@@ -1,6 +1,6 @@
 languageCode = "en-us"
 title = "Armory Spinnaker Documentation"
-baseURL = "http://192.168.99.100:8080"
+baseURL = "http://104.154.17.70"
 theme = "hugo-theme-learn"
 
 [params]
