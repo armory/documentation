@@ -1,0 +1,59 @@
+User Guide: How to Create an Application
+This guide should tell you:
+
+- What the first page is all about
+- How to create an application
+- How to delete an application
+
+
+
+At First Glance
+
+When you first log in to Spinnaker, the landing page should look like this:
+
+https://cl.ly/1U0r3c3q1R3I
+
+The navigation bar at the top allows you to access Projects, Applications, and Infrastructure.
+The search bar allows you to search through your Infrastructure. 
+(this search bar will find everything in all of your AWS Infrastructure) 
+
+Spinnaker should scan all of your infrastructure and create applications for anything that it finds. 
+If you enter an application this way that was not configured by Spinnaker, it should state that the application has not been configured. 
+
+Note: The naming convention that you have been using is not necessarily the same one that Spinnaker uses, but accessing your applications through Spinnaker should allow you to configure it to your preferences.
+Remember that Spinnaker considers an application to be anything you would put into a single code repository.
+
+
+
+
+
+Making an Application
+
+Step 1: Enter Applications from your Navigation bar. 
+
+Step 2: Click the “Actions” button and select from the drop-down menu “Create Application”
+https://cl.ly/3p3H1H373A1G
+
+Step 3: Fill out the pop-up form with desired user definitions.
+https://cl.ly/3B0i3E2H331f
+
+Notes: 
+
+- The Name of the application cannot have hyphens, or it will interfere with the naming convention.
+- The Account(s) can include your AWS account and your Docker registry.
+- When you create an application in Spinnaker, consider it to be anything you would put into a single code repository. 
+
+Step 4: After you fill out the form you should see this:
+https://cl.ly/3g0z2b2i0b23
+
+Step 5: If you wish to modify the settings for the application, click on “Config” for configurations.
+
+Note that by now you should have created an application, but as you have not created a pipeline and executed it, nothing should show up yet.
+
+
+
+Deleting an Application
+
+Go to your application, click on “Config” and scroll all the way down. There will be a prompt to confirm if you would like to delete your application. 
+
+https://cl.ly/1A021W1V152x
