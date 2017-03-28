@@ -14,7 +14,7 @@ This guide should include:
 To add a Jenkins trigger to your pipeline, go to your configurations stage and select "add trigger", select "Jenkins" from the Type dropdown menu. Select a Master from the Master category list and then select a Job to trigger from the pipeline. 
 
 
-![alt text](https://cl.ly/022u0k090y2K "Logo Title Text 1")
+![Add Trigger](https://cl.ly/022u0k090y2K)
 
 
 
