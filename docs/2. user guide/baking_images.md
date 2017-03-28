@@ -1,0 +1,1 @@
+Multi-region bake vs copying AMIs to other regions.
