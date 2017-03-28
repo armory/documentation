@@ -49,8 +49,38 @@ Note: For more elaborate instructions on expression language, please refer to th
 
 
 
+##How to Trigger a Jenkins Job through Spinnaker
+
+
+Step 1: In pipelines, click on'Add stage'.
+
+
+Step 2: Select 'Jenkins' from Type. Name the Stage Name and Depends On if you need it. 
+
+
+Step 3: Configure your Master and Job. IF your Job is parameterized, then Spinnaker will display a Parameters form for your input. 
+
+
+Step 4: The Property File input works the same way, but you cannot use the same expression above to get it. Instead, you would access it with `${ #stage('Jenkins')['context']['KEY'] }`.
+
+
+https://cl.ly/0b1J3L3m2R3Z
+
+
+In the example picture, you can see a very simple Jenkins job that creates a properties file. In the Stage Configuration it should look like this: 
+
+https://cl.ly/2O363s0N2p0T
+
+
+In a later stage
 
 
 
 
+get the context of this build stage to access these properties.
+
+
+to run an arbitrary script, run it via jenkins and select script type for stage, fill out the script configuration, (output file is basically properties file produced by the script).
+
+https://cl.ly/0R113U1g0Z3w
 
