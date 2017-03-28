@@ -8,16 +8,17 @@ This guide should include:
 - how to trigger Jenkins' jobs from Spinnaker
 
 
-## triggers
+## Triggering a pipeline with Jenkins
 
 
 To add a Jenkins trigger to your pipeline, go to your configurations stage and select "add trigger", select "Jenkins" from the Type dropdown menu. Select a Master from the Master category list and then select a Job to trigger from the pipeline. 
 
 
-https://cl.ly/022u0k090y2K
+![alt text](https://cl.ly/022u0k090y2K "Logo Title Text 1")
 
 
-Note: Make sure you archive your package files and your properties file in Jenkins. 
+
+Note: Make sure you archive your package files and your properties file in Jenkins.
 
 
 
@@ -27,13 +28,13 @@ Note: Make sure you archive your package files and your properties file in Jenki
 The property file is a way to transfer information about your build from Jenkins to Spinnaker. The file needs to be archived by the Jenkins job and should contain key value pairs. 
 
 
-In this example, my Jenkins job archived this file `build.properties` to look like:
+As an example, if you had your Jenkins job create and archive a file named `build.properties` which looks like:
 
-
-```COMMITER_NAME=andrew
+```
+COMMITER_NAME=andrew
 BRANCH_NAME=mybranch
-CONFIG=config-3059cad.tar.gz```
-
+CONFIG=config-3059cad.tar.gz
+```
 
 Then in the property files field in the Spinnaker Jenkins trigger, fill it in with `build.properties`.
 
