@@ -1,7 +1,0 @@
-languageCode = "en-us"
-title = "Armory Spinnaker Documentation"
-baseURL = "http://104.154.17.70"
-theme = "hugo-theme-learn"
-
-[params]
-  menu = [ "introduction", "installation", "related", "release-notes" ]
