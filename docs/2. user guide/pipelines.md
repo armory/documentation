@@ -1,5 +1,6 @@
 
 
+manual executions
 - What happens when you replay a previous execution?
   - it grabs the package version from the jenkins build.
   - it doesnt rebake the image unless the previously baked image is not there.
