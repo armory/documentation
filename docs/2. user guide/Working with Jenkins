@@ -1,6 +1,8 @@
 #Working with Jenkins
 
+
 This guide should include:
+
 
 - how to trigger Spinnaker pipelines from Jenkins
 - how to trigger Jenkins' jobs from Spinnaker
@@ -11,14 +13,19 @@ This guide should include:
 
 To add a Jenkins trigger to your pipeline, go to your configurations stage and select "add trigger", select "Jenkins" from the Type dropdown menu. Select a Master from the Master category list and then select a Job to trigger from the pipeline. 
 
+
 https://cl.ly/022u0k090y2K
+
 
 Note: Make sure you archive your package files and your properties file in Jenkins. 
 
 
-Property File
+
+###Property File
+
 
 The property file is a way to transfer information about your build from Jenkins to Spinnaker. The file needs to be archived by the Jenkins job and should contain key value pairs. 
+
 
 In this example, my Jenkins job archived this file `build.properties` to look like:
 
@@ -30,11 +37,13 @@ CONFIG=config-3059cad.tar.gz```
 
 Then in the property files field in the Spinnaker Jenkins trigger, fill it in with `build.properties`.
 
+
 Now that those variables are in Spinnaker, we can access them elsewhere in our pipeline by using the built-in Spinnaker expression language. 
 
 
 
 In any given stage we can use the expression language `${#trigger.parameters['BRANCH_NAME']}` to access the property value of the varable named `BRANCH_NAME`.
+
 
 Note: For more elaborate instructions on expression language, please refer to the [Spinnaker Expression Language Guide](link placeholder).
 
@@ -42,6 +51,6 @@ Note: For more elaborate instructions on expression language, please refer to th
 
 
 
-build.properties
-marking artifacts
+
+
 
