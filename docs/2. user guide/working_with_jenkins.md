@@ -1,4 +1,4 @@
-#Working with Jenkins
+# Working with Jenkins
 
 
 This guide should include:
@@ -8,7 +8,7 @@ This guide should include:
 - how to trigger Jenkins' jobs from Spinnaker
 
 
-##triggers
+## triggers
 
 
 To add a Jenkins trigger to your pipeline, go to your configurations stage and select "add trigger", select "Jenkins" from the Type dropdown menu. Select a Master from the Master category list and then select a Job to trigger from the pipeline. 
@@ -21,7 +21,7 @@ Note: Make sure you archive your package files and your properties file in Jenki
 
 
 
-###Property File
+### Property File
 
 
 The property file is a way to transfer information about your build from Jenkins to Spinnaker. The file needs to be archived by the Jenkins job and should contain key value pairs. 
