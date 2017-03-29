@@ -1,0 +1,1 @@
+Describe all of the options on the application screen
