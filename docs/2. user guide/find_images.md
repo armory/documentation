@@ -1,0 +1,1 @@
+how to use find images and the expressino language to use the image as a base image and something to deploy.

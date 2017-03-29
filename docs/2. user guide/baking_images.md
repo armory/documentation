@@ -112,6 +112,17 @@ https://cl.ly/3J2A1E3A1v3t
 
 and repeat the bake, I see that Spinnaker named the AMI `mycustomname-all-mycustomsuffix-trusty`
 
+### Base AMIs
+
+Often you will want to specify a base image for use in your bake. In that case you will use the 'Base AMI' field, not to be confused with the 'Base Name' field. As an example, I have specified `ami-4d78c02d`:
+
+https://cl.ly/2H1G150p2c2c
+
+
+In this situation, the Base OS selection (ubuntu/trusty/windows) will be ignored. 
+
+You can also select a base AMI more dynamically by combing the 'Bake' stage type with the 'Find Image' stage type. For more details check out the [Find Images Guide](find_images.md)
+
 
 ### Public vs Private AMIs
 
