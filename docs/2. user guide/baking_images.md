@@ -2,9 +2,8 @@
 
 This guide should include:
 
-
 - How to bake an Amazon Machine Image
-
+- TODO
 
 Definition: The term 'Baking' is used within Spinnaker to refer to the process of creating machine images.
 
