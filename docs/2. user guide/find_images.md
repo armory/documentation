@@ -1,0 +1,5 @@
+- how to use find images
+  - different images in different regions
+- use expression language to use the found image later in the pipeline.
+  - give an example using it as a base image
+  - give an example deploying the found image

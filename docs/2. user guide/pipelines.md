@@ -12,3 +12,5 @@ manual executions
   - Artifacts from Jenkins
     - package name prefix that is used later for baking
     - explain a build.properties and how to build from a file
+
+- notifications
