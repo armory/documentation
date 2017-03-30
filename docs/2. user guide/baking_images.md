@@ -74,7 +74,7 @@ After the bake is successful, I see:
 https://cl.ly/0100152P1U0y
 
 
-Notice that the AMI name and ID are shared in the lower right.
+Notice that the AMI name and ID are shared in the lower right's blue box - in this example it is "armory-hello-deploy-all-20170329204459-trusty (ami-c78410a7)".
 
 
 If I press 'Start Manual Execution' again, since the package version hasn't changed, it will reuse the same image rather than rebaking. The screen for that looks like:
