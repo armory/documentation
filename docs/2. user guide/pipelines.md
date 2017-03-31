@@ -14,3 +14,6 @@ manual executions
     - explain a build.properties and how to build from a file
 
 - notifications
+
+
+- Hanging pipelines
