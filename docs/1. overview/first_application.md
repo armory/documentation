@@ -11,7 +11,7 @@ At First Glance
 
 When you first log in to Spinnaker, the landing page should look like this:
 
-()[https://d1ax1i5f2y3x71.cloudfront.net/items/2z1u24101u2v463O3u1M/Image%202017-03-24%20at%203.15.34%20PM.png]
+![](https://d1ax1i5f2y3x71.cloudfront.net/items/2z1u24101u2v463O3u1M/Image%202017-03-24%20at%203.15.34%20PM.png)
 
 The navigation bar at the top allows you to access Projects, Applications, and Infrastructure.
 The search bar allows you to search through your Infrastructure. 
