@@ -11,7 +11,7 @@ This guide should include:
 ## Triggering a pipeline with Jenkins
 
 
-To add a Jenkins trigger to your pipeline, go to your configurations stage and select "add trigger", select "Jenkins" from the Type dropdown menu. Select a Master from the Master category list and then select a Job to trigger from the pipeline. 
+To add a Jenkins trigger to your pipeline, go to your configurations stage and select "add trigger", then select "Jenkins" from the Type dropdown menu. Select a Master from the Master category list and then select a Job to trigger from the pipeline. 
 
 
 ![Add Trigger](https://cl.ly/022u0k090y2K)
@@ -42,7 +42,7 @@ Then in the property files field in the Spinnaker Jenkins trigger, fill it in wi
 Now that those variables are in Spinnaker, we can access them elsewhere in our pipeline by using the built-in Spinnaker expression language. 
 
 
-In any given stage we can use the expression `${#trigger.parameters['BRANCH_NAME']}` to access the property value of the varable named `BRANCH_NAME`.
+In any given stage we can use the expression `${#trigger.parameters['BRANCH_NAME']}` to access the property value of the variable named `BRANCH_NAME`.
 
 
 Note: For more elaborate instructions on expression language, please refer to the [Spinnaker Expression Language Guide](link placeholder).
@@ -52,16 +52,16 @@ Note: For more elaborate instructions on expression language, please refer to th
 ## How to Trigger a Jenkins Job through Spinnaker
 
 
-Step 1: In pipelines, click on'Add stage'.
+Step 1: In pipelines, click on 'Add stage'.
 
 
 Step 2: Select 'Jenkins' from Type. Name the Stage Name and Depends On if you need it. 
 
 
-Step 3: Configure your Master and Job. If your Job is parameterized, then Spinnaker will display a Parameters form for your input. 
+Step 3: Configure your Master and Job. If your Job is parameterized then Spinnaker will display a Parameters form for your input. 
 
 
-Step 4: The Property File input works the same way as abaove, however you cannot use the same expression above to access it. Instead, you would access it with `${ #stage('Jenkins')['context']['BRANCH_NAME'] }`, supposing you wanted to access the `BRANCH_NAME` variable.
+Step 4: The Property File input works the same way as above - however you **cannot** use the same expression above to access it. Instead, you would access it with `${ #stage('Jenkins')['context']['BRANCH_NAME'] }`, supposing you wanted to access the `BRANCH_NAME` variable.
 
 
 ### Example
@@ -73,11 +73,11 @@ First we navigate to my Jenkins Master and create a new Jenkins 2.0 Pipeline Job
 
 https://cl.ly/0b1J3L3m2R3Z
 
-Then we go back to Spinnaker a create a new pipeline. We will skip over the Jenkins trigger for this example and create a Jenkins stage. Make sure to name the stage `Jenkins`. Make sure to type `build.properties` into the Properties field so that Spinnaker know where to source the property values. 
+Then we go back to Spinnaker and create a new pipeline. We will skip over the Jenkins trigger for this example and create a Jenkins stage. Make sure to name the stage `Jenkins`. Make sure to type `build.properties` into the Properties field so that Spinnaker know where to source the property values. 
 
 https://cl.ly/2O363s0N2p0T
 
-To demonstrate accessing our properties file, lets create a new `Manual Judgement` stage. In the Instructions text box input:
+To demonstrate accessing our properties file, let's create a new `Manual Judgement` stage. In the Instructions text box input:
 ```
 ${ #stage('Jenkins')['context']['KEY'] }
 ```

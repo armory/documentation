@@ -16,21 +16,21 @@ Preprequisites and assumptions:
 
 ## Baking in a Pipeline
 
-First lets go through an example of baking, then we can go into some details and information sharing.
+First let's go through an example of baking, then we can go into some details and information sharing.
 
 ## Example
 
-In this example we will bake an image containing a debian package created by a Jenkins' job. If you like, you can check out the [working with Jenkins guide](working_with_jenkins.md) for more information on how Jenkins and Spinnaker can work together. We also have a guide on [creating debian packages](debian_packages.md).
+In this example we will bake an image containing a Debian package created by a Jenkins' job. If you like, you can check out the [working with Jenkins guide](working_with_jenkins.md) for more information on how Jenkins and Spinnaker can work together. We also have a guide on [creating debian packages](debian_packages.md).
 
 
-First Lets look at the the Jenkins job that builds our package. 
+First Let's look at the the Jenkins job that builds our package. 
 https://cl.ly/0I0E070P3D2n
 As you can see, the last run archived a packaged named `armory-hello-deploy_0.5.0-h5.c4baff4_all.deb`
 
 
-Now lets go to Spinnaker and create a new pipeline. I named mine `bake-example` 
+Now let's go to Spinnaker and create a new pipeline. I named mine `bake-example`.
 
-On the configuration stage, I scroll down and add a new Jenkins automated trigger. Select my master, and then select the Jenkins job shown above (`armory/job/armory-hello-deploy/job/master`). For this example, there is no need to worry about settings a properties file.
+On the configuration stage, I scroll down and add a new Jenkins automated trigger. Select my master, and then select the Jenkins job shown above (`armory/job/armory-hello-deploy/job/master`). For this example, there is no need to worry about setting a properties file.
 
 Next I add a bake stage (add stage -> Type: Bake)
 
@@ -74,7 +74,7 @@ After the bake is successful, I see:
 https://cl.ly/0100152P1U0y
 
 
-Notice the AMI name and id is shared in the lower right.
+Notice that the AMI name and ID are shared in the lower right's blue box - in this example it is "armory-hello-deploy-all-20170329204459-trusty (ami-c78410a7)".
 
 
 If I press 'Start Manual Execution' again, since the package version hasn't changed, it will reuse the same image rather than rebaking. The screen for that looks like:
@@ -87,7 +87,6 @@ Notice the whole pipeline only ran for '00:00' and in the lower right Spinnaker 
 
 You can additionally do things like use a specific base AMI, specify your baked AMI's name, use a custom packer script, or pass variables to a packer script.
 
-To get started
 If you would like to change the name in AWS of your AMI, you can do so by selecting the 'Show Advanced Options' checkbox in the Bake Stage Configuration. Continuing from our example above, when I see:
 
 https://cl.ly/3z252A1D3S2i
@@ -105,11 +104,11 @@ After re-running the pipeline, I see that Spinnaker named the AMI `mycustomname-
 
 https://cl.ly/022b3M0V1X2G
 
-How if I add 'mycustomsuffix' to the 'AMI Suffix' field:
+Then I add 'mycustomsuffix' to the 'AMI Suffix' field:
 
 https://cl.ly/3J2A1E3A1v3t
 
-and repeat the bake, I see that Spinnaker named the AMI `mycustomname-all-mycustomsuffix-trusty`
+Repeating the bake, I see that Spinnaker named the AMI `mycustomname-all-mycustomsuffix-trusty`
 
 ### Base AMIs
 
@@ -141,14 +140,14 @@ By selecting a region, you are selecting which region the bake will take place. 
 
 When a bake step executes, Spinnaker looks for a previously created image before baking a new one. It uses the set of packages (and their versions) that users specify in the bake stage configuration to determine if the bake is neccessary.
 
-You can force Spinnaker to always bake if you so desire by selecting the 'Rebake: Rebake image without regard to the status of any existing bake' checkbox on the bake stage configuration screen. You also have the option when executing a pipeline manually to force rebaking. 
+You can force Spinnaker to always bake by selecting the 'Rebake: Rebake image without regard to the status of any existing bake' checkbox on the bake stage configuration screen. You also have the option when executing a pipeline manually to force rebaking. 
 
 
 ## Bake and Copy vs Multi-region Bake
 
-There are two options for getting an image to multiple regions in AWS. A common practice outside of Spinnaker is to create your AMI and then copy it to the regions you need. However, Spinnaker by default will do a multi-region bake. Meaning, if you select more than one region, it will go through the process of creating an image in each region (spin up an instance, install the packages, etc).
+There are two options for getting an image to multiple regions in AWS. A common practice outside of Spinnaker is to create your AMI and then copy it to the regions you need. However, Spinnaker by default will do a multi-region bake. This means if you select more than one region it will go through the process of creating an image in each region (spin up an instance, install the packages, etc).
 
-There are trade offs to each approach. Generally, Spinnaker's default multi-region bake approach is faster than the bake and copy approach. However, if you need to limit all baking activities to one region, then there isn't much of a choice.
+There are trade offs to each approach. Generally, Spinnaker's default multi-region bake approach is faster than the bake and copy approach. However, if you need to limit all baking activities to one region then there isn't much of a choice.
 
 
 ## Custom Bake Scripts
@@ -164,4 +163,4 @@ https://cl.ly/2T070y2S0F1G
 Click the link that says 'View Bakery Details'. It can be helpful to track down the last command that the bakery executed. 
 
 
-Another source of information is the pipeline's source link. You can find this link in small writing in the far bottom right of the pipeline execution detail screen. The 'source' is a json representatinon of the data generated by Spinnaker when running your pipeline (not just the bake step).
+Another source of information is the pipeline's source link. You can find this link in small writing in the far bottom right of the pipeline execution detail screen. The 'source' is a json representation of the data generated by Spinnaker when running your pipeline (not just the bake step).
