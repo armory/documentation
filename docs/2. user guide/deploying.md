@@ -122,13 +122,7 @@ You have the option when deploying a new server group to use either EC2 or ELB h
 It is possible to set your ELB to work with certain AZs but then deploy your server group to another AZ. If you have your healthcheck set to ELB, then your instances will never become healthy. You can tell when this happens by hovering you mouse over the red triangle [described above](investigating-red-instances).
 
 
-## What does disabled mean?
-
-When an instance is disabled within Spinnaker, it is removed from all load balancers. Depending on how your application recieves work, this may or may not stop your application from doing work. If your application reiceves work via the load balancer, like a web application or something like that, then it should actually be disabled. However, if you have an application that does something along the lines of pulling workloads off of a distributed queue (SQS, Kafka, etc) then removing it from a load balancer won't really do anything. In fact, it probably wasn't ever in a load balancer.
-
-
 ## Deployment strategies
-
 
 ### Red/Black aka Blue/Green
 
@@ -145,6 +139,11 @@ This strategy will create a new server group and add it to the load balancer. On
 ### None
 
 This strategy will deploay a new server group. It won't do anything about the older server groups. They will just all be in the load balancer together like one big happy family!
+
+
+## What does disabled mean?
+
+When an instance is disabled within Spinnaker, it is removed from all load balancers. Depending on how your application recieves work, this may or may not stop your application from doing work. If your application reiceves work via the load balancer, like a web application or something like that, then it should actually be disabled. However, if you have an application that does something along the lines of pulling workloads off of a distributed queue (SQS, Kafka, etc) then removing it from a load balancer won't really do anything. In fact, it probably wasn't ever in a load balancer.
 
 
 ## UserData
