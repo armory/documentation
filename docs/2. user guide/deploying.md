@@ -4,7 +4,7 @@
 This guide should include:
 
 - How to deploy AMIs
-- TODO
+- Common errors and troubleshooting
 
 
 Prerequisites and Assumptions:
@@ -115,6 +115,10 @@ You have the option when deploying a new server group to use either EC2 or ELB h
 ### Deploy AZs vs ELB AZs
 
 It is possible to set your ELB to work with certain AZs but then deploy your server group to another AZ. If you have your healthcheck set to ELB, then your instances will never become healthy. You can tell when this happens by hovering you mouse over the red triangle [described above](investigating-red-instances).
+
+### Unkown errors
+
+Sometimes you may encounter an 'Unknown Error' message when executing your deploy. Something like, "Shrink cluster: Exception: No reason provided." These errors are almost always caused by a field having an incorrect value in the deploy configuration. This particular "Shrink cluster" error was caused by the server group's region being invalid.
 
 
 ## Deployment strategies
