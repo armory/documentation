@@ -142,6 +142,7 @@ This strategy will deploy a new server group. It won't do anything about the old
 
 When an instance is disabled within Spinnaker, it is removed from all load balancers. Depending on how your application receives work, this may or may not stop your application from doing work. If your application receives work via the load balancer - like a web application - then it should actually be disabled. However, if you have an application that works similarly to pulling workloads off of a distributed queue (SQS, Kafka, etc), then removing it from a load balancer won't change anything. In fact, it was probably never in a load balancer.
 
+You can re-enable a server group by selecting it from the 'Cluster' screen, click the 'Server Group Actions' button on the right panel and click 'Enable'.
 
 ## UserData
 
