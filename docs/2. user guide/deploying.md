@@ -9,7 +9,7 @@ This guide should include:
 
 Prerequisites and Assumptions:
 
-- You are deploying to AWS
+- You are deploying to Amazon Web Services (AWS)
 - You know how to create pipelines and utilize the [Bake stage](baking_images.md)
 - You understand Spinnaker's [naming conventions](../overview/naming_conventions.md)
 - You are familiar with ELB configuration
@@ -18,13 +18,11 @@ Prerequisites and Assumptions:
 
 The primary objective of Spinnaker is to deploy your software. It would like you to [Bake an image](baking_images.md) and use that same image to deploy to all of your environments.
 
-Spinnaker opinion of an application: load balancer, server groups
-
-The typical type of distributed application that Spinnaker deploys is one with a cluster of homogeneous instances behind a load balancer. The load balancer is resposible for detecting healthy and unhealthy instances.
+The typical type of distributed application that Spinnaker deploys is one with a cluster of homogeneous instances behind a load balancer. The load balancer is responsible for detecting healthy and unhealthy instances.
 
 TODO: more detail about types of applications.
 
-To start off, lets go through an example. This example continues from the example in the [Baking an image guide](baking_images.md).
+To start off, let's go through an example. This example continues from the example in the [Baking an image guide](baking_images.md).
 
 
 ## Example
@@ -39,11 +37,10 @@ Press the '+' on the right to create a new load balancer. The screen that pops u
 
 https://cl.ly/1B2j3N152A0P
 
-I input 'example' into the 'Stack' field, set my [VPC Subnet Type](vpc-subnet-type), use my precreated security group, forward the correct ports and most importantly set my healthcheck. Finally, I press create.
+I input 'example' into the 'Stack' field, set my [VPC Subnet Type](vpc-subnet-type), use my pre-created security group, forward the correct ports and most importantly set my healthcheck. Finally, I press 'Create'.
 
 
-
-Now to create get going on creating the Deploy stage in our pipeline,  I navigate to the configuration screen of the previously created pipeline from the [Baking guide](baking_images.md).
+Now to create the Deploy stage in our pipeline,  I navigate to the configuration screen of the previously created pipeline from the [Baking guide](baking_images.md).
 
 Select 'Add Stage' and select 'Deploy' from the 'Type' dropdown menu.
 
@@ -51,52 +48,52 @@ https://cl.ly/1E3i1J3B3l45
 
 Now, I press the 'Add server group' option in the 'Deploy Configuration'
 
-You'll be given the option copy a configuration from a currently running server group, if a server group for this application already exists. In my case, I select 'None' and continue. Now I see:
+You'll be given the option to copy a configuration from a currently running server group if a server group for this application already exists. In my case, I select 'None' and continue. Now I see:
 
 https://cl.ly/0V2z3s2X0R0z
 
-I select the same 'VPC Subnet' type as the ELB I just made. Also, input 'example' to the 'Stack' field, since that is what was used when creating the ELB.
+I select the same 'VPC Subnet' type as the ELB I just made. Remember to input 'example' to the 'Stack' field since that is what was used when creating the ELB.
 
-For this example, I'm going to use a Red/Black (aka Blue/Green) deployment strategy. Then I scroll down and select the load balancer that I just created from the list and select my precreated security group.
+For this example, I'm going to use a Red/Black (also known as Blue/Green) deployment strategy. Then I scroll down and select the load balancer that I just created from the list and select my pre-created security group.
 
-Under the 'Instance Type' section, select 'Micro Utility'. I scroll all the way down to the 'Advanced Settings' section and change the 'Health Check Type' from 'EC2' to 'ELB'. Then I erase the 'IAM Instance Profile' field which is filled in by default. 
+Under the 'Instance Type' section, select 'Micro Utility'. I scroll all the way down to the 'Advanced Settings' section and change the 'Health Check Type' from 'EC2' to 'ELB'. I then erase the 'IAM Instance Profile' field. We do so in our examplen because we don't need access to any other AWS resources and the field may be filled in by default.
 
 https://cl.ly/0M0E2x2H2c2u
 
-Then press 'Add' to finish with this screen. After returning to the Deploy Stage Configuration screen, the Deploy Configuration section looks like:
+Then press 'Add' to complete this step. After returning to the Deploy Stage Configuration screen, the Deploy Configuration section looks like:
 
 https://cl.ly/3V1M1V2n2V1X
 
-Lastly, I press 'Save Changes' and select the 'Pipelines' tab to return to the pipeline executions screen.
+Finally, I press 'Save Changes' and select the 'Pipelines' tab to return to the Pipeline Executions screen.
 
 I press 'Start Manual Execution' on my pipeline. This is what I see:
 
 https://cl.ly/3M3q16220o35
 
-As this deploy is happening, I can click on the 'Clusters' tab to see new a server group come up.
+As this deploy is happening, I can click on the 'Clusters' tab to see a new server group come up.
 
 https://cl.ly/3a3H2y1o450J
 
 For more information about the details of this screen, check out the [application screen description guide](application_screen.md)
 
-I can see here that a new server has indeed come up and is healthy. Healthy in this case means that it has passed the ELB healthcheck. If you are having problems with your instances not becoming healthy, check out the [common errors section](#common-errors).
+I can see here that a new server has indeed come up and is healthy. Healthy in this case means that it has passed the ELB healthcheck. If you are having problems with your instances not passing the healthcheck, check out the [common errors section](#common-errors).
 
-Now, to demonstrate the blue/green, I go back to the pipeline executions screen and press 'Start Manual Execution' again. Then I go back to the 'Clusters' tab watch whats going on.
+Now, to demonstrate the Blue/Green, I go back to the Pipeline Executions screen and press 'Start Manual Execution' again. Then I go back to the 'Clusters' tab to watch the execution process.
 
-First I see that a new server group is being created, `v001`. It doesn't have any instances in it yet:
+First I see that a new server group named `v001` is being created. It doesn't have any instances in it yet:
 https://cl.ly/2X293L1J2m1Z
 
-After a few moments, an instance is created and is unhealthy:
+After a few moments an instance is created and is initially 'unhealthy':
 https://cl.ly/0i1M3T370w2d
 
-Once it passes its healthchecks and becomes healthy, it will turn green. At this point Spinnaker will add the server group to the load balancer.
+Once it passes its healthchecks and becomes healthy, it will visually indicate so by turning green. At this point Spinnaker will add the server group to the load balancer.
 https://cl.ly/3a410Q3W0O3g
 
-Immediately after that, the old server group is removed from the load balancer. Spinnaker will turn the old server group's instances blue. This means that they are disabled and no longer recieving traffic.
+Immediately after that, the old server group is removed from the load balancer. Spinnaker will turn the old server group's instances blue. This means that they are disabled and no longer receiving traffic.
 
 https://cl.ly/3Z3j3v2b0r37
 
-Because of how I configured my deploy stage, the old blue server group will stick around until I either manual scale it down or destroy it. If you like, you can configure your deploy stage to automatically scale down the old server group after the new one is healthy. 
+Because of how I configured my deploy stage, the old Blue server group will stick around until I either manually scale it down or destroy it. If you like, you can configure your deploy stage to automatically scale down the old server group after the new one is healthy. 
 
 
 ## Common errors and troubleshooting
@@ -109,13 +106,13 @@ Often when your deploy stage is timing out, it is because your instances are nev
 
 ### Investigating red instances
 
-When you are trying to figure out why your instance is not comming up correctly, you can hover your cursor over the red triangle next to the load balancer under the 'Status' section after selecting your red instance. Usually some very helpful information will be displayed.
+Select your red instance and hover your cursor over the red triangle next to the load balancer under the 'Status' section. This should display some helpful information for understanding why your instance is not deploying correctly.
 
 https://cl.ly/3z2P3i0v3B3b
 
 ### Incorrect Healthcheck 
 
-You have the option when deploying a new server group to use either EC2 or ELB healthchecking. When instances aren't passing this healthcheck, they will be terminated and replaced. If you are experiencing strange behavior, double check that the correct healthcheck is selected.
+You have the option when deploying a new server group to use either EC2 or ELB healthchecking. When instances aren't passing this healthcheck they will be terminated and replaced. If you are experiencing strange behavior, double check that the correct healthcheck is selected.
 
 ### Deploy AZs vs ELB AZs
 
@@ -124,13 +121,13 @@ It is possible to set your ELB to work with certain AZs but then deploy your ser
 
 ## Deployment strategies
 
-### Red/Black aka Blue/Green
+### Red/Black (also known as Blue/Green)
 
-This strategy will deploy a fresh server group and add it to the load balancer. The older server group will then be disabled.
+This strategy will deploy a fresh server group and add it to the load balancer. The older server group will then be disabled but still be available for internal use.
 
 https://cl.ly/3y2G270F1q0b
 
-When you configure this stragey you can choose to scale down the old server group. You can always scale it back up if you need it for a roll back. Also, you can choose how many old server groups to leave in the cluster.
+When you configure this stragey you can choose to scale down the old server group. You can always scale it back up if you need it for a rollback. Also, you can choose how many old server groups to leave in the cluster.
 
 ### Highlander
 
@@ -138,17 +135,17 @@ This strategy will create a new server group and add it to the load balancer. On
 
 ### None
 
-This strategy will deploay a new server group. It won't do anything about the older server groups. They will just all be in the load balancer together like one big happy family!
+This strategy will deploy a new server group. It won't do anything about the older server groups. They will just all be in the load balancer together like one big happy family!
 
 
 ## What does disabled mean?
 
-When an instance is disabled within Spinnaker, it is removed from all load balancers. Depending on how your application recieves work, this may or may not stop your application from doing work. If your application reiceves work via the load balancer, like a web application or something like that, then it should actually be disabled. However, if you have an application that does something along the lines of pulling workloads off of a distributed queue (SQS, Kafka, etc) then removing it from a load balancer won't really do anything. In fact, it probably wasn't ever in a load balancer.
+When an instance is disabled within Spinnaker, it is removed from all load balancers. Depending on how your application receives work, this may or may not stop your application from doing work. If your application receives work via the load balancer - like a web application - then it should actually be disabled. However, if you have an application that works similarly to pulling workloads off of a distributed queue (SQS, Kafka, etc), then removing it from a load balancer won't change anything. In fact, it was probably never in a load balancer.
 
 
 ## UserData
 
-You can pass custom information to your deployed instances through the 'UserData' field under the 'Advanced Settings' section of the deploy stage configuration.
+You can pass custom information to your deployed instances through the 'User Data' field under the 'Advanced Settings' section of the deploy stage configuration.
 
 https://cl.ly/182M19133O0s
 
@@ -173,7 +170,7 @@ LAUNCH_CONFIG="test-example-v001-03302017224619"
 
 ## Rolling back
 
-Yup. Sometimes you need to rollback.
+Yup. Sometimes you need to rollback to a known previously working environment. 
 
 ### Automatically
 
@@ -190,7 +187,7 @@ The server group that you select will re-enabled and scaled up to the necessary 
 ### Manually
 
 If you are ever in a situation where you need to roll back without Spinnaker, you can do so from the AWS console. You will basically run through the process that Spinnaker would do automatically:
-- Scale up the older ASG
+- Scale up the older Auto Scaling Groups (ASG)
 - Add those instances to the ELB
 - Remove the newer ASG's instances from the ELB
 - Scale down or delete the new ASG
