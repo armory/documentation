@@ -20,8 +20,6 @@ The primary objective of Spinnaker is to deploy your software. It would like you
 
 The typical type of distributed application that Spinnaker deploys is one with a cluster of homogeneous instances behind a load balancer. The load balancer is responsible for detecting healthy and unhealthy instances.
 
-TODO: more detail about types of applications.
-
 To start off, let's go through an example. This example continues from the example in the [Baking an image guide](baking_images.md).
 
 
