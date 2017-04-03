@@ -7,12 +7,12 @@ This guide should include:
 - troubleshooting tips
 
 
-The expression language within Spinnaker is used to pass information between stages of a pipeline. Some common use cases would be:
+The expression language is a powerful tool that you can use to add logic and decision making to your pipelines. While a lot of the time you will probably use it to evaluated variables, it can do a lot more. You can write straight Java/Groovy into it. This means you can do transformations, filters, maps, etc. You can use it to branch your pipeline into different directions.
+
+Some of the most common uses include:
 - Getting build information from Jenkins
 - Passing image names from one stage to another
 - Retrieving a user's manual judgement response
-
-The expression language is a powerful tool that you can use to add logic and decision making to your pipelines. While a lot of the time you will probably use it to evaluated variables, it can do a lot more. You can write straight Java/Groovy into it. This means you can do transformations, filters, maps, etc. You can use it to branch your pipeline into different directions.
 
 
 Before we go into examples and troubleshooting, check out the guide on spinnaker.io for an detailed overview: [http://www.spinnaker.io/docs/pipeline-expressions-guide](http://www.spinnaker.io/docs/pipeline-expressions-guide)
