@@ -7,3 +7,6 @@
 - Common Uses
   - find images
   - trigger
+
+
+  When you type an invalid expression, it will just print it as a string. this is often confused for spinnaker not evaluating, but is really user error.
