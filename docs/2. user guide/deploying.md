@@ -56,7 +56,7 @@ I select the same 'VPC Subnet' type as the ELB I just made. Remember to input 'e
 
 For this example, I'm going to use a Red/Black (also known as Blue/Green) deployment strategy. Then I scroll down and select the load balancer that I just created from the list and select my pre-created security group.
 
-Under the 'Instance Type' section, select 'Micro Utility'. I scroll all the way down to the 'Advanced Settings' section and change the 'Health Check Type' from 'EC2' to 'ELB'. I then erase the 'IAM Instance Profile' field. We do so in our examplen because we don't need access to any other AWS resources and the field may be filled in by default.
+Under the 'Instance Type' section, select 'Micro Utility'. I scroll all the way down to the 'Advanced Settings' section and change the 'Health Check Type' from 'EC2' to 'ELB'. I then erase the 'IAM Instance Profile' field. We do so in our example because we don't need access to any other AWS resources and the field may be filled in by default.
 
 https://cl.ly/0M0E2x2H2c2u
 
@@ -123,7 +123,7 @@ It is possible to set your ELB to work with certain AZs but then deploy your ser
 
 ### Red/Black (also known as Blue/Green)
 
-This strategy will deploy a fresh server group and add it to the load balancer. The older server group will then be disabled but still be available for internal use.
+This strategy will deploy a fresh server group and add it to the load balancer. The older server group will then be [disabled](#what-does-disabled-mean).
 
 https://cl.ly/3y2G270F1q0b
 
@@ -170,7 +170,7 @@ LAUNCH_CONFIG="test-example-v001-03302017224619"
 
 ## Rolling back
 
-Yup. Sometimes you need to rollback to a known previously working environment. 
+Yup. Sometimes you need to rollback to a known previously working state. 
 
 ### Automatically
 
