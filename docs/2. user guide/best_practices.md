@@ -37,7 +37,7 @@ It would be best not to bake secrets into your images. If you have the default i
 
 Since secrets are not baking, that implies that loading them will have to be done at runtime. 
 
-Specifically for SSL, it can be beneficial to terminate SSL at the ELB whenever feasable. Amazon has the [Key Management Service (KMS)]() to help with this. If you need to handle certificate management at the application level, you might want to check out [Netflix's Lemur](http://techblog.netflix.com/2015/09/introducing-lemur.html) project.
+Specifically for SSL, it can be beneficial to terminate SSL at the ELB whenever feasable. Amazon has the [Key Management Service (KMS)](https://aws.amazon.com/kms/) to help with this. If you need to handle certificate management at the application level, you might want to check out [Netflix's Lemur](http://techblog.netflix.com/2015/09/introducing-lemur.html) project.
 
 Some other general purpose secret management tools include:
 - [HashiCorp's Vault](https://www.vaultproject.io/)
