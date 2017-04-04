@@ -6,14 +6,13 @@ This guide should include:
 - manual executions
 - notifications
 
-
-Pipelines are the key to orcastrating deploys in Spinnaker. They are a combination of stages that enabled some very sophisticated coordination and branching. Pipelines are specific to an application. To see an application's pipelines, select 'Applications' from Spinnaker's top navigation bar, click on an application's name, and then press the 'Pipelines' tab. For the sake of nomenclature, when a pipeline runs, the result is called an execution.
+Pipelines are a combination of stages that enable some very sophisticated coordination and branching. They are the key to orchestrating deploys in Spinnaker and each one is specific to an application. To see an application's pipelines, select 'Applications' from Spinnaker's top navigation bar, click on an application's name, and then press the 'Pipelines' tab. The result from a pipeline running is called an execution.	
 
 Take this screenshot for example:
 
 https://cl.ly/000R192M0O42
 
-There is a pipeline called 'Deploy' with two exectuions, both labeled 'Manual Start'. The top execution is marked as 'Succeeded' while the bottom is makred as 'Canceled'. 
+There is a pipeline called 'Deploy' with two executions, both labeled 'Manual Start'. The top execution is marked as 'Succeeded' while the bottom is marked as 'Cancelled'. 
 
 For more information on creating bake and deploy pipelines, checkout the [baking](baking_images.md) and [deploying](deploying.md) guides.
 
@@ -28,7 +27,7 @@ If your pipeline has a Jenkins' trigger, you can select which Jenkins' build num
 
 https://cl.ly/10163n1z3y1r
 
-The artifacts produced by the build you select will be used in the pipeline. If your pipeline bakes an image, a cached image will be used if avaliable. To force a rebuild, make sure you specify such before pressing the 'Run' button.
+The artifacts produced by the build you select will be used in the pipeline. If your pipeline bakes an image, a cached image will be used if available. To force a rebuild, make sure you specify such before pressing the 'Run' button.
 
 
 ## Enabling notifications
@@ -48,4 +47,4 @@ https://cl.ly/403y2g2c2I33
 
 ### Hanging or Timed Out Pipelines
 
-A lot of the time pipelines hang because of a misconfigured stage. Most commonly when a server group does not complete its deploy because the deployed instances never pass the healthcheck. This happens both when the healthcheck is misconfigured and/or when the image doesn't bake as expected. These two areas should be investigated first. For more information you can see the troubleshooting topic in the [deployment guide](deploying.md).
+A lot of the time pipelines hang because of a misconfigured stage. This is a common occurrence when a server group does not complete its deploy because the deployed instances never pass the healthcheck. This happens both when the healthcheck is misconfigured and/or when the image doesn't bake as expected. These two areas should be investigated first. For more information you can see the troubleshooting topic in the [deployment guide](deploying.md).
