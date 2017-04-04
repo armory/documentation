@@ -1,19 +1,51 @@
+# Pipelines
 
+This guide should include:
 
-manual executions
-- What happens when you replay a previous execution?
-  - it grabs the package version from the jenkins build.
-  - it doesnt rebake the image unless the previously baked image is not there.
-
-
-- Walk through how a pipeline works under the hood a little bit
-  - Packer files and templates that are already installed
-  - How does a find image work and when do you need to use the expression language or not
-  - Artifacts from Jenkins
-    - package name prefix that is used later for baking
-    - explain a build.properties and how to build from a file
-
+- pipeline and execution overview
+- manual executions
 - notifications
 
 
-- Hanging pipelines
+Pipelines are the key to orcastrating deploys in Spinnaker. They are a combination of stages that enabled some very sophisticated coordination and branching. Pipelines are specific to an application. To see an application's pipelines, select 'Applications' from Spinnaker's top navigation bar, click on an application's name, and then press the 'Pipelines' tab. For the sake of nomenclature, when a pipeline runs, the result is called an execution.
+
+Take this screenshot for example:
+
+https://cl.ly/000R192M0O42
+
+There is a pipeline called 'Deploy' with two exectuions, both labeled 'Manual Start'. The top execution is marked as 'Succeeded' while the bottom is makred as 'Canceled'. 
+
+For more information on creating bake and deploy pipelines, checkout the [baking](baking_images.md) and [deploying](deploying.md) guides.
+
+
+## Manual Execution
+
+You can re-run an execution by pressing the 'Start Manual Execution'. 
+
+https://cl.ly/100M0V2o0S2D
+
+If your pipeline has a Jenkins' trigger, you can select which Jenkins' build number to use for running the pipeline. 
+
+https://cl.ly/10163n1z3y1r
+
+The artifacts produced by the build you select will be used in the pipeline. If your pipeline bakes an image, a cached image will be used if avaliable. To force a rebuild, make sure you specify such before pressing the 'Run' button.
+
+
+## Enabling notifications
+
+Spinnaker supports several methods of notification. Notifications can be made when a pipeline runs, succeeds, or fails. You can be contacted via SMS, email, slack, hipchat, and/or pagerduty. Each of these outlets need to be configured within Spinnaker by your Spinnaker Administrator. Once it is configured, you can enable it in your pipeline.
+
+To enable it, navigate to the configuration screen for your pipeline. Make sure you have the 'Configuration' stage selected. Scroll down to the 'Notifications' section.
+
+https://cl.ly/403y2g2c2I33
+
+ Press 'Add Notifications Preference'. For example's sake, I have selected to receive a notification via Slack in the `#engineering` channel whenever my pipeline fails.
+
+ Finally press 'Update' to finish. Don't forget to press 'Save Changes' on your pipeline configuration.
+
+
+## Troubleshooting
+
+### Hanging or Timed Out Pipelines
+
+A lot of the time pipelines hang because of a misconfigured stage. Most commonly when a server group does not complete its deploy because the deployed instances never pass the healthcheck. This happens both when the healthcheck is misconfigured and/or when the image doesn't bake as expected. These two areas should be investigated first. For more information you can see the troubleshooting topic in the [deployment guide](deploying.md).
