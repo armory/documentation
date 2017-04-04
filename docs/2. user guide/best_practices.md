@@ -17,7 +17,7 @@ If you are running the default installation of ArmorySpinnaker, then every AWS i
 
 ### Service Discovery
 
-While it is not feasible for every type of application, using a load balancer can greatly simplify things. Spinnaker gives load balancers preferential treatment and will not need additional integrations to work right out of the box.
+While it is not feasible for every type of application, using a load balancer can greatly simplify things. Spinnaker gives load balancers first-class citizens and will not need additional integrations to work right out of the box.
 
 For applications and workloads that can not utilize a load balancer, the tools listed above may help.
 
@@ -37,7 +37,7 @@ Managing Secrets is a major part of deploying software. Spinnaker does not direc
 
 It would be best not to bake Secrets into your images. If you have the default installation of ArmorySpinnaker then you can find `/etc/default/server-env` on your instance. This file will have information (in the format of key-value pairs) about the environment and stack you are running on. You can use this to load the correct Secrets.
 
-Since Secrets are not baking, this implies that loading them will have to be done at runtime. 
+Since Secrets are not baked, this implies that loading them will have to be done at runtime. 
 
 Specifically for Secure Sockets Layer (SSL), it can be beneficial to terminate SSL at the ELB whenever feasible. Amazon has the [Key Management Service (KMS)]() for this purpose. If you need to handle certificate management at the application level, you might want to check out [Netflix's Lemur](http://techblog.netflix.com/2015/09/introducing-lemur.html) project.
 
