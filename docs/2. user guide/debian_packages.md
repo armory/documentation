@@ -15,7 +15,5 @@ While Spinnaker is flexible to use any dependency management system, it is predi
 Creating a Debian package can be done through various open-source packaging tools.  
 
 | Language | Tool | Package Types |
-|---|---|---|---|---|
+|---|---|---|
 | Java   | [OS Package](https://github.com/nebula-plugins/gradle-ospackage-plugin)  | Deb/RPM |
-|   |   |   |   |   |
-|   |   |   |   |   |
