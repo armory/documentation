@@ -62,7 +62,7 @@ For more information about pipelines, check out the [pipeline guide](pipelines.m
 
 ## Deleting an application
 
-To delete an application, first click on the 'Applications' tab on Spinnaker's top navigation bar. Select the application you would like to delete to go to its application detail page. Now select the 'Config' tab. Scroll all the way down to the 'Delete Application' section. 
+To delete an application, first click on the 'Applications' tab on Spinnaker's top navigation bar. Select the application you would like to delete and enter its application detail page. Now select the 'Config' tab. Scroll all the way down to the 'Delete Application' section. 
 
 Example:
 https://cl.ly/2j3P2o2k240m
@@ -72,8 +72,8 @@ You can see that in order to delete the application, you first need to delete it
 Example of V952 selected:
 https://cl.ly/0r371A380m2V
 
-Now press the 'Server Group Actions' from the bar on the right hand side and press 'Destroy'. Next Spinnaker will ask you to confirm. 
+Now press the 'Server Group Actions' from the bar on the right hand side and press 'Destroy'. Spinnaker will always ask you to confirm that you are going to delete this server group. 
 
-Once all of the server groups have been deleted, navigate back to the 'Config'->'Delete Application' section and press "Delete Application'
+Once all of the server groups have been deleted, navigate back to the 'Config'->'Delete Application' section and press "Delete Application'. 
 
 https://cl.ly/1e3H1F2J3I16
