@@ -27,7 +27,7 @@ Creating a Debian package can be done through various open-source packaging tool
 
 Begin by creating a `build.gradle`.  Below is an example of what a gradle file might look like for a application that builds a war.
 
-```python
+```javascript
 buildscript {
   repositories {
     jcenter()
