@@ -29,9 +29,11 @@ Remember that Spinnaker considers an application to be anything you would put in
 Step 1: Enter Applications from your Navigation bar. 
 
 Step 2: Click the “Actions” button and select from the drop-down menu “Create Application”
+
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/0H383p1h120p1D2n2y19/Image%202017-03-24%20at%203.20.41%20PM.png)
 
 Step 3: Fill out the pop-up form with desired user definitions.
+
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/2B3k3E2o3h442H0x2U3S/Image%202017-03-24%20at%203.22.30%20PM.png)
 
 Notes: 
@@ -41,6 +43,7 @@ Notes:
 - When you create an application in Spinnaker, consider it to be anything you would put into a single code repository. 
 
 Step 4: After you fill out the form you should see this:
+
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/2T1h1b1c052n2x1g1R1y/Image%202017-03-24%20at%203.26.40%20PM.png)
 
 Step 5: If you wish to modify the settings for the application, click on “Config” for configurations.
