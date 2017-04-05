@@ -7,11 +7,16 @@ This guide should include:
 
 ## Why Use Debian Packages
 
-While Spinnaker is flexible to use any dependency management system, it is predisposed to manage Debian packages due to it's default settings with Rosco, Orca and Jenkins.  Out-of-the-box settings for Spinnaker look for a archived package with a `.deb` suffix within Jenkins.  It also grabs the version from the package and automatically appends it to the package name within Rosco.  This makes it easy to specify your package in Rosco without the version number, `mycompany-app` but during the bake provisioning process it will install the version that was specified by the Jenkins build: `mycompany-app.3.24.9-3`.  Debian packaging allows service teams to easily add their app specific configuration to common packer templates.  If you're using any Debian linux based system (Ubuntu, DSL, Astra, etc) you'll likely be using Debian packages for your system configuration and dependency management so it's a natural extension to use it for your own applications.  Using Debian packages will help reduce the variations in packer templates or variables passed to packer templates during the bake process.
+While Spinnaker is flexible to use any dependency management system, it is predisposed to manage Debian packages due to its default settings with Rosco, Orca and Jenkins.  
+
+- Out-of-the-box settings for Spinnaker look for an archived package with a `.deb` suffix within Jenkins.  It also grabs the version from the package and automatically appends it to the package name within Rosco.  This makes it easy to specify your package in Rosco without the version number, `mycompany-app` but during the bake provisioning process it will install the version that was specified by the Jenkins build: `mycompany-app.3.24.9-3`.  
+
+- Debian packaging allows service teams to easily add their app specific configuration to common packer templates.  If you're using any Debian linux based system (Ubuntu, DSL, Astra, etc) you'll likely be using Debian packages for your system configuration and dependency management so it's a natural extension to use it for your own applications.  Using Debian packages will help reduce the variations in packer templates or variables passed to packer templates during the bake process.
+
 
 ## Creating Debian Packages
 
-Creating a Debian package can be done through various open-source packaging tools.  If you're using Java, using the `OS Package` library is a good place to start.  Of course you can always use the [packaging tools provided by Debian](https://www.debian.org/doc/manuals/maint-guide/build.en.html).  A good example of using a Debian packaging for a Spinnaker configuration repo: https://github.com/armory-io/spinnaker-config
+Creating a Debian package can be done through various open-source packaging tools.  If you're using Java, using the `OS Package` library is a good place to start.  Of course you can always use the [packaging tools provided by Debian](https://www.debian.org/doc/manuals/maint-guide/build.en.html).  Here is a good example of using a Debian package for a [Spinnaker configuration repo](https://github.com/armory-io/spinnaker-config).
 
 | Language | Tool | Package Types |
 |---|---|---|
