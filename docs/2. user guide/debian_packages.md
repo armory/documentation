@@ -25,9 +25,9 @@ Creating a Debian package can be done through various open-source packaging tool
 
 ### Debian Package with OSPackage Gradle Plugin
 
-Begin by creating a `build.gradle`
+Begin by creating a `build.gradle`.  Below is an example of what a gradle file might look like for a application that builds a war.
 
-```
+```java
 buildscript {
   repositories {
     jcenter()
@@ -40,26 +40,16 @@ buildscript {
 
 apply plugin: 'nebula.ospackage'
 
-project.buildDir = '/app/build/'
-
 ospackage {
-  def buildNumber = System.getenv("BUILD_NUMBER") ?: "0"
-  def branchName = System.getenv("BRANCH_NAME") ?: "dev"
+  packageName = "mycompanyname-service"
+  version = "1.10.3"
 
-  packageName = "mycompanyname-spinnaker-config"
-  version = "0.${buildNumber}.0"
-  release = "h${buildNumber}.${branchName}"
+  requires('nginx')
 
-  requires('curl')
+  postInstall file('config/scripts/post-install.sh')
 
-  postInstall file('deb-config/scripts/post-install.sh')
-
-  from('deb-config/spinnaker/compose/') {
-    into '/opt/spinnaker/compose/'
-  }
-
-  from('deb-config/spinnaker/config/') {
-    into '/opt/spinnaker/config/'
+  from('build/application.war') {
+    into '/opt/application/'
   }
 }
 ```
