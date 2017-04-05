@@ -16,7 +16,7 @@ Notice that this uses port `8084`.
 
 You should see a screen that looks like:
 
-https://cl.ly/3J2P0W2v1440
+![](https://d1ax1i5f2y3x71.cloudfront.net/items/1D1R2G270O070o0g0T00/Image%202017-04-03%20at%204.06.51%20PM.png)
 
 You can click on the controller you are interested in to see endpoints related to it. You can even test out hitting these different endpoints right in the UI.
 
