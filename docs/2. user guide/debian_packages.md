@@ -21,3 +21,45 @@ Creating a Debian package can be done through various open-source packaging tool
 | PHP     | [php-deb-packager](https://github.com/wdalmut/php-deb-packager) | deb |
 | Any     | [pkgr](https://github.com/crohr/pkgr) | deb/rpm |
 | Any     | [fpm](https://github.com/jordansissel/fpm/wiki) | deb/rpm/others |
+
+
+### Debian Package with OSPackage Gradle Plugin
+
+Begin by creating a `build.gradle`
+
+```
+buildscript {
+  repositories {
+    jcenter()
+    maven { url "https://plugins.gradle.org/m2/" }
+  }
+  dependencies {
+       classpath 'com.netflix.nebula:gradle-ospackage-plugin:4.3.0'
+   }
+}
+
+apply plugin: 'nebula.ospackage'
+
+project.buildDir = '/app/build/'
+
+ospackage {
+  def buildNumber = System.getenv("BUILD_NUMBER") ?: "0"
+  def branchName = System.getenv("BRANCH_NAME") ?: "dev"
+
+  packageName = "mycompanyname-spinnaker-config"
+  version = "0.${buildNumber}.0"
+  release = "h${buildNumber}.${branchName}"
+
+  requires('curl')
+
+  postInstall file('deb-config/scripts/post-install.sh')
+
+  from('deb-config/spinnaker/compose/') {
+    into '/opt/spinnaker/compose/'
+  }
+
+  from('deb-config/spinnaker/config/') {
+    into '/opt/spinnaker/config/'
+  }
+}
+```
