@@ -23,7 +23,7 @@ Creating a Debian package can be done through various open-source packaging tool
 | Any     | [fpm](https://github.com/jordansissel/fpm/wiki) | deb/rpm/others |
 
 
-### Debian Package with OSPackage Gradle Plugin
+### Example: Debian Package with OSPackage Gradle Plugin
 
 Begin by creating a `build.gradle`.  Below is an example of what a gradle file might look like for a application that builds a war.
 
@@ -57,4 +57,10 @@ ospackage {
 Then build your Debian package based on your gradle build file:
 ```bash
 $ gradle buildDeb
+```
+
+If the build succeeds then you should find a Debian package in the following path:
+
+```
+./build/distrubtions/mycompanyname-service.1.10.3_all.deb
 ```
