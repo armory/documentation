@@ -53,3 +53,6 @@ ospackage {
   }
 }
 ```
+
+Then build your Debian package based on your gradle build file:
+`gradle buildDeb`
