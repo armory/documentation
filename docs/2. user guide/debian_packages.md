@@ -62,5 +62,5 @@ $ gradle buildDeb
 If the build succeeds then you should find a Debian package in the following path:
 
 ```
-./build/distrubtions/mycompanyname-service.1.10.3_all.deb
+./build/distributions/mycompanyname-service.1.10.3_all.deb
 ```
