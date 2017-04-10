@@ -1,5 +1,7 @@
-# Deploying
-
+---
+layout: post
+title: Deploying
+---
 
 This guide should include:
 

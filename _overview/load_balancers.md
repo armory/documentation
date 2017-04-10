@@ -1,4 +1,7 @@
-# User Guide: Load Balancers
+---
+layout: post
+title: Load Balancers
+---
 
 This guide should tell you:
 

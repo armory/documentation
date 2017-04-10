@@ -1,4 +1,7 @@
-# User Guide: How to Create an Application
+---
+layout: post
+title: How to Create an Application
+---
 
 This guide should tell you:
 

@@ -1,5 +1,7 @@
-# Writing Scripts
-
+---
+layout: post
+title: Writing Scripts
+---
 
 This guide should include:
 
