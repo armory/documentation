@@ -32,3 +32,13 @@ gems:
 exclude:
   - Gemfile
   - Gemfile.lock
+
+collections:
+  overview:
+    output: true
+  user_guides:
+    output: true
+  admin_guides:
+    output: true
+  release_notes:
+    output: true
