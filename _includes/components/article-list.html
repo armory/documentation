@@ -1,0 +1,11 @@
+<ul class="Articles-list">
+  {% assign articles = site.articles %}
+  {% for article in articles %}
+    <li class="Articles">
+      <a href="{{ article.url }}">
+        <div class="Article__title">{{ article.title }}</div>
+        <div class="Article__description">{{ event.description }}</div>
+      </a>
+    </li>
+  {% endfor %}
+</ul>

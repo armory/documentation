@@ -1,4 +1,7 @@
-# Pipelines
+---
+layout: post
+title: Pipelines
+---
 
 This guide should include:
 

@@ -1,4 +1,7 @@
-# Debian Packages
+---
+layout: post
+title: Debian Packages
+---
 
 This guide should include:
 

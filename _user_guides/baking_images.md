@@ -1,4 +1,7 @@
-# Baking
+---
+layout: post
+title: Baking Images
+---
 
 This guide should include:
 

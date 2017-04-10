@@ -1,4 +1,7 @@
-# Best practices
+---
+layout: post
+title: Best Practices
+---
 
 This guide should include:
 

@@ -1,4 +1,7 @@
-# Nomenclature and Naming Conventions
+---
+layout: post
+title: Nomenclature and Naming Conventions
+---
 
 This guide should:
 

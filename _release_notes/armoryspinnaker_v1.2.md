@@ -1,4 +1,9 @@
-#Armory Enterprise Spinnaker
+---
+layout: post
+title: v1.2 Armory Enterprise Spinnaker
+---
+
+##Armory Enterprise Spinnaker
 - Smaller container size
 - Faster initialization and startup due to optimization of containers
 - Debian packaging for Armory Spinnaker

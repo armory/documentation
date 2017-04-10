@@ -1,5 +1,7 @@
-# Overview of Armory-Spinnaker
-
+---
+layout: post
+title: Overview of Armory-Spinnaker
+---
 
 ## What Armory-Spinnaker Does
 

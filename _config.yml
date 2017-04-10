@@ -13,7 +13,7 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: Your awesome title
+title: Armory.io Documentation
 email: your-email@domain.com
 description: > # this means to ignore newlines until "baseurl:"
   Write an awesome description for your new site here. You can edit this
@@ -36,9 +36,13 @@ exclude:
 collections:
   overview:
     output: true
+    permalink: /overview/:title/
   user_guides:
     output: true
+    permalink: /user-guides/:title/
   admin_guides:
     output: true
+    permalink: /admin-guides/:title/
   release_notes:
     output: true
+    permalink: /release-notes/:title/

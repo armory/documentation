@@ -1,4 +1,8 @@
-# User Guide: Pipelines
+---
+layout: post
+title: Pipelines
+---
+
 This guide should tell you:
 
 - How to create a pipeline
