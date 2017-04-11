@@ -1,0 +1,29 @@
+.Nav-list {
+	list-style: none;
+	padding: 0;
+
+	ul {
+		list-style: none;
+		padding: 0;
+	}
+
+	a {
+		text-decoration: none;
+	}
+}
+
+.Nav-list__section {
+	border-bottom: 1px solid $color-divider;
+	margin-bottom: 1.2rem;
+	padding-bottom: 1.2rem;
+
+	&:last-child {
+		border-bottom: none;
+		padding-bottom: 0;
+	}
+}
+
+.Nav-list__link {
+	font-size: 1.3rem;
+	line-height: 1.7;
+}

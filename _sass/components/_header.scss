@@ -1,0 +1,11 @@
+.Header {
+	background: $color-blue-light;
+
+	a {
+		color: $color-text-dark;
+
+		&:hover {
+			color: $color-blue-vivid;
+		}
+	}
+}
