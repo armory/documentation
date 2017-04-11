@@ -1,6 +1,5 @@
 ---
 layout: post
-title: Working With Jenkins
 ---
 
 This guide should include:

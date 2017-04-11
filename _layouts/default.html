@@ -4,15 +4,15 @@
   {% include base/head.html %}
 
   <body>
+    <div class="Wrapper">
+    	<div class="Wrapper__inner">
+	        {% include base/header.html %}
 
-    {% include base/header.html %}
-
-    <main class="page-content" aria-label="Content">
-      <div class="wrapper">
-        {{ content }}
-      </div>
-    </main>
-
+      		<main class="Main" aria-label="Content">
+        		{{ content }}
+	        </main>
+    	</div>
+    </div>
   </body>
 
 </html>

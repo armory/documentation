@@ -1,6 +1,5 @@
 ---
 layout: post
-title: Find Images
 ---
 
 This guide should include:

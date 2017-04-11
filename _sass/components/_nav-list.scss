@@ -14,8 +14,8 @@
 
 .Nav-list__section {
 	border-bottom: 1px solid $color-divider;
-	margin-bottom: 1.2rem;
-	padding-bottom: 1.2rem;
+	margin-bottom: 2.4rem;
+	padding-bottom: 2.4rem;
 
 	&:last-child {
 		border-bottom: none;
@@ -24,6 +24,8 @@
 }
 
 .Nav-list__link {
+	display: block;
 	font-size: 1.3rem;
-	line-height: 1.7;
+	line-height: 1;
+	padding: 0.8rem 3rem 0.8rem 0;
 }

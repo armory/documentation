@@ -1,6 +1,5 @@
 ---
 layout: post
-title: Expression Language
 ---
 
 This guide should include:

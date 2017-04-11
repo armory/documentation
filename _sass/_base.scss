@@ -9,10 +9,84 @@ $color-divider:		rgba(25, 61, 89, 0.20);
 html {
 	font-family: 'Open Sans', 'Helvetica', 'Helventica Neue', 'Arial', sans-serif;
 	font-size: 10px;
+	text-rendering: optimizeLegibility;
 }
 
 body {
 	font-size: 1.6rem;
 	font-weight: 400;
-	padding: 1rem;
+	margin: 0;
+	padding: 2rem;
 }
+
+.Wrapper {
+	position: relative;
+
+	&:before {
+		background: $color-blue-light;
+		content: '';
+		display: block;
+		height: 100%;
+		left: 0;
+		position: absolute;
+		top: 0;
+		width: 33.33%;
+	}
+}
+
+.Wrapper__inner {
+	display: flex;
+	margin: 0 auto;
+	max-width: 100rem;
+	position: relative;
+}
+
+.Main {
+	flex: 1 1 66.66%;
+	overflow: hidden;
+	padding: 0 3rem;
+
+	img {
+		max-width: 100%;
+	}
+}
+
+.Header {
+	flex: 1 1 33.33%;
+	padding: 0 0 0 3rem;	
+}
+
+.Post {
+	padding: 1.6rem 0 4.8rem;
+}
+
+.Post__title {
+	@extend .Header--large;
+	margin-top: 0;
+}
+
+.Post__content {
+	color: $color-text;
+	font-size: 1.4rem;
+	line-height: 1.7;
+
+	h1, h2, h3, h4, h5, h6 {
+		color: $color-text-dark;
+	}
+
+	h1 {
+		@extend .Header--large;
+	}
+
+	h2 {
+		@extend .Header--medium;
+	}
+
+	img {
+		margin-bottom: 1.6rem;
+	}
+}
+
+@import 'components/header';
+@import 'components/headers';
+@import 'components/nav-list';
