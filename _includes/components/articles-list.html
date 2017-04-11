@@ -1,0 +1,9 @@
+<ul class="Articles-list">
+	{% assign page_collection = site.documents | where:"collection",page.collection %}
+	{% for article in page_collection %}
+		<li class="Article-list__item">
+			<a href="{{ article.url }}" class="Article-list__item__title"><div>{{ article.title }}</div></a>
+			<div class="Article-list__item__description">{{ article.description }}</div>
+		</li>
+	{% endfor %}
+</ul>
