@@ -1,13 +1,15 @@
 <header class="Header" role="banner">
   {% assign default_paths = site.pages | map: "path" %}
   {% assign page_paths = site.header_pages | default: default_paths %}
-  <a class="site-title" href="{{ "/" | relative_url }}" title="{{ site.title | escape }}">Armory</a>
+  <a class="Header__logo" href="{{ "/" | relative_url }}" title="{{ site.title | escape }}">
+    <img src="/assets/images/logo.svg" />
+  </a>
 
   
   <nav class="Nav">
       <ul class="Nav-list">
         <li class="Nav-list__section">
-          <h3 class="Header-tiny">Overview</h3>
+          <h3 class="Header--tiny">Overview</h3>
           <ul>
             {% for link in site.overview %}
               <li><a class="Nav-list__link" href="{{ link.url | relative_url }}">{{ link.title | escape }}</a></li>
@@ -16,7 +18,7 @@
         </li>
 
         <li class="Nav-list__section">
-          <h3 class="Header-tiny">User Guides</h3>
+          <h3 class="Header--tiny">User Guides</h3>
           <ul>
             {% for link in site.user_guides %}
               <li><a class="Nav-list__link" href="{{ link.url | relative_url }}">{{ link.title | escape }}</a></li>
@@ -25,7 +27,7 @@
         </li>
 
         <li class="Nav-list__section">
-          <h3 class="Header-tiny">Admin Guides</h3>
+          <h3 class="Header--tiny">Admin Guides</h3>
           <ul>
             {% for link in site.admin_guides %}
               <li><a class="Nav-list__link" href="{{ link.url | relative_url }}">{{ link.title | escape }}</a></li>
@@ -34,7 +36,7 @@
         </li>
 
         <li class="Nav-list__section">
-          <h3 class="Header-tiny">Other</h3>
+          <h3 class="Header--tiny">Other</h3>
           <ul>
             <li><a class="Nav-list__link" href="/release-notes">Release Notes</a></li>
           </ul>

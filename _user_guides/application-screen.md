@@ -1,6 +1,5 @@
 ---
 layout: post
-title: Applications
 ---
 
 This guide should include:

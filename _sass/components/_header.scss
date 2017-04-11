@@ -1,5 +1,6 @@
 .Header {
 	background: $color-blue-light;
+	padding-top: 2.4rem;
 
 	a {
 		color: $color-text-dark;
@@ -8,4 +9,9 @@
 			color: $color-blue-vivid;
 		}
 	}
+}
+
+.Header__logo {
+	display: block;
+	margin-bottom: 3.2rem;
 }

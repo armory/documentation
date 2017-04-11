@@ -1,6 +1,5 @@
 ---
 layout: post
-title: Managing Rate Limits
 ---
 
 - How does Spinnaker monitor a deployment
