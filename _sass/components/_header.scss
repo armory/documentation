@@ -36,7 +36,7 @@
 		font-size: 1.6rem;
 		position: absolute;
 		right: 1.5rem;
-		top: -4px;
+		top: -3px;
 		transform: rotate(90deg);
 	}
 
@@ -58,5 +58,14 @@
 
 	.toggle-section-trigger {
 		margin-bottom: 0;
+	}
+}
+
+@media screen and (max-width: 900px) {
+	.Header {
+		flex: 0 0 100%;
+		margin: 0 -2rem;
+		padding-left: 2rem;
+		order: 2;
 	}
 }
