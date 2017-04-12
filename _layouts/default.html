@@ -20,7 +20,8 @@
       var el = document.querySelectorAll('.js__toggle-section-trigger');
       
       for (var i=0; i < el.length; i++){
-        el[i].addEventListener('click', function() {
+        el[i].addEventListener('click', function(e) {
+          e.preventDefault();
           toggleClass(this.parentNode, 'is-closed');
         });
       }

@@ -36,3 +36,19 @@
 	display: flex;
 	flex-direction: row;
 }
+
+@media screen and (max-width: 900px) {
+	.Wrapper__inner {
+		flex-direction: column;
+	}
+
+	.Wrapper--main:before {
+		display: none;
+	}
+
+	.Main {
+		flex: 0 0 100%;
+		order: 1;
+		padding: 0;
+	}
+}

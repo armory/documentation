@@ -95,3 +95,15 @@
     	background: url('/assets/images/ico-email-white.png') center center no-repeat;
 	}
 }
+
+@media screen and (max-width: 900px) {
+	.Footer {
+		margin: 0 -2rem -2rem -2rem;
+		padding: 5.5rem 2rem 4rem 2rem;
+	}
+
+	.Footer__right {
+		display: block;
+		margin-top: 4rem;
+	}
+}
