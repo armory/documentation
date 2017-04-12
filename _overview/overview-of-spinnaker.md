@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Overview of Spinnaker
+order: '3'
 ---
 
 ## What Armory-Spinnaker Does

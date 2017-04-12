@@ -27,5 +27,23 @@
 	display: block;
 	font-size: 1.3rem;
 	line-height: 1;
-	padding: 0.8rem 3rem 0.8rem 0;
+	padding: 1rem 3rem 1rem 0;
+	position: relative;
+
+	&.is-active {
+		color: $color-blue-vivid;
+		font-weight: 700;
+
+		&:before {
+			background: $color-blue-vivid;
+			border-radius: 0.2rem;
+			content: '';
+			display: block;
+			left: -1.5rem;
+			height: 90%;
+			position: absolute;
+			top: 5%;
+			width: 0.4rem;
+		}
+	}
 }

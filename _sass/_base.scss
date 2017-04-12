@@ -1,5 +1,6 @@
 $color-blue-light: 	#EDF3F5;
 $color-blue-vivid: 	#0CACC4;
+$color-blue-dark: 	#394C58;
 
 $color-text-dark: 	#0E171A;
 $color-text: 		#5C6365;
@@ -21,7 +22,9 @@ body {
 
 .Wrapper {
 	position: relative;
+}
 
+.Wrapper--main {
 	&:before {
 		background: $color-blue-light;
 		content: '';
@@ -85,6 +88,124 @@ body {
 	img {
 		margin-bottom: 1.6rem;
 	}
+}
+
+.Footer {
+	background: $color-blue-dark;
+	color: #FFF;
+	margin-top: 2rem;
+	padding: 5.5rem 0 4rem 0;
+
+	a {
+		color: #FFF;
+		text-decoration: none;
+	}
+}
+
+.Footer__logo {
+	display: block;
+	margin-bottom: 3rem;
+}
+
+.Footer__left,
+.Footer__right {
+	flex: 0 0 50%;
+}
+
+.Footer__list {
+	ul {
+		list-style-type: none;
+		padding: 0;
+	}
+
+	a {
+		color: #99a2ae;
+		font-size: 1.6rem;
+	    line-height: 3rem;
+	    font-weight: 500;
+	    transition: all 0.2s linear;
+
+	    &:hover {
+	    	color: #FFF;
+	    }
+	}
+}
+
+.Footer__header {
+	color: #FFF;
+	font-size: 2.1rem;
+    font-weight: 700;
+    line-height: 30px;
+    margin: 0 0 1.5rem 0;
+}
+
+.Footer__contact-info {
+	margin-top: 2.6rem;
+}
+
+.item-phone {
+	margin-right: 2rem;
+	padding-left: 22px;
+	position: relative;
+
+	&:before {
+		content: '';
+		display: inline-block;
+		height: 100%;
+		width: 22px;
+		position: absolute;
+		top: 0;
+		left: 0;
+    	background: url('/assets/images/ico-phone-white.png') 0 center no-repeat;
+	}
+}
+
+.item-email {
+	padding-left: 28px;
+	position: relative;
+
+	&:before {
+		content: '';
+		display: inline-block;
+		height: 100%;
+		width: 28px;
+		position: absolute;
+		top: 0;
+		left: 0;
+    	background: url('/assets/images/ico-email-white.png') 0 center no-repeat;
+	}
+}
+
+.Row {
+	display: flex;
+	flex-direction: row;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0 15px;
+    width: auto;
+    height: 48px;
+    border: 2px solid #fff;
+    border-radius: 1px;
+    font-size: 16px;
+    font-size: 1.6rem;
+    line-height: 44px;
+    font-weight: 600;
+    vertical-align: top;
+    text-align: center;
+    transition: all .2s ease-in-out;
+}
+
+a.btn-blue,
+.btn-blue {
+    border-color: #3ab5de;
+    border-color: rgba(58,181,222,.3);
+    color: #3ab5de;
+}
+
+.btn-blue:hover {
+    border-color: #3ab5de;
 }
 
 @import 'components/header';

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Nomenclature and Naming Conventions
+order: '4'
 ---
 
 This guide should:
