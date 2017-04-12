@@ -1,0 +1,97 @@
+.Footer {
+	background: $color-blue-dark;
+	color: #FFF;
+	margin-top: 2rem;
+	padding: 5.5rem 0 4rem 0;
+
+	a {
+		color: #FFF;
+		text-decoration: none;
+	}
+}
+
+.Footer__logo {
+	display: block;
+	margin-bottom: 3rem;
+}
+
+.Footer__left {
+	flex: 0 0 33.33%;
+}
+
+.Footer__right {
+	display: flex;
+	flex: 0 0 66.66%;
+	.Footer__list {
+		flex: 0 0 33.33%;
+	}
+}
+
+.Footer__list {
+	ul {
+		list-style-type: none;
+		margin: 0 0 2.5rem 0;
+		padding: 0;
+	}
+
+	a {
+		color: #99a2ae;
+		font-size: 1.6rem;
+	    line-height: 3rem;
+	    font-weight: 500;
+	    transition: all 0.2s linear;
+
+	    &:hover {
+	    	color: #FFF;
+	    }
+	}
+}
+
+.Footer__header {
+	color: #FFF;
+	font-size: 2.1rem;
+    font-weight: 700;
+    line-height: 30px;
+    margin: 0 0 1rem 0;
+}
+
+.Footer__contact-info {
+	margin-top: 2.6rem;
+
+	a {
+		display: block;
+		margin-bottom: 1rem;
+	}
+}
+
+.item-phone {
+	padding-left: 3rem;
+	position: relative;
+
+	&:before {
+		content: '';
+		display: inline-block;
+		height: 100%;
+		width: 2rem;
+		position: absolute;
+		top: 0;
+		left: 0;
+    	background: url('/assets/images/ico-phone-white.png') center center no-repeat;
+	}
+}
+
+.item-email {
+	padding-left: 3rem;
+	position: relative;
+
+	&:before {
+		content: '';
+		display: inline-block;
+		height: 100%;
+		width: 2rem;
+		position: absolute;
+		top: 0;
+		left: 0;
+    	background: url('/assets/images/ico-email-white.png') center center no-repeat;
+	}
+}
