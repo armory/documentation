@@ -1,0 +1,38 @@
+.Wrapper {
+	position: relative;
+}
+
+.Wrapper--main {
+	&:before {
+		background: $color-blue-light;
+		content: '';
+		display: block;
+		height: 100%;
+		left: 0;
+		position: absolute;
+		top: 0;
+		width: 33.33%;
+	}
+}
+
+.Wrapper__inner {
+	display: flex;
+	margin: 0 auto;
+	max-width: 100rem;
+	position: relative;
+}
+
+.Main {
+	flex: 1 1 66.66%;
+	overflow: hidden;
+	padding: 0 3rem;
+
+	img {
+		max-width: 100%;
+	}
+}
+
+.Row {
+	display: flex;
+	flex-direction: row;
+}

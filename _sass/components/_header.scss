@@ -1,6 +1,7 @@
 .Header {
 	background: $color-blue-light;
-	padding-top: 2.4rem;
+	flex: 1 1 33.33%;
+	padding: 4rem 0 0 3rem;	
 
 	a {
 		color: $color-text-dark;
@@ -9,6 +10,10 @@
 			color: $color-blue-vivid;
 		}
 	}
+}
+
+.Header {
+	
 }
 
 .Header__logo {
