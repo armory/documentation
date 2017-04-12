@@ -12,13 +12,14 @@
 	}
 }
 
-.Header {
-	
-}
-
-.Header__logo {
+.Header__logo,
+.Header__logo--mobile {
 	display: block;
 	margin-bottom: 3.2rem;
+}
+
+.Header__logo--mobile {
+	display: none;
 }
 
 .toggle-section {
@@ -65,7 +66,19 @@
 	.Header {
 		flex: 0 0 100%;
 		margin: 0 -2rem;
-		padding-left: 2rem;
+		padding: 2rem 0 2rem 2rem;
 		order: 2;
+	}
+
+	.Header__logo {
+		display: none;
+	}
+
+	.Header__logo--mobile {
+		display: block;
+	}
+
+	.Nav-list {
+		margin-top: 0;
 	}
 }

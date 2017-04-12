@@ -22,3 +22,13 @@
 	margin-bottom: 0.8rem;
 	text-transform: uppercase;
 }
+
+@media screen and (max-width: 900px) {
+	.Header--large {
+		font-size: 3rem;
+	}
+
+	.Header--medium {
+		font-size: 2rem;
+	}
+}

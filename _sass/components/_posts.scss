@@ -41,3 +41,9 @@
 		margin-bottom: 1.6rem;
 	}
 }
+
+@media screen and (max-width: 900px) {
+	.Post {
+		padding-top: 0;
+	}
+}
