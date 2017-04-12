@@ -1,5 +1,5 @@
 <ul class="Articles-list">
-	{% assign page_collection = site.documents | where:"collection",page.collection %}
+	{% assign page_collection = site.documents | where:"collection",page.collection | sort: 'order' %}
 	{% for article in page_collection %}
 		<li class="Article-list__item">
 			<a href="{{ article.url }}" class="Article-list__item__title"><div>{{ article.title }}</div></a>

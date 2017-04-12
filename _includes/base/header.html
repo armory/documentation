@@ -2,7 +2,7 @@
   {% assign default_paths = site.pages | map: "path" %}
   {% assign page_paths = site.header_pages | default: default_paths %}
   <a class="Header__logo" href="{{ "/" | relative_url }}" title="{{ site.title | escape }}">
-    <img src="/assets/images/logo.svg" />
+    <img src="/assets/images/logo.svg" height="44" />
   </a>
 
   
@@ -11,8 +11,9 @@
         <li class="Nav-list__section">
           <h3 class="Header--tiny">Overview</h3>
           <ul>
-            {% for link in site.overview %}
-              <li><a class="Nav-list__link" href="{{ link.url | relative_url }}">{{ link.title | escape }}</a></li>
+            {% assign sorted_overview = site.overview | sort: 'order' %}
+            {% for link in sorted_overview %}
+              <li><a class="Nav-list__link{% if page.url == link.url %} is-active{% endif %}" href="{{ link.url | relative_url }}">{{ link.title | escape }}</a></li>
             {% endfor %}
           </ul>
         </li>
@@ -20,7 +21,8 @@
         <li class="Nav-list__section">
           <h3 class="Header--tiny">User Guides</h3>
           <ul>
-            {% for link in site.user_guides %}
+            {% assign sorted_user_guides = site.user_guides | sort: 'order' %}
+            {% for link in sorted_user_guides %}
               <li><a class="Nav-list__link" href="{{ link.url | relative_url }}">{{ link.title | escape }}</a></li>
             {% endfor %}
           </ul>
@@ -29,7 +31,8 @@
         <li class="Nav-list__section">
           <h3 class="Header--tiny">Admin Guides</h3>
           <ul>
-            {% for link in site.admin_guides %}
+            {% assign sorted_admin_guides = site.admin_guides | sort: 'order' %}
+            {% for link in sorted_admin_guides %}
               <li><a class="Nav-list__link" href="{{ link.url | relative_url }}">{{ link.title | escape }}</a></li>
             {% endfor %}
           </ul>
