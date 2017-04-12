@@ -9,8 +9,8 @@
   <nav class="Nav">
       <ul class="Nav-list">
         <li class="Nav-list__section">
-          <h3 class="Header--tiny">Overview</h3>
-          <ul>
+          <h3 class="Header--tiny toggle-section-trigger js__toggle-section-trigger" tabindex="0">Overview</h3>
+          <ul class="toggle-section">
             {% assign sorted_overview = site.overview | sort: 'order' %}
             {% for link in sorted_overview %}
               <li><a class="Nav-list__link{% if page.url == link.url %} is-active{% endif %}" href="{{ link.url | relative_url }}">{{ link.title | escape }}</a></li>
@@ -19,29 +19,29 @@
         </li>
 
         <li class="Nav-list__section">
-          <h3 class="Header--tiny">User Guides</h3>
-          <ul>
+          <h3 class="Header--tiny toggle-section-trigger js__toggle-section-trigger" tabindex="0">User Guides</h3>
+          <ul class="toggle-section">
             {% assign sorted_user_guides = site.user_guides | sort: 'order' %}
             {% for link in sorted_user_guides %}
-              <li><a class="Nav-list__link" href="{{ link.url | relative_url }}">{{ link.title | escape }}</a></li>
+              <li><a class="Nav-list__link{% if page.url == link.url %} is-active{% endif %}" href="{{ link.url | relative_url }}">{{ link.title | escape }}</a></li>
             {% endfor %}
           </ul>
         </li>
 
         <li class="Nav-list__section">
-          <h3 class="Header--tiny">Admin Guides</h3>
-          <ul>
+          <h3 class="Header--tiny toggle-section-trigger js__toggle-section-trigger" tabindex="0">Admin Guides</h3>
+          <ul class="toggle-section">
             {% assign sorted_admin_guides = site.admin_guides | sort: 'order' %}
             {% for link in sorted_admin_guides %}
-              <li><a class="Nav-list__link" href="{{ link.url | relative_url }}">{{ link.title | escape }}</a></li>
+              <li><a class="Nav-list__link{% if page.url == link.url %} is-active{% endif %}" href="{{ link.url | relative_url }}">{{ link.title | escape }}</a></li>
             {% endfor %}
           </ul>
         </li>
 
         <li class="Nav-list__section">
-          <h3 class="Header--tiny">Other</h3>
-          <ul>
-            <li><a class="Nav-list__link" href="/release-notes">Release Notes</a></li>
+          <h3 class="Header--tiny toggle-section-trigger js__toggle-section-trigger" tabindex="0">Other</h3>
+          <ul class="toggle-section"l>
+            <li><a class="Nav-list__link{% if page.url == link.url %} is-active{% endif %}" href="/release-notes">Release Notes</a></li>
           </ul>
         </li>
       </ul>
