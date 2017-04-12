@@ -1,7 +1,7 @@
 .Header {
 	background: $color-blue-light;
 	flex: 1 1 33.33%;
-	padding: 4rem 0 0 3rem;	
+	padding: 4rem 0;	
 
 	a {
 		color: $color-text-dark;
@@ -59,6 +59,12 @@
 
 	.toggle-section-trigger {
 		margin-bottom: 0;
+	}
+}
+
+@media screen and (max-width: 1100px) {
+	.Header {
+		padding-left: 3rem;
 	}
 }
 

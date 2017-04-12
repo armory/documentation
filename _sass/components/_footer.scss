@@ -96,10 +96,15 @@
 	}
 }
 
+@media screen and (max-width: 1100px) {
+	.Footer {
+		padding: 5.5rem 2rem 4rem 2rem;
+	}
+}
+
 @media screen and (max-width: 900px) {
 	.Footer {
 		margin: 0 -2rem -2rem -2rem;
-		padding: 5.5rem 2rem 4rem 2rem;
 	}
 
 	.Footer__right {

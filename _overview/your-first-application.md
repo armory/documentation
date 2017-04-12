@@ -1,6 +1,7 @@
 ---
 layout: post
 order: '1'
+permalink: '/'
 ---
 
 This guide should tell you:
