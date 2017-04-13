@@ -28,9 +28,16 @@ github_username:  jekyll
 markdown: kramdown
 gems:
   - jekyll-feed
+  - jekyll-assets
 exclude:
   - Gemfile
   - Gemfile.lock
+
+assets:
+  autoprefixer:
+    browsers:
+      - "last 2 versions"
+      - "IE > 9"
 
 collections:
   overview:
