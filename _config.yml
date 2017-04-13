@@ -32,8 +32,11 @@ gems:
 exclude:
   - Gemfile
   - Gemfile.lock
-
 assets:
+  sources:
+    - _assets/css
+  compress:
+    css: true
   autoprefixer:
     browsers:
       - "last 2 versions"
