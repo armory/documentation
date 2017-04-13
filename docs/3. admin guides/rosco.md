@@ -1,0 +1,7 @@
+
+
+# Baking Configuration
+
+## Packer
+
+### Templates
