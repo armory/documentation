@@ -1,0 +1,5 @@
+#!/bin/bash
+set -e
+cd "$(dirname "$0")"/..
+chmod -R 777 "$(pwd)"
+docker run --rm --user="root" -v "$(pwd):/srv/jekyll" jekyll/jekyll bash -c "jekyll build"
