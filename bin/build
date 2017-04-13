@@ -1,4 +1,4 @@
 #!/bin/bash
 set -e
 cd "$(dirname "$0")"/..
-docker run --rm -v "$(pwd):/srv/jekyll" jekyll/jekyll bash -c "sudo jekyll build"
+docker run --rm --user root -v "$(pwd):/srv/jekyll" jekyll/jekyll jekyll build
