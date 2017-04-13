@@ -1,0 +1,4 @@
+#!/bin/bash
+set -e
+cd "$(dirname "$0")"/..
+docker run -v "$(pwd):/srv/jekyll" jekyll/jekyll jekyll build
