@@ -31,11 +31,11 @@ The property file is a way to transfer information about your build from Jenkins
 
 As an example, if you had your Jenkins job create and archive a file named `build.properties` which looks like:
 
-```
+{% highlight shell %}
 COMMITER_NAME=andrew
 BRANCH_NAME=mybranch
 CONFIG=config-3059cad.tar.gz
-```
+{% endhighlight %}
 
 Then in the property files field in the Spinnaker Jenkins trigger, fill it in with `build.properties`.
 
@@ -79,9 +79,9 @@ Then we go back to Spinnaker and create a new pipeline. We will skip over the Je
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/173L3Z472X0i3y1i171E/Image%202017-03-27%20at%205.21.05%20PM.png)
 
 To demonstrate accessing our properties file, let's create a new `Manual Judgement` stage. In the Instructions text box input:
-```
+{% highlight shell %}
 ${ #stage('Jenkins')['context']['KEY'] }
-```
+{% endhighlight %}
 Spinnaker has added the key value pairs from `build.properties` in the Jenkins' job to the context of the Jenkins stage. The above expression allows us to access that information.
 
 Don't forget to press the save button in the lower right corner. Your pipeline configuration should look like:

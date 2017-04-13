@@ -11,17 +11,17 @@ This guide should include:
 Prerequisites and Assumptions:
 
 - You are deploying to Amazon Web Services (AWS)
-- You know how to create pipelines and utilize the [Bake stage](baking_images.md)
-- You understand Spinnaker's [naming conventions](../overview/naming_conventions.md)
+- You know how to create pipelines and utilize the [Bake stage]({% link _user_guides/baking-images.md %})
+- You understand Spinnaker's [naming conventions]({% link _overview/naming-conventions.md %})
 - You are familiar with ELB configuration
 - You have already created a security group to use in your application
 
 
-The primary objective of Spinnaker is to deploy your software. It would like you to [Bake an image](baking_images.md) and use that same image to deploy to all of your environments.
+The primary objective of Spinnaker is to deploy your software. It would like you to [Bake an image]({% link _user_guides/baking-images.md %}) and use that same image to deploy to all of your environments.
 
 The typical type of distributed application that Spinnaker deploys is one with a cluster of homogeneous instances behind a load balancer. The load balancer is responsible for detecting healthy and unhealthy instances.
 
-To start off, let's go through an example. This example continues from the example in the [Baking an image guide](baking_images.md).
+To start off, let's go through an example. This example continues from the example in the [Baking an image guide]({% link _user_guides/baking-images.md %}).
 
 
 ## Example
@@ -36,10 +36,10 @@ Press the '+' on the right to create a new load balancer. The screen that pops u
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/2L2C1X1F2W23470b1d3T/Image%202017-03-30%20at%2012.46.05%20PM.png)
 
-I input 'example' into the 'Stack' field, set my [VPC Subnet Type](vpc-subnet-type), use my pre-created security group, forward the correct ports and most importantly set my healthcheck. Finally, I press 'Create'.
+I input 'example' into the 'Stack' field, set my [VPC Subnet Type]({% link _admin_guides/subnets.md %}), use my pre-created security group, forward the correct ports and most importantly set my healthcheck. Finally, I press 'Create'.
 
 
-Now to create the Deploy stage in our pipeline,  I navigate to the configuration screen of the previously created pipeline from the [Baking guide](baking_images.md).
+Now to create the Deploy stage in our pipeline,  I navigate to the configuration screen of the previously created pipeline from the [Baking guide]({% link _user_guides/baking-images.md %}).
 
 Select 'Add Stage' and select 'Deploy' from the 'Type' dropdown menu.
 
@@ -73,7 +73,7 @@ As this deploy is happening, I can click on the 'Clusters' tab to see a new serv
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/0s2m1Z14300J0N280b0q/Image%202017-03-30%20at%203.23.24%20PM.png)
 
-For more information about the details of this screen, check out the [application screen description guide](application_screen.md)
+For more information about the details of this screen, check out the [application screen description guide]({% link _user_guides/application-screen.md %})
 
 I can see here that a new server has indeed come up and is healthy. Healthy in this case means that it has passed the ELB healthcheck. If you are having problems with your instances not passing the healthcheck, check out the [common errors section](#common-errors).
 
@@ -159,7 +159,7 @@ Make sure to base64 encode the content before putting it into the field in the o
 ## Passing environment data to your deployed instances
 
 The default configuration of ArmorySpinnaker creates a file `/etc/default/server-env` on every instance with information about its environment. In the example above, `server-env` looks like:
-```
+{% highlight shell %}
 CLOUD_ACCOUNT="default-aws-account"
 CLOUD_ACCOUNT_TYPE="default-aws-account"
 CLOUD_ENVIRONMENT="default-aws-account"
@@ -169,7 +169,7 @@ CLOUD_STACK="example"
 CLOUD_DETAIL=""
 EC2_REGION="us-west-2"
 LAUNCH_CONFIG="test-example-v001-03302017224619"
-```
+{% endhighlight %}
 
 
 ## Rolling back

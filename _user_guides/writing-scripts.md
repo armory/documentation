@@ -9,9 +9,9 @@ This guide should include:
 
 People often ask how they can write scripts and use Spinnaker programatically. You most certainly can. Spinnaker is a collection of subservices that all expose a RESTful API. You can see a list (with descriptions) of all of the endpoints by navigating to:
 
-```
+{% highlight shell %}
 http(s)://<your-spinnaker-dns-name>:8084/swagger-ui.html
-```
+{% endhighlight %}
 
 Notice that this uses port `8084`.
 

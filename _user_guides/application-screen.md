@@ -59,7 +59,7 @@ This page shows two pipelines, 'Deploy' and 'Cron Deploy'. The 'Deploy' pipeline
 Now I can see that the execution failed because of a subnet issue.
 
 
-For more information about pipelines, check out the [pipeline guide](pipelines.md)
+For more information about pipelines, check out the [pipeline guide]({% link _user_guides/pipelines.md %})
 
 
 ## Deleting an application
