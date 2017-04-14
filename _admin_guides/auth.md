@@ -1,3 +1,8 @@
+---
+layout: post
+order: '40'
+---
+
 # Authentication
 
 There are a few authentication mechanisms in Spinnaker.  Spinnaker supports the following mechanisms:
@@ -25,3 +30,4 @@ There are a few authentication mechanisms in Spinnaker.  Spinnaker supports the 
 
 
 ## SAML
+=======

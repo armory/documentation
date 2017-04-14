@@ -1,3 +1,8 @@
+---
+layout: post
+order: '60'
+---
+
 # Logging
 
 Because we use Docker to manage our services pushing your logs to a distributed service is as simple as using one of the provided logging drivers provider by Docker.   All logging comes from STDOUT of the service and process that runs inside of Docker and can be pushed to various endpoints.

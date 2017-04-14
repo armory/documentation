@@ -1,3 +1,7 @@
+---
+layout: post
+order: '110'
+---
 # VPCs & Subnets
 
 Subnets determine where and how you can deploy AWS resources such as EC2 machines, ELBs and Security Groups.  Configuring your Subnets correctly the first time means you won't have to update your pipelines later with changes.

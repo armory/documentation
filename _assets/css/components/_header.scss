@@ -62,6 +62,12 @@
 	}
 }
 
+@media screen and (max-width: 1100px) {
+	.Header {
+		padding-left: 3rem;
+	}
+}
+
 @media screen and (max-width: 900px) {
 	.Header {
 		flex: 0 0 100%;

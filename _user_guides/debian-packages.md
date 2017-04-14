@@ -1,5 +1,6 @@
 ---
 layout: post
+order: '90'
 ---
 
 This guide should include:
@@ -29,7 +30,7 @@ Creating a Debian package can be done through various open-source packaging tool
 
 Begin by creating a `build.gradle`.  Below is an example of what a gradle file might look like for a application that builds a war.
 
-```javascript
+{% highlight javascript %}
 buildscript {
   repositories {
     jcenter()
@@ -54,15 +55,15 @@ ospackage {
     into '/opt/application/'
   }
 }
-```
+{% endhighlight %}
 
 Then build your Debian package based on your gradle build file:
-```bash
+{% highlight shell %}
 $ gradle buildDeb
-```
+{% endhighlight %}
 
 If the build succeeds then you should find a Debian package in the following path:
 
-```
+{% highlight shell %}
 ./build/distributions/mycompanyname-service.1.10.3_all.deb
-```
+{% endhighlight %}

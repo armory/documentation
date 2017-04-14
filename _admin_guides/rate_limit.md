@@ -1,6 +1,4 @@
-
 #  Rate Limits for AWS
-
 
 ## How Spinnaker Monitors a Deployment
 
@@ -10,9 +8,7 @@ By default Spinnaker queries the state
 
   # potential solutions
 
-  Muliple Accounts
-  Accounts
-
+Muliple Accounts
 
 Assume Roles and AWS
 
