@@ -1,6 +1,6 @@
 ---
 layout: post
-order: '90'
+order: 90
 ---
 
 This guide should include:

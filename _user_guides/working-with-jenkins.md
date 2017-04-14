@@ -1,6 +1,6 @@
 ---
 layout: post
-order: '20'
+order: 20
 ---
 
 This guide should include:
