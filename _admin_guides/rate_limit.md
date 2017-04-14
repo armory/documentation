@@ -2,13 +2,10 @@
 
 ## How Spinnaker Monitors a Deployment
 
-By default Spinnaker queries the state
-  - polling, interval 30 seconds, potential rate limits
-  - clouddriver is the main component
+By default Spinnaker queries (e.g. polls) the entire state of the AWS resources managed by Spinnaker every 30 seconds through the Clouddriver sub-service.
 
-  # potential solutions
 
-Muliple Accounts
+Multiple Accounts
 
 Assume Roles and AWS
 
