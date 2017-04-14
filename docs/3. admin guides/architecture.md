@@ -1,7 +1,11 @@
 # Architecture
 
 
+## Overview
+
 ## Systems Requirements
+
+Armory Spinnaker runs only on Ubuntu & CentOS and RHEL based machines within AWS.  It uses AWS resources to run manage and run Armory Spinnaker.
 
 ### Cloud & Operating Systems
 

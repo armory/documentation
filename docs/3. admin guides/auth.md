@@ -5,6 +5,7 @@ There are a few authentication mechanisms in Spinnaker.  Spinnaker supports the 
 * OAuth
 * X509
 * SAML
+* Basic Auth
 
 ## Enabling HTTPS/SSL
 
