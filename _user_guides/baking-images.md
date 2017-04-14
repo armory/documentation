@@ -1,5 +1,6 @@
 ---
 layout: post
+order: '30'
 ---
 
 This guide should include:
@@ -12,7 +13,7 @@ Definition: The term 'Baking' is used within Spinnaker to refer to the process o
 
 Preprequisites and assumptions:
 
-- You are familiar with creating [applications](../overview/first_applications.md) and [pipelines](../overview/first_pipeline.md).
+- You are familiar with creating [applications]({% link _overview/your-first-application.md %}) and [pipelines]({% link _overview/your-first-pipeline.md %}).
 - You are deploying to AWS.
 
 
@@ -22,10 +23,11 @@ First let's go through an example of baking, then we can go into some details an
 
 ## Example
 
-In this example we will bake an image containing a Debian package created by a Jenkins' job. If you like, you can check out the [working with Jenkins guide](working_with_jenkins.md) for more information on how Jenkins and Spinnaker can work together. We also have a guide on [creating debian packages](debian_packages.md).
+In this example we will bake an image containing a Debian package created by a Jenkins' job. If you like, you can check out the [working with Jenkins guide]({% link _user_guides/working-with-jenkins.md %}) for more information on how Jenkins and Spinnaker can work together. We also have a guide on [creating debian packages]({% link _user_guides/debian-packages.md %}).
 
 
 First Let's look at the the Jenkins job that builds our package. 
+
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/2c3e2Z0d1u1t1M1E1S3a/Image%202017-03-29%20at%2012.43.31%20PM.png)
 As you can see, the last run archived a packaged named `armory-hello-deploy_0.5.0-h5.c4baff4_all.deb`
 
@@ -46,7 +48,7 @@ like:
 
 At this point if I want to see more details about my bake, I can click the 'View Bakery Details' box. A new window will open up with the bakery logs. In my case, the first few lines look like:
 
-```
+{% highlight shell %}
 ==> amazon-ebs: Prevalidating AMI Name...
     amazon-ebs: Found Image ID: ami-3d50120d
 ==> amazon-ebs: Creating temporary keypair: packer_58dc1ccb-b936-7104-ebe0-0984e888ca78
@@ -64,7 +66,7 @@ At this point if I want to see more details about my bake, I can click the 'View
     amazon-ebs: package_type=deb
     amazon-ebs: packages=armory-hello-deploy=0.5.0-h5.c4baff4
 ...
-```
+{% endhighlight %}
 
 Under the hood, Spinnaker is leveraging [HashiCorp's Packer](https://www.packer.io/) tool to create images. The above is a Packer log file. 
 
@@ -121,7 +123,7 @@ Often you will want to specify a base image for use in your bake. In that case y
 
 In this situation, the Base OS selection (ubuntu/trusty/windows) will be ignored. 
 
-You can also select a base AMI more dynamically by combing the 'Bake' stage type with the 'Find Image' stage type. For more details check out the [Find Images Guide](find_images.md)
+You can also select a base AMI more dynamically by combing the 'Bake' stage type with the 'Find Image' stage type. For more details check out the [Find Images Guide]({% link _user_guides/find-images.md %})
 
 
 ### Public vs Private AMIs
