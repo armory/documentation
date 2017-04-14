@@ -1,5 +1,6 @@
 ---
 layout: post
+order: '70'
 ---
 
 - How does Spinnaker monitor a deployment

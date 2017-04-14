@@ -1,6 +1,7 @@
 ---
 layout: post
-order: '3'
+order: '10'
+permalink: '/'
 ---
 
 ## What Armory-Spinnaker Does

@@ -1,5 +1,6 @@
 ---
 layout: post
+order: '50'
 ---
 
 This guide should include:
