@@ -1,6 +1,6 @@
 ---
 layout: post
-order: '10'
+order: 10
 permalink: '/'
 ---
 

@@ -1,4 +1,4 @@
 ---
 layout: post
-order: '90'
+order: 90
 ---

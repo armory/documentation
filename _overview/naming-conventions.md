@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Nomenclature and Naming Conventions
-order: '20'
+order: 20
 ---
 
 This guide should:

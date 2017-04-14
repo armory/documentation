@@ -1,4 +1,4 @@
 ---
 layout: post
-order: '50'
+order: 50
 ---
