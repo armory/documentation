@@ -1,3 +1,8 @@
+---
+layout: post
+order: 20
+---
+
 # Spinnaker Sub-Services
 
 ## Orca

@@ -1,6 +1,6 @@
 ---
 layout: post
-order: '110'
+order: 110
 ---
 # VPCs & Subnets
 

@@ -1,6 +1,6 @@
 ---
 layout: post
-order: '30'
+order: 30
 ---
 
 This guide should tell you:

@@ -30,4 +30,3 @@ There are a few authentication mechanisms in Spinnaker.  Spinnaker supports the 
 
 
 ## SAML
-=======
