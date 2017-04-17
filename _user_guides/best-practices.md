@@ -20,18 +20,9 @@ If you are running the default installation of ArmorySpinnaker, then every AWS i
 
 ### Service Discovery
 
-While it is not feasible for every type of application, using a load balancer can greatly simplify things. Spinnaker gives load balancers first-class citizens and will not need additional integrations to work right out of the box.
+While it is not feasible for every type of application, using a load balancer can greatly simplify things. Spinnaker gives load balancers first-class citizenship and will not need additional integrations to work right out of the box.
 
 For applications and workloads that can not utilize a load balancer, the tools listed above may help.
-
-
-### Isolate Delivery Pipelines from Integration
-
-(andrew rephrase: - why we do it, and how we do it)
-While it's possible to have Spinnaker webhook off of Github repositories or trigger from Jenkins jobs, it's generally preferable to isolate the delivery pipeline from the code build. That means triggering Spinnaker pipelines off of Docker repos currently. That frees up the development teams to restructure their build systems and validation in whatever way they want, as long as the Docker image makes it up to the repo everything in the delivery process can remain the same.
-
-
-Sometimes you may need extra information if you're triggering off of Docker images. For instance you might want to release anything on the master branch to production, but release any other branch to the staging area. In order to do so, put the extra information into the tag, and the pipeline triggers in Spinnaker can use regular expression matches on the tag name in Docker to determine which pipeline to execute.
 
 
 ## Secret Management
@@ -47,3 +38,16 @@ Specifically for Secure Sockets Layer (SSL), it can be beneficial to terminate S
 Some other general purpose Secret Management tools include:
 - [HashiCorp's Vault](https://www.vaultproject.io/)
 - [Nike's Cerberus](http://engineering.nike.com/cerberus/)
+
+
+### Isolate Delivery Pipelines from Integration
+
+There are several ways to trigger a deployment pipeline. However, depending on the asset you are delivering, some methods are easier to work with thank others.
+
+*Docker Images* 
+
+It is best to have Spinnaker trigger off of a push to a Docker registry. This is in contrast to triggering off of a GitHub push or Jenkins job. That frees up the development teams to restructure their build systems and validation in whatever way they want, as long as the Docker image makes it up to the repo everything in the delivery process can remain the same.
+
+Sometimes you may need extra information if you're triggering off of Docker images. For instance you might want to release anything on the master branch to production, but release any other branch to the staging area. In order to do so, put the extra information into the tag, and the pipeline triggers in Spinnaker can use regular expression matches on the tag name in Docker to determine which pipeline to execute. Here is an example:
+
+![](https://cl.ly/0F091p2u1v0k/Image%202017-04-17%20at%204.35.46%20PM.png)
