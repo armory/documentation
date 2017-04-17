@@ -39,8 +39,6 @@ aws:
     templateFile: aws-ebs.json
     defaultVirtualizationType: hvm
     baseImages:
-    # AMIs sourced from: https://cloud-images.ubuntu.com/locator/ec2/
-    # Images should be considered placeholders.
     - baseImage:
         id: ubuntu
         shortDescription: v12.04

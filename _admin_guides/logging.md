@@ -43,6 +43,41 @@ services:
           splunk-token: ${YOUR_SPLUNK_TOKEN}
           splunk-url: https://${YOUR_SPLUNK_HOST}:8088
           splunk-insecureskipverify: "true"
+  orca:
+    logging:
+      driver: splunk
+      options:
+          splunk-token: ${YOUR_SPLUNK_TOKEN}
+          splunk-url: https://${YOUR_SPLUNK_HOST}:8088
+          splunk-insecureskipverify: "true"
+  rosco:
+    logging:
+      driver: splunk
+      options:
+          splunk-token: ${YOUR_SPLUNK_TOKEN}
+          splunk-url: https://${YOUR_SPLUNK_HOST}:8088
+          splunk-insecureskipverify: "true"
+  deck:
+    logging:
+      driver: splunk
+      options:
+          splunk-token: ${YOUR_SPLUNK_TOKEN}
+          splunk-url: https://${YOUR_SPLUNK_HOST}:8088
+          splunk-insecureskipverify: "true"
+  gate:
+    logging:
+      driver: splunk
+      options:
+          splunk-token: ${YOUR_SPLUNK_TOKEN}
+          splunk-url: https://${YOUR_SPLUNK_HOST}:8088
+          splunk-insecureskipverify: "true"
+  gate:
+    logging:
+      driver: splunk
+      options:
+          splunk-token: ${YOUR_SPLUNK_TOKEN}
+          splunk-url: https://${YOUR_SPLUNK_HOST}:8088
+          splunk-insecureskipverify: "true"
 ```
 
 ## Example: Logging to Syslog
