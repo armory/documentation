@@ -5,6 +5,10 @@ order: 20
 
 # Spinnaker Sub-Services
 
+Spinnaker is the composition of a few sub-services for resiliency
+and follow the single-responsibility principle.  It allows for faster iteration on each
+individual component and a more pluggable architecture for custom components.
+
 ## Orca
 
 Orca is responsible for the orchestration of of pipelines, stages and tasks within Spinnaker.  It acts as the "traffic cop" within Spinnaker making sure that sub-services, their execution and state are passed along correct.
