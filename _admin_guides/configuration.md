@@ -7,7 +7,6 @@ order: '50'
 
 # possible configurations for each service by Each YAML file
 
-# Clouddriver
 
 Multiple Accounts
 Accounts
