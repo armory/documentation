@@ -6,7 +6,10 @@ order: 30
 This guide should include:
 
 - How to bake an Amazon Machine Image
-- TODO
+- How to use base images
+- Pulling from different package repositories
+- Troubleshooting
+
 
 Definition: The term 'Baking' is used within Spinnaker to refer to the process of creating machine images.
 
@@ -126,15 +129,15 @@ In this situation, the Base OS selection (ubuntu/trusty/windows) will be ignored
 You can also select a base AMI more dynamically by combing the 'Bake' stage type with the 'Find Image' stage type. For more details check out the [Find Images Guide]({% link _user_guides/find-images.md %})
 
 
-### Public vs Private AMIs
-
-TODO
-
-
 ### Adding Debian repositores
 
 It is common practice to use a base image throughout your team or organization. Usually this base image will be kept up to date with security patches and will contain common tools (DataDog, Splunk, etc clients). It is also a good place to register your Debian repository's GPG keys. 
 
+If you need to add repositories on a per bake basis, you can use the 'Extended Attributes' within the 'Advanced Options' section. You can add a key/value pair where the key is labeled 'repository' and the value is a space seperated list of repository URLs. For example:
+
+![](https://cl.ly/3Z1A2w171n0s/Image%202017-04-17%20at%2010.41.20%20AM.png)
+
+Will add Armory's bintray debian repository to the bake.
 
 ## Regions
 

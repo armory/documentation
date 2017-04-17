@@ -17,7 +17,7 @@ Take this screenshot for example:
 
 There is a pipeline called 'Deploy' with two executions, both labeled 'Manual Start'. The top execution is marked as 'Succeeded' while the bottom is marked as 'Cancelled'. 
 
-For more information on creating bake and deploy pipelines, checkout the [baking]({% link _user_guides/baking-images.md %}) and [deploying]({% link _user_guides/deploying.md %} guides.
+For more information on creating bake and deploy pipelines, checkout the [baking]({% link _user_guides/baking-images.md %}) and [deploying]({% link _user_guides/deploying.md %}) guides.
 
 
 ## Manual Execution
