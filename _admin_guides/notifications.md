@@ -1,3 +1,8 @@
+---
+layout: post
+title: Notifications
+order: 20
+---
 # Notifications
 
 ## Echo

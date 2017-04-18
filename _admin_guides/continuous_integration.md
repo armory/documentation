@@ -1,3 +1,9 @@
+---
+layout: post
+title: Jenkins
+order: 10
+---
+
 # Continuous Integration (CI)
 Spinnaker's goal is leverage existing CI solutions to build and produce an artifact that can be deployed.
 

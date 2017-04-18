@@ -1,3 +1,8 @@
+---
+layout: post
+title: Installation
+order: 30
+---
 # Installing Armory Spinnaker
 The installer is a script that is responsible for asking the user for customer specific inputs like AWS keys, VPC, subnets and S3 buckets. These inputs are kept locally on your system and then passed to Terraform.  You can also install Armory Spinnaker directly from the Debian or RPM package if you don't need the additional resources (S3/Elasticache/IAM roles) created for you.
 

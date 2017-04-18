@@ -1,7 +1,7 @@
 ---
 layout: post
-description: This is the architecture page.
-order: '10'
+title: Architecture
+order: 10
 ---
 # Architecture
 
