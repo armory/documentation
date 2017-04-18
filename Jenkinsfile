@@ -1,8 +1,8 @@
 #!/usr/bin/env groovy
 
 node {
-    deleteDir()
     checkout scm
+    deleteDir("_site")
 
     stage("Build") {
         sh("""#!/bin/bash -x
