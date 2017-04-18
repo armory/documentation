@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Logging
-order: 20
+order: 60
 ---
 
 # Logging

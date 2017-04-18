@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Notifications
-order: 20
+order: 80
 ---
 # Notifications
 

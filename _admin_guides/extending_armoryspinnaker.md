@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Extending Armory Spinnaker
-order: 10
+order: 150
 ---
 # Extending Armory Spinnaker
 

@@ -1,3 +1,8 @@
+---
+layout: post
+title: Adding Accounts
+order: 160
+---
 # Spinnaker API (Gate)
 Spinnaker is backed by a robust set of RESTful APIs which are all JSON based and easy to use.  Every operation in
 

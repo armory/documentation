@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Architecture
-order: 40
+order: 70
 ---
 
 # Authentication

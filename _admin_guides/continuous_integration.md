@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Jenkins
-order: 10
+order: 50
 ---
 
 # Continuous Integration (CI)
