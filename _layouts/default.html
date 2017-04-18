@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
+  {% include base/head.html %}
+
+  <body>
+    <div class="Wrapper Wrapper--main">
+    	<div class="Wrapper__inner">
+        {% include base/header.html %}
+
+    		<main class="Main" aria-label="Content">
+      		{{ content }}
+        </main>
+    	</div>
+    </div>
+
+    {% include base/footer.html %}
+
+    <script type="text/javascript">
+      var el = document.querySelectorAll('.js__toggle-section-trigger');
+      
+      for (var i=0; i < el.length; i++){
+        el[i].addEventListener('click', function(e) {
+          e.preventDefault();
+          toggleClass(this.parentNode, 'is-closed');
+        });
+      }
+
+      function toggleClass(el, className) {
+        if (el.classList) {
+          el.classList.toggle(className);
+        } else {
+          var classes = el.className.split(' ');
+          var existingIndex = classes.indexOf(className);
+
+          if (existingIndex >= 0)
+            classes.splice(existingIndex, 1);
+          else
+            classes.push(className);
+
+          el.className = classes.join(' ');
+        }
+      }
+    </script>
+  </body>
+
+</html>

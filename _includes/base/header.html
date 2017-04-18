@@ -1,0 +1,53 @@
+<a class="Header__logo--mobile" href="//www.armory.io" title="{{ site.title | escape }}">
+  <img src="/images/logo.svg" height="32" />
+</a>
+
+<header class="Header" role="banner">
+  {% assign default_paths = site.pages | map: "path" %}
+  {% assign page_paths = site.header_pages | default: default_paths %}
+  <a class="Header__logo" href="//www.armory.io" title="{{ site.title | escape }}">
+    <img src="/images/logo.svg" height="44" />
+  </a>
+
+  
+  <nav class="Nav">
+      <ul class="Nav-list">
+        <li class="Nav-list__section">
+          <h3 class="Header--tiny toggle-section-trigger js__toggle-section-trigger" tabindex="0">Overview</h3>
+          <ul class="toggle-section">
+            {% assign sorted_overview = site.overview | sort: 'order' %}
+            {% for link in sorted_overview %}
+              <li><a class="Nav-list__link{% if page.url == link.url %} is-active{% endif %}" href="{{ link.url | relative_url }}">{{ link.title | escape }}</a></li>
+            {% endfor %}
+          </ul>
+        </li>
+
+        <li class="Nav-list__section">
+          <h3 class="Header--tiny toggle-section-trigger js__toggle-section-trigger" tabindex="0">User Guides</h3>
+          <ul class="toggle-section">
+            {% assign sorted_user_guides = site.user_guides | sort: 'order' %}
+            {% for link in sorted_user_guides %}
+              <li><a class="Nav-list__link{% if page.url == link.url %} is-active{% endif %}" href="{{ link.url | relative_url }}">{{ link.title | escape }}</a></li>
+            {% endfor %}
+          </ul>
+        </li>
+
+        <li class="Nav-list__section">
+          <h3 class="Header--tiny toggle-section-trigger js__toggle-section-trigger" tabindex="0">Admin Guides</h3>
+          <ul class="toggle-section">
+            {% assign sorted_admin_guides = site.admin_guides | sort: 'order' %}
+            {% for link in sorted_admin_guides %}
+              <li><a class="Nav-list__link{% if page.url == link.url %} is-active{% endif %}" href="{{ link.url | relative_url }}">{{ link.title | escape }}</a></li>
+            {% endfor %}
+          </ul>
+        </li>
+
+        <li class="Nav-list__section">
+          <h3 class="Header--tiny toggle-section-trigger js__toggle-section-trigger" tabindex="0">Other</h3>
+          <ul class="toggle-section"l>
+            <li><a class="Nav-list__link{% if page.url == link.url %} is-active{% endif %}" href="/release-notes">Release Notes</a></li>
+          </ul>
+        </li>
+      </ul>
+  </nav>
+</header>

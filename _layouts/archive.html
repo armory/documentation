@@ -1,0 +1,13 @@
+---
+layout: default
+---
+<div class="Post">
+
+  <header class="Post__header">
+    <h1 class="Post__title" itemprop="name headline">{{ page.title | escape }}</h1>
+  </header>
+
+  <div class="Post__content" itemprop="articleBody">
+    {% include components/articles-list.html %}
+  </div>
+</div>
