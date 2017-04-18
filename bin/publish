@@ -1,4 +1,4 @@
 #!/bin/bash
 set -e
 cd "$(dirname "$0")"/..
-aws s3 sync $(pwd)/_site/ s3://docs.armory.io/
+aws s3 sync --delete "$(pwd)/_site/" "s3://docs.armory.io/"

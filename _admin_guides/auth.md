@@ -1,6 +1,8 @@
 ---
 layout: post
-order: '40'
+title: Authentication
+order: 70
+published: false
 ---
 
 # Authentication
