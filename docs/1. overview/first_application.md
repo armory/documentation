@@ -1,4 +1,5 @@
-User Guide: How to Create an Application
+# User Guide: How to Create an Application
+
 This guide should tell you:
 
 - What the first page is all about
@@ -6,8 +7,7 @@ This guide should tell you:
 - How to delete an application
 
 
-
-At First Glance
+## At First Glance
 
 When you first log in to Spinnaker, the landing page should look like this:
 
@@ -24,18 +24,17 @@ Note: The naming convention that you have been using is not necessarily the same
 Remember that Spinnaker considers an application to be anything you would put into a single code repository.
 
 
-
-
-
-Making an Application
+## Making an Application
 
 Step 1: Enter Applications from your Navigation bar. 
 
 Step 2: Click the “Actions” button and select from the drop-down menu “Create Application”
-https://cl.ly/3p3H1H373A1G
+
+![](https://d1ax1i5f2y3x71.cloudfront.net/items/0H383p1h120p1D2n2y19/Image%202017-03-24%20at%203.20.41%20PM.png)
 
 Step 3: Fill out the pop-up form with desired user definitions.
-https://cl.ly/3B0i3E2H331f
+
+![](https://d1ax1i5f2y3x71.cloudfront.net/items/2B3k3E2o3h442H0x2U3S/Image%202017-03-24%20at%203.22.30%20PM.png)
 
 Notes: 
 
@@ -44,16 +43,16 @@ Notes:
 - When you create an application in Spinnaker, consider it to be anything you would put into a single code repository. 
 
 Step 4: After you fill out the form you should see this:
-https://cl.ly/3g0z2b2i0b23
+
+![](https://d1ax1i5f2y3x71.cloudfront.net/items/2T1h1b1c052n2x1g1R1y/Image%202017-03-24%20at%203.26.40%20PM.png)
 
 Step 5: If you wish to modify the settings for the application, click on “Config” for configurations.
 
 Note that by now you should have created an application, but as you have not created a pipeline and executed it, nothing should show up yet.
 
 
-
-Deleting an Application
+## Deleting an Application
 
 Go to your application, click on “Config” and scroll all the way down. There will be a prompt to confirm if you would like to delete your application. 
 
-https://cl.ly/1A021W1V152x
+![](https://d1ax1i5f2y3x71.cloudfront.net/items/2v0j1E0A1p06461K0A1c/Image%202017-03-24%20at%203.28.14%20PM.png)

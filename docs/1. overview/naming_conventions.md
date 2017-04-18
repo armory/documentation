@@ -1,4 +1,5 @@
-User and Administrative Guide: Nomenclature
+# Nomenclature and Naming Conventions
+
 This guide should:
 
 - tell you what these words mean in context of Armory
@@ -6,42 +7,50 @@ This guide should:
 - explain Spinnaker’s naming convention
 
 
-Nomenclature of Domain definitions:
+## Nomenclature of Domain definitions:
 
 Application
 An application inside Spinnaker represents what you would typically find in a single code repository - and in many cases, an application maps directly to a microservice.
-https://cl.ly/1P3v3t3A2a3m
 
-Cluster
+![](https://d1ax1i5f2y3x71.cloudfront.net/items/3N0l3U0F2z3j1z202j17/Image%202017-03-24%20at%203.07.57%20PM.png)
+
+#### Cluster
 A server group is a regional view of servers, whereas a cluster is a world-wide view of server groups. 
-https://cl.ly/232k1N1M2h28
 
-Execution
+![](https://d1ax1i5f2y3x71.cloudfront.net/items/1u2q3W3U3v3t1J0x3o1S/Image%202017-03-24%20at%203.05.04%20PM.png)
+
+#### Execution
 When a pipeline runs, the end result is called an execution. 
-https://cl.ly/380d0T451n1h
 
-Pipeline
+![](https://d1ax1i5f2y3x71.cloudfront.net/items/1h2V1U0n0h3D2D1X2T0c/Image%202017-03-24%20at%203.06.50%20PM.png)
+
+#### Pipeline
 A pipeline in Spinnaker is a series of stages linked together that can be executed serially or in parallel. All pipelines are defined in the context of an application. A typical pipeline will contain stages for “creating images”, “testing”, and “deploying”. The process of “creating images” is also commonly referred to as a “bake”.
-https://cl.ly/0S2M272q2p1u
 
-Project
+![](https://d1ax1i5f2y3x71.cloudfront.net/items/2q0K2x0m31273u023H0Y/Image%202017-03-24%20at%203.06.29%20PM.png)
+
+#### Project
 A project inside Spinnaker is a logical grouping of applications. For example, we might create a project called “Spinnaker” and its applications would be “Deck”, “Orca”, “Clouddriver”, etc. Spinnaker provides a helpful dashboard view for each project to visualize its applications and status of each application contained within it.
-https://cl.ly/2f390v1I3f3W
 
-Server Group
+![](https://d1ax1i5f2y3x71.cloudfront.net/items/1s2Z330i3v033f1u2u35/Image%202017-03-24%20at%203.08.23%20PM.png)
+
+#### Server Group
 From an Amazon Web Service (AWS) point of view, a server group is represented by an auto-scaling group (ASGs). All applications that are deployed by Spinnaker are deployed to server groups. 
-https://cl.ly/232k1N1M2h28
 
-Stage
+![](https://d1ax1i5f2y3x71.cloudfront.net/items/1u2q3W3U3v3t1J0x3o1S/Image%202017-03-24%20at%203.05.04%20PM.png)
+
+#### Stage
 Within a pipeline, the tasks that pipeline performs are called stages.
-https://cl.ly/0S2M272q2p1u
 
-Trigger
+![](https://d1ax1i5f2y3x71.cloudfront.net/items/2q0K2x0m31273u023H0Y/Image%202017-03-24%20at%203.06.29%20PM.png)
+
+#### Trigger
 A trigger is the entry point to a pipeline. 
-https://cl.ly/0S2M272q2p1u
+
+![](https://d1ax1i5f2y3x71.cloudfront.net/items/2q0K2x0m31273u023H0Y/Image%202017-03-24%20at%203.06.29%20PM.png)
 
 
-Spinnaker Naming Conventions
+## Spinnaker Naming Conventions
 
 Spinnaker has very specific naming conventions that help it identify resources in your cloud account. 
 
@@ -55,10 +64,6 @@ Clusters and server groups follow the convention `application_name``-``stack``-`
 
 In AWS, Spinnaker will name your ASGs and Launch Configurations according to the naming convention above (ie. “armoryspinnaker-prod-polling-v015”). 
 
-https://cl.ly/0l432s1a2w24
+![](https://d1ax1i5f2y3x71.cloudfront.net/items/3l332i3p3B1L1T0t0E2j/Image%202017-03-24%20at%203.10.53%20PM.png)
 
 Please note that if your user definition includes a hyphen, it will disrupt the naming convention. 
-
-
-
-

@@ -10,7 +10,7 @@ Pipelines are a combination of stages that enable some very sophisticated coordi
 
 Take this screenshot for example:
 
-https://cl.ly/000R192M0O42
+![](https://d1ax1i5f2y3x71.cloudfront.net/items/2l1b2l0O453t0L311H0g/Image%202017-04-03%20at%204.35.40%20PM.png)
 
 There is a pipeline called 'Deploy' with two executions, both labeled 'Manual Start'. The top execution is marked as 'Succeeded' while the bottom is marked as 'Cancelled'. 
 
@@ -21,11 +21,11 @@ For more information on creating bake and deploy pipelines, checkout the [baking
 
 You can re-run an execution by pressing the 'Start Manual Execution'. 
 
-https://cl.ly/100M0V2o0S2D
+![](https://d1ax1i5f2y3x71.cloudfront.net/items/2P2H2W1K2b3M3d2i321q/Image%202017-04-03%20at%204.51.41%20PM.png)
 
 If your pipeline has a Jenkins' trigger, you can select which Jenkins' build number to use for running the pipeline. 
 
-https://cl.ly/10163n1z3y1r
+![](https://d1ax1i5f2y3x71.cloudfront.net/items/1y1V2X18341X203u0k30/Image%202017-04-03%20at%204.53.50%20PM.png)
 
 The artifacts produced by the build you select will be used in the pipeline. If your pipeline bakes an image, a cached image will be used if available. To force a rebuild, make sure you specify such before pressing the 'Run' button.
 
@@ -36,7 +36,7 @@ Spinnaker supports several methods of notification. Notifications can be made wh
 
 To enable it, navigate to the configuration screen for your pipeline. Make sure you have the 'Configuration' stage selected. Scroll down to the 'Notifications' section.
 
-https://cl.ly/403y2g2c2I33
+![](https://d1ax1i5f2y3x71.cloudfront.net/items/3P1b0M1P0u3q0Z0o351u/Image%202017-04-03%20at%204.31.37%20PM.png)
 
  Press 'Add Notifications Preference'. For example's sake, I have selected to receive a notification via Slack in the `#engineering` channel whenever my pipeline fails.
 
