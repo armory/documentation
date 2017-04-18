@@ -1,3 +1,8 @@
+---
+layout: post
+title: Rate Limits
+order: 20
+---
 #  Rate Limits for AWS
 
 ## How Spinnaker Monitors a Deployment

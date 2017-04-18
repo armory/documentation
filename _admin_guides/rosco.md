@@ -1,4 +1,8 @@
-
+---
+layout: post
+title: Rosco/Baking Configuration
+order: 10
+---
 
 # Baking Images With Rosco
 

@@ -1,6 +1,7 @@
 ---
 layout: post
-order: '100'
+title: Spinnaker Permissions
+order: 20
 ---
 
 # Spinnaker Permissions
