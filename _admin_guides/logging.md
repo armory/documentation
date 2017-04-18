@@ -1,6 +1,7 @@
 ---
 layout: post
-order: '60'
+title: Logging
+order: 60
 ---
 
 # Logging

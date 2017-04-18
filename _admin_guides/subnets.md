@@ -1,6 +1,7 @@
 ---
 layout: post
-order: 110
+title: Subnets
+order: 90
 ---
 # VPCs & Subnets
 
