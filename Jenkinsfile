@@ -2,7 +2,9 @@
 
 node {
     checkout scm
-    deleteDir("_site")
+    dir("_site") {
+        deleteDir()
+    }
 
     stage("Build") {
         sh("""#!/bin/bash -x
