@@ -3,9 +3,9 @@ layout: post
 title: Architecture
 order: 10
 ---
-# Architecture
+# Architecture for Spinnaker
 
-We provide two methods of installing Spinnaker: Stand-Alone and High-Availability (HA).  The stand-alone version is there for development and evaluation purposes.  It's a simplified deployment and is the quickest way to evaluate Spinnaker.  The HA deployment provides redundancy and additional security such that there is no single point of failure.  It also allows you to easily
+Armory Spinnaker provides two methods of installing Spinnaker: Stand-Alone and High-Availability (HA).  The stand-alone version is there for development and evaluation purposes.  It's a simplified deployment and is the quickest way to evaluate Spinnaker.  The HA deployment provides redundancy and additional security such that there is no single point of failure.  
 
 
 ## Stand-Alone
@@ -28,7 +28,7 @@ Below is a diagram of the architecture & components deployed in an HA configurat
 
 ## Systems Requirements
 
-Armory Spinnaker runs only on Ubuntu & CentOS and RHEL based machines within AWS.  It uses AWS resources to run manage and run Armory Spinnaker.
+Armory Spinnaker runs only on Ubuntu & CentOS and RHEL based machines within AWS.  It uses AWS resources to manage and run Armory Spinnaker.
 
 ### Cloud & Operating Systems
 
@@ -49,4 +49,4 @@ Armory Spinnaker uses Docker and Docker-Compose for every component possible.
 
 ## High Availability
 
-* redudancy, performane, intermediate step before breaking out into many more components
+* redudancy, performance, intermediate step before breaking out into many more components
