@@ -5,7 +5,7 @@ order: 30
 
 This guide should include:
 
-- How to bake an Amazon Machine Image
+- How to bake an Amazon Machine Image (AMI)
 - How to use base images
 - Pulling from different package repositories
 - Troubleshooting
@@ -16,8 +16,8 @@ Definition: The term 'Baking' is used within Spinnaker to refer to the process o
 
 Preprequisites and assumptions:
 
-- You are familiar with creating [applications]({% link _overview/your-first-application.md %}) and [pipelines]({% link _overview/your-first-pipeline.md %}).
-- You are deploying to AWS.
+- You are familiar with creating [applications]({% link _overview/your-first-application.md %}) and [pipelines]({% link _overview/your-first-pipeline.md %})
+- You are deploying to Amazon Web Services (AWS)
 
 
 ## Baking in a Pipeline
@@ -29,10 +29,10 @@ First let's go through an example of baking, then we can go into some details an
 In this example we will bake an image containing a Debian package created by a Jenkins' job. If you like, you can check out the [working with Jenkins guide]({% link _user_guides/working-with-jenkins.md %}) for more information on how Jenkins and Spinnaker can work together. We also have a guide on [creating debian packages]({% link _user_guides/debian-packages.md %}).
 
 
-First Let's look at the the Jenkins job that builds our package. 
+First let's look at the the Jenkins job that builds our package. 
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/2c3e2Z0d1u1t1M1E1S3a/Image%202017-03-29%20at%2012.43.31%20PM.png)
-As you can see, the last run archived a packaged named `armory-hello-deploy_0.5.0-h5.c4baff4_all.deb`
+As you can see, the last run archived a package named `armory-hello-deploy_0.5.0-h5.c4baff4_all.deb`
 
 
 Now let's go to Spinnaker and create a new pipeline. I named mine `bake-example`.
@@ -92,7 +92,7 @@ Notice the whole pipeline only ran for '00:00' and in the lower right Spinnaker 
 
 ## Advanced Options
 
-You can additionally do things like use a specific base AMI, specify your baked AMI's name, use a custom packer script, or pass variables to a packer script.
+You can do additional things like use a specific base AMI, specify your baked AMI's name, use a custom packer script, or pass variables to a packer script.
 
 If you would like to change the name in AWS of your AMI, you can do so by selecting the 'Show Advanced Options' checkbox in the Bake Stage Configuration. Continuing from our example above, when I see:
 
@@ -124,42 +124,42 @@ Often you will want to specify a base image for use in your bake. In that case y
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/1i3j2G0G3T1r311l1Y1A/Image%202017-03-29%20at%204.06.24%20PM.png)
 
 
-In this situation, the Base OS selection (ubuntu/trusty/windows) will be ignored. 
+In this situation, the base OS selection (ubuntu/trusty/windows) will be ignored. 
 
 You can also select a base AMI more dynamically by combing the 'Bake' stage type with the 'Find Image' stage type. For more details check out the [Find Images Guide]({% link _user_guides/find-images.md %})
 
 
-### Adding Debian repositores
+### Adding Debian Repositories
 
-It is common practice to use a base image throughout your team or organization. Usually this base image will be kept up to date with security patches and will contain common tools (DataDog, Splunk, etc clients). It is also a good place to register your Debian repository's GPG keys. 
+It is common practice to use a base image throughout your team or organization. Usually this base image will be kept up to date with security patches and will contain common tools (DataDog, Splunk, etc.). It is also a good place to register your Debian repository's GPG keys. 
 
-If you need to add repositories on a per bake basis, you can use the 'Extended Attributes' within the 'Advanced Options' section. You can add a key/value pair where the key is labeled 'repository' and the value is a space seperated list of repository URLs. For example:
+If you need to add repositories on a per bake basis, you can use the 'Extended Attributes' within the 'Advanced Options' section. You can add a key/value pair where the key is labeled 'repository' and the value is a space separated list of repository URLs. For example:
 
 ![](https://cl.ly/3Z1A2w171n0s/Image%202017-04-17%20at%2010.41.20%20AM.png)
 
-Will add Armory's bintray debian repository to the bake.
+This will add Armory's bintray debian repository to the bake.
 
 ## Regions
 
-By selecting a region, you are selecting which region the bake will take place. When a bake happens, an instance is spun up, the desired packages are installed, and then a snapshot is taken. Where the instances that spin up are located is determined by which regions you select. 
+By selecting a region, you are selecting which region the bake will take place. When a bake happens, an instance is spun up, the desired packages are installed, and then a snapshot is taken. The location where the instances spin up is determined by which region you select. Multiple regions may be selected at once.
 
 ## Rebaking
 
 When a bake step executes, Spinnaker looks for a previously created image before baking a new one. It uses the set of packages (and their versions) that users specify in the bake stage configuration to determine if the bake is neccessary.
 
-You can force Spinnaker to always bake by selecting the 'Rebake: Rebake image without regard to the status of any existing bake' checkbox on the bake stage configuration screen. You also have the option when executing a pipeline manually to force rebaking. 
+You can force Spinnaker to always bake by selecting the 'Rebake: Rebake image without regard to the status of any existing bake' checkbox on the bake stage configuration screen. You also have the option to force rebaking when manually executing a pipeline. 
 
 
-## Bake and Copy vs Multi-region Bake
+## Bake and Copy vs Multi-Region Bake
 
 There are two options for getting an image to multiple regions in AWS. A common practice outside of Spinnaker is to create your AMI and then copy it to the regions you need. However, Spinnaker by default will do a multi-region bake. This means if you select more than one region it will go through the process of creating an image in each region (spin up an instance, install the packages, etc).
 
-There are trade offs to each approach. Generally, Spinnaker's default multi-region bake approach is faster than the bake and copy approach. However, if you need to limit all baking activities to one region then there isn't much of a choice.
+There are trade-offs to each approach. Generally, Spinnaker's default multi-region bake approach is faster than the bake and copy approach. However, if you need to limit all baking activities to one region then there isn't much of a choice.
 
 
 ## Custom Bake Scripts
 
-If you would like to use a custom Packer script to bake your AMI, you will need to contact your Spinnaker Administrator. The script will have to be installed on your Spinnaker instances.
+If you would like to use a custom Packer script to bake your AMI you will need to contact your Spinnaker Administrator. The script will have to be installed on your Spinnaker instances.
 
 
 ## Troubleshooting
@@ -170,4 +170,4 @@ When you have a failing bake step and you do not know why, a good place to start
 Click the link that says 'View Bakery Details'. It can be helpful to track down the last command that the bakery executed. 
 
 
-Another source of information is the pipeline's source link. You can find this link in small writing in the far bottom right of the pipeline execution detail screen. The 'source' is a json representation of the data generated by Spinnaker when running your pipeline (not just the bake step).
+Another source of information is the pipeline's source link. You can find this link in small writing in the far bottom right of the pipeline execution detail screen. The 'source' is a JSON representation of the data generated by Spinnaker when running your pipeline (not just the bake step).

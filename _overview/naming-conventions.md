@@ -13,7 +13,7 @@ This guide should:
 
 ## Nomenclature of Domain definitions:
 
-Application
+#### Application
 An application inside Spinnaker represents what you would typically find in a single code repository - and in many cases, an application maps directly to a microservice.
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/3N0l3U0F2z3j1z202j17/Image%202017-03-24%20at%203.07.57%20PM.png)
