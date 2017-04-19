@@ -3,21 +3,25 @@ layout: post
 title: Rate Limits
 order: 140
 ---
-#  Rate Limits for AWS
+#  Rate Limits for Amazon Web Service (AWS)
 
 ## How Spinnaker Monitors a Deployment
 
 By default Spinnaker queries (e.g. polls) the entire state of the AWS resources managed by Spinnaker every 30 seconds through the Clouddriver sub-service.
 
 
-Multiple Accounts
+### Multiple Accounts
 
-Assume Roles and AWS
+This section is a work in progress.
+
+### Assume Roles and AWS
+
+This section is a work in progress.
 
 
 ## Fine Grained Rate Limits
 
-Spinnaker queries your cloud provider (AWS, GCP, Azure, Kubernetes, etc) frequently to understand about the state of your existing infrastructure and current deployments.  In doing so however, you might run into rate limits imposed by the cloud provider.  Below is an example configuration for global rate limits for all services that you would place in `clouddriver-local.yml`.
+Spinnaker queries your cloud provider (AWS, GCP, Azure, Kubernetes, etc) frequently to understand the state of your existing infrastructure and current deployments.  However, by doing so you might run into rate limits imposed by the cloud provider.  Below is an example configuration for global rate limits for all services that you would place in `clouddriver-local.yml`.
 
 ```
 serviceLimits:
@@ -34,7 +38,7 @@ serviceLimits:
       rateLimit: 15
 ```
 
-You can provide account specific overrides as well in case you have significantly more resources in one account while others have less
+You can provide account specific overrides as well in case you have significantly more resources in one account while others have less:
 
 ```
 serviceLimits:
@@ -45,7 +49,7 @@ serviceLimits:
       rateLimit: 100
 ```
 
-And lastly, you can have more fine-grained control for particular AWS endpoints that might have a different rate limits:
+And finally, you can have more fine-grained control for particular AWS endpoints that might have a different rate limits:
 
 ```
   implementationLimits:
@@ -64,4 +68,3 @@ And lastly, you can have more fine-grained control for particular AWS endpoints 
 
 Using these rate limits will help you avoid hitting the rate limits and potentially make Spinnaker more responsive as the cloud provider clients won't have to implement back-off strategy to continue to query the infrastructure.  
 
-As always, we want to provide ridiculously responsive support, let us know how we can help.

@@ -3,7 +3,7 @@ layout: post
 title: Architecture
 order: 10
 ---
-# Architecture
+
 
 We provide two methods of installing Spinnaker: Stand-Alone and High-Availability (HA).  The stand-alone version is there for development and evaluation purposes.  It's a simplified deployment and is the quickest way to evaluate Spinnaker.  The HA deployment provides redundancy and additional security such that there is no single point of failure.  It also allows you to easily
 

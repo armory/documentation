@@ -6,12 +6,14 @@ order: 120
 
 # Baking Images With Rosco
 
-Rosco is the sub-service that manages baking using [Packer](https://www.packer.io/docs/) which is a cloud agnostic tool that automates the creation of images.  Rosco is a small API which manages the state of packer jobs and their executions so that it can report to other sub-systems.  It is highly extendable to work for different types of environments.  
+Rosco is the sub-service that manages baking using [Packer](https://www.packer.io/docs/), a cloud agnostic tool that automates the creation of images.  Rosco is a small API which manages the state of packer jobs and their executions so that it can report to other sub-systems.  It is highly extendable to work for different types of environments.  
 
 ## Rosco Configuration for Baking
 
 ### Templates Location
-You can tell where Rosco should look for template files and script.  By default they're kept at `/opt/rosco/config/packer`.  With a standard Spinnaker distribution you should find various examples to extend.  In most cases you will want to take a template file and add your custom packer properties to build correctly.  You will only need to add your files here in this directory and then reference then in your bake stage under the `Template File Name` field.
+You can tell Rosco where it should look for template files and scripts.  The default location is `/opt/rosco/config/packer`.  With a standard Spinnaker distribution you should find various examples to extend.  In most cases you will want to take a template file and add your custom packer properties to build correctly.  You will only need to add your files here in this directory and then reference them in your bake stage under the `Template File Name` field.
+
+
 You can specify the following in `/opt/spinnaker/config/rosco-local.yml`:
 ```
 rosco:
@@ -33,7 +35,7 @@ chocolateyRepository: https://chocolatey.org/api/v2/
 
 ### Setting Up Base OS Defaults for Baking
 
-The default configurations use Ubuntu 12.04/14.0 as the default choices for Base OS, however these are configurable below by add the configuration below to your `rosco-local.yml`.   You can specify a different `templateFile` per base image which should save time from a user perspective so that they don't have to specify an additional parameter.  You can specify multiple base image and virtualization settings for each region you need to process bakes.
+The default configurations use Ubuntu 12.04/14.0 as the default choices for Base OS - these are configurable by adding the configurations below to your `rosco-local.yml`.   You can specify a different `templateFile` per base image which should save time from a user perspective so they don't have to specify an additional parameter.  You can specify multiple base images and virtualization settings for each region you need to process bakes.
 
 ```
 aws:
