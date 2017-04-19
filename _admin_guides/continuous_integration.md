@@ -9,7 +9,8 @@ Spinnaker's goal is to leverage existing CI solutions to build and produce an ar
 
 ## Enabling Spinnaker to Communicate with Jenkins
 
-To enable Spinnaker to communicate with your Jenkins build you will need to edit your `spinnaker-local.yml` file.  First configure Jenkins by finding your password or API Token.  You can find your token here: `http://${YOUR_JENKINS_URL}.armory.io/me/configure`.
+To enable Spinnaker to communicate with your Jenkins instance you will need to edit your `spinnaker-local.yml` file. 
+First prepare to configure Jenkins by finding your password or API Token.  You can find your token here: `http://${YOUR_JENKINS_URL}.armory.io/me/configure`.
 
 Then configure your `/opt/spinnaker/config/spinnaker-local.yml` file and add the following:
 
