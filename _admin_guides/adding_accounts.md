@@ -14,7 +14,7 @@ In AWS, Spinnaker relies on IAM policies to access temporary keys into configure
 
 ## Clouddriver Configuration
 
-For adding additional accounts into Spinnaker you'll need to extend Clouddriver by adding your configuration into `clouddriver-local.yml`.  Here is an example of clouddriver configuration file that has 3 accounts as described above.
+For adding additional accounts into Spinnaker you'll need to extend Clouddriver by adding your configuration into `clouddriver-local.yml`.  Here is an example of a Clouddriver configuration file that has 3 accounts as described above.
 
 ```
 aws:
@@ -43,7 +43,7 @@ aws:
 ## Assume Roles in IAM
 
 You will need to create a `SpinnakerManagedProfile` role in the target AWS account (prod-account, staging-account, service-account) and give it the
-correct trust policy in IAM.  Below is the trusty policy you give the `SpinnakerManagedProfile` in the target account to allow the `SpinakerInstanceProfile`
+correct trust policy in IAM.  Below is the trust policy you give the `SpinnakerManagedProfile` in the target account to allow the `SpinakerInstanceProfile`.
 
 ```
 {
