@@ -4,7 +4,7 @@ title: v1.2 Armory Enterprise Spinnaker
 order: 1000
 ---
 
-# Release Notes
+# 02/10/2017 Release Notes
 
 
 ## Armory Enterprise Spinnaker
