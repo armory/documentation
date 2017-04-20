@@ -1,7 +1,6 @@
 ---
 layout: post
 title: v1.2 Armory Enterprise Spinnaker
-permalink: 'release-notes'
 ---
 
 ## Armory Enterprise Spinnaker
