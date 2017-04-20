@@ -1,0 +1,391 @@
+---
+layout: post
+title: v1.3 Armory Enterprise Spinnaker
+order: 999
+---
+
+# Release Notes
+
+
+## Armory Enterprise Spinnaker
+ - Adding `DECK_HOST` as the env var to use for baseUrl for deck
+ - No longer rely on `CLOUD_STACK` env variable to determine environment
+ - Generate settings.js from ymls with multiple spring profiles
+ - Need compose dir for secrets
+ - bugfix - secrets need to be loaded before env resolves
+ - Default logging profile - local log files 
+ - Update healthcheck version and modify hostnames
+ - Drain KeyError fix
+
+## Spinnaker Community Contributions
+
+### Orca - v1.368.0
+ - Adding support for bulk server group operations
+ - fix(triggers): pipeline triggers may not deserialize parent pipeline correctly in some circumstances
+ - fix(pipelinetemplate): Handlebars rendering & variable inheritance issues (#1230)
+ - chore(halyard): BaseUrls need to include protocol (#1231)
+ - fix circular dependency preventing app launch
+ - Get rid of v1 execution engine and isolate Spring Batch dependency
+ - chore(fiat): Bump Fiat API, add @EnableFiatAutoConfig annotation
+ - fix(pipelinetemplate): Fix configuration stage injection & requisiteStageRefId rendering (#1228)
+ - fix(pipelinetemplate): Ensure pipelines are executed on v2 (#1227)
+ - chore(halyard): Add bootstrapping profile to orca (#1225)
+ - feat(pipelinetemplate): Basic template & config validation (#1221)
+ - fix(pipelinetemplate): Allow associating to an existing pipelineConfigId (#1226)
+ - fix a DST bug in a spec
+ - feat(spel): #propertiesFromUrl helper method
+ - fix(orca): stupid cast error in endpoint
+ - Fast Property multiple apps in scope
+ - any execution that does not specify a version will run v2
+ - Ensuring there is a buildNumber present in the context before proceeding
+ - fix(canary): add cloud provider to canary operations
+ - docs(pipelinetemplate): Quick start guide to pipeline templates (#1215)
+ - feature(netflix): simplify zombie pipeline cleanup
+ - feat(metrics): send cloudProvider to task invocations metric
+ - fix(executions): avoid intermittent StackOverflowError
+ - feat(pipelinetemplates): Adding withMapKey handlebars helper (#1190)
+ - feat(pipelinetemplates): Adding basic plan capability
+ - fix(netflix): ensure older instances report counts
+ - fix(jobs): add output from jobs to global context for downstream jobs
+ - add details of running executions to execution tracker
+ - fix(core): Avoid capturing security group ingress rules with empty cidr's. (#1206)
+ - fix(triggers): fix dumb assumption that a 'strategy' param will always be boolean
+ - fix(quip): increase timeout from 2 minutes to 10 minutes
+ - chore(dependencies): upgrade to latest jackson/spectator/kork versions
+ - can't inherit another task as you get multiple beans by type
+ - restore renamed task class otherwise deserialization breaks
+ - restore renamed task class otherwise deserialization breaks
+ - prevent disabled pipelines from launching even when they are launched by another pipeline or queued
+ - Refactoring & adding cycle detection in DAG
+ - chore(PR Template): Added PR template. (#1195)
+ - (rrb) Adjust success conditions for percent enable/disable (#1177)
+ - (appengine) upsert load balancers stage with target server group resolution (#1194)
+ - rm cloudbuild step (#1189)
+ - allow branch failure to fail pipeline even if other branches run to completion
+ - Add optional force flag to the cancel pipeline endpoint
+ - Ensuring interesting health provider names are preserved for rolling push
+ - return instances busiest first
+ - core/notifications: add notifications from Front50 to pipeline notifications
+ - provide better error message when canary baseline lookup fails
+ - add bulkUpsertEntityTags stage
+ - Fix orca endpoint references (#1183)
+ - chore(gradle): spinnaker-gradle-project version bump. (#1182)
+ - Injecting trigger info into pipeline prior to preprocessors
+ - throw exception if Front50 application retrieval returns non-200/404
+ - initial cut at cluster guards
+ - GCB tag latest build (#1179)
+ - support pointing clouddriver reads at a readonly replica.
+ - dag stage injection
+
+### Echo - v1.132.0
+ - Add BitBucket support
+ - Assume notification preferences are set upstream
+ - chore(gradle) spinnaker-gradle-project version bump. (#136)
+ - GCB optimizations (#135)
+ - Slim build & gradle project bump (#133)
+ - Ignore Spinnaker product release tags in TravisCI. (#132)
+ - Enables checking of 'X-Hub-Signature' in Github webhook requests to confirm source of webhook
+
+### Front50 - v1.88.0
+ - Update spinnaker-dependencies to 0.86.0 (#215)
+ - implement front-50 swift (#214)
+ - fix(google): strip out google.com:, if present, from default bucket name (#212)
+ - Fixing a bug where search returned everything even on no match
+ - chore(PR Template): Added PR template. (#210)
+ - feat(gce) Allow entity tags to be stored in GCS (#208)
+ - migrates all remaining pipelines to v2
+ - Cache all entity tags
+ - rm cloudbuild step (#204)
+ - Introduce a new `namespace` attribute to `EntityTag`
+ - EntityTags: fix batchUpdate endpoint scheduler
+ - fix ambiguous entity tag controller method
+ - entityTags: add findAllById endpoint, return tags on batchUpdate
+ - Remove rootFolder from AZS config (#199)
+ - try to reconcile dependencies
+ - (core) Increase spinnaker-dependencies version. (google) Support newer GoogleCommonSafeRetry.doRetry() interface.
+ - (halconfig) disable cassandra (#196)
+ - chore(gradle): spinnaker-gradle-project version bump. (#195)
+ - migrate all non-deploy, non-canary pipelines
+ - (tagging) allow batch update of entity tags
+ - GCB optimizations (#192)
+ - (google) Add retries around GCS calls.
+
+### Spinnaker - v0.78.0
+ - Dont update gcloud on boot
+ - Remove rootFolder from AZS config
+ - Allow server group tests to test either zonal or regional.
+ - Remove azure objectId from clouddriver.yml
+ - chore(gradle): spinnaker-gradle-project version bump.
+ - feat(annotator) Removed build number and add flag to force rebuild. (#1426)
+ - Deleting replicaset as well as replicationcontrollers (#1397)
+ - Update rosco.yml (#1425)
+ - Install scripts for monitoring support.
+ - (appengine) config (#1423)
+ - Dont require --jenkins_master or --jenkins_url for bake_and_deploy_test.
+ - Allow front50 gcs to be configured from spinnaker-local.yml
+
+### Deck - v2.1040.0
+ - config(provider/google): Change local ssd defaults to 0. (#3405)
+ - feat(appengine) adds provider logo for appengine (#3392)
+ - chore(netflix/blesk): convert module to TS
+ - chore(various): cleanup old lodash props
+ - fix(kubernetes) allows deletion of annotations in deploy stage config (#3402)
+ - chore(core/help): make help field work in ng2
+ - fix(core): make org not required in docker trigger
+ - feat(spel): add #propertiesFromUrl to autocomplete
+ - fix(gce) prevents race condition in how credentials are set on command (#3397)
+ - fix(core) hide capacity in deploy execution details if unnecessary
+ - fix(appengine) fixes bug that prevents deploy stage dialogue from opening (#3395)
+ - Pinning @types/jasmine to 2.5.42 (#3394)
+ - (core, SPIN-2438) Re-fix Pipeline Details Toggle (#3393)
+ - (core, SPIN-2438) Fix Pipeline Details Toggle
+ - fix(container): Extends timeout to 15m in cloudbuild.yaml file (#3390)
+ - (netflix) Allow Fast Property substring filtering (#3389)
+ - feat(gce) adds support for ad hoc create/edit/delete autohealer (#3387)
+ - fix(canary): do not break on canary expressions
+ - chore(linter): update linting rules and code
+ - refactor(gce) makes autoHealing configurer generic (#3384)
+ - fix(canary): fix data normalization issue
+ - (netflix) Fix Fast Property impact count or Regions (#3383)
+ - (netflix) Allow Fast property scope to be updated. (#3375)
+ - fix(appengine) allows instances to be rendered properly in the infrastructure tab (#3380)
+ - fix(pipelines): sanitize stage name
+ - fix(serverGroups): cluster disable warning update
+ - feat(titus): add resources to server group sidebar and omit some unchangeable labels
+ - fix(titus): fix link to canary config name
+ - chore(core): upgrade angular to latest
+ - feat(build): parallelize build process
+ - feat(google): Add support for labels. (#3366)
+ - fix(netflix): Availability typo
+ - fix(pipeline): update pipeline json edit check
+ - feat(netflix): Improve Availability Context Dropdown
+ - fix(netflix): Fix the issue submitted modal to show proper links
+ - fix(netflix): ITT: Fix editing missing VIP override fields
+ - fix(core): awesome-typescript-loader breaking build
+ - feat(all): ng2 test, service, and component work
+ - fix(netflix): Incorrect tooltip for yesterday availability gauge
+ - Revert "fix(core) do not allow free-form text in group membership config"
+ - feat(netflix): Availability Gauges
+ - fix(netflix): Fix help dropdown stickiness (and typescript it)
+ - fix(core) do not allow free-form text in group membership config
+ - feat(gce) adds support for firewall rule source and target tags (#3352)
+ - (core): convert to ng1/ng2 hybrid app
+ - refactor(version check): convert to TS, use scheduler
+ - perf(pipelines) do not re-render entire graph when view state changes
+ - perf(pipelines): only watch status, execution label line counts
+ - fix(pipelines): consider providesFor field when selecting stage provider
+ - Converting Fast Property JS to Typescript (#3348)
+ - (netflix): update canary UI
+ - style(aws): Added context on load balancer edit for unsupported advanced settings
+ - refactor(core) make render if feature actually not render a component
+ - feat(aws,gce) render entity tags (#3344)
+ - chore(PR Template): Added PR template. (#3347)
+ - - (titus) Update default runtimeLimit to 3600s per titus request
+ - fix(aws): scaling policy graph was not loading
+ - (core): upgrade Typescript to the latest version
+ - fix(aws): send vpcId when deleting load balancers
+ - fix(netflix): restore tableau data source
+ - adding openstack settings for halyard
+ - Adding pipeline name for Fast Property executions. (#3338)
+ - fix(gce) specify protocol on load balancer links based on ports (#3337)
+ - Adding a UI element for runtimeLimitSecs for the titus runJob stage
+ - fix(appconfig): do not overwrite cloudProviders when editing app
+ - Add a "force" checkbox to the cancel pipeline modal dialog
+ - (appengine) surface platform health properly (#3335)
+ - (appengine) adds full set of locators for upsert app engine pipeline stage (#3334)
+ - fix(aws/k8s): specify protocol on load balancer links based on ports/listeners
+ - Scope Fast Property to multiple apps (#3332)
+ - refactor(core): Convert pipeline config to typescript (and remove d3 v3 in the process)
+ - Add feature for user to check their own roles
+ - (appengine) icon (#3329)
+ - fix(docker/titus): switch registry when changing accounts
+ - feat(core/build): Remove ng2 hybrid app
+ - (appengine) allow users to specify config file contents in server group wizard (#3326)
+ - rm cloudbuild step (#3324)
+ - initial state of radio buttons wasn't set
+ - added new stage failure option to allow other branches to complete but stage to fail
+ - (kubernetes) add node-selector (#3322)
+ - Enhance fast property execution details (#3320)
+ - (appengine) switched from app.yaml path to general config filepaths (#3321)
+ - (all): convert deck to hybrid ng1/ng2 app
+ - (netflix) Fast properties impact count or env. (#3316)
+ - Add BitBucket support
+ - (core) remove angular-wizard dependency
+ - (core) Kill Old Modal Wizad (#3314)
+ - Fast Property performance improvements (#3312)
+ - (netflix): move blesk z-index fix to correct file
+ - (netflix): set z-index on blesk alerts
+ - (core) add analytics to alerts/notices, update icons
+ - (core) show matched clusters on traffic guard config
+ - (netflix) include help on setting up pager duty service
+ - (all providers) Stop using local cache for checking name collisions when creating a load balancer
+ - (netflix) Clean up legacy Fast Property code. (#3305)
+ - (various): update bake stage adv opts visibility
+ - (titus) enable titus to be selected as part of the canary stage
+ - chore(gradle): Bumps spinnaker-gradle-project version. (#3306)
+ - (azure) Convert to V2ModalWizard (#3293)
+ - (core) instance details list word break (#3302)
+ - (core) allow users to configure traffic protected clusters
+ - Create halconfig (#3298)
+ - (netflix) Add back Fast Property key/value search. (#3303)
+ - GCB tag latest (#3304)
+ - (k8s) adds support for kuberntes config map as volume source (#3301)
+ - (appengine) edit load balancer execution details (#3296)
+ - (cloudfoundry) Convert to V2ModalWizard (#3294)
+
+### Gate - v3.17.0
+ - fix(authn): Print user info details when debugging is enabled (#362)
+ - Fix inconsistencies when fetching Security Groups by ID
+ - chore(fiat): Bumps Fiat API, dropping autoConfig property
+ - fix(tls) - update DH key size to 2048 bits
+ - fix(tls) - disable TLS client renegotiation, update kork
+ - fix(ratelimit): Autowire metrics registry (#354)
+ - feat(ratelimit): Add throttle metric counter, capacity details in throttle log msg
+ - chore: remove gate-manual as it is woefully out of date
+ - feat(instances): add more account metadata
+ - chore(PR Template): Added PR template. (#350)
+ - fix(auth): make basic authentication configurable and opt-in
+ - Support `force` parameter for cancel pipeline endpoint in Orca
+ - Enable Basic Auth in order to support spectator sidecar adaptor (#348)
+ - rm cloudbuild step (#347)
+ - API rate limiting
+ - Add BitBucket support
+ - (halconfig) Gate supplies its own server config (#344)
+ - Swagger new active executions endpoint. (#337)
+ - clean up batch endpoint (remove extra batch in path)
+ - add batchUpdate endpoint for tagging
+ - (halconfig) Update redis connection to use baseUrl (#341)
+ - chore(gradle): spinnaker-gradle-project version bump. (#339)
+ - Incorporate Fiat roles in /auth/user (#336)
+ - add full context to server group insight actions (#335)
+ - GCB optimizations (#338)
+ - Fix github OAuth support (#334)
+
+### Igor - v1.64.0
+ - chore(dependencies) update to spinnaker-dependencies 0.84.0
+ - chore(PR Template): Added PR template. (#155)
+ - rm cloudbuild step (#154)
+ - Add BitBucket support
+ - (halconfig) fix redis connection & remove circular service dependency (#152)
+ - chore(gradle): spinnaker-gradle-project version bump. (#151)
+ - GCB optimizations (#150)
+ - Slim build & gradle plugin bump (#149)
+ - Ignore Spinnaker product release tags in TravisCI. (#148)
+ - Base igor halconfig (#147)
+
+### Rosco - v0.93.0
+ - feat(build): Add 'unzip' as dependency, remove apt from postInst. (#194)
+ - To find packer version, use full path for packer. This will be useful if the build system already pulls in packer. Also there is a bug in the post install script. It does apt-get install within apt-get install, so it will not succeed. This path fix will help those who already install packer in via custom install scripts. (#193)
+ - fix(install): Made postInst sh-compatible, not bash. (#192)
+ - fix(install): Use tempdir instead of /usr/bin. (#191)
+ - fix(install): Wrap packer failure in function. (#190)
+ - feat(install): Install packer when rosco is installed. (#189)
+ - style(google): s/singleton/resolved (#188)
+ - feat(google): Deprecate google.gce.bakeryDefaults in favor of google.bakeryDefaults (#186)
+ - chore(PR Template): Added PR template. (#187)
+ - rm cloudbuild step (#185)
+ - (halconfig) fix redis connection (#184)
+ - Fix to provisioning. Adding removal fo waagent at end of bake. (#182)
+ - chore(gradle): spinnaker-gradle-project version bump. (#183)
+ - GCB tag latest (#181)
+ - Refactor package and version handling (#178)
+
+### Clouddriver - v1.567.0
+ - config(provider/google): Change local ssd defaults to 0. (#1521)
+ - fix(kubenetesjob): Fixed missing updated hostNetwork option for job. (#1518)
+ - perf(aws): Simplifying termination lifecyle to not lookup app info first (#1517)
+ - Update spinnaker-dependencies to 0.86.0 (#1516)
+ - feat(web): ServerGroup view model post processor interface (#1515)
+ - fix(container): typo in apk command in slim container (#1514)
+ - fix(container): Extends timeout to 15m in cloudbuild.yaml file (#1513)
+ - fix(titus): okhttp doesn't properly url encode the ^ in the query string.
+ - chore(halyard): Add boostrapping profile to clouddriver (#1511)
+ - feat(gce) adds support for upsert autoHealingPolicy operation (#1497)
+ - feat(gce) adds support for ad hoc delete autohealing policy operation (#1510)
+ - fix(aws): Allow deploys to continue if lifecycles fail to create (#1500)
+ - perf(aws): termination lifecycle eureka perf improvements (#1502)
+ - fix(google): Made instrumentation a little more consistent
+ - fix(elasticsearch): Fix NPE generated when an entity tag is null (#1509)
+ - feat(provider/kubernetes): Add hostNetwork option for pod creation. … (#1504)
+ - feat(aws): Adding conditional scaling policy copy method (#1506)
+ - fix(groovy): Groovyc making the static property private to child classes (#1505)
+ - feat(titus): allow customizing titus poll interval
+ - feat(google): Add support for labels. (#1501)
+ - support region-scoped amazon instance reservations (#1445)
+ - Danielpeach add gcloud to dockerfile (#1498)
+ - fix(titus): increase retry backoff to 13 minutes
+ - feat(monitoring): Instrument kubernetes API calls
+ - chore(monitoring): Plumb infrastructure for instrumenting kubernetes API calls
+ - feat(aws): termination lifecycle worker config; cleaner IAM (#1495)
+ - chore(eureka): enhancing logging on eureka service failures (#1494)
+ - perf(aws): refactor termination lifecycle agent to run as background thread (#1493)
+ - fix(titus): allow vpc id to be configured at the account level
+ - perf(aws): configurable termination lifecycle agent poll time (#1491)
+ - feat(provider/aws): retrieve 150 scaling activities instead of 30
+ - fix(aws) LaunchFailureNotifactionCleanupAgent skips tags for unknown accounts.
+ - fix(aws) : region default resolution does not have to be statically initialized
+ - feat(gce) allows instance tags and network to be passed through the server group list endpoint (#1483)
+ - feat(kubernetes): Omit desired namespaces (#1486)
+ - fix(titus) - run job retrival of files can't deal with dots
+ - chore(dependencies) : update to latest spinnaker-dependencies
+ - fix(aws): Tightening direct SQS IAM perms in termination events (#1470)
+ - fix(aws): cn-north-1 support
+ - fix(provider/google): Fixed constant in ILB enable/disable.
+ - chore(PR Template): Fix broken links to docs. (#1481)
+ - fix(kubernetes): Percent enable disable (#1477)
+ - chore(PR Template): Added PR template. (#1479)
+ - bug(titus,aws): don't send negative mins on detach
+ - feat(provider/google): Finish support for source tags on security groups (firewall rules). (#1478)
+ - feat(kubernetes): Reduce log noise for secret creation (#1476)
+ - (bugfix) change openstack credentials builder return type (#1474)
+ - Adds configuration option to regionally disable edda
+ - Log exceptions when errors occur updating ElasticSearch
+ - Addresses an issue wherein Spinnaker is incorrectly cleaning up tags when server groups are created
+ - add extension point for titus job customization
+ - refactors UserDataProvider interface to accept full LaunchConfigurationSettings
+ - (appengine) remove thrown errors in load balancer provider (#1469)
+ - (openstack) bugfix: make credential build method public (#1468)
+ - (appengine) change model for upsert load balancer description (#1467)
+ - Partition `bulkIndex` into sets of 1000 entity tags (adjustable as needed)
+ - Improved reindex behavior and support for filtering tags by namespace
+ - (google) Be more tolerant of missing server group <-> load balancer relationships. (#1466)
+ - Propagate 401 error for basic auth docker registry (#1436)
+ - (appengine) set account on operation descriptions (#1464)
+ - (appengine) destroy safe retry (#1463)
+ - (openstack) add account credentials builder (#1462)
+ - feat(aws): Allow termination lifecycle hooks to target SQS directly
+ - (appengine) allow config files to be specified in deploy operation (#1461)
+ - Fixing an issue where the list of events where being written during iteration
+ - Copies K8S load balancer lables over upon update (#1458)
+ - Rollback deleted ELB listeners on add failure
+ - rm cloudbuild step (#1455)
+ - (aws) allow customization of scaling policy copying
+ - (kubernetes) add node-selector (#1454)
+ - Adding metrics for termination lifecycle lag
+ - (aws & titus) Deleting tags from server group upon creation
+ - Revert "(aws & titus) Deleting tags from server group upon creation"
+ - (aws & titus) Deleting tags from server group upon creation
+ - (appengine) switched from app.yaml path to general config filepaths (#1446)
+ - (google) Log error when caching target pool instance health instead of throwing exception. (#1443)
+ - EntityTags: batch bulk operations in groups of 50
+ - Introduce a new `namespace` attribute to `EntityTag`
+ - EntityTags: fix batchUpdate endpoint path
+ - optimize front50 operations on bulk tagging operations
+ - (kubernetes) Complete enabled/disable early when there are no pods to operate on (#1440)
+ - (k8s) SG is enabled when no LBs are attached (#1439)
+ - add an explicit eviction on empty force cache refresh to align with other on demand implementations
+ - (titus) move lookup of security group details to cluster caching time and remove instance caching agent since the functionality there is redundant.
+ - fixes an error on task lookup when previousRedis goes away
+ - Fixed deleting regional GCS MIGs (#1433)
+ - Implement redisCache.cacheMetrics interface
+ - Fixing NPE when lifecycle is triggered on an unknown account id
+ - Delete ignored messages (like test notifications, etc)
+ - (google) Fix typo. (#1429)
+ - Updating termination lifecycle agent to unwrap sns messages
+ - (entityTags) allow bulk update of entity tags
+ - Display target & address for failed docker auth attempts (#1416)
+ - chore(gradle): Bump spinnaker-gradle-project version. (#1425)
+ - fix(provider/google): Don't retry on 'successful' codes in SafeRetry. (#1424)
+ - Google Cloud Builder optimizations (#1423)
+ - (k8s) add validator for configMap volume source type (#1422)
+ - update to latest AWS SDK
