@@ -61,10 +61,17 @@ Spinnaker has very specific naming conventions that help it identify resources i
 Clusters and server groups follow the convention `application_name``-``stack``-``detail``-``infrastructure_version`  
 
 
-- Application Name is the name of your application in Spinnaker
-- Stack refers to an environment like “prod”, “pre-prod”, “qa”, “stg” and “test”. Stacks are anything that requires integration tests to be run together. Stack names are defined by the user in the Spinnaker configuration User Interface (UI).
-- Detail is also user-defined and can be any additional piece of information you want to label your cluster and server group with.
-- Infrastructure Version is the version number of the infrastructure ie. v011, v012, etc. This is automatically appended and is not user defined. 
+#### Application 
+The Name is the name of your application in Spinnaker.
+
+#### Stack
+You can think of a stack like a tag you give to anything that you want to be integrated together. Environments are usually a good example. If you have an app that has an ELB, a Cache, and an ASG, usually you would want to run integration tests on your staging environment separately from your production environment. In that case, you would give the staging ELB, Cache, and ASG all the “staging” stack, while prod ELB, Cache, and ASG would be the “prod” stack. Stack names are defined by the user in the Spinnaker configuration User Interface (UI).
+
+#### Detail 
+Detail is also user-defined and can be any additional piece of information you want to label your cluster and server group with.
+
+#### Infrastructure Version
+The version number of the infrastructure ie. v011, v012, etc. This is automatically appended and is not user defined. 
 
 In AWS, Spinnaker will name your ASGs and Launch Configurations according to the naming convention above (ie. “armoryspinnaker-prod-polling-v015”). 
 
