@@ -6,12 +6,12 @@ order: 20
 
 This guide should:
 
-- tell you what these words mean in context of Armory
+- tell you what these words mean in context of Armory Spinnaker
 - be searchable so you can find a word and its corresponding definition
 - explain Spinnaker’s naming convention
 
 
-## Nomenclature of Domain definitions:
+## Nomenclature of Domain Definitions:
 
 #### Application
 An application inside Spinnaker represents what you would typically find in a single code repository - and in many cases, an application maps directly to a microservice.
@@ -61,12 +61,21 @@ Spinnaker has very specific naming conventions that help it identify resources i
 Clusters and server groups follow the convention `application_name``-``stack``-``detail``-``infrastructure_version`  
 
 
-- Application Name is the name of your application in Spinnaker
-- Stack refers to an environment like “prod”, “pre-prod”, “qa”, “stg” and “test”. Stacks are anything that requires integration tests to be run together. Stack names are defined by the user in the Spinnaker configuration User Interface (UI).
-- Detail is also user-defined and can be any additional piece of information you want to label your cluster and server group with.
-- Infrastructure Version is the version number of the infrastructure ie. v011, v012, etc. This is automatically appended and is not user defined. 
+#### Application 
+The 'Name' is the name of your application in Spinnaker.
 
-In AWS, Spinnaker will name your ASGs and Launch Configurations according to the naming convention above (ie. “armoryspinnaker-prod-polling-v015”). 
+#### Stack
+You can think of a 'Stack' as a tag you give to anything that you want to be integrated together. Environments are usually a good example of something you would tag with a Stack. If you have an app that has an ELB, a Cache, and an ASG, usually you would want to run integration tests on your staging environment separately from your production environment. In that case, you would give the staging ELB, Cache, and ASG all the “staging” stack, while prod ELB, Cache, and ASG would be the “prod” stack. 
+
+Note that Stack names are defined by the user in the Spinnaker configuration User Interface (UI).
+
+#### Detail 
+Detail is also user-defined and can be any additional piece of information you want to label your cluster and server group with.
+
+#### Infrastructure Version
+The infrastructure's version number; such as v011, v012, etc. This is automatically appended and is not user defined. 
+
+In AWS, Spinnaker will name your ASGs and Launch Configurations according to the naming convention mentioned above (ie. “armoryspinnaker-prod-polling-v015”). 
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/3l332i3p3B1L1T0t0E2j/Image%202017-03-24%20at%203.10.53%20PM.png)
 
