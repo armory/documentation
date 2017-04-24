@@ -26,14 +26,14 @@ The back-end is written in Java 8 and Groovy. It uses a Java framework called Sp
 Today’s world revolves around software and services working reliably and continuously - the internet is increasingly accessible from all time-zones and having business services experience downtime is becoming increasingly costly. Spinnaker is an advanced tool for cloud deployments that not only encourages businesses to move to the cloud (an expected migration) but makes it easier for them to adopt the cloud’s advantages, such as immutable infrastructure and multi-cloud deployments.
 
 
-## What Armory-Spinnaker Does
+## What Armory Spinnaker Does
 
-Armory-Spinnaker is a preconfigured distribution of spinnaker that runs on Amazon Web Services. Spinnaker can help you coordinate and orchestrate complicated tasks for deploying software. 
+Armory Spinnaker is a preconfigured distribution of Spinnaker that runs on Amazon Web Services. Spinnaker can help you coordinate and orchestrate complicated tasks with pipelines for deploying software. 
 
 
 ## Opinions and Conventions
 
-A normal work flow in Armory-Spinnaker would be to start with a Debian package to create an Amazon Machine Image (AMI) for deployment to multiple environments, such as staging, development, and production. The Elastic Cloud Compute (EC2) instances themselves are never modified, but replaced with new instances as you produce new versions of your software. This concept is commonly referred to as Immutable Infrastructure.
+A normal work flow in Armory Spinnaker would be to start with a Debian package to create an Amazon Machine Image (AMI) for deployment to multiple environments, such as staging, development, and production. The Elastic Cloud Compute (EC2) instances themselves are never modified, but replaced with new instances as you produce new versions of your software. This concept is commonly referred to as Immutable Infrastructure.
 
 
 ## Need More Help? 
