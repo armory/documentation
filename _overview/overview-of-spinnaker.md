@@ -7,18 +7,13 @@ permalink: '/'
 
 ## What is Spinnaker?
 
-Spinnaker is an open source multi-cloud Continuous Integration and Delivery platform from Netflix for fast and stable deployments. 
+Spinnaker is an open source multi-cloud Continuous Delivery and Deployment tool started by Netflix for fast and stable deployments. 
 
 Spinnaker’s flexible pipeline model allows for easy customization and enhancement in addition to facilitating smart pipeline management to serve a variety of cloud deployment needs. 
 
-As of today, Spinnaker can deploy to and manage clusters simultaneously across both Amazon Web Services (AWS), Kubernetes and Google Cloud Platform (GCP) with full feature compatibility for those cloud providers. Spinnaker also features deploys to Cloud Foundry, and support for full integration with Microsoft Azure is currently underway.
+As of today, Spinnaker can deploy to and manage clusters simultaneously across both Amazon Web Services (AWS), Kubernetes and Google Cloud Platform (GCP) with full feature compatibility for those cloud providers. Spinnaker can also deploy to Cloud Foundry, and support for full integration with Microsoft Azure is currently underway.
 
 ![](https://cl.ly/0r2s0y030z0j)
-
-- What languages are involved in Spinnaker?
-
-The back-end is written in Java 8 and Groovy. It uses a Java framework called Spring Boot. The front-end is written in Angular and TypeScript.
-
 
 
 ## Why is it relevant?
@@ -39,3 +34,7 @@ A normal work flow in Armory Spinnaker would be to start with a Debian package t
 ## Need More Help? 
 
 If you have questions, comments or suggestions about this documentation *(especially if anything is unclear)*, just chat with us by clicking on the icon on the bottom right of each page.  Our entire team monitors these chats and we'll respond as quickly as we can.
+
+## Want to Help?
+
+Join the Spinnaker Open Source Community on the [Spinnaker Slack channel](http://join.spinnaker.io/)!
