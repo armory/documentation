@@ -44,6 +44,11 @@ A server group is a regional view of servers, whereas a cluster is a world-wide 
 #### Code Repository
 A source code repository is a private or public storage location for file archive and web hosting, used for source codes of software or web pages.
 
+
+#### Debian Package
+Debian packages (deb) are two tar archives contained in standard Unix ar archives - one holds the control information and the other contains the data used for installation. 
+
+
 #### Detail 
 Detail is also user-defined and can be any additional piece of information you want to label your cluster and server group with.
 
@@ -66,7 +71,7 @@ Please note that if your user definition includes a hyphen, it will disrupt the 
 
 
 #### [Jenkins]({% link _user_guides/working-with-jenkins.md %}) 
-Jenkins is an open source automation server that creates Debian packages as artifacts for [triggering](#trigger) [pipelines](#pipeline).
+Jenkins is an open source automation server that can package applications for distribution. Spinnaker pipelines can be [triggered](#trigger) from a build on Jenkins.  
 
 
 #### [Load Balancer]({% link _overview/load-balancers.md %}) 
@@ -97,6 +102,6 @@ Within a pipeline, the tasks that pipeline performs are called stages.
 
 
 #### Trigger
-A trigger is the entry point to a pipeline.
+A trigger is the entry point to a [pipeline](#pipeline) - when a pipeline is triggered, it attempts to [execute](#execution).
 
 
