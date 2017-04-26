@@ -6,7 +6,8 @@ order: 40
 This guide should include:
 
 - How to deploy AMIs
-- Common errors and troubleshooting
+- Common errors and troubleshooting]
+- How to do a Blue/Green deployment on the same cluster
 
 
 Prerequisites and Assumptions:
@@ -211,3 +212,19 @@ There are two ways you can tag them. One option is to use the convention `spinna
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/1R0c3l3u3P3h3P1e0h1y/Image%202017-03-30%20at%201.48.35%20PM.png)
 
 Another option is to create a tag named `immutable_metadata` with value `{"purpose": "MySubnetNameInsideSpinnaker"}`
+
+
+## Running App-based Blue/Green Deployments
+
+Sometimes you want to utilize the blue/green deployment strategy to the same cluster for upgrading one application. For instance, version 1 of the service is deployed live on production, but you want to do a seamless transition into version 2 minimizing downtime.
+
+To do this, you will want to use expressions to determine both new and old server groups:
+
+Newly-deployed server group: ${ #stage('Deploy in ' + deployedServerGroups[0].region)['context']['source']['serverGroupName'] }
+
+
+Earlier server group: ${ deployedServerGroups[0].serverGroup}
+
+Make sure you run validation tests on v2 before you switch the Load Balancer. You can target validation directly at the server group and its instances to do so. 
+
+When confident in the viability of v2 from testing, point your Load Balancer from v1 to v2 and you're done. 
