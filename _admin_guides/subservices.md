@@ -40,6 +40,15 @@ Igor is a wrapper API which communicates with Jenkins.  It is responsible for ki
 
 Echo is the service for Spinnaker which manages notifications, alerts and scheduled pipelines (Cron).  It can also propagate these events out to other REST endpoints such as an Elastic Search, Splunk's HTTP Event Collector or a custom event collector/processor.
 
+### Fiat
+
+Fiat is the authorization server for Spinnaker.
+It exposes a RESTful interface for querying the access permissions for a particular user. It currently supports three kinds of resources:
+
+- Accounts
+- Applications
+- Service Accounts
+
 ### Armory Lighthouse
 
 Lighthouse is a small, lightweight service written by Armory and is part of Armory Spinnaker's distribution.  Its job is to monitor the health of the Spinnaker instance.  It's also responsible for monitoring Orca on its own instance and terminating the instance once there are no jobs running.
