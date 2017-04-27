@@ -50,6 +50,13 @@ A server group is a regional view of servers, whereas a cluster is a world-wide 
 #### Code Repository
 A source code repository is a private or public storage location for file archive and web hosting, used for source codes of software or web pages.
 
+#### Continuous Delivery
+Continuous Delivery (CD) is an engineering approach for DevOps teams to produce software in short cycles: building, testing, and releasing software at a fast and frequent pace in order to iterate as quickly as possible. 
+
+#### Continuous Integration
+Continuous Integration (CI) is a development practice where software developers merge their separate changes and updates to a main source code repository - usually multiple times a day. 
+
+
 #### Deck
 A sub-service within Spinnaker. For more information, go to [sub-services]({% link _admin_guides/subservices.md %}#Deck).
 
