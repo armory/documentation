@@ -1,7 +1,6 @@
 ---
 layout: post
-title: Subnets
-order: 90
+order: 110
 ---
 # VPCs & Subnets
 
@@ -10,7 +9,7 @@ Subnets determine where and how you can deploy AWS resources such as EC2 machine
 ## Configuring Subnets
 Spinnaker groups subnets into a single subnet name across multiple availability zones.  This makes it simpler for end-users of Spinnaker to choose a group of subnets within a VPC that have a given purpose such as `ec2-subnets`, `elb-subnets` or `public-subnets`.  This allows Spinnaker to place the machines within that group and ensure equal redundancy across zones. Below is a logical representation of how Spinnaker groups multiple subnets together.  If you want to make a subnet accessible to Spinnaker you'll have to add a tag and value to with the following `immutable_metadata={"purpose":"example-purpose"}`
 
-![subnets groups](https://cl.ly/1d2z052Z3O3v/Image%202017-04-14%20at%2012.06.16%20PM.png)
+![subnets groups](https://cl.ly/1z3z3x0L0E0w/Image%202017-04-18%20at%204.07.10%20PM.png)
 
 ## I Don't See My Subnets or VPCs
 Spinnaker caches as much as possible to keep performance through the UI responsive.  If you don't see the subnets and you believe you configured them correctly per the instructions then make sure to refresh the cache.  You can find the cache going to the _config_ section of your application and clicking _refresh all caches_.  You should also make sure to refresh your browswer cache by using your browser's development tools and deleting any browser database.

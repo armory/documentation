@@ -1,10 +1,7 @@
 ---
 layout: post
-title: Subservices
 order: 20
 ---
-
-# Spinnaker Sub-Services
 
 Spinnaker is the composition of a few sub-services for resiliency
 and follow the single-responsibility principle.  It allows for faster iteration on each
@@ -30,11 +27,11 @@ Rosco is the "bakery" service.  It is wrapper around Hashicorp's Packer command 
 
 ### Deck
 
-Deck is the UI for interactive and visualizing the state of cloud resources.  It's written entirely in Angular and depends on Gate to interact with the cloud providers.
+Deck is the UI for interactive and visualizing the state of cloud resources.  It is written entirely in Angular and depends on Gate to interact with the cloud providers.
 
 ### Igor
 
-Igor is a wrapper API which communicates with Jenkins.  It's responsible for kicking-off jobs and reporting the state of running or completing jobs.
+Igor is a wrapper API which communicates with Jenkins.  It is responsible for kicking-off jobs and reporting the state of running or completing jobs.
 
 ### Echo
 
@@ -42,4 +39,4 @@ Echo is the service for Spinnaker which manages notifications, alerts and schedu
 
 ### Armory Lighthouse
 
-Lighthouse is a small, lightweight service which is written by Armory and made part of Armory Spinnaker's distribution.  It's job is to monitor the health of the a Spinnaker instance.  It's also responsible for monitoring Orca on it's own instance and terminating the instance once there are no jobs running
+Lighthouse is a small, lightweight service which is written by Armory and made part of Armory Spinnaker's distribution.  It's job is to monitor the health of the a Spinnaker instance.  It is also responsible for monitoring Orca on it's own instance and terminating the instance once there are no jobs running.
