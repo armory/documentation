@@ -22,7 +22,7 @@ Things you should already have prepared beforehand for this example:
 - A Jenkins Master configured by your administrator
 - A Jenkins job that archives a Debian package
 - A security group within AWS with appropriate permissions
-- Create a Load Balancer ([in this guide]({% link _overview/load-balancers.md #}))
+- Create a Load Balancer (in this guide hyperlink here)
 
 Step 1: After selecting your Application, click the Pipelines category.
 
@@ -54,7 +54,7 @@ Step 6: For this example we will select Jenkins. By adding a trigger we are defi
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/3n0j3m3c0Z1g452J061z/Image%202017-03-24%20at%203.50.27%20PM.png)
 
-Note: The Property File (also called 'build.properties') is an important topic that will be covered [in a separate guide]({% link _user_guides/working-with-jenkins.md %}#Property-File). 
+Note: The Property File is an important topic that will be covered in a separate guide (hyperlink here). 
 
 Step 7: Before you test your pipeline, you may want to consider enabling or disabling the trigger via the checklist at the bottom. 
 
@@ -117,6 +117,6 @@ Step 22: Press “Run”, and you should see a progress bar where blue represent
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/431f381I1z0y2K3w2s3M/Image%202017-03-24%20at%204.45.33%20PM.png)
 
-If your pipeline does not succeed, refer to the Troubleshooting Guide [here]({% link _user_guides/toubleshooting.md %}).
+If your pipeline does not succeed, refer to the Troubleshooting Guide here (hyperlink here) 
 
 Note: Always remember to save your changes by clicking the button in the bottom right of the window. 
