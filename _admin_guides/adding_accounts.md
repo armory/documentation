@@ -40,6 +40,15 @@ aws:
         - name: us-east-1
 ```
 
+You'll also have to set your default account in your `spinnaker-local.yml` file:
+
+```
+providers:
+  aws:
+    primaryCredentials:
+      name: prod-account
+```
+
 ## Assume Roles in IAM
 
 You will need to create a `SpinnakerManagedProfile` role in the target AWS account (prod-account, staging-account, service-account) and give it the
