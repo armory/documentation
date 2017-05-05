@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Adding A DNS
+title: Domain Name
 order: 60
 ---
 
