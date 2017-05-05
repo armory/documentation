@@ -2,10 +2,8 @@
 layout: post
 title: Authentication
 order: 70
-published: false
+published: True
 ---
-
-# Authentication
 
 There are several authentication mechanisms available in Spinnaker:
 
