@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker run --rm --user="root" -ti -p 4000:4000 -v "$(pwd):/srv/jekyll" jekyll/jekyll bash -c "jekyll serve --incremental"

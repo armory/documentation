@@ -13,7 +13,7 @@ Spinnaker’s flexible pipeline model allows for easy customization and enhancem
 
 As of today, Spinnaker can deploy to and manage clusters simultaneously across both Amazon Web Services (AWS), Kubernetes and Google Cloud Platform (GCP) with full feature compatibility for those cloud providers. Spinnaker can also deploy to Cloud Foundry, and support for full integration with Microsoft Azure is currently underway.
 
-[Spinnaker's Responsibilities](https://cl.ly/2S1E250w1q2q/Image%202017-04-25%20at%201.33.24%20PM.png)
+![Spinnaker's Responsibilities](/assets/images/armory_what_is_spinnaker.png)
 
 
 ## Why is it relevant?
