@@ -48,7 +48,7 @@ To enable it, navigate to the configuration screen for your pipeline. Make sure 
 
 ## Pipeline JSON
 
-Pipelines are represented as JSON behind the scenes. The JSON is interpretted and displayed to you in the UI. However, sometimes it is helpful to view or edit the it directly. To access the JSON:
+Pipelines are represented as JSON behind the scenes. The JSON is interpreted and displayed to you in the UI. However, sometimes it is helpful to view or edit the JSON directly. To access the JSON:
 
 1. Click 'Configure' on your pipeline:
 
@@ -64,7 +64,7 @@ a. If you select 'Edit as JSON' then you should see something like:
 
 ![](https://cl.ly/15240u372F2T/download/Image%202017-05-04%20at%204.32.03%20PM.png)
 
-From this screen you can edit the JSON directly and save your changes. The changes will be used in the next execution of your pipeline.
+From this screen you can edit the JSON directly. **Remember to always save your changes**, so they will be used in the next execution of your pipeline.
 
 b. If you select 'Show Revision History' then you should see something like:
 
