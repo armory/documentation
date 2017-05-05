@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Extending Armory Spinnaker
+title: Extending and Configuring Armory Spinnaker
 order: 150
 published: false
 ---
@@ -8,10 +8,10 @@ published: false
 
 Because we use Docker and Docker-compose extending Armory Spinnaker is done through docker-compose.override.yml file in most cases.
 
+## Docker & Docker Compose
 
-## Docker
-
-You'll first have to run a container with the service that is accessible 
-
+You'll first have to run a container with the service that is accessible
 
 ## Docker-compose.override.yml
+
+## Environment Variables
