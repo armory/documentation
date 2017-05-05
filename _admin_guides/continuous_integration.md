@@ -5,11 +5,12 @@ order: 50
 ---
 
 # Continuous Integration (CI)
-Spinnaker's goal is leverage existing CI solutions to build and produce an artifact that can be deployed.
+Spinnaker's goal is to leverage existing CI solutions to build and produce an artifact that can be deployed.
 
-## Enabling Jenkins & Igor to talk to Spinnaker
+## Enabling Spinnaker to Communicate with Jenkins
 
-To enable Igor, Gate to integrate with your Jenkins build you'll need to edit your `spinnaker-local.yml` file.  First configure Jenkins by finding your password  or API Token.  You can find your token here: `http://${YOUR_JENKINS_URL}.armory.io/me/configure`.
+To enable Spinnaker to communicate with your Jenkins instance you will need to edit your `spinnaker-local.yml` file. 
+First prepare to configure Jenkins by finding your password or API Token.  You can find your token here: `http://${YOUR_JENKINS_URL}.armory.io/me/configure`.
 
 Then configure your `/opt/spinnaker/config/spinnaker-local.yml` file and add the following:
 
@@ -30,4 +31,4 @@ Make sure to restart the Igor service: `sudo docker restart igor`
 
 
 ## Purpose
-Igor is an API that communicates with Jenkins and is responsible for executing jobs, reading state of jobs or  
+Igor is an API that is responsible for executing and reading the state of jobs from Jenkins.

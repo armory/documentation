@@ -3,4 +3,8 @@ layout: post
 order: 110
 ---
 
-For troubleshooting tips on [baking](baking_images.md), [deploying](deploying.md), [the pipeline expression language](expression_language.md), or [working with jenkins](working_with_jenkins.md), check out the 'Troubleshooting' sections of those guides.
+Troubleshooting directions are embedded into the guides by topic:
+
+- [Baking]({% link _user_guides/baking-images.md %}#troubleshooting)
+- [Deploying]({% link _user_guides/deploying.md %}#common-errors-and-troubleshooting)
+- [Expression language]({% link _user_guides/expression-language.md %}#troubleshooting)

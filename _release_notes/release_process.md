@@ -2,6 +2,7 @@
 layout: post
 title: Release Process
 order: 170
+published: false
 ---
 
 # Release Management
@@ -16,4 +17,4 @@ We also publish nightly builds that we test to confirm the integrations pass how
 
 ### Winnaker Tests
 
-[Winnaker](https://github.com/user/repo/blob/branch/other_file.md) was originally built by Target to do integration testing from a simulated browser sessions.  We use it to make sure that configurations for Deck don't have backward breaking configuration changes and continue to work as expected.  Armory also actively supports and contributes code back to Winnaker due to changes in the UI.
+[Winnaker](https://github.com/target/winnaker) was originally built by Target to do integration testing from a simulated browser sessions.  We use it to make sure that configurations for Deck don't have backward breaking configuration changes and continue to work as expected.  Armory also actively supports and contributes code back to Winnaker due to changes in the UI.

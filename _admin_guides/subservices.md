@@ -4,14 +4,14 @@ order: 20
 ---
 
 Spinnaker is the composition of a few sub-services for resiliency
-and follow the single-responsibility principle.  It allows for faster iteration on each
+and follows the single-responsibility principle.  It allows for faster iteration on each
 individual component and a more pluggable architecture for custom components.
 
 ### Orca
 
-Orca is responsible for the orchestration of of pipelines, stages and tasks within Spinnaker.  It acts as the "traffic cop" within Spinnaker making sure that sub-services, their execution and state are passed along correct.
+Orca is responsible for the orchestration of pipelines, stages and tasks within Spinnaker.  It acts as the "traffic cop" within Spinnaker making sure that sub-services, their executions and states are passed along correctly.
 
-The smallest atomic unit within orca is a task, stages are composed of tasks and pipelines are composed of stages.  
+The smallest atomic unit within Orca is a task - stages are composed of tasks and pipelines are composed of stages.  
 
 ### Clouddriver
 
@@ -19,11 +19,11 @@ Clouddriver is a core component of Spinnaker which facilitates the interactions 
 
 ### Gate
 
-Gate is the front-end API that is exposed to the users of your Spinnaker instance.  It also manages authentication and authorization for sub-service API and resources with Spinnaker.  All communication between the UI and the back-end services happen through Gate.  You can find a list of the endpoints available through swagger:  `http://${GATE_HOST}:8084/swagger-ui.html`
+Gate is the front-end API that is exposed to the users of your Spinnaker instance.  It also manages authentication and authorization for sub-service APIs and resources with Spinnaker.  All communication between the UI and the back-end services happen through Gate.  You can find a list of the endpoints available through Swagger:  `http://${GATE_HOST}:8084/swagger-ui.html`
 
 ### Rosco
 
-Rosco is the "bakery" service.  It is wrapper around Hashicorp's Packer command line tool which bakes images for AWS, GCP, Docker, Azure, and [others](https://www.packer.io/docs/builders/index.html)
+Rosco is the "bakery" service.  It is a wrapper around Hashicorp's Packer command line tool which bakes images for AWS, GCP, Docker, Azure, and [other builders](https://www.packer.io/docs/builders/index.html).
 
 ### Deck
 
@@ -35,7 +35,7 @@ Igor is a wrapper API which communicates with Jenkins.  It is responsible for ki
 
 ### Echo
 
-Echo is the service for Spinnaker which manages notifications, alerts and scheduled pipelines (cron).  It also can propogate these events out to other REST endpoints such as an Elastic Search, Splunk's HTTP Event Collector or a custom event collector or processor.
+Echo is the service for Spinnaker which manages notifications, alerts and scheduled pipelines (Cron).  It can also propagate these events out to other REST endpoints such as an Elastic Search, Splunk's HTTP Event Collector or a custom event collector/processor.
 
 ### Armory Lighthouse
 

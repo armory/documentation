@@ -1,8 +1,11 @@
 ---
 layout: post
 title: v1.2 Armory Enterprise Spinnaker
-permalink: 'release-notes'
+order: 1000
 ---
+
+# 02/10/2017 Release Notes
+
 
 ## Armory Enterprise Spinnaker
 - Smaller container size
@@ -14,7 +17,7 @@ permalink: 'release-notes'
 - Settings.js is automatically generated so you don’t have to define same config in 2 places
 - Install and configure truststore for Java8 for docker Images
 
-## Lighthouse
+### Lighthouse
 - Previously named Healthcheck
 - Endpoint to monitor Orca work endpoint
 - Enabled threading on server
@@ -24,7 +27,7 @@ permalink: 'release-notes'
 
 ## Spinnaker Community Contributions
 
-## Clouddriver
+### Clouddriver
 - (aws) Update to the latest AWS SDK
 - (aws) ASG Lifecycle Hooks
 - (aws) Instance termination lifecycle agent; early-notifies Eureka of termination events
@@ -32,7 +35,7 @@ permalink: 'release-notes'
 - Ensure queue/topic exists on every iteration of the launch failure agent
 - (amazon) Log all requests to create launch configurations (sans user data)
 
-## Echo
+### Echo
 - (auth) Adds runAsUser to CRON triggers.
 - (auth) Updates isInSync method to consider runAsUser.
 - (rest) Add optional basic auth support to outgoing rest webhooks.
@@ -42,13 +45,13 @@ permalink: 'release-notes'
 - Add all templates for manualJudgmentContinue and manualJudgmentStop.
 - Add slack template for manualJudgment.
 
-## Gate
+### Gate
 - A relaxed RedisHealthIndicator that will never report DOWN once UP
 - (cors) - adds a configurable allowedOriginsPattern to whitelist cors access to spinnaker API (breaking) With the change to whitelist cors requests to a specified - regex, anyone relying on the open cors policy will be impacted (if you have developed a separate browser based webapp that uses the spinnaker api, and you have - - authentication enabled you will need to whitelist the host domain for that webapp to propagate the authentication for API requests)
 - Adding regex support for oauth2 user info requirements
 - update entity tags via POST, partial delete operation
 
-## Deck
+### Deck
 - (core) allow users to configure traffic protected clusters
 - (aws) Bug-fix bad rendering of instance details title.
 - (aws) preserve userdata on pipeline cluster edit
@@ -65,10 +68,10 @@ permalink: 'release-notes'
 - (aws) allow whitelisting of classic launch, default subnet
 - (core) refactor disable/destroy warnings on server group actions
 
-## Igor
+### Igor
 - Only publish events to echo if a docker registry has been indexed once
 
-## Orca
+### Orca
 - Adds clouddriver.readonly.baseUrl config option to point clouddriver read operations at a separate endpoint (read replica)
 - Adds a new endpoint that returns counts of active executions running on each orca instance.
 - Fix an issue in v2 orchestrations that are using dynamic target server groups
@@ -83,7 +86,7 @@ permalink: 'release-notes'
 - (core) Various bits of managed pipeline template implementation
 - Bug Fix - Fixes stage restarts in v2
 
-## Rosco
+### Rosco
 - (core) Bug-Fix - Don't fail worker threads on top-level exceptions.
 - (rpm) Allow for multiple RPM repositories.
 - (AWS/Azure) Add support for Windows using Chocolatey as package manager.
@@ -92,7 +95,7 @@ permalink: 'release-notes'
 - (packer/templates) Add DEBIAN_FRONTEND=noninteractive to apt-get install.
 - consider optional templateFileName parameter when determining if resolved template is included in templatesNeedingRoot.
 
-## Front50
+### Front50
 - (core) Remove unused loadObjectVersion storage API.
 - (core) Adding support for searching project by a variety of keywords
 - (core) include tagMetadata in EntityTags object

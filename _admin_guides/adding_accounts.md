@@ -5,7 +5,7 @@ order: 40
 ---
 # Adding Additional AWS Accounts
 
-Spinnaker supports adding multiple AWS accounts with some users reaching 100s of accounts in production.  Spinnaker uses AWS assume roles to create resources in the target account and then pass the role to a target instance profile if it's creating a instance resource.
+Spinnaker supports adding multiple AWS accounts with some users reaching 100s of accounts in production.  Spinnaker uses AWS assume roles to create resources in the target account and then passes the role to a target instance profile if it's creating an instance resource.
 
 ## Spinnaker's Account Model
 In AWS, Spinnaker relies on IAM policies to access temporary keys into configured accounts by [assuming a role](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_passrole.html).  This allows an administrator to limit and audit the actions that Spinnaker is taking in configured accounts.
@@ -14,7 +14,7 @@ In AWS, Spinnaker relies on IAM policies to access temporary keys into configure
 
 ## Clouddriver Configuration
 
-For adding additional accounts into Spinnaker you'll need to extend Clouddriver by adding your configuration into `clouddriver-local.yml`.  Here is an example of clouddriver configuration file that has 3 accounts as described above.
+For adding additional accounts into Spinnaker you'll need to extend Clouddriver by adding your configuration into `clouddriver-local.yml`.  Here is an example of a Clouddriver configuration file that has 3 accounts as described above.
 
 ```
 aws:
@@ -43,7 +43,7 @@ aws:
 ## Assume Roles in IAM
 
 You will need to create a `SpinnakerManagedProfile` role in the target AWS account (prod-account, staging-account, service-account) and give it the
-correct trust policy in IAM.  Below is the trusty policy you give the `SpinnakerManagedProfile` in the target account to allow the `SpinakerInstanceProfile`
+correct trust policy in IAM.  Below is the trust policy you give the `SpinnakerManagedProfile` in the target account to allow the `SpinakerInstanceProfile`.
 
 ```
 {

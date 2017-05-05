@@ -6,14 +6,14 @@ order: 60
 
 # Logging
 
-Because we use Docker to manage our services pushing your logs to a distributed service is as simple as using one of the provided logging drivers provider by Docker.   All logging comes from STDOUT of the service and process that runs inside of Docker and can be pushed to various endpoints.
+Pushing your logs to a distributed service is as simple as using one of the provided logging drivers provider by Docker.   All logging comes from STDOUT inside of Docker and can be pushed to various endpoints.
 
 
 ## Enabling A Logging Profile
 
 Armory Spinnaker provides an entry point into enabling a given profile by setting the `LOGGING_PROFILE` environment variable.  You'll have to make sure the file with the corresponding file name is placed in `/opt/spinnaker/compose`, i.e. if you set `LOGGING_PROFILE=syslog` then a corresponding file must exist at `/opt/spinnaker/compose/logging-syslog.yml`.
 
-You can set a logging profile by changing the variable per environment.  You can find the environment file that is used at startup at `/opt/spinnaker/env`
+You can set a logging profile by changing the variable per environment.  You can find the environment file that is used at startup at `/opt/spinnaker/env`.
 
 
 ## Logging Drivers for Docker
@@ -25,7 +25,7 @@ You can use any of the available logging drivers for Docker.  At the time of thi
 
 ## Example: Logging to Splunk
 
-Below is a sample logging-splunk.yml file that can be used to extend Armory Spinnaker to log to Splunk.  There are [many configuration options]((https://docs.docker.com/engine/admin/logging/splunk/#usage) for Splunk and Docker, below is just a simple example of how to log to Splunk HTTP Event Collector Splunk  for just the lighthouse and clouddriver service.  You can add the additional services as well by copying the configuration and changing the service name.  Once this file place at the location `/opt/spinnaker/compose` and set `LOGGING_PROFILE=splunk` in your environment file located at `/opt/spinnaker/env`.
+Below is a sample logging-splunk.yml file that can be used to extend Armory Spinnaker to log to Splunk.  As there are [many configuration options]((https://docs.docker.com/engine/admin/logging/splunk/#usage) for Splunk and Docker, the one below is just a simple example of how to log to Splunk HTTP Event Collector Splunk  for just the Lighthouse and Clouddriver service.  You can add the additional services as well by copying the configuration and changing the service name.  Once this file place at the location `/opt/spinnaker/compose` and set `LOGGING_PROFILE=splunk` in your environment file located at `/opt/spinnaker/env`.
 
 ```
 version: "2.1"
