@@ -40,11 +40,26 @@ Some other general purpose Secret Management tools include:
 - [Nike's Cerberus](http://engineering.nike.com/cerberus/)
 
 
+### Using Vault With Spinnaker on AWS
+
+Issuing a Vault token with AWS is an automated process that uses AWS as a trusted third party to initiate authorization.
+
+One piece of "dynamic metadata" available to the EC2 instance, is the instance identity document, a JSON representation of a collection of instance metadata. AWS also provides PKCS#7 signature of the instance metadata document, and publishes the public keys (grouped by region) which can be used to verify the signature.
+
+You can issue an authentication by issuing the following:
+
+```
+$ vault auth-enable aws-ec2
+```
+
+And then proceeding with any additional vault commands and execution that needs to happen.  These steps need to happen at startup you'll want add this script as a [base 64 encoded users-data in your deployment steps[http://docs.armory.io/user-guides/deploying/].
+
+
 ### Isolate Delivery Pipelines from Integration
 
 There are several ways to trigger a deployment pipeline. However, depending on the asset you are delivering, some methods are easier to work with than others.
 
-*Docker Images* 
+*Docker Images*
 
 It is best to have Spinnaker trigger off of a push to a Docker registry instead of triggering off of a GitHub push or Jenkins job. Doing so frees up the development teams to restructure their build systems and validation as they desire because everything in the delivery process can remain the same as long as the Docker image makes it up to the repo.
 
