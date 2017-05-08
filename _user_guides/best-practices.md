@@ -52,7 +52,7 @@ You can issue an authentication by issuing the following:
 $ vault auth-enable aws-ec2
 ```
 
-And then proceeding with any additional vault commands and execution that needs to happen.  Because this needs to happen at startup you'll want add this script as a [base 64 encoded users-data in your deployment steps[http://docs.armory.io/user-guides/deploying/].
+And then proceeding with any additional vault commands and execution that needs to happen.  These steps need to happen at startup you'll want add this script as a [base 64 encoded users-data in your deployment steps[http://docs.armory.io/user-guides/deploying/].
 
 
 ### Isolate Delivery Pipelines from Integration
