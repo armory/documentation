@@ -18,7 +18,7 @@ order: 996
  - Add gunicorn layer in front of API.
  - Set connection idle timeout to 90 (making higher than the ELB 60 sec idle)
  - Enable CORS
- - Allow empyt `spinnaker-local.yml` files.
+ - Allow empty `spinnaker-local.yml` files.
 
 ### Dashboard - a42b0e8
  - First version of Audit Portal - AMI history
