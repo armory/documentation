@@ -42,7 +42,7 @@ Some other general purpose Secret Management tools include:
 
 ### Using Vault With Spinnaker on AWS
 
-Issuing a Vault token with AWS is an automated process that uses AWS as a trusted third party to initiate authorization.
+Issuing a Vault token with AWS is an automated process that uses AWS as a [trusted third party to initiate authorization](https://www.vaultproject.io/docs/auth/aws-ec2.html).
 
 One piece of "dynamic metadata" available to the EC2 instance, is the instance identity document, a JSON representation of a collection of instance metadata. AWS also provides PKCS#7 signature of the instance metadata document, and publishes the public keys (grouped by region) which can be used to verify the signature.
 
@@ -52,8 +52,7 @@ You can issue an authentication by issuing the following:
 $ vault auth-enable aws-ec2
 ```
 
-And then proceeding with any additional vault commands and execution that needs to happen.  These steps need to happen at startup you'll want add this script as a [base 64 encoded users-data in your deployment steps[http://docs.armory.io/user-guides/deploying/].
-
+And then proceeding with any additional vault commands and execution that needs to happen.  These steps need to happen at startup you'll want add this script as a [base 64 encoded users-data in your deployment steps](http://docs.armory.io/user-guides/deploying/).
 
 ### Isolate Delivery Pipelines from Integration
 
