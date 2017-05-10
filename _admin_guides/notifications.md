@@ -2,7 +2,6 @@
 layout: post
 title: Notifications
 order: 80
-published: true
 ---
 # Notifications
 
