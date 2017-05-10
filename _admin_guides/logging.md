@@ -4,8 +4,6 @@ title: Logging
 order: 60
 ---
 
-# Logging
-
 Pushing your logs to a distributed service is as simple as using one of the provided logging drivers provider by Docker.   All logging comes from STDOUT inside of Docker and can be pushed to various endpoints.
 
 
