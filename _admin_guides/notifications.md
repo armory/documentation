@@ -2,7 +2,7 @@
 layout: post
 title: Notifications
 order: 80
-published: false
+published: true
 ---
 # Notifications
 
@@ -25,6 +25,12 @@ slack:
   enabled: true
   token: ${YOUR_SLACK_TOKEN}
 ```  
+
+Restart Armory Spinnaker by issuing
+
+```
+service armory-spinnaker restart
+```
 
 Make sure to invite `${YOUR_BOT_NAME}` to any channel you want to be notified by spinnaker alerts.
 
