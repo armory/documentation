@@ -21,7 +21,9 @@ This section is a work in progress.
 
 ## Fine Grained Rate Limits
 
-Spinnaker queries your cloud provider (AWS, GCP, Azure, Kubernetes, etc) frequently to understand the state of your existing infrastructure and current deployments.  However, by doing so you might run into rate limits imposed by the cloud provider.  Below is an example configuration for global rate limits for all services that you would place in `clouddriver-local.yml`.
+Spinnaker queries your cloud provider (AWS, GCP, Azure, Kubernetes, etc) frequently to understand the state of your existing infrastructure and current deployments.  However, by doing so you might run into rate limits imposed by the cloud provider. To help avoid this Spinnaker provides controls to limit the number of requests it generates. The unit used for these controls is "requests per second".
+
+Below is an example configuration for global rate limits for all services that you would place in `clouddriver-local.yml`:
 
 ```
 serviceLimits:
