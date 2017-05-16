@@ -10,7 +10,7 @@ Armory Spinnaker is extendable and allows you to override any properties or code
 
 ## Docker & Docker Compose
 
-You'll first have to run a container with the service that is accessible
+Write a `/opt/spinnaker/compose/docker-compose.override.yml` file that  You'll first have to run a container with the service that is accessible
 
 ## Overriding docker-compose Docker-compose.override.yml
 
