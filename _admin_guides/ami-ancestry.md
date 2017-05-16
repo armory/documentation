@@ -28,8 +28,9 @@ services:
       enabled: true
 ```
 
-Then we need to add a tag to all packer templates that require tracking through this tool.  This is done by adding the `base_ami` tag to `builders` section of your packer template, typically kept at `/opt/spinnaker/config/`
+Then we need to add a tag to all packer templates that require tracking through this tool.  This is done by adding the `base_ami` tag to `builders` section of your packer template, typically kept at `/opt/spinnaker/config/`:
 
+```
 {
   "builders": [
      {
@@ -37,5 +38,6 @@ Then we need to add a tag to all packer templates that require tracking through 
          "base_ami": "{{ user `aws_source_ami`}}"
        }
 }
+```
 
 Once you've made the changes, restart Armory Spinnaker: `service armory-spinnaker restart`
