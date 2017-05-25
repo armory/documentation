@@ -1,0 +1,471 @@
+---
+layout: post
+title: v1.5.55 Armory Enterprise Spinnaker
+order: 995
+---
+
+# 05/25/17 Release Notes
+
+## Armory Enterprise Spinnaker
+
+### lighthouse - 723a81a
+ - Add missing os import
+ - Convert settings to a struct that json will serialize (#60)
+ - Use eventlet async workers (#59)
+ - not throwing excpetions and instead just using info (#58)
+ - updating healtcheck to use a different remote host if needed for testing purposes
+ - Injecting value from yamls instead of envs (#56)
+ - moving everything away from routes and into healthcheck module. we also changed the endpoint to /health
+ - changing to tuples instead of dictionaries
+ - adding unit tests and restructing healthcheck a bit to be more easily unit tested
+ - Fix the scope for the load_cache_for_id() call
+ - adding false to the eventlet so it doesnt throw an exception
+ - Endpoint to expose latest released armoryspinnaker version info (#54)
+ - Adds redis cache flush for *clouddriver* (#53)
+ - Look up the deploy spinnaker pipeline and get the package version (#51)
+
+### dashboard - 495ef63
+ - Fix styling for bad requests
+ - Fix - correctly access assets
+ - Fix - accidently swapped installed and available version numbers
+ - Fix - forgot to update release notes link
+ - Functional prototype of upgrade front end
+
+## Spinnaker Community Contributions
+
+### orca - v2.6.0
+ - Consolidating interestingHealthPoviderNames lookup logic (#1209)
+ - Revert "fix(expressions): further restrict object traversal in expression processing"
+ - fix(expressions): further restrict object traversal in expression processing
+ - chore(dependencies): update to latest spinnaker-dependencies version
+ - feat(pipelinetemplate): Pipeline Template Partials support (#1342)
+ - fix(nu orca): Fix issue where pipeline params overwrite jenkins stage params
+ - fix(restarts): Propagate user to handler for restart messages
+ - fix(restarts): Clear `canceled` flag on restart otherwise restarted tasks abort immediately
+ - fix(restarts): Make sure nested synthetic stages are cleared before restart
+ - fix(pipelinetemplate): Disable risky jinja tags (#1346)
+ - chore(tests): Try to get intermittently failing integration tests reliable on Travis
+ - fix(queue): Process expressions in stage contexts when running tasks in nü-orca
+ - chore(queue): Added some more detail to execution log entries
+ - chore(queue): Apply metrics to thread pools used by queue
+ - feat(dcd): support setting templates from trigger context using jinja (#1343)
+ - feat(pipelinetemplate): Add support for list injection for Before and After stanzas (#1316)
+ - fix(tests): Fix invalid time zone handling in a test
+ - fix(expressions): recognize deployedServerGroups from createServerGroup stages
+ - chore(queue): have gradle run JUnit integration test as well as Spek tests
+ - chore(queue): ensure correct scoping of test subjects
+ - Revert "fix(queue): instance lock logic was backward"
+ - feat(SPEL): new base64 encode and decode methods (#1339)
+ - fix(core): don't try to hdel an empty key set if a stage has data for all its fields
+ - fix(queue): instance lock logic was backward
+ - fix(queue): prevent echo listener from overwriting data from task starting
+ - feat(pipeline): endpoint for evaluating pipeline expressions (#1336)
+ - fix(queue): don't recursively add infinite execution windows
+ - fix(queue): ensure FAILED_CONTINUE or SKIPPED before stages propagate completion
+ - fix(queue): handle task timeouts correctly
+ - fix(upsert_lb_task): Fix up context name defaulting. (#1331)
+ - fix(queue): handle execution completion correctly
+ - chore(queue): use SubjectSpek
+ - chore(queue): move execution log to its own package
+ - fix(test): properly close embedded redis
+ - fix(queue): transactionally read pipeline data
+ - fix(queue): ensure executor doing message re-delivery doesn't die
+ - fix(core): missed a field with null-safety fixes
+ - fix(core): null safety and some debug logging for ongoing issue with missing stage data
+ - enhancement(core): add some transactional behavior to ExecutionRepository
+ - enhancement(queue): use redis transactions for atomic queue ops (#1322)
+ - fix(queue): stop leaking all the redis connections (#1321)
+ - feature(queue): added a bunch of context to execution log and fixed ordering
+ - fix(queue): ensure correct precedence of FAILED_CONTINUE and STOPPED statuses
+ - chore(core): `ExecutionRunner.resume` method should really be called `restart`
+ - fix(queue): canaries were not attaching their deploy stages
+ - fix(queue): handle starting stages with no tasks
+ - chore(queue): make Kotlin and Spek dependencies tidier
+ - chore(queue): upgrade Spek
+ - fix(queue): handle stages with no tasks
+ - fix(queue): don't rewrite parallel stage type with wrong thing
+ - fix(queue): don't time out stages that take a long time to run before stages
+ - fix(queue): stop dead-lettering messages after it's done once, d'oh!
+ - fix(deploy): don't NPE on network issue when finding image from cluster
+ - fix(nu-orca): handle parallel stage name/type correctly
+ - feat(oraclebmcs): Add Oracle BMCS server group creator (#1295)
+ - feat(webhooks): allow custom headers on monitor task of webhook stage (#1313)
+ - fix(core): disambiguate task executor beans so Spring Batch doesn't run single-threaded
+ - fix(core): retry on 502, 503, 504 thrown by task
+ - fix(core): don't kill pipelines running on v3
+ - fix(queue): add synthetic stages in a concurrency-safe way (#1311)
+ - fix(core): keep the index of stages in a pipeline in a separate redis key so it's theoretically atomically updatable
+ - fix(queue): argh Kotlin when expressions don't work quite how I thought (#1309)
+ - fix(queue): handle sub-classes of message types (#1308)
+ - fix(azure): Set imageName on server groups (#1296)
+ - fix(queue): don't just assume task ids are valid (#1307)
+ - feat(nuorca): Add get execution logs endpoint (#1305)
+ - fix(queue): limit re-deliveries of failed messages (#1306)
+ - fix(pipelinetemplate): Do not default execution engine of templated pipelines (#1304)
+ - fix a couple of issues spotted in initial testing of nü orca (#1303)
+ - feat(webhooks): allow custom headers on webhook call (#1301)
+ - Nü Orca (#1298)
+ - feat(provider/kubernetes): Enable deployment of baked docker containers (#1299)
+ - feat(pipelinetemplate): Support spinnaker-baked pipeline templates (#1294)
+ - fix(pipelines) - revert the change that removed dependent pipelines from a dedicated thread.
+ - chore(dependencies): update to latest spinnaker-dependencies
+ - feat(pipelines): allow user-specified limit when fetching latest pipelines (#1293)
+ - fix(core): reset synthetic stages when restarting a pipeline (#1292)
+ - Pin `min` capacity to `desired` capacity when rolling back
+ - Task.implementing class becomes a String to avoid CNFE when deserializing
+ - got rid of DefaultTask and Task (the model one) becomes a simple POJO
+ - docs(pipelinetemplate): Consolidate alpha docs into dcd-spec (#1287)
+
+### echo - v1.135.0
+ - fix(triggers): fix NPE regression on BuildEventMonitor.
+ - chore(dependencies): update to latest spinnaker-dependencies version
+ - feat(core): Allow configurable headers for rest endpoints (#143)
+ - feat(Pipeline triggers) Support new `travis` triggerType
+ - chore(changelog): Extend changelog commit keywords. (#142)
+ - chore(PR Template): Added PR template. (#140)
+ - Adds basic controller.invocations spectator metrics collector (#139)
+ - rm cloudbuild step (#138)
+
+### front50 - v1.95.2
+ - fix(cassandra): Disable Pipeline Template storage capability (#233)
+ - fix(core): Gracefully handle duplicate key errors during cache refresh (#232)
+ - feat(fiat): Updates to new read-only permission model (#231)
+ - feat(oraclebmcs): Add Oracle BMCS Storage Service provider (#230)
+ - chore(dependencies): update to latest spinnaker-dependencies version
+ - fix(migrations): don't change v3 pipelines back to v2 (#228)
+ - fix(redis): Wiring up RedisPipelineTemplateDAO correctly (#227)
+ - feat(core/model): Add category to EntityTag model (#223)
+ - feat(core): Adding pipeline template storage (#222)
+ - fix(azs): Leverage CommonStorageServiceDAOConfig in AZS (#226)
+ - Ability to retrieve most recently cached objects w/o an explicit refresh (#225)
+ - Simplify how StorageServiceDAO's are created across the different storage backends (#224)
+ - feat(s3): Create specified bucket when it doesn't exist (#207)
+
+### spinnaker - v0.80.0
+ - feat(halyard_release): Implement support for Halyard release tracks. (#1599)
+ - chore(google): Update codelab config (#1596)
+ - chore(google): changed scripts building google image and codelab. (#1595)
+ - fix(bake): Rely on artifact name, not service name for baking (#1594)
+ - fix(bake): Replace colon in image names (#1593)
+ - fix(google): Fixed typo in previous commit (#1592)
+ - chore(google): allow reuse of a bash support module. (#1591)
+ - fix(publish): Delete existing VM images when rebaking (#1590)
+ - fix(publish_bom): Update 'hal' commands and repo paths. (#1588)
+ - initial commit - Azure test (app/security group) (#1560)
+ - fix(hal_k8s_run): Remove kubeconfig logging. (#1587)
+ - fix(component_images): Wait for subprocess and fail if any fail. (#1586)
+ - chore(bake): Bake images for redis, vault-server & consul-server (#1583)
+ - fix(bom): Fix redis version (#1582)
+ - feat(changelog): script for publishing changelog (#1578)
+ - fix(dev): Permit refresh_source to be run from within a non-spinnaker repo. (#1574)
+ - feat(build_image): Add script to build GCE image of one component. (#1571)
+ - fix(tests): Fixed native test startup / configuration (#1573)
+ - fix(config): Add chaos.enabled to spinnaker.yml (#1572)
+ - fix(dev): Fixed image extraction to tar.gz (#1569)
+ - Adding chaosEnabled and chaosMonkey flags to config/settings.js and a chaos service to default_spinnaker_local.yml. (#1567)
+ - chore(testing): Migrated aws tests from AwsCliAgent to AwsPythonAgent (#1543)
+ - chore(dev): Simplify build_googe_image.sh (#1564)
+ - fix(hal_k8s): actuate -> apply. (#1565)
+ - feat(nightly): Publish nightly test results to spinnaker.github.io. (#1562)
+ - fix(hal_k8s_run): Update halyard's webhook -> ci change. (#1563)
+ - Change experimental/kubernetes/ha to remove launch args (#1555)
+ - fix(dev): Recreate disks through instances, not directly from images (#1554)
+ - fix(dev): build google tarball from existing image (#1551)
+ - fix(dev): clean google tarball more (#1549)
+ - fix(bom): Add external dependency versions. (#1542)
+ - fix(install): Inject YAML nodes to fix disabling cassandra. (#1540)
+ - fix(dev): fixes deck dev startup (#1538)
+ - fix(front50_test): Don't inspect config if host platform is 'native'. (#1541)
+ - fix(dev): Fix path in instructions. (#1539)
+ - fix(halyard_k8s): Institutionalize the actuation. (#1537)
+ - fix(dev): Install kubectl with bootstrap_dev.sh (#1536)
+ - fix(docker-compose):Fixing typo in docker-compose.yml
+
+### deck - v2.1112.0
+ - fix(pipelines): remove refId param after resolving deep link
+ - refactor(build): avoid linting twice
+ - fix(core): prevents unnecessarily defaulting to AWS for stage configs
+ - feat(provider/oraclebmcs): Implement resize ASG pipeline stage for Oracle BMCS provider
+ - Remove check for enabled on Run Job trigger option (#3714)
+ - fix(modals): fix style on modal headings
+ - chore(*): convert refresh icons to fa-refresh
+ - refactor(*): replace glyphicon-asterisk with fa-cog
+ - chore(*): replace some glyphicons with font-awesome
+ - chore(misc): clean up imports
+ - refactor(netflix/titus): misc nflx/titus module cleanup
+ - fix(core): assign unique namespaces to waypoint* directives
+ - refactor(core/entityTag): Refactor Entity Tags to React (#3717)
+ - refactor(core): flatten select2, misc lib build fixes
+ - fix(aws): restore $onInit to ingress security group selector
+ - fix(core): add entityTags module
+ - fix(netflix): handle FP category result with no stack/cluster
+ - refactor(aws): enable amazon module build with sourcemaps
+ - refactor(aws): move amazon code to src directory
+ - feat(provider/oraclebmcs): Add destroy server group stage
+ - refactor(amazon): prepare amazon for library build
+ - chore(core): move angular2react components to separate class
+ - fix(aws): restore scaling activities link
+ - refactor(docker): enable library build of docker module
+ - refactor(docker): prepare docker for lib packaging
+ - refactor(help): split help into provider modules
+ - fix(clusters): fix search result heading for clusters
+ - fix(deploymentstrategy): include requires for deployment strategies
+ - feat(core): enable library build of core module
+ - feat(provider/oraclebmcs): Add instance details to server groups
+ - feat(filters): remove sliding width animation on filter panels
+ - fix(history): ignore undefined params when replacing history entry
+ - refactor(core): make stage execution handling pluggable
+ - refactor(core): move core to core/src
+ - refactor(*): clean up modules, core references
+ - refactor(*): convert imports to @spinnaker/core
+ - refactor(core): rollup imported exports from core module
+ - fix(search): require jquery instead of importing it
+ - fix(core): fix reference to ButtonBusyIndicator
+ - refactor(react): move angular2react to *Injector
+ - refactor(core): move React-injected services into ReactInjector directly
+ - chore(core): consolidate domain classes, standardize names
+ - refactor(search): convert search to TS, make pluggable
+ - refactor(filtertags): address PR comments
+ - chore(clusters): convert multiselect model spec to TS
+ - refactor(core): convert filter tags to React
+ - chore(core): clean up requires
+ - fix(executions): add alias to deploy for v3 executions
+ - chore(core): consolidate whats new settings to core
+ - feat(provider/oraclebmcs): Implement server groups
+ - refactor(core): Convert loadBalancers view to React (#3672)
+ - chore(*): Update React to 15.5 now that react-select has updated
+ - fix(netflix): fix scope loading for fast properties
+ - fix(core): restore spinning animation
+ - feat(gce): makes `associate public ip` an application setting
+ - feat(spel): add fromBase64 and toBase64 helper methods
+ - fix(netflix): dedupe stacks in fast prop scope picker
+ - fix(netflix): do not allow users to specify useSourceCapacity for canaries
+ - fix(executions): allow filtering on pipelines with commas in name (#3674)
+ - chore(travis): Do not perform gradle build when running tests for pull requests (#3670)
+ - fix(core): fix lag in spinner, loading page title
+ - fix(core/clusters): fix rendering of on-demand views
+ - fix(core/tasks): fix deep linking to tasks
+ - feat(core/visualizer): Allow visualizer and trace toggle from URL query param `?vis=true` and `trace=true` (#3644)
+ - chore(*): Update dependencies
+ - refactor(core): move react module to core
+ - feat: Allow ssh links
+ - chore(netflix): remove unnecessary dependency injections
+ - fix(gce): send `name` in SSL upsert payload (#3665)
+ - refactor(pipelines): use base execution details ctrl where possible
+ - feat(core): mutating request debug mode
+ - fix(core): hide empty account tag, show tags inline in header
+ - refactor(core): consolidate account tag/label code
+ - chore(core): convert doubleClick directive to TS
+ - chore(less): use (reference) to import less, remove copyright headers
+ - chore(docker): move docker trigger to docker module
+ - chore(build): remove protractor, coverage, add to vendor bundle
+ - chore(core): remove hotkeys, octicons, angular-filters
+ - feat(netflix): move app fast properties to tabs
+ - feat(netflix): add TTL to properties, scope editor on stage
+ - fix(clusters/lbs/secgrps): fix delayed apply of filters
+ - fix(pipelines): fix reordering of pipeline/strategy configs
+ - feat(core) adds help text in pipeline template config modal, allows pipeline templates to be selected in create pipeline modal (#3640)
+ - feat(provider/oraclebmcs): Add initial scaffolding for Oracle BMCS (#3636)
+ - fix(core): prevent overflow in check preconditions stage config
+ - fix(headers): restore sticky header styles
+ - fix(routing): do not add array field to params if not specified
+ - refactor(netflix): refactor fast properties views
+ - fix(core): Fix scrolling in modal highlighting navigation
+ - refactor(core): convert instances and loadBalancerFilter.model to TS components (#3635)
+ - chore(ngInject): Use ng-annotate-loader for angular DI annotation (#3642)
+ - fix(core/cluster): Use `redirectTo` hook to switch to pipelines when serverGroups is disabled (#3643)
+ - refactor(core): Convert waypointService to TS, cloudProviderLogo to React, and cleanup waypointService (#3633)
+ - fix(aws): prepend default security groups when creating ELBs (#3641)
+ - fix(ChAP): Fix canary report link for ChAP (#3637)
+ - fix(core/pageTitle): Use promise based API for showing/hiding spinner (#3639)
+ - feat(travis): allow travis stage to be featured flag off (#3638)
+ - fix(firefox): fix page scrolling in Firefox
+ - fix(titus): URL decode params to allow expressions in Bake package name (#3604)
+ - fix(aws): remove debounce from ui-select, use inf-scroll
+ - fix(core): Fix sticky-headers in react
+ - fix(servergroups): highlight selected server group
+ - fix(pipelines): prevent re-render of running executions every second
+ - fix(*): Optimize selected account validation
+ - refactor(bake/core): Replace bake stage choose base OS radio buttons for dropdown
+ - fix(executions): fix navigation to parent pipeline from standalone view
+ - fix(loadbalancers): fix click handling on load balancers tag
+ - Fixing UI issue with options that aren't visible by default.
+ - chore(routing): upgrade to ui-router 1.0.rc1
+ - fix(clusters/loadBalancers): fix false positive change detections
+ - Fix issues with subnet selection in deploy pipeline stage for openstack
+ - refactor(core): Convert loadBalancersTag and healthCounts to react (#3614)
+ - fix(netflix): Fix talk to us on slack link (#3621)
+ - fix(core/delivery): Fix stage durations (#3620)
+ - feat(core): render changelog if given in settings.js (#3615)
+ - fix(kubernetes): adds retry logic to kubernetes image reader (#3612)
+ - fix(crontrigger): fix radio buttons when multiple cron triggers exist
+ - chore(halyard): Hooks for publishing changelog (#3611)
+ - fix(kubernetes): fixes container copying in server group dialogue (#3610)
+ - fix(*): Fix single select account drop-down (#3609)
+ - feat(aws): Allow for Deploy/Clone stages to use default block device mappings for instance type
+ - fix(*): Accounts showing up as empty on the Edit Application modal (#3608)
+ - fix(amazon): preserve existing security groups on ELB edit
+ - fix(netflix/availability): Fix dimensions of availability widget to support zoom (#3606)
+ - feat(core): first pass at pipeline template parameter modal (#3597)
+ - chore(all): Update tslint and react dependencies and fix new linting rules (#3603)
+ - fix(kubernetes): allow container to be copied if image does not have registry (#3602)
+ - fix(webhook): Fix NPE as "statusUrlResolution" is not set by default
+ - refactor(react): Make ES6 imports of angular DI a little less ceremonious
+ - perf(aws): improve security group selector performance
+ - fix(deck): Add check for isZeroLengthText response
+ - chore(netflix/ci): add tests (#3594)
+ - refactor(entitytags): do not throw exception on entity tag load failure
+ - feat(webhooks): allow custom headers on webhook call
+ - feat(provider/azure): Add form validation on submit
+ - feat(provider/kubernetes): Deploy baked docker images (#3588)
+ - fix(netflix): do not navigate to root on jira click
+ - allow ~ in titus server group detail
+ - fix(webhooks): allow empty payload in webhook stage (#3589)
+ - Fix UI bugs for openstack: (#3586)
+ - fix(pipelineconfig): only cache stage/section state (#3587)
+ - feat(dcd): pipeline template boilerplate (#3569)
+ - chore(netflix/ci): add scm reader test suite (#3585)
+ - fix(gce): fixes bake stage validation and execution details (#3582)
+ - feat(kubernetes): Allow Run Job trigger tag (#3570)
+ - fix(gitTrigger): Add back fiatEnabled check for git triggers (#3579)
+ - feat(aws): Changing memory instance type category to r4 family (#3584)
+ - fix(pipelines): show custom label as tooltip, fix canary score (#3583)
+ - feat(halconfig): Add azure settings (#3581)
+ - perf(netflix): improve fast property selector performance (#3577)
+ - fix(pipelines): avoid NPE rendering execution groups (#3576)
+ - refactor(netflix/ci): convert ci build reader (#3566)
+ - fix(netflix): fast property label typo (#3575)
+ - refactor(pipelines): rename *Template to *Component (#3574)
+ - feat(pipelines): allow user actions via popovers (#3573)
+ - refactor(*): Switch from arrow function properties to @autoBindMethods decorator (#3572)
+ - refactor(pipelines): convert wait/execution window actions to React
+ - refactor (core/delivery): Convert executionGroup and executionGroups to React
+ - refactor(core): convert create pipeline modal to react (#3568)
+ - Pin `min` capacity to `desired` capacity when rolling back
+ - feat(aws): Updating instance types to default new families (#3564)
+ - fix(aws/bake) - remove enhanced networking bake flag
+ - fix(core/pipeline): Make graph nodes clickable again
+ - feat(pipelines): provide observable to surface execution group updates
+ - fix(netflix/feedback): Fix callback binding
+ - fix(core/utils): sticky header tries to remove data from header when does not exist
+ - fix(core/delivery): Fix an undefined when there is no firstActiveStage
+ - fix(netflix/availability): Show Danger title when overridden
+ - refactor(core/cache): Convert collapsibleSectionStateCache to TS
+ - feat(titus): show instance id in the sidebar for tasks
+ - Fixing the FileUris array
+ - chore(core): Add JSX listing and cleanup based on rule changes
+ - fix(force cancel pipeline): Display force checkbox by default (#3548)
+ - refactor(pipelines): convert manual judgment options to react
+ - fix(aws): render enabled ASG metrics in details panel
+ - refactor(netflix): convert canary module
+ - refactor(core/delivery): Convert triggerTag and nextRunTag to React
+ - refactor(core/pipeline): Convert pipelineConfigProvider to TS
+ - fix(core): Fix default on account/region select field
+ - fix(netflix/properties): Fix undefined error when trying to access nonexistent original properties
+ - fix(core/delivery): Fix whitespace issues
+ - fix(netflix): fix tableau loading
+ - fix(core/delivery): Fix scoping for callback in waitUntilNewTriggeredPipelineAppears
+ - feat(core): show hint if wait for up instances task is not completing (#3541)
+ - feat(provider/kubernetes): Add termination grace period seconds to Server Group (#3515)
+ - refactor(netflix): convert tableau module to TS
+ - refactor(netflix): convert help module to typescript
+ - refactor(core): convert sticky-header to a component
+ - fix(aws): prevents NPE in aws view changes link (#3540)
+ - chore(netflix): convert reservation report module
+ - fix(core): fix CSS regressions on multiselect
+ - fix(netflix): clarify help text when setting up PagerDuty integration
+
+### gate - v3.36.0
+ - feat(ratelimit): Parity of static & redis configs (#396)
+ - fix(pipelinetemplate): Propagate pipeline template errors (#395)
+ - fix(oauth): Fix UnsatifiedDependencyException (#393)
+ - fix(oauth): Use the whole preEstablishedRedirectUri, if set, instead of just changing the protocol (#392)
+ - feat(pipeline): add endpoint for evaluating pipeline expressions (#391)
+ - fix(credentials): allow account names with dots (#377)
+ - fix(oauth): Fix issue where externally-terminated SSL deployments had HTTP-only redirect to /login (#390)
+ - docs(clusters): add api operation descriptions for /applications/{application}/cluster (#387)
+ - docs(controllers): Add simple api operation descriptions to controllers (#388)
+ - docs(pipelines): Add simple api operation descriptions to /bakery, /credentials, /networks and /subnets entry-points. (#386)
+ - when x509 is enabled, install a custom SecurityContextRepository that does not persist X509 authenticated contexts
+ - docs(pipelines): Add simple api operation descriptions to /pipelines entry-points. (#384)
+ - feature(orca): expose execution log endpoint
+ - feat(web): Adding pipeline template create/read apis (#380)
+ - chore(dependencies): update to latest spinnaker-dependencies
+ - chore(kork): fix compatibility with latest kork
+ - feat(executions): add endpoint to get executions by config id (#379)
+
+### igor - v1.71.0
+ - fix(jenkins): Changing jenkins monitor algorithm to process builds using timestamp ranges (#165)
+ - fix(jenkins): Fixing missed build events on concurrent builds (#163)
+ - chore(dependencies): update to latest spinnaker-dependencies version
+ - Revert "fix(jenkins): Fixing missed build events on concurrent builds (#161)" (#162)
+ - feat(travis/pro) Support fetching of logs from travis pro (#160)
+ - fix(jenkins): Fixing missed build events on concurrent builds (#161)
+ - feat(artifact/decoration): Artifact decoration of docker events spinnaker/spinnaker#1348 (#159)
+ - feat(travis/gradle): configurable regexes to parse artifacts (#142)
+
+### rosco - v0.95.0
+ - feat(artifact/decoration): Artifact decoration spinnaker/spinnaker#1348 (#202)
+ - chore(halyard): Add links to templates & images (#195)
+ - fix(Rosco/Chocolatey) Properly install Chocolatey packages that include the package version (#1616) (#201)
+ - fix(Dockerfile): Navigate Docker's wonky COPY command. (#200)
+ - fix(Dockerfile): Manually do recursive copy. (#199)
+ - fix(Dockerfile): Add all directories below /config. (#198)
+ - fix(Dockerfile): Update Dockerfile to include packer configs. (#197)
+ - chore(changelog): Extend changelog commit keywords. (#196)
+
+### clouddriver - v1.622.0
+ - Fixing cloning behavior, adding unit tests for custom user data. (#1639)
+ - chore(fiat): Bump fiat version, fixes deserialization issue (#1633)
+ - refactor(aws): instance type sort should be ascending (reservation report v3) (#1637)
+ - refactor(aws): s/totalAllocated/totalRegionalReserved and s/allocations/regionalReservedAllocations (#1635)
+ - feat(udf): Added user data file to use with every deploy. (#1632)
+ - fix(aws): Fix #1632, unable to find AMI with encrypted snapshots in target/managed account (#1628)
+ - feat(amazon): A 'v3' reservation report that attempts to use regional reserved instances to cover zonal shortfalls (#1629)
+ - refactor(kubernetes): Update fabric8 client to 2.3.1 to make StatefulSet available. (#1631)
+ - feat(kubernetes): Support downward api (#1627)
+ - feat(aws/auth): optionally include spinnaker authenticated user in aws requests
+ - fix(provider/google): Retry firewall rule deletes and accept 404. (#1624)
+ - fix(provider/kubernetes): Use sanitized namespace in enable/disable. (#1623)
+ - refactor(kubernetes): Refactor the logic to use caching data instead … (#1620)
+ - fix(provider/google): Wait for forwarding rule creation in LB upserts. (#1622)
+ - chore(dependencies): update to latest spinnaker dependencies version
+ - feat(discovery): pass a stack field from titus (#1619)
+ - fix(provider/openstack) adds name nullcheck to filtering images (#1618)
+ - fix(aws): Fix register with load balancer (#1617)
+ - fix(aws): Fix deregistering instances from load balancers (#1616)
+ - refactor(provider/oraclebmcs): Take auth parameters from yaml instead of oracle config file (#1615)
+ - feat(amazon): include cluster, server group in instance details (#1614)
+ - chore(titus): moving titus to internal netflix project to take advantage of grpc protocols only published internally at Netflix (#1611)
+ - fix(kubernetes): handle images without registry (#1613)
+ - feat(provider/openstack): consul enable/disable (#1612)
+ - feat(providers/aws): Add ALB Support (#1589)
+ - fix(provider/openstack): Add nullcheck for autoscalling type server group caching agent (#1594)
+ - feature(kubernetes): add ability to specify sequence number when deploying kubernetes server group (#1610)
+ - fix(provider/google): Support on-demand cache updates for GCE Security Groups (Firewalls). (#1608)
+ - fix(provider/google): Fix deserialization of load balancer health for instances. (#1609)
+ - fix(provider/google): Support on-demand cache updates for GCE Network Load Balancers. (#1605)
+ - Raise an exception when a lifecycle hook specifies an invalid transition (#1606)
+ - fix(provider/azure): Default environment and accountType to accountName (#1593)
+ - feat(core/model): Add category to EntityTag model (#1599)
+ - Switch to using `refresh=false` when retrieving all entity tags from Front50 (#1604)
+ - feat(aws): Flag to allow launching private thirdparty AMIs (#1603)
+ - chore(dependencies): update to latest spinnaker-dependencies.
+ - chore(build): fix build config for bmcs cloudprovider
+ - feat(artifact/decoration): Artifact decoration spinnaker/spinnaker#1348 (#1586)
+ - chore(consul) add debug log for consul checks (#1601)
+ - fix(core/cache): Allow clouddriver to be started without redis by making CoreProvider conditionally constructed. (#1597)
+ - fix(provider/oraclebmcs): Ignore unknown json properties for server groups (#1596)
+ - feat(provider/oraclebmcs): Enable/Disable server group operations (#1592)
+ - chore(aws): Make missing AMI error more actionable (#1595)
+ - fix(amazon): do not tag/share public images on AllowLaunch (#1579)
+ - fix(kubernetes): Empty port causing NPE during caching (#1583)
+ - feat(provider/oraclebmcs): Destroy server group operation (#1591)
+ - feat(provider/oraclebmcs): Resize server group operation (#1590)
+ - feat(provider/oraclebmcs): Add Oracle BMCS Deploy Handler (#1585)
+ - Ensure that `EntityTags.tags` is always a modifiable list (#1588)
+ - (aws): Revert ALB Support. Cloning was pulling in unspecified target groups.
+ - feat(provider/oraclebmcs): Server group service, caching agent and cluster provider (#1574)
+ - Added OFFLINE status in LB Health enum
+ - fix(provider/google): Avoids batch failure in LB caching agents. (#1582)
+ - fix(kubernetes): Use 'kind' constants rather than strings (#1580)
