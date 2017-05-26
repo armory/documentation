@@ -55,3 +55,6 @@ collections:
   release_notes:
     output: true
     permalink: /release-notes/:title/
+  glossary:
+    output: true
+    permalink: /glossary/:title/
