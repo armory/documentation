@@ -20,6 +20,18 @@ Some of the most common uses include:
 
 Before we go into examples and troubleshooting, check out the guide on spinnaker.io for an detailed overview: [http://www.spinnaker.io/docs/pipeline-expressions-guide](http://www.spinnaker.io/docs/pipeline-expressions-guide)
 
+## Common techniques
+
+### Dynamically defining User-Data
+
+If you are creating a deployment configuration for AWS, Spinnaker gives you the option to provide [user-data](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html#instancedata-add-user-data). As you can see here:
+
+![](https://cl.ly/3g2Z2l2j1634/Image%202017-05-26%20at%2011.20.47%20AM.png)
+
+The user-data field needs to be base64 encoded. It is possible to create this dynamically with the built in expression language. To do this you can use the `${ #toBase64() }` command. For example, You can pass the build number to the user-data via:
+
+![](https://cl.ly/1m2E080X1z44/Image%202017-05-26%20at%2011.29.23%20AM.png)
+
 
 ## Examples
 
