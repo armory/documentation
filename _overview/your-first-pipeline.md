@@ -22,7 +22,7 @@ Things you should already have prepared beforehand for this example:
 - A Jenkins Master configured by your administrator
 - A Jenkins job that archives a Debian package
 - A security group within AWS with appropriate permissions
-- Create a Load Balancer (in this guide hyperlink here)
+- Create a Load Balancer
 
 Step 1: After selecting your Application, click the Pipelines category.
 
@@ -117,6 +117,6 @@ Step 22: Press “Run”, and you should see a progress bar where blue represent
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/431f381I1z0y2K3w2s3M/Image%202017-03-24%20at%204.45.33%20PM.png)
 
-If your pipeline does not succeed, refer to the Troubleshooting Guide here (hyperlink here) 
+If your pipeline does not succeed, refer to one of the troubleshooting sections in the [pipelines]({% link _user_guides/pipelines.md %}#troubleshooting), [baking]({% link _user_guides/baking-images.md %}#troubleshooting), or [deploying]({% link _user_guides/deploying.md %}#common-errors-and-troubleshooting) guides.
 
 Note: Always remember to save your changes by clicking the button in the bottom right of the window. 
