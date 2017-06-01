@@ -205,7 +205,7 @@ add an a new list to the pipeline JSON.  Unfortunately at this time there is no
 UI to add block devices.  
 
 1.  [Edit Your Pipelines JSON](http://docs.armory.io/user-guides/pipelines/#pipeline-json)
-2.  Find your deployment dictionary.  You'll need to add the dictionary for each cluster definition.
+2.  Find your deployment dictionary.  You'll need to add the object of pairs for each cluster definition.
 3.  Add your custom block devices for launch under the key `blockDevices`.
 
 ### Block Devices Definition
