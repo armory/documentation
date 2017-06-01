@@ -198,7 +198,7 @@ If you are ever in a situation where you need to roll back without Spinnaker, yo
 - Scale down or delete the new ASG
 
 
-## Adding Additional Launch Block Devices
+## Additional Launch Block Devices
 
 If you want additional block devices or a larger root partition you'll need to
 add an a new list to the pipeline JSON.  Unfortunately at this time there is no
