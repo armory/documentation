@@ -229,7 +229,7 @@ UI to add block devices.
           "application": "myapplication",
           "blockDevices": [
             {
-              "deleteOnTermination": true
+              "deleteOnTermination": true,
               "deviceName": "/dev/sda1",
               "size": 32,
               "volumeType": "gp2"
