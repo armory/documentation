@@ -119,8 +119,14 @@ A project inside Spinnaker is a logical grouping of applications. For example, w
 #### Rosco
 A sub-service within Spinnaker. For more information, go to [sub-services]({% link _admin_guides/subservices.md %}#Rosco).
 
+#### Scale Server Group
+Reduce the total number of server groups remaining in the cluster.
+
 #### Server Group
 From an Amazon Web Service (AWS) point of view, a server group is represented by an auto-scaling group (ASGs). All applications that are deployed by Spinnaker are deployed to server groups. 
+
+#### Shrink Server Group
+Reduce the number of instances in a particular server group.
 
 #### Stack
 You can think of a 'Stack' as a tag you give to anything that you want to be integrated together. Environments are usually a good example of something you would tag with a Stack. If you have an app that has an ELB, a Cache, and an [ASG](#auto-scaling-group), usually you would want to run integration tests on your staging environment separately from your production environment. In that case, you would give the staging ELB, Cache, and ASG all the “staging” stack, while prod ELB, Cache, and ASG would be the “prod” stack. 
