@@ -1,6 +1,6 @@
 ---
 layout: post
-title: v1.5.69-release Armory Enterprise Spinnaker
+title: v1.5.69 Armory Enterprise Spinnaker
 order: 994
 ---
 
