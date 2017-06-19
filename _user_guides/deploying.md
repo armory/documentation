@@ -93,7 +93,7 @@ Immediately after that, the old server group is removed from the load balancer. 
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/0T3m0K1J0x0i1B1q451J/Image%202017-03-30%20at%203.50.18%20PM.png)
 
-Because of how I configured my deploy stage, the old Blue server group will stick around until I either manually scale it down or destroy it. If you like, you can configure your deploy stage to automatically scale down the old server group after the new one is healthy. 
+Because of how I configured my deploy stage, the old Blue server group will stick around until I either manually scale it down or destroy it. If you like, you can configure your deploy stage to automatically scale down the old server group after the new one is healthy.
 
 
 ## Common errors and troubleshooting
@@ -102,7 +102,7 @@ If you are having trouble try checking out some of these topics:
 
 ### Deploy times out
 
-Often when your deploy stage is timing out, it is because your instances are never becomming healthy. In this case, Spinnaker will keep terminating and replacing the instances. 
+Often when your deploy stage is timing out, it is because your instances are never becomming healthy. In this case, Spinnaker will keep terminating and replacing the instances.
 
 ### Investigating red instances
 
@@ -110,7 +110,7 @@ Select your red instance and hover your cursor over the red triangle next to the
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/3o1J0A292M1x2C1m2x2q/Image%202017-03-30%20at%203.29.02%20PM.png)
 
-### Incorrect Healthcheck 
+### Incorrect Healthcheck
 
 You have the option when deploying a new server group to use either EC2 or ELB healthchecking. When instances aren't passing this healthcheck they will be terminated and replaced. If you are experiencing strange behavior, double check that the correct healthcheck is selected.
 
@@ -175,7 +175,7 @@ LAUNCH_CONFIG="test-example-v001-03302017224619"
 
 ## Rolling back
 
-Yup. Sometimes you need to rollback to a known previously working state. 
+Yup. Sometimes you need to rollback to a known previously working state.
 
 ### Automatically
 
@@ -198,11 +198,54 @@ If you are ever in a situation where you need to roll back without Spinnaker, yo
 - Scale down or delete the new ASG
 
 
+## Additional Launch Block Devices
+
+If you want additional block devices or a larger root partition you'll need to
+add an a new list to the pipeline JSON.  Unfortunately at this time there is no
+UI to add block devices.  
+
+1.  [Edit Your Pipelines JSON](http://docs.armory.io/user-guides/pipelines/#pipeline-json)
+2.  Find your deployment dictionary.  You'll need to add the object of pairs for each cluster definition.
+3.  Add your custom block devices for launch under the key `blockDevices`.
+
+### Block Devices Definition
+
+```
+"blockDevices": [
+  {
+    "deleteOnTermination": [true|false],
+    "deviceName": "[device string]",
+    "iops": [integer ranging from 100-20000],
+    "size": [integer, size in GB, range from 1GB-64TB],
+    "volumeType": "[st1|io1|gp2|sc1]"
+  }
+]
+```
+### Example of Additional Block Devices
+```
+"clusters": [
+        {
+          "account": "my-aws-account",
+          "application": "myapplication",
+          "blockDevices": [
+            {
+              "deleteOnTermination": true,
+              "deviceName": "/dev/sda1",
+              "size": 32,
+              "volumeType": "gp2"
+            }
+          ]
+        },
+        ...
+]
+```
+
+
 ## VPC Subnet Type
 
 Throughout Spinnaker, Subnet Type is an abstraction of subnets within AWS.
 
-You can find fields that you use to specify VPC Subnet type when creating load balancers, deploying server groups, etc. 
+You can find fields that you use to specify VPC Subnet type when creating load balancers, deploying server groups, etc.
 
 In order to use a subnet within Spinnaker, you will need to tag it in AWS a certain way.
 

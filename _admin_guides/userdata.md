@@ -14,3 +14,7 @@ To modify the location of the `udf0` template file update your `clouddriver-loca
 udf:
   udfRoot: /opt/spinnaker/config/udf
 ```
+
+### Related Guides
+
+- [Dynamically defining User-Data]({% link _user_guides/expression-language.md %}#dynamically-defining-user-data)

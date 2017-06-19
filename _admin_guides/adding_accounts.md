@@ -22,7 +22,7 @@ aws:
   accounts:
 
     - name: prod-account
-      accountId: "098765432101"
+      accountId: "198765432101"
       regions:
         - name: us-east-1
         - name: us-east-2
