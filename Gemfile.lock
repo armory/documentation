@@ -45,6 +45,7 @@ GEM
       sass (~> 3.4)
     jekyll-watch (1.5.0)
       listen (~> 3.0, < 3.1)
+    jekyll_version_plugin (2.0.0)
     kramdown (1.13.2)
     liquid (3.0.6)
     listen (3.0.8)
@@ -74,6 +75,7 @@ DEPENDENCIES
   jekyll-assets
   jekyll-feed (~> 0.6)
   jekyll-livereload
+  jekyll_version_plugin
   tzinfo-data
 
 RUBY VERSION
