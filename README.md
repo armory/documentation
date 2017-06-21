@@ -14,7 +14,7 @@ Jekyll is used to compile the markdown into a website.
 Once you have this repo checked out, make some changes, then (assuming you know how to use docker):
 
 ```
-docker run -ti -p 4000:4000 -v "$(pwd):/srv/jekyll" jekyll/jekyll jekyll serve
+docker run -ti -p 4000:4000 -p 5678:5678 -v "$(pwd):/srv/jekyll" jekyll/jekyll jekyll serve --incremental --livereload --reload_port 5678
 ```
 
 If you are using docker-machine then you will need to navigate to the ip for your docker vm, probably something like: `http://192.168.99.100:4000`
@@ -22,3 +22,6 @@ If you are using docker-machine then you will need to navigate to the ip for you
 If you are using native docker, then try: `http://localhost:4000`
 
 to exit, you can do `ctrl+c`
+
+### Livereload
+Install the [Livereload chrome extension](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en) if you like seeing the page auto refresh when making a change.
