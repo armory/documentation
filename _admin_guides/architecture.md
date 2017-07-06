@@ -16,7 +16,7 @@ We provide two methods of installing Spinnaker: Stand-Alone and High-Availabilit
 
 Below is a diagram of the architecture & components deployed in a stand-alone configuration.
 
-![](https://d17oy1vhnax1f7.cloudfront.net/items/1v2S0C0l0p3m18060g06/Image%202017-01-26%20at%2012.03.11%20PM.png?v=3aa888eb)
+![](http://f.cl.ly/items/1v2S0C0l0p3m18060g06/Image%202017-01-26%20at%2012.03.11%20PM.png?v=3aa888eb)
 
 ### Security Groups
 In order to not expose Spinnaker sub-services which may not contain authentication, we use internal and user-facing security groups.  The user-facing security group exposes ports for `gate` and `deck`, typically 8084 and 80 respecitively.  We use a separate security group for internal communication between services.
@@ -33,7 +33,7 @@ By default, we create an instance with a private IP and keys which should only b
 
 Below is a diagram of the architecture & components deployed in an HA configuration.
 
-![](https://d17oy1vhnax1f7.cloudfront.net/items/3a272r1D3S1j0R2N3H2f/Image%202017-01-26%20at%2011.18.35%20AM.png?v=38d7cea6)
+![](http://f.cl.ly/items/3a272r1D3S1j0R2N3H2f/Image%202017-01-26%20at%2011.18.35%20AM.png?v=38d7cea6)
 
 ## Systems Requirements
 
