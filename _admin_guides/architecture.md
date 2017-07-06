@@ -29,10 +29,14 @@ We'll create an ASG with the name `armoryspinnaker-preprod-v000`.
 
 By default, we create an instance with a private IP and keys which should only be accessible by your team.
 
+
 ## High Availability (HA)
 
 * Redudancy and solid performance
-* Intermediate step before breaking out into many more components
+    - Multiple Availability Zones (AZ) failovers
+    - Scheduled jobs failovers into a new AZ
+    - Polling jobs (jenkins, etc.) failovers into a new AZ
+* HA is our intermediate step before breaking up each sub-service into multiple AZs
 
 Below is a diagram of the architecture & components deployed in an HA configuration.
 
