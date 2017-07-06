@@ -19,8 +19,10 @@ Below is a diagram of the architecture & components deployed in a stand-alone co
 
 ![](http://f.cl.ly/items/1v2S0C0l0p3m18060g06/Image%202017-01-26%20at%2012.03.11%20PM.png?v=3aa888eb)
 
+
 ### Security Groups
-In order to not expose Spinnaker sub-services which may not contain authentication, we use internal and user-facing security groups.  The user-facing security group exposes ports for `gate` and `deck`, typically 8084 and 80 respecitively.  We use a separate security group for internal communication between services.
+In order to not expose any Spinnaker sub-services which may not contain authentication, we use internal and user-facing security groups.  The user-facing security group exposes ports for `gate` and `deck`, typically 8084 and 80 respecitively.  A separate security group is used for internal communication between services.
+
 
 ### Autoscaling Groups & Launch Configurations
 We'll create an ASG with the name `armoryspinnaker-preprod-v000`.  
