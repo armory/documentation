@@ -10,8 +10,9 @@ We provide two methods of installing Spinnaker: Stand-Alone and High-Availabilit
 
 ## Stand-Alone
 
- * Local Redis
+ * Local instance Redis
  * Local networking
+ * Configuration persistance is done through s3
 
 
 Below is a diagram of the architecture & components deployed in a stand-alone configuration.
