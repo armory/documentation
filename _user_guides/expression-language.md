@@ -18,7 +18,7 @@ Some of the most common uses include:
 - Retrieving a user's manual judgement response
 
 
-Before we go into examples and troubleshooting, check out the guide on spinnaker.io for an detailed overview: [http://www.spinnaker.io/docs/pipeline-expressions-guide](http://www.spinnaker.io/docs/pipeline-expressions-guide)
+Before we go into examples and troubleshooting, check out the guide on spinnaker.io for an detailed overview: [https://www.spinnaker.io/docs/pipeline-expressions-guide](https://www.spinnaker.io/docs/pipeline-expressions-guide)
 
 ## Common techniques
 
