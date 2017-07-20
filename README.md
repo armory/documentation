@@ -10,18 +10,19 @@ Jekyll is used to compile the markdown into a website.
 
 
 ### Running locally
-
-Once you have this repo checked out, make some changes, then (assuming you know how to use docker):
+Once you have this repo checked out, start the server and make changes
 
 ```
-docker run -ti -p 4000:4000 -p 5678:5678 -v "$(pwd):/srv/jekyll" jekyll/jekyll jekyll serve --incremental --livereload --reload_port 5678
+./bin/run
 ```
 
-If you are using docker-machine then you will need to navigate to the ip for your docker vm, probably something like: `http://192.168.99.100:4000`
-
-If you are using native docker, then try: `http://localhost:4000`
+You can view your changes at : `http://localhost:4000` or `http://192.168.99.100:4000` (if you're using docker-machine)
 
 to exit, you can do `ctrl+c`
+
+### Pushing to prod
+Make a pull-request and once its merged, Jenkins automatically puts it on S3.
+
 
 ### Livereload
 Install the [Livereload chrome extension](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en) if you like seeing the page auto refresh when making a change.
