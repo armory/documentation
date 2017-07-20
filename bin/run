@@ -1,3 +1,9 @@
 #!/bin/bash
 
-docker run --rm --user="root" -ti -p 4000:4000 -v "$(pwd):/srv/jekyll" jekyll/jekyll bash -c "jekyll serve --incremental"
+docker build -t armory/documentation .
+
+docker run --rm -ti \
+	--name=documentation \
+	-p 4000:4000 -p 5678:5678 \
+	-v "$(pwd):/srv/jekyll" armory/documentation \
+	jekyll serve --incremental --livereload --reload_port 5678

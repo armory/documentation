@@ -10,8 +10,8 @@ ruby RUBY_VERSION
 # This will help ensure the proper Jekyll version is running.
 # Happy Jekylling!
 gem "jekyll", "3.4.3"
-gem "jekyll-assets"
-gem "autoprefixer-rails"
+gem "jekyll-assets", "2.2.8"
+gem "autoprefixer-rails", "6.7.7.1"
 
 # If you want to use GitHub Pages, remove the "gem "jekyll"" above and
 # uncomment the line below. To upgrade, run `bundle update github-pages`.
@@ -19,9 +19,16 @@ gem "autoprefixer-rails"
 
 # If you have any plugins, put them here!
 group :jekyll_plugins do
-   gem "jekyll-feed", "~> 0.6"
-   gem 'jekyll-livereload'
-   gem 'jekyll_version_plugin'
+    gem "jekyll-feed", "~> 0.6"
+    gem "jekyll-livereload"
+    gem "jekyll_version_plugin"
+    gem "sass", "3.4.23"
+    gem "rb-fsevent", "0.9.8"
+    gem "rb-inotify", "0.9.8"
+    gem "kramdown", "1.13.2"
+    gem "extras", "0.1.0"
+    gem "rack", "1.6.5"
+    gem "sprockets", "3.6.3"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
