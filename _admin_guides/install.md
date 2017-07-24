@@ -46,6 +46,8 @@ After setting up Spinnaker through the [Spinnaker-Terraform](#spinnaker-terrafor
 - Any selection of `Base OS` will work, it'll be used for AMI naming. Changes can be made through the `spinnaker-local.yml`.
 - `Show Advance Options` needs to be checked for the following.
 
+![screenshot of bake stage](https://cl.ly/431n1T2r1O0U/Screen%20Shot%202017-07-24%20at%204.39.17%20PM.png)
+
 
 #### CentOS
 ```
