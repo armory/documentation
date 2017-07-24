@@ -10,8 +10,6 @@ The installer is a script that is responsible for asking the user for customer s
 
 
 
-
-
 * Table of Contents
 {:toc}
 
@@ -41,56 +39,42 @@ Configuration(s) to set Spinnaker up for the first time.
 The installer will download the latest stable version of the Terraform files and place them in `~/armory/`. - If you want to customize how the bootstrapped version of Spinnaker is installed, make changes to the template files in `~/armory/` and run the installer again.
 
 
-## Installing Armory Spinnaker From A Debian Package
-We provide a Debian package that will install all the dependencies needed to install as a bootstrap.  From there you can deploy [Spinnaker with Spinnaker](/admin-guides/redeploying-spinnaker) to additional targets like RHEL or CentOS.
+## Using CentOS or Redhat for Armory Spinnaker
+After setting up Spinnaker through the [Spinnaker-Terraform](#spinnaker-terraform) method, change or add the bake stage in the "Spinnaker deploy Spinnaker" pipeline to the following.
 
+**Note**:
+- Any selection of `Base OS` will work, it'll be used for AMI naming. Changes can be made through the `spinnaker-local.yml`.
+- `Show Advance Options` needs to be checked for the following.
+
+
+#### CentOS
 ```
-apt-get update && apt-get install -y \
-      apt-transport-https \
-      ca-certificates \
-      curl
+Package: armoryspinnaker
 
-curl -fsSL https://yum.dockerproject.org/gpg | sudo apt-key add -
+Extended Attributes:
+    repository: https://yum.dockerproject.org/repo/main/centos/7/; https://dl.bintray.com/armory/rpms
+    package_type: rpm
+    aws_ssh_username: centos
+    aws_instance_type: m4.large
 
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 379CE192D401AB61
-
-
-echo "deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main" \
-        | sudo tee -a /etc/apt/sources.list
-
-echo "deb https://dl.bintray.com/armory/debians trusty main" \
-  | sudo tee -a /etc/apt/sources.list
-
-apt-get update
-
-apt-get install armoryspinnaker
+Base AMI: ami-bec022de (a base CentOS 7.1704)
+AMI Name: centos-armoryspinnaker
 ```
 
 
-
-## Install ArmorySpinnaker on Redhat and CentOS
-We provide a RPM package that will install all dependancies needed.
-From there you can deploy [Spinnaker with Spinnaker](/admin-guides/redeploying-spinnaker).
-```bash
-sudo cat << EOF > /etc/yum.repos.d/armory-docker.repo
-[armory-docker]
-name=armory-docker
-baseurl=https://yum.dockerproject.org/repo/main/centos/7/
-gpgcheck=0
-enabled=1
-EOF
-
-sudo cat << EOF > /etc/yum.repos.d/armory-spinnaker.repo
-[armory-spinnaker]
-name=armory-spinnaker
-baseurl=https://dl.bintray.com/armory/rpms
-gpgcheck=0
-enabled=1
-EOF
-
-sudo yum -y install armoryspinnaker
+#### Redhat
 ```
+Package: armoryspinnaker
 
+Extended Attributes:
+    repository: https://yum.dockerproject.org/repo/main/centos/7/; https://dl.bintray.com/armory/rpms
+    package_type: rpm
+    aws_ssh_username: ec2-user
+    aws_instance_type: m4.large
+
+Base AMI: ami-b55a51cc (a base Redhat 7.3)
+AMI Name: redhat-armoryspinnaker
+```
 
 
 ## Armory Spinnaker AMI & Debian Distribution
