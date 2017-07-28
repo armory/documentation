@@ -95,3 +95,21 @@ services:
       options:
         syslog-address: "tcp://192.168.0.42:123"  
 ```
+
+## Example: Logging to Sumo Logic
+
+For logging to Sumo Logic the preferred method is to run the sumologic-collector container (provided by Sumo Logic) alongside the default logging settings. To do this add/edit the docker-compose.override.yml file at the location `/opt/spinnaker/compose` and set `DOCKER_COMPOSE_OVERRIDE=true` in your environment file located at `/opt/spinnaker/env`. This is an example of a fresh docker-compose.override.yml that runs the Sumo Logic collector:
+
+```
+version: "2.1"
+services:
+  sumologic-collector:
+    container_name: sumologic-collector
+    hostname: sumologic-collector
+    image: sumologic/collector:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: ["${ACCESSID}", "${ACCESSKEY}"]
+```
+
+Note that `${ACCESSID}` and `${ACCESSKEY}` in the example above should be replaced with your actual Sumo Logic acceess keys. If this is your first Docker source configured through Sumo Logic you may have to configure the source on the Sumo Logic side. Please see the [Docker Collector documentation from Sumo Logic](https://help.sumologic.com/Send-Data/Data-Types/Docker/01_Collect_Events_and_Statistics_for_the_Docker_App) for info about configuring a source.
