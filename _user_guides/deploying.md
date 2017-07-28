@@ -118,7 +118,7 @@ You have the option when deploying a new server group to use either EC2 or ELB h
 
 It is possible to set your ELB to work with certain AZs but then deploy your server group to another AZ. If you have your healthcheck set to ELB, then your instances will never become healthy. You can tell when this happens by hovering you mouse over the red triangle [described above](investigating-red-instances).
 
-### Unkown errors
+### Unknown errors
 
 Sometimes you may encounter an 'Unknown Error' message when executing your deploy. Something like, "Shrink cluster: Exception: No reason provided." These errors are almost always caused by a field having an incorrect value in the deploy configuration. This particular "Shrink cluster" error was caused by the server group's region being invalid.
 
@@ -202,7 +202,7 @@ If you are ever in a situation where you need to roll back without Spinnaker, yo
 
 If you want additional block devices or a larger root partition you'll need to
 add an a new list to the pipeline JSON.  Unfortunately at this time there is no
-UI to add block devices.  
+UI to add block devices.
 
 1.  [Edit Your Pipelines JSON](http://docs.armory.io/user-guides/pipelines/#pipeline-json)
 2.  Find your deployment dictionary.  You'll need to add the object of pairs for each cluster definition.
