@@ -156,6 +156,13 @@ You can pass custom information to your deployed instances through the 'User Dat
 
 Make sure to base64 encode the content before putting it into the field in the options.
 
+### UserData issues
+
+If the default Armory Spinnaker UserData doesn't work with your instance launch sequence, there are two work-arounds you can use.
+
+* If the UserData you want to use is bash-compatible and will fit after that existing chunk of variables that Spinnaker puts in, you can just put your base64 encoded UserData into the cluster config.
+
+* Adjust the UserData template used by Spinnaker.  There is a writeup by the Spinnaker Folks [here]({% https://github.com/spinnaker/clouddriver/blob/master/clouddriver-aws/UserData.md %}). When we use that option we normally point udfRoot at something like /opt/spinnaker/config/custom-udf, and then add the custom-udf directory to the config package we release Spinnaker from. If you want to turn it off completely that means just adding the udfRoot option to clouddriver-local.yml, and putting a blank file at /opt/spinnaker/config/custom-udf/udf0 .
 
 ## Passing environment data to your deployed instances
 
