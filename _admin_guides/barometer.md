@@ -10,6 +10,9 @@ published: True
 Update your environment file in `/opt/spinnaker/env/` to enable barometer with the following:
 `BAROMETER_ENABLED=true`
 
+## Open Ports
+
+On the internal ELB open up port 9092 which is the default port for `barometer`
 ## Enabling Datadog
 
 In your `barometer-local.yml` file add your Datadog API Keys:
