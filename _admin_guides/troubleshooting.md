@@ -16,12 +16,6 @@ From time-to-time you might have hung tasks.  In order to clear them out you'll 
 You can then grab the ID from the url:
 `https://${YOURSPINNAKER_INSTANCE}:8084/applications/armoryspinnaker/tasks/bf06a51c-083f-40f0-964a-71314c97ae17`
 
-4.  Delete the orchestration key from redis
-
-```
-redis-cli -h ${HOST_FROM_STEP_2} DEL orchestration:${TASK_KEY}
-```
-
-```
-redis-cli -h ${HOST_FROM_STEP_2} DEL  orchestration:bf06a51c-083f-40f0-964a-71314c97ae17:stageIndex
-```
+4.  Delete the orchestration keys from redis:<br/>
+`redis-cli -h ${HOST_FROM_STEP_2} DEL orchestration:${TASK_KEY}`<br/>
+`redis-cli -h ${HOST_FROM_STEP_2} DEL  orchestration:bf06a51c-083f-40f0-964a-71314c97ae17:stageIndex`
