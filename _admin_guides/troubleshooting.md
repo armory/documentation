@@ -1,8 +1,7 @@
-  ---
+---
 layout: post
 title: Troubleshooting
 order: 200
-published: true
 ---
 
 #### How do I remove hung operations in the tasks view?
