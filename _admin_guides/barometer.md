@@ -18,9 +18,15 @@ In your `barometer-local.yml` file add your Datadog API Keys:
 datadog:
   apiKey: 0000000000AAAAAAAAAAAA-SAMPLE_KEY
   applicationKey: AAAAAAAAAAAAAAAA00000000000-SAMPLE_KEY
+
+spinnaker:
+  redis:
+    host: ${services.redis.host}
+    port: ${services.redis.port}
 ```
 
 Restart Armory Spinnaker
+
 ```
 service armory-spinnaker restart
 ```
