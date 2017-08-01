@@ -20,4 +20,4 @@ You can then grab the ID from the url:
 
 `redis-cli -h ${HOST_FROM_STEP_2} DEL orchestration:${TASK_KEY}`
 
-`redis-cli -h ${HOST_FROM_STEP_2} orchestration:bf06a51c-083f-40f0-964a-71314c97ae17:stageIndex`
+`redis-cli -h ${HOST_FROM_STEP_2} DEL  orchestration:bf06a51c-083f-40f0-964a-71314c97ae17:stageIndex`
