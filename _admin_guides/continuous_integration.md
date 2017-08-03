@@ -31,17 +31,17 @@ Make sure to restart the Igor service: `sudo docker restart igor`
 
 ## Multiple Jenkins Masters
 
-If you have more than one Jenkins master, then you'll need to edit your `igor-local.yml`.
+If you have more than one Jenkins master, you'll need to edit your `igor-local.yml`.
 
 ```
 
 jenkins:
   enabled: ${services.jenkins.enabled:false}
   masters:
-    - name: ${services.jenkins.defaultMaster.name}
-      address: ${services.jenkins.defaultMaster.baseUrl}
-      username: ${services.jenkins.defaultMaster.username}
-      password: ${services.jenkins.defaultMaster.password}
+    - name: First-Master
+      address: http://firstmaster.example.com
+      username: first-master-username
+      password: first-master-password
     - name: Second-Master
       address: http://second-master.example.com
       username: second-master-username
