@@ -39,7 +39,7 @@ jenkins:
   enabled: ${services.jenkins.enabled:false}
   masters:
     - name: First-Master
-      address: http://firstmaster.example.com
+      address: http://firstmaster.example.com:8080
       username: first-master-username
       password: first-master-password
     - name: Second-Master
