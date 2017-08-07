@@ -22,7 +22,7 @@ If canarying is enabled for your instance, you should be able to see a stage for
 
 The canary stage starts by deploying 2 new server-groups: a `baseline` and `canary`.   The `baseline` server group is deployed with the AMI that was most recently deployed for the chosen template server-group.  The `canary` server group is deployed with release candidate AMI which is pull from a previous `Bake` or `Find Image` stage in the pipeline.  Once both server groups are up and "in service" the analysis will be begin.  The analysis is based on additional configuration below.
 
-Once the canary passes _both_ the `canary` and `baseline` server group will be destroyed and then the pipeline will continue, likely a standard deployment stage.  By not including the canary as part of the production deployment stage it adds safety and isolation to the canary.  If there are errors or problems during the canarying stage it makes clean up simple because this stage isn't considered a canary stage.  You can still choose to have your deployment to have a more sophisticated deployment which is completed in phases.  
+Once the canary stage has completed, _both_ the `canary` and `baseline` server group will be destroyed and the pipeline will continue, likely to a standard deployment stage.  By not including the canary as part of the production deployment stage it adds safety and isolation to the canary.  You can still choose to have your deployment to have a more sophisticated deployment which is completed in phases.  
 
 ### Deployment
 
