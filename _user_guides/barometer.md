@@ -9,18 +9,18 @@ published: True
 
 Barometer is a automated canarying analysis (ACA) service that is provided through Armory Spinnaker.  The goal for barometer is to provide confidence through automation and intelligence.
 
-While Barometer aims to work with many different data providers, it currently works with the following data sources providers:
+While Barometer aims to work with many different data providers, it currently works with the following data providers:
 
 * Elastic Search
 * Datadog
 
 ## Configuring A Canary Stage
 
-If canary is enabled on your instance you should be able to see a stage for canarying called `canary`.  
+If canarying is enabled for your instance, you should be able to see a stage for canarying:
 
 ![Canary Stage](https://cl.ly/2H0T1P1j2J15/Image%202017-08-07%20at%2010.57.58%20AM.png)
 
-The canary stage starts by deploying 2 new server-groups: a `baseline` and `canary` server groups.  The `baseline` server group is deployed with the AMI that was most recently previously deployed for the group.  The `canary` server group is deployed with release candidate AMI which is pull from a previous `Bake` or `Find Image From Tags` stage in the pipeline.  Once both server groups are up and "in service" the analysis will be begin.  The analysis is based on additional configuration below.
+The canary stage starts by deploying 2 new server-groups: a `baseline` and `canary`.   The `baseline` server group is deployed with the AMI that was most recently deployed for the chosen template server-group.  The `canary` server group is deployed with release candidate AMI which is pull from a previous `Bake` or `Find Image` stage in the pipeline.  Once both server groups are up and "in service" the analysis will be begin.  The analysis is based on additional configuration below.
 
 Once the canary passes _both_ the `canary` and `baseline` server group will be destroyed and then the pipeline will continue, likely a standard deployment stage.  By not including the canary as part of the production deployment stage it adds safety and isolation to the canary.  If there are errors or problems during the canarying stage it makes clean up simple because this stage isn't considered a canary stage.  You can still choose to have your deployment to have a more sophisticated deployment which is completed in phases.  
 
