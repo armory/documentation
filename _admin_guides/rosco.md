@@ -23,6 +23,31 @@ rosco:
 ![baking templates](https://d1ax1i5f2y3x71.cloudfront.net/items/0K1S1l3L2M0z373A0L1o/Image%202017-04-17%20at%207.06.45%20AM.png?X-CloudApp-Visitor-Id=2686178)
 
 
+### Region Templates
+
+In some cases you'll want to bake in multiple multiple regions but in order to do so you'll need to create variable files that tell packer where and how to bake the image.  You can do this using [Packer's template variables from a file](https://www.packer.io/docs/templates/user-variables.html#from-a-file).  You can configure your bake stage to use the region template you need by using the `${region}` variable and selecting the regions where would like the bake to occur.  This is a _much_ faster process than copying the AMIs across regions because the bakes happen in parallel.
+
+![bake configuration](https://cl.ly/1g1M192j3M2D/Image%202017-08-07%20at%2012.45.20%20PM.png)
+
+
+### Dynamically Generating Base AMI
+
+In some cases you'll want to dynamically generate a Base AMI for all deployments of Spinnaker instead of using the `Find Images` stage to determine the latest base AMI to use.  This effectively saves a step for every deployment.  You can [specify a `source_ami_filter`](https://www.packer.io/docs/builders/amazon-ebs.html#source_ami_filter)  which is run before the packer instance is created to find the base AMI to use.
+
+```
+{
+  "source_ami_filter": {
+    "filters": {
+      "virtualization-type": "hvm",
+      "name": "mycompany-base-security-patched-*",
+      "root-device-type": "ebs"
+    },
+    "owners": ["099720109477"],
+    "most_recent": true
+  }
+}
+```
+
 ### Using Package (deb/rpm/chocolatey) Repositories
 
 You can specify an apt repository (used when baking debian based images) and/or a yum repository (used when baking an rpm based imaged) and/or a chocolatey repository (used when baking a nuget based image).
