@@ -20,7 +20,9 @@ If canary is enabled on your instance you should be able to see a stage for cana
 
 ![Canary Stage](https://cl.ly/2H0T1P1j2J15/Image%202017-08-07%20at%2010.57.58%20AM.png)
 
-The canary stage starts by deploying 2 new server-groups: a `baseline` and `canary` server groups.  The `baseline` server group is deployed with the AMI that was most recently previously deployed for the group.  The `canary` server group is deployed with release candidate AMI which is pull from a previous `Bake` or `Find Image From Tags` stage in the pipeline.  Once both server groups are up and "in service" the analysis will be begin.  The analysis is based on additional configuration below
+The canary stage starts by deploying 2 new server-groups: a `baseline` and `canary` server groups.  The `baseline` server group is deployed with the AMI that was most recently previously deployed for the group.  The `canary` server group is deployed with release candidate AMI which is pull from a previous `Bake` or `Find Image From Tags` stage in the pipeline.  Once both server groups are up and "in service" the analysis will be begin.  The analysis is based on additional configuration below.
+
+Once the canary passes _both_ the `canary` and `baseline` server group will be destroyed and then the pipeline will continue, likely a standard deployment stage.  By not including the canary as part of the production deployment stage it adds safety and isolation to the canary.  If there are errors or problems during the canarying stage it makes clean up simple because this stage isn't considered a canary stage.  You can still choose to have your deployment to have a more sophisticated deployment which is completed in phases.  
 
 ### Deployment
 
@@ -42,13 +44,19 @@ This configuration determines how the canary will be deployed.  This looks simil
 
 ![Canary Pair Configuration](https://cl.ly/3b2l1N1a0n3Q/Image%202017-08-07%20at%2011.39.16%20AM.png)
 
-## Using Datadog
+## Datadog
 
 If your Administrator has configured Datadog in your Barometer instance you'll be able to use the metrics and monitors stored in Datadog to inform Barometer on the health of your service.
 
+### Metrics Dashboard
+
+
 ### Metrics
 
-The metrics stored and are compared relative
+The metrics stored in Datadog are compared between the canary and baseline using statistical analysis.  Once the service determines that the canary is behaving abnormally it'll mark it as unhealthy.  You can specify which metrics that you want Barometer to consider during the canary analysis.  
+
+![Datadog Metrics](https://cl.ly/2I251a2r2Y1W/Image%202017-08-07%20at%201.36.44%20PM.png)
+
 
 ### Monitors
 
@@ -59,6 +67,12 @@ You can use pre-existing monitors to fail the canary regardless of how it compar
 In your Datadog monitor you'll need to aggregate the metric by autoscaling group:
 ![ASG Metrics](https://cl.ly/0s0s2N382x02/Image%202017-08-07%20at%2012.04.54%20PM.png)
 
+You'll also need to include the autoscaling group name in the monitor message by checking the box `Include Triggering tags in notification title`:
+
+
+![include asg](https://cl.ly/3L42191Z0o03/Image%202017-08-07%20at%201.23.30%20PM.png)
+
+
 You can enable/disable this behavior by checking the box below.
 ![Disable monitor](https://cl.ly/2g1T1b0q2I2S/Image%202017-08-07%20at%2011.53.07%20AM.png)
 
@@ -66,15 +80,10 @@ You can enable/disable this behavior by checking the box below.
 
 ![enabling ec2 and autoscaling](https://cl.ly/0z1h27390b3v/Image%202017-08-07%20at%2012.10.12%20PM.png)
 
-## Using Elastic Search
+## Elastic Search
 
-## Goals
-We need documentation (published to docs.armory.io) describing how Barometer will work once we complete all of the work in this sprint.
+If Elastic Search is configured by your Spinnaker Administrator you can take advantage of using ES queries to further analyze your canary deployments.  
 
-The documentation should include information on the three features that we've built:
+You can specify which queries you want Barometer to consider by adding each new JSON query that you want considered by Barometer.  If Barometer queries your elastic search instance and finds that any of these queries return a result it will consider the canary unhealthy.  
 
-1) Using Datadog Monitors or Elastic Search query to kill a canary
-2) Manual canary where user views a Datadog canary report, then manually continues executing the pipeline.
-3) Automated canary (warn the user that this is an experimental feature)
-
-The document should describe what each feature does, when you would want to use it, and how to actually configure it in a Spinnaker pipeline.
+![elastic search example](https://cl.ly/190T1M3S3o40/Image%202017-08-07%20at%201.56.10%20PM.png)
