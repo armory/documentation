@@ -32,7 +32,7 @@ In some cases you'll want to bake in multiple multiple regions but in order to d
 
 ### Dynamically Generating Base AMI
 
-In some cases you'll want to dynamically generate a Base AMI for all deployments of Spinnaker instead of using the `Find Images` stage to determine the latest base AMI to use.  This effectively saves a step for every deployment.  You can [specify a `source_ami_filter`](https://www.packer.io/docs/builders/amazon-ebs.html#source_ami_filter)  which is run before the packer instance is created to find the base AMI to use.
+In some cases you'll want to dynamically generate a Base AMI for all deployments of Spinnaker instead of using the `Find Images` stage to determine the latest base AMI to use.  This effectively saves a step for every deployment.  You can [specify a  source_ami_filter](https://www.packer.io/docs/builders/amazon-ebs.html#source_ami_filter) in your packer template which is run before the packer instance is created to find the base AMI to use.
 
 ```
 {
