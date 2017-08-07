@@ -1,0 +1,80 @@
+---
+layout: post
+title: Barometer
+order: 70
+published: True
+---
+
+# What is Barometer
+
+Barometer is an additional automated canarying analysis (ACA) service that is provided through Armory Spinnaker.  The goal is barometer is provide confidence through automation and intelligence to provide the user with additional confidence during deployments.  
+
+While Barometer aims to work with many different data providers, it currently works with the following data sources providers:
+
+* Elastic Search
+* Datadog
+
+## Configuring A Canary Stage
+
+If canary is enabled on your instance you should be able to see a stage for canarying called `canary`.  
+
+![Canary Stage](https://cl.ly/2H0T1P1j2J15/Image%202017-08-07%20at%2010.57.58%20AM.png)
+
+The canary stage starts by deploying 2 new server-groups: a `baseline` and `canary` server groups.  The `baseline` server group is deployed with the AMI that was most recently previously deployed for the group.  The `canary` server group is deployed with release candidate AMI which is pull from a previous `Bake` or `Find Image From Tags` stage in the pipeline.  Once both server groups are up and "in service" the analysis will be begin.  The analysis is based on additional configuration below
+
+### Deployment
+
+![Canary Deployment](https://cl.ly/1J1H0W2d2R15/Image%202017-08-07%20at%2011.01.19%20AM.png)
+
+`Canary Lifetime` - The total time period that the canary & baseline server will live and continue analysis before moving onto the next stage.
+
+
+`Terminate unhealthy canary` - If the canary is unhealthy based on analysis it'll continue to collect and analyze information for this period of time until it considers the overall result of the canary a failure.
+
+
+`Baseline version - Account & Clusters` - This is the baseline cluster to use for the canary analysis.  The Canary stage will find the AMI id from the latest deployed cluster and use this for the baseline server group.  In our screenshot above, the canary stage would deploy 2 new server groups: `armoryhellodeplloy-nightly-baseline` and `armoryhellodeplloy-nightly-canary`.
+
+
+### Baseline/Canary Cluster Pair
+
+This configuration determines how the canary will be deployed.  This looks similar to a server group deployment. The difference is that it is managed by Canary stage and has a limited lifespan as defined by `Canary Lifetime` above.  In most cases you'll want to put the canary behind the existing production load balancer which will drive a small percentage of traffic to your new canary and baseline server group.  You can specify a different load balancer but you'll be responsible for creating a different mechanism for traffic shaping.   
+
+
+![Canary Pair Configuration](https://cl.ly/3b2l1N1a0n3Q/Image%202017-08-07%20at%2011.39.16%20AM.png)
+
+## Using Datadog
+
+If your Administrator has configured Datadog in your Barometer instance you'll be able to use the metrics and monitors stored in Datadog to inform Barometer on the health of your service.
+
+### Metrics
+
+The metrics stored and are compared relative
+
+### Monitors
+
+You can use pre-existing monitors to fail the canary regardless of how it compares to it's `baseline`.  This is good if you have absolute business rules such as "response times can't go over 50ms" or "Number of exceptions must be below 10 per minute".  Barometer does this by periodically checking the event stream for monitors that have failed and match the canary autoscaling group name.
+
+#### Enabling the monitor
+
+In your Datadog monitor you'll need to aggregate the metric by autoscaling group:
+![ASG Metrics](https://cl.ly/0s0s2N382x02/Image%202017-08-07%20at%2012.04.54%20PM.png)
+
+You can enable/disable this behavior by checking the box below.
+![Disable monitor](https://cl.ly/2g1T1b0q2I2S/Image%202017-08-07%20at%2011.53.07%20AM.png)
+
+**Note:** If you aren't able to aggregate by autoscaling group this means either you're not logging through the Datadog agent that is usually placed on the instance or you need to enable `Auto Scaling` and `EC2` integrations from the Datadog integrations screen.
+
+![enabling ec2 and autoscaling](https://cl.ly/0z1h27390b3v/Image%202017-08-07%20at%2012.10.12%20PM.png)
+
+## Using Elastic Search
+
+## Goals
+We need documentation (published to docs.armory.io) describing how Barometer will work once we complete all of the work in this sprint.
+
+The documentation should include information on the three features that we've built:
+
+1) Using Datadog Monitors or Elastic Search query to kill a canary
+2) Manual canary where user views a Datadog canary report, then manually continues executing the pipeline.
+3) Automated canary (warn the user that this is an experimental feature)
+
+The document should describe what each feature does, when you would want to use it, and how to actually configure it in a Spinnaker pipeline.
