@@ -36,11 +36,11 @@ Then `ctrl+c` to exit watch once it is healthy.
 
 
 ## Subnets
-The first thing you will need to do is configure the tags on the subnets you want Spinnaker to deploy to within AWS. Spinnaker would like you to categorize your subnets so that it knows which ones are similar enough to deploy to for different purposes. There is a seperate guide on configuring your subnets that you can find [here]({% link _user_guides/sbunets.md %})
+The first thing you will need to do is configure the tags on the subnets you want Spinnaker to deploy to within AWS. Spinnaker would like you to categorize your subnets so that it knows which ones are similar enough to deploy to for different purposes. There is a seperate guide on configuring your subnets that you can find [here]({% link _admin_guides/sbunets.md %})
 
 
 ## Jenkins
-You can add a Jenkins master to Spinnaker by following [this guide]({% link _user_guides/continuous_integration.md %}). Once the master is added you will need to restart your Spinnaker instance. You can verify that the master has been added correctly by running the following form the instance:
+You can add a Jenkins master to Spinnaker by following [this guide]({% link _admin_guides/continuous_integration.md %}). Once the master is added you will need to restart your Spinnaker instance. You can verify that the master has been added correctly by running the following form the instance:
 ```
 $ curl http://localhost:8084/v2/builds
 ```
