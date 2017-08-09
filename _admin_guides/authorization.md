@@ -61,23 +61,19 @@ This sample data could be handled by adding the following configuration to the
 file `/opt/spinnaker/config/fiat-local.yml`:
 
 ```
-1 auth:
-2   groupMembership:
-3     service: ldap
-4
-5     ldap:
-6       url: ldaps://ldap.mycompany.com
-7
-8       managerDn: cn=admin,dc=mycompany,dc=com
-9       managerPassword: myPassword
-10
-11      groupSearchBase: ou=groups,dc=mycompany,dc=com
-12      groupSearchFilter: member={0},dc=mycompany,dc=com
-13      groupRoleAttributes: cn
-14
-15      userDnPattern: uid={0},ou=users
-16      userSearchBase: dc=mycompany,dc=com
-17      userSearchFilter: ''
+auth:
+  groupMembership:
+    service: ldap
+    ldap:
+      url: ldaps://ldap.mycompany.com
+      managerDn: cn=admin,dc=mycompany,dc=com
+      managerPassword: myPassword
+      groupSearchBase: ou=groups,dc=mycompany,dc=com
+      groupSearchFilter: member={0},dc=mycompany,dc=com
+      groupRoleAttributes: cn
+      userDnPattern: uid={0},ou=users
+      userSearchBase: dc=mycompany,dc=com
+      userSearchFilter: ''
 ```
 
 You must tailor this configuration to match your ldap database.
