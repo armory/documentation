@@ -6,8 +6,7 @@ published: True
 ---
 
 # Authorization
-Authorization is handled by a micro-service called `Fiat`.  Fiat is responsible for access control  
-for both applications and accounts.  It's also responsible for executing triggers with service accounts.
+Authorization is handled by a micro-service called `Fiat`.  Fiat is responsible for access control for both applications and accounts.  It's also responsible for executing triggers with service accounts.
 
 ## Enabling Fiat
 
@@ -79,8 +78,8 @@ auth:
 You must tailor this configuration to match your ldap database.
 * adjust `mycompany` and `com` to match your organization.
 * adjust `managerDn` and `managerPassword` on lines 8 & 9.
-* On line 11, you should change `groups` to be the parent DN of your groups.
-* On line 12, replace `member` with the key that you use when you add a user to a group. In the sample
+* adjust `groups` to be the parent DN of your groups.
+* replace `member` with the key that you use when you add a user to a group. In the sample
 data, 'member' is used to add isaac and don to the eng group.
 
 ## Application Access
