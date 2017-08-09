@@ -41,6 +41,10 @@ aws:
       requiredGroupMembership: mobile-apps-group
 ```
 
+then restart armory-spinnaker:
+```
+service armory-spinnaker restart
+```
 ## LDAP Authorization
 
 Consider the following sample ldap database:
