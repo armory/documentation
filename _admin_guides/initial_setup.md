@@ -34,9 +34,38 @@ $ watch curl http://localhost:5000/healthcheck
 ```
 Then `ctrl+c` to exit watch once it is healthy.
 
+## Adding AWS Accounts
+The first thing you need to do is configure the AWS accounts you would like to use as deploy targets. Check out the instructions [here]({% link _admin_guides/adding_accounts.md %}). Restart Spinnaker. You can verify the accounts are registered by SSHing to the Spinnaker instance and running:
+```
+$ curl http://localhost:8084/credentials
+```
+You should see something like this:
+```
+[
+  {
+    "accountId": "315216489504",
+    "name": "default-aws-account",
+    "requiredGroupMembership": [],
+    "type": "aws"
+  },
+  {
+    "accountId": "025174528366",
+    "name": "aws-dev",
+    "requiredGroupMembership": [],
+    "type": "aws"
+  }
+  {
+    "accountId": "136468154731",
+    "name": "aws-staging",
+    "requiredGroupMembership": [],
+    "type": "aws"
+  }
+]
+```
+Verify that the `accountId`s match what you intended.
 
 ## Subnets
-The first thing you will need to do is configure the tags on the subnets you want Spinnaker to deploy to within AWS. Spinnaker would like you to categorize your subnets so that it knows which ones are similar enough to deploy to for different purposes. There is a seperate guide on configuring your subnets that you can find [here]({% link _admin_guides/subnets.md %})
+After you have your accounts added to Spinnaker, you will need to configure the tags on the subnets. Only configured subnets can be deployed to by Spinnaker. Spinnaker would like you to categorize your subnets so that it knows which ones are similar enough to deploy to for different purposes. There is a seperate guide on configuring your subnets that you can find [here]({% link _admin_guides/subnets.md %})
 
 
 ## Jenkins
