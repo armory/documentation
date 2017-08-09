@@ -11,6 +11,31 @@ Spinnaker groups subnets into a single subnet name across multiple availability 
 
 ![subnets groups](https://cl.ly/1z3z3x0L0E0w/Image%202017-04-18%20at%204.07.10%20PM.png)
 
+## Verifying Subnet Configuration
+Once you configured the purpose of your subnets you can use the Spinnaker API to double check that settings have been noticed. It will take between 30 seconds and 2 minutes for the changes to be picked up. After that time period you can run:
+```
+$ curl http://<your-spinnaker-hostname>:8084/subnets/aws
+```
+You can expect to receive a response similar to:
+```[
+  {
+    "account": "default-aws-account",
+    "availabilityZone": "us-west-1b",
+    "availableIpAddressCount": 4088,
+    "cidrBlock": "172.31.0.0/20",
+    "deprecated": false,
+    "id": "subnet-7bd69322",
+    "purpose": "external",
+    "region": "us-west-1",
+    "state": "available",
+    "target": null,
+    "type": "aws",
+    "vpcId": "vpc-63327b06"
+  }
+]
+```
+If the `purpose` field is non-null then things are configured correctly.
+
 ## I Don't See My Subnets or VPCs
 Spinnaker caches as much as possible to keep performance through the UI responsive.  If you don't see the subnets and you believe you configured them correctly, then make sure to refresh the cache.  You can find the cache going to the _config_ section of your application and clicking _refresh all caches_.  You should also make sure to refresh your browswer cache by using your browser's development tools and deleting any browser databases.
 
