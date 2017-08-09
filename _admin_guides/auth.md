@@ -55,6 +55,21 @@ Update your ELB to contain the following port mappings:
 ![elb](https://cl.ly/3i0o0b38103J/Image%202017-05-05%20at%203.42.27%20PM.png)
 
 
+## LDAP Authentication
+
+Update the file `/opt/spinnaker/config/gate-local.yml` and add the following section:
+
+```
+ldap:
+  enabled: true
+  url: ldaps://ldap.mycompany.com/dc=mycompany,dc=com
+  userDnPattern: uid={0},ou=users
+```
+
+You should adjust `mycompany` and `com` to match your organization.
+See the [Spinnaker LDAP Documentation](https://www.spinnaker.io/setup/security/authentication/ldap/)
+for more info.
+
 ## X509
 
 In order to enable x509 certificates we'll need to add an additional trust certificate to the keystore.
