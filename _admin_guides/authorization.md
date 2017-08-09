@@ -6,7 +6,12 @@ published: True
 ---
 
 # Authorization
+<<<<<<< HEAD
 Authorization is handled by a micro-service called `Fiat`.  Fiat is responsible for access control for both applications and accounts.  It's also responsible for executing triggers with service accounts.
+=======
+Authorization is handled by a micro-service called `Fiat`.  Fiat is responsible for access control  
+for both applications and accounts.  It's also responsible for executing triggers with service accounts.
+>>>>>>> 4f1510613d66684020451cf550258f87de770108
 
 ## Enabling Fiat
 
@@ -60,6 +65,7 @@ This sample data could be handled by adding the following configuration to the
 file `/opt/spinnaker/config/fiat-local.yml`:
 
 ```
+<<<<<<< HEAD
 auth:
   groupMembership:
     service: ldap
@@ -73,13 +79,37 @@ auth:
       userDnPattern: uid={0},ou=users
       userSearchBase: dc=mycompany,dc=com
       userSearchFilter: ''
+=======
+1 auth:
+2   groupMembership:
+3     service: ldap
+4
+5     ldap:
+6       url: ldaps://ldap.mycompany.com
+7
+8       managerDn: cn=admin,dc=mycompany,dc=com
+9       managerPassword: myPassword
+10
+11      groupSearchBase: ou=groups,dc=mycompany,dc=com
+12      groupSearchFilter: member={0},dc=mycompany,dc=com
+13      groupRoleAttributes: cn
+14
+15      userDnPattern: uid={0},ou=users
+16      userSearchBase: dc=mycompany,dc=com
+17      userSearchFilter: ''
+>>>>>>> 4f1510613d66684020451cf550258f87de770108
 ```
 
 You must tailor this configuration to match your ldap database.
 * adjust `mycompany` and `com` to match your organization.
 * adjust `managerDn` and `managerPassword` on lines 8 & 9.
+<<<<<<< HEAD
 * adjust `groups` to be the parent DN of your groups.
 * replace `member` with the key that you use when you add a user to a group. In the sample
+=======
+* On line 11, you should change `groups` to be the parent DN of your groups.
+* On line 12, replace `member` with the key that you use when you add a user to a group. In the sample
+>>>>>>> 4f1510613d66684020451cf550258f87de770108
 data, 'member' is used to add isaac and don to the eng group.
 
 ## Application Access
