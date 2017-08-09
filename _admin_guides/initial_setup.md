@@ -6,7 +6,7 @@ order: 35
 # Setting Up Armory Spinnaker
 {:.no_toc}
 
-The [installation guide]({% link _user_guides/install.md %}) described how to install Armory Spinnaker for the first time. Once it is installed you will need to configure your environment in order to fully utilize Spinnaker.
+The [installation guide]({% link _admin_guides/install.md %}) described how to install Armory Spinnaker for the first time. Once it is installed you will need to configure your environment in order to fully utilize Spinnaker.
 
 An ideal EC2 based deployment has the following workflow:
 1. A change is made to master in your code repository.
