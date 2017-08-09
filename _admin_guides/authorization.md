@@ -13,8 +13,33 @@ for both applications and accounts.  It's also responsible for executing trigger
 
 To enable fiat, set the following: `FIAT_ENABLED=true` in your environment variable.  This is
 typically stored at `/opt/spinnaker/env/` with a correlated environment file.  You'll also have to make sure that [authentication
-is setup first](http://docs.armory.io/admin-guides/auth/).  Next steps are to configure an underlying service which will inform Fiat
+is setup first](http://docs.armory.io/admin-guides/auth/).  Next steps are to configure an authorization provider (see below) which will inform Fiat
 about users and access control.
+
+
+## Application Access
+
+To modify an application's access go to `application -> config > edit application attributes -> permissions`
+
+![application permissions](https://cl.ly/0Z3j0k1L3Q0m/Image%202017-08-09%20at%2012.34.13%20PM.png)
+
+Once you have your authorization provider configured you should be able to see available groups for your user.  For each group that is added to the list you can select "Read-Only" or "Read/Write" Permissions.  Once groups are added to the list no other users will be able to access that application.  
+
+![application permissions](https://cl.ly/2K3D0V3F170i/Image%202017-08-09%20at%2012.35.25%20PM.png)
+
+## Account Access
+
+To restrict access to an account based on group membership add you'll need to add
+the `requiredGroupMembership` field to your accounts which is configured in
+`/opt/spinnaker/config/clouddriver-local.yml`.
+
+```
+aws:
+  accounts:
+    - name: mobile-apps-account
+      accountId: "111111111111"
+      requiredGroupMembership: mobile-apps-group
+```
 
 ## LDAP Authorization
 
