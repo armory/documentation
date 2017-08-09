@@ -1,27 +1,22 @@
 ---
 layout: post
-title: LDAP Authorization & Authentication
+title: Authorization
 order: 70
 published: True
 ---
 
-# Enabling LDAP Authentication
+# Authorization
+Authorization is handled by a micro-service called `Fiat`.  Fiat is responsible for access control  
+for both applications and accounts.  It's also responsible for executing triggers with service accounts.
 
-Update the file `/opt/spinnaker/config/gate-local.yml` and add the following section:
+## Enabling Fiat
 
-```
-ldap:
-  enabled: true
-  url: ldaps://ldap.mycompany.com/dc=mycompany,dc=com
-  userDnPattern: uid={0},ou=users
-```
+To enable fiat, set the following: `FIAT_ENABLED=true` in your environment variable.  This is
+typically stored at `/opt/spinnaker/env/` with a correlated environment file.  You'll also have to make sure that [authentication
+is setup first](http://docs.armory.io/admin-guides/auth/).  Next steps are to configure an underlying service which will inform Fiat
+about users and access control.
 
-You should adjust `mycompany` and `com` to match your organization.
-See the [Spinnaker LDAP Documentation](https://www.spinnaker.io/setup/security/authentication/ldap/)
-for more info.
-
-
-# Enable LDAP Authorization
+## LDAP Authorization
 
 Consider the following sample ldap database:
 
@@ -86,7 +81,6 @@ file `/opt/spinnaker/config/fiat-local.yml`:
 ```
 
 You must tailor this configuration to match your ldap database.
-
 * adjust `mycompany` and `com` to match your organization.
 * adjust `managerDn` and `managerPassword` on lines 8 & 9.
 * On line 11, you should change `groups` to be the parent DN of your groups.
