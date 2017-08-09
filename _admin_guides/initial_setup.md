@@ -36,7 +36,7 @@ Then `ctrl+c` to exit watch once it is healthy.
 
 
 ## Subnets
-The first thing you will need to do is configure the tags on the subnets you want Spinnaker to deploy to within AWS. Spinnaker would like you to categorize your subnets so that it knows which ones are similar enough to deploy to for different purposes. There is a seperate guide on configuring your subnets that you can find [here]({% link _admin_guides/sbunets.md %})
+The first thing you will need to do is configure the tags on the subnets you want Spinnaker to deploy to within AWS. Spinnaker would like you to categorize your subnets so that it knows which ones are similar enough to deploy to for different purposes. There is a seperate guide on configuring your subnets that you can find [here]({% link _admin_guides/subnets.md %})
 
 
 ## Jenkins
