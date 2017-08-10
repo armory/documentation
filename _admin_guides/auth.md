@@ -72,6 +72,24 @@ You should adjust `mycompany` and `com` to match your organization.
 See the [Spinnaker LDAP Documentation](https://www.spinnaker.io/setup/security/authentication/ldap/)
 for more info.
 
+## Basic Auth
+
+In `/opt/spinnaker/config/gate-local.yml` add the following:
+
+```
+security:
+  basic:
+    enabled: true
+  user:
+    name: example-username
+    password: example-password
+```
+
+This will allow you to call the Spinnaker API using basic auth:
+
+`curl --user example-username:example-password --header 'Accept: application/json' http://spinnaker-host.example.com:8084/applications`
+
+
 ## X509
 
 In order to enable x509 certificates we'll need to add an additional trust certificate to the keystore.
