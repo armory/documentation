@@ -25,7 +25,11 @@ If you want to learn more about what is happening behind the scenes, you can go 
 ![previous](https://cl.ly/0T2O2i0Q2f1q/Image%202017-04-14%20at%209.15.55%20AM.png)
 
 ### Terraform Templates
-Armory Spinnaker relies on Terraform templates to create the infrastructure described above.  The `tfstate` file is created and backed by S3 for record keeping.
+
+The installation of Armory Spinnaker relies on Terraform templates to create the infrastructure described above.  The `tfstate` file is created and backed by S3 for record keeping. 
+Note: You do not have to have Terraform installed for this as the dependency is managed with Docker. All you need is Docker installed to deploy Spinnaker for the first time.
+
+Once you have Spinnaker deployed, you can then use Spinnaker to deploy itself. 
 
 #### Spinnaker-Terraform
 Configuration(s) to set Spinnaker up for the first time.
