@@ -78,21 +78,21 @@ aws:
         # You can specify the templateFile used for this baseImage.
         # If not specified, the default templateFile will be used.
         templateFile: aws-ebs.json
-      virtualizationSettings:
-      - region: us-east-1
-        virtualizationType: hvm
-        instanceType: t2.micro
-        sourceAmi: ami-d4aed0bc
-        sshUserName: ubuntu
+        virtualizationSettings:
+        - region: us-east-1
+          virtualizationType: hvm
+          instanceType: t2.micro
+          sourceAmi: ami-d4aed0bc
+          sshUserName: ubuntu
     - baseImage:
-         id: trusty
-         shortDescription: v14.04
-         detailedDescription: Ubuntu Trusty Tahr v14.04
-         packageType: deb
-       virtualizationSettings:
-       - region: us-east-1
-         virtualizationType: hvm
-         instanceType: t2.micro
-         sourceAmi: ami-9eaa1cf6
-         sshUserName: ubuntu
+        id: trusty
+        shortDescription: v14.04
+        detailedDescription: Ubuntu Trusty Tahr v14.04
+        packageType: deb
+        virtualizationSettings:
+        - region: us-east-1
+          virtualizationType: hvm
+          instanceType: t2.micro
+          sourceAmi: ami-9eaa1cf6
+          sshUserName: ubuntu
 ```
