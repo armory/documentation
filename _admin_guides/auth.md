@@ -18,14 +18,16 @@ There are several authentication mechanisms available in Spinnaker:
 In order to enable SSL we'll need to provide Gate (and thus Java) with certificates in a java keystore (JKS) or terminate at the ELB.  This will ensure secure communication between your browser/clients and Spinnaker Deck & Gate
 
 For the following example we're going to create self-signed certificates although for production use you will want to have an official certificate authority (CA) sign your certificate.
-Let's start by first creating a self-signed CA for a java keystore
 
+You can eiter create a self signed cert, or import your own cert.
+
+- Creating a **self-signed CA** with java keystore
 ```
-keytool -genkey -keyalg RSA -alias selfsigned -keystore keystore.jks -storepass ${YOUR_KEYSTORE_PASSWORD} -validity 360 -keysize 2048
+apt-get install openjdk-7-jre-headless -y;
+keytool -genkey -keyalg RSA -alias server -keystore keystore.jks -storepass ${YOUR_KEYSTORE_PASSWORD} -validity 360 -keysize 2048
 ```
 
-If you already have a certificate you would like to use you can import it:
-
+ - Import **your own Certificate**
 ```
 keytool -importkeystore -srckeystore server.p12 -srcstoretype pkcs12 -srcalias spinnaker -srcstorepass ${YOUR_KEY_PASSWORD} -destkeystore keystore.jks -deststoretype jks -destalias server -deststorepass ${YOUR_KEY_PASSWORD} -destkeypass ${YOUR_KEYSTORE_PASSWORD}
 ```
