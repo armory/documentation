@@ -89,7 +89,7 @@ When significant updates are available we distribute a new version of Armory Spi
 
 ### Using A Release Candidate Build
 
-1. Update your `armoryspinnaker` bake stage with our internal repo.  You'll need to add a new `extended attribute`:
+1. Update your `armoryspinnaker` bake stage with our release candidate Debian repository.  You'll need to add a new `extended attribute` with the following:
 
 ```
 Key: repository
