@@ -26,10 +26,10 @@ If you want to learn more about what is happening behind the scenes, you can go 
 
 ### Terraform Templates
 
-The installation of Armory Spinnaker relies on Terraform templates to create the infrastructure described above.  The `tfstate` file is created and backed by S3 for record keeping. 
+The installation of Armory Spinnaker relies on Terraform templates to create the infrastructure described above.  The `tfstate` file is created and backed by S3 for record keeping.
 Note: You do not have to have Terraform installed for this as the dependency is managed with Docker. All you need is Docker installed to deploy Spinnaker for the first time.
 
-Once you have Spinnaker deployed, you can then use Spinnaker to deploy itself. 
+Once you have Spinnaker deployed, you can then use Spinnaker to deploy itself.
 
 #### Spinnaker-Terraform
 Configuration(s) to set Spinnaker up for the first time.
@@ -85,3 +85,23 @@ AMI Name: redhat-armoryspinnaker
 
 ## Armory Spinnaker AMI & Debian Distribution
 When significant updates are available we distribute a new version of Armory Spinnaker that includes updated components from the OSS community edition as well.  We release minor patches every few days for priority fixes.  You can find more under release management.
+
+
+### Using A Release Candidate Build
+
+1. Update your `armoryspinnaker` bake stage with our release candidate Debian repository.  You'll need to add a new `extended attribute` with the following:
+
+```
+Key: repository
+Value: https://dl.bintray.com/armory/internal trusty main
+```
+
+![bake stage](https://cl.ly/2X443i1W2u3z/Image%202017-08-16%20at%203.31.06%20PM.png)
+
+2. Update `Package` field
+
+Update the package field with the new version given to you by Armory, for example:
+
+`armoryspinnaker=1.8.48`
+
+![edit package field](https://cl.ly/072E001Q0O46/Image%202017-08-16%20at%203.36.36%20PM.png)
