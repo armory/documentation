@@ -8,6 +8,10 @@ published: True
 # Authorization
 Authorization is handled by a micro-service called `Fiat`.  Fiat is responsible for access control for both applications and accounts.  It's also responsible for executing triggers with service accounts.
 
+## Open Port
+
+On the internal ELB make sure port 7003 is open. If there's no listener for 7003 then add it, copying the configuration used for the listener on port 7002.
+
 ## Enabling Fiat
 
 To enable fiat, set the following: `FIAT_ENABLED=true` in your environment variable.  This is
