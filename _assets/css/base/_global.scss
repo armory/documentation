@@ -10,3 +10,25 @@ body {
 	margin: 0;
 	padding: 2rem;
 }
+
+
+// Adjust base font size on wide and ultra wide monitors
+// to scale up web page accordingly.
+
+@media screen and (min-width: 1440px) {
+	html {
+		font-size: 12px;
+	}
+}
+
+@media screen and (min-width: 1980px) {
+	html {
+		font-size: 14px;
+	}
+}
+
+@media screen and (min-width: 2970px) {
+	html {
+		font-size: 16px;
+	}
+}
