@@ -11,7 +11,7 @@
 		left: 0;
 		position: absolute;
 		top: 0;
-		width: 33.33%;
+		width: 50%;
 	}
 }
 
@@ -23,6 +23,7 @@
 }
 
 .Main {
+	background: #FFF;
 	flex: 1 1 66.66%;
 	overflow: hidden;
 	padding: 0 3rem;
