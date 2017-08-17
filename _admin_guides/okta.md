@@ -15,16 +15,13 @@ To configure Spinnaker to use Okta, you will need to:
 ## Configure a Spinnaker Application in Okta
 
 Select Applications -> Applications from the top menu.
-
-    Screenshot of Applications -> Applications top menu
+![Applications Screen](/assets/images/okta-applications.png)
 
 Click the green "Add Application" button.
-
-    Screenshot of "Add Application" button;
+![AddApplicationButton](/assets/images/okta-addapplication.png)
 
 Click the green "Create New App" button.
-
-    Screenshot showing "Create New App" button;
+![CreateNewApp](/assets/images/okta-createnewapp.png)
 
 In the dialog "Create a New Application Integration", select the following values:
 
@@ -33,27 +30,21 @@ In the dialog "Create a New Application Integration", select the following value
 
 Then hit the green "Create" button.
 
-    Screenshot showing the selection of these dialog values
+![CreateNewIntegration](/assets/images/okta-createnewintegration.png)
 
 
 On "Create SAML Integration" (1) General Settings  page,
-Select the app name. For this example, we are using the name OktaSpinnaker.
+Enter an app name for your Spinnaker app. For this example, we are using the name OktaSpinnaker.
 
 Then hit the green "Next" button.
+![CreateNewIntegration](/assets/images/okta-appname.png)
 
-    Screenshot of App Name selection & configuration
-
-On the "Create SAML Integration" (2) Configure SAML" page,
-configure the following settings -
-
-In the (A) SAML Settings area under the "GENERAL" heading, configure the following settings -
+On the Configure SAML page, configure the following settings -
 
 * Single sign on URL -> Enter the URL for your Gate service, with the path /saml/SSO;
   For this example, we are using the URL https://oktaspinnaker.spinnaker.armory.io:8084/saml/SSO
 
 * Audience URI (SP Entity ID) -> Enter a unique entity id; In this example, we are using io.armory.spinnaker:oktatest
-
-* Default RelayState -> leave blank
 
 * Name ID format -> In this example, we are using "EmailAddress"
 
@@ -62,36 +53,26 @@ In the (A) SAML Settings area under the "GENERAL" heading, configure the followi
 
 In the GROUP ATTRIBUTE STATEMENTS (OPTIONAL) section:
 
-* name = memberOf, name format = Unspecified, Filter - Regex: .*
+* name = memberOf, name format = Unspecified, Filter - Regex: .* (a period followed by an asterisk)
 
-Hit the green "Next" button
+Then, hit the green "Next" button
+![SamlSettings](/assets/images/okta-samlsettings.png)
 
-    Screenshot of ENTIRE GENERAL settings page
-
-On the "Create SAML Integration" (3) Feedback page:
-
-   Select the "I'm an Okta customer adding an internal app" button;
-
-Hit the green "Finish" button
-
-    Screenshot of "memberOf" setting & Finsh button
+On the Create SAML Integration Feedback page,
+Select the "I'm an Okta customer adding an internal app" button,
+then Hit the green "Finish" button.
+![Feedback](/assets/images/okta-feedback.png)
 
 
 This takes you to the "Sign On" tab of the application you just created.
 
-You can navigate back to this page by going to applications -> <applicationName> -> "Sign On" tab.
-
-    Screenshot that includes "View Setup Instructions" button
-
+You can navigate back to this page by going to applications -> applicationName -> Sign On tab.
 Click the button "View Setup Instructions".  This will display the page with configuration information
 necessary to configure Spinnaker.
-
-    Screenshot with Sample Configuration Information
+![ViewSetupInstructions](/assets/images/okta-viewsetupinstructions.png)
 
 Save the (Optional 1) IDP metadata file, you will use this to configure spinnaker.
-
-    Screenshot of the displayed metadata file
-
+![IDPmetadata](/assets/images/okta-idpmetadata.png)
 
 ## Configure Spinnaker to use Okta for authorization and authentication
 
