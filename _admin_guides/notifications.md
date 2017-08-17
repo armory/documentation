@@ -3,7 +3,6 @@ layout: post
 title: Notifications
 order: 80
 ---
-# Notifications
 
 ## Configuring Slack
 

@@ -17,6 +17,12 @@
 		margin: 2.4rem 0 0 0;
 	}
 
+	h2 {
+		border-top: 2px solid #EDF3F5;
+		margin-top: 3rem;
+		padding-top: 3rem;
+	}
+
 	p {
 		margin: 0.8rem 0 1.2rem 0;
 	}
@@ -82,6 +88,16 @@
 
 	thead {
 		text-align: left;
+	}
+
+	blockquote {
+		background: $color-blue-light;
+		border: 1px solid darken($color-blue-light, 10%);
+		border-radius: 2px;
+		margin-left: 0;
+		margin-right: 0;
+		padding: 1rem 2rem;
+		font-style: italic;
 	}
 }
 
