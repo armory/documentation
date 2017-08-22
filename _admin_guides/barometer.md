@@ -37,7 +37,7 @@ service armory-spinnaker restart
 
 ## Enabling ElasticSearch
 
-In your 'barometer-local.yml` file add the following:
+In your `barometer-local.yml` file add the following:
 ```
 elasticsearch:
   enabled: true
