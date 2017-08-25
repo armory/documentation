@@ -9,7 +9,7 @@ order: 992
 
 ## Highlitghted Updates
 ### Armory Enterprise Spinnaker
-Fiat has been official release with Armory Spinnaker! Thanks to everyone who helped us get it out!
+Adding support for Fiat, the Auth N/Z service within Spinnaker
 
 
 ###  Spinnaker Community Contributions
