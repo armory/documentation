@@ -1,12 +1,22 @@
 ---
 layout: post
-title: Re-deploying Spinnaker
+title: Deploying and Upgrading Spinnaker
 order: 130
 ---
 
 # Spinnaker Deploying Spinnaker
 
-Spinnaker is a deployment tool that can deploy itself without any downtime, with the same confidence and processes that your other tools have. 
+Spinnaker is a deployment tool that can deploy itself without any downtime, with the same confidence and processes that your other tools have.
+
+## Upgrading Spinnaker
+
+1. Navigate to your Armory Spinnaker pipeline
+2. Press Configure
+3. Click on the bake step
+4. Looking at the ‘package’ field, you should see ‘armoryspinnaker=1.2.3’. Change it to ‘armoryspinnaker=`${NEW_VERSION}`’, Where new version looks like 1.9.40
+5. Press Save
+6. Manually execute the pipeline
+
 
 ## Orca State
 A single Orca instance maintains the state of single pipeline.  If that Orca instance dies then the pipeline will hang.  You have to make sure to never kill a pipeline.
