@@ -10,7 +10,7 @@ order: 992
 ## Highlighted Updates
 ### Armory Enterprise Spinnaker
 - **Want to share your Spinnaker instance with all your application developer colleagues, but don't want them deleting each other's pipelines or otherwise crashing your party?** Now you can! We've added support for Fiat, the Auth N/Z service within Spinnaker. 
-- With Fiat support you can now safely add others in your company (including end users like application developer teams) to Spinnaker with fine-grained permissions. Enable your application developers to become more self-service by letting them create & manage their own pipelines so you can ~~go drink mai-tais by the beach!~~ focus on other work at hand.
+  - With Fiat support you can now safely add others in your company (including end users like application developer teams) to Spinnaker with fine-grained permissions. Enable your application developers to become more self-service by letting them create & manage their own pipelines so you can ~~go drink mai-tais by the beach!~~ focus on other work at hand.
 
 
 ###  Spinnaker Community Contributions
