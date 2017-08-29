@@ -49,7 +49,7 @@ Audit logs are sent over HTTP to any destination.  Below is configuration for po
 
 ### Sumo Logic
 
-First, you'll need to create an HTTP endpoint at Sumologic. Trocess is described in the [Sumologic help pages](https://help.sumologic.com/Send-Data/Sources/02Sources-for-Hosted-Collectors/HTTP-Source).
+First, you'll need to create an HTTP endpoint at Sumologic. The process is described in the [Sumologic help pages](https://help.sumologic.com/Send-Data/Sources/02Sources-for-Hosted-Collectors/HTTP-Source).
 
 Sumologic will generate a new HTTP endpoint and unique URL.  That URL is represented as `${SUMOLOGIC_URL}` in the following config.
 
