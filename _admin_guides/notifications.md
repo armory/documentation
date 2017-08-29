@@ -4,7 +4,14 @@ title: Notifications
 order: 80
 ---
 
-## Configuring Slack
+# Echo
+
+The Echo service handles all notifications, scheduled pipelines(e.g. cron jobs) and audit logging to an external sources.  By default it stores events in memory but can also be configured to store results in an external source like Redis.  It is also responsible for triggering pipelines based on one of the available trigger integrations or the result of an executing pipeline.
+
+
+## Notifications
+
+### Slack
 
 Add the following to your `/opt/spinnaker/config/spinnaker-local.yml` file:
 
@@ -32,13 +39,30 @@ service armory-spinnaker restart
 
 Make sure to invite `${YOUR_BOT_NAME}` to any channel you want to be notified by spinnaker alerts.
 
-## Echo
 
-The Echo service handles all notifications, scheduled pipelines(e.g. cron jobs) and audit logging to an external sources.  By default it stores events in memory but can also be configured to store results in an external source like Redis.  It is also responsible for triggering pipelines based on one of the available trigger integrations or the result of an executing pipeline.
-
-### Configuring Echo
+### E-mail
+### Pager Duty
 
 
-#### Scheduler
-#### REST
-#### Webhooks
+## Audit Logs
+Audit logs are sent over HTTP to any destination.  
+
+### Sumo Logic
+
+First, you'll need to create an HTTP endpoint at Sumologic. Trocess is described in the [Sumologic help pages](https://help.sumologic.com/Send-Data/Sources/02Sources-for-Hosted-Collectors/HTTP-Source).
+
+Sumologic will generate a new HTTP endpoint and unique URL.  That URL is represented as `${SUMOLOGIC_URL}` in the following config.
+
+Add the following to `opt/spinnaker/config/echo-local.yml`:
+
+```
+rest:
+  enabled: true
+  endpoints:
+    - wrap: false
+      url: "${SUMOLOGIC_URL}"
+```
+
+This tells the echo service to send any events to the Sumologic URL, and to send the events in full without a wrapper. Once you have configured echo restart Armory Spinnaker : `service armory-spinnaker restart`.
+
+You should start seeing events flowing to Sumologic. Because of the indexing delay in Sumologic, the best way to make sure the events are flowing is the [Live Tail function at Sumologic](https://help.sumologic.com/Search/Live-Tail/About-Live-Tail).
