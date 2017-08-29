@@ -69,9 +69,9 @@ You should start seeing events flowing to Sumologic. Because of the indexing del
 
 ### Splunk
 
-First have to make sure you have the [HTTP Event Collector configured](http://dev.splunk.com/view/event-collector/SP-CAAAE6M) on your Splunk deployment.
+First, you'll need to make sure you have the [HTTP Event Collector configured](http://dev.splunk.com/view/event-collector/SP-CAAAE6M) on your Splunk deployment.
 
-Once HEC is configured you should have a host/port to send events to, and an authorization token to add to the request headers. If you want to test out the basic setup you should be able to send in test [data using curl]( http://dev.splunk.com/view/event-collector/SP-CAAAE7G).
+Once HEC is configured you should have a host/port to send events to, and an authorization token to add to the request headers. If you want to test out the basic setup you should be able to send in [test data using curl]( http://dev.splunk.com/view/event-collector/SP-CAAAE7G).
 
  If everything is working the next step is to add to/create site specific config for echo so that it forwards all events to Splunk. Create/modify the file at `/opt/spinnaker/config/echo-local.yml` . The values `HEC_HOST`, `HEC_PORT`, and `HEC_TOKEN` should be replaced by the values you got during the Splunk HTTP Event Collector setup:
 
@@ -87,4 +87,4 @@ rest:
       insecure: true
 ```
 
-Once you've added this config and restarted your Spinnaker cluster you should quickly start seeing events appear in Splunk although indexing might delay the results in the search UI.
+Once you've added this config, restart your spinnaker service: `service armory-spinnaker restart`. You should start seeing events appear in Splunk although indexing might delay the results in the search UI.
