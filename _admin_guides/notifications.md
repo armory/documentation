@@ -45,7 +45,7 @@ Make sure to invite `${YOUR_BOT_NAME}` to any channel you want to be notified by
 
 
 ## Audit Logs
-Audit logs are sent over HTTP to any destination.  
+Audit logs are sent over HTTP to any destination.  Below is configuration for popular centralized logging destinations  
 
 ### Sumo Logic
 
@@ -66,3 +66,25 @@ rest:
 This tells the echo service to send any events to the Sumologic URL, and to send the events in full without a wrapper. Once you have configured echo restart Armory Spinnaker : `service armory-spinnaker restart`.
 
 You should start seeing events flowing to Sumologic. Because of the indexing delay in Sumologic, the best way to make sure the events are flowing is the [Live Tail function at Sumologic](https://help.sumologic.com/Search/Live-Tail/About-Live-Tail).
+
+### Splunk
+
+First have to make sure you have the [HTTP Event Collector configured] (http://dev.splunk.com/view/event-collector/SP-CAAAE6M) on your Splunk deployment.
+
+Once HEC is configured you should have a host/port to send events to, and an authorization token to add to the request headers. If you want to test out the basic setup you should be able to send in test [data using curl]( http://dev.splunk.com/view/event-collector/SP-CAAAE7G).
+
+ If everything is working the next step is to add to/create site specific config for echo so that it forwards all events to Splunk. Create/modify the file at `/opt/spinnaker/config/echo-local.yml` . The values `HEC_HOST`, `HEC_PORT`, and `HEC_TOKEN` should be replaced by the values you got during the Splunk HTTP Event Collector setup:
+
+ ```
+rest:
+  enabled: true
+  endpoints:
+    - wrap: true
+      url: "https://HEC_HOST:HEC_PORT/services/collector/event?"
+      headers:
+        Authorization: "Splunk HEC_TOKEN"
+      template: '{"event":{{event}} }'
+      insecure: true
+```
+
+Once you've added this config and restarted your Spinnaker cluster you should quickly start seeing events appear in Splunk although indexing might delay the results in the search UI.
