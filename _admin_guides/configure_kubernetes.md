@@ -1,0 +1,131 @@
+---
+layout: post
+title: Kubernetes Configuration
+order: 70
+published: True
+---
+
+To configure Kubernetes, you need to:
+* Configure Spinnaker to use Kubernetes as a cloud provider
+* Configure docker registries
+* Create a kubectl config file, and
+* Configure clouddriver to use that kubernetes configuration
+
+## Spinnaker Configuration
+
+Add the following stanza to the file /opt/spinnaker/config/spinnaker-armory.yml:
+```
+  kubernetes:
+    enabled: true
+    primaryCredentials:
+      name: myuser
+      dockerRegistryAccount: dockerhub
+
+  dockerRegistry:
+    enabled: true
+    primaryCredentials:
+      name: myuser
+      address: https://index.docker.io
+      repositories:
+        - armory/armory-hello-deploy
+```
+
+## Configure your Docker Registries
+
+Add the following to the file /opt/spinnaker/config/clouddriver-local.yml under
+the key dockerRegistry:
+```
+dockerRegistry:
+  enabled: true
+  accounts:
+    - name: dockerhub
+      address: https://index.docker.io
+      username: MY_USERNAME
+      passwordFile: /opt/spinnaker/credentials/dockerhub.password
+      repositories:
+        - armory/armory-hello-deploy
+        - armory/spinnaker-clouddriver
+        ...
+```
+Modify the credentials in the key 'username' and in the file passwordFile to reflect your login credentials.
+If you are using dockerhub, you must list the repositories from which you will deploy.
+If you are not using dockerhub, modify the address to the appropriate value for your registry.
+
+For additional insight into docker registries, see: [Docker Registries](https://www.spinnaker.io/setup/providers/docker-registry/),
+but note that 'hal' is not used to configure Armory Spinnaker.
+
+## Create a Kubectl Config File
+
+You need a config file that you can use to contact your Kubernetes cluster.
+
+If you already have such a file that uses static configuration to talk
+to your cluster, great! A common configuration for the Google Container Engine uses a short-lived access token, which
+is problematic for Spinnaker.
+
+To create your inital config file, run the following commands:
+```
+# (1) Configure cluster - Use the IP address of your cluster
+kubectl config --kubeconfig=kubeconfig set-cluster mycluster --server https://192.168.1.1
+
+# (2) Add the CA cert used by your cluster, if necessary;
+kubectl config --kubeconfig=kubeconfig set-cluster mycluster --certificate-authority=/path/to/certfile
+#
+# or #
+#
+# edit kubeconfig, add the base64-encoded certificate data directory to the kubeconfig file in the
+# attribute certificate-authority-data; e.g.,
+#
+# - cluster:
+#     certificate-authority-data: LS0t...Qo=
+#     server: https://35.193.38.121
+#   name: mycluster
+
+# (3) Create a user with basic auth; Adjust the user/password.
+kubectl config --kubeconfig=kubeconfig set-credentials myuser --username=ADMIN --password=ADMINPASSWORD
+
+# (4) Create a context
+kubectl config --kubeconfig=kubeconfig set-context default --cluster mycluster --user=myuser
+kubectl config --kubeconfig=kubeconfig config use-context default
+```
+
+[//]: # (Comment) XXX NOTE don - don't know why, the --certificate-authority=filename didn't work for me, don't know why;
+[//]: # (Comment) Tried putting both the plain cert and the base64 version in the file; YMMY.
+
+If your kubeconfig file is properly configured, you should now be able to run the following command
+to show your namespaces:
+```
+kubectl --kubeconfig=kubeconfig get ns
+```
+
+## Configure Clouddriver to use the kubectl Config File
+
+To configure clouddriver to use your  kubectl config file,
+copy your config file - either your existing .kube/config file or the kubeconfig file create above - to
+/opt/spinnaker/credentials/kubeconfig.
+
+Then, add the folling to the the file /opt/spinnaker/config/clouddriver-local.yml:
+
+```
+kubernetes:
+  enabled: true
+  accounts:
+    - name: kubernetes
+      kubeconfigFile: /opt/spinnaker/credentials/kubeconfig
+      namespaces:
+        - staging
+        - default
+        - demo
+      dockerRegistries: # WARNING! only include configured accounts here
+        - accountName: dockerhub
+```
+The listed namespaces are the the names of your kubernetes namespaces. You can find your configured
+namespaces by running the command to list namespaces in the section above.
+
+[//]: # (Comment) XXX NOTE don - What exactly is the point of listing the namespaces?
+[//]: # (Comment) Are these allowed namespaces, or what?
+
+Under dockerRegistries, you should list the account name of your docker registry.
+
+## See Also
+
+For additional documentation on configuring Kubernetes, see the [Kubernetes Documention](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/).
