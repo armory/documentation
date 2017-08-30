@@ -21,7 +21,7 @@ Below is a diagram of the architecture & components deployed in a stand-alone co
 
 
 ### Security Groups
-In order to not expose any Spinnaker sub-services which may not contain authentication, we use internal and user-facing security groups.  The user-facing security group exposes ports for `gate` and `deck`, typically 8084 and 80 respecitively.  A separate security group is used for internal communication between services.
+In order to not expose any Spinnaker sub-services which may not contain authentication, we use internal and user-facing security groups.  The user-facing security group exposes ports for `gate` and `deck`, typically 8084 and 80 respectively.  A separate security group is used for internal communication between services.
 
 
 ### Autoscaling Groups & Launch Configurations
@@ -44,11 +44,11 @@ Below is a diagram of the architecture & components deployed in an HA configurat
 
 ## Systems Requirements
 
-Armory Spinnaker runs only on Ubuntu & CentOS and RHEL based machines within AWS.  It uses AWS resources to run manage and run Armory Spinnaker.
+Armory Spinnaker runs only on Ubuntu & CentOS and RHEL based machines within AWS.  It uses AWS resources to run manage and run Armory Spinnaker.  
 
 ### Cloud & Operating Systems
 
-We currently support running Armory Spinnaker in AWS.
+We currently support running Armory Spinnaker in AWS.  By default it uses (3) m4.2xlarge machines for redudancy.  Once launched, this is completely configurable and based on your team's usage patterns can be scaled up and down with Spinnaker.
 
 ### Target Cloud Providers
 We currently support AWS and Kubernetes. We plan to support GCP and Azure in the future.
@@ -57,4 +57,5 @@ We currently support AWS and Kubernetes. We plan to support GCP and Azure in the
 
 Armory Spinnaker uses Docker and Docker-Compose for every component possible.  
 
-	
+### Security Groups
+In order to not expose any Spinnaker sub-services which may not contain authentication, we use internal and user-facing security groups to match the internal and external facing ELB.  The user-facing security group exposes ports for `gate` and `deck`, typically 8084 and 80 respectively.  If you choose to [configure SSL/HTTPS](http://docs.armory.io/admin-guides/auth/#enabling-httpsssl) at a later time, then 443 will need to be opened as well.  A separate security group is used for internal communication between services which exposes ports but only between members of the security group.
