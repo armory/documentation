@@ -83,7 +83,7 @@ rest:
       url: "https://HEC_HOST:HEC_PORT/services/collector/event?"
       headers:
         Authorization: "Splunk HEC_TOKEN"
-      template: '{"event":{{event}} }'
+      template: '{"event":{{ "{{event"}}}} }
       insecure: true
 ```
 
