@@ -25,28 +25,28 @@ Below is an example configuration for global rate limits for all services that y
 
 ```
 serviceLimits:
- defaults:
-   rateLimit: 20
+  defaults:
+    rateLimit: 20
 ```
 
 If you have multiple cloud providers, you can limit each one differently:
 
 ```
 serviceLimits:
- cloudProviderOverrides:
-   aws:
-     rateLimit: 15
+  cloudProviderOverrides:
+    aws:
+      rateLimit: 15
 ```
 
 You can provide account specific overrides as well in case you have significantly more resources in one account while others have less:
 
 ```
 serviceLimits:
- accountOverrides:
-   test:
-     rateLimit: 5
-   prod:
-     rateLimit: 100
+  accountOverrides:
+    test:
+      rateLimit: 5
+    prod:
+      rateLimit: 100
 ```
 
 And finally, you can have more fine-grained control for particular AWS endpoints that might have a different rate limits:
@@ -54,16 +54,16 @@ And finally, you can have more fine-grained control for particular AWS endpoints
 ```
  implementationLimits:
 
-   AmazonEC2:
-     defaults:
-       rateLimit: 200
-     accountOverrides:
-       prod:
-         rateLimit: 500
+    AmazonEC2:
+      defaults:
+        rateLimit: 200
+      accountOverrides:
+        prod:
+          rateLimit: 500
 
-   AmazonElasticLoadBalancing:
-     defaults:
-       rateLimit: 10
+    AmazonElasticLoadBalancing:
+      defaults:
+        rateLimit: 10
 ```
 
 Using these rate limits will help you avoid hitting the rate limits and potentially make Spinnaker more responsive as the cloud provider clients won't have to implement back-off strategy to continue to query the infrastructure. 
@@ -74,17 +74,17 @@ The Armory Spinnaker distribution comes with the following default service limit
 
 ```
 serviceLimits:
- cloudProviderOverrides:
-   aws:
-     rateLimit: 15.0
+  cloudProviderOverrides:
+    aws:
+      rateLimit: 15.0
 
- implementationLimits:
-   AmazonAutoScaling:
-     defaults:
-       rateLimit: 3.0
-   AmazonElasticLoadBalancing:
-     defaults:
-       rateLimit: 5.0
+  implementationLimits:
+    AmazonAutoScaling:
+      defaults:
+        rateLimit: 3.0
+    AmazonElasticLoadBalancing:
+      defaults:
+        rateLimit: 5.0
 ```
 
 If you require a higher rate limit on these APIs then you will need to overwrite them directly. Overwriting the global service default is not sufficient.
@@ -95,8 +95,8 @@ You can set the number of retries per request with the following setting:
 
 ```
 aws:
- client:
-   maxErrorRetry: 4
+  client:
+    maxErrorRetry: 4
 ```
 This is the number of retries before failing the request. It is on an exponential backoff maxing out at 20 seconds. By default Armory Spinnaker sets `maxErrorRetry` to `20`.
 
