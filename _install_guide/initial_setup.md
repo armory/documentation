@@ -2,11 +2,12 @@
 layout: post
 title: Initial Setup
 order: 35
+next: install
 ---
 # Setting Up Armory Spinnaker
 {:.no_toc}
 
-The [installation guide]({% link _admin_guides/install.md %}) described how to install Armory Spinnaker for the first time. Once it is installed you will need to configure your environment in order to fully utilize Spinnaker.
+The [installation guide]({% link _install_guide/subnets.md %}) described how to install Armory Spinnaker for the first time. Once it is installed you will need to configure your environment in order to fully utilize Spinnaker.
 
 An ideal EC2 based deployment has the following workflow:
 1. A change is made to master in your code repository.
@@ -35,7 +36,7 @@ $ watch curl http://localhost:5000/healthcheck
 Then `ctrl+c` to exit watch once it is healthy.
 
 ## Adding AWS Accounts
-The first thing you need to do is configure the AWS accounts you would like to use as deploy targets. Check out the instructions [here]({% link _admin_guides/adding_accounts.md %}). Restart Spinnaker. You can verify the accounts are registered by SSHing to the Spinnaker instance and running:
+The first thing you need to do is configure the AWS accounts you would like to use as deploy targets. Check out the instructions [here]({% link _install_guide/adding_accounts.md %}). Restart Spinnaker. You can verify the accounts are registered by SSHing to the Spinnaker instance and running:
 ```
 $ curl http://localhost:8084/credentials
 ```
@@ -65,11 +66,11 @@ You should see something like this:
 Verify that the `accountId`s match what you intended.
 
 ## Subnets
-After you have your accounts added to Spinnaker, you will need to configure the tags on the subnets. Only configured subnets can be deployed to by Spinnaker. Spinnaker would like you to categorize your subnets so that it knows which ones are similar enough to deploy to for different purposes. There is a seperate guide on configuring your subnets that you can find [here]({% link _admin_guides/subnets.md %})
+After you have your accounts added to Spinnaker, you will need to configure the tags on the subnets. Only configured subnets can be deployed to by Spinnaker. Spinnaker would like you to categorize your subnets so that it knows which ones are similar enough to deploy to for different purposes. There is a seperate guide on configuring your subnets that you can find [here]({% link _install_guide/subnets.md %})
 
 
 ## Jenkins
-You can add a Jenkins master to Spinnaker by following [this guide]({% link _admin_guides/continuous_integration.md %}). Once the master is added you will need to restart your Spinnaker instance. You can verify that the master has been added correctly by running the following form the instance:
+You can add a Jenkins master to Spinnaker by following [this guide]({% link _install_guide/continuous_integration.md %}). Once the master is added you will need to restart your Spinnaker instance. You can verify that the master has been added correctly by running the following form the instance:
 ```
 $ curl http://localhost:8084/v2/builds
 ```
