@@ -7,16 +7,14 @@ order: 140
 
 ## How Spinnaker Monitors a Deployment
 
-By default Spinnaker queries (e.g. polls) the entire state of the AWS resources managed by Spinnaker every 30 seconds through the Clouddriver sub-service.
+By default Spinnaker queries (e.g. polls) the entire state of the AWS resources managed by Spinnaker every 30 seconds through the Clouddriver sub-service. This can cause AWS to throttle the requests on your account. If you have a large number of Auto-Scaling Groups and Elastic Load Balancers in your account or other services commonly querying the same APIs then you can expect to see throttling exceptions in your Spinnaker logs.
 
+### How to eleviate AWS Throttling Exceptions
 
-### Multiple Accounts
-
-This section is a work in progress.
-
-### Assume Roles and AWS
-
-This section is a work in progress.
+There are several things you can do to help reduce the effects of throttling:
+- Set fine tune rate limits within Spinnaker.
+- Adjust Spinnaker's retry limit per request.
+- Decrease the polling interval.
 
 
 ## Fine Grained Rate Limits
@@ -54,7 +52,7 @@ serviceLimits:
 And finally, you can have more fine-grained control for particular AWS endpoints that might have a different rate limits:
 
 ```
-  implementationLimits:
+ implementationLimits:
 
     AmazonEC2:
       defaults:
@@ -68,5 +66,42 @@ And finally, you can have more fine-grained control for particular AWS endpoints
         rateLimit: 10
 ```
 
-Using these rate limits will help you avoid hitting the rate limits and potentially make Spinnaker more responsive as the cloud provider clients won't have to implement back-off strategy to continue to query the infrastructure.  
+Using these rate limits will help you avoid hitting the rate limits and potentially make Spinnaker more responsive as the cloud provider clients won't have to implement back-off strategy to continue to query the infrastructure. 
 
+### Default Service Limits
+
+The Armory Spinnaker distribution comes with the following default service limits:
+
+```
+serviceLimits:
+  cloudProviderOverrides:
+    aws:
+      rateLimit: 15.0
+
+  implementationLimits:
+    AmazonAutoScaling:
+      defaults:
+        rateLimit: 3.0
+    AmazonElasticLoadBalancing:
+      defaults:
+        rateLimit: 5.0
+```
+
+If you require a higher rate limit on these APIs then you will need to overwrite them directly. Overwriting the global service default is not sufficient.
+
+## Request Retry
+
+You can set the number of retries per request with the following setting:
+
+```
+aws:
+  client:
+    maxErrorRetry: 4
+```
+This is the number of retries before failing the request. It is on an exponential backoff maxing out at 20 seconds. By default Armory Spinnaker sets `maxErrorRetry` to `20`.
+
+
+## FAQ
+
+*Q:* Why doesn't Spinnaker use AWS Config to update its state?
+*A:* AWS Config does not support all resource types. The two most rate limitted APIs are Auto Scaling and Classic Elastic Load Balancing, [neither are supported](http://docs.aws.amazon.com/config/latest/developerguide/resource-config-reference.html) by AWS Config. Additionally, there is a non-trivial delay from the time a resource is created and the time a notification is created by AWS Config.
