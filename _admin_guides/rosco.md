@@ -11,7 +11,7 @@ Rosco is the sub-service that manages baking using [Packer](https://www.packer.i
 ## Rosco Configuration for Baking
 
 ### Templates Location
-You can tell Rosco where it should look for template files and scripts.  The default location is `/opt/rosco/config/packer`.  With a standard Spinnaker distribution you should find various examples to extend.  In most cases you will want to take a template file and add your custom packer properties to build correctly.  You will only need to add your files here in this directory and then reference them in your bake stage under the `Template File Name` field.
+You can tell Rosco where it should look for template files and scripts.  The default location is `/opt/spinnaker/config/packer` for Armory Spinnaker.  With a standard Spinnaker distribution you should find various examples to extend.  In most cases you will want to take a template file and add your custom packer properties to build correctly.  You will only need to add your files here in this directory and then reference them in your bake stage under the `Template File Name` field.  There's a more complete example of modifying a template and install script below.
 
 
 You can specify the following in `/opt/spinnaker/config/rosco-local.yml`:
@@ -57,6 +57,35 @@ debianRepository: http://dl.bintray.com/spinnaker/ospackages
 yumRepository: https://https://jfrog.bintray.com/yourpath
 chocolateyRepository: https://chocolatey.org/api/v2/
 ```
+
+### Modifying Packer Templates and Install Scripts
+
+If your organization uses different repositories between groups or if you need some additional custom logic run when baking images it is possible to customize the files that Rosco uses to drive Packer. As mentioned in the Template Files section above, those templates are normally stored in /opt/spinnaker/config/packer. The easiest way to get customizations working is to copy an existing example and add it to your spinnaker config. For instance say we want to start from the aws-ebs.json template and install Docker on all our baked images, but need to install the Docker deb GPG key to add their repo.
+
+There are two files we need to copy over into our configuration. Copy the aws-ebs.json file and name it aws-ebs-custom.json. And copy the install_packages.sh into your config and name it install_packages_custom.sh.
+
+In the aws-ebs-custom.json template there's only one change we need to make. Modify the provisioners section so that the script entry points to our custom installer script:
+
+```
+{% raw %}
+"script": "{{user `configDir`}}/install_packages_custom.sh",
+{% endraw %}
+```
+
+In the install_packages_custom.sh script add the logic you need to have run when a bake instance starts up. For our example we'll add the following lines to the provision_deb() function:
+
+```
+{% raw %}
+#Add the docker gpg key
+curl -fsSL https://yum.dockerproject.org/gpg | sudo apt-key add -
+
+#Add the docker repo to the sources list
+echo "deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main" \
+      | sudo tee -a /etc/apt/sources.list
+{% endraw %}
+```
+
+Once you have the custom template and script deployed to your Spinnaker cluster you can use it by changing the "Template File Name" in Bake Configuration to aws-ebs-custom.json.
 
 ### Setting Up Base OS Defaults for Baking
 
