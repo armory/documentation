@@ -6,57 +6,57 @@ published: True
 ---
 
 To configure Kubernetes, you need to:
-* Configure Spinnaker to use Kubernetes as a cloud provider
 * Configure docker registries
 * Create a kubectl config file, and
 * Configure clouddriver to use that kubernetes configuration
 
-## Spinnaker Configuration
-
-Add the following stanza to the file /opt/spinnaker/config/spinnaker-armory.yml:
-```
-  kubernetes:
-    enabled: true
-    primaryCredentials:
-      name: myuser
-      dockerRegistryAccount: dockerhub
-
-  dockerRegistry:
-    enabled: true
-    primaryCredentials:
-      name: myuser
-      address: https://index.docker.io
-      repositories:
-        - armory/armory-hello-deploy
-```
-
 ## Configure your Docker Registries
 
-Add the following to the file /opt/spinnaker/config/clouddriver-local.yml under
-the key dockerRegistry:
+Add the following stanza to the file `/opt/spinnaker/config/clouddriver-local.yml` under
+the key `dockerRegistry`:
+```
+dockerRegistry:
+  enabled: true
+  accounts:
+    - name: dockerhub
+      address: MY_CONTAINER_PROVIDER  # If you are using dockerhub -
+                                      # https://index.docker.io
+      username: MY_USERNAME
+      passwordFile: /opt/spinnaker/credentials/dockerhub.password
+      repositories:
+        - myorg/app1
+        - myorg/app2
+        ...
+```
+Modify the key `address` to reflect the address of your docker registry.
+
+Modify the credentials in the key `username` and in the contents of the file `passwordFile` to reflect your login credentials.
+
+If you are using **Dockerhub**, you must list the repositories from which you will deploy because
+Dockerhub does not provide an api to discover available repositories.
+
+Complete example:
 ```
 dockerRegistry:
   enabled: true
   accounts:
     - name: dockerhub
       address: https://index.docker.io
-      username: MY_USERNAME
+      username: armoryspinnakerbot
       passwordFile: /opt/spinnaker/credentials/dockerhub.password
       repositories:
         - armory/armory-hello-deploy
         - armory/spinnaker-clouddriver
-        ...
+        - armory/spinnaker-deck
+        - armory/spinnaker-igor
 ```
-Modify the credentials in the key 'username' and in the file passwordFile to reflect your login credentials.
-If you are using dockerhub, you must list the repositories from which you will deploy.
-If you are not using dockerhub, modify the address to the appropriate value for your registry.
 
-For additional insight into docker registries, see: [Docker Registries](https://www.spinnaker.io/setup/providers/docker-registry/),
-but note that 'hal' is not used to configure Armory Spinnaker.
+For additional insight into docker registries, see: [Docker Registries](https://www.spinnaker.io/setup/providers/docker-registry/).
+Note that the program **hal** is not used to configure Armory Spinnaker.
 
 ## Create a Kubectl Config File
 
-You need a config file that you can use to contact your Kubernetes cluster.
+You need a config file that you can use to interact with your Kubernetes cluster.
 
 If you already have such a file that uses static configuration to talk
 to your cluster, great! A common configuration for the Google Container Engine uses a short-lived access token, which
@@ -101,9 +101,9 @@ kubectl --kubeconfig=kubeconfig get ns
 
 To configure clouddriver to use your  kubectl config file,
 copy your config file - either your existing .kube/config file or the kubeconfig file create above - to
-/opt/spinnaker/credentials/kubeconfig.
+`/opt/spinnaker/credentials/kubeconfig`.
 
-Then, add the folling to the the file /opt/spinnaker/config/clouddriver-local.yml:
+Then, add the following stanza to the the file `/opt/spinnaker/config/clouddriver-local.yml`:
 
 ```
 kubernetes:
@@ -124,7 +124,18 @@ namespaces by running the command to list namespaces in the section above.
 [//]: # (Comment) XXX NOTE don - What exactly is the point of listing the namespaces?
 [//]: # (Comment) Are these allowed namespaces, or what?
 
-Under dockerRegistries, you should list the account name of your docker registry.
+Under `dockerRegistries`, you should list the account name of your docker registry.
+
+## Persistence and Secrets Management
+
+In many configurations, your kubeconfig file and your docker registry password file will contain
+secrets that you need to protect.
+
+A few possibilities for managing these secrets include:
+* Placing a script in /opt/spinnaker/bin/secret to install your credentials;
+* Using a secret management system;
+
+If your Kubernetes cluster is non-sensitive, you can keep your kubeconfig file in a source control system.
 
 ## See Also
 
