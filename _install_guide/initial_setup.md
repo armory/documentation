@@ -1,8 +1,7 @@
 ---
 layout: post
 title: Initial Setup
-order: 35
-next: install
+order: 1
 ---
 # Setting Up Armory Spinnaker
 {:.no_toc}
@@ -70,7 +69,7 @@ After you have your accounts added to Spinnaker, you will need to configure the 
 
 
 ## Jenkins
-You can add a Jenkins master to Spinnaker by following [this guide]({% link _install_guide/continuous_integration.md %}). Once the master is added you will need to restart your Spinnaker instance. You can verify that the master has been added correctly by running the following form the instance:
+You can add a Jenkins master to Spinnaker by following [this guide]({% link _install_guide/jenkins.md %}). Once the master is added you will need to restart your Spinnaker instance. You can verify that the master has been added correctly by running the following form the instance:
 ```
 $ curl http://localhost:8084/v2/builds
 ```

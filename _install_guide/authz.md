@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Authorization
-order: 70
+order: 120
 published: True
 ---
 

@@ -50,8 +50,7 @@ The first goal is to get Spinnaker installed and running to the point where we c
 
 We will do the following:
 
-- [Install Armory Spinnaker]()
-
+- [Install Armory Spinnaker]({% link _install_guide/install.md %})
 
 ### Re-Deploying Spinnaker
 
@@ -59,12 +58,10 @@ Next we will configure Spinnaker so that it can re-deploy itself. This way we ca
 
 We will do the following:
 
-- [Tag AWS Subnets]()
-- [Create a GitHub repo for Spinnaker's configuration files]()
-- [Use Jenkins to create a deb package from configuration files]()
-- [Configure Spinnaker to trigger from Jenkins]()
-- [Configure Spinnaker to download the package from a central artifact repository]()
-- [Create a pipeline for Spinnaker to deploy Spinnaker]()
+- [Tag AWS Subnets]({% link _install_guide/subnets.md %})
+- [Store Spinnaker's configuration files in a repo]({% link _install_guide/config_repo.md %})
+- [Configure Spinnaker to trigger from Jenkins]({% link _install_guide/jenkins.md %})
+- [Create a pipeline for Spinnaker to deploy Spinnaker]({% link _install_guide/spinnaker-deploy-spinnaker.md %})
 
 
 ### Deploying An Application
@@ -73,9 +70,9 @@ After we have Spinnaker in a re-deployable state we can get started on deploying
 
 We will do the following:
 
-- [Add additional cloud provider accounts (and possibly subnets)]()
-- [Adjust Packer scripts]()
-- [Create a pipeline to deploy the application]()
+- [Add additional cloud provider accounts (and possibly subnets)]({% link _install_guide/adding_accounts.md %})
+- [Adjust Packer scripts]({% link _install_guide/packer.md %})
+- [Create a pipeline to deploy the application]({% link _install_guide/application_pipeline.md %})
 
 
 ### Production Ready
@@ -84,22 +81,22 @@ Before opening Spinnaker up for general availability within your organization, t
 
 We will do the following:
 
-- [Add a DNS name and SSL]()
-- [Setup Authentication]()
-- [Setup Authorization]()
-- [Configure centralized logging]()
-- [Pre-create common Packer templates]()
+- [Add a DNS name and SSL]({% link _install_guide/dns_and_ssl.md %})
+- [Setup Authentication]({% link _install_guide/auth.md %})
+- [Setup Authorization]({% link _install_guide/authz.md %})
+- [Configure centralized logging]({% link _install_guide/logging.md %})
+- [Pre-create common Packer templates]({% link _install_guide/advanced_packer.md %})
 
 
 ### Next Steps
 
 Optionally, you may want to:
 
-- [Configure Notifications]()
-- [Setup Audit Logging]()
+- [Configure Notifications]({% link _admin_guides/notifications.md %})
+- [Setup Audit Logging]({% link _install_guide/logging.md %})
 
 Once you have Spinnaker production ready, it is time to onboard users. You may want to:
 
-- Make Packer scripts to help [migrate from Chef, Puppet or Salt]()
-- Share the [User Guides]()
+- Make Packer scripts to help [migrate from Chef, Puppet or Salt]({% link _install_guide/advanced_packer.md %})
+- Share the [User Guides]({% link _user_guides/application-screen.md %})
 - Provide example pipelines that are specific to your organization
