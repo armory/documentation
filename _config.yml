@@ -49,6 +49,9 @@ collections:
   user_guides:
     output: true
     permalink: /user-guides/:title/
+  install_guide:
+    output: true
+    permalink: /install-guide/:title/  
   admin_guides:
     output: true
     permalink: /admin-guides/:title/
