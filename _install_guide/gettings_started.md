@@ -52,6 +52,21 @@ We will do the following:
 
 - [Install Armory Spinnaker]({% link _install_guide/install.md %})
 
+While configuring Spinnaker for the first time you should scale down your Spinnaker cluster to one instance. You will also need to change the Autoscaling Group healthcheck type from ELB to EC2. This will allow you to restart Armory Spinnaker without the ASG terminating the instance.
+
+Start by SSH'ing to the single instance of Armory Spinnaker. Throughout this guide you will be making changes to the `.yml` files in `/opt/spinnaker/config/`. In order for the changes to take affect you will need to restart Armory Spinnaker. To restart run the following:
+```
+$ sudo service armory-spinnaker stop
+$ sleep 15
+$ sudo service armory-spinnaker start
+```
+
+It will take a moment for the services to come back online. You can check its status by running:
+```
+$ watch curl http://localhost:5000/healthcheck
+```
+Then `ctrl+c` to exit watch once it is healthy.
+
 ### Re-Deploying Spinnaker
 
 Next we will configure Spinnaker so that it can re-deploy itself. This way we can make configuration changes without any trouble.
