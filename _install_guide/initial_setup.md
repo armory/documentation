@@ -2,6 +2,7 @@
 layout: post
 title: Initial Setup
 order: 1
+published: false
 ---
 # Setting Up Armory Spinnaker
 {:.no_toc}
