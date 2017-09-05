@@ -85,7 +85,7 @@ We will do the following:
 - [Setup Authentication]({% link _install_guide/auth.md %})
 - [Setup Authorization]({% link _install_guide/authz.md %})
 - [Configure centralized logging]({% link _install_guide/logging.md %})
-- [Pre-create common Packer templates]({% link _install_guide/advanced_packer.md %})
+- [Pre-create common Packer templates]({% link _admin_guides/rosco.md %})
 
 
 ### Next Steps
