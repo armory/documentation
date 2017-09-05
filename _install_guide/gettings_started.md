@@ -112,6 +112,6 @@ Optionally, you may want to:
 
 Once you have Spinnaker production ready, it is time to onboard users. You may want to:
 
-- Make Packer scripts to help [migrate from Chef, Puppet or Salt]({})
+- Make Packer scripts to help migrate from Chef, Puppet or Salt.
 - Share the [User Guides]({% link _user_guides/application-screen.md %})
 - Provide example pipelines that are specific to your organization
