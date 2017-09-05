@@ -4,7 +4,9 @@ title: Custom Packer Scripts
 order: 80
 ---
 
-Topics:
-- How to make customer packer scripts
-- How to store the scripts
-- How to use them in a pipeline
+Todo Topics:
+- Bare minimum needed to get an just one app deployed
+- where to put it in the config/repo
+- what to use as an example
+- How to use it in a pipeline
+- Reference: You can find a more comprehensive guide in the admin section
