@@ -17,8 +17,20 @@ Armory Spinnaker comes with an installer that walks you through deploying Spinna
 
 `bash -c "$(curl -sS http://get.armory.io)"`
 
-If you want to learn more about what is happening behind the scenes, you can go through the components below.
+You will need a AWS user/profile with permission to create the following resources:
 
+- Autoscaling group and launch configuration
+- Elastic Load Balancer
+- Security group for the ELB
+- Security group for the Spinnaker stack
+- Elastic Cache (Redis)
+- IAM Role for Spinnaker instances
+- IAM Role for Spinnaker managed account
+- IAM Policy Spinnaker S3 Access
+- IAM Policy Spinnaker assume role permissions
+- IAM Policy Spinnaker ECR read access
+
+If you want to learn more about what is happening behind the scenes, you can go through the components below.
 
 ### Continuing From A Previous Install
 ![previous](https://cl.ly/0T2O2i0Q2f1q/Image%202017-04-14%20at%209.15.55%20AM.png)
