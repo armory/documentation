@@ -10,7 +10,16 @@ This is a step by step guide to creating the pipeline.
 
 ## Create the Pipeline
 
-Go into the armoryspinnaker application and create a new pipeline called "Deploy Production"
+In this step we'll create a pipeline and attach it to Jenkins so that it runs automatically whenever config changes are made.
+
+- Go into the armoryspinnaker application and create a new pipeline called "Deploy Production"
+- In the configuration click on "Add Trigger"
+  - Set the Type to "Jenkins"
+  - Set the Master to the Jenkins machine that builds your configuration package
+
+Once configured the trigger should look like this:
+
+![Trigger](/assets/images/redeploy-trigger.png)
 
 ## Bake armoryspinnaker Stage
 
@@ -70,10 +79,9 @@ In this stage we'll take the image, which now contains both armoryspinnaker and 
   - Turn on the "Scale down replace server groups to zero instances" option
   - Keep a maximum of 3 server groups
   - Make sure the Capacity is set to "Copy the capacity from the current server group"
-  - In Advanced Settings remove the text in the "UserData" field and leave it blank
   - Save the server group details
 - Click "Add server group" and add an AWS deployment, but using the armory-prod-nonpolling group as a template
-  - Make the same set of changes (strategy, scale down, keep 3 groups, copy capacity, and blank UserData)
+  - Make the same set of changes (strategy, scale down, keep 3 groups, and copy capacity)
 
 Once the stage is configured it should look like this:
 
