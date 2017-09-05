@@ -25,6 +25,8 @@ The forked repo is setup to build a deb package out of the configuration files. 
 - `./build.sh` executes and puts the artifacts in `build/distributions/*.deb`
 - The `deb` is uploaded to a central artifact store.
 
+If you are using Jenkins, make sure to artifact the deb package. This is what tells Spinnaker which version of your package to use.
+
 ## Alternatives
 
 If you do not already have a central artifact repository system you might want to check out [Deb S3](https://github.com/krobertson/deb-s3). 
