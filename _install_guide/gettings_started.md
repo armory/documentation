@@ -11,7 +11,7 @@ As you go through this guide, keep in mind that there are four major milestones:
 - Installing Spinnaker
 - Re-deploying Spinnaker
 - Deploying an Application
-- Production Readyness
+- Production Readiness
 
 
 ## Spinnaker's Workflow
