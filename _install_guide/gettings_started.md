@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Gettings Started
+title: Getting Started
 order: 10
 ---
 
