@@ -122,10 +122,8 @@ After configuring distributed logging make sure logs are arriving before moving 
 
 If not all the logs are showing up you can get info about the logging setup from the Docker daemon. For example to **see information about where clouddriver logs are going** you can use this command:
 
-```
-{% raw %}
+```{% raw %}
 docker inspect -f '{{.HostConfig.LogConfig}}' clouddriver
-{% endraw %}
-```
+{% endraw %}```
 
 If the log config isn't what you expect then something is wrong in the Armory Spinnaker config, and if the config is what you expect the problem is likely in your distributed logging setup.
