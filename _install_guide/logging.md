@@ -4,12 +4,12 @@ title: Logging
 order: 130
 ---
 
-Pushing your logs to a distributed service is as simple as using one of the provided logging drivers provider by Docker.   All logging comes from STDOUT inside of Docker and can be pushed to various endpoints.
+Pushing your logs to a distributed service is as simple as using one of the logging drivers provided by Docker.   All logging comes from STDOUT inside of Docker and can be pushed to various endpoints.
 
 
 ## Enabling A Logging Profile
 
-Armory Spinnaker provides an entry point into enabling a given profile by setting the `LOGGING_PROFILE` environment variable.  You'll have to make sure the file with the corresponding file name is placed in `/opt/spinnaker/compose`, i.e. if you set `LOGGING_PROFILE=syslog` then a corresponding file must exist at `/opt/spinnaker/compose/logging-syslog.yml`.
+Armory Spinnaker exposes control over logging through Docker compose. The configuration is made available by files placed in `/opt/spinnaker/compose` and selected by setting the `LOGGING_PROFILE` environment variable.  For example, if you want to create a syslog logging profile you would create the file `/opt/spinnaker/compose/logging-syslog.yml` and set `LOGGING_PROFILE=syslog`.
 
 You can set a logging profile by changing the variable per environment.  You can find the environment file that is used at startup at `/opt/spinnaker/env`.
 
@@ -23,7 +23,7 @@ You can use any of the available logging drivers for Docker.  At the time of thi
 
 ## Example: Logging to Splunk
 
-Below is a sample logging-splunk.yml file that can be used to extend Armory Spinnaker to log to Splunk.  As there are [many configuration options]((https://docs.docker.com/engine/admin/logging/splunk/#usage) for Splunk and Docker, the one below is just a simple example of how to log to Splunk HTTP Event Collector Splunk  for just the Lighthouse and Clouddriver service.  You can add the additional services as well by copying the configuration and changing the service name.  Once this file place at the location `/opt/spinnaker/compose` and set `LOGGING_PROFILE=splunk` in your environment file located at `/opt/spinnaker/env`.
+Below is a sample logging-splunk.yml file that can be used to **extend Armory Spinnaker to log to Splunk**.  As there are [many configuration options](https://docs.docker.com/engine/admin/logging/splunk/#usage) for Splunk and Docker. The one below is just a simple example of how to log to Splunk HTTP Event Collector. Place this file at `/opt/spinnaker/compose/logging-splunk.yml` and set `LOGGING_PROFILE=splunk` in your environment file located at `/opt/spinnaker/env`.
 
 ```
 version: "2.1"
@@ -80,6 +80,8 @@ services:
 ```
 
 ## Example: Logging to Syslog
+
+Below is a sample logging-syslog.yml file that can be used to **extend Armory Spinnaker to log to syslog**. This example sends just clouddriver and lighthouse logs to syslog, but you can add the additional services as well by copying the configuration and changing the service name.  Place this file at `/opt/spinnaker/compose/logging-syslog.yml` and set `LOGGING_PROFILE=syslog` in your environment file located at `/opt/spinnaker/env`.
 ```
 version: "2.1"
 services:
@@ -98,7 +100,7 @@ services:
 
 ## Example: Logging to Sumo Logic
 
-For logging to Sumo Logic the preferred method is to run the sumologic-collector container (provided by Sumo Logic) alongside the default logging settings. To do this add/edit the docker-compose.override.yml file at the location `/opt/spinnaker/compose` and set `DOCKER_COMPOSE_OVERRIDE=true` in your environment file located at `/opt/spinnaker/env`. This is an example of a fresh docker-compose.override.yml that runs the Sumo Logic collector:
+Sumo Logic uses a different mechanism than Splunk and syslog. The preferred method is to run the sumologic-collector container (provided by Sumo Logic) alongside the default logging settings. To do this add/edit the `/opt/spinnaker/compose/docker-compose.override.yml` file and set `DOCKER_COMPOSE_OVERRIDE=true` in your environment file located at `/opt/spinnaker/env`. This is an example of **a fresh docker-compose.override.yml that runs the Sumo Logic collector to send all Spinnaker logs**:
 
 ```
 version: "2.1"
@@ -113,3 +115,15 @@ services:
 ```
 
 Note that `${ACCESSID}` and `${ACCESSKEY}` in the example above should be replaced with your actual Sumo Logic acceess keys. If this is your first Docker source configured through Sumo Logic you may have to configure the source on the Sumo Logic side. Please see the [Docker Collector documentation from Sumo Logic](https://help.sumologic.com/Send-Data/Data-Types/Docker/01_Collect_Events_and_Statistics_for_the_Docker_App) for info about configuring a source.
+
+## Validate Log Delivery
+
+After configuring distributed logging make sure logs are arriving before moving on. If this is the first time you're setting up logging just searching for the Spinnaker services such as clouddriver or front50 should be enough. If you need to test a more complicated setup sometimes it's best to run a manual execution for a pipleline or wait for a new pipeline to run, and then use the execution ID from the run to make sure all the parts are appearing that you expect.
+
+If not all the logs are showing up you can get info about the logging setup from the Docker daemon. For example to **see information about where clouddriver logs are going** you can use this command:
+
+```{% raw %}
+docker inspect -f '{{.HostConfig.LogConfig}}' clouddriver
+{% endraw %}```
+
+If the log config isn't what you expect then something is wrong in the Armory Spinnaker config, and if the config is what you expect the problem is likely in your distributed logging setup.
