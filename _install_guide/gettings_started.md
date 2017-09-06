@@ -41,24 +41,29 @@ For example, suppose you are using GitHub, Jenkins, Artifactory and AWS. Then a 
 
 ## Milestones
 
-The following steps are broken up insto milestones. However, you should follow them serially. Click on the bullet points below to go to the guide.
+The following steps are broken up into milestones. However, you should follow them serially.
 
 
 ### Installing Armory Spinnaker
-
+[**Install Armory Spinnaker**]({% link _install_guide/install.md %})  
 The first goal is to get Spinnaker installed and running to the point where we can connect to its UI.
 
-We will do the following:
+On install, Armory Spinnaker is configured to be in HA mode. 
 
-- [Install Armory Spinnaker]({% link _install_guide/install.md %})
+#### Tips during configuration:
+- Scale down Spinnaker to be just 1 instance.  
+Click on `nonpolling` server group and go to `Server Group Actions` > `Resize`
+![gif](https://cl.ly/003B1D0b0P0C/Screen%20Recording%202017-09-05%20at%2006.06%20PM.gif)
 
-While configuring Spinnaker for the first time you should scale down your Spinnaker cluster to one instance. You will also need to change the Autoscaling Group healthcheck type from ELB to EC2. This will allow you to restart Armory Spinnaker without the ASG terminating the instance.
 
-Start by SSH'ing to the single instance of Armory Spinnaker. Throughout this guide you will be making changes to the `.yml` files in `/opt/spinnaker/config/`. In order for the changes to take affect you will need to restart Armory Spinnaker. To restart run the following:
+- Change the Auto Scaling Group Healthcheck from `ELB` to `EC2`. This will allow you to restart Armory Spinnaker without the ASG terminating the instance.  
+Click on the remaining ASG and go to `Advance Settings` > `Edit Advance Settings`
+![gif](https://cl.ly/2A1A1V3t3d2R/Screen%20Recording%202017-09-05%20at%2006.12%20PM.gif)
+
+
+Start by SSH'ing to the single instance of Armory Spinnaker. Throughout this guide you will be making changes to the `*-local.yml` files in `/opt/spinnaker/config/`. In order for the changes to take affect you will need to restart Armory Spinnaker. To restart run the following:
 ```
-$ sudo service armory-spinnaker stop
-$ sleep 15
-$ sudo service armory-spinnaker start
+$ sudo service armory-spinnaker stop && sleep 15 && sudo service armory-spinnaker start  # restart spinnaker
 ```
 
 It will take a moment for the services to come back online. You can check its status by running:
@@ -67,9 +72,11 @@ $ watch curl http://localhost:5000/healthcheck
 ```
 Then `ctrl+c` to exit watch once it is healthy.
 
+
+
 ### Re-Deploying Spinnaker
 
-Next we will configure Spinnaker so that it can re-deploy itself. This way we can make configuration changes without any trouble.
+Next we will configure Spinnaker so that Spinnaker can re-deploy Spinnaker. This way we can make configuration changes and provide Spinnaker with an upgrade path.
 
 We will do the following:
 
@@ -79,6 +86,7 @@ We will do the following:
 - [Create a pipeline for Spinnaker to deploy Spinnaker]({% link _install_guide/spinnaker-deploy-spinnaker.md %})
 
 
+
 ### Deploying An Application
 
 After we have Spinnaker in a re-deployable state we can get started on deploying an application.
@@ -86,7 +94,7 @@ After we have Spinnaker in a re-deployable state we can get started on deploying
 We will do the following:
 
 - [Add additional cloud provider accounts (and possibly subnets)]({% link _install_guide/adding_accounts.md %})
-- [Adjust Packer scripts]({% link _install_guide/packer.md %})
+- [Understanding Packer Scripts]({% link _install_guide/packer.md %})
 - [Create a pipeline to deploy the application]({% link _install_guide/application_pipeline.md %})
 
 
@@ -101,6 +109,8 @@ We will do the following:
 - [Setup Authorization]({% link _install_guide/authz.md %})
 - [Configure centralized logging]({% link _install_guide/logging.md %})
 - [Pre-create common Packer templates]({% link _admin_guides/rosco.md %})
+
+Finally we can undo some shortcuts when we were configuring Spinnaker. Just undo everything in the [Tips during configurations Guide](#tips-during-configuration)
 
 
 ### Next Steps
