@@ -5,18 +5,19 @@ order: 40
 ---
 
 ## What to expect
+By storing configuration in source control we get all of the benefits that go along with it (versioning, change history, etc.) The cost is that it takes time to see the changes take affect.
 
 In this guide you will learn how to:
 - Create a GitHub repo for storing Spinnaker's configuration files.
 - Packages the configuration files.
 - Publish the artifacts to a central repository.
 
-By storing configuration in source control we get all of the benefits that go along with it (versioning, change history, etc.) The cost is that it takes time to see the changes take affect.
-
 
 # GitHub Repo
 
-We start by forking the example repo from the Armory GitHub organization here: `https://github.com/Armory/spinnaker-config-deb`. After forking, you can find the Spinnaker configuration `.yml` files in `./deb-config/spinnaker/config`.
+We start by forking the example repo from the Armory GitHub organization here: [`https://github.com/Armory/spinnaker-config-deb`](https://github.com/Armory/spinnaker-config-deb). After forking, you can find the Spinnaker configuration `-local.yml` files in `./deb-config/spinnaker/config`.
+
+
 
 # Packaging
 

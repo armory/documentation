@@ -9,14 +9,14 @@ order: 20
 Subnets determine where and how you can deploy AWS resources such as EC2 machines, ELBs and Security Groups.  Configuring your Subnets correctly the first time means you won't have to update your pipelines later with changes.
 
 ## Configuring Subnets
-Spinnaker groups subnets into a single subnet name across multiple availability zones.  This makes it simpler for end-users of Spinnaker to choose a group of subnets within a VPC that have a given purpose such as `ec2-subnets`, `elb-subnets` or `public-subnets`.  This allows Spinnaker to place the machines within that group and ensure equal redundancy across zones. Below is a logical representation of how Spinnaker groups multiple subnets together.  If you want to make a subnet accessible to Spinnaker you'll have to add a tag and value to the subnet with the following: `immutable_metadata={"purpose":"example-purpose"}`
+Spinnaker groups subnets into a single subnet name across multiple availability zones.  This makes it simpler for end-users of Spinnaker to choose a group of subnets within a VPC that have a given purpose such as `ec2-subnets`, `elb-subnets` or `public-subnets`.  This allows Spinnaker to place the machines within that group and ensure equal redundancy across zones. Below is a logical representation of how Spinnaker groups multiple subnets together.  If you want to **make a subnet accessible to Spinnaker** you'll have to add a tag and value to the subnet with the following: `immutable_metadata={"purpose":"example-purpose"}`
 
 ![subnets groups](https://cl.ly/1z3z3x0L0E0w/Image%202017-04-18%20at%204.07.10%20PM.png)
 
 ## Verifying Subnet Configuration
 Once you configured the purpose of your subnets you can use the Spinnaker API to double check that settings have been noticed. It will take between 30 seconds and 2 minutes for the changes to be picked up. After that time period you can run:
 ```
-$ curl http://<your-spinnaker-hostname>:8084/subnets/aws
+$ curl http://localhost:8084/subnets/aws
 ```
 You can expect to receive a response similar to:
 ```[
