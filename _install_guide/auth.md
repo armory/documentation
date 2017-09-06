@@ -49,6 +49,8 @@ This will allow you to call the Spinnaker API using basic auth:
 
 ## X509
 
+X509 certificates are typically used to allow users to connect to the Spinnaker API.  This is especially helpful if you want different groups within your organization to maintain different keys.  You can re-use the same certificate as you used in the previous step but might want to maintain different certificates for groups within your organization.
+
 In order to enable x509 certificates we'll need to add an additional trust certificate to the keystore.
 
 In your `/opt/spinnaker/config/gate-local.yml` file add the following:
