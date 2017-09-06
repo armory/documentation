@@ -37,7 +37,7 @@ Press the '+' on the right to create a new load balancer. The screen that pops u
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/2L2C1X1F2W23470b1d3T/Image%202017-03-30%20at%2012.46.05%20PM.png)
 
-I input 'example' into the 'Stack' field, set my [VPC Subnet Type]({% link _admin_guides/subnets.md %}), use my pre-created security group, forward the correct ports and most importantly set my healthcheck. Finally, I press 'Create'.
+I input 'example' into the 'Stack' field, set my [VPC Subnet Type]({% link _install_guide/subnets.md %}), use my pre-created security group, forward the correct ports and most importantly set my healthcheck. Finally, I press 'Create'.
 
 
 Now to create the Deploy stage in our pipeline,  I navigate to the configuration screen of the previously created pipeline from the [Baking guide]({% link _user_guides/baking-images.md %}).
