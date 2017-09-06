@@ -118,7 +118,7 @@ Note that `${ACCESSID}` and `${ACCESSKEY}` in the example above should be replac
 
 ## Validate Log Delivery
 
-After configuring distributed logging make sure logs are arriving before moving on. If this is the first time you're setting up logging just searching for the Spinnaker services such as clouddriver or front50 should be enough. If you need to test a more complicated setup sometimes it's best to run a manual execution for a pipleline wait for a new pipeline to run, and then use the execution ID from the run to make sure all the parts are appearing that you expect.
+After configuring distributed logging make sure logs are arriving before moving on. If this is the first time you're setting up logging just searching for the Spinnaker services such as clouddriver or front50 should be enough. If you need to test a more complicated setup sometimes it's best to run a manual execution for a pipleline or wait for a new pipeline to run, and then use the execution ID from the run to make sure all the parts are appearing that you expect.
 
 If not all the logs are showing up you can get info about the logging setup from the Docker daemon. For example to **see information about where clouddriver logs are going** you can use this command:
 
