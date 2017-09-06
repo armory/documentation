@@ -172,4 +172,4 @@ keytool -importkeystore -srckeystore server.p12 -srcstoretype pkcs12 -srcalias s
 
 Before you configure authentication you'll need to enable sticky sessions for the external ELB for port 8084 (Gate).  This operation must be done through the AWS console.  For an infinite session leave the `Experation Period` blank
 
-![Adding Sticky Sessions](https://d1ax1i5f2y3x71.cloudfront.net/items/2B3v0a0u121K2D2f0E38/Screen%20Recording%202017-09-06%20at%2012.56%20PM.gif?X-CloudApp-Visitor-Id=2686178)
+![Adding Sticky Sessions](https://d1ax1i5f2y3x71.cloudfront.net/items/2B3v0a0u121K2D2f0E38/Screen%20Recording%202017-09-06%20at%2012.56%20PM.gif)
