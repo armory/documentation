@@ -34,7 +34,7 @@ for more info.
 
 ## Github OAuth
 
-he configuration below is for GitHub or GitHub Enterprise, but other possible configurations include Azure OAuth, Okta, [Google](http://www.spinnaker.io/docs/securing-spinnaker) or Facebook.
+The configuration below is for GitHub or GitHub Enterprise, but other possible configurations include Azure OAuth, Okta, [Google](http://www.spinnaker.io/docs/securing-spinnaker) or Facebook.
 
 1.  *Setup the OAuth2 app in GitHub.* -
 ![](http://drod.io/1z1P3W2Q040t/Image%202017-01-06%20at%205.21.21%20PM.png)
