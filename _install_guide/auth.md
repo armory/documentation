@@ -7,10 +7,11 @@ published: True
 
 # What To Expect
 This guide should include:
-* OAuth
-* x509
+* [LDAP Auth](#ldap-authentication)
+* [Basic Auth](#basic-auth)
+* [Github OAuth](#github-oauth)
+* [x509](#x509)
 * SAML
-* Basic Auth
 
 > *Note*: If you are going to use authentication with your Spinnaker instance you will no longer be able to use the API without setting up x509 authentication
 
