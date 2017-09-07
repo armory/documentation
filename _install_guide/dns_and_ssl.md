@@ -4,9 +4,10 @@ title: DNS and SSL
 order: 100
 ---
 
-Topics:
-- DNS name changes
-- SSL Termination at the ELB
+# What To Expect
+This guide should include:
+- How to give your Spinnaker instance a new domain name
+- SSL Termination at the ELB with Gate and Deck
 
 ## Create a DNS Entry for your Load Balancer
 

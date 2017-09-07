@@ -5,6 +5,11 @@ order: 120
 published: True
 ---
 
+This guide should include:
+* How to enable and configure Fiat
+* Configure LDAP as an authorization provider
+* Restrict access based on account/application
+
 # Authorization
 Authorization is handled by a micro-service called `Fiat`.  Fiat is responsible for access control for both applications and accounts.  It's also responsible for executing triggers with service accounts.
 
@@ -19,7 +24,7 @@ typically stored at `/opt/spinnaker/env/` with a correlated environment file.  Y
 is setup first](http://docs.armory.io/admin-guides/auth/).  Next steps are to configure an authorization provider (see below) which will inform Fiat
 about users and their group membership.
 
-## LDAP Authorization
+## LDAP
 
 Consider the following sample ldap database:
 
@@ -83,6 +88,10 @@ You must tailor this configuration to match your ldap database.
 * adjust `managerDn` and `managerPassword` on lines 8 & 9.
 * adjust `groups` to be the parent DN of your groups.
 * replace `member` with the key that you use when you add a user to a group. In the sample data, 'member' is used to add isaac and don to the eng group.
+
+## OKTA
+
+OKTA has it's own [separate guide](/admin-guides/okta/) due to it's lengthy configuration
 
 ## Application Access
 

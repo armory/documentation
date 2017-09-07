@@ -3,6 +3,12 @@ layout: post
 title: Understanding Bake Scripts (Packer scripts)
 order: 80
 ---
+
+# What To Expect
+This guide should include:
+- Overview of the Spinnaker bake process using Packer
+- Configuration details with Rosco & Packer regarding location and simple usage
+
 **Note** If you're using Kubernetes, you can skip this section.
 
 

@@ -4,6 +4,12 @@ title: Re-Deploying Spinnaker
 order: 60
 ---
 
+
+# What To Expect
+This guide should include:
+- Creating a pipeline that deploys Spinnaker for new configuration or version upgrades
+- How to update and deploy a custom configuration
+
 The installer scripts setup an initial Spinnaker environment. To keep Spinnaker up to date and to release changes to configuration, we'll teach Spinnaker how to redeploy itself. We call this the "Spinnaker deploy Spinnaker" pipeline.
 
 This is a step by step guide to creating the pipeline.
@@ -35,7 +41,7 @@ Steps to create an AMI that pulls in the armoryspinnaker base package:
 - Set the **Template File Name** to `aws-ebs.json`
 - Click **Add Extended Attribute** to create a new attribute
   - Set ****key**** to `repository`
-  - Set the ****value**** to 
+  - Set the ****value**** to
   ```
   "https://apt.dockerproject.org/repo/ ubuntu-trusty main;https://dl.bintray.com/armory/debians trusty main"
   ```

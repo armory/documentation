@@ -4,6 +4,12 @@ title: Subnets
 order: 20
 ---
 
+
+# What To Expect
+This guide should include:
+- Overview of how VPCs and Subnets are used within Spinnaker
+- Configuring Subnets to be used during Deployment stage
+
 # VPCs & Subnets
 
 Subnets determine where and how you can deploy AWS resources such as EC2 machines, ELBs and Security Groups.  Configuring your Subnets correctly the first time means you won't have to update your pipelines later with changes.

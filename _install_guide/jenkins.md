@@ -4,6 +4,10 @@ title: Jenkins
 order: 50
 ---
 
+# What To Expect
+This guide should include:
+- Configuring Jenkins (or multiple masters) as a trigger to kick-off pipelines
+
 # Continuous Integration (CI)
 Spinnaker's goal is to leverage existing CI solutions to build and produce an artifact that can be deployed.
 
