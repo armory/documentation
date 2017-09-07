@@ -137,6 +137,24 @@ A few possibilities for managing these secrets include:
 
 If your Kubernetes cluster is non-sensitive, you can keep your kubeconfig file in a source control system.
 
+## Verify Your Changes
+
+### Restart Spinnaker
+
+You must restart or redeploy Spinnaker before these changes will take effect.
+
+### Make Sure Kubernetes shows up as a cloud provider
+
+If Kubernetes is properly configured, kubernetes will appear as one of the choices for "Cloud Providers" when you use
+the New Application dialog:
+
+![NewApplication](/assets/images/kubernetes-newapplication.png)
+
+You should see a similar option in the "Cloud Provider" section of the Edit Application dialog when editing existing application attributes via: config -> Edit Application Attributes:
+
+![EditApplication](/assets/images/kubernetes-editapplication.png)
+
+
 ## See Also
 
-For additional documentation on configuring Kubernetes, see the [Kubernetes Documention](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/).
+For additional documentation on configuring Kubernetes, see the [Kubernetes Documentation](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/).
