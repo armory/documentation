@@ -3,6 +3,14 @@ layout: post
 title: Adding Accounts
 order: 70
 ---
+
+
+This guide should include:
+
+- Adding additional AWS Accounts to Clouddriver so that they're available for Deployments
+- Background on Spinnaker's IAM policies and configuration
+
+
 # Adding Additional AWS Accounts
 
 Spinnaker supports adding multiple AWS accounts with some users reaching 100s of accounts in production.  Spinnaker uses AWS assume roles to create resources in the target account and then passes the role to a target instance profile if it's creating an instance resource.
@@ -70,99 +78,6 @@ correct trust policy in IAM.  Below is the trust policy you give the `SpinnakerM
 }
 ```
 
-Below is the EC2 policy to use for allowing `SpinnakerInstanceProfile`.
+Below is the latest EC2 policy to use for allowing `SpinnakerInstanceProfile`.
 
-```
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "Stmt1486065689000",
-            "Effect": "Allow",
-            "Action": [
-                "autoscaling:CreateAutoScalingGroup",
-                "autoscaling:CreateLaunchConfiguration",
-                "autoscaling:CreateOrUpdateTags",
-                "autoscaling:DeleteAutoScalingGroup",
-                "autoscaling:DeleteLaunchConfiguration",
-                "autoscaling:DeletePolicy",
-                "autoscaling:DeleteScheduledAction",
-                "autoscaling:DeleteTags",
-                "autoscaling:DescribeAutoScalingGroups",
-                "autoscaling:DescribeLaunchConfigurations",
-                "autoscaling:DescribeLoadBalancers",
-                "autoscaling:DescribePolicies",
-                "autoscaling:DescribeScalingActivities",
-                "autoscaling:DescribeScheduledActions",
-                "autoscaling:DetachInstances",
-                "autoscaling:DisableMetricsCollection",
-                "autoscaling:PutLifecycleHook",
-                "autoscaling:PutNotificationConfiguration",
-                "autoscaling:PutScalingPolicy",
-                "autoscaling:PutScheduledUpdateGroupAction",
-                "autoscaling:ResumeProcesses",
-                "autoscaling:SuspendProcesses",
-                "autoscaling:TerminateInstanceInAutoScalingGroup",
-                "autoscaling:UpdateAutoScalingGroup",
-                "cloudwatch:DeleteAlarms",
-                "cloudwatch:DescribeAlarms",
-                "cloudwatch:GetMetricStatistics",
-                "cloudwatch:ListMetrics",
-                "cloudwatch:PutMetricAlarm",
-                "ec2:AttachClassicLinkVpc",
-                "ec2:AuthorizeSecurityGroupIngress",
-                "ec2:CreateNetworkInterface",
-                "ec2:CreateSecurityGroup",
-                "ec2:CreateTags",
-                "ec2:DeleteSecurityGroup",
-                "ec2:DeleteTags",
-                "ec2:DescribeAccountAttributes",
-                "ec2:DescribeAddresses",
-                "ec2:DescribeAvailabilityZones",
-                "ec2:DescribeClassicLinkInstances",
-                "ec2:DescribeImages",
-                "ec2:DescribeInstances",
-                "ec2:DescribeKeyPairs",
-                "ec2:DescribeRegions",
-                "ec2:DescribeReservedInstances",
-                "ec2:DescribeReservedInstancesOfferings",
-                "ec2:DescribeSecurityGroups",
-                "ec2:DescribeSpotPriceHistory",
-                "ec2:DescribeSubnets",
-                "ec2:DescribeTags",
-                "ec2:DescribeVpcClassicLink",
-                "ec2:DescribeVpcs",
-                "ec2:GetConsoleOutput",
-                "ec2:ModifyImageAttribute",
-                "ec2:ModifyInstanceAttribute",
-                "ec2:RebootInstances",
-                "ec2:RevokeSecurityGroupIngress",
-                "ec2:TerminateInstances",
-                "elasticloadbalancing:ApplySecurityGroupsToLoadBalancer",
-                "elasticloadbalancing:ConfigureHealthCheck",
-                "elasticloadbalancing:CreateLoadBalancer",
-                "elasticloadbalancing:CreateLoadBalancerListeners",
-                "elasticloadbalancing:CreateLoadBalancerPolicy",
-                "elasticloadbalancing:DeleteLoadBalancer",
-                "elasticloadbalancing:DeleteLoadBalancerListeners",
-                "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
-                "elasticloadbalancing:DeregisterTargets",
-                "elasticloadbalancing:DescribeInstanceHealth",
-                "elasticloadbalancing:DescribeLoadBalancerAttributes",
-                "elasticloadbalancing:DescribeLoadBalancerPolicies",
-                "elasticloadbalancing:DescribeLoadBalancers",
-                "elasticloadbalancing:DescribeTargetGroups",
-                "elasticloadbalancing:DescribeTargetHealth",
-                "elasticloadbalancing:ModifyLoadBalancerAttributes",
-                "elasticloadbalancing:RegisterInstancesWithLoadBalancer",
-                "elasticloadbalancing:RegisterTargets",
-                "elasticloadbalancing:SetLoadBalancerPoliciesOfListener",
-                "iam:PassRole"
-            ],
-            "Resource": [
-                "*"
-            ]
-        }
-    ]
-}
-```
+<script src="http://gist-it.appspot.com/https://github.com/Armory/spinnaker-aws-policy/blob/master/policies/latest/SpinnakerInstanceProfile.json"></script>

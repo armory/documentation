@@ -4,6 +4,12 @@ title: Logging
 order: 130
 ---
 
+# What To Expect
+This guide should include:
+- Publishing logs to a centralized logging server like Splunk, Sumo Logic or Syslog
+- Validating configuration for log delivery
+
+## Armory Spinnaker's Application Logs with Docker
 Pushing your logs to a distributed service is as simple as using one of the logging drivers provided by Docker.   All logging comes from STDOUT inside of Docker and can be pushed to various endpoints.
 
 

@@ -6,7 +6,7 @@ order: 90
 
 # What To Expect
 
-In this guide you will learn how to:
+This guide should include:
 * Create a pipeline
 * Configure a `Bake` & `Deploy` stage
 * Execute a deployment pipeline
@@ -57,7 +57,7 @@ _Note_: The Property File is an important topic that will be [covered in a separ
 
 #### Step 7: Before you test your pipeline, you may want to consider enabling or disabling the trigger via the checklist at the bottom.
 
-#### Step 8: Add a new stage. 
+#### Step 8: Add a new stage.
 Click the add stage button in the visual representations section.
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/1P0f2L0C2v2k463X3Q0U/Image%202017-03-24%20at%204.19.38%20PM.png)
@@ -66,7 +66,7 @@ Click the add stage button in the visual representations section.
 
 ![](https://cl.ly/043q3u1K1a2V/Image%202017-09-05%20at%204.47.51%20PM.png)
 
-#### Step 10: Select the region you want to bake in. 
+#### Step 10: Select the region you want to bake in.
 Enter the name of the package that was archived by the Jenkins job.
 
 - _Note_: The package name should not include any version numbers. (e.g.: If your build produces a deb file named `myapp_1.27-h343`, you would want to enter `myapp` here.)
@@ -83,19 +83,19 @@ _Note_: If we want to reorganize the order that the stages execute in the pipeli
 
 #### Step 12: In the Deploy Configuration, click on the “Add server group” button. Pick your provider. For our example it will be AWS.
 
-#### Step 13: Select “Continue without a template”. 
-Since this is a new application we will not choose to copy a configuration from a template. 
+#### Step 13: Select “Continue without a template”.
+Since this is a new application we will not choose to copy a configuration from a template.
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/1Y0k2u0H2t303h2y1Z2F/Image%202017-03-24%20at%204.32.05%20PM.png)
 
-#### Step 14: Set up the Deploy Strategy. 
+#### Step 14: Set up the Deploy Strategy.
 We will use the Highlander strategy for this example, which will ensure that only one server group for our application exists at a time.
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/2D143V0z0J370f3d2o3S/Image%202017-03-24%20at%204.35.23%20PM.png)
 
 _Note_: Different deployment strategies are important and there will be [a separate guide for those](http://localhost:4000/user-guides/deploying/#deployment-strategies)
 
-#### Step 15: Select a security group 
+#### Step 15: Select a security group
 The security group will define the access rights to your resource.
 
 #### Step 16: Select Instance Type.
@@ -107,7 +107,7 @@ Select how many instances you want in your server group on deploy. For our examp
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/1i1Y1V2B3k0b3x3A433R/Image%202017-03-24%20at%204.39.12%20PM.png)
 
 #### Step 18: Add the server group.
-Click "Add" and you'll be brought back to your Application and to see your new Deploy Configuration. 
+Click "Add" and you'll be brought back to your Application and to see your new Deploy Configuration.
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/2d2J000z3T1z0n0j1d1i/Image%202017-03-24%20at%204.42.09%20PM.png)
 

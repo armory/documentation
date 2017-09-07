@@ -5,8 +5,8 @@ order: 110
 published: True
 ---
 
-There are several authentication mechanisms available in Spinnaker:
-
+# What To Expect
+This guide should include:
 * OAuth
 * x509
 * SAML
