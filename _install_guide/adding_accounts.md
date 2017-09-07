@@ -70,7 +70,7 @@ correct trust policy in IAM.  Below is the trust policy you give the `SpinnakerM
       "Sid": "",
       "Effect": "Allow",
       "Principal": {
-        "AWS": "arn:aws:iam::987654321123:role/SpinnakerInstanceProfile"
+        "AWS": "arn:aws:iam::987654321123:role/SpinnakerManagedProfile"
       },
       "Action": "sts:AssumeRole"
     }
