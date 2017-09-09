@@ -96,8 +96,11 @@ It's helpful commit and see diffs as we iterate.
 
 #### 7. `cd config/packer`  
 It's best to iterate packer scripts by:
-1. copy steps from an app's current deployment into our `packer script`.
-2. Make sure the app is deployed and working.
+1. copy steps from your app's current deployment into your new `packer script`.  
+For the first iteration, it's helpful to imagine it like setting up a brand new instance in an environment. Ex: copying all the `apt-get install` commands, dependencies (like nginx, pm2, gunicorn, ...) and dependency configs. Make sure to double check for secrets or environment variables that are injected (`ENV=production`, `DB_URI=localhost:3389`, `DB_USER_NAME=user`, ...).
+
+2. Make sure the app is deployed and working like the old style.  
+
 3. Start simplifying the script. Check out [Things to keep in mind](#things-to-keep-in-mind) for tips.
 
 
