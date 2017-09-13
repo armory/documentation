@@ -147,7 +147,7 @@ The default configurations use `Ubuntu 12.04/14.0` as the default choices for Ba
 > **Note** There's currently a bug in the YAML merge that if you specify less than 3 `baseImages` (listed in `rosco.yml`), Spinnaker will show `null null` in the drop down for **Base OS**.
  
 
-Here's a simple version of `rosco-local.yml`
+Here's a simple version of `rosco-local.yml`. See [Full Version](https://github.com/spinnaker/rosco/blob/master/rosco-web/config/rosco.yml)
 ```
 aws:
   enabled: true
