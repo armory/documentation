@@ -101,7 +101,7 @@ Spinnaker runs in root and all the files are owned by root.
 This is the home for Spinnaker
 
 6. (optional) `export GIT_DIR=/opt/spinnaker/.git ; git init && git add . && git commit -m "init" ; unset GIT_DIR`  
-It's helpful commit and see diffs as we iterate.
+Initialize `/opt/spinnaker` as a git repo. It's helpful to see what exactly is changed throught the process.
 
 7. **`cd config/packer`**
 
