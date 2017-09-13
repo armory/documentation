@@ -19,7 +19,7 @@ We start by forking the example repo from the Armory GitHub organization here: [
 
 
 # Understanding config files.
-Spinnaker uses Spring's confinguration files. With the default Armory Spinnaker installation, files are sourced in the following order, where a following file will replace the predecessors settings.
+Spinnaker uses Spring's configuration files. With the default Armory Spinnaker installation, files are sourced in the following order, where a following file will replace the predecessors settings.
 ```
 spinnaker.yml
 spinnaker-local.yml
