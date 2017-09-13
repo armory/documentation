@@ -18,6 +18,22 @@ In this guide you will learn how to:
 We start by forking the example repo from the Armory GitHub organization here: [`https://github.com/Armory/spinnaker-config-deb`](https://github.com/Armory/spinnaker-config-deb). After forking, you can find the Spinnaker configuration `-local.yml` files in `./deb-config/spinnaker/config`.
 
 
+# Understanding config files.
+Spinnaker uses Spring's configuration files. With the default Armory Spinnaker installation, files are sourced in the following order, where a following file will replace the predecessors settings.
+```
+spinnaker.yml
+spinnaker-local.yml
+ENVIRONMENT_VARIABLES
+```
+
+Subservices will sometimes also source variables in a similar order, for example `igor`:
+```
+igor.yml
+igor-armory.yml
+igor-local.yml
+ENVIRONMENT_VARIABLES
+```
+
 
 # Packaging
 

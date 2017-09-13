@@ -1,20 +1,22 @@
 ---
 layout: post
-title: Rosco/Baking Configuration
+title: Baking Configuration
 order: 120
 ---
 
-# Baking Images With Rosco
+# What is Rosco?
 
-Rosco is the sub-service that manages baking using [Packer](https://www.packer.io/docs/), a cloud agnostic tool that automates the creation of images.  Rosco is a small API which manages the state of packer jobs and their executions so that it can report to other sub-systems.  It is highly extendable to work for different types of environments.  
+Rosco is the sub-service that manages baking using [Packer](https://www.packer.io/docs/), a cloud agnostic tool that automates the creation of images.  Rosco is a small API which manages the state of packer jobs and their executions so that it can report to other sub-systems. Make sure to read up on [Understanding Bake Scripts (Packer scripts)]({% link _install_guide/packer.md %}).
 
-## Rosco Configuration for Baking
+
+
+## Configurations for Baking
+
 
 ### Templates Location
-You can tell Rosco where it should look for template files and scripts.  The default location is `/opt/spinnaker/config/packer` for Armory Spinnaker.  With a standard Spinnaker distribution you should find various examples to extend.  In most cases you will want to take a template file and add your custom packer properties to build correctly.  You will only need to add your files here in this directory and then reference them in your bake stage under the `Template File Name` field.  There's a more complete example of modifying a template and install script below.
-
-
-You can specify the following in `/opt/spinnaker/config/rosco-local.yml`:
+The default location is `/opt/spinnaker/config/packer` for Armory Spinnaker, however this can be changed.
+You can specify the following in  
+`/opt/spinnaker/config/rosco-local.yml`:
 ```
 rosco:
   configDir: ${services.rosco.configDir:/opt/rosco/config/packer}
@@ -27,7 +29,21 @@ rosco:
 
 In some cases you'll want to bake in multiple multiple regions but in order to do so you'll need to create variable files that tell packer where and how to bake the image.  You can do this using [Packer's template variables from a file](https://www.packer.io/docs/templates/user-variables.html#from-a-file).  You can configure your bake stage to use the region template you need by using the `${region}` variable and selecting the regions where would like the bake to occur.  This is a _much_ faster process than copying the AMIs across regions because the bakes happen in parallel.
 
+
+### Using Templates
+When selecting a **Base OS**, the default template will be used. The default is **Base OS** is `Ubuntu 12.04/14.0`, which uses `aws-ebs.json` and `install_package.sh`. See [Setting Up Base OS Defaults for Baking](#setting-up-base-o-s-defaults-for-baking) on how to change the defaults.
+
+You can also specify a template in the bake stage.  The example below shows the template being set to `mycompany-ebs.json` using the **Template File Name** setting for the stage. Spinnaker allows variables so you can even make each template dynamic.  
 ![bake configuration](https://cl.ly/1g1M192j3M2D/Image%202017-08-07%20at%2012.45.20%20PM.png)
+
+Example of baking `armory-spinnaker` in CentOS (without defining the correct Base OS):
+![img](https://cl.ly/3h2K0p0z1W06/Screen%20Shot%202017-09-07%20at%205.40.01%20PM.png)
+
+
+
+### Getting to Know Packer
+[Packer's documentation can be found here](https://www.packer.io/docs/index.html). In brief, Spinnaker will execute `packer build` with the provided json, which then will execute the `packer_script.sh`.
+
 
 
 ### Dynamically Generating Base AMI
@@ -48,49 +64,90 @@ In some cases you'll want to dynamically generate a Base AMI for all deployments
 }
 ```
 
-### Using Package (deb/rpm/chocolatey) Repositories
 
-You can specify an apt repository (used when baking debian based images) and/or a yum repository (used when baking an rpm based imaged) and/or a chocolatey repository (used when baking a nuget based image).
 
-```
-debianRepository: http://dl.bintray.com/spinnaker/ospackages
-yumRepository: https://https://jfrog.bintray.com/yourpath
-chocolateyRepository: https://chocolatey.org/api/v2/
-```
+### Working on Packer Scripts
+There's a few options on getting a config change out. 
+1. Make a change to `spinnaker-config` repo and wait for a redeploy.  
+This method is useful for minor changes and to keep Spinnaker highly available with less downtime. However a bake and deploy will take on a minimum of 5-10 minutes.
+
+2. Make changes on a Spinnaker instance itself, then commit the changes later. See [Making Config Changes on Spinnaker](#making-config-changes-on-spinnaker).
+This method will scale down Spinnaker to one instance, and allow for a quick development cycle. Keep in mind that if there's anyone using Spinnaker, this will have a drastic, noticeable effect.
+
+It's best to iterate packer scripts by:
+1. Copy steps from your app's current deployment into your new packer script.  
+This might come from your chef, puppet, ansible, or shell scripts. For the first iteration, it's helpful to imagine it like setting up a brand new instance for an environment. Ex: copying all the `apt-get install` commands, dependencies (like nginx, pm2, gunicorn, ...) and dependency configs. Make sure to double check for secrets or environment variables that are injected (`ENV=production`, `DB_URI=localhost:3389`, `DB_USER_NAME=user`, ...).
+
+2. Make sure the app is deployed and working like the old style.  
+
+3. Start simplifying the script. Check out [Things to keep in mind](#things-to-keep-in-mind) for tips.
+
+
+### Making Config Changes on Spinnaker
+
+1. **Scale down all Spinnaker instances except 1 polling instance** :
+Armory Spinnaker is set to spin up in high availability mode, this means there's a potential for a pipeline to execute on one instance and bake on another instance.
+![gif](https://cl.ly/2A1A1V3t3d2R/Screen%20Recording%202017-09-05%20at%2006.12%20PM.gif)
+
+2. **Set the healthcheck for Spinnaker to be EC2** :
+If we're making changes to **rosco**, this will require you to restart Armory Spinnaker (`service armory-spinnaker restart`). This will prevent the ASG healthchecks from destroying your instance while you're working on it.
+
+3. **SSH into the Spinnaker instance**
+
+4. **sudo su** : 
+Spinnaker runs in root and all the files are owned by root. 
+
+5. **`cd /opt/spinnaker`** :
+This is the home for Spinnaker
+
+6. (optional) `export GIT_DIR=/opt/spinnaker/.git ; git init && git add . && git commit -m "init" ; unset GIT_DIR`  
+Initialize `/opt/spinnaker` as a git repo. It's helpful to see what exactly is changed throught the process.
+
+7. **`cd config/packer`**
+
 
 ### Modifying Packer Templates and Install Scripts
 
-If your organization uses different repositories between groups or if you need some additional custom logic run when baking images it is possible to customize the files that Rosco uses to drive Packer. As mentioned in the Template Files section above, those templates are normally stored in /opt/spinnaker/config/packer. The easiest way to get customizations working is to copy an existing example and add it to your spinnaker config. For instance say we want to start from the aws-ebs.json template and install Docker on all our baked images, but need to install the Docker deb GPG key to add their repo.
+If your organization uses different repositories between groups or if you need some additional custom logic run when baking images it is possible to customize the files that Rosco uses to drive Packer. As mentioned in the Template Files section above, those templates are normally stored in `/opt/spinnaker/config/packer`. The easiest way to get customizations working is to copy an existing example and add it to your spinnaker config. 
 
-There are two files we need to copy over into our configuration. Copy the aws-ebs.json file and name it aws-ebs-custom.json. And copy the install_packages.sh into your config and name it install_packages_custom.sh.
 
-In the aws-ebs-custom.json template there's only one change we need to make. Modify the provisioners section so that the script entry points to our custom installer script:
+#### Example: Installing Docker before Each Bake
+Lets install Docker and make sure we get add the GPG key for their repo.
 
+- Let's start by copying [`aws-ebs.json`](https://github.com/spinnaker/rosco/blob/master/rosco-web/config/packer/aws-ebs.json) to `my-custom-baker.json`.
+- Let's start by copying [`install_packages.sh`](https://github.com/spinnaker/rosco/blob/master/rosco-web/config/packer/install_packages.sh) to `my-custom-install_packages.sh`.
+
+In the `my-custom-baker.json`, modify the **provisioners** section so that the script entry points to our custom installer script:
 ```
 {% raw %}
-"script": "{{user `configDir`}}/install_packages_custom.sh",
+"script": "{{user `configDir`}}/my-custom-install_packages.sh",
 {% endraw %}
 ```
 
-In the install_packages_custom.sh script add the logic you need to have run when a bake instance starts up. For our example we'll add the following lines to the provision_deb() function:
-
+In `my-custom-install_packages.sh` script, add the logic you need to have run when a bake instance starts up.
 ```
 {% raw %}
-#Add the docker gpg key
+# Add the docker gpg key
 curl -fsSL https://yum.dockerproject.org/gpg | sudo apt-key add -
 
-#Add the docker repo to the sources list
+# Add the docker repo to the sources list
 echo "deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main" \
       | sudo tee -a /etc/apt/sources.list
 {% endraw %}
 ```
 
-Once you have the custom template and script deployed to your Spinnaker cluster you can use it by changing the "Template File Name" in Bake Configuration to aws-ebs-custom.json.
+Once you have the custom template and script deployed onto your Spinnaker cluster you can now set **Template File Name** in Bake Configuration to `my-custom-baker.json`.
+
+
 
 ### Setting Up Base OS Defaults for Baking
 
-The default configurations use Ubuntu 12.04/14.0 as the default choices for Base OS - these are configurable by adding the configurations below to your `rosco-local.yml`.   You can specify a different `templateFile` per base image which should save time from a user perspective so they don't have to specify an additional parameter.  You can specify multiple base images and virtualization settings for each region you need to process bakes.
+The default configurations use `Ubuntu 12.04/14.0` as the default choices for Base OS - these are configurable by adding the configurations below to your `rosco-local.yml`.   You can specify a different `templateFile` per base image which should save time from a user perspective so they don't have to specify an additional parameter.  You can specify multiple base images and visualization settings for each region you need to process bakes.
 
+> **Note** There's currently a bug in the YAML merge that if you specify less than 3 `baseImages` (listed in `rosco.yml`), Spinnaker will show `null null` in the drop down for **Base OS**.
+ 
+
+Here's a simple version of `rosco-local.yml`
 ```
 aws:
   enabled: true
@@ -125,3 +182,26 @@ aws:
           sourceAmi: ami-9eaa1cf6
           sshUserName: ubuntu
 ```
+
+
+
+### Things to keep in mind
+#### Try to use only 1 packer script across an organization
+* Otherwise this can lead to packer script explosion and splits the ownership of the app.
+* There's going to be a lot of changes to the `spinnaker-config` which will become a nightmare.
+* Checkout [`install_package.sh`](https://github.com/spinnaker/rosco/blob/master/rosco-web/config/packer/install_packages.sh) to get an idea.
+
+#### Avoid install secrets during bake time
+* A potential security issue.
+* Instead, on boot time of the image, an machine  should pull the secret from a secret store.
+
+#### Avoid adding all the dependencies into the packer script
+* This will slow the the bake times because bake will be downloading and installing on each new app change. 
+* Instead, use a prebake stage or prebaked image to speed up deploy times. Spinnaker will cache an existing bake if no changes have been made.
+
+#### Avoid having too many prebaked images.
+* After a while, we run into versioning and update issues with the images across multiple apps.
+* Instead, have a single base image, (potentially a security hardened) image, shared across the entire organization. Here's some ways to accomplish this:
+  - Fill the **Base AMI** section for a Bake
+  - Have a `Find Image` stage which would pick the latest base image.
+  - [Allow packer to find the latest image](#dynamically-generating-base-a-m-i).
