@@ -66,7 +66,7 @@ Barometer can automatically generate a DataDog dashboard showing the metrics you
 
 ### Monitors
 
-You can use pre-existing monitors to fail the canary regardless of how it compares to it's `baseline`.  This is good if you have absolute business rules such as "response times can't go over 50ms" or "Number of exceptions must be below 10 per minute".  Barometer does this by periodically checking the event stream for monitors that have failed and match the canary autoscaling group name.
+You can use pre-existing monitors to fail the canary regardless of how it compares to its `baseline`.  This is good if you have absolute business rules such as "response times can't go over 50ms" or "Number of exceptions must be below 10 per minute".  Barometer does this by periodically checking the event stream for monitors that have failed and match the canary autoscaling group name.
 
 #### Enabling the monitor
 

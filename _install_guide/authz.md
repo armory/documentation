@@ -91,7 +91,7 @@ You must tailor this configuration to match your ldap database.
 
 ## OKTA
 
-OKTA has it's own [separate guide](/admin-guides/okta/) due to it's lengthy configuration
+OKTA has its own [separate guide](/admin-guides/okta/) due to its lengthy configuration
 
 ## Application Access
 
