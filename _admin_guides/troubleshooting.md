@@ -45,7 +45,7 @@ This should stream all the `clouddriver` logs to your terminal.  You'll want to 
 ```apt-get install redis-server```
 2.  Find the host of the Armory Spinnaker Redis server.  This is typically kept in ```/opt/spinnaker/env/resolved.env``` under the key ```REDIS_HOST```.
 3.  Flush all content.  This will remove old executions.
-`recis-cli -h ${HOST_FROM_STEP_2} FLUSHALL`
+`redis-cli -h ${HOST_FROM_STEP_2} FLUSHALL`
 
 #### How do I remove hung operations in the tasks view?
 
