@@ -52,6 +52,21 @@ jenkins:
       password: second-master-password
 ```
 
-
 ## Purpose
 Igor is an API that is responsible for executing and reading the state of jobs from Jenkins.
+
+
+## Validating Your Jenkins Configuration
+You can see if you've configured your jenkins master correctly by querying `Gate`:
+```
+curl localhost:8084/v2/builds
+```
+
+You should see a response similar to:
+```
+[
+  "Armory Jenkins",
+  "First-Master",
+  "Second-Master"
+]
+```
