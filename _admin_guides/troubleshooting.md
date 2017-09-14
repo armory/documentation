@@ -4,6 +4,49 @@ title: Troubleshooting
 order: 200
 ---
 
+#### How can I debug Armory Spinnaker?
+
+To see which sub-system is unhealthy you can check with lighthouse:
+```
+curl localhost:5000/healthcheck
+```
+
+This should return a response similar to:
+```
+{
+   "healthy":true,
+   "systems":{
+      "gate":true,
+      "clouddriver":false,
+      "echo":true,
+      "igor":true,
+      "orca":true,
+      "rosco":true,
+      "front50":true,
+      "deck":true,
+      "host":{
+         "diskUsage":65.7
+      }
+   }
+}
+```
+
+In the example above `clouddriver` is `false` so it's likely unhealthy.  To check for exceptions or errors tail the logs:
+
+```
+docker logs -f clouddriver
+```
+
+This should stream all the `clouddriver` logs to your terminal.  You'll want to look for any obvious exceptions or stack-traces to share with the Armory Support team.
+
+#### How can I flush the Redis cache?
+
+1.  Install redis server which comes with the cli tool.  
+```apt-get install redis-server```
+2.  Find the host of the Armory Spinnaker Redis server.  This is typically kept in ```/opt/spinnaker/env/resolved.env``` under the key ```REDIS_HOST```.
+3.  Flush all content.  This will remove old executions.
+`recis-cli -h ${HOST_FROM_STEP_2} FLUSHALL`
+
 #### How do I remove hung operations in the tasks view?
 
 From time-to-time you might have hung tasks.  In order to clear them out you'll have to use Redis you'll have to remove the key from the server.
