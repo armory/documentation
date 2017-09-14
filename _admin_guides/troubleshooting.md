@@ -66,5 +66,5 @@ You can then grab the ID from the url:
 `https://${YOURSPINNAKER_INSTANCE}:8084/applications/armoryspinnaker/tasks/bf06a51c-083f-40f0-964a-71314c97ae17`
 
 4.  Delete the orchestration keys from redis:<br/>
-`redis-cli -h ${HOST_FROM_STEP_2} DEL orchestration:${TASK_KEY}`<br/> <br/>
-`redis-cli -h ${HOST_FROM_STEP_2} DEL  orchestration:bf06a51c-083f-40f0-964a-71314c97ae17:stageIndex`
+`. /opt/spinnaker/env/resolved.env redis-cli -h ${REDIS_HOST} DEL orchestration:${TASK_KEY}`<br/> <br/>
+`. /opt/spinnaker/env/resolved.env redis-cli -h ${REDIS_HOST} DEL  orchestration:bf06a51c-083f-40f0-964a-71314c97ae17:stageIndex`
