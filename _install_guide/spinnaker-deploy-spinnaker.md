@@ -40,10 +40,10 @@ Steps to create an AMI that pulls in the armoryspinnaker base package:
 - Check the **Show Advanced Options** box to see additional fields
 - Set the **Template File Name** to `aws-ebs.json`
 - Click **Add Extended Attribute** to create a new attribute
-  - Set ****key**** to `repository`
-  - Set the ****value**** to
+  - Set **key** to `repository`
+  - Set the **value** to
   ```
-  "https://apt.dockerproject.org/repo/ ubuntu-trusty main;https://dl.bintray.com/armory/debians trusty main"
+  https://apt.dockerproject.org/repo/ ubuntu-trusty main; https://dl.bintray.com/armory/debians trusty main;
   ```
 
 Once configured the stage should look like this:
