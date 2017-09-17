@@ -28,6 +28,11 @@ If your app is using zip, tarballs or you'll need some customization, you'll nee
 - In the configuration repo: [`spinnaker-config/deb-config/spinnaker/config/packer/`](https://github.com/Armory/spinnaker-config-deb/tree/master/deb-config/spinnaker/config/packer)
 
 
-# Using and Validating Your Packer Script
-Spinnaker can send pipeline variables such as `repository` to the packer script by adding it in the extended attributes. Some attributes are already included depending on the **Base OS**.
+
+# Using and Verifying The Packer Script
+This is is for Ubuntu, with minor changes for Redhat and CentOS.
+The default template used is `aws-ebs.json` and `install_package.sh`.
+
+**Bake Configuration** in Spinnaker
+Spinnaker can send pipeline variables such as `repository` to the packer script by adding it in the extended attributes. Some attributes are prefilled because of selecting `trusty` as the base OS.
 ![example](https://cl.ly/41113D0o1h3x/Screen%20Shot%202017-09-05%20at%204.34.58%20PM.png)

@@ -40,10 +40,10 @@ Steps to create an AMI that pulls in the armoryspinnaker base package:
 - Check the **Show Advanced Options** box to see additional fields
 - Set the **Template File Name** to `aws-ebs.json`
 - Click **Add Extended Attribute** to create a new attribute
-  - Set ****key**** to `repository`
-  - Set the ****value**** to
+  - Set **key** to `repository`
+  - Set the **value** to
   ```
-  "https://apt.dockerproject.org/repo/ ubuntu-trusty main;https://dl.bintray.com/armory/debians trusty main"
+  https://apt.dockerproject.org/repo/ ubuntu-trusty main; https://dl.bintray.com/armory/debians trusty main;
   ```
 
 Once configured the stage should look like this:
@@ -117,7 +117,7 @@ Once the pipeline is fully configured it should look like this:
 
 
 
-## Validate with a Manual Run
+## Verify with a Manual Run
 
 To make sure that everything is working well you can manually run the pipeline. If all goes well the execution should show green for all stages. And you should be able to see multiple server groups in the custer view for the armoryspinnaker application. It should look something like the following:
 

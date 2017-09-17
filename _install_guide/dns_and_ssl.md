@@ -76,3 +76,9 @@ DECK_HOST=https://spinnaker.example-domain.com
 Update your ELB to contain the following port mappings:
 
 ![elb](https://cl.ly/3i0o0b38103J/Image%202017-05-05%20at%203.42.27%20PM.png)
+
+
+Now you can restart Armory Spinnaker by doing
+```
+service armory-spinnaker restart
+```

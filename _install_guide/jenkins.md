@@ -56,7 +56,7 @@ jenkins:
 Igor is an API that is responsible for executing and reading the state of jobs from Jenkins.
 
 
-## Validating Your Jenkins Configuration
+## Verify Your Jenkins Configuration
 You can see if you've configured your jenkins master correctly by querying `Gate`:
 ```
 curl localhost:8084/v2/builds
