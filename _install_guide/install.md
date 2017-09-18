@@ -53,3 +53,6 @@ Configuration(s) to set Spinnaker up for the first time.
 
 The installer will download the latest stable version of the Terraform files and place them in `~/armory/`. - If you want to customize how the bootstrapped version of Spinnaker is installed, make changes to the template files in `~/armory/` and run the installer again.
 
+### Validating Your Spinnaker Install
+
+(hello)[https://cl.ly/2g163N1z050V/download/[98c70de3cd1c9778e50d5aa0e4db15f6]_Image%202017-09-13%20at%204.10.04%20PM.png]

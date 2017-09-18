@@ -117,7 +117,7 @@ Once the pipeline is fully configured it should look like this:
 
 
 
-## Validate with a Manual Run
+## Verify with a Manual Run
 
 To make sure that everything is working well you can manually run the pipeline. If all goes well the execution should show green for all stages. And you should be able to see multiple server groups in the custer view for the armoryspinnaker application. It should look something like the following:
 

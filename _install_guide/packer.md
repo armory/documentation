@@ -23,15 +23,14 @@ The provided way to do this is by debian/rpm packages stored into a artifact rep
 If your app is using zip, tarballs or you'll need some customization, you'll need to create a new packer script. See [Rosco/Baking Configuration](https://docs.armory.io/admin-guides/rosco/#rosco-baking-configuration) for steps on how to do this.
 
 
-
 # Where the packer scripts are stored
 - On a spinnaker instance: `/opt/spinnaker/config/packer/`  
 - In the configuration repo: [`spinnaker-config/deb-config/spinnaker/config/packer/`](https://github.com/Armory/spinnaker-config-deb/tree/master/deb-config/spinnaker/config/packer)
 
 
 
-# Using the packer script
-This is is for Ubuntu, with minor changes for Redhat and CentOS. 
+# Using and Verifying The Packer Script
+This is is for Ubuntu, with minor changes for Redhat and CentOS.
 The default template used is `aws-ebs.json` and `install_package.sh`.
 
 **Bake Configuration** in Spinnaker
