@@ -10,10 +10,14 @@ This guide should include:
 - Adding additional AWS Accounts to Clouddriver so that they're available for Deployments
 - Background on Spinnaker's IAM policies and configuration
 
+# Adding A Kubernetes Account
+
+Spinnaker supports deploying to multiple cloud environments. If you're using Kubernetes you'll need to [follow this guide]({% link _admin_guides/configure_kubernetes.md %})  
 
 # Adding Additional AWS Accounts
 
 Spinnaker supports adding multiple AWS accounts with some users reaching 100s of accounts in production.  Spinnaker uses AWS assume roles to create resources in the target account and then passes the role to a target instance profile if it's creating an instance resource.
+
 
 ## Spinnaker's Account Model
 In AWS, Spinnaker relies on IAM policies to access temporary keys into configured accounts by [assuming a role](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_passrole.html).  This allows an administrator to limit and audit the actions that Spinnaker is taking in configured accounts.
