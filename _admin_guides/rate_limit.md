@@ -9,7 +9,7 @@ order: 140
 
 By default Spinnaker queries (e.g. polls) the entire state of the AWS resources managed by Spinnaker every 30 seconds through the Clouddriver sub-service. This can cause AWS to throttle the requests on your account. If you have a large number of Auto-Scaling Groups and Elastic Load Balancers in your account or other services commonly querying the same APIs then you can expect to see throttling exceptions in your Spinnaker logs.
 
-### How to eleviate AWS Throttling Exceptions
+### How to alleviate AWS Throttling Exceptions
 
 There are several things you can do to help reduce the effects of throttling:
 - Set fine tune rate limits within Spinnaker.
