@@ -5,7 +5,7 @@ order: 200
 ---
 
 
-#### I upgraded Spinnaker and it failed, how do I rollback?
+#### I upgraded Spinnaker and it is no longer responding, how do I rollback?
 
 If you deploy a configuration or a change that takes down Spinnaker it'll be impossible to rollback since Spinnaker would not be available.  In order to manually to deploy back you'll have to do the following:
 
