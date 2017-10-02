@@ -16,7 +16,7 @@ As you go through this guide, keep in mind that there are four major milestones:
 
 ## Spinnaker's Workflow
 
-Before we dive in, it is important to understand the workflow that Spinnaker prefers. This will allow us to understand what we need to install and configure and why. Lets go over it from the beginning to the end. The process starts with a code change and ends with that code running in production. The general case is:
+Before we dive in, it is important to understand the workflow that Spinnaker prefers. This will allow us to understand what we need to install and configure and why. Let's go over it from beginning to end. The process starts with a code change and ends with that code running in production. The general case is:
 
 1. A change is made to master in your code repository.
 2. The build system creates an artifact.
@@ -34,7 +34,7 @@ For example, suppose you are using GitHub, Jenkins, Artifactory and AWS. Then a 
 3. Jenkins archives the deb package and uploads it to Artifactory.
 4. Spinnaker triggers a pipeline based on the Jenkins job completing.
 5. Spinnaker downloads the artifact from Artifactory.
-6. Spinnaker creates and AMI with the artifact and any of its dependencies.
+6. Spinnaker creates an AMI with the artifact and its dependencies.
 7. Spinnaker deploys the AMI to an environment.
 
 
