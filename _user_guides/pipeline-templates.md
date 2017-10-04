@@ -4,7 +4,7 @@ order: 108
 ---
 
 [Pipeline Templates](https://github.com/spinnaker/dcd-spec/blob/master/PIPELINE_TEMPLATES.md)
-are a new feature of Spinnaker.  They are a means for standarding and
+are a new feature of Spinnaker.  They are a means for standardizing and
 distributing reusable Pipelines within a Spinnaker ecosystem.  The following
 stages are of particular note to users deploying through pipeline templates.
 
