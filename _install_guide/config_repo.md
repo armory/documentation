@@ -37,7 +37,7 @@ ENVIRONMENT_VARIABLES
 
 # Packaging
 
-The forked repo is setup to build a deb package out of the configuration files. You can see how this works in `./build.sh`. The system you use to build will need to have Docker installed and available. If you are using Jenkins then you can look at `./Jenkinsfile` as an example. This is the flow you need to create in the build system:
+The forked repo is set up to build a deb package out of the configuration files. You can see how this works in `./build.sh`. The system you use to build will need to have Docker installed and available. If you are using Jenkins then you can look at `./Jenkinsfile` as an example. This is the flow you need to create in the build system:
 
 - `./build.sh` executes and puts the artifacts in `build/distributions/*.deb`
 - The `deb` is uploaded to a central artifact store.
