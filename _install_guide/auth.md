@@ -126,7 +126,7 @@ server:
     clientAuth: want
 
 default:
-  apiPort: 8083
+  apiPort: 8085
 ```
 
 The configuration adds an additional port for x509 certificates. This is so you can terminate HTTPS to end-users of the UI on the ELB and continue using API on a different port with x509 client certificates.
