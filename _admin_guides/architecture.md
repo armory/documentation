@@ -42,6 +42,11 @@ Below is a diagram of the architecture & components deployed in an HA configurat
 
 ![](http://f.cl.ly/items/3a272r1D3S1j0R2N3H2f/Image%202017-01-26%20at%2011.18.35%20AM.png?v=38d7cea6)
 
+## Polling and Non-Polling environments
+
+For certain components you'll only want a single instance running on an ASG on "polling" mode.  Namely Igor and Echo which need to run on a
+single instance so that multiple trigger events are not sent to Spinnaker and issuing multiple events for the same build.
+
 ## Systems Requirements
 
 Armory Spinnaker runs only on Ubuntu & CentOS and RHEL based machines within AWS.  It uses AWS resources to run manage and run Armory Spinnaker.  
