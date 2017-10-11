@@ -30,7 +30,7 @@ You should adjust `mycompany` and `com` to match your organization.
 See the [Spinnaker LDAP Documentation](https://www.spinnaker.io/setup/security/authentication/ldap/)
 for more info.
 
-> *Note*: Enable [sticky sessions](#enabling-sticky-sessions) on the external ELB when enabling LDAP.   Make sure to use load balancer generated cookies. ![](https://cl.ly/0C1n3m3e3M2z/Image%202017-10-11%20at%209.26.58%20AM.png)
+> *Note*: Make sure to enable [sticky sessions](#enabling-sticky-sessions) on the external ELB when enabling LDAP.   Make sure to use load balancer generated cookies. ![](https://cl.ly/0C1n3m3e3M2z/Image%202017-10-11%20at%209.26.58%20AM.png)
 
 
 ## Github OAuth
@@ -81,7 +81,7 @@ Set `AUTH_ENABLED=true` in your environment file.  It's typically stored at `/op
 
 - Restart spinnaker: `service armory-spinnaker restart`
 
-> *Note*: Enable [sticky sessions](#enabling-sticky-sessions) on the external ELB when enabling OAuth.  Make sure to use load balancer generated cookies. ![](https://cl.ly/0C1n3m3e3M2z/Image%202017-10-11%20at%209.26.58%20AM.png)
+> *Note*: Make sure to enable [sticky sessions](#enabling-sticky-sessions) on the external ELB when enabling OAuth.  Make sure to use load balancer generated cookies. ![](https://cl.ly/0C1n3m3e3M2z/Image%202017-10-11%20at%209.26.58%20AM.png)
 
 ## Basic Auth
 
