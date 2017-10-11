@@ -79,9 +79,7 @@ The fields to fill in are the `clientID` and `clientSecret` from the yellow box 
 -  *Enable Auth Flag * -
 Set `AUTH_ENABLED=true` in your environment file.  It's typically stored at `/opt/spinnaker/env/`
 
-- Restart spinnaker
-
-`service armory-spinnaker restart`
+- Restart spinnaker: `service armory-spinnaker restart`
 
 > *Note*: Enable [sticky sessions](#enabling-sticky-sessions) on the external ELB when enabling OAuth.  Make sure to use load balancer generated cookies. ![](https://cl.ly/0C1n3m3e3M2z/Image%202017-10-11%20at%209.26.58%20AM.png)
 
