@@ -30,7 +30,7 @@ You should adjust `mycompany` and `com` to match your organization.
 See the [Spinnaker LDAP Documentation](https://www.spinnaker.io/setup/security/authentication/ldap/)
 for more info.
 
-> *Note*: Make sure to enable [sticky sessions](#enabling-sticky-sessions) on the external ELB when enabling LDAP
+> *Note*: Make sure to enable [sticky sessions](#enabling-sticky-sessions) on the external ELB when enabling LDAP.   Make sure to use load balancer generated cookies. ![](https://cl.ly/0C1n3m3e3M2z/Image%202017-10-11%20at%209.26.58%20AM.png)
 
 
 ## Github OAuth
@@ -46,6 +46,7 @@ The configuration below is for GitHub or GitHub Enterprise, but other possible c
 Next, generate a personal API access token. It only needs to have `read:org` permissions.
 ![](http://drod.io/3n1w1L2C1E0L/Image%202017-01-06%20at%205.23.33%20PM.png)
 > *Note*: You might want to create a GitHub Bot account for this and add it to your organization
+
 
 - *Add Github Configuration to Spinnaker* -
 Add the GitHub configuration to Gate by adding the following to: `/opt/spinnaker/config/gate-local.yml`:
@@ -82,7 +83,7 @@ Set `AUTH_ENABLED=true` in your environment file.  It's typically stored at `/op
 
 `service armory-spinnaker restart`
 
-> *Note*: Make sure to enable [sticky sessions](#enabling-sticky-sessions) on the external ELB when enabling OAuth
+> *Note*: Make sure to enable [sticky sessions](#enabling-sticky-sessions) on the external ELB when enabling OAuth.  Make sure to use load balancer generated cookies. ![](https://cl.ly/0C1n3m3e3M2z/Image%202017-10-11%20at%209.26.58%20AM.png)
 
 ## Basic Auth
 
@@ -173,4 +174,4 @@ keytool -importkeystore -srckeystore server.p12 -srcstoretype pkcs12 -srcalias s
 
 Before you configure authentication you'll need to enable sticky sessions for the external ELB for port 8084 (Gate).  This operation must be done through the AWS console.  For an infinite session leave the `Experation Period` blank
 
-![Adding Sticky Sessions](https://d1ax1i5f2y3x71.cloudfront.net/items/2B3v0a0u121K2D2f0E38/Screen%20Recording%202017-09-06%20at%2012.56%20PM.gif)
+![Adding Sticky Sessions](https://cl.ly/0C1n3m3e3M2z/Image%202017-10-11%20at%209.26.58%20AM.png)
