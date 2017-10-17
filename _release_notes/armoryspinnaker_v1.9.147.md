@@ -6,37 +6,22 @@ order: 980
 
 # 10/17/17 Release Notes
 
-
-## Highlighted Updates
-### Armory Enterprise Spinnaker
-Some summary what got released in this release.
-For each of the subservices, pick out notable updates from Verbose updates and add them below.
-
-### lighthouse - ff1b1e7
-
-### barometer - 1c8ac5c
-
-### deck-armory - a5ae983
-
-
 ###  Spinnaker Community Contributions
 ### orca - v3.28.1
+ - feat(rrb): Support for running a pipeline between scale up and disable (#1694)
+ - feat(qa): dry run pipelines
 
 ### echo - v1.147.1
-
-### front50 - v1.115.0
-
-### gate - v4.8.0
+ - refactor(pubsub): Simpler artifact matching (#179)
 
 ### clouddriver - v1.689.0
-
-
-
+ - feat(cats): Adding cache gzip compression (#2000)
+ - feat(provider/kubernetes): V2 instance state (#1986)
 
 <br><br><br>
 ## Detailed Updates
 ### Armory Enterprise Spinnaker
-### lighthouse - ff1b1e7
+### Lighthouse
  - Change log level of http errors from old orca status endpoint.
  - Disable error logging for the first WARMUP seconds.
  - Cleanups.
@@ -45,28 +30,21 @@ For each of the subservices, pick out notable updates from Verbose updates and a
  - Do not allow user to edit `settings.js`
  - Don't trigger armoryspinnaker, watch will be done upstream
  - Eng 633 build properties (#98)
- - Change our shutdown method to support new Orca. (#97)
 
-### barometer - 1c8ac5c
+### Barometer
  - Now that build is cleaned up, try to fix the archive step
- - Pull out the armoryspinnaker rebuild, testing out another method
- - Archive just the build properties
- - Write out a build.properties and archive, build armoryspinnaker instead (#92)
 
 ### deck-armory - a5ae983
  - Updating dashboard to c88dc51 in version.manifest
  - Change name of load test stage (#39)
  - Add back job params for loadtest stage.
  - ENG-685: Load Test stage (copied from Jenkins) (#37)
- - Updating dashboard to cac56a0 in version.manifest
- - Updating dashboard to 3545cfa in version.manifest
  - angular now requires module name instead of module
  - copied src/settings.js from OSS
  - copy from OSS, keeping armory canary
  - oss removed colors.less, instead moving to variables
  - copied canaryScore style from oss version
  - Updating dashboard to 4e8240e in version.manifest
- - updating deck version
 
 
 ###  Spinnaker Community Contributions
