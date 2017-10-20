@@ -17,7 +17,7 @@ Spinnaker is still actively being developed by a community of over 50 engineers 
 many different large organizations and changes are happening rapidly.  This introduces a level of risk that can be reduced by creating a staging environment coupled with a suite of integration pipelines that exercise the base functionality of Spinnaker.  Additionally, everyone's cloud environment is unique. Permissions, networking, authentication, baking, and cloud targets differ wildly from environment to environment.  This will help add confidence into your deployment practices to practice continuous delivery with Spinnaker itself
 
 ## Setting Up A preprod Environment
-When Armory Spinnaker starts, it looks for a property file that matches it's [stack name]({% link _overview/naming-conventions.md %}).  This file should contain key/value pairs that it'll use for it's environment. It pulls this stack name from an environment file located at: `/etc/default/server-env`.  If you're using Armory Spinnaker, this file is managed for you by using [clouddriver's global userdata]({% link _admin_guides/userdata.md %}). If a file is found it is appended to `default.env` and generates a `resolved.env` for use.
+When Armory Spinnaker starts, it looks for a property file that matches its [stack name]({% link _overview/naming-conventions.md %}).  This file should contain key/value pairs that it'll use for its environment. It pulls this stack name from an environment file located at: `/etc/default/server-env`.  If you're using Armory Spinnaker, this file is managed for you by using [clouddriver's global userdata]({% link _admin_guides/userdata.md %}). If a file is found it is appended to `default.env` and generates a `resolved.env` for use.
 
 For example, if the stack of your deploy is named `preprod`, Armory Spinnaker will look for a corresponding environment file named `/opt/spinnaker/env/preprod.env` and append those values to `default.env` should one exist.
 
@@ -25,7 +25,7 @@ For example, if the stack of your deploy is named `preprod`, Armory Spinnaker wi
 For your preprod environment you will want to have it match your production properties as closely as possible with the exception of a few environment properties described below.
 
 ##### S3 Properties
-The following determines where Spinnaker will store persitent items like application details, pipelines, etc.  
+The following determines where Spinnaker will store persistent items like application details, pipelines, etc.  
 It's critical that these are not the same as your production deployment.
 ```  
 ARMORYSPINNAKER_S3_BUCKET=mycompany-preprod-spinnaker
@@ -57,7 +57,7 @@ DECK_HOST=https://spinnaker.preprod.mycompany.com
 will automatically create an internal network for the sub-services to communicate with each other.
 
 ##### Spring Profiles
-Spinnaker's core framework is Spring.  Spring uses a hierarchical profile loading system.  You can create environment specific properties files that are loaded at runtime.  Make sure to leave the `armory` profiles as the first one in the list, then your environment specific profiles.  In the example below `preprod` takes the highest precedent
+Spinnaker's core framework is Spring.  Spring uses a hierarchical profile loading system.  You can create environment specific properties files that are loaded at runtime.  Make sure to leave the `armory` profiles as the first one in the list, then your environment specific profiles.  In the example below `preprod` takes the highest precedence
 ```
 SPRING_PROFILES_ACTIVE=armory,local,preprod
 ```
