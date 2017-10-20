@@ -9,9 +9,6 @@ order: 970
 
 ## Highlighted Updates
 ### Armory Enterprise Spinnaker
-Some summary what got released in this release.
-For each of the subservices, pick out notable updates from Verbose updates and add them below.
-
 ### lighthouse
  - Fixes to terminate disabled instances due to endpoint changes in orca. (#109)
 
