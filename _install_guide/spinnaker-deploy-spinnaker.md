@@ -115,6 +115,8 @@ Once the pipeline is fully configured it should look like this:
 
 ![Redeploy Overall](/assets/images/redeploy-overall.png)
 
+To add more confidence to your upgrade path consider creating
+a [stage environment and integration tests]({% link _admin_guides/preprod_environment.md %}).
 
 
 ## Verify with a Manual Run
