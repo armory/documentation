@@ -8,7 +8,7 @@ published: true
 # What To Expect
 This guide should include:
 - Why you need a preprod environment
-- How to setup a staging environment
+- How to setup a preprod environment
 - How to create a suite of integration pipelines to validate your staging environment
 
 
