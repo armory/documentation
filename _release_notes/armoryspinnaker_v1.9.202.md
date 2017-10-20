@@ -13,31 +13,27 @@ Some summary what got released in this release.
 For each of the subservices, pick out notable updates from Verbose updates and add them below.
 
 ### lighthouse
+ - Fixes to terminate disabled instances due to endpoint changes in orca. (#109)
 
 ### barometer
+- Generate basic statistics on the selected data points so that user can see standard deviation
 
 ### deck-armory
-
-### gate-armory
+- add historical statistic in the deck UI for Barometer users
 
 ### packager
-
+ - adding 8085 as an open port in Docker compose for Gate API usage (#177)
 
 ###  Spinnaker Community Contributions
 ### orca - v3.34.2
-
-### echo - v1.147.5
+- feat(queue): update delivery time on runtask (#1676)
+- feat(logging): ops controller annotation + logstashEncoder dep (#1692)
 
 ### gate - v4.9.0
-
-### igor - v1.76.0
-
-### rosco - v0.100.0
+- feat(pipeline_template): Convert pipeline config to pipeline template (#457)
 
 ### clouddriver - v1.690.1
-
-
-
+- feat(provider/kubernetes): V2 Cache services (#2009)
 
 <br><br><br>
 ## Detailed Updates
@@ -80,7 +76,6 @@ For each of the subservices, pick out notable updates from Verbose updates and a
  - Remove old crufty jira stage (#178)
  - Updating deck to 2.1142.0 and deck-armory to 21db765 in version.legacy
  - Eng 725 jira integration (#174)
- - adding 8085 as a port (#177)
  - Change enhanced_networking to ena_support (Packer update requirement) (#176)
  - Updating deck to 2.1142.0 and deck-armory to 089374b in version.legacy
  - Make the update subservices work only for deck and deck-armory (#175)
