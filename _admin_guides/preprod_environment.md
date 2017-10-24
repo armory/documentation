@@ -1,23 +1,23 @@
 ---
 layout: post
-title: Preprod Environment
+title: Preprod Environment for Spinnaker
 order: 110
 published: true
 ---
 
 # What To Expect
 This guide should include:
-- Why you need a preprod environment
-- How to setup a preprod environment
-- How to create a suite of integration pipelines to validate your staging environment
+- Why you need a preprod environment for Spinnaker
+- How to setup a preprod environment for Spinnaker
+- How to create a suite of integration pipelines to validate your preprod environment
 
 
 ## Why Do I Need A Preprod Environment?
 Spinnaker is still actively being developed by a community of over 50 engineers across
-many different large organizations and changes are happening rapidly.  This introduces a level of risk that can be reduced by creating a staging environment coupled with a suite of integration pipelines that exercise the base functionality of Spinnaker.  Additionally, everyone's cloud environment is unique. Permissions, networking, authentication, baking, and cloud targets differ wildly from environment to environment.  This will help add confidence into your deployment practices to practice continuous delivery with Spinnaker itself
+many different large organizations and changes are happening rapidly. This introduces a level of risk that can be reduced by creating a preprod environment coupled with a suite of integration pipelines that exercise the base functionality of Spinnaker. Additionally, everyone's cloud environment is unique. Permissions, networking, authentication, baking, and cloud targets differ wildly from environment to environment. This will help add confidence into your deployment practices to practice continuous delivery with Spinnaker itself.
 
-## Setting Up A preprod Environment
-When Armory Spinnaker starts, it looks for a property file that matches its [stack name]({% link _overview/naming-conventions.md %}).  This file should contain key/value pairs that it'll use for its environment. It pulls this stack name from an environment file located at: `/etc/default/server-env`.  If you're using Armory Spinnaker, this file is managed for you by using [clouddriver's global userdata]({% link _admin_guides/userdata.md %}). If a file is found it is appended to `default.env` and generates a `resolved.env` for use.
+## Setting Up A Preprod Environment
+When Armory Spinnaker starts, it looks for a property file that matches its [stack name]({% link _overview/naming-conventions.md %}).  This file should contain key/value pairs that it will use for its environment. It pulls this stack name from an environment file located at: `/etc/default/server-env`.  If you're using Armory Spinnaker, this file is managed for you by using [clouddriver's global userdata]({% link _admin_guides/userdata.md %}). If a file is found it is appended to `default.env` and generates a `resolved.env` for use.
 
 For example, if the stack of your deploy is named `preprod`, Armory Spinnaker will look for a corresponding environment file named `/opt/spinnaker/env/preprod.env` and append those values to `default.env` should one exist.
 
@@ -34,36 +34,36 @@ SPINNAKER_AWS_DEFAULT_REGION=us-west-2
 ```
 
 ##### Redis
-Redis is used for keep state of your cloud resources, pipeline executions, authentication sessions and other transient state.  For your preprod environment you might want to use a local Redis instead of creating a new one using Elasticache.
+Redis is used to maintain state of your cloud resources, pipeline executions, authentication sessions and other transient state. For your preprod environment you might want to use a local Redis instead of creating a new one using Elasticache.
 ```
 LOCAL_REDIS=true
 REDIS_HOST=redis
 ```
 
-otherwise if you want to use an external Redis to closer match your production setup do the following:
+Otherwise, if you want to use an external Redis to more closely match your production setup, do the following:
 ```
 LOCAL_REDIS=false
 REDIS_HOST=armoryspinnaker-preprod.aaaaaaaaa.aa.0001.usw2.cache.amazonaws.com
 ```
 
 ##### Host Names
-You'll need to create a new ELB for your preprod Spinnaker. These should have the same settings, healthcheck and listeners as your production setup. You'll likely want to apply friendly DNS records to the given name from AWS.  Once they have been configured you'll need to change the addresses below.
+You'll need to create a new ELB for your preprod Spinnaker. These should have the same settings, healthcheck and listeners as your production setup. You'll likely want to apply friendly DNS records to the given name from AWS. Once they have been configured you'll need to change the addresses below.
 ```
 API_HOST=https://spinnaker.preprod.mycompany.com:8084
 DECK_HOST=https://spinnaker.preprod.mycompany.com
 ```
 
-> Note: Make sure to remove your `DEFAULT_DNS_NAME` key from the environment file.  Armory Spinnaker
+> Note: Make sure to remove your `DEFAULT_DNS_NAME` key from the environment file. Armory Spinnaker
 will automatically create an internal network for the sub-services to communicate with each other.
 
 ##### Spring Profiles
-Spinnaker's core framework is Spring.  Spring uses a hierarchical profile loading system.  You can create environment specific properties files that are loaded at runtime.  Make sure to leave the `armory` profiles as the first one in the list, then your environment specific profiles.  In the example below `preprod` takes the highest precedence
+Spinnaker's core framework is Spring. Spring uses a hierarchical profile loading system. You can create environment specific properties files that are loaded at runtime. Make sure to leave the `armory` profiles as the first one in the list, followed by your environment specific profiles. In the example below `preprod` takes the highest precedence.
 ```
 SPRING_PROFILES_ACTIVE=armory,local,preprod
 ```
 
 ### Create a new Deploy Stage
-Add a new deploy stage to your "Spinnaker Deploy Spinnaker" pipeline.  When adding the stage and server group you can use production as the server template.  You'll want to add a `manual judgement` or `integration test` stage following the deploy stage so you can confirm that your preprod environment is working as expected.  Make sure to change the stack to the name chosen for your environment file, in this example: `preprod`.
+Add a new deploy stage to your "Spinnaker Deploy Spinnaker" pipeline. When adding the stage and server group you can use production as the server template. You'll want to add a `manual judgement` or `integration test` stage following the deploy stage so you can confirm that your preprod environment is working as expected. Make sure to change the stack to the name chosen for your environment file, in this example: `preprod`.
 
 ![deploy configuration](https://cl.ly/2P421F3m1y3O/Image%202017-10-20%20at%201.06.30%20PM.png)
 
