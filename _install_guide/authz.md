@@ -9,6 +9,7 @@ This guide should include:
 * How to enable and configure Fiat
 * Configure LDAP as an authorization provider
 * Restrict access based on account/application
+* Configure a Service Account for some operations
 
 # Authorization
 Authorization is handled by a micro-service called `Fiat`.  Fiat is responsible for access control for both applications and accounts.  It's also responsible for executing triggers with service accounts.
@@ -99,7 +100,7 @@ To modify an application's access go to `application -> config > edit applicatio
 
 ![application permissions](https://cl.ly/0Z3j0k1L3Q0m/Image%202017-08-09%20at%2012.34.13%20PM.png)
 
-Once you have your authorization provider configured you should be able to see available groups for your user.  For each group that is added to the list you can select "Read-Only" or "Read/Write" Permissions.  Once groups are added to the list no other users will be able to access that application.  
+Once you have your authorization provider configured you should be able to see available groups for your user.  For each group that is added to the list you can select "Read-Only" or "Read/Write" Permissions.  Once groups are added to the list no other users will be able to access that application.
 
 ![application permissions](https://cl.ly/2K3D0V3F170i/Image%202017-08-09%20at%2012.35.25%20PM.png)
 
@@ -120,4 +121,18 @@ aws:
 then restart armory-spinnaker:
 ```
 service armory-spinnaker restart
+```
+
+# Configure a Service Account
+When fiat is enabled, some Spinnaker operations require a service account.
+
+This account will be used to shutdown old instances when you re-deploy armoryspinnaker.
+
+To configure the service account, edit the file spinnaker-local.yml and add the settings:
+
+```
+services:
+  lighthouse:
+    # Put your service account here;
+    defaultServiceAccount: armory-lighthouse
 ```
