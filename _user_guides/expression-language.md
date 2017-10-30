@@ -53,3 +53,7 @@ For example:
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/0O261w2H3N3H043r0l33/Image%202017-04-03%20at%203.37.57%20PM.png)
 
 You should see a page full of JSON. It doesn't print in a very readable format, so you may want to copy and paste it into a text editor or another tool that will help you read it (I usually just curl this URL and pipe it to `jq`). You can navigate to the JSON field 'stages' for a list of stages in your pipeline. These stages are not necessarily in order. In the stage you'll see another field called 'context'. This is the information avaliable to the expression language. Make sure what you are referencing is in the context of the appropriate stage.
+
+### Testing your pipeline expressions
+
+The best way to test a pipeline expression is to create a sample pipeline and see if your SPEL expression does what you expect it to do before you add it to your production pipeline. Another feature that is helpful for writing SPEL is if the pipeline has ran in the past, the UI will show you autocomplete options based on the previous execution.
