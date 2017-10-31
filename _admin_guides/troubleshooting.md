@@ -66,7 +66,9 @@ This should stream all the `clouddriver` logs to your terminal.  You'll want to 
 
 1.  SSH into an active Armory Spinnaker node
 1.  Install redis server which comes with the cli tool.  
-```apt-get install redis-tools```
+```
+apt-get install redis-tools
+```
 
 1.  Flush all content.  This will remove old executions.
 
@@ -80,7 +82,9 @@ From time-to-time you might have hung tasks.  In order to clear them out you'll 
 
 1.  SSH into an active Armory Spinnaker node
 1.  Install redis server which comes with the cli tool.  
-```apt-get install redis-tools```
+```
+apt-get install redis-tools
+```
 1.  Find the host of the Armory Spinnaker Redis server.  This is typically kept in ```/opt/spinnaker/env/resolved.env``` under the key ```REDIS_HOST```.
 1.  Find the key of the task you want to delete.
 ![alt text](http://f.cl.ly/items/043D1P1s1T353Y3E352D/%5B8c4dbdb8b3942adf28094343663d5588%5D_Image+2017-08-01+at+11.37.03+AM.png?X-CloudApp-Visitor-Id=2686178&v=7e43486e)
@@ -90,3 +94,15 @@ You can then grab the ID from the url:
 4.  Delete the orchestration keys from redis:<br/>
 `. /opt/spinnaker/env/resolved.env redis-cli -h ${REDIS_HOST} DEL orchestration:${TASK_KEY}`<br/> <br/>
 `. /opt/spinnaker/env/resolved.env redis-cli -h ${REDIS_HOST} DEL  orchestration:bf06a51c-083f-40f0-964a-71314c97ae17:stageIndex`
+
+
+#### How do I add DEBUG level logging?
+
+You can specify logging levels based on the package that you're trying to debug or reduce messaging by adding the following to `/opt/spinnaker/config/spinnaker-local.yml`
+
+```
+logging:
+  level:
+    com.netflix.spinnaker.gate: DEBUG
+    com.netflix.spinnaker..clouddriver: WARN
+```
