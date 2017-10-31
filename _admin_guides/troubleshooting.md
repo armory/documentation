@@ -65,11 +65,7 @@ This should stream all the `clouddriver` logs to your terminal.  You'll want to 
 #### How can I flush the Redis cache?
 
 1.  SSH into an active Armory Spinnaker node
-1.  Install redis server which comes with the cli tool.  
-```
-apt-get install redis-tools
-```
-
+1.  Install redis server which comes with the cli tool. `apt-get install redis-tools`
 1.  Flush all content.  This will remove old executions.
 
 ```
