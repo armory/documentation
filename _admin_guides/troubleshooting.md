@@ -97,5 +97,5 @@ You can specify logging levels based on the package that you're trying to debug 
 logging:
   level:
     com.netflix.spinnaker.gate: DEBUG
-    com.netflix.spinnaker..clouddriver: WARN
+    com.netflix.spinnaker.clouddriver: WARN
 ```
