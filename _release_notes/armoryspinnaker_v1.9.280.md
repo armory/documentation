@@ -1,7 +1,7 @@
 ---
 layout: post
 title: v1.9.280 Armory Enterprise Spinnaker
-order: TODO
+order: 960
 ---
 
 # 11/02/17 Release Notes
