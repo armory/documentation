@@ -6,7 +6,8 @@ order: 960
 
 # 11/02/17 Release Notes
 
-> Note: If you're experiencing production issues after upgrading Spinnaker, [rollback to a previous working version] (http://docs.armory.io/admin-guides/troubleshooting/#i-upgraded-spinnaker-and-it-is-no-longer-responding-how-do-i-rollback).
+> Note: If you're experiencing production issues after upgrading Spinnaker rollback to a [previous working version](http://docs.armory.io/admin-guides/troubleshooting/#i-upgraded-spinnaker-and-it-is-no-longer-responding-how-do-i-rollback)
+
 
 > Note: This release requires an update to your IAM access policy.  You can alway find the [latest policy in our  documentation](http://docs.armory.io/install-guide/adding_accounts/#assume-roles-in-iam).
 
