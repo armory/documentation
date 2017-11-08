@@ -6,7 +6,8 @@ order: 959
 
 # 11/08/17 Release Notes
 
-> Note: If you're experiencing production issues after upgrading Spinnaker, [rollback to a previous working version] (http://docs.armory.io/admin-guides/troubleshooting/#i-upgraded-spinnaker-and-it-is-no-longer-responding-how-do-i-rollback).
+> Note: If you're experiencing production issues after upgrading Spinnaker rollback to a [previous working version](http://docs.armory.io/admin-guides/troubleshooting/#i-upgraded-spinnaker-and-it-is-no-longer-responding-how-do-i-rollback.
+
 
 ## Highlighted Updates
 ### Armory Enterprise Spinnaker
