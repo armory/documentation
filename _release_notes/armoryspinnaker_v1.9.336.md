@@ -12,9 +12,10 @@ order: 959
 
 ## Highlighted Updates
 ### Armory Enterprise Spinnaker
-Some summary what got released in this release.
-For each of the subservices, pick out notable updates from Verbose updates and add them below.
 
+Earlier versions
+Of these release notes were not
+Proofread by humans
 
 ### barometer - 54d8390
 - Begin work for new relic support. (#105)
@@ -72,19 +73,8 @@ For each of the subservices, pick out notable updates from Verbose updates and a
  - Update yml resources for NewRelic.
 
 ### deck-armory - c254801
- - fixing canary (#62)
- - Refactor to not over-use stage.
- - Remove leftover console.log
- - Rework New Relic UI so you can choose per-pipeline.
- - Set metricsProvider on the CanaryConfig
- - Set 'pretty name' for metrics provider on stage
- - Initial pass -- swap out "DataDog" for "New Relic"
- - Fix complainy-pants style guide issues.
+ - Initial pass on adding New Relic support for canary stages
  - chore(deck) - version bump
- - Need to fake out .filter() as well as .length
- - Set metricsProvider on the CanaryConfig
- - Set 'pretty name' for metrics provider on stage
- - Initial pass -- swap out "DataDog" for "New Relic"
 
 ### gate-armory - 535da1f
  - Include the gate.yml in the distribution files
