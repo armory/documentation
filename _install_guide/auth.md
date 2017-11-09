@@ -51,28 +51,28 @@ Next, generate a personal API access token. It only needs to have `read:org` per
 - *Add Github Configuration to Spinnaker* -
 Add the GitHub configuration to Gate by adding the following to: `/opt/spinnaker/config/gate-local.yml`:
 ```
-security:  
-  oauth2:
-    client:
-      clientId: xxxxxxxxxxxxxxxxx83a
-      clientSecret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx722
-      userAuthorizationUri: https://github.com/login/oauth/authorize # Used to get an authorization code
-      accessTokenUri: https://github.com/login/oauth/access_token # Used to get an access token
-      scope: read:org,user:email
-    resource:
-      userInfoUri: https://api.github.com/user # Used to the current user's profile
-    userInfoMapping: # Used to map the userInfo response to our User
-      email: email
-      firstName: name
-      lastName:
-      username: login
-  auth:
-    groupMembership:
-      service: github
-      github:
-        organization: your-org-here
-        baseUrl: https://api.github.com
-        access_token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx2a0
+  security:  
+    oauth2:
+      client:
+        clientId: xxxxxxxxxxxxxxxxx83a
+        clientSecret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx722
+        userAuthorizationUri: https://github.com/login/oauth/authorize # Used to get an authorization code
+        accessTokenUri: https://github.com/login/oauth/access_token # Used to get an access token
+        scope: read:org,user:email
+      resource:
+        userInfoUri: https://api.github.com/user # Used to the current user's profile
+      userInfoMapping: # Used to map the userInfo response to our User
+        email: email
+        firstName: name
+        lastName:
+        username: login
+    auth:
+      groupMembership:
+        service: github
+        github:
+          organization: your-org-here
+          baseUrl: https://api.github.com
+          access_token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx2a0
 ```
 The fields to fill in are the `clientID` and `clientSecret` from the yellow box in the first screenshot above. Finally, add the `access_token` you generated in the previous step.
 
