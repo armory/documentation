@@ -29,7 +29,7 @@ First let's go through an example of baking, then we can go into some details an
 In this example we will bake an image containing a Debian package created by a Jenkins' job. If you like, you can check out the [working with Jenkins guide]({% link _user_guides/working-with-jenkins.md %}) for more information on how Jenkins and Spinnaker can work together. We also have a guide on [creating debian packages]({% link _user_guides/debian-packages.md %}).
 
 
-First let's look at the the Jenkins job that builds our package. 
+First let's look at the the Jenkins job that builds our package.
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/2c3e2Z0d1u1t1M1E1S3a/Image%202017-03-29%20at%2012.43.31%20PM.png)
 As you can see, the last run archived a package named `armory-hello-deploy_0.5.0-h5.c4baff4_all.deb`
@@ -41,7 +41,7 @@ On the configuration stage, I scroll down and add a new Jenkins automated trigge
 
 Next I add a bake stage (add stage -> Type: Bake)
 
-Select the `us-west-2` region. For the Package field, I enter the base name of my package. In my case, the entire package filename is `armory-hello-deploy_0.5.0-h5.c4baff4_all.deb` so I will input `armory-hello-deploy`. Also, I know that my package is created for Ubuntu 14, so I make sure to select the 'trusty (v14.04)' option. 
+Select the `us-west-2` region. For the Package field, I enter the base name of my package. In my case, the entire package filename is `armory-hello-deploy_0.5.0-h5.c4baff4_all.deb` so I will input `armory-hello-deploy`. Also, I know that my package is created for Ubuntu 14, so I make sure to select the 'trusty (v14.04)' option.
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/0F0N3R3Y1V0o2e0Z2X31/Image%202017-03-29%20at%201.35.13%20PM.png)
 
@@ -71,7 +71,7 @@ At this point if I want to see more details about my bake, I can click the 'View
 ...
 {% endhighlight %}
 
-Under the hood, Spinnaker is leveraging [HashiCorp's Packer](https://www.packer.io/) tool to create images. The above is a Packer log file. 
+Under the hood, Spinnaker is leveraging [HashiCorp's Packer](https://www.packer.io/) tool to create images. The above is a Packer log file.
 
 The thing I wanted to point out here is that the correct version of the package is getting passed down to the bakery.
 
@@ -124,14 +124,14 @@ Often you will want to specify a base image for use in your bake. In that case y
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/1i3j2G0G3T1r311l1Y1A/Image%202017-03-29%20at%204.06.24%20PM.png)
 
 
-In this situation, the base OS selection (ubuntu/trusty/windows) will be ignored. 
+In this situation, the base OS selection (ubuntu/trusty/windows) will be ignored.
 
 You can also select a base AMI more dynamically by combing the 'Bake' stage type with the 'Find Image' stage type. For more details check out the [Find Images Guide]({% link _user_guides/find-images.md %})
 
 
 ### Adding Debian Repositories
 
-It is common practice to use a base image throughout your team or organization. Usually this base image will be kept up to date with security patches and will contain common tools (DataDog, Splunk, etc.). It is also a good place to register your Debian repository's GPG keys. 
+It is common practice to use a base image throughout your team or organization. Usually this base image will be kept up to date with security patches and will contain common tools (DataDog, Splunk, etc.). It is also a good place to register your Debian repository's GPG keys.
 
 If you need to add repositories on a per bake basis, you can use the 'Extended Attributes' within the 'Advanced Options' section. You can add a key/value pair where the key is labeled 'repository' and the value is a space separated list of repository URLs. For example:
 
@@ -147,7 +147,7 @@ By selecting a region, you are selecting which region the bake will take place. 
 
 When a bake step executes, Spinnaker looks for a previously created image before baking a new one. It uses the set of packages (and their versions) that users specify in the bake stage configuration to determine if the bake is neccessary.
 
-You can force Spinnaker to always bake by selecting the 'Rebake: Rebake image without regard to the status of any existing bake' checkbox on the bake stage configuration screen. You also have the option to force rebaking when manually executing a pipeline. 
+You can force Spinnaker to always bake by selecting the 'Rebake: Rebake image without regard to the status of any existing bake' checkbox on the bake stage configuration screen. You also have the option to force rebaking when manually executing a pipeline.
 
 
 ## Bake and Copy vs Multi-Region Bake
@@ -162,12 +162,30 @@ There are trade-offs to each approach. Generally, Spinnaker's default multi-regi
 If you would like to use a custom Packer script to bake your AMI you will need to contact your Spinnaker Administrator. The script will have to be installed on your Spinnaker instances.
 
 
+## Caching Bakes
+
+Spinnaker will cache bakes and not re-run a bake to save time if it finds the bake key in it's cache.
+When Spinnaker bakes a package it creates a unique key based on the following components:
+Cloud Provider Type, Base OS, Base AMI, AMI Name, Packer Template Filename, Var Filename, Package Name and Package Version. If any of those components change at the time of bake it will rebake otherwise it'll use the cached AMI.
+
+#### Package Name and Version
+
+By default, Spinnaker looks for an artifact from the Jenkins build that triggered the bake to [parse out version information](https://github.com/spinnaker/rosco/blob/ddd6ed4689b8a769e4b7331acdca2c0ba1b29a66/rosco-core/src/main/groovy/com/netflix/spinnaker/rosco/providers/util/PackageNameConverter.groovy#L54).  Below are valid names to packages:
+
+```
+subscriberha-1.0.0-h150
+subscriberha-1.0.0-h150.586499
+subscriberha-1.0.0-h150.586499/WE-WAPP-subscriberha/150
+```
+
+This allows you to just specify `subscriberha` as the `package` in your bake stage and Spinnaker will handle which version to bake based on the Jenkins trigger that was chosen at execution time.
+
 ## Troubleshooting
-When you have a failing bake step and you do not know why, a good place to start is with the bakery log. You can find a link to the bakery log in the Detail of your bake step on the pipeline execution screen 
+When you have a failing bake step and you do not know why, a good place to start is with the bakery log. You can find a link to the bakery log in the Detail of your bake step on the pipeline execution screen
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/2j1i1y2E0S2P022C1129/Image%202017-03-29%20at%201.59.18%20PM.png)
 
-Click the link that says 'View Bakery Details'. It can be helpful to track down the last command that the bakery executed. 
+Click the link that says 'View Bakery Details'. It can be helpful to track down the last command that the bakery executed.
 
 
 Another source of information is the pipeline's source link. You can find this link in small writing in the far bottom right of the pipeline execution detail screen. The 'source' is a JSON representation of the data generated by Spinnaker when running your pipeline (not just the bake step).
