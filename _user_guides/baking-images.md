@@ -164,7 +164,7 @@ If you would like to use a custom Packer script to bake your AMI you will need t
 
 ## Caching Bakes
 
-Spinnaker will cache bakes and not re-run a bake to save time if it finds the bake key in it's cache.
+Spinnaker will cache bakes and not re-run a bake to save time if it finds the bake key in its cache.
 When Spinnaker bakes a package it creates a unique key based on the following components:
 Cloud Provider Type, Base OS, Base AMI, AMI Name, Packer Template Filename, Var Filename, Package Name and Package Version. If any of those components change at the time of bake it will rebake otherwise it'll use the cached AMI.
 
