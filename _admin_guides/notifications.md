@@ -92,7 +92,7 @@ Once you've added this config, restart your spinnaker service: `service armory-s
 ### Auto Scaling Lifecycle Hooks
 
 Integrating with [Autoscaling Life Cycle Hooks](http://docs.aws.amazon.com/autoscaling/latest/userguide/lifecycle-hooks.html) allows
-you to send notifications to an ARN whenever an ASG changes state.  This is useful for workloads that are asynchronous like CRON jobs and worker nodes. Spinnaker allows you to configure a [life cycle hook](http://docs.aws.amazon.com/autoscaling/latest/userguide/lifecycle-hooks.html) per account.  To enable life cycle hooks you'll need to modify your `/opt/spinnaker/config/clouddriver-local.yml`.  Below is an example configuration:
+you to send notifications to an ARN whenever an ASG changes state.  This is useful for workloads that are asynchronous like CRON jobs and worker nodes and require the jobs to finish before terminating the instance. Spinnaker allows you to configure a [life cycle hook](http://docs.aws.amazon.com/autoscaling/latest/userguide/lifecycle-hooks.html) per account.  To enable life cycle hooks you'll need to modify your `/opt/spinnaker/config/clouddriver-local.yml`.  Below is an example configuration:
 
 ```
 aws:
