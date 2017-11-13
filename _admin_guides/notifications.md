@@ -109,4 +109,4 @@ aws:
        roleARN: 'arn:aws:iam::{{accountId}}:role/SpinnakerManagedRole'
 ```
 
-> Note: in the example above, Spinnaker will replace {{region}} and {{accountId}} with valid values
+> Note: in the example above, Spinnaker will replace {{region}} and {{accountId}} with valid values at runtime
