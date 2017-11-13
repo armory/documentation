@@ -88,3 +88,25 @@ rest:
 ```
 
 Once you've added this config, restart your spinnaker service: `service armory-spinnaker restart`. You should start seeing events appear in Splunk although indexing might delay the results in the search UI.
+
+### Auto Scaling Lifecycle Hooks
+
+Integrating with [Autoscaling Life Cycle Hooks](http://docs.aws.amazon.com/autoscaling/latest/userguide/lifecycle-hooks.html) allows
+you to send notifications to an ARN whenever an ASG changes state.  This is useful for workloads that are asynchronous like CRON jobs and worker nodes. Spinnaker allows you to configure a [life cycle hook](http://docs.aws.amazon.com/autoscaling/latest/userguide/lifecycle-hooks.html) per account.  To enable life cycle hooks you'll need to modify your `/opt/spinnaker/config/clouddriver-local.yml`.  Below is an example configuration:
+
+```
+aws:
+  accounts:
+- name:
+   accountId: "0123456578999
+   regions:
+     - name: us-west-2
+   lifecycleHooks:
+     - defaultResult: 'CONTINUE'
+       heartbeatTimeout: 7200
+       lifecycleTransition: 'autoscaling:EC2_INSTANCE_TERMINATING'
+       notificationTargetARN: 'arn:aws:sns:{{region}}:{{accountId}}:spinnaker-instance-terminating'
+       roleARN: 'arn:aws:iam::{{accountId}}:role/SpinnakerManagedRole'
+```
+
+> Note: in the example above, Spinnaker will replace {{region}} and {{accountId}} with valid values
