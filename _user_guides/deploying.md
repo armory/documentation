@@ -116,7 +116,7 @@ You have the option when deploying a new server group to use either EC2 or ELB h
 
 ### Deploy AZs vs ELB AZs
 
-It is possible to set your ELB to work with certain AZs but then deploy your server group to another AZ. If you have your healthcheck set to ELB, then your instances will never become healthy. You can tell when this happens by hovering you mouse over the red triangle [described above](investigating-red-instances).
+It is possible to set your ELB to work with certain AZs but then deploy your server group to another AZ. If you have your healthcheck set to ELB, then your instances will never become healthy. You can tell when this happens by hovering you mouse over the red triangle [described above](http://docs.armory.io/user-guides/deploying/#investigating-red-instances).
 
 ### Unknown errors
 
