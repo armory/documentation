@@ -47,7 +47,7 @@ Now that those variables are in Spinnaker, we can access them elsewhere in our p
 In any given stage we can use the expression `${#trigger.parameters['BRANCH_NAME']}` to access the property value of the variable named `BRANCH_NAME`.
 
 
-Note: For more elaborate instructions on expression language, please refer to the [Spinnaker Expression Language Guide](link placeholder).
+Note: For more elaborate instructions on expression language, please refer to the [Spinnaker Expression Language Guide](http://docs.armory.io/user-guides/expression-language/).
 
 
 
