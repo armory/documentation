@@ -20,7 +20,7 @@ The default is `aws-ebs.json`, which sources `install_package.sh` for debians.
 
 The provided way to do this is by debian/rpm packages stored into a artifact repository (Bintry, Nexus, Artifactory, etc.). The packer script will  pull from the artifact repository and install it onto the machine. Spinnaker will then package up the image and make it available in the next stage of a pipeline.
 
-If your app is using zip, tarballs or you'll need some customization, you'll need to create a new packer script. See [Rosco/Baking Configuration](https://docs.armory.io/admin-guides/rosco/#rosco-baking-configuration) for steps on how to do this.
+If your app is using zip, tarballs or you'll need some customization, you'll need to create a new packer script. See [Rosco/Baking Configuration](http://docs.armory.io/admin-guides/rosco/) for steps on how to do this.
 
 
 # Where the packer scripts are stored
