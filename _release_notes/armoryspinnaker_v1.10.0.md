@@ -11,7 +11,7 @@ order: 958
 ## Highlighted Updates
 
 #### Notable Changes That Introduce Risk To Upgrade
-* Orca 4.0.0 introduced model changes that might break currently executing pipelines.  
+* Orca 4.0.0 introduces model changes that might break currently executing pipelines.  
 
 ### Armory Enterprise Spinnaker
 
