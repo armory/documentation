@@ -52,7 +52,6 @@ order: 958
 ### fiat - v0.35.0
 - Back off on 500's or 403 rate limits. (#205)
 
-<br><br><br>
 ## Detailed Updates
 ### Armory Enterprise Spinnaker
 
