@@ -29,7 +29,7 @@ The 2 new policies required are:
 
 ### gate - v4.13.0
  - feat(x509) Allow x509 and LDAP to be used together (#476)
- 
+
 ## Detailed Updates
 ### Armory Enterprise Spinnaker
 ### deck-armory - f4f1cc6
