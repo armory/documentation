@@ -11,7 +11,7 @@ order: 957
 
 ## Highlighted Updates
 
-This release requires updates to your IAM policy.  You can always find the latest policy [here.](http://docs.armory.io/install-guide/adding_accounts/#assume-roles-in-iam)
+This release requires updates to your `SpinnakerManagedProfile` IAM policy.  You can always find the latest policy [here.](http://docs.armory.io/install-guide/adding_accounts/#assume-roles-in-iam)
 The 2 new policies required are:
 
  - elasticloadbalancing:DeleteRule
