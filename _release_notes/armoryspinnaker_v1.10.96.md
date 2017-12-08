@@ -1,7 +1,7 @@
 ---
 layout: post
 title: v1.10.98 Armory Enterprise Spinnaker
-order: TODO
+order: 956
 ---
 
 # 12/08/17 Release Notes
@@ -19,10 +19,6 @@ order: TODO
 ### Armory Enterprise Spinnaker
 ### deck-armory - dd17801
  - ENG-1016: Make apiPrefix a configurable setting (#87)
-
-### packager - 8413c7a
- - unpin igor (#229)
- - ENG-1015 wait for the version to exist in bintray before continuing (#228)
 
 ###  Spinnaker Community Contributions
 ### orca - v4.12.2
