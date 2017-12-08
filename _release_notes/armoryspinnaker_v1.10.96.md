@@ -15,7 +15,6 @@ order: TODO
 - ENG-1016: Make apiPrefix a configurable setting (#87)
 
 
-<br><br><br>
 ## Detailed Updates
 ### Armory Enterprise Spinnaker
 ### deck-armory - dd17801
