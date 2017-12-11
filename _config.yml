@@ -32,6 +32,8 @@ gems:
 exclude:
   - Gemfile
   - Gemfile.lock
+  - .git
+  - .github
 assets:
   sources:
     - _assets/css
@@ -51,7 +53,7 @@ collections:
     permalink: /user-guides/:title/
   install_guide:
     output: true
-    permalink: /install-guide/:title/  
+    permalink: /install-guide/:title/
   admin_guides:
     output: true
     permalink: /admin-guides/:title/
