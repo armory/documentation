@@ -43,7 +43,7 @@ The configuration below is for GitHub or GitHub Enterprise, but other possible c
 - Replace `yourdomain` in the blue box "Homepage URL" above with hostname of Deck
 - For the "Authorization callback URL," in blue replace `yourdomain` with your Gate hostname.
 - **Make sure to use HTTPS for both URLs above.**
-- Now to generate a personal API access token [https://github.com/settings/tokens](https://github.com/settings/tokens). It only needs to have `read:org` permissions. **Note** be very specific with the name for someone in the future 😄
+- Generate a personal API access token [https://github.com/settings/tokens](https://github.com/settings/tokens). It only needs to have `read:org` permissions.
 ![](http://drod.io/3n1w1L2C1E0L/Image%202017-01-06%20at%205.23.33%20PM.png)
 > *Note*: You might want to create a GitHub Bot account for this and add it to your organization
 
