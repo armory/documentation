@@ -8,13 +8,12 @@ order: 960
 
 > Note: If you're experiencing production issues after upgrading Spinnaker rollback to a [previous working version](http://docs.armory.io/admin-guides/troubleshooting/#i-upgraded-spinnaker-and-it-is-no-longer-responding-how-do-i-rollback)
 
-
 > Note: This release requires an update to your IAM access policy.  You can alway find the [latest policy in our  documentation](http://docs.armory.io/install-guide/adding_accounts/#assume-roles-in-iam).
 
 ## Highlighted Updates
 ### Armory Enterprise Spinnaker
-Some summary what got released in this release.
-For each of the subservices, pick out notable updates from Verbose updates and add them below.
+- New features for SLA monitoring of applications
+- Fix for certified pipelines
 
 ### lighthouse - 17afad7
 - Initial implementation SLA computation.
