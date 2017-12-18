@@ -33,6 +33,7 @@ API_HOST=http://spinnaker.mydomain.com
 
 For SSL, it can be beneficial to terminate SSL at the Elastic Load Balancer (ELB) whenever feasible. Amazon has the [Key Management Service (KMS)](https://aws.amazon.com/kms/) for this purpose. If you need to handle certificate management at the application level, you might want to check out [Netflix's Lemur](http://techblog.netflix.com/2015/09/introducing-lemur.html) project.
 
+> Note: We must still give Spinnaker a certificate due to workflow bugs between Spring and Tomcat.  This certificate is only used between the ELB and Spinnaker.
 
 ## Enabling HTTPS/SSL in Spinnaker
 
@@ -40,7 +41,7 @@ In order to enable SSL we'll need to provide Gate (and thus Java) with certifica
 
 For the following example we're going to create self-signed certificates although for production use you will want to have an official certificate authority (CA) sign your certificate.
 
-You can eiter create a self signed cert, or import your own cert.
+You can either create a self signed cert, or import your own cert.
 
 - Creating a **self-signed CA** with java keystore
 ```
@@ -75,7 +76,7 @@ DECK_HOST=https://spinnaker.example-domain.com
 
 Update your ELB to contain the following port mappings:
 
-![elb](https://cl.ly/3i0o0b38103J/Image%202017-05-05%20at%203.42.27%20PM.png)
+![elb](https://cl.ly/032I1N1z1S0z/Image%202017-12-18%20at%2010.36.37%20AM.png)
 
 
 Now you can restart Armory Spinnaker by doing
