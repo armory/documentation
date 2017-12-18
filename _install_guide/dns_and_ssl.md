@@ -33,11 +33,13 @@ API_HOST=http://spinnaker.mydomain.com
 
 For SSL, it can be beneficial to terminate SSL at the Elastic Load Balancer (ELB) whenever feasible. Amazon has the [Key Management Service (KMS)](https://aws.amazon.com/kms/) for this purpose. If you need to handle certificate management at the application level, you might want to check out [Netflix's Lemur](http://techblog.netflix.com/2015/09/introducing-lemur.html) project.
 
-> Note: We must still give Spinnaker a certificate due to workflow bugs between Spring and Tomcat.  This certificate is only used between the ELB and Spinnaker.
+> Note: Even if you terminate SSL at the ELB, you must still give Spinnaker a certificate due to workflow bugs between Spring and Tomcat.  This certificate is only used between the ELB and Spinnaker.
 
 ## Enabling HTTPS/SSL in Spinnaker
 
-In order to enable SSL we'll need to provide Gate (and thus Java) with certificates in a java keystore (JKS) or terminate at the ELB.  This will ensure secure communication between your browser/clients and Spinnaker Deck & Gate
+In order to enable SSL we'll need to provide Gate (and thus Java) with certificates in a java keystore (JKS) _and_ terminate at the ELB.  This will ensure secure communication between your browser/clients and Spinnaker Deck & Gate
+
+> Note: Even if you terminate SSL at the ELB, you must still give Spinnaker a certificate due to workflow bugs between Spring and Tomcat.  This certificate is only used between the ELB and Spinnaker.
 
 For the following example we're going to create self-signed certificates although for production use you will want to have an official certificate authority (CA) sign your certificate.
 
