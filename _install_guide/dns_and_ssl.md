@@ -28,7 +28,6 @@ DECK_HOST=http://spinnaker.mydomain.com
 API_HOST=http://spinnaker.mydomain.com
 ```
 
-
 ## SSL Termination at the ELB
 
 For SSL, it can be beneficial to terminate SSL at the Elastic Load Balancer (ELB) whenever feasible. Amazon has the [Key Management Service (KMS)](https://aws.amazon.com/kms/) for this purpose. If you need to handle certificate management at the application level, you might want to check out [Netflix's Lemur](http://techblog.netflix.com/2015/09/introducing-lemur.html) project.
