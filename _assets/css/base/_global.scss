@@ -11,6 +11,12 @@ body {
 	padding: 2rem;
 }
 
+.github-corner svg {
+  z-index: 100000;
+  color: #fff !important;
+  fill: $color-blue-vivid !important;
+}
+
 
 // Adjust base font size on wide and ultra wide monitors
 // to scale up web page accordingly.
