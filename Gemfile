@@ -9,7 +9,7 @@ ruby RUBY_VERSION
 #
 # This will help ensure the proper Jekyll version is running.
 # Happy Jekylling!
-gem "jekyll", "3.4.3"
+gem "jekyll", "3.6.2"
 gem "jekyll-assets", "2.2.8"
 gem "autoprefixer-rails", "6.7.7.1"
 
@@ -25,7 +25,7 @@ group :jekyll_plugins do
     gem "sass", "3.4.23"
     gem "rb-fsevent", "0.9.8"
     gem "rb-inotify", "0.9.8"
-    gem "kramdown", "1.13.2"
+    gem "kramdown", "1.14"
     gem "extras", "0.1.0"
     gem "rack", "1.6.5"
     gem "sprockets", "3.6.3"
