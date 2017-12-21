@@ -1,7 +1,7 @@
 ---
 layout: post
 title: v1.10.143 Armory Enterprise Spinnaker
-order: TODO
+order: 956
 ---
 
 # 12/21/17 Release Notes
@@ -10,45 +10,60 @@ order: TODO
 > Note: If you're experiencing production issues after upgrading Spinnaker, rollback to a [previous working version](http://docs.armory.io/admin-guides/troubleshooting/#i-upgraded-spinnaker-and-it-is-no-longer-responding-how-do-i-rollback).
 
 ## Highlighted Updates
-### Armory Enterprise Spinnaker
 
 Enjoy the Happy Holidays with these changes to Armory Spinnaker!
 
 If you're using Kubernetes, and you've been a good boy or girl this season,
 you'll enjoy the expanded support for Kubernetes!  Armory and Google have
-worked together on Kubernetes v2 support in the open source packages, and
-this version pulls all that work in for our customers to enjoy.
+been working together on Kubernetes v2 support in the open source packages,
+and this version pulls in more of that work for our customers to enjoy.
 
 If you're not a Kubernetes user, there are still plenty of stocking
 stuffers in this release.  Take a look below to see all the features and
 fixes we've wrapped up for you this Yule!
 
-### Lighthouse&trade; - 7e204f3
+### Armory Enterprise Spinnaker
 
 ### Packager - b3fa281
 
+ - adding api prefix (#231)
 
 ###  Spinnaker Community Contributions
 ### Orca  - v5.5.1
 
+ - feat(core): Support for rolling back a cluster (across multiple regions) (#1866)
+ - feat(pipelinetemplate): Support inheritance of expectedArtifacts. (#1835)
+ - feat(pipeline_template) Allow partials to be injected from template configuration. (#1798)
+
 ### Echo  - v1.541.0
+
+ - feat(slack): allow more compact slack notifications (#209)
 
 ### Front50  - v1.120.0
 
+ - feat(xenial_builds): Added systemd service configuration for Front50. (#292)
+
 ### Gate  - v4.14.0
+
+ - feat(artifacts): artifact credentials endpoints (#489)
 
 ### Igor  - v1.84.0
 
+ - feat(gitlab): Add Gitlab SCM integration (spinnaker/spinnaker#2047) (#197)
+ - feat(authz): Add ability to specify Google service account credential or raw OAuth bearer token to Jenkins master request (#188)
+ - feat(xenial_builds): Added systemd config for igor. (#199)
+
 ### Clouddriver  - v1.750.1
 
+ - feat(artifacts): Download artifacts from GitHub (#2231)
+ - feat(provider/kubernetes): deploy from artifact (#2223)
+ - feat(aws/loadBalancer): Support on demand caching for target groups (#2214)
 
 
 
 <br><br><br>
 ## Detailed Updates
 ### Armory Enterprise Spinnaker
-### Lighthouse&trade; - 7e204f3
- - add logging on which file we're fetching (#127)
 
 ### Packager - b3fa281
  - Support 242 packer config (#238)
