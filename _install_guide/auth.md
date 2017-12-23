@@ -7,13 +7,33 @@ published: True
 
 # What To Expect
 This guide should include:
-* [LDAP Auth](#ldap-authentication)
 * [Basic Auth](#basic-auth)
+* [LDAP Auth](#ldap-authentication)
 * [Github OAuth](#github-oauth)
 * [x509](#x509)
 * SAML
 
 > *Note*: If you are going to use authentication with your Spinnaker instance you will no longer be able to use the API without setting up x509 authentication
+
+
+## Basic Auth
+
+In `/opt/spinnaker/config/gate-local.yml` add the following:
+
+```
+security:
+  basic:
+    enabled: true
+  user:
+    name: example-username
+    password: example-password
+```
+
+This will allow you to call the Spinnaker API using basic auth:
+
+`curl --user example-username:example-password --header 'Accept: application/json' http://spinnaker-host.example.com:8084/applications`
+
+
 
 ## LDAP Authentication
 
@@ -43,62 +63,38 @@ The configuration below is for GitHub or GitHub Enterprise, but other possible c
 - Replace `yourdomain` in the blue box "Homepage URL" above with hostname of Deck
 - For the "Authorization callback URL," in blue replace `yourdomain` with your Gate hostname.
 - **Make sure to use HTTPS for both URLs above.**
-- Generate a personal API access token [https://github.com/settings/tokens](https://github.com/settings/tokens). It only needs to have `read:org` permissions.
-![](http://drod.io/3n1w1L2C1E0L/Image%202017-01-06%20at%205.23.33%20PM.png)
-> *Note*: You might want to create a GitHub Bot account for this and add it to your organization
 
 
 - *Add Github Configuration to Spinnaker* -
 Add the GitHub configuration to Gate by adding the following to: `/opt/spinnaker/config/gate-local.yml`:
 ```
-  security:  
-    oauth2:
-      client:
-        clientId: xxxxxxxxxxxxxxxxx83a
-        clientSecret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx722
-        userAuthorizationUri: https://github.com/login/oauth/authorize # Used to get an authorization code
-        accessTokenUri: https://github.com/login/oauth/access_token # Used to get an access token
-        scope: read:org,user:email
-      resource:
-        userInfoUri: https://api.github.com/user # Used to the current user's profile
-      userInfoMapping: # Used to map the userInfo response to our User
-        email: email
-        firstName: name
-        lastName:
-        username: login
-    auth:
-      groupMembership:
-        service: github
-        github:
-          organization: your-org-here
-          baseUrl: https://api.github.com
-          access_token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx2a0
+security:
+  oauth2:
+    enabled: true
+    client:
+      clientId: ###############
+      clientSecret: #############################
+      userAuthorizationUri: https://github.com/login/oauth/authorize # Used to get an authorization code
+      accessTokenUri: https://github.com/login/oauth/access_token # Used to get an access token
+      scope: read:org,user:email
+    resource:
+      userInfoUri: https://api.github.com/user  # Used to the current user's profile
+    userInfoMapping:  # Used to map the userInfo response to our User
+      email: email
+      firstName: name
+      lastName:
+      username: login
+    provider: GITHUB
 ```
-The fields to fill in are the `clientID` and `clientSecret` from the yellow box in the first screenshot above. Finally, add the `access_token` you generated in the previous step.
+The fields to fill in are the `clientID` and `clientSecret` from the yellow box in the first screenshot above.
 
 -  *Enable Auth Flag * -
-Set `AUTH_ENABLED=true` in your environment file.  It's typically stored at `/opt/spinnaker/env/`
+Set `AUTH_ENABLED=true` in your environment file.  It's typically stored at `/opt/spinnaker/env/ha.env`
 
 - Restart spinnaker: `service armory-spinnaker restart`
 
 > *Note*: Enable [sticky sessions](#enabling-sticky-sessions) on the external ELB when enabling OAuth.  Make sure to use load balancer generated cookies. ![](https://cl.ly/0C1n3m3e3M2z/Image%202017-10-11%20at%209.26.58%20AM.png)
 
-## Basic Auth
-
-In `/opt/spinnaker/config/gate-local.yml` add the following:
-
-```
-security:
-  basic:
-    enabled: true
-  user:
-    name: example-username
-    password: example-password
-```
-
-This will allow you to call the Spinnaker API using basic auth:
-
-`curl --user example-username:example-password --header 'Accept: application/json' http://spinnaker-host.example.com:8084/applications`
 
 
 ## X509
