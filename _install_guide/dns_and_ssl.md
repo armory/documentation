@@ -42,18 +42,19 @@ In order to enable SSL we'll need to provide Gate (and thus Java) with certifica
 
 For the following example we're going to create self-signed certificates although for production use you will want to have an official certificate authority (CA) sign your certificate.
 
-You can either create a self signed cert, or import your own cert.
+You can **either** import your own cert **or** create a self signed cert:
 
-- Creating a **self-signed CA** with java keystore
-```
-apt-get install openjdk-7-jre-headless -y;
-keytool -genkey -keyalg RSA -alias server -keystore keystore.jks -storepass ${YOUR_KEYSTORE_PASSWORD} -validity 360 -keysize 2048
-```
-
- - Import **your own Certificate**
+ - Importing **your own Certificate**.
 ```
 keytool -importkeystore -srckeystore server.p12 -srcstoretype pkcs12 -srcalias spinnaker -srcstorepass ${YOUR_KEY_PASSWORD} -destkeystore keystore.jks -deststoretype jks -destalias server -deststorepass ${YOUR_KEY_PASSWORD} -destkeypass ${YOUR_KEYSTORE_PASSWORD}
 ```
+
+- Creating a **self-signed CA (EXPIRES IN 360 DAYS)** with java keystore.
+```
+apt-get install -y openjdk-7-jre-headless;
+echo -e "\n\n\n\n\n\ny\n" | keytool -genkey -keyalg RSA -alias server -keystore keystore.jks -storepass ${YOUR_KEYSTORE_PASSWORD} -validity 360 -keysize 2048
+```
+
 
 Place the resulting keystore.jks in `/opt/spinnaker/config`
 
