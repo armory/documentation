@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Re-Deploying Spinnaker
+title: Spinnaker Deploy Spinnaker
 order: 60
 ---
 
@@ -13,6 +13,16 @@ This guide should include:
 The installer scripts setup an initial Spinnaker environment. To keep Spinnaker up to date and to release changes to configuration, we'll teach Spinnaker how to redeploy itself. We call this the "Spinnaker deploy Spinnaker" pipeline.
 
 This is a step by step guide to creating the pipeline.
+
+
+
+## Full Pipeline
+
+Once the pipeline is fully configured it should look like this:
+
+![Redeploy Overall](/assets/images/redeploy-overall.png)
+
+
 
 ## Create the Pipeline
 
@@ -31,24 +41,29 @@ Once configured the trigger should look like this:
 
 ## Bake armoryspinnaker Stage
 
-Steps to create an AMI that pulls in the armoryspinnaker base package:
+Steps to create an AMI that pulls in the Armory package:
 
-- Add a **Bake stage** and set the Stage Name to `Bake armoryspinnaker`
-- Make sure to check the region where your Spinnaker instance runs
-- Set the **Package** to `armoryspinnaker`
-- Set the **Base OS** to `trusty`
+- Add a **Bake stage** and set the Stage Name to `Bake Armory Spinnaker`
+- Make sure to check the `region` where your Armory Spinnaker instance runs
+- Set the **Package** select a version of [Armory](http://localhost:4000/release-notes/)
+```
+docker-engine armoryspinnaker=SELECT_A_VERSION
+```
+- Set the **Base OS** to `trusty (v14.04)`
 - Check the **Show Advanced Options** box to see additional fields
 - Set the **Template File Name** to `aws-ebs.json`
 - Click **Add Extended Attribute** to create a new attribute
-  - Set **key** to `repository`
-  - Set the **value** to
+  - Set `aws_instance_type` to `m4.large`
+  - Set `repository` to
   ```
   https://apt.dockerproject.org/repo/ ubuntu-trusty main; https://dl.bintray.com/armory/debians trusty main;
   ```
+  - (optional) If AWS doesn't add new instances to a subnet, set `aws_subnet_id` to `subnet-11111`.
+- Set `AMI Name` to `armoryspinnaker`
 
 Once configured the stage should look like this:
 
-![Bake armoryspinnaker](/assets/images/redeploy-bake-armoryspinnaker.png)
+![Bake armoryspinnaker](https://cl.ly/1J2b0t3u1i2V/Image%202017-12-26%20at%2011.22.55%20AM.png)
 
 
 
@@ -68,7 +83,7 @@ Once configured the stage should look like this:
 
 ## Bake with Custom Config
 
-In this stage we'll create another AMI, this time including any site specific config.
+In this stage we'll create another AMI, this time including any site specific config. By doing a 2 part bake, configuration changes is a bit quicker. 
 
 - Add a Bake stage and set the Stage Name to `Bake config`
 - Check the region where your Spinnaker instance runs
@@ -108,13 +123,7 @@ Once the stage is configured it should look like this:
 ![Deploy](/assets/images/redeploy-deploy.png)
 
 
-
-## Full Pipeline
-
-Once the pipeline is fully configured it should look like this:
-
-![Redeploy Overall](/assets/images/redeploy-overall.png)
-
+## Add more confidence
 To add more confidence to your upgrade path consider creating
 a [stage environment and integration tests]({% link _admin_guides/preprod_environment.md %}).
 
