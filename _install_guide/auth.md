@@ -83,7 +83,6 @@ security:
       firstName: name
       lastName:
       username: login
-    provider: GITHUB
 ```
 
 
@@ -125,7 +124,6 @@ security:
       firstName: name
       lastName:
       username: login
-    provider: GITHUB
 ```
 The `organization` field should be the name of the github organization you want to use to restrict membership.
 
