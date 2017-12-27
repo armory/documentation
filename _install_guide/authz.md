@@ -7,7 +7,8 @@ published: True
 
 This guide should include:
 * How to enable and configure Fiat
-* Configure LDAP as an authorization provider
+* LDAP as an authorization provider
+* Github as an authorization provider
 * Restrict access based on account/application
 * Configure a Service Account for some operations
 
