@@ -124,7 +124,8 @@ service armory-spinnaker restart
 ```
 
 # Configure a Service Account
-When fiat is enabled, some Spinnaker operations require a service account.
+When fiat is enabled, some Spinnaker operations require ![adding a service account](https://www.spinnaker.io/setup/security/authorization/service-accounts/).  The service
+account should be a `memberOf` of the `armoryspinnaker`'s groups.
 
 This account will be used to shutdown old instances when you re-deploy armoryspinnaker.
 
