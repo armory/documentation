@@ -90,6 +90,21 @@ You must tailor this configuration to match your ldap database.
 * adjust `groups` to be the parent DN of your groups.
 * replace `member` with the key that you use when you add a user to a group. In the sample data, 'member' is used to add isaac and don to the eng group.
 
+
+## Github
+
+Fiat supports application and AWS account access based on [Github teams](https://help.github.com/articles/about-teams/). Fiat will poll Github to find changes to teams in Github.  To configure Github add the configuration below to: `/opt/spinnaker/config/fiat-local.yml`:
+
+```
+auth:
+  groupMembership:
+    service: github
+    github:
+      organization: YOUR_ORGANIZATION
+      baseUrl: https://api.github.com
+      access_token: YOUR_ACCESS_TOKEN
+```
+
 ## OKTA
 
 OKTA has its own [separate guide](/admin-guides/okta/) due to its lengthy configuration
