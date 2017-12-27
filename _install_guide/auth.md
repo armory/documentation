@@ -58,13 +58,14 @@ for more info.
 
 The configuration below is for GitHub or GitHub Enterprise, but other possible configurations include Azure OAuth, Okta, [Google](http://www.spinnaker.io/docs/securing-spinnaker) or Facebook.
 
-1. *Setup the OAuth2 app in GitHub.* -
+- *Setup the OAuth2 app in GitHub.* -
 ![](http://drod.io/1z1P3W2Q040t/Image%202017-01-06%20at%205.21.21%20PM.png)
   * Replace `yourdomain` in the blue box "Homepage URL" above with hostname of Deck
   * For the "Authorization callback URL," in blue replace `yourdomain` with your Gate hostname.
   * **Make sure to use HTTPS for both URLs above.**
-1. *Add Github Configuration to Spinnaker* -
+- *Add Github Configuration to Spinnaker* -
 Add the GitHub configuration to Gate by adding the following to: `/opt/spinnaker/config/gate-local.yml`:
+
 ```
 security:
   oauth2:
@@ -84,11 +85,13 @@ security:
       username: login
     provider: GITHUB
 ```
+
+
 The fields to fill in are the `clientID` and `clientSecret` from the yellow box in the first screenshot above.
 
-1. *Enable Auth Flag* Set `AUTH_ENABLED=true` in your environment file.  It's typically stored at `/opt/spinnaker/env/ha.env`
+- *Enable Auth Flag* Set `AUTH_ENABLED=true` in your environment file.  It's typically stored at `/opt/spinnaker/env/ha.env`
 
-1. *Restart Spinnaker*: `service armory-spinnaker restart`
+- *Restart Spinnaker*: `service armory-spinnaker restart`
 
 > *Note*: Enable [sticky sessions](#enabling-sticky-sessions) on the external ELB when enabling OAuth.  Make sure to use load balancer generated cookies. ![](https://cl.ly/0C1n3m3e3M2z/Image%202017-10-11%20at%209.26.58%20AM.png)
 
@@ -98,34 +101,35 @@ The fields to fill in are the `clientID` and `clientSecret` from the yellow box 
 
 By default Github OAuth only requires that a user has a Github account without any restrictions on that account. Many installations will also want to require the user belong to a company organization to be authenticated successfully. When using the organization restriction members must have their visiblity set to `Public`. You can view the visibility setting for members on the `People` tab of your organization.
 
-1. Ensure that everyone in your organization has their visibility set to Public if they plan to login to Spinnaker:
+- Ensure that everyone in your organization has their visibility set to Public if they plan to login to Spinnaker:
 ![Armory People Screen](/assets/images/github-armory-people.jpg)
-1. Add a `providerRequirements` section to the file at `/opt/spinnaker/config/gate-local.yml` under security.oauth2 so that your configuration looks like the following:
+- Add a `providerRequirements` section to the file at `/opt/spinnaker/config/gate-local.yml` under security.oauth2 so that your configuration looks like the following:
+
 ```
-    security:
-      oauth2:
-        enabled: true
-        client:
-          clientId: ###############
-          clientSecret: #############################
-          userAuthorizationUri: https://github.com/login/oauth/authorize # Used to get an authorization code
-          accessTokenUri: https://github.com/login/oauth/access_token # Used to get an access token
-          scope: read:org,user:email
-        providerRequirements:
-          type: github
-          organization: ########
-        resource:
-          userInfoUri: https://api.github.com/user  # Used to the current user's profile
-        userInfoMapping:  # Used to map the userInfo response to our User
-          email: email
-          firstName: name
-          lastName:
-          username: login
-        provider: GITHUB
+security:
+  oauth2:
+    enabled: true
+    client:
+      clientId: ###############
+      clientSecret: #############################
+      userAuthorizationUri: https://github.com/login/oauth/authorize # Used to get an authorization code
+      accessTokenUri: https://github.com/login/oauth/access_token # Used to get an access token
+      scope: read:org,user:email
+    providerRequirements:
+      type: github
+      organization: ########
+    resource:
+      userInfoUri: https://api.github.com/user  # Used to the current user's profile
+    userInfoMapping:  # Used to map the userInfo response to our User
+      email: email
+      firstName: name
+      lastName:
+      username: login
+    provider: GITHUB
 ```
 The `organization` field should be the name of the github organization you want to use to restrict membership.
 
-1. *Restart Spinnaker*: `service armory-spinnaker restart`
+- *Restart Spinnaker*: `service armory-spinnaker restart`
 
 ## X509
 
