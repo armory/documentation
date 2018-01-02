@@ -10,7 +10,7 @@ order: 955
 ## Highlighted Updates
 ### Armory Enterprise Spinnaker
 
-> Note: The old account permissions properties for Fiat has been deprecated.  Please review [the new account permissions properties.](http://docs.armory.io/install-guide/authz/#account-access)
+> Note: The old account permission properties for Fiat have been deprecated.  Please review [the new account permissions properties.](http://docs.armory.io/install-guide/authz/#account-access)
 
 ### Packager - 188d2a0
  - Don't start automatically with upstart, should be done as part of cloud-init (#253)
