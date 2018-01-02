@@ -123,7 +123,7 @@ Once you have your authorization provider configured you should be able to see a
 ## Account Access
 
 To restrict access to an account based on group membership add you'll need to add
-the `requiredGroupMembership` field to your accounts which is configured in
+the `permissions` field to your accounts which is configured in
 `/opt/spinnaker/config/clouddriver-local.yml`.
 
 ```
@@ -131,7 +131,12 @@ aws:
   accounts:
     - name: mobile-apps-account
       accountId: "111111111111"
-      requiredGroupMembership: mobile-apps-group
+      permissions:
+        read:
+          - mobile-team-devs
+          - mobile-team-qa
+        write:
+          - mobile-team-qa
 ```
 
 then restart armory-spinnaker:
