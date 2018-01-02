@@ -94,7 +94,14 @@ You must tailor this configuration to match your ldap database.
 
 ## Github
 
-Fiat supports application and AWS account access based on [Github teams](https://help.github.com/articles/about-teams/). Fiat will poll Github to find changes to teams in Github.  To configure Github add the configuration below to: `/opt/spinnaker/config/fiat-local.yml`:
+Fiat supports application and AWS account access based on [Github teams](https://help.github.com/articles/about-teams/). Fiat will poll Github to find changes to teams in Github.
+
+You'll need to generate a personal API access token here: [https://github.com/settings/tokens](https://github.com/settings/tokens). It only needs to have `read:org` permissions.
+> *Note*: You might want to create a GitHub Bot account for this and add it to your organization
+
+![](http://drod.io/3n1w1L2C1E0L/Image%202017-01-06%20at%205.23.33%20PM.png)
+
+And the configuration below to: `/opt/spinnaker/config/fiat-local.yml`:
 
 ```
 auth:
@@ -103,7 +110,7 @@ auth:
     github:
       organization: YOUR_ORGANIZATION
       baseUrl: https://api.github.com
-      access_token: YOUR_ACCESS_TOKEN
+      access_token: YOUR_ACCESS_TOKEN  # access token handled by secret store
 ```
 
 ## OKTA
