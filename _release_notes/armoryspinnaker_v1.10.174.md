@@ -10,7 +10,7 @@ order: 955
 ## Highlighted Updates
 ### Armory Enterprise Spinnaker
 
-> Note: The old account permissions properties for Fiat has been deprecated.  Please review [the new account permissions properties.](http://docs.armory.io/install-guide/authz/#account-access).
+> Note: The old account permissions properties for Fiat has been deprecated.  Please review [the new account permissions properties.](http://docs.armory.io/install-guide/authz/#account-access)
 
 ### Packager - 188d2a0
  - Don't start automatically with upstart, should be done as part of cloud-init (#253)
@@ -75,7 +75,7 @@ order: 955
  - This adds the ability to restrict github authentication to only users (#490)
 
 ### Igor  - v1.85.0
- - fix(travis) emmit build started events for new branches as well (#212)
+ - fix(travis) emit build started events for new branches as well (#212)
 
 ### Clouddriver  - v1.753.2
  - fix(provider/aws): Ensure that `HttpEntity` is closed on edda failure (#2258)
