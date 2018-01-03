@@ -24,9 +24,7 @@ While configuring Spinnaker for the first time you should scale down your Spinna
 
 Start by SSH'ing to the single instance of Armory Spinnaker. Throughout this guide you will be making changes to the `.yml` files in `/opt/spinnaker/config/`. In order for the changes to take affect you will need to restart Armory Spinnaker. To restart run the following:
 ```
-$ sudo service armory-spinnaker stop
-$ sleep 15
-$ sudo service armory-spinnaker start
+$ sudo service armory-spinnaker restart
 ```
 
 It will take a moment for the services to come back online. You can check its status by running:

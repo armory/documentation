@@ -63,7 +63,7 @@ Click on the remaining ASG and go to `Advance Settings` > `Edit Advance Settings
 
 Start by SSH'ing to the single instance of Armory Spinnaker. Throughout this guide you will be making changes to the `*-local.yml` files in `/opt/spinnaker/config/`. In order for the changes to take affect you will need to restart Armory Spinnaker. To restart run the following:
 ```
-$ sudo service armory-spinnaker stop && sleep 15 && sudo service armory-spinnaker start  # restart spinnaker
+$ sudo service armory-spinnaker restart
 ```
 
 It will take a moment for the services to come back online. You can check its status by running:
