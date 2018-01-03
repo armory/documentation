@@ -101,7 +101,7 @@ You'll need to generate a personal API access token here: [https://github.com/se
 
 ![](http://drod.io/3n1w1L2C1E0L/Image%202017-01-06%20at%205.23.33%20PM.png)
 
-And the configuration below to: `/opt/spinnaker/config/fiat-local.yml`:
+Add the configuration below to: `/opt/spinnaker/config/fiat-local.yml`:
 
 ```
 auth:
