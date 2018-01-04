@@ -50,7 +50,10 @@ The first goal is to get Spinnaker installed and running to the point where we c
 
 On install, Armory Spinnaker is configured to be in HA mode. 
 
+
 #### Tips during configuration:
+We'll want to do local configuration changes on 1 instance only, the polling instance. This helps reduce the configuration/restart process and we won't need to worry about consistency across all of Armory Spinnaker instances.
+
 - Scale down Spinnaker to be just 1 instance.  
 Click on `nonpolling` server group and go to `Server Group Actions` > `Resize`
 ![gif](https://cl.ly/003B1D0b0P0C/Screen%20Recording%202017-09-05%20at%2006.06%20PM.gif)
@@ -61,16 +64,24 @@ Click on the remaining ASG and go to `Advance Settings` > `Edit Advance Settings
 ![gif](https://cl.ly/2A1A1V3t3d2R/Screen%20Recording%202017-09-05%20at%2006.12%20PM.gif)
 
 
-Start by SSH'ing to the single instance of Armory Spinnaker. Throughout this guide you will be making changes to the `*-local.yml` files in `/opt/spinnaker/config/`. In order for the changes to take affect you will need to restart Armory Spinnaker. To restart run the following:
+Start by SSH'ing to the single instance of Armory Spinnaker. Throughout this guide you will be making changes to the files in `/opt/spinnaker/`. Checkout [**Understanding config files**]({% link _install_guide/config_repo.md %}#understanding-config-files) for more info. In order for the changes to take affect you will need to restart Armory Spinnaker.
+
 ```
+$ ssh -i ~/.ssh/your-key-here.pem 111.111.111.111
+
+# On your ArmorySpinnaker instance:
+
+$ sudo su
+$ cd /opt/spinnaker
+$ vim config/clouddriver-local.yml
 $ sudo service armory-spinnaker restart
 ```
 
 It will take a moment for the services to come back online. You can check its status by running:
 ```
-$ watch curl http://localhost:5000/healthcheck
+$ watch -d 'curl -s -m 1 http://localhost:5000/healthcheck | python -m json.tool'
 ```
-Then `ctrl+c` to exit watch once it is healthy.
+Then `ctrl+c` to exit watch once `"healthy": true`.
 
 
 
