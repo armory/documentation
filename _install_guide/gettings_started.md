@@ -67,7 +67,7 @@ Click on the remaining ASG and go to `Advance Settings` > `Edit Advance Settings
 Start by SSH'ing to the single instance of Armory Spinnaker. Throughout this guide you will be making changes to the files in `/opt/spinnaker/`. Checkout [**Understanding config files**]({% link _install_guide/config_repo.md %}#understanding-config-files) for more info. In order for the changes to take affect you will need to restart Armory Spinnaker.
 
 ```
-$ ssh -i ~/.ssh/your-key-here.pem 111.111.111
+$ ssh -i ~/.ssh/your-key-here.pem 111.111.111.111
 
 # On your ArmorySpinnaker instance:
 
