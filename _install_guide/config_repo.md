@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Configuration Repo
+title: Storing Configurations
 order: 40
 ---
 
@@ -18,7 +18,7 @@ By storing configuration in source control we get all of the benefits that go al
 Overview:
 <!-- MarkdownTOC autolink=true bracket=round depth=2 -->
 
-- [Understanding config files.](#understanding-config-files)
+- [Understanding config files](#understanding-config-files)
 - [Secrets](#secrets)
 - [Packaged Configurations](#packaged-configurations)
   - [GitHub Repo](#github-repo)
@@ -26,34 +26,36 @@ Overview:
   - [Validation](#validation)
 - [S3 Configurations](#s3-configurations)
   - [Turning on the Configurator](#turning-on-the-configurator)
+  - [Using the Configurator](#using-the-configurator)
 
 <!-- /MarkdownTOC -->
 
 
 
-# Understanding config files.
+# Understanding config files
 See the example files here: [https://github.com/Armory/spinnaker-config-deb/tree/master/deb-config/spinnaker](https://github.com/Armory/spinnaker-config-deb/tree/master/deb-config/spinnaker)
 
-Spinnaker uses Spring's configuration ymls. The default Armory Spinnaker installation, files are sourced in the following order, where a following file will replace the predecessors settings.
+Spinnaker uses Spring's configuration ymls located in `/opt/spinnaker/config/`. Files are merged in top down order.  
+Example:
 ```
 spinnaker.yml
-spinnaker-armory.yml
-spinnaker-local.yml
-spinnaker-secrets.yml
-ENVIRONMENT_VARIABLES
+spinnaker-armory.yml  overrides spinnaker.yml
+spinnaker-local.yml   overrides spinnaker-armory.yml, spinnaker.yml
+spinnaker-secrets.yml overrides spinnaker-local.yml, spinnaker-armory.yml, spinnaker.yml
+ENVIRONMENT_VARIABLES overrides spinnaker-secrets.yml, spinnaker-local.yml, spinnaker-armory.yml, spinnaker.yml
 ```
 
 A subservice will also include `spinnaker` configuration files, for example `igor`:
 ```
 spinnaker.yml
-spinnaker-armory.yml
-spinnaker-local.yml
-spinnaker-secrets.yml
-igor.yml
-igor-armory.yml
-igor-local.yml
-igor-secrets.yml
-ENVIRONMENT_VARIABLES
+spinnaker-armory.yml  overrides spinnaker.yml
+spinnaker-local.yml   overrides spinnaker-armory.yml, spinnaker.yml
+spinnaker-secrets.yml overrides spinnaker-local.yml, spinnaker-armory.yml, spinnaker.yml
+igor.yml              overrides spinnaker-secrets.yml, spinnaker-local.yml, spinnaker-armory.yml, spinnaker.yml
+igor-armory.yml       overrides igor.yml, spinnaker-secrets.yml, spinnaker-local.yml, spinnaker-armory.yml, spinnaker.yml
+igor-local.yml        overrides igor-armory.yml, igor.yml, spinnaker-secrets.yml, spinnaker-local.yml, spinnaker-armory.yml, spinnaker.yml
+igor-secrets.yml      overrides igor-local.yml, igor-armory.yml, igor.yml, spinnaker-secrets.yml, spinnaker-local.yml, spinnaker-armory.yml, spinnaker.yml
+ENVIRONMENT_VARIABLES overrides igor-secrets.yml, igor-local.yml, igor-armory.yml, igor.yml, spinnaker-secrets.yml, spinnaker-local.yml, spinnaker-armory.yml, spinnaker.yml
 ```
 
 
@@ -117,3 +119,22 @@ service armory-spinnaker restart
 
 - visit [http://your.spinnaker.elb/armory/config/](http://your.spinnaker.elb/armory/config/)
 - edit a file and hit `save` to persist the local version to s3
+
+
+
+## Using the Configurator
+The Configurator will make edits to one of Armory Spinnaker's machines, then uploads the files to s3.
+Configurations are locked to a server group at runtime, so you must redeploy it to see changes. This allows you to rollback to an existing OK Armory Spinnaker. See [**Tips during configuration**]({% link _install_guide/gettings_started.md %}#tips-during-configuration) for best practices on configurations.
+
+### For big config changes (ex: initial setup) or fast dev cycle time:
+- Scale down to 1 polling ArmorySpinnaker
+- Edit the config on the machine
+- Restart ArmorySpinnaker
+- Verify changes are live
+- After you've finished, load the Configurator [http://your.spinnaker.elb/armory/config](http://your.spinnaker.elb/armory/config) 
+- Hit save to persist the config
+- Redeploy ArmorySpinnaker
+
+### For smaller changes, make the change on the Configurator:
+- Hit save to persist the config
+- Redeploy ArmorySpinnaker
