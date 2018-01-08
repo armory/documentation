@@ -23,7 +23,7 @@ On the internal ELB make sure port 7003 is open. If there's no listener for 7003
 
 To enable fiat, set the following: `FIAT_ENABLED=true` in your environment variable.  This is
 typically stored at `/opt/spinnaker/env/` with a correlated environment file.  You'll also have to make sure that [authentication
-is setup first](http://docs.armory.io/admin-guides/auth/).  Next steps are to configure an authorization provider (see below) which will inform Fiat
+is setup first](http://docs.armory.io/install-guide/auth/).  Next steps are to configure an authorization provider (see below) which will inform Fiat
 about users and their group membership.
 
 ## LDAP
