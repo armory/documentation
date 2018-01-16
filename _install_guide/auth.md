@@ -7,19 +7,29 @@ published: True
 
 # What To Expect
 This guide should include:
-* [Basic Auth](#basic-auth)
-* [LDAP Auth](#ldap-authentication)
-* [Github OAuth](#github-oauth)
-* [Github Organization Restriction](#github-organization-restriction)
-* [x509](#x509)
-* SAML
+<!-- MarkdownTOC autolink=true bracket=round depth=2 -->
+
+- [Basic Auth](#basic-auth)
+- [LDAP Authentication](#ldap-authentication)
+- [Google Groups](#google-groups)
+- [Github](#github)
+  - [Github Organization Restriction](#github-organization-restriction)
+- [Configuring OAuth for Gate](#configuring-oauth-for-gate)
+- [SAML](#saml)
+- [X509](#x509)
+- [Enable Sticky Sessions](#enable-sticky-sessions)
+
+<!-- /MarkdownTOC -->
+
+
+
 
 > *Note*: If you are going to use authentication with your Spinnaker instance you will no longer be able to use the API without setting up x509 authentication
 
 
 ## Basic Auth
 
-In `/opt/spinnaker/config/gate-local.yml` add the following:
+- Add the following to `/opt/spinnaker/config/gate-local.yml`:
 
 ```
 security:
@@ -30,15 +40,19 @@ security:
     password: example-password
 ```
 
-This will allow you to call the Spinnaker API using basic auth:
+- This will allow you to call the Spinnaker API using basic auth:
 
-`curl --user example-username:example-password --header 'Accept: application/json' http://spinnaker-host.example.com:8084/applications`
+```
+curl --user example-username:example-password --header 'Accept: application/json' http://spinnaker-host.example.com:8084/applications
+```
+
+- [Enabling Sticky Sessions](#enabling-sticky-sessions)
 
 
 
 ## LDAP Authentication
 
-Update the file `/opt/spinnaker/config/gate-local.yml` and add the following section:
+Add the following to `/opt/spinnaker/config/gate-local.yml`:
 
 ```
 ldap:
@@ -47,62 +61,57 @@ ldap:
   userDnPattern: uid={0},ou=users
 ```
 
-You should adjust `mycompany` and `com` to match your organization.
-See the [Spinnaker LDAP Documentation](https://www.spinnaker.io/setup/security/authentication/ldap/)
-for more info.
+- You should adjust `mycompany` and `com` to match your organization.
+See the [Spinnaker LDAP Documentation](https://www.spinnaker.io/setup/security/authorization/ldap/#user-dns)
+for more options.
+- [Enable Sticky Sessions](#enable-sticky-sessions)
 
-> *Note*: Enable [sticky sessions](#enabling-sticky-sessions) on the external ELB when enabling LDAP.   Make sure to use load balancer generated cookies. ![](https://cl.ly/0C1n3m3e3M2z/Image%202017-10-11%20at%209.26.58%20AM.png)
 
 
-## Github OAuth
 
-The configuration below is for GitHub or GitHub Enterprise, but other possible configurations include Azure OAuth, Okta, [Google](http://www.spinnaker.io/docs/securing-spinnaker) or Facebook.
+## Google Groups
+- [Setup a Service Account for Spinnaker](https://www.spinnaker.io/setup/security/authorization/google-groups/)
+- Jump to section [Configuring OAuth for Gate](#configuring-oauth-for-gate) to configure gate.
 
-- *Setup the OAuth2 app in GitHub.* -
-![](http://drod.io/1z1P3W2Q040t/Image%202017-01-06%20at%205.21.21%20PM.png)
-  * Replace `yourdomain` in the blue box "Homepage URL" above with hostname of Deck
-  * For the "Authorization callback URL," in blue replace `yourdomain` with your Gate hostname.
+
+
+
+## Github
+- Go to [https://github.com/organizations/YOUR_ORG_HERE/settings/applications/new](https://github.com/organizations/YOUR_ORG_HERE/settings/applications/new)
+- Set it up to look like:
+![](https://cl.ly/0E1B1W2F1701/Image%202018-01-16%20at%202.47.43%20PM.png)
+  * Armory's Logo: [http://go.Armory.io/shield-white](http://go.Armory.io/shield-white)
+  * Fill in `Homepage URL`
+  * Fill in `Authorization callback URL`
   * **Make sure to use HTTPS for both URLs above.**
-- *Add Github Configuration to Spinnaker* -
-Add the GitHub configuration to Gate by adding the following to: `/opt/spinnaker/config/gate-local.yml`:
-
-```
-security:
-  oauth2:
-    enabled: true
-    client:
-      clientId: ###############
-      clientSecret: #############################
-      userAuthorizationUri: https://github.com/login/oauth/authorize # Used to get an authorization code
-      accessTokenUri: https://github.com/login/oauth/access_token # Used to get an access token
-      scope: read:org,user:email
-    resource:
-      userInfoUri: https://api.github.com/user  # Used to the current user's profile
-    userInfoMapping:  # Used to map the userInfo response to our User
-      email: email
-      firstName: name
-      lastName:
-      username: login
-```
+- Jump to section [Configuring OAuth for Gate](#configuring-oauth-for-gate) to configure gate.
 
 
-The fields to fill in are the `clientID` and `clientSecret` from the yellow box in the first screenshot above.
+### Github Organization Restriction
 
-- *Enable Auth Flag* Set `AUTH_ENABLED=true` in your environment file.  It's typically stored at `/opt/spinnaker/env/ha.env`
-
-- *Restart Spinnaker*: `service armory-spinnaker restart`
-
-> *Note*: Enable [sticky sessions](#enabling-sticky-sessions) on the external ELB when enabling OAuth.  Make sure to use load balancer generated cookies. ![](https://cl.ly/0C1n3m3e3M2z/Image%202017-10-11%20at%209.26.58%20AM.png)
-
-
-
-## Github Organization Restriction
-
-By default Github OAuth only requires that a user has a Github account without any restrictions on that account. Many installations will also want to require the user belong to a company organization to be authenticated successfully. When using the organization restriction members must have their visiblity set to `Public`. You can view the visibility setting for members on the `People` tab of your organization.
+By default Github OAuth only requires that a user has a Github account without any restrictions on that account. Many installations will also want to require the user belong to a company organization to be authenticated successfully. When using the organization restriction members must have their visibility set to `Public`. You can view the visibility setting for members on the `People` tab of your organization.
 
 - Ensure that everyone in your organization has their visibility set to Public if they plan to login to Spinnaker:
 ![Armory People Screen](/assets/images/github-armory-people.jpg)
-- Add a `providerRequirements` section to the file at `/opt/spinnaker/config/gate-local.yml` under security.oauth2 so that your configuration looks like the following:
+- Add a `providerRequirements` section to the file at `/opt/spinnaker/config/gate-local.yml` under **security.oauth2** so that your configuration looks like the following:
+
+```
+security:
+  oauth2:
+    providerRequirements:
+      type: github
+      organization: ########
+```
+The `organization` field should be the name of the github organization you want to use to restrict membership.
+
+- Restart Spinnaker `service armory-spinnaker restart`
+
+
+
+## Configuring OAuth for Gate
+The configuration below is shown for [Github](#github), however the process is similar with Azure OAuth, Okta, [Google Groups](#google-groups) or Facebook.
+
+- Add the following to `/opt/spinnaker/config/gate-local.yml`:
 
 ```
 security:
@@ -111,12 +120,9 @@ security:
     client:
       clientId: ###############
       clientSecret: #############################
-      userAuthorizationUri: https://github.com/login/oauth/authorize # Used to get an authorization code
-      accessTokenUri: https://github.com/login/oauth/access_token # Used to get an access token
+      userAuthorizationUri: https://github.com/login/oauth/authorize  # Used to get an authorization code
+      accessTokenUri: https://github.com/login/oauth/access_token     # Used to get an access token
       scope: read:org,user:email
-    providerRequirements:
-      type: github
-      organization: ########
     resource:
       userInfoUri: https://api.github.com/user  # Used to the current user's profile
     userInfoMapping:  # Used to map the userInfo response to our User
@@ -125,9 +131,24 @@ security:
       lastName:
       username: login
 ```
-The `organization` field should be the name of the github organization you want to use to restrict membership.
 
-- *Restart Spinnaker*: `service armory-spinnaker restart`
+- Fill in the values for `clientID` and `clientSecret` generated in the previous step.
+- Add the following to your environment file, typically `/opt/spinnaker/env/ha.env`
+
+```
+AUTH_ENABLED=true
+```
+
+- Restart Spinnaker `service armory-spinnaker restart`
+- [Enable Sticky Sessions](#enable-sticky-sessions)
+
+
+
+
+## SAML
+See [Spinnaker's docs](https://www.spinnaker.io/setup/security/authorization/saml/) for more information.
+
+
 
 ## X509
 
@@ -196,8 +217,11 @@ Import the certifcate into the keystore.  This is what will be used by Gate esta
 keytool -importkeystore -srckeystore server.p12 -srcstoretype pkcs12 -srcalias spinnaker -srcstorepass ${YOUR_KEY_PASSWORD} -destkeystore keystore.jks -deststoretype jks -destalias server -deststorepass ${YOUR_KEY_PASSWORD} -destkeypass ${YOUR_KEY_PASSWORD}
 ```
 
-## Enabling Sticky Sessions
 
-Before you configure authentication you'll need to enable sticky sessions for the external ELB for port 8084 (Gate).  This operation must be done through the AWS console.  For an infinite session leave the `Expiration Period` blank.
 
+## Enable Sticky Sessions
+
+Before you configure authentication you'll need to enable sticky sessions for the external ELB for port `8084` (Gate).  This must be done through the AWS console.  
+- For an infinite session leave the `Expiration Period` blank.
+- *Note* Make sure to use load balancer generated cookies. 
 ![Adding Sticky Sessions](https://cl.ly/0C1n3m3e3M2z/Image%202017-10-11%20at%209.26.58%20AM.png)
