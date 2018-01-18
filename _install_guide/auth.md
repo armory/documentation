@@ -14,7 +14,7 @@ This guide should include:
 - [Google Groups](#google-groups)
 - [Github](#github)
   - [Github Organization Restriction](#github-organization-restriction)
-- [Configuring OAuth for Gate](#configuring-oauth-for-gate)
+- [Configuring Other OAuth providers](#configuring-other-oauth-providers)
 - [SAML](#saml)
 - [X509](#x509)
 - [Enable Sticky Sessions](#enable-sticky-sessions)
@@ -72,6 +72,35 @@ for more options.
 ## Google Groups
 - [Setup a Service Account for Spinnaker](https://www.spinnaker.io/setup/security/authorization/google-groups/)
 - Jump to section [Configuring OAuth for Gate](#configuring-oauth-for-gate) to configure gate.
+- Add the following to `/opt/spinnaker/config/gate-local.yml`:
+
+```
+security:
+  oauth2:
+    enabled: true
+    client:
+      clientId: ################################
+      clientSecret: ################################
+      userAuthorizationUri: https://accounts.google.com/o/oauth2/v2/auth  # Used to get an authorization code
+      accessTokenUri: https://www.googleapis.com/oauth2/v4/token          # Used to get an access token
+      scope: profile email
+    resource:
+      userInfoUri: https://www.googleapis.com/oauth2/v3/userinfo          # Used to the current user's profile
+    userInfoMapping:  # Used to map the userInfo response to our User
+      email: email
+      firstName: given_name
+      lastName: family_name
+```
+
+- Fill in the values for `clientID` and `clientSecret` generated in the previous step.
+- Add the following to your environment file, typically `/opt/spinnaker/env/ha.env`
+
+```
+AUTH_ENABLED=true
+```
+
+- Restart Spinnaker `service armory-spinnaker restart`
+- [Enable Sticky Sessions](#enable-sticky-sessions)
 
 
 
@@ -84,7 +113,36 @@ for more options.
   * Fill in `Homepage URL`
   * Fill in `Authorization callback URL`
   * **Make sure to use HTTPS for both URLs above.**
-- Jump to section [Configuring OAuth for Gate](#configuring-oauth-for-gate) to configure gate.
+- Add the following to `/opt/spinnaker/config/gate-local.yml`:
+
+```
+security:
+  oauth2:
+    enabled: true
+    client:
+      clientId: ###############
+      clientSecret: #############################
+      userAuthorizationUri: https://github.com/login/oauth/authorize  # Used to get an authorization code
+      accessTokenUri: https://github.com/login/oauth/access_token     # Used to get an access token
+      scope: read:org,user:email
+    resource:
+      userInfoUri: https://api.github.com/user  # Used to the current user's profile
+    userInfoMapping:  # Used to map the userInfo response to our User
+      email: email
+      firstName: name
+      lastName:
+      username: login
+```
+
+- Fill in the values for `clientID` and `clientSecret` generated in the previous step.
+- Add the following to your environment file, typically `/opt/spinnaker/env/ha.env`
+
+```
+AUTH_ENABLED=true
+```
+
+- Restart Spinnaker `service armory-spinnaker restart`
+- [Enable Sticky Sessions](#enable-sticky-sessions)
 
 
 ### Github Organization Restriction
@@ -108,7 +166,7 @@ The `organization` field should be the name of the github organization you want 
 
 
 
-## Configuring OAuth for Gate
+## Configuring Other OAuth providers
 The configuration below is shown for [Github](#github), however the process is similar with Azure OAuth, Okta, [Google Groups](#google-groups) or Facebook.
 
 - Add the following to `/opt/spinnaker/config/gate-local.yml`:
@@ -120,11 +178,11 @@ security:
     client:
       clientId: ###############
       clientSecret: #############################
-      userAuthorizationUri: https://github.com/login/oauth/authorize  # Used to get an authorization code
-      accessTokenUri: https://github.com/login/oauth/access_token     # Used to get an access token
+      userAuthorizationUri: #####################  # Used to get an authorization code
+      accessTokenUri: ########################     # Used to get an access token
       scope: read:org,user:email
     resource:
-      userInfoUri: https://api.github.com/user  # Used to the current user's profile
+      userInfoUri: ################  # Used to the current user's profile
     userInfoMapping:  # Used to map the userInfo response to our User
       email: email
       firstName: name
@@ -132,7 +190,7 @@ security:
       username: login
 ```
 
-- Fill in the values for `clientID` and `clientSecret` generated in the previous step.
+- Fill in the values for marked with `#####....`
 - Add the following to your environment file, typically `/opt/spinnaker/env/ha.env`
 
 ```
