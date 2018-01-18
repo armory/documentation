@@ -13,7 +13,7 @@ This guide should include:
 * Configure a Service Account for some operations
 
 # Authorization
-Authorization is handled by a micro-service called `Fiat`.  Fiat is responsible for access control for both applications and accounts.  It's also responsible for executing triggers with service accounts.
+Authorization is handled by a micro-service called `Fiat`.  Fiat is responsible for access control for both applications and accounts.  It's also responsible for executing triggers with service accounts. Fiat authorization model is open by default, read more about authorizations [here](https://www.spinnaker.io/setup/security/authorization).
 
 ## Open Port
 
