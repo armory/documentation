@@ -176,18 +176,18 @@ security:
   oauth2:
     enabled: true
     client:
-      clientId: ###############
+      clientId: #################################
       clientSecret: #############################
       userAuthorizationUri: #####################  # Used to get an authorization code
-      accessTokenUri: ########################     # Used to get an access token
-      scope: read:org,user:email
+      accessTokenUri: ###########################  # Used to get an access token
+      scope: ####################################
     resource:
       userInfoUri: ################  # Used to the current user's profile
     userInfoMapping:  # Used to map the userInfo response to our User
-      email: email
-      firstName: name
-      lastName:
-      username: login
+      email: ######################
+      firstName: ##################
+      lastName: ###################
+      username: ###################
 ```
 
 - Fill in the values for marked with `#####....`
