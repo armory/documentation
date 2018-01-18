@@ -89,7 +89,7 @@ If you are using Jenkins, make sure to artifact the deb package. This is what te
 
 ### Alternatives
 
-If you do not already have a central artifact repository system you might want to check out [Deb S3](https://github.com/krobertson/deb-s3). However your 
+If you do not already have a central artifact repository system you might want to check out [Deb S3](https://github.com/krobertson/deb-s3). You may want to setup IAM permissions, but this is left as an exercise for the reader, however PRs are welcomed!
 
 
 
