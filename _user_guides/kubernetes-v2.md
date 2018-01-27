@@ -69,7 +69,7 @@ We'll configure the config map to be deployed first. Add a "Deploy(Manifest)" st
 
 Once you've added the stage, select `Artifact` below and it will allow you to choose one of the expected artifacts that we configured in the previous section.  Choose `config-map.yml` and hit `save`. Spinnaker will deploy the chosen artifact but append a version to the name of the artifact. For [our example config map](https://github.com/Armory/spinnaker-k8s-v2-example/blob/master/config-map.yml). So for the name `k8-v2-config-map` it will appear in the Kubernetes cluster with `k8-v2-config-map-v001`.
 
-![config map](https://cl.ly/2C0Z1A0Z3c2G/Image%202018-01-26%20at%204.36.29%20PM.png)
+![config map](https://cl.ly/1Q0s2B1b0n0D/config-map.png)
 
 ### Configuring Deployment Manifest Delivery
 
