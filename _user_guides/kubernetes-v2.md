@@ -8,7 +8,7 @@ This guide should include:
 - Kubernetes V2 Provider Overview
 - What to expect (and what not to) from the Kubernetes V2 provider
 - Setting up the V2 provider
-- Create a Kubernetes V2 Pipeline
+- Creating a Kubernetes V2 Pipeline
 
 ## Kubernetes V2 Provider Overview
 This new Kubernetes provider is centered around delivering and promoting Kubernetes manifests to different Kubernetes environments. These manifests are delivered to Spinnaker using [artifacts](https://www.spinnaker.io/reference/artifacts/in-kubernetes-v2/#kubernetes-objects-as-artifacts) and applied to the target cluster using `kubectl`. Currently there is support to supply artifacts through Git, GCS and Google Pub/Sub.  The manifests that are deployed are automatically versioned by appending a the string such as `v421` to the resource that was deployed to Kubernetes.
@@ -20,6 +20,14 @@ The new Kubernetes provider is very much a work in progress and is subject to ma
 - S3, SQS, and SNS are not support for Artifact delivery
 - Native Spinnaker red/black, highlander, rolling red/black deployment strategies are not supported. If desired you should use the deployment object.
 - Only `containers` and `configMaps` are bounded to the deployed manifest. `secrets` and other resource types are coming soon.
+
+### Available Manifest Based Stages
+
+There are 4 stages that are available for use:
+
+1. *Deploy Manifest* -  Uses `kubectl apply` to deploy a manifest.  Spinnaker will wait until the manifest stabilizes in the Kubernetes cluster.
+
+2. *Delete Manifests* - Removes the manifests based on different types and labels.  
 
 
 ## Setting Up The V2 Provider
@@ -62,7 +70,7 @@ After configuring the artifacts we'll need to associate them with a Github trigg
 
 ### Configuring The Config Map Manifest Delivery
 
-We'll configure the config map to be deployed first. Add a "Deploy(Manifest)" stage to your pipelines
+We'll configure the config map to be deployed first. Add a `Deploy (Manifest)` stage to your pipelines.
 
 ![deploy manifest](https://cl.ly/3p3T360a3f37/deploy_manifest.png)
 
@@ -73,7 +81,7 @@ Once you've added the stage, select `Artifact` below and it will allow you to ch
 
 ### Configuring Deployment Manifest Delivery
 
-Next we'll configure the stage to deploy the [deployment.yml](https://github.com/Armory/spinnaker-k8s-v2-example/blob/master/deployment.yml) manifest.  This manifest references our config-map as a volume and it's source will be replaced by the versioned artifact deployed in the previous step: `k8-v2-config-map-v001`.  So if our `deployment.yml` contains the following:
+Next we'll configure a new `Deploy (Manifest)` stage to deploy the [deployment.yml](https://github.com/Armory/spinnaker-k8s-v2-example/blob/master/deployment.yml) manifest.  This manifest references our config-map as a volume and it's source will be replaced by the versioned artifact deployed in the previous step: `k8-v2-config-map-v001`.  So if our `deployment.yml` contains the following:
 ```
 volumes:
   - name: k8-config
