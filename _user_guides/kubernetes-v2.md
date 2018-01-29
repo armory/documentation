@@ -65,7 +65,7 @@ We'll begin by creating a pipeline that is triggered from Kuberentes artifacts a
 
 ![artifacts](https://cl.ly/091z2h232r0d/page.png)
 
-After configuring the artifacts we'll need to associate them with a Github trigger so the pipeline is triggered whenever there are modifications pushed to Github.  For example, the pipeline below will only trigger when _either_ `deployment.yml` _or_ `config-map.yml` are modified and pushed to the repository.
+After configuring the artifacts we'll need to associate them with a Github trigger so the pipeline is triggered whenever there are modifications pushed to Github.  For example, the pipeline below will only trigger when _either_ `deployment.yml` _or_ `config-map.yml` are modified and pushed to the repository.  If the manifest isn't modified it'll use the latest version that was deployed.
 
 > Note: If you haven't already, you'll need to configure [Github webhooks](https://www.spinnaker.io/setup/features/notifications/#github) for your Spinnaker instance.
 
@@ -86,7 +86,7 @@ Once you've added the stage, select `Artifact` from the `Manifest Source` below 
 ### Configuring Deployment Manifest Delivery
 
 Next we'll configure a new `Deploy (Manifest)` stage to deploy the [deployment.yml](https://github.com/Armory/spinnaker-k8s-v2-example/blob/master/deployment.yml) manifest.  This manifest references our config-map as a volume and it's source will be replaced by the versioned artifact deployed in the previous step: `k8-v2-config-map-v001`.  So if our `deployment.yml` contains the following:
-```
+```yaml
 volumes:
   - name: k8-config
     configMap:
