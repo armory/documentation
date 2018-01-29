@@ -3,40 +3,39 @@ layout: post
 title: Kubernetes V2 Provider Guide
 published : false
 ---
-This guide should include:
+This guide includes:
 
-- Kubernetes V2 Provider Overview
+- Kubernetes V2 provider overview
 - What to expect (and what not to) from the Kubernetes V2 provider
 - Setting up the V2 provider
-- Creating a Kubernetes V2 Pipeline
+- Creating a Kubernetes V2 manifest based deployment pipeline
 
 ## Kubernetes V2 Provider Overview
-This new Kubernetes provider is centered around delivering and promoting Kubernetes manifests to different Kubernetes environments. These manifests are delivered to Spinnaker using [artifacts](https://www.spinnaker.io/reference/artifacts/in-kubernetes-v2/#kubernetes-objects-as-artifacts) and applied to the target cluster using `kubectl`. Currently there is support to supply artifacts through Git, GCS and Google Pub/Sub.  The manifests that are deployed are automatically versioned by appending a the string such as `v421` to the resource that was deployed to Kubernetes.
+The new Kubernetes provider is centered on delivering and promoting Kubernetes manifests to different Kubernetes environments. These manifests are delivered to Spinnaker using [artifacts](https://www.spinnaker.io/reference/artifacts/in-kubernetes-v2/#kubernetes-objects-as-artifacts) and applied to the target cluster using `kubectl` in the background. Currently, there is support to supply artifacts through Git, GCS and Google Pub/Sub.  The V2 provider manages the version of the artifacts deployed to Kubernetes by appending a the string such as `v421` to the resource that was deployed to Kubernetes.  This allows for easy rollbacks and management of resources.
 
 ### What To Expect From The V2 Provider
-The new Kubernetes provider is very much a work in progress and is subject to many changes to the UI and APIs. Manifests The user experience is still a work in progress and we're interested in understanding real-world usage patterns as we iterate on the provider to optimize the experience.  
+The new Kubernetes provider is very much a work in progress and is subject to changes in the UI and APIs. The user experience is still a work in progress and we're interested in understanding real-world usage patterns as we iterate on the provider to optimize the experience.  
 
 ### Current Limitations
-- S3, SQS, and SNS are not support for Artifact delivery
-- Native Spinnaker red/black, highlander, rolling red/black deployment strategies are not supported. If desired you should use the deployment object.
-- Only `containers` and `configMaps` are bounded to the deployed manifest. `secrets` and other resource types are coming soon.
+- S3, SQS, and SNS are not supported for artifact delivery
+- Native Spinnaker deployment strategies such as red/black, highlander, rolling red/black deployment are not supported. If these stragies are desired consider using the deployment object in your manifests.
+- The V2 provider only considers `containers` and `configMaps` for binding to the deployed manifest. `secrets` and other resource types are coming soon.
 
 ### Available Manifest Based Stages
 
-There are 4 stages that are available for use:
+There are 4 stages that are available:
 
-1. *Deploy Manifest* -  Uses `kubectl apply` to deploy a manifest.  Spinnaker will wait until the manifest stabilizes in the Kubernetes cluster.
+1. **Deploy Manifest** -  Uses `kubectl apply` to deploy a manifest.  Spinnaker will wait until the manifest stabilizes in the Kubernetes cluster or reach the expected capacity on healthy pods.
 
-2. *Delete Manifests* - Removes the manifests based on different types and labels.  
+2. **Delete Manifests** - Removes the manifests and their corresponding artifacts in kubernetes based on different types and labels.  
 
-3. *Scale Manifests* -
+3. **Scale Manifests** - Scales replica sets to a given static size.
 
-4. *Rollback Manifest* - 
-
+4. **Rollback Manifest** - Allows rollback of a given Kuberentes artifact by a given number of versions.  Helpful in cases of a failed deployment or failed manual QA.
 
 ## Setting Up The V2 Provider
 
-Setting up the V2 provider is similar to the [V1 Kubernetes configuration](http://docs.armory.io/admin-guides/configure_kubernetes/#configure-clouddriver-to-use-the-kubectl-config-file) but we'll need to change the provider flag in `/opt/spinnaker/config/clouddriver-local.yml` to `v2` like in the example below:
+Setting up the V2 provider is similar to the [V1 Kubernetes configuration](http://docs.armory.io/admin-guides/configure_kubernetes/#configure-clouddriver-to-use-the-kubectl-config-file) however we'll need to change the provider flag in `/opt/spinnaker/config/clouddriver-local.yml` to `v2`.  For example:
 
 ```
 kubernetes:
@@ -56,7 +55,7 @@ features:
     enabled: true
 ```
 
-Then restart Armory Spinnaker `service armory-spinnaker restart`
+Then restart Armory Spinnaker: `service armory-spinnaker restart`
 
 ## Creating a Kubernetes V2 Pipeline
 
