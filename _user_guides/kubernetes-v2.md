@@ -20,6 +20,7 @@ The new Kubernetes provider is very much a work in progress and is subject to ch
 - S3, SQS, and SNS are not supported for artifact delivery
 - Native Spinnaker deployment strategies such as red/black, highlander, rolling red/black deployment are not supported. If these stragies are desired consider using the deployment object in your manifests.
 - The V2 provider only considers `containers` and `configMaps` for binding to the deployed manifest. `secrets` and other resource types are coming soon.
+- You cannot manually trigger the pipeline, you have to use Github triggers.
 
 ### Available Manifest Based Stages
 
@@ -73,12 +74,12 @@ After configuring the artifacts we'll need to associate them with a Github trigg
 
 ### Configuring The Config Map Manifest Delivery
 
-We'll configure the config map to be deployed first. Add a `Deploy (Manifest)` stage to your pipelines.
+We'll configure the `configMap` to be deployed first. Add a `Deploy (Manifest)` stage to your pipelines.
 
 ![deploy manifest](https://cl.ly/3p3T360a3f37/deploy_manifest.png)
 
 
-Once you've added the stage, select `Artifact` below and it will allow you to choose one of the expected artifacts that we configured in the previous section.  Choose `config-map.yml` and hit `save`. Spinnaker will deploy the chosen artifact but append a version to the name of the artifact. For [our example config map](https://github.com/Armory/spinnaker-k8s-v2-example/blob/master/config-map.yml). So for the name `k8-v2-config-map` it will appear in the Kubernetes cluster with `k8-v2-config-map-v001`.
+Once you've added the stage, select `Artifact` from the `Manifest Source` below and it will allow you to choose one of the expected artifacts that we configured in the previous section.  Choose `config-map.yml` and hit `save`. Spinnaker will deploy the chosen artifact but append a version to the name of the artifact. For [our example config map](https://github.com/Armory/spinnaker-k8s-v2-example/blob/master/config-map.yml). So for the name `k8-v2-config-map` it will appear in the Kubernetes cluster with `k8-v2-config-map-v001`.
 
 ![config map](https://cl.ly/1Q0s2B1b0n0D/config-map.png)
 
