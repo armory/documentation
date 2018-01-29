@@ -60,7 +60,7 @@ Then restart Armory Spinnaker: `service armory-spinnaker restart`
 ## Creating a Kubernetes V2 Pipeline
 
 ### Configuring The Pipeline Trigger
-We'll begin by creating a pipeline that is triggered from Kuberentes artifacts delivered through Github.  Below we'll define two artifacts that will be deployed as Kuberenetes manifests: `deployment.yml` and `config-map.yml` which are valid Kubernetes manifests.  Make sure to select the source as `Github`.
+We'll begin by creating a pipeline that is triggered from Kuberentes artifacts and delivered through Github.  Below we'll define two artifacts that will be deployed as Kuberenetes manifests: `deployment.yml` and `config-map.yml` which are valid Kubernetes manifests.  Make sure to select the source as `Github`.
 
 ![artifacts](https://cl.ly/091z2h232r0d/page.png)
 
