@@ -29,6 +29,10 @@ There are 4 stages that are available for use:
 
 2. *Delete Manifests* - Removes the manifests based on different types and labels.  
 
+3. *Scale Manifests* -
+
+4. *Rollback Manifest* - 
+
 
 ## Setting Up The V2 Provider
 
