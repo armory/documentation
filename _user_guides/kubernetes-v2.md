@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Kubernetes V2 Provider Guide
+title: Early Access Kubernetes V2 Provider Guide
 published : false
 ---
 This guide includes:
@@ -11,15 +11,15 @@ This guide includes:
 - Creating a Kubernetes V2 manifest based deployment pipeline
 
 ## Kubernetes V2 Provider Overview
-The new Kubernetes provider is centered on delivering and promoting Kubernetes manifests to different Kubernetes environments. These manifests are delivered to Spinnaker using [artifacts](https://www.spinnaker.io/reference/artifacts/in-kubernetes-v2/#kubernetes-objects-as-artifacts) and applied to the target cluster using `kubectl` in the background. Currently, there is support to supply artifacts through Git, GCS and Google Pub/Sub.  The V2 provider manages the version of the artifacts deployed to Kubernetes by appending a the string such as `v421` to the resource that was deployed to Kubernetes.  This allows for easy rollbacks and management of resources.
+The new Kubernetes provider is centered on delivering and promoting Kubernetes manifests to different Kubernetes environments. These manifests are delivered to Spinnaker using [artifacts](https://www.spinnaker.io/reference/artifacts/in-kubernetes-v2/#kubernetes-objects-as-artifacts) and applied to the target cluster using `kubectl` in the background. Currently, there is support to supply artifacts through Git, GCS and Google Pub/Sub.  The V2 provider manages the version of the artifacts deployed to Kubernetes by appending a string such as `v421` to the resource that was deployed to Kubernetes.  This allows for easy rollbacks and management of resources.
 
 ### What To Expect From The V2 Provider
 The new Kubernetes provider is very much a work in progress and is subject to changes in the UI and APIs. The user experience is still a work in progress and we're interested in understanding real-world usage patterns as we iterate on the provider to optimize the experience.  
 
 ### Current Limitations
-- S3, SQS, and SNS are not supported for artifact delivery
+-  The only supported services for artifact delivery are Github, GCS, or Google Pub/Sub. S3, SQS, and SNS are currently not supported.
 - Native Spinnaker deployment strategies such as red/black, highlander, rolling red/black deployment are not supported. If these stragies are desired consider using the deployment object in your manifests.
-- The V2 provider only considers `containers` and `configMaps` for binding to the deployed manifest. `secrets` and other resource types are coming soon.
+- While you're able to deploy all Kubernetes resource types, the V2 provider only considers `containers` and `configMaps` for [binding to the deployed manifest](https://www.spinnaker.io/reference/artifacts/in-kubernetes-v2/#kubernetes-objects-as-artifacts). `secrets` and other resource types are coming soon.    
 - You cannot manually trigger the pipeline, you have to use Github triggers.
 
 ### Available Manifest Based Stages
