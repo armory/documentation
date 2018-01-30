@@ -44,8 +44,6 @@ kubernetes:
     - name: k8s-v2
       providerVersion: v2
       kubeconfigFile: /opt/spinnaker/credentials/kubeconfig
-      dockerRegistries:
-        - accountName: gcr
 ```
 
 We'll also need to enable artifact handling in Spinnaker by setting a flag in `/opt/spinnaker/config/spinnaker-local.yml`
