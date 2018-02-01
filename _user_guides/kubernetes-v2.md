@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Early Access Kubernetes V2 Provider Guide
-published : false
+order: 100
 ---
 This guide includes:
 
