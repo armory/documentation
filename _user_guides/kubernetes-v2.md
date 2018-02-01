@@ -32,7 +32,7 @@ There are 4 stages that are available:
 
 3. **Scale Manifests** - Scales replica sets to a given static size.
 
-4. **Rollback Manifest** - Allows rollback of a given Kuberentes artifact by a given number of versions.  Helpful in cases of a failed deployment or failed manual QA.
+4. **Rollback Manifest** - Allows rollback of a given Kubernetes artifact by a given number of versions.  Helpful in cases of a failed deployment or failed manual QA.
 
 ## Setting Up The V2 Provider
 
