@@ -54,6 +54,18 @@ features:
     enabled: true
 ```
 
+And we'll need to configure the Github artifact account in `/opt/spinnaker/config/clouddriver-local.yml`
+
+```yaml
+artifacts:
+  github:
+    enabled: true
+    accounts:
+    - name: github
+      username: BOT_USERNAME
+      token: YOURTOKEN
+```      
+
 Then restart Armory Spinnaker: `service armory-spinnaker restart`
 
 ## Creating a Kubernetes V2 Pipeline
@@ -84,6 +96,7 @@ Once you've added the stage, select `Artifact` from the `Manifest Source` below 
 ### Configuring Deployment Manifest Delivery
 
 Next we'll configure a new `Deploy (Manifest)` stage to deploy the [deployment.yml](https://github.com/Armory/spinnaker-k8s-v2-example/blob/master/deployment.yml) manifest.  This manifest references our config-map as a volume and it's source will be replaced by the versioned artifact deployed in the previous step: `k8-v2-config-map-v001`.  So if our `deployment.yml` contains the following:
+
 ```yaml
 volumes:
   - name: k8-config

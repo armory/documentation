@@ -156,6 +156,18 @@ There are two options for getting an image to multiple regions in AWS. A common 
 
 There are trade-offs to each approach. Generally, Spinnaker's default multi-region bake approach is faster than the bake and copy approach. However, if you need to limit all baking activities to one region then there isn't much of a choice.
 
+## Baking Using `chroot`
+
+Baking using the `chroot` builder for packer allows you to bake an AMI without having to spin up a new instance.  Instead, a new EBS volume is mounted to the running Spinnaker instance, `chroot` is executed on the new volume, packer installs the required packages on the volume, a snapshot is taken, and then volume is cleanly detached.  To enable `chroot` style baking, we'll need to configure `rosco` with some additional properties.  You will need to add the following to `/opt/spinnaker/compose/docker-compose.override.yml`:
+
+```yaml
+version: "2.1"
+services:
+  rosco:
+    privileged: true
+    volumes:
+      - /dev:/dev
+```
 
 ## Custom Bake Scripts
 
