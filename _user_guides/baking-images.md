@@ -169,6 +169,10 @@ services:
       - /dev:/dev
 ```
 
+Armory Spinnaker comes with a [default chroot template](https://github.com/armory-io/rosco/blob/master/rosco-web/config/packer/aws-chroot.json) which is named `aws-chroot.json` and stored your other packer templates.  
+
+> Note: There are a few ["gotchas"](https://www.packer.io/docs/builders/amazon-chroot.html#gotchas) with chroot builders.  
+
 ## Custom Bake Scripts
 
 If you would like to use a custom Packer script to bake your AMI you will need to contact your Spinnaker Administrator. The script will have to be installed on your Spinnaker instances.
