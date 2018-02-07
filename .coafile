@@ -1,0 +1,5 @@
+[Default]
+[WriteGoodLintBear]
+allow_there_is=True
+files = **/*.md
+bears = WriteGoodLintBear
