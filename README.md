@@ -2,7 +2,7 @@
 
 Technical documentation for Armory Spinnaker.
 
-## Developement
+## Development
 
 Guides and docs are in markdown. They are split up into directories such as `_overview`, `_user_guides`, and `_admin_guides`. You can modify the markdown files in those directories, or add new ones. The 'order' field at the top of the `md` files determine where it will be placed on the list. 
 
