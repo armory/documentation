@@ -14,5 +14,5 @@ Add a CNAME entry for the given ELB then make sure to update your `DECK_HOST` an
 
 ```
 DECK_HOST=http://spinnaker.mydomain.com
-API_HOST=http://spinnaker.mydomain.com
+API_HOST=http://spinnaker.mydomain.com:8084
 ```

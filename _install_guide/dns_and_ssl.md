@@ -25,7 +25,7 @@ Update the values for `DECK_HOST` and `API_HOST` in your environment file in the
 
 ```
 DECK_HOST=http://spinnaker.mydomain.com
-API_HOST=http://spinnaker.mydomain.com
+API_HOST=http://spinnaker.mydomain.com:8084
 ```
 
 ## SSL Termination at the ELB
