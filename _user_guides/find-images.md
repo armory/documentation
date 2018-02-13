@@ -20,7 +20,7 @@ Spinnaker provides a lot of auto-magic for determining which AMI should be deplo
 
 ## Dynamic Base AMI
 
-Sometimes you may want to build your AMI in several different pipelines before deploying it. This is a popular method when you need to add a layer of standard tools and daemons to all of your instances (ex: Splunk or Datadog agents). Also, you may want to do regular security updates and have it roll out to all instances in your organization.
+Sometimes you may want to build your AMI in several different pipelines before deploying it. This is a popular method when you need to add a layer of standard tools and daemons to all of your instances (ex: Splunk or DataDog agents). Also, you may want to do regular security updates and have it roll out to all instances in your organization.
 
 Let's go through an example.
 
