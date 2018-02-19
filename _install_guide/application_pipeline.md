@@ -93,7 +93,7 @@ We will use the Highlander strategy for this example, which will ensure that onl
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/2D143V0z0J370f3d2o3S/Image%202017-03-24%20at%204.35.23%20PM.png)
 
-_Note_: Different deployment strategies are important and there will be [a separate guide for those](http://localhost:4000/user-guides/deploying/#deployment-strategies)
+_Note_: Different deployment strategies are important and there will be a separate guide for those.
 
 #### Step 15: Select a security group
 The security group will define the access rights to your resource.
