@@ -6,7 +6,7 @@ order: 953
 
 # 02/19/18 Release Notes
 
-> Note: This release includes a major version update to Orca 6.5.5.  This changes the processing and management of triggers in Orca.  This might affect actively executing pipelines during a deployment of Armory Spinnaker.
+> Note: This release includes a major version update to Orca 6.5.5 and changes the processing and management of triggers in Orca.  It might affect actively executing pipelines during a deployment of Armory Spinnaker.
 
 > Note: If you're experiencing production issues after upgrading Spinnaker, rollback to a [previous working version](http://docs.armory.io/admin-guides/troubleshooting/#i-upgraded-spinnaker-and-it-is-no-longer-responding-how-do-i-rollback).
 
