@@ -11,7 +11,7 @@ order: 953
 > Note: If you're experiencing production issues after upgrading Spinnaker, rollback to a [previous working version](http://docs.armory.io/admin-guides/troubleshooting/#i-upgraded-spinnaker-and-it-is-no-longer-responding-how-do-i-rollback).
 
 ## Highlighted Updates
-This release has early access functionality for the [Kubernetes V2 provider](http://docs.armory.io/user-guides/kubernetes-v2/). It also modifies trigger execution and processing within Orca.
+This release has early access functionality for the [Kubernetes V2 provider](http://docs.armory.io/user-guides/kubernetes-v2/), modifies trigger execution and processing within Orca, and adds ECS support.
 
 ### Orca  - v6.5.5
 - fix(jenkins): ignore full display name in trigger
@@ -34,40 +34,10 @@ This release has early access functionality for the [Kubernetes V2 provider](htt
 - fix(pubsub): Add payload to pubsub triggers. (#221)
 
 ### Deck  - v2.1171.0
-- fix(core/search): Fix calling setState on unmounted RecentlyViewedItems (#4680)
-- style(amazon/application/projects/pipeline/google/kubernetes): Replacing fa-cog icons with new spinner (#4630)
-- fix(core): surface app data status in views without active states (#4675)
-- fix(core/presentation): Add padding to filter sidebar as a scrolling affordance (#4679)
-- fix(webhooks): default parameters to empty list (#4678)
-- fix(core/search): Fix instance searches (#4670)
-- fix(core/vis): Fix visualizer toggle to clean up old copies of the visualizer (#4672)
-- fix(core): fix restore to this version behavior on pipeline config (#4671)
-- Add/update Travis Slack notifications (#4673)
-- chore(amazon): bump package to 0.0.59 (#4677)
-- chore(provider/kubernetes): bump kubernetes package version (#4676)
 - feat(provider/kubernetes): export k8s server group interface (#4674)
 - feat(webhooks): preconfigured webhook params (#4669)
-- feat(amazon/serverGroup): warn that scaling policies will not work when capacity is pinned (#4668)
-- chore(core): bump package to 0.0.129 (#4666)
-- fix(core): remove lazy datasource config on security groups, load balancers (#4665)
-- feat(provider/ecs): Updated the ECS Module with all its content (#4658)
-- feat(provider/ecs): Added serverGroup Transformer (#4650)
-- chore(core): bump package to 0.0.128 (#4663)
-- perf(core): lazy load data for load balancers, security groups (#4661)
-- fix(core): fix link to deployed server group in tasks view (#4662)
-- fix(core/pipelines): do not show no pipelines message while initializing (#4660)
-- fix(core): handle execution window expressions gracefully (#4656)
-- chore(build): remove halconfig from webpack common (#4659)
 - feat(deck) - Add gitlab as a gitSource and allow gitSources to be configured via settings.js (#4657)
-- fix(ecs): clean up imports, method signature (#4655)
 - feat(provider/ecs): Add ECS Support
-- fix(core): allow side filters to be collapsed (#4629)
-- feat(provider/kubernetes): v2 rename required deployed artifacts (#4627)
-- chore(amazon): bump package to 0.0.58 (#4626)
-- chore(core): bump package to 0.0.126 (#4625)
-- fix(core): remove "0" from filter list when no pipelines present (#4623)
-- chore(package): upgrade uirouter/visualizer to 5.1.3
-- fix(core/search): Fix redirect from 'home.infrastructure' to 'home.search'
 
 ### Gate  - v4.20.0
 - feat(authz): include full credentials list (#509)
