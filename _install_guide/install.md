@@ -15,7 +15,7 @@ The installer is a script that is responsible for asking the user for customer s
 ## Installing Armory Spinnaker Installer Scripts
 Armory Spinnaker comes with an installer that walks you through deploying Spinnaker in your AWS account.  It should only take 15 minutes to have an instance of Armory Spinnaker up and running.  To get started, open up a terminal and execute the following:
 
-`bash -c "$(curl -sS http://get.armory.io)"`
+`bash -c "$(curl -sS https://get.armory.io)"`
 
 You will need a AWS user/profile with permission to create the following resources:
 
