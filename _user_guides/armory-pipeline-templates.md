@@ -141,7 +141,7 @@ You would use the following JSON to create such. Note that any of the stages cou
              "eu-central-1"
           ],
           "requisiteStageRefIds": [
-            "105"
+            "105"      // this means: stage "105" comes before this stage
           ],
           "storeType": "ebs",
           "type": "bake",
