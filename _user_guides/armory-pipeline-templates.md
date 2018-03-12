@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Armory Pipeline Templates
+title: Armory Pipeline Templates (Dinghy)
 order: 106
 published: True
 ---
@@ -11,7 +11,11 @@ The Armory Spinnaker installation provides a service called "Dinghy" which will 
 
 ## Primitives
 
-- **Modules**: These are templates that define a Stage/Task in the pipeline. They are kept in a single GitHub repo that is configurable. They are JSON files with replacable values in them. e.g., a module that defines a wait stage in a pipeline might look like:
+- **Modules**: These are templates that define a Stage/Task in the pipeline. They are kept in a single GitHub repo that is configurable when the dinghy service starts. eg:
+
+![dinghy-templates](http://f.cl.ly/items/3R0B3W3o2l3h2K0E3e1G/dinghy-template-repo.png)
+
+ They are JSON files with replacable values in them. e.g., a module that defines a wait stage in a pipeline might look like:
 ```
 {
     "name": "Wait",
@@ -21,7 +25,11 @@ The Armory Spinnaker installation provides a service called "Dinghy" which will 
     "waitTime": 42
 }
 ```
-- **Pipeline definitions**: These define a pipeline for an application in a file called `dinghyfile`. You can compose stage/task templates to make a full definition. e.g., a Pipeline definition for a spinnaker application called `foo` that has a single wait stage might look like:
+- **Pipeline definitions**: These define a pipeline for an application in a file called `dinghyfile`. The `dinghyfile` usually resides at the root level of the application repo. eg:
+
+![dinghyfile](http://f.cl.ly/items/3t3z0Q2Z040f0i0V2P3O/dinghyfile.png)
+
+You can compose stage/task templates to make a full definition. e.g., a Pipeline definition for a spinnaker application called `foo` that has a single wait stage might look like:
 ```
 {
   "application": "foo",
@@ -49,7 +57,7 @@ The Armory Spinnaker installation provides a service called "Dinghy" which will 
 ## Template variables and substitution
 
 We can have Pipeline definitions use Modules defined in another GitHub Repo. e.g.:
-```
+```{% raw %}
 {
   "application": "foo",
   "pipelines": [
@@ -59,15 +67,15 @@ We can have Pipeline definitions use Modules defined in another GitHub Repo. e.g
       "limitConcurrent": true,
       "name": "Made By Armory Pipeline Templates",
       "stages": [
-        {\{ module "wait.stage.module" }}
+        {{ module "wait.stage.module" }}
       ],
       "triggers": []
     }
   ]
 }
-```
+{% endraw %}```
 We can also overwrite variables inside the imported module like so:
-```
+```{% raw %}
 {
   "application": "foo",
   "pipelines": [
@@ -77,20 +85,20 @@ We can also overwrite variables inside the imported module like so:
       "limitConcurrent": true,
       "name": "Made By Armory Pipeline Templates",
       "stages": [
-        {\{ module "wait.stage.module" "waitTime" 200 }}
+        {{ module "wait.stage.module" "waitTime" 200 }}
       ],
       "triggers": []
     }
   ]
 }
-```
+{% endraw %}```
 Any number of variables can be overwritten in the same module by simply specifying them as arguments. e.g.: `{{ module "wait.stage.module" "waitTime" 100 "name" "simpleWait" }}`.
 
 > Note: We do not support complex data-type variable substitution in the alpha release
 
 Let us create a more realistic pipeline using templates. One that would look like this:
 
-![artifacts](http://f.cl.ly/items/1z3z3Z2w3j2w35171U39/Screen%20Shot%202018-03-12%20at%2011.18.38%20AM.png)
+![demopipeline](http://f.cl.ly/items/1z3z3Z2w3j2w35171U39/Screen%20Shot%202018-03-12%20at%2011.18.38%20AM.png)
 
 You would use the following JSON to create such. Note that any of the stages could have come from an imported module, but we show the full JSON here for readability:
 
