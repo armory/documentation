@@ -9,6 +9,10 @@ Armory Pipeline Templates provide a way of specifying pipeline definitions in so
 
 The Armory Spinnaker installation provides a service called "Dinghy" which will keep the pipeline in Spinnaker in sync with what is defined in the GitHub repo. Also, users will be able to make a pipeline by composing other pipelines, stages, or tasks and templating certain values.
 
+## How it works in a nutshell
+
+GitHub (or BitBucket) webhooks are sent off when either the Templates or the Module definitions are modified. The Dinghy service looks for and fetches all dependent modules and parses the template and updates the pipelines in Spinnaker. The pipelines get automatically updated whenever a module that is used by a pipeline is updated in VCS. This is done by maintaining a dependency graph.
+
 ## Primitives
 
 - **Modules**: These are templates that define a Stage/Task in the pipeline. They are kept in a single GitHub repo that is configurable when the dinghy service starts. eg:
@@ -67,7 +71,7 @@ We can have Pipeline definitions use Modules defined in another GitHub Repo. e.g
       "limitConcurrent": true,
       "name": "Made By Armory Pipeline Templates",
       "stages": [
-        {{ module "wait.stage.module" }}
+        {{ module "wait.stage.module" }} // Module created in dinghy-templates repo
       ],
       "triggers": []
     }
@@ -92,7 +96,7 @@ We can also overwrite variables inside the imported module like so:
   ]
 }
 {% endraw %}```
-Any number of variables can be overwritten in the same module by simply specifying them as arguments. e.g.: `{{ module "wait.stage.module" "waitTime" 100 "name" "simpleWait" }}`.
+Any number of variables can be overwritten in the same module by simply specifying them as arguments. e.g.: `{% raw %}{{ module "wait.stage.module" "waitTime" 100 "name" "simpleWait" }}{% endraw %}`.
 
 > Note: We do not support complex data-type variable substitution in the alpha release
 
@@ -120,7 +124,7 @@ You would use the following JSON to create such. Note that any of the stages cou
           "master": "Armory Jenkins",
           "name": "Jenkins",
           "parameters": {},
-          "refId": "105",
+          "refId": "105",            // a unique id that's unique between pipelines.stages[*].refId
           "requisiteStageRefIds": [],
           "type": "jenkins"
         },
@@ -181,9 +185,3 @@ You would use the following JSON to create such. Note that any of the stages cou
   ]
 }
 ```
-
-
-## How it works in a nutshell
-
-GitHub (or BitBucket) webhooks are sent off when either the Templates or the Module definitions are modified. The Dinghy service looks for and fetches all dependent modules and parses the template and updates the pipelines in Spinnaker. The pipelines get automatically updated whenever a module that is used by a pipeline is updated in VCS. This is done by maintaining a dependency graph.
-
