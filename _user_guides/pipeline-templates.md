@@ -3,50 +3,183 @@ layout: post
 order: 108
 ---
 
-[Pipeline Templates](https://github.com/spinnaker/dcd-spec/blob/master/PIPELINE_TEMPLATES.md)
-are a new feature of Spinnaker.  They are a means for standardizing and
-distributing reusable Pipelines within a Spinnaker ecosystem.  The following
-stages are of particular note to users deploying through pipeline templates.
+Armory Pipeline Templates provide a way of specifying pipeline definitions in source code repos (like GitHub & BitBucket). 
 
-## Load Balancer Stage
+The Armory Spinnaker installation provides a service called "Dinghy" which will keep the pipeline in Spinnaker in sync with what is defined in the GitHub repo. Also, users will be able to make a pipeline by composing other pipelines, stages, or tasks and templating certain values.
 
-This stage, when enabled, allows for the automation of the creation of a new
-load balancer within the cluster.  You can enable this feature by passing
-in the environment variable `INFRA_ENABLED=true`, or configure
-it in your `/opt/spinnaker/config/spinnaker-armory.yml` file:
+## How it works in a nutshell
+
+GitHub (or BitBucket) webhooks are sent off when either the Templates or the Module definitions are modified. The Dinghy service looks for and fetches all dependent modules and parses the template and updates the pipelines in Spinnaker. The pipelines get automatically updated whenever a module that is used by a pipeline is updated in VCS. This is done by maintaining a dependency graph.
+
+## Primitives
+
+- **Modules**: These are templates that define a Stage/Task in the pipeline. They are kept in a single GitHub repo that is configurable when the dinghy service starts. eg:
+
+![dinghy-templates](http://f.cl.ly/items/3R0B3W3o2l3h2K0E3e1G/dinghy-template-repo.png)
+
+ They are JSON files with replacable values in them. e.g., a module that defines a wait stage in a pipeline might look like:
+```
+{
+    "name": "Wait",
+    "refId": "1",
+    "requisiteStageRefIds": [],
+    "type": "wait",
+    "waitTime": 42
+}
+```
+- **Pipeline definitions**: These define a pipeline for an application in a file called `dinghyfile`. The `dinghyfile` usually resides at the root level of the application repo. eg:
+
+![dinghyfile](http://f.cl.ly/items/3t3z0Q2Z040f0i0V2P3O/dinghyfile.png)
+
+You can compose stage/task templates to make a full definition. e.g., a Pipeline definition for a spinnaker application called `foo` that has a single wait stage might look like:
+```
+{
+  "application": "foo",
+  "pipelines": [
+    {
+      "application": "foo",
+      "keepWaitingPipelines": false,
+      "limitConcurrent": true,
+      "name": "Made By Armory Pipeline Templates",
+      "stages": [
+        {
+          "name": "Wait",
+          "refId": "1",
+          "requisiteStageRefIds": [],
+          "type": "wait",
+          "waitTime": 10
+        }
+      ],
+      "triggers": []
+    }
+  ]
+}
+```
+
+## Template variables and substitution
+
+We can have Pipeline definitions use Modules defined in another GitHub Repo. e.g.:
+```{% raw %}
+{
+  "application": "foo",
+  "pipelines": [
+    {
+      "application": "foo",
+      "keepWaitingPipelines": false,
+      "limitConcurrent": true,
+      "name": "Made By Armory Pipeline Templates",
+      "stages": [
+        {{ module "wait.stage.module" }} // Module created in dinghy-templates repo
+      ],
+      "triggers": []
+    }
+  ]
+}
+{% endraw %}```
+We can also overwrite variables inside the imported module like so:
+```{% raw %}
+{
+  "application": "foo",
+  "pipelines": [
+    {
+      "application": "foo",
+      "keepWaitingPipelines": false,
+      "limitConcurrent": true,
+      "name": "Made By Armory Pipeline Templates",
+      "stages": [
+        {{ module "wait.stage.module" "waitTime" 200 }}
+      ],
+      "triggers": []
+    }
+  ]
+}
+{% endraw %}```
+Any number of variables can be overwritten in the same module by simply specifying them as arguments. e.g.: `{% raw %}{{ module "wait.stage.module" "waitTime" 100 "name" "simpleWait" }}{% endraw %}`.
+
+> Note: We do not support complex data-type variable substitution in the alpha release
+
+Let us create a more realistic pipeline using templates. One that would look like this:
+
+![demopipeline](http://f.cl.ly/items/1z3z3Z2w3j2w35171U39/Screen%20Shot%202018-03-12%20at%2011.18.38%20AM.png)
+
+You would use the following JSON to create such. Note that any of the stages could have come from an imported module, but we show the full JSON here for readability:
 
 ```
-features:
-  infrastructureStages:
-    enabled: true
+{
+  "application": "demo",
+  "pipelines": [
+    {
+      "application": "demo",
+      "keepWaitingPipelines": false,
+      "limitConcurrent": true,
+      "name": "step1",
+      "stages": [
+        {
+          "continuePipeline": false,
+          "failPipeline": true,
+          "isNew": true,
+          "job": "armory/job/armory-hello-deploy/job/master",
+          "master": "Armory Jenkins",
+          "name": "Jenkins",
+          "parameters": {},
+          "refId": "105",            // a unique id that's unique between pipelines.stages[*].refId
+          "requisiteStageRefIds": [],
+          "type": "jenkins"
+        },
+        {
+          "baseLabel": "release",
+          "baseOs": "ubuntu",
+          "cloudProviderType": "aws",
+          "extendedAttributes": {},
+          "isNew": true,
+          "name": "bake in eu-central-1",
+          "package": "myapp_1.27-h343",
+          "refId": "101",
+          "regions": [
+             "eu-central-1"
+          ],
+          "requisiteStageRefIds": [
+            "105"      // this means: stage "105" comes before this stage
+          ],
+          "storeType": "ebs",
+          "type": "bake",
+          "user": "LeSandeep",
+          "vmType": "hvm"
+        },
+        {
+          "failPipeline": true,
+          "isNew": true,
+          "name": "run tests",
+          "refId": "102",
+          "requisiteStageRefIds": [
+            "101"
+          ],
+          "type": "script",
+          "user": "LeSandeep",
+          "waitForCompletion": true
+        },
+        {
+          "isNew": true,
+          "name": "canary",
+          "refId": "103",
+          "requisiteStageRefIds": [
+            "101"
+          ]
+        },
+        {
+          "clusters": [],
+          "isNew": true,
+          "name": "deploy to stage",
+          "refId": "104",
+          "requisiteStageRefIds": [
+            "102",
+            "103"
+          ],
+          "type": "deploy"
+        }
+      ],
+      "triggers": []
+    }
+  ]
+}
 ```
-
-You should see a "Create Load Balancers" stage as an optional type when
-creating a stage:
-
-![](https://cl.ly/2M422h202Z0j/Screen%20Shot%202017-10-02%20at%2011.46.04%20AM.png)
-
-Then you can define the load balancers to create (or update -- if the
-load balancer already exists with the same name, the configuration defined
-here will overwrite the existing configuration)
-
-![](https://cl.ly/2O0U3z1r1w1L/[6f77766dc4c52a0cafbec1aabe19cd12]_Screen%20Shot%202017-10-02%20at%2011.51.57%20AM.png)
-
-The interface for configuring the load balancer is exactly the same as the
-direct-create method.  Select your account, region, subnet, security groups,
-etc.  The load balancer will not be created until this stage executes.
-
-![](https://cl.ly/1E1m1e0u0e03/Screen%20Shot%202017-10-02%20at%2011.55.06%20AM.png)
-
-When saved, the load balancer configuration should appear on the screen,
-where you can edit, remove or duplicate that configuration:
-
-![](https://cl.ly/2F1v3e0R1s0P/Screen%20Shot%202017-10-02%20at%2011.57.58%20AM.png)
-
-If the create/update succeeds, the pipeline execution should look something
-like this:
-
-![](https://cl.ly/3i2w1o0x2o34/[3871895d1326b53d8ea91db022b61326]_Screen%20Shot%202017-10-02%20at%2012.01.50%20PM.png)
-
-
-
