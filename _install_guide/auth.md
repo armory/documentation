@@ -219,7 +219,7 @@ In your `/opt/spinnaker/config/gate-local.yml` file add the following:
 ```
 x509:
   enabled: true
-  subjectPrincipalRegex: EMAILADDRESS=(.*?)(?:,|$) # optional
+  subjectPrincipalRegex: EMAILADDRESS=(.*?)(?:,|$)
 
 server:
   ssl:
@@ -270,16 +270,19 @@ We'll have to export the certs in a P12 format for standard http communication
 openssl pkcs12 -export -clcerts -in client.crt -inkey client.key -out client.p12
 ```
 
+Import the root CA into the keystore
+```
+keytool -importcert -file ca.crt -keystore keystore.jks -alias "server"
+```
+
 Import the certifcate into the keystore.  This is what will be used by Gate establish the `trustStore`
 ```
 keytool -importkeystore -srckeystore server.p12 -srcstoretype pkcs12 -srcalias spinnaker -srcstorepass ${YOUR_KEY_PASSWORD} -destkeystore keystore.jks -deststoretype jks -destalias server -deststorepass ${YOUR_KEY_PASSWORD} -destkeypass ${YOUR_KEY_PASSWORD}
 ```
 
-
-
 ## Enable Sticky Sessions
 
 Before you configure authentication you'll need to enable sticky sessions for the external ELB for port `8084` (Gate).  This must be done through the AWS console.  
 - For an infinite session leave the `Expiration Period` blank.
-- *Note* Make sure to use load balancer generated cookies. 
+- *Note* Make sure to use load balancer generated cookies.
 ![Adding Sticky Sessions](https://cl.ly/0C1n3m3e3M2z/Image%202017-10-11%20at%209.26.58%20AM.png)
