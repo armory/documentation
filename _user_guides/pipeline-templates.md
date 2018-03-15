@@ -25,7 +25,7 @@ gitHubCredsPath:   /path/to/github-creds # credentials for github api (username:
 stashCredsPath:    /path/to/github-creds # credentials for stash api (username:token)
 stashEndpoint:     http://stash.mycompany.com/rest/api/1.0", # url where stash is running
 ```
-The path to this file must be set in the environment variable `DINGHY_CONFIG`
+The path to this file must be set in the environment variable `DINGHY_CONFIG`. It defaults to `/opt/spinnaker/dinghy-local.yml`.
 
 ## Primitives
 
