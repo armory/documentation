@@ -5,9 +5,9 @@ order: 953
 visibile: 0
 ---
 
-# 03/15/18
+## Warning
 
-> Note: We have found stability issues with this release. Please do not upgrade until further notice. If you have already upgraded we recommend to rollback.
+> We found stability issues with this release. Please do not upgrade to this version. If you have already upgraded, we recommend rolling back.
 
 # 02/19/18 Release Notes
 
