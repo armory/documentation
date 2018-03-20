@@ -21,7 +21,7 @@ autoLockPipelines: true # whether or not to lock pipelines in the UI before upda
 spinnakerAPIURL:   https://spinnaker.mycompany.com:8085
 spinnakerUIURL:    https://spinnaker.mycompany.io
 certPath:          /path/to/client.pem # spinnaker x509 cert
-gitHubCredsPath:   /path/to/github-creds # credentials for github api (username:token)
+githubCredsPath:   /path/to/github-creds # credentials for github api (username:token)
 stashCredsPath:    /path/to/github-creds # credentials for stash api (username:token)
 stashEndpoint:     http://stash.mycompany.com/rest/api/1.0", # url where stash is running
 ```
