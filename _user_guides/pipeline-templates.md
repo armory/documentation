@@ -27,6 +27,29 @@ stashEndpoint:     http://stash.mycompany.com/rest/api/1.0", # url where stash i
 ```
 The default path to this file is: `/opt/spinnaker/dinghy-local.yml`. It can be overwritten by setting the `DINGHY_CONFIG` environment variable.
 
+
+## Github setup
+Go to [https://github.com/organizations/your_org_here/settings/hooks](https://github.com/organizations/your_org_here/settings/hooks) and add:
+```
+Payload URL: https://spinnaker.armory.io:8084/webhooks/git/github
+Content type: application/json
+Events: Pushes
+```
+
+You'll need to have github's webhooks IP whitelisted. You can find their IPs here:
+[https://api.github.com/meta](https://api.github.com/meta), you can read [github's docs here.](https://help.github.com/articles/about-github-s-ip-addresses/)
+
+
+## Hosted Stash or Bitbucket Server setup
+If you're using stash `<v3.11.6`, you'll need to install a webhook plugin. You can find [that here.](https://marketplace.atlassian.com/plugins/com.atlassian.stash.plugin.stash-web-post-receive-hooks-plugin/server/overview), Bitbucket Server already has webhooks included.
+
+For each repo, you'll to set the webhook to:
+```
+Payload URL: https://spinnaker.armory.io:8084/webhooks/git/github
+```
+
+
+
 ## Primitives
 
 - **Modules**: These are templates that define a Stage/Task in the pipeline. They are kept in a single GitHub repo that is configurable when the dinghy service starts. eg:
@@ -47,13 +70,13 @@ The default path to this file is: `/opt/spinnaker/dinghy-local.yml`. It can be o
 
 ![](http://f.cl.ly/items/3t3z0Q2Z040f0i0V2P3O/dinghyfile.png)
 
-You can compose stage/task templates to make a full definition. e.g., a Pipeline definition for a spinnaker application called `foo` that has a single wait stage might look like:
+You can compose stage/task templates to make a full definition. e.g., a Pipeline definition that has a single wait stage might look like:
 ```
 {
-  "application": "foo",
+  "application": "yourspinnakerapplicationname",
   "pipelines": [
     {
-      "application": "foo",
+      "application": "yourspinnakerapplicationname",
       "keepWaitingPipelines": false,
       "limitConcurrent": true,
       "name": "Made By Armory Pipeline Templates",
@@ -77,10 +100,10 @@ You can compose stage/task templates to make a full definition. e.g., a Pipeline
 We can have Pipeline definitions use Modules defined in another GitHub Repo. e.g.:
 ```{% raw %}
 {
-  "application": "foo",
+  "application": "yourspinnakerapplicationname",
   "pipelines": [
     {
-      "application": "foo",
+      "application": "yourspinnakerapplicationname",
       "keepWaitingPipelines": false,
       "limitConcurrent": true,
       "name": "Made By Armory Pipeline Templates",
@@ -95,10 +118,10 @@ We can have Pipeline definitions use Modules defined in another GitHub Repo. e.g
 We can also overwrite variables inside the imported module like so:
 ```{% raw %}
 {
-  "application": "foo",
+  "application": "yourspinnakerapplicationname",
   "pipelines": [
     {
-      "application": "foo",
+      "application": "yourspinnakerapplicationname",
       "keepWaitingPipelines": false,
       "limitConcurrent": true,
       "name": "Made By Armory Pipeline Templates",
@@ -122,10 +145,10 @@ You would use the following JSON to create such. Note that any of the stages cou
 
 ```
 {
-  "application": "demo",
+  "application": "yourspinnakerapplicationname",
   "pipelines": [
     {
-      "application": "demo",
+      "application": "yourspinnakerapplicationname",
       "keepWaitingPipelines": false,
       "limitConcurrent": true,
       "name": "step1",
