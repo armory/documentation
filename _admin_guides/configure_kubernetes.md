@@ -85,7 +85,7 @@ kubectl config --kubeconfig=kubeconfig set-credentials myuser --username=ADMIN -
 
 # (4) Create a context
 kubectl config --kubeconfig=kubeconfig set-context default --cluster mycluster --user=myuser
-kubectl config --kubeconfig=kubeconfig config use-context default
+kubectl config --kubeconfig=kubeconfig use-context default
 ```
 
 [//]: # (Comment) XXX NOTE don - don't know why, the --certificate-authority=filename didn't work for me, don't know why;
