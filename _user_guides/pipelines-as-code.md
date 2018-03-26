@@ -3,7 +3,7 @@ layout: post
 order: 108
 ---
 
-Armory Pipeline Templates provide a way of specifying pipeline definitions in source code repos (like GitHub & BitBucket). 
+Armory's Pipelines As Code feature provides a way to specify pipeline definitions in source code repos (like GitHub & BitBucket). 
 
 The Armory Spinnaker installation provides a service called "Dinghy" which will keep the pipeline in Spinnaker in sync with what is defined in the GitHub repo. Also, users will be able to make a pipeline by composing other pipelines, stages, or tasks and templating certain values.
 
@@ -135,15 +135,13 @@ We can also overwrite variables inside the imported module like so:
 {% endraw %}```
 Any number of variables can be overwritten in the same module by simply specifying them as arguments. e.g.: `{% raw %}{{ module "wait.stage.module" "waitTime" 100 "name" "simpleWait" }}{% endraw %}`.
 
-> Note: We do not support complex data-type variable substitution in the alpha release
-
 Let us create a more realistic pipeline using templates. One that would look like this:
 
 ![](http://f.cl.ly/items/1z3z3Z2w3j2w35171U39/Screen%20Shot%202018-03-12%20at%2011.18.38%20AM.png)
 
 You would use the following JSON to create such. Note that any of the stages could have come from an imported module, but we show the full JSON here for readability:
 
-```
+```{% raw %}
 {
   "application": "yourspinnakerapplicationname",
   "pipelines": [
@@ -205,20 +203,22 @@ You would use the following JSON to create such. Note that any of the stages cou
             "101"
           ]
         },
-        {
-          "clusters": [],
-          "isNew": true,
-          "name": "deploy to stage",
-          "refId": "104",
-          "requisiteStageRefIds": [
-            "102",
-            "103"
-          ],
-          "type": "deploy"
-        }
+        {{ module deploy.stage.module "requisiteStageRefIds" ["102", "103"] }}
       ],
       "triggers": []
     }
   ]
 }
-```
+{% endraw %}```
+
+The file `deploy.stage.module` would look like this:
+```{% raw %}
+{
+  "clusters": [],
+  "isNew": true,
+  "name": "deploy to stage",
+  "refId": "104",
+  "requisiteStageRefIds": [],
+  "type": "deploy"
+}
+{% endraw %}```
