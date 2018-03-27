@@ -82,7 +82,7 @@ service armory-spinnaker restart
 
 Otherwise, you'll want to restart the whole cluster so the config changes are picked up.
 
-## Open Ports
+# Open Ports
 
 If you are upgrading an existing Spinnaker installation, you'll need to add some ports to the load balancers serving your install.  HTTP listeners on port 10000 will need to be added to both the external and internal load balancers, and on the internal load balancer, you'll need to add a Listener for port 5001:
 
