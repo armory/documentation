@@ -1,54 +1,18 @@
 ---
 layout: post
+title: Pipelines as Code
 order: 108
 ---
 
-Armory Pipeline Templates provide a way of specifying pipeline definitions in source code repos (like GitHub & BitBucket). 
+Armory's Pipelines As Code feature provides a way to specify pipeline definitions in source code repos (like GitHub & BitBucket). 
 
 The Armory Spinnaker installation provides a service called "Dinghy" which will keep the pipeline in Spinnaker in sync with what is defined in the GitHub repo. Also, users will be able to make a pipeline by composing other pipelines, stages, or tasks and templating certain values.
+
+> NOTE: before you can use this feature, please ensure you have [configured it](http://docs.armory.io/install-guide/dinghy/) correctly.
 
 ## How it works in a nutshell
 
 GitHub (or BitBucket) webhooks are sent off when either the Templates or the Module definitions are modified. The Dinghy service looks for and fetches all dependent modules and parses the template and updates the pipelines in Spinnaker. The pipelines get automatically updated whenever a module that is used by a pipeline is updated in VCS. This is done by maintaining a dependency graph.
-
-## Configuration
-The configuration for this service comes from a yaml file that might look like this:
-```
-templateOrg:       armory-io  # github or stash "org" where the app repos and templates reside
-dinghyFilename:    dinghyfile # name of the file which describes pipelines
-templateRepo:      dinghy-templates # name of the repo containing modules
-autoLockPipelines: true # whether or not to lock pipelines in the UI before updating them
-spinAPIUrl:        https://spinnaker.mycompany.com:8085
-spinUIUrl:         https://spinnaker.mycompany.io
-certPath:          /path/to/client.pem # spinnaker x509 cert
-githubCredsPath:   /path/to/github-creds # credentials for github api (username:token)
-stashCredsPath:    /path/to/github-creds # credentials for stash api (username:token)
-stashEndpoint:     http://stash.mycompany.com/rest/api/1.0", # url where stash is running
-```
-The default path to this file is: `/opt/spinnaker/dinghy-local.yml`. It can be overwritten by setting the `DINGHY_CONFIG` environment variable.
-
-
-## Github setup
-Go to [https://github.com/organizations/your_org_here/settings/hooks](https://github.com/organizations/your_org_here/settings/hooks) and add:
-```
-Payload URL: https://spinnaker.armory.io:8084/webhooks/git/github
-Content type: application/json
-Events: Pushes
-```
-
-You'll need to have github's webhooks IP whitelisted. You can find their IPs here:
-[https://api.github.com/meta](https://api.github.com/meta), you can read [github's docs here.](https://help.github.com/articles/about-github-s-ip-addresses/)
-
-
-## Hosted Stash or Bitbucket Server setup
-If you're using stash `<v3.11.6`, you'll need to install a webhook plugin. You can find [that here.](https://marketplace.atlassian.com/plugins/com.atlassian.stash.plugin.stash-web-post-receive-hooks-plugin/server/overview), Bitbucket Server already has webhooks included.
-
-For each repo, you'll to set the webhook to:
-```
-Payload URL: https://spinnaker.armory.io:8084/webhooks/git/github
-```
-
-
 
 ## Primitives
 
@@ -135,15 +99,13 @@ We can also overwrite variables inside the imported module like so:
 {% endraw %}```
 Any number of variables can be overwritten in the same module by simply specifying them as arguments. e.g.: `{% raw %}{{ module "wait.stage.module" "waitTime" 100 "name" "simpleWait" }}{% endraw %}`.
 
-> Note: We do not support complex data-type variable substitution in the alpha release
-
 Let us create a more realistic pipeline using templates. One that would look like this:
 
 ![](http://f.cl.ly/items/1z3z3Z2w3j2w35171U39/Screen%20Shot%202018-03-12%20at%2011.18.38%20AM.png)
 
 You would use the following JSON to create such. Note that any of the stages could have come from an imported module, but we show the full JSON here for readability:
 
-```
+```{% raw %}
 {
   "application": "yourspinnakerapplicationname",
   "pipelines": [
@@ -205,20 +167,67 @@ You would use the following JSON to create such. Note that any of the stages cou
             "101"
           ]
         },
-        {
-          "clusters": [],
-          "isNew": true,
-          "name": "deploy to stage",
-          "refId": "104",
-          "requisiteStageRefIds": [
-            "102",
-            "103"
-          ],
-          "type": "deploy"
-        }
+        {{ module deploy.stage.module "requisiteStageRefIds" ["102", "103"] }}
       ],
       "triggers": []
     }
   ]
 }
-```
+{% endraw %}```
+
+The file `deploy.stage.module` would look like this:
+```{% raw %}
+{
+  "clusters": [],
+  "isNew": true,
+  "name": "deploy to stage",
+  "refId": "104",
+  "requisiteStageRefIds": [],
+  "type": "deploy"
+}
+{% endraw %}```
+
+## Multiple level inheritance:
+
+In the below example, we show a pipeline that is created with multiple levels of module inheritance. The application's dinghyfile looks like this:
+
+```{% raw %}
+{
+  "application": "dinghytest",
+  "pipelines": [
+    {{ module "simple.pipeline.module" "application" "dinghytest" }}
+  ]
+}
+{% endraw %}```
+The dinghyfile inherits its pipeline from a _module_ named `simple.pipeline.module` that looks as shown below. Note that it also overrides the application name in the module to avoid conflict.
+
+```{% raw %}
+{
+  "application": "yourspinnakerapplicationname",
+  "keepWaitingPipelines": false,
+  "limitConcurrent": true,
+  "name": "Made By Armory Pipeline Templates",
+  "stages": [
+    {{ module "wait.stage.module" "waitTime" 200 }},
+    {{ module "deploy.stage.module" "requisiteStageRefIds" ["1"] }}
+  ],
+  "triggers": []
+}
+{% endraw %}```
+
+This module inherits two stages and overrides variables within them. The `wait.stage.module` is same as the one shown above. The `deploy.stage.module` looks like this:
+
+```{% raw %}
+{
+  "clusters": [],
+  "isNew": true,
+  "name": "deploy to stage",
+  "refId": "104",
+  "requisiteStageRefIds": [],
+  "type": "deploy"
+}
+{% endraw %}```
+
+Note how the `requisiteStageRefIds` is overwritten while calling the module so that the deploy stage _depends on_ the wait stage. This pipeline would look like this in the spinnaker UI:
+
+![](http://f.cl.ly/items/0p353C431U1G2g2H2N13/Screen_Shot_2018-03-26_at_5_06_25_PM.png)
