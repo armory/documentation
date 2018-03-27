@@ -7,7 +7,7 @@ published: False
 
 ## Configure Slack App
 
-1. Go to api.slack.com/apps and Create New App.
+1. Go to [https://api.slack.com/apps](https://api.slack.com/apps) and Create New App.
 
   ![Create New App](https://dha4w82d62smt.cloudfront.net/items/0J0M08230j212s0M0k0q/%5B704dbb753f72c8e5569ef622cbf2d254%5D_Image+2018-03-27+at+1.37.31+PM.png)
 
