@@ -37,10 +37,10 @@ stashEndpoint:     http://stash.mycompany.com/rest/api/1.0", # url where stash i
 - Edit the file `config/echo-local.yml` and add the following contents to it:
 ```
 armorywebhooks:
-  enabled: true
-  forwarding:
-    baseUrl: http://${DEFAULT_DNS_NAME}:8081  # dinghy
-    endpoint: v1/webhooks
+    enabled: true
+    forwarding:
+      baseUrl: http://${DEFAULT_DNS_NAME}:8081  # dinghy
+      endpoint: v1/webhooks
 ```
 - Edit the file: `prod.env` (or `dev.env` if in dev environment) and set the following environment variable `DINGHY_ENABLED=true`
 
