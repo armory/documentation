@@ -27,8 +27,6 @@ published: False
 
   ![Request URL](https://dha4w82d62smt.cloudfront.net/items/422P0u042F1F0O3E1B1L/Image%202018-03-27%20at%201.54.42%20PM.png)
   
-  NOTE:  HTTPS support is coming soon!
-
 6. Click on "Bot Users" and give your bot a username and a display name.
 
   ![Set up bot user](https://dha4w82d62smt.cloudfront.net/items/1A1Y441R1v331T190r0S/Image%202018-03-27%20at%201.57.44%20PM.png)
@@ -91,5 +89,10 @@ If you are upgrading an existing Spinnaker installation, you'll need to add some
 In order to take advantage of the interactive buttons the Armory Platform
 puts into Slack, you will need to allow Slack to call back into the Platform
 on port 10000 from any IP; Slack's API services are cloud-based and don't have a fixed set of IPs sending traffic.  Only Slack callbacks with properly configured tokens (see Verification Token, above) are accepted; a `/health` endpoint is also available to help test for connectivity.  If you are using Security Groups or other firewalls to limit access to specific IP addresses, an exception will need to be made for port 10000.
+
+NOTE:  If you want to have Slack use HTTPS when calling back to your endpoint, you should
+configure your external loadbalancer to receive HTTPS from a port of your choice, but then
+map to HTTP on port 10000 internally.  The Slack callbacks won't work if Slack can't
+verify your SSL certificate.
 
 
