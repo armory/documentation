@@ -1,5 +1,6 @@
 ---
 layout: post
+title: Advanced Configurations
 order: 80
 ---
 
