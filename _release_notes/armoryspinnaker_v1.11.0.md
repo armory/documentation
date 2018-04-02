@@ -2,7 +2,12 @@
 layout: post
 title: v1.11.0 Armory Enterprise Spinnaker
 order: 953
+visibile: 0
 ---
+
+## Warning
+
+> We found stability issues with this release. Please do not upgrade to this version. If you have already upgraded, we recommend rolling back.
 
 # 02/19/18 Release Notes
 
