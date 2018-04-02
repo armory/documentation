@@ -32,7 +32,19 @@ certPath:          /path/to/client.pem # spinnaker x509 cert
 githubCredsPath:   /path/to/github-creds # credentials for github api (username:token)
 stashCredsPath:    /path/to/github-creds # credentials for stash api (username:token)
 stashEndpoint:     http://stash.mycompany.com/rest/api/1.0", # url where stash is running
+orca:
+    enabled: true
+    baseUrl: http://echo:8083
+front50:
+    enabled: true
+    baseUrl: http://front50:8080
+fiat:  # if you have fiat enabled
+    enabled: true
+    baseUrl: http://fiat:7003
+    authUser: your-service-account
 ```
+
+> Note: If you have fiat enabled, set the authUser to your service account which is in a group that has read/write access to the pipelines you will be updating. If you have app specific permissions configured in your spinnaker application, make sure the service account is added 
 
 - Edit the file `config/echo-local.yml` and add the following contents to it:
 ```
