@@ -3,7 +3,9 @@ layout: post
 title: Rate Limits
 order: 140
 ---
-#  Rate Limits for Amazon Web Service (AWS)
+#  Rate Limits
+
+# Running into AWS Rate Limits
 
 ## How Spinnaker Monitors a Deployment
 
@@ -23,7 +25,7 @@ Spinnaker queries your cloud provider (AWS, GCP, Azure, Kubernetes, etc) frequen
 
 Below is an example configuration for global rate limits for all services that you would place in `clouddriver-local.yml`:
 
-```
+```yml
 serviceLimits:
   defaults:
     rateLimit: 20
@@ -31,7 +33,7 @@ serviceLimits:
 
 If you have multiple cloud providers, you can limit each one differently:
 
-```
+```yml
 serviceLimits:
   cloudProviderOverrides:
     aws:
@@ -40,7 +42,7 @@ serviceLimits:
 
 You can provide account specific overrides as well in case you have significantly more resources in one account while others have less:
 
-```
+```yml
 serviceLimits:
   accountOverrides:
     test:
@@ -51,7 +53,7 @@ serviceLimits:
 
 And finally, you can have more fine-grained control for particular AWS endpoints that might have a different rate limits:
 
-```
+```yml
  implementationLimits:
 
     AmazonEC2:
@@ -72,7 +74,7 @@ Using these rate limits will help you avoid hitting the rate limits and potentia
 
 The Armory Spinnaker distribution comes with the following default service limits:
 
-```
+```yml
 serviceLimits:
   cloudProviderOverrides:
     aws:
@@ -93,7 +95,7 @@ If you require a higher rate limit on these APIs then you will need to overwrite
 
 You can set the number of retries per request with the following setting:
 
-```
+```yml
 aws:
   client:
     maxErrorRetry: 4
@@ -101,7 +103,32 @@ aws:
 This is the number of retries before failing the request. It is on an exponential backoff maxing out at 20 seconds. By default Armory Spinnaker sets `maxErrorRetry` to `20`.
 
 
-## FAQ
+
+# Fiat hitting rate limits
+If Fiat is configured to poll Github or Google, you may end up seeing rate limits when Fiat does it's polling for user groups. Some symptoms you'll see is:
+- You can't log into spinnaker anymore
+- Your Fiat logs contain lines similar to:
+
+```
+GithubTeamsUserRolesProvider : [] HTTP 403 Forbidden. Rate limit info: X-RateLimit-Limit
+-- or --
+GoogleDirectoryUserRolesProvider : [] Failed to fetch groups for user x: Rate Limit Exceeded
+```
+
+You'll need to adjust poll cycle time and/or timeouts ([defaults here](https://github.com/spinnaker/fiat/blob/master/fiat-roles/src/main/java/com/netflix/spinnaker/fiat/config/CatsSchedulerConfig.java#L54-L58)) in `fiat-local.yml`:
+```yml
+fiat:
+  writeMode:
+    # Poll cycle interval, "check if a user belongs to a group every X ms"
+    # syncDelayMs:   # the default is usually fine
+
+    # The amount of time to wait for a poll job to complete,
+    # the more users there are, the longer the job takes.
+    syncDelayTimeoutMs: 30000 # (default is 30 seconds)
+```
+
+
+# FAQ
 
 *Q:* Why doesn't Spinnaker use AWS Config to update its state?
 *A:* AWS Config does not support all resource types. The two most rate limitted APIs are Auto Scaling and Classic Elastic Load Balancing, [neither are supported](http://docs.aws.amazon.com/config/latest/developerguide/resource-config-reference.html) by AWS Config. Additionally, there is a non-trivial delay from the time a resource is created and the time a notification is created by AWS Config.
