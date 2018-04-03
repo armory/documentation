@@ -34,7 +34,7 @@ stashCredsPath:    /path/to/github-creds # credentials for stash api (username:t
 stashEndpoint:     http://stash.mycompany.com/rest/api/1.0", # url where stash is running
 orca:
     enabled: true
-    baseUrl: http://echo:8083
+    baseUrl: http://orca:8083
 front50:
     enabled: true
     baseUrl: http://front50:8080
