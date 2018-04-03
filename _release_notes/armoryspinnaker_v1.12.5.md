@@ -1,6 +1,6 @@
 ---
 layout: post
-title: v1.12.2 Armory Release
+title: v1.12.5 Armory Release
 order: 952
 visible: 1
 ---
