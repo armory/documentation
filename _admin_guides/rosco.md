@@ -164,7 +164,7 @@ aws:
         # You can specify the templateFile used for this baseImage.
         # If not specified, the default templateFile will be used.
         templateFile: aws-ebs.json
-        virtualizationSettings:
+      virtualizationSettings:
         - region: us-east-1
           virtualizationType: hvm
           instanceType: t2.micro
@@ -175,7 +175,7 @@ aws:
         shortDescription: v14.04
         detailedDescription: Ubuntu Trusty Tahr v14.04
         packageType: deb
-        virtualizationSettings:
+      virtualizationSettings:
         - region: us-east-1
           virtualizationType: hvm
           instanceType: t2.micro
