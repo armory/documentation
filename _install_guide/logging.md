@@ -137,7 +137,7 @@ If the log config isn't what you expect then something is wrong in the Armory Sp
 
 ## Monitoring Spinnaker With Datadog
 
-Spinnaker provides a monitoring container which exports metrics from the core sub-services. Below we add two additional containers to our docker-compose setup: `datadog` and `spinnaker-monitoring`.
+Spinnaker provides a monitoring container which exports metrics from the core sub-services. We'll need to add two additional containers to our docker-compose setup: `datadog` and `spinnaker-monitoring`.
 
 Add the following to `/opt/spinnaker/compose/docker-compose.override.yml`
 ```
@@ -167,7 +167,8 @@ services:
       - /opt/spinnaker/config/:/opt/spinnaker-monitoring/config/
 ```
 
-In the configuration above `/opt/spinnaker/config/datadog_api_token.txt` is a properties file which contains your Datadog API key
+In the configuration above `/opt/spinnaker/config/datadog_api_token.txt` is a [secrets file](https://docs.armory.io/install-guide/config_repo/#secrets) which contains your Datadog API key
+
 ```
 API_KEY=${YOUR_DATADOG_API_KEY}
 ```
