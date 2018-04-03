@@ -139,7 +139,7 @@ If the log config isn't what you expect then something is wrong in the Armory Sp
 
 Spinnaker provides a monitoring container which exports metrics from the core sub-services. Below we add two additional containers to our docker-compose setup: `datadog` and `spinnaker-monitoring`.
 
-Add the following to `/opt/spinnaker/compose/docker.compose.override.yml`
+Add the following to `/opt/spinnaker/compose/docker-compose.override.yml`
 ```
 version: "2.1"
 services:
