@@ -44,7 +44,7 @@ fiat:  # if you have fiat enabled
     authUser: your-service-account
 ```
 
-> Note: If you have fiat enabled, set the authUser to your service account which is in a group that has read/write access to the pipelines you will be updating. If you have app specific permissions configured in your spinnaker application, make sure the service account is added 
+> Note: If you have fiat enabled, set the authUser to your service account which is in a group that has read/write access to the pipelines you will be updating. If you have app specific permissions configured in your spinnaker application, make sure the service account is added. If you need to create a new service account, here are the [instructions](https://www.spinnaker.io/setup/security/authorization/service-accounts/#creating-service-accounts)
 
 - Edit the file `config/echo-local.yml` and add the following contents to it:
 ```
