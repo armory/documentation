@@ -26,6 +26,8 @@ published: False
 5. Enter your Spinnaker address, port 10000, and the path `/slackback`:
 
   ![Request URL](https://dha4w82d62smt.cloudfront.net/items/422P0u042F1F0O3E1B1L/Image%202018-03-27%20at%201.54.42%20PM.png)
+
+  Note that if you choose to use HTTPS, you'll need a valid SSL cert configured and terminated on your load balancer (see below, "Opening Ports")
   
 6. Click on "Bot Users" and give your bot a username and a display name.
 
@@ -53,9 +55,6 @@ slack:
   channel:  <the Slack channel you want to use>
   apiToken:  <the Slack bot token>
   verificationToken:  <the Slack API verification token>
-
-spinnaker:
-  pemFilePath: <local path to the PEM file to use to authenticate with gate>
 ```
 
 NOTE:  If you want to set the channel differently per-environment, you can set
@@ -70,6 +69,8 @@ github:
   organization: <Your Github org>
 ```
 
+The Github credentials file is just a text file with one line, in the format <username>:<password-or-access-token>.
+
 ## Finally...
 
 Restart Armory Spinnaker; if you are running a single node instance, you can do this from on the console:
@@ -80,7 +81,7 @@ service armory-spinnaker restart
 
 Otherwise, you'll want to restart the whole cluster so the config changes are picked up.
 
-# Open Ports
+# Opening Ports
 
 If you are upgrading an existing Spinnaker installation, you'll need to add some ports to the load balancers serving your install.  HTTP listeners on port 10000 will need to be added to both the external and internal load balancers, and on the internal load balancer, you'll need to add a Listener for port 5001:
 
@@ -90,9 +91,6 @@ In order to take advantage of the interactive buttons the Armory Platform
 puts into Slack, you will need to allow Slack to call back into the Platform
 on port 10000 from any IP; Slack's API services are cloud-based and don't have a fixed set of IPs sending traffic.  Only Slack callbacks with properly configured tokens (see Verification Token, above) are accepted; a `/health` endpoint is also available to help test for connectivity.  If you are using Security Groups or other firewalls to limit access to specific IP addresses, an exception will need to be made for port 10000.
 
-NOTE:  If you want to have Slack use HTTPS when calling back to your endpoint, you should
-configure your external loadbalancer to receive HTTPS from a port of your choice, but then
-map to HTTP on port 10000 internally.  The Slack callbacks won't work if Slack can't
-verify your SSL certificate.
+NOTE:  If you want to have Slack use HTTPS when calling back to your endpoint, you should configure your external loadbalancer to receive HTTPS from a port of your choice, but then map to HTTP on port 10000 internally.  The Slack callbacks won't work if Slack can't verify your SSL certificate.
 
 
