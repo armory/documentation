@@ -99,3 +99,18 @@ logging:
     com.netflix.spinnaker.gate: DEBUG
     com.netflix.spinnaker.clouddriver: WARN
 ```
+
+#### Accessing a service's `/resolvedEnv` endpoint
+Spinnaker uses Spring underneath the covers.  Spring has a sophisticated property file system which merges property files based on profiles, environment variables, and variable substitution. To see how Spring has resolved a final property set you'll need to disable security before issuing a GET request to the `/resolvedEnv` endpoint of the service.
+
+>Note:  Disabling security will leave secrets exposed through the `resolvedEnv` endpoint and should only be used for debugging purposes
+
+```
+security:
+  basic:
+    enabled: false
+
+management:
+  security:
+    enabled: false
+```

@@ -17,9 +17,11 @@ To get an overview of Pipelines as code, check out the [user guide](http://docs.
 
 - Create a personal access token (in either GitHub or Stash) that has read access to all repos where `dinghyfile`s and `module`s reside. Place this token in a file called `github-creds.txt` (or `stash-creds.txt`). The contents of this file should be of the format: `username:token`. Place this file in your secrets management system. By default, this will be the S3 bucket where the other credentials for spinnaker are pulled from.
 
-- Open the configurator UI by going to `https://your.spinnaker.installation/armory/config`. Add a line to `/bin/sectrets` to copy the credentials created in the previous step to the instance where spinnaker will run. e.g.: `aws s3 cp s3://your-s3-bucket/aws/spinnaker/${ENV}/github-creds.txt "${SPINNAKER_SECRETS_DIR}"`
+> Note: All the below config file changes are either done in the configurator UI `https://your.spinnaker.installation/armory/config` or wherever spinnaker configs are stored in your installation.
 
-- Create a new file in the configurator UI: `config/dinghy-local.yml` with the following contents:
+- Add a line to `/bin/secrets` to copy the credentials created in the previous step to the instance where spinnaker will run. e.g.: `aws s3 cp s3://your-s3-bucket/aws/spinnaker/${ENV}/github-creds.txt "${SPINNAKER_SECRETS_DIR}"`
+
+- Create a new file: `config/dinghy-local.yml` with the following contents:
 
 ```
 templateOrg:       armory-io  # github or stash "org" where the app repos and templates reside
@@ -34,7 +36,7 @@ stashCredsPath:    /path/to/github-creds # credentials for stash api (username:t
 stashEndpoint:     http://stash.mycompany.com/rest/api/1.0", # url where stash is running
 orca:
     enabled: true
-    baseUrl: http://echo:8083
+    baseUrl: http://orca:8083
 front50:
     enabled: true
     baseUrl: http://front50:8080
@@ -44,7 +46,7 @@ fiat:  # if you have fiat enabled
     authUser: your-service-account
 ```
 
-> Note: If you have fiat enabled, set the authUser to your service account which is in a group that has read/write access to the pipelines you will be updating. If you have app specific permissions configured in your spinnaker application, make sure the service account is added 
+> Note: If you have fiat enabled, set the authUser to your service account which is in a group that has read/write access to the pipelines you will be updating. If you have app specific permissions configured in your spinnaker application, make sure the service account is added. If you need to create a new service account, here are the [instructions](https://www.spinnaker.io/setup/security/authorization/service-accounts/#creating-service-accounts)
 
 - Edit the file `config/echo-local.yml` and add the following contents to it:
 ```
