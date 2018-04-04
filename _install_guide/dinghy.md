@@ -19,7 +19,7 @@ To get an overview of Pipelines as code, check out the [user guide](http://docs.
 
 > Note: All the below config file changes are either done in the configurator UI `https://your.spinnaker.installation/armory/config` or wherever spinnaker configs are stored in your installation.
 
-- Add a line to `/bin/sectrets` to copy the credentials created in the previous step to the instance where spinnaker will run. e.g.: `aws s3 cp s3://your-s3-bucket/aws/spinnaker/${ENV}/github-creds.txt "${SPINNAKER_SECRETS_DIR}"`
+- Add a line to `/bin/secrets` to copy the credentials created in the previous step to the instance where spinnaker will run. e.g.: `aws s3 cp s3://your-s3-bucket/aws/spinnaker/${ENV}/github-creds.txt "${SPINNAKER_SECRETS_DIR}"`
 
 - Create a new file: `config/dinghy-local.yml` with the following contents:
 
