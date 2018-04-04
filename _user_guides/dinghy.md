@@ -80,7 +80,7 @@ Pipeline definitions can include Modules defined in another GitHub Repo. e.g.:
 }
 {% endraw %}```
 
-The ```{% raw %}{{ module "wait.stage.module" }}{% endraw %}``` takes the wait.stage.module file inside the dinghy-templates repo, and includes it in the current template.
+The `{% raw %}{{ module "wait.stage.module" }}{% endraw %}` takes the wait.stage.module file inside the dinghy-templates repo, and includes it in the current template.
 
 We can also pass variables to our modules like so:
 
@@ -94,7 +94,7 @@ We can also pass variables to our modules like so:
       "limitConcurrent": true,
       "name": "Made By Armory Pipeline Templates",
       "stages": [
-        {{ module "wait.stage.module" "waitTime" 200 }}
+        {{ module "wait.stage.module" "waitTime" 200 }} // Pass the "waitTime" variable with value 200 to wait.stage.module
       ],
       "triggers": []
     }
@@ -108,13 +108,15 @@ Inside wait.stage.module, we can then include these variables inline:
 
 ```{% raw %}
 {
-  "waitTime": {{ var "waitTime" 10 }}
-  "name": {{ var "name" "defaultname" }},
+  "waitTime": {{ var "waitTime" ?: 10 }}
+  "name": {{ var "name" ?: "defaultname" }},
 }
 {% endraw %}
 ```
 
-The `{% raw %}var{% endraw %}` function is used to access variables passed from above. The first parameter is the variable name. The second parameter is the default value that will be used if the variable is not found.
+The `{% raw %}{{ var }}{% endraw %}` function is used to access variables passed to the `{% raw %}{{ module }}{% endraw %}` call.
+The first parameter is the variable name: `{% raw %}{{ var "waitName" }}{% endraw %}`
+Optionally, you can include a default parameter: `{% raw %}{{ var "waitName" ?: "defaultValue" }}{% endraw %}`.
 
 Let us create a more realistic pipeline using templates. One that would look like this:
 
