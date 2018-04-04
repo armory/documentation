@@ -1,5 +1,6 @@
 ---
 layout: post
+title: Video Tutorials
 order: 9
 ---
 
