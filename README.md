@@ -10,11 +10,12 @@ Jekyll is used to compile the markdown into a website.
 
 
 ### Running locally
-Once you have this repo checked out, start the server and make changes
-
-```
-./bin/run
-```
+Once you have this repo checked out, 
+1. Download and install Docker
+2. Start the server and make changes
+    ```
+    ./bin/run
+    ```
 
 You can view your changes at : `http://localhost:4000` or `http://192.168.99.100:4000` (if you're using docker-machine)
 
