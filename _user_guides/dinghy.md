@@ -201,7 +201,7 @@ The file `deploy.stage.module` would look like this:
   "isNew": true,
   "name": "deploy to stage",
   "refId": "104",
-  "requisiteStageRefIds": {{ var "requisiteStageRefIds" [] }},
+  "requisiteStageRefIds": {{ var "requisiteStageRefIds" ?: [] }},
   "type": "deploy"
 }
 {% endraw %}```
@@ -222,7 +222,7 @@ The dinghyfile inherits its pipeline from a _module_ named `simple.pipeline.modu
 
 ```{% raw %}
 {
-  "application": {{ var "application" "yourspinnakerapplicationname" }},
+  "application": {{ var "application" ?: "yourspinnakerapplicationname" }},
   "keepWaitingPipelines": false,
   "limitConcurrent": true,
   "name": "Made By Armory Pipeline Templates",
@@ -242,7 +242,7 @@ This module inherits two stages and overrides variables within them. The `wait.s
   "isNew": true,
   "name": "deploy to stage",
   "refId": "104",
-  "requisiteStageRefIds": {{ var "requisiteStageRefIds" [] }},
+  "requisiteStageRefIds": {{ var "requisiteStageRefIds" ?: [] }},
   "type": "deploy"
 }
 {% endraw %}```
