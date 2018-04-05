@@ -58,10 +58,10 @@ armorywebhooks:
 ```
 - Edit the file: `prod.env` (or `dev.env` if in dev environment) and set the following environment variable `DINGHY_ENABLED=true`
 
-- If you're using GitHub, setup webhooks at the organization level for Push events. You can do that by going to: [](https://github.com/organizations/your_org_here/settings/hooks). Set the `Payload URL` to: `https://spinnaker.your-company.com:8084/webhooks/git/github`. You’ll need to have github’s webhooks IP whitelisted. You can find their IPs here: [](https://api.github.com/meta), you can read [github's docs her](https://help.github.com/articles/about-github-s-ip-addresses/).
+- If you're using GitHub, setup webhooks at the organization level for Push events. You can do that by going to: [](https://github.com/organizations/your_org_here/settings/hooks). Set the `Payload URL` to: `https://spinnaker.your-company.com:8084/webhooks/git/github`. You’ll need to have github’s webhooks IP whitelisted. You can find their IPs here: [](https://api.github.com/meta), you can read [github's docs here](https://help.github.com/articles/about-github-s-ip-addresses/).
 
 - If you're using Stash, you'll need to setup webhooks for each project that has the dinghyfile or module separately. Make the webhook POST to: `https://spinnaker.your-company.com:8084/webhooks/git/stash`. If you're using stash `<v3.11.6`, you'll need to install the following [webhook plugin](https://marketplace.atlassian.com/plugins/com.atlassian.stash.plugin.stash-web-post-receive-hooks-plugin/server/overview) to be able to setup webhooks.
 
 - Configure your spinnaker installation's _internal load balancer_ to forward all traffic on port 8081. Here's a [video](https://marketplace.atlassian.com/plugins/com.atlassian.stash.plugin.stash-web-post-receive-hooks-plugin/server/overview) that walks you through the process.
 
-Now that all the configs are in place, upgrade to the release you recieved from Armory and the "Pipelines as Code" feature should be up and running. Refer to the [user guide](http://docs.armory.io/admin-guides/user-guides/dinghy) on how to use this feature!
+Now that all the configs are in place, upgrade to the release you recieved from Armory and the "Pipelines as Code" feature should be up and running. Refer to the [user guide](http://docs.armory.io/user-guides/dinghy) on how to use this feature!
