@@ -233,3 +233,16 @@ This module inherits two stages and overrides variables within them. The `wait.s
 Note how the `requisiteStageRefIds` is overwritten while calling the module so that the deploy stage _depends on_ the wait stage. This pipeline would look like this in the spinnaker UI:
 
 ![](http://f.cl.ly/items/0p353C431U1G2g2H2N13/Screen_Shot_2018-03-26_at_5_06_25_PM.png)
+
+## Deleting stale pipelines
+
+If you want any pipelines in the spinnaker application that are not part of the `dinghyfile` to be deleted automatically when the `dinghyfile` is updated, then you can set `deleteStalePipelines` to `true` in the JSON like so:
+
+```{% raw %}
+{
+  "application": "yourspinnakerapplicationname",
+  "deleteStalePipelines": true
+  "pipelines": [
+  ]
+}
+{% endraw %}```
