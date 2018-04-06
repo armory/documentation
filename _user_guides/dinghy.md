@@ -3,8 +3,7 @@ layout: post
 title: Pipelines as Code
 order: 108
 redirect_from:
-  - /user-guides/pipeline-templates
-  - https://docs.armory.io/user-guides/pipeline-templates/
+  - /user-guides/pipeline-templates/
 ---
 
 Armory's Pipelines As Code feature provides a way to specify pipeline definitions in source code repos (like GitHub & BitBucket). 
