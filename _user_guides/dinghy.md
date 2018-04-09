@@ -2,6 +2,8 @@
 layout: post
 title: Pipelines as Code
 order: 108
+redirect_from:
+  - /user-guides/pipeline-templates/
 ---
 
 Armory's Pipelines As Code feature provides a way to specify pipeline definitions in source code repos (like GitHub & BitBucket). 
@@ -61,7 +63,7 @@ You can compose stage/task templates to make a full definition. e.g., a Pipeline
 
 ## Template variables and substitution
 
-We can have Pipeline definitions use Modules defined in another GitHub Repo. e.g.:
+Pipeline definitions can include Modules defined in another GitHub Repo. e.g.:
 ```{% raw %}
 {
   "application": "yourspinnakerapplicationname",
@@ -79,7 +81,11 @@ We can have Pipeline definitions use Modules defined in another GitHub Repo. e.g
   ]
 }
 {% endraw %}```
-We can also overwrite variables inside the imported module like so:
+
+The `{% raw %}{{ module "wait.stage.module" }}{% endraw %}` takes the wait.stage.module file inside the dinghy-templates repo, and includes it in the current template.
+
+We can also pass variables to our modules like so:
+
 ```{% raw %}
 {
   "application": "yourspinnakerapplicationname",
@@ -90,14 +96,29 @@ We can also overwrite variables inside the imported module like so:
       "limitConcurrent": true,
       "name": "Made By Armory Pipeline Templates",
       "stages": [
-        {{ module "wait.stage.module" "waitTime" 200 }}
+        {{ module "wait.stage.module" "waitTime" 200 }} // Pass the "waitTime" variable with value 200 to wait.stage.module
       ],
       "triggers": []
     }
   ]
 }
 {% endraw %}```
-Any number of variables can be overwritten in the same module by simply specifying them as arguments. e.g.: `{% raw %}{{ module "wait.stage.module" "waitTime" 100 "name" "simpleWait" }}{% endraw %}`.
+
+Any number of variables can be passed to a module by simply specifying them as arguments, e.g.: `{% raw %}{{ module "wait.stage.module" "waitTime" 100 "name" "simpleWait" }}{% endraw %}`.
+
+Inside wait.stage.module, we can then include these variables inline:
+
+```{% raw %}
+{
+  "waitTime": {{ var "waitTime" ?: 10 }}
+  "name": {{ var "name" ?: "defaultname" }},
+}
+{% endraw %}
+```
+
+The `{% raw %}{{ var }}{% endraw %}` function is used to access variables passed to the `{% raw %}{{ module }}{% endraw %}` call.
+The first parameter is the variable name: `{% raw %}{{ var "waitName" }}{% endraw %}`
+Optionally, you can include a default parameter: `{% raw %}{{ var "waitName" ?: "defaultValue" }}{% endraw %}`.
 
 Let us create a more realistic pipeline using templates. One that would look like this:
 
@@ -182,7 +203,7 @@ The file `deploy.stage.module` would look like this:
   "isNew": true,
   "name": "deploy to stage",
   "refId": "104",
-  "requisiteStageRefIds": [],
+  "requisiteStageRefIds": {{ var "requisiteStageRefIds" ?: [] }},
   "type": "deploy"
 }
 {% endraw %}```
@@ -203,7 +224,7 @@ The dinghyfile inherits its pipeline from a _module_ named `simple.pipeline.modu
 
 ```{% raw %}
 {
-  "application": "yourspinnakerapplicationname",
+  "application": {{ var "application" ?: "yourspinnakerapplicationname" }},
   "keepWaitingPipelines": false,
   "limitConcurrent": true,
   "name": "Made By Armory Pipeline Templates",
@@ -223,7 +244,7 @@ This module inherits two stages and overrides variables within them. The `wait.s
   "isNew": true,
   "name": "deploy to stage",
   "refId": "104",
-  "requisiteStageRefIds": [],
+  "requisiteStageRefIds": {{ var "requisiteStageRefIds" ?: [] }},
   "type": "deploy"
 }
 {% endraw %}```
@@ -231,3 +252,16 @@ This module inherits two stages and overrides variables within them. The `wait.s
 Note how the `requisiteStageRefIds` is overwritten while calling the module so that the deploy stage _depends on_ the wait stage. This pipeline would look like this in the spinnaker UI:
 
 ![](http://f.cl.ly/items/0p353C431U1G2g2H2N13/Screen_Shot_2018-03-26_at_5_06_25_PM.png)
+
+## Deleting stale pipelines
+
+If you want any pipelines in the spinnaker application that are not part of the `dinghyfile` to be deleted automatically when the `dinghyfile` is updated, then you can set `deleteStalePipelines` to `true` in the JSON like so:
+
+```{% raw %}
+{
+  "application": "yourspinnakerapplicationname",
+  "deleteStalePipelines": true
+  "pipelines": [
+  ]
+}
+{% endraw %}```
