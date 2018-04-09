@@ -265,19 +265,29 @@ Next, we'll self-sign the certificate to use on the server
 openssl x509 -req -days 365 -in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out client.crt
 ```
 
-We'll have to export the certs in a P12 format for standard http communication
-```
-openssl pkcs12 -export -clcerts -in client.crt -inkey client.key -out client.p12
-```
-
 Import the root CA into the keystore
 ```
-keytool -importcert -file ca.crt -keystore keystore.jks -alias "server"
+keytool -importcert -file ca.crt -keystore keystore.jks -alias ca
 ```
 
-Import the certifcate into the keystore.  This is what will be used by Gate establish the `trustStore`
+Import the client certificate into the keystore
 ```
-keytool -importkeystore -srckeystore server.p12 -srcstoretype pkcs12 -srcalias spinnaker -srcstorepass ${YOUR_KEY_PASSWORD} -destkeystore keystore.jks -deststoretype jks -destalias server -deststorepass ${YOUR_KEY_PASSWORD} -destkeypass ${YOUR_KEY_PASSWORD}
+keytool -importcert -file client.crt -keystore keystore.jks -alias client
+```
+
+Then restart Armory:
+```
+service armory-spinnaker restart
+```
+
+In order for your client to communicate with the API you'll need to a `PEM` formatted file which contains both the cert and key.
+```
+cat client.crt client.key > client.pem
+```
+
+To test the certificate you can use curl directly from the host. It should return a JSON list of applications:
+```
+curl https://localhost:8085/applications --cert client.pem -k
 ```
 
 ## Enable Sticky Sessions
