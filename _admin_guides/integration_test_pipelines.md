@@ -46,7 +46,7 @@ cloud provider stages whose subtasks execute much of Spinnaker's core functional
 
 # Executing & Monitoring The Test Pipeline
 
-To execute the master pipeline you'll need to access the API.  You can either build your own client or use Armory's version of [roer]  (https://github.com/armory/roer) which is a thin API client for Spinnaker and contains functionality to execute  and monitor pipelines.
+To execute the master pipeline you'll need to access the API.  You can either build your own client or use Armory's version of [roer](https://github.com/armory/roer) which is a thin API client for Spinnaker and contains functionality to execute  and monitor pipelines.
 
 ### Roer Usage:
 ```
