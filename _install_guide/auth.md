@@ -208,7 +208,7 @@ See [Spinnaker's docs](https://www.spinnaker.io/setup/security/authorization/sam
 
 
 
-## X509
+## x509
 
 X509 certificates are typically used to allow users to connect to the Spinnaker API.  This is especially helpful if you want different groups within your organization to maintain different keys.  You can re-use the same certificate as you used in the previous step but might want to maintain different certificates for groups within your organization.
 
@@ -289,6 +289,21 @@ To test the certificate you can use curl directly from the host. It should retur
 ```
 curl https://localhost:8085/applications --cert client.pem -k
 ```
+
+### x509 and Fiat
+If you're running fiat you'll need to tell Spinnaker which groups are associated with your certificate.  x509 provides a mechanism to do just that.  The [Spinnaker OSS documentation provides a guide](https://www.spinnaker.io/setup/security/authentication/x509/#creating-an-x509-client-certificate-with-user-role-information) on how to generate a client certificate with the `1.2.840.10070.8.1` field.
+
+You'll also need to update your `/opt/spinnaker/config/gate-local.yml` file add the following:
+
+```
+x509:
+  enabled: true
+  subjectPrincipalRegex: EMAILADDRESS=(.*?)(?:,|$)
+  roleOid: 1.2.840.10070.8.1
+```
+
+Then restart Armory
+`service armory-spinnaker restart`
 
 ## Enable Sticky Sessions
 
