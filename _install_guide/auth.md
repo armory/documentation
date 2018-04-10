@@ -291,7 +291,7 @@ curl https://localhost:8085/applications --cert client.pem -k
 ```
 
 ### x509 and Fiat
-If you're running fiat you'll need to tell Spinnaker which groups are associated with your certificate.  x509 provides a mechanism to do just that.  The [Spinnaker OSS documentation provides a guide](https://www.spinnaker.io/setup/security/authentication/x509/#creating-an-x509-client-certificate-with-user-role-information) on how to generate a client certificate with the `1.2.840.10070.8.1` field.
+If you're running fiat you'll need to tell Spinnaker which groups are associated with your certificate.  X509 provides a field called `1.2.840.10070.8.1` which can be embedded in the client certificate to assign groups to the certificate.  The [Spinnaker OSS documentation provides a guide](https://www.spinnaker.io/setup/security/authentication/x509/#creating-an-x509-client-certificate-with-user-role-information) on how to generate a client certificate with the `1.2.840.10070.8.1` field.
 
 You'll also need to update your `/opt/spinnaker/config/gate-local.yml` file add the following:
 
