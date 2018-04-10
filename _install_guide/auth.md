@@ -150,7 +150,7 @@ AUTH_ENABLED=true
 By default Github OAuth only requires that a user has a Github account without any restrictions on that account. Many installations will also want to require the user belong to a company organization to be authenticated successfully. When using the organization restriction members must have their visibility set to `Public`. You can view the visibility setting for members on the `People` tab of your organization.
 
 - Ensure that everyone in your organization has their visibility set to Public if they plan to login to Spinnaker:
-![Armory People Screen](/assets/images/github-armory-people.jpg)
+![Armory People Screen](https://cl.ly/3Z3D0Q312J2L/Image%202018-04-09%20at%2010.30.55.png)
 - Add a `providerRequirements` section to the file at `/opt/spinnaker/config/gate-local.yml` under **security.oauth2** so that your configuration looks like the following:
 
 ```
