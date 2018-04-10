@@ -222,9 +222,11 @@ In the below example, we show a pipeline that is created with multiple levels of
 {% endraw %}```
 The dinghyfile inherits its pipeline from a _module_ named `simple.pipeline.module` that looks as shown below. Note that it also overrides the application name in the module to avoid conflict.
 
+> It is worth noting in the below example, where we are substituting a string variable, the call to {% raw %}{{ var ... }}{% endraw %} is also surrounded by quotes, unlike when substituting non-string variables (ie, int, array, json...)
+
 ```{% raw %}
 {
-  "application": {{ var "application" ?: "yourspinnakerapplicationname" }},
+  "application": "{{ var "application" ?: "yourspinnakerapplicationname" }}",
   "keepWaitingPipelines": false,
   "limitConcurrent": true,
   "name": "Made By Armory Pipeline Templates",

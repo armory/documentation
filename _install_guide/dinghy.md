@@ -34,6 +34,7 @@ certPath:          /path/to/client.pem # spinnaker x509 cert
 githubCredsPath:   /path/to/github-creds # credentials for github api (username:token)
 stashCredsPath:    /path/to/github-creds # credentials for stash api (username:token)
 stashEndpoint:     http://stash.mycompany.com/rest/api/1.0", # url where stash is running
+debugLevel:        info # one of: (debug, info, warn, error, fatal, panic)
 orca:
     enabled: true
     baseUrl: http://orca:8083
