@@ -13,24 +13,24 @@ This guide should include:
 
 # Approach
 
-Using Spinnaker's orchestration engine, we can quickly create pipelines that exercise the integration between Spinnaker and your cloud environment before deploying any upgrades.  We'll walk through creating a master that kicks off numerous sub-pipelines asynchronously and waits for them successfully complete.
+Using Spinnaker's orchestration engine, we can quickly create pipelines that exercise the integration between Spinnaker and your cloud environment before deploying any upgrades to Spinnaker.  We'll walk through creating a master pipeline that kicks off sub-pipelines asynchronously and waits for them complete.
 
 ![integration test pipeline](https://cl.ly/0E2A470S0a36/Image%202018-04-05%20at%209.25.12%20PM.png)
 
-For each stage in the pipeline we're just calling other pipelines that contain the real test.  Which essentially make the master pipeline your "test suite runner" and reports failures.
+For each stage in the pipeline we're just calling other pipelines that contain the real functionality. This essentially makes the master pipeline your "test suite runner" and reports failures.
 
 ![](https://cl.ly/3T2m3g1x091S/Image%202018-04-06%20at%2011.32.51%20AM.png)
 
 ### Where & When Should My Tests Run
-These tests should run on a [pre-prod or staging environment](https://docs.armory.io/admin-guides/preprod_environment/) and should be integrated as part of your [Spinnaker deploy Spinnaker](https://docs.armory.io/install-guide/spinnaker-deploy-spinnaker/) pipeline.  We'll use a Jenkins stage to execute the integration pipeline on the pre-prod or dev environment.
+The tests should run on a [pre-prod or staging environment](https://docs.armory.io/admin-guides/preprod_environment/) and should be integrated as part of your [Spinnaker deploy Spinnaker](https://docs.armory.io/install-guide/spinnaker-deploy-spinnaker/) pipeline.  We'll use a Jenkins stage to execute the integration pipeline on the pre-prod or dev environment.
 
 ![pipeline image](https://cl.ly/3h1Y1I301v0f/Image%202018-04-05%20at%209.45.15%20PM.png)
 
-# Types of Test Pipelines To Create
-These pipelines will be based on your usage of Spinnaker and should be similar to your production pipelines.  You won't need to deploy into your production accounts but you should deploy into multiple accounts from your pre-prod/dev environments.  Below are some of the potential pipeline/stages you can consider.
+# Types of Test Pipelines
+These pipelines will be based on your usage of Spinnaker and should be similar to your production pipelines.  You won't need to deploy into your production accounts to validate Spinnaker functionality but you should deploy into multiple accounts from your pre-prod/dev environments. Below are some of the potential pipeline/stages you can consider.
 
-* **Bake and Deploy** - In this pipeline you'll want to test your Rosco and Packer template configuration to make sure bakes happen properly as well as feed this to a deploy stage.  The application to deploy should be a simple application.  We use our [Hello Deploy application](https://github.com/armory-io/armory-hello-deploy) which has debian/rpm packaging as well as an docker image for your container deployments.
->Note: If you're using multiple regions make sure to test this functionality as it may expose networking issues and valid templates.
+* **Bake and Deploy** - In this pipeline you'll want to test your Rosco and Packer template configuration to make sure bakes happen properly as well as feed the resulting AMI to a deploy stage. The application yoo choose to deploy should be a simple application.  We use our [Hello Deploy application](https://github.com/armory-io/armory-hello-deploy) which has deb/rpm packaging as well as a docker image for your containerized deployments.
+>Note: If you're using multiple regions make sure to test this functionality as it may expose networking issues and invalid templates.
 
 ![](https://dha4w82d62smt.cloudfront.net/items/1G0x022Q3I2c2Y1F173Z/Image%202018-04-06%20at%2011.49.13%20AM.png?X-CloudApp-Visitor-Id=2686178)
 
