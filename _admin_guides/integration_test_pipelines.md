@@ -77,7 +77,7 @@ The example above will run the master pipeline `Preprod-Integration-Test-Suite-R
 
 If you have configuring [authentication or authorization](https://docs.armory.io/install-guide/authz/) on your Armory instance then you'll need to make sure to also setup x509 certificate and potentially [service accounts](https://docs.armory.io/install-guide/authz/#configure-a-service-account) if you lock down applications and accounts with Fiat.
 
-If you have [x509 certificate and keys]((https://docs.armory.io/install-guide/auth/#x509) you can pass them in with the follow CLI options:
+If you have [x509 certificate and keys](https://docs.armory.io/install-guide/auth/#x509) you can pass them in with the follow CLI options:
 ```
 --certPath value, -c value  HTTPS x509 cert path
 --keyPath value, -k value   HTTPS x509 key path
