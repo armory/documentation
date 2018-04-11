@@ -16,7 +16,7 @@ This guide should include:
   - [Github Organization Restriction](#github-organization-restriction)
 - [Configuring Other OAuth providers](#configuring-other-oauth-providers)
 - [SAML](#saml)
-- [X509](#X.509)
+- [X509](#509)
 - [Enable Sticky Sessions](#enable-sticky-sessions)
 
 <!-- /MarkdownTOC -->
@@ -208,7 +208,7 @@ See [Spinnaker's docs](https://www.spinnaker.io/setup/security/authorization/sam
 
 
 
-## X.509
+## x509
 
 X509 certificates are typically used to allow users to connect to the Spinnaker API.  This is especially helpful if you want different groups within your organization to maintain different keys.  You can re-use the same certificate as you used in the previous step but might want to maintain different certificates for groups within your organization.
 
