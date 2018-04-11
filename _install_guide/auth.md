@@ -16,7 +16,7 @@ This guide should include:
   - [Github Organization Restriction](#github-organization-restriction)
 - [Configuring Other OAuth providers](#configuring-other-oauth-providers)
 - [SAML](#saml)
-- [X509](#X509)
+- [X509](#x509)
 - [Enable Sticky Sessions](#enable-sticky-sessions)
 
 <!-- /MarkdownTOC -->
