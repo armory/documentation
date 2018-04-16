@@ -16,7 +16,7 @@ This guide should include:
   - [Github Organization Restriction](#github-organization-restriction)
 - [Configuring Other OAuth providers](#configuring-other-oauth-providers)
 - [SAML](#saml)
-- [X509](#x509)
+- [x509](#x509)
 - [Enable Sticky Sessions](#enable-sticky-sessions)
 
 <!-- /MarkdownTOC -->
@@ -150,7 +150,7 @@ AUTH_ENABLED=true
 By default Github OAuth only requires that a user has a Github account without any restrictions on that account. Many installations will also want to require the user belong to a company organization to be authenticated successfully. When using the organization restriction members must have their visibility set to `Public`. You can view the visibility setting for members on the `People` tab of your organization.
 
 - Ensure that everyone in your organization has their visibility set to Public if they plan to login to Spinnaker:
-![Armory People Screen](/assets/images/github-armory-people.jpg)
+![Armory People Screen](https://cl.ly/3Z3D0Q312J2L/Image%202018-04-09%20at%2010.30.55.png)
 - Add a `providerRequirements` section to the file at `/opt/spinnaker/config/gate-local.yml` under **security.oauth2** so that your configuration looks like the following:
 
 ```
@@ -208,9 +208,9 @@ See [Spinnaker's docs](https://www.spinnaker.io/setup/security/authorization/sam
 
 
 
-## X509
+## x509
 
-X509 certificates are typically used to allow users to connect to the Spinnaker API.  This is especially helpful if you want different groups within your organization to maintain different keys.  You can re-use the same certificate as you used in the previous step but might want to maintain different certificates for groups within your organization.
+x509 certificates are typically used to allow users to connect to the Spinnaker API.  This is especially helpful if you want different groups within your organization to maintain different keys.  You can re-use the same certificate as you used in the previous step but might want to maintain different certificates for groups within your organization.
 
 In order to enable x509 certificates we'll need to add an additional trust certificate to the keystore.
 
@@ -289,6 +289,21 @@ To test the certificate you can use curl directly from the host. It should retur
 ```
 curl https://localhost:8085/applications --cert client.pem -k
 ```
+
+### x509 and Fiat
+If you're running fiat you'll need to tell Spinnaker which groups are associated with your certificate.  x509 provides a field called `1.2.840.10070.8.1` which can be embedded in the client certificate to assign groups to the certificate.  The [Spinnaker OSS documentation provides a guide](https://www.spinnaker.io/setup/security/authentication/x509/#creating-an-x509-client-certificate-with-user-role-information) on how to generate a client certificate with the `1.2.840.10070.8.1` field.
+
+You'll also need to update your `/opt/spinnaker/config/gate-local.yml` file add the following:
+
+```
+x509:
+  enabled: true
+  subjectPrincipalRegex: EMAILADDRESS=(.*?)(?:,|$)
+  roleOid: 1.2.840.10070.8.1
+```
+
+Then restart Armory
+`service armory-spinnaker restart`
 
 ## Enable Sticky Sessions
 

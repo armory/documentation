@@ -222,9 +222,11 @@ In the below example, we show a pipeline that is created with multiple levels of
 {% endraw %}```
 The dinghyfile inherits its pipeline from a _module_ named `simple.pipeline.module` that looks as shown below. Note that it also overrides the application name in the module to avoid conflict.
 
+> It is worth noting in the below example, where we are substituting a string variable, the call to {% raw %}{{ var ... }}{% endraw %} is also surrounded by quotes, unlike when substituting non-string variables (ie, int, array, json...)
+
 ```{% raw %}
 {
-  "application": {{ var "application" ?: "yourspinnakerapplicationname" }},
+  "application": "{{ var "application" ?: "yourspinnakerapplicationname" }}",
   "keepWaitingPipelines": false,
   "limitConcurrent": true,
   "name": "Made By Armory Pipeline Templates",
@@ -265,3 +267,22 @@ If you want any pipelines in the spinnaker application that are not part of the 
   ]
 }
 {% endraw %}```
+
+## Triggering other pipelines from within a stage
+
+The spinnaker `pipeline` stage allows you to trigger other pipelines. However, typically you need the UUID of the pipeline to be triggered. To make it easier to write dinghy templates, we have a `pipelineID` function which can be used in dinghyfiles to trigger pipelines. Consider the below example (`pipeline.stage.module`):
+
+```{% raw %}
+{
+		"application": "pipelineidexample",
+		"failPipeline": true,
+		"name": "Pipeline",
+		"pipeline": "{{ pipelineID "default-app" "default-pipeline" }}",
+		"refId": "1",
+		"requisiteStageRefIds": [],
+		"type": "pipeline",
+		"waitForCompletion": true
+}
+{% endraw %}```
+
+In the above example, we are triggering a pipeline by the name `default-pipeline` under `default-app` spinnaker application. The app name and the pipeline name can be overwritten when calling this module. At any higher level, simply pass in `"triggerApp"` and `"triggerPipeline"` like so: `{% raw %}{{ module "pipeline.stage.module" "triggerApp" "pipelineidtest" "triggerPipeline" "testpipelinename" }}{% endraw %}`
