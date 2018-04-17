@@ -24,7 +24,7 @@ What is Spinnaker
 
 Concepts / Naming Conventions<br/>
 
-{% include components/youtubePlayer.html id="b8N23gcdRHc" %}
+{% include components/youtubePlayer.html id="H_rFShgmJHY" %}
 
 
 ## How To Create a Pipline
