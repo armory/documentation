@@ -19,7 +19,7 @@ Spinnaker is the continuous delivery platform that codifies the software deliver
 <br/>
 What is Spinnaker
 
-{% include components/youtubePlayer.html id="cQAou8eFCDU" %}<br/>
+{% include components/youtubePlayer.html id="H_rFShgmJHY" %}<br/>
 
 
 Concepts / Naming Conventions<br/>
