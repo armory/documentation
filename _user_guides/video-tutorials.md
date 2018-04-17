@@ -47,6 +47,6 @@ Concepts / Naming Conventions<br/>
  - Check Preconditions
  - Adding a Parallel Stage
  
-{% include components/youtubePlayer.html id="dM1trF4rsqU&t" %}
+{% include components/youtubePlayer.html id="dM1trF4rsqU" %}
 
 
