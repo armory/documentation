@@ -19,124 +19,210 @@ Kayenta uses real-time data sources to validate that a canary is good or bad. To
 If Kayenta is enabled for you instance, if you go to an application's config
 you should see a checkbox to enable Canarying:
 
-[image]
+![image](https://dha4w82d62smt.cloudfront.net/items/110k1y0g0l2a2s2w452C/%5Be5cd4808aad349ab8c521f7e97100f50%5D_Image+2018-04-17+at+9.25.33+AM.png)
 
 Make sure it's checked and saved.
 
-## Configuring Canary Metrics
+If you don't see this option in your application config, make sure you've
+[configured Kayenta](/admin-guides/kayenta).
 
-You should now see a "CANARY" menu element.  In this UI you'll configure the
-queries used to get metrics from your metrics store (DataDog or Stackdriver)
-that can be selected from within the canary stage.
+## Additional Documentation
 
-## Configuring A Canary Stage
+Kayenta is an open source feature of Spinnaker and has its own documentation at
+[https://www.spinnaker.io/guides/user/canary/](https://www.spinnaker.io/guides/user/canary/)
 
-If canarying is enabled for your instance, you should be able to see a stage for canarying:
+In this document, we will quickly run through the process to simply get you
+going.
 
-![Canary Stage](https://cl.ly/2H0T1P1j2J15/Image%202017-08-07%20at%2010.57.58%20AM.png)
+## Canary Configs
+
+(NOTE:  You may need to refresh your browser page to see these changes
+after enabling the Canary above)
+
+Your menubar should show "Delivery" and you should see the option for
+"Canary Configs" as a hover, or as a submenu element:
+
+![Canary Configs Menu Item](https://cl.ly/00181r2Q372S/[069c7e1865637f78eb92a091172c92da]_Image%202018-04-18%20at%2012.45.18%20PM.png)
+
+Click on "Canary Configs" and "Add configuration".  You should see a
+mostly-blank form:
+
+![Canary Config Form](https://cl.ly/0d3o1e3I3e3e/Image%202018-04-18%20at%2012.56.54%20PM.png)
+
+*Configuration Name*:  Spaces are not allowed, only alphanumerics, hyphens and
+underscores.  This name will be displayed as an option in the canary stage
+configuration later, so we recommend you make it a meaningful name.
+
+*Metric Store*:  If you only configured one metrics store, this will already
+be set for you.  Otherwise, you can choose from the options, the default will
+be the one you referenced in the environment file.
+
+*Description*:  Free form text to help your coworkers know what this canary
+is doing.
+
+## Groups
+
+A Canary Config can contain multiple groups of metrics, and each group can
+contain multiple metrics.  By default "Group 1" is set up for you to add to;
+you can rename the group by clicking on the group and then clicking on the
+pencil icon next to it.
+
+A group that has no metrics in it will be removed when the configuration is
+saved.  If you create an extra group or want to delete an existing one, just
+be sure you've removed all the metrics from that group before saving.
+
+Grouping is used to add different weights to the importance of different
+metrics or groups of metrics (see "Scoring" below).
+
+## Add Metric
+
+When you add a metric, the UI will be slightly different depending on what
+Metric Store you selected earlier.  The DataDog dialog looks like:
+
+![DataDog Metric Dialog](https://cl.ly/2p1s1A2k131c/Image%202018-04-18%20at%201.11.59%20PM.png)
+
+The Stackdriver dialog looks like:
+
+![Stackdriver Metric Dialog](https://cl.ly/0Q0t3Y1E021R/Image%202018-04-18%20at%201.12.46%20PM.png)
+
+In both cases, the Name is free-form and used to label the results and graphs.
+
+By default the "Fail on" selection of "either" means the comparison of canary
+and baseline metrics will be marked as a failure if the canary's data is
+either significantly greater or less than the baseline's data.  You can select
+"increase" if you only want to fail when the canary's metrics are significantly
+higher than the baseline (useful for things like error counts, memory and CPU
+usage, etc, where a significant improvement is not a failure), or, conversely,
+select "decrease" for the opposite (useful for metrics that measure things
+where bigger numbers are always better).
+
+### DataDog Metrics
+
+For DataDog, the metric is simply the aggregation function you wish to use
+(avg, min, max, sum), a colon, and the name of the metric.  You can use the
+[DataDog Metrics Explorer](https://app.datadoghq.com/metric/explorer) to find
+these names:
+
+![DataDog Metrics Explorer](https://cl.ly/1g360s0l1o3F/Image%202018-04-18%20at%201.20.25%20PM.png)
+
+For example, if you wanted to measure the average amount of CPU used, you could
+enter `avg:system.cpu.user`.
+
+### Stackdriver Metrics
+
+Please refer to the [Spinnaker Kayenta documentation](https://www.spinnaker.io/guides/user/canary/config/#create-metric-groups-and-add-metrics) for information
+on configuring Stackdriver metrics.
+
+## Filter Templates
+
+Please refer to the [Spinnaker Kayenta documentation](https://www.spinnaker.io/guides/user/canary/config/filter_templates/) for information on configuring
+Filter Templates.  They are completely optional and may not be necessary for
+your application.
+
+## Scoring
+
+After adding some metrics to groups, you should see each non-empty groups in
+this section, with scores defaulted to "0".  You'll need to edit these scores
+to sum to 100 (if you've only created a single group, just set it to 100).
+
+When the canary runs for a given interval, all the metrics are evaluated and
+each metric is given a pass/fail based on the deviation from the baseline
+metric.  Within a group, each metric is evenly balanced (so if a group has
+two metrics, and one fails and one passes, the group is scored at 50%; if
+it had only one metric, it would score either 100% for a pass or 0% for a
+fail).
+
+Each group is then scored their Metric Group Weight proportional to the
+success of the metrics in the group.  A group with a weight of 40 and a
+50% failure rate would score a total of 20 (50% of 40).  The score of each
+group is added together for a final interval score.  It's this total score
+that is compared to the Thresholds evaluation.  If the total is above the
+"Marginal" level, the canary will continue to run; if it's less than the
+Marginal level, the canary will stop and record a failed stage immediately.
+
+If the canary runs to completion, and all the intervals scored above "Pass",
+the stage will be considered a success.  If *any* interval fell into the
+grey area between Marginal and Pass, the stage will end with a failure,
+although it will not have been pre-emptively cancelled.  This is intented to
+allow someone to look at the marginal responses and make their own evaluation
+of whether or not the pipeline should continue.
+
+## Configuring A Canary Analysis Stage
+
+If everything is configured properly, you should be able to create a stage
+of Type "Canary Analysis".  The stage form should look like this:
+
+![Blank Canary Config](https://cl.ly/0Z001M3g2o0j/Image%202018-04-18%20at%201.48.11%20PM.png)
+
+*Analysis Type*:  "Real Time" (default) or "Retrospective".  If you select
+Retrospective, you'll see two additional fields appear, where you will set
+the start and end time of the evaluation.  This is the time period that will
+be examined on *every* execution of this stage, so it's most useful for
+examining historical data, or just testing your configs before applying them
+to live systems.
+
+*Config Name*:  Here you select which Canary Config (which we created in the
+previous section) to use.
+
+*Delay*:  It may be useful to wait a few minutes after the previous deploy
+stages have completed, to let the systems get into a stable running state,
+before checking metrics.  This field disappears if you've chosen to do a
+Retrospective analysis.
+
+*Interval*:  This defines the time between metrics inspections.  If this is
+set to 30, for example, the metrics will be compared only twice during a
+1-hour canary; if set to 5, it would be inspected 12 times during a 1-hour
+canary (see Lifetime, below).
+
+*Lookback Type*:  "Growing" (default) or "Sliding".  If set to "Growing",
+the metrics are queried from the start of the canary up to the time of the
+interval.  If set to "Sliding" (and you set the look back duration), it will
+only look at the metrics for that sliding window of time.
+
+*Metric Scopes*:  See below for details on this section.
+
+*Step*:  How many seconds between each metric datapoint to query.  NOTE: For
+DataDog, this field is ignored (DataDog does not let you define the interval)
+
+*Lifetime*:  How many hours to let this canary analysis run before making a
+final determination.  Note that if any single interval falls below a
+"Marginal" score, the analysis will stop immediately.
+
+*Scoring Thresholds*:  These are defaulted to whatever is configured in
+the Canary Config -- however, you can adjust these scores on a per-pipeline
+basis if desired.
+
+*Metrics Account*:  Select which account to use for metrics (if you've
+configured multiple).  NOTE:  If you've configured multiple metrics
+providers, like DataDog AND Stackdriver, be sure you've selected an account
+that matches the Canary Config's Metric Store.  The UI currently does not
+prevent you from selecting, for example, a Stackdriver account here, after
+selecting a Canary Config based on Datadog.
+
+*Storage Account*:  Select which account to use for storing the metrics data
+and graphs.
+
+*Scope Name*:  Select Default for now.
+
+### Metric Scopes
+
+This section gets filled in differently, depending on which metrics provider
+you're using, and how you've set up your pipeline prior to this stage.  For
+DataDog, as an example, the intention is to provide the tag:value pairs
+you've set up on your instances, identifying the different clusters, hosts,
+etc. that you're comparing.  For example, if you're using AWS Autoscaling
+Groups to cluster your baseline and canary instances, you would enter
+something like `autoscaling_group:myapp-v001` for the baseline and
+`autoscaling_group:myapp-v002` for the canary.  You can further refine
+the results by appending further tag:value pairs separated by commas,
+such as `autoscaling_group:myapp-v001,region:us-west-2`.
+
+For DataDog, the two Location fields are unused and can be safely left
+blank.  For Stackdriver (and other metrics sources) they are required fields.
+
+For more information on configuring these scopes, please refer to the
+[Spinnaker Kayenta Documentation](https://www.spinnaker.io/guides/user/canary/stage/#define-the-canary-stage).
 
 
-The canary stage starts by deploying 2 new server-groups: a `baseline` and `canary`.   The `baseline` server group is deployed with the AMI that was most recently deployed for the chosen template server-group.  The `canary` server group is deployed with release candidate AMI which is pull from a previous `Bake` or `Find Image` stage in the pipeline.  Once both server groups are up and "in service" the analysis will be begin.  The analysis is based on additional configuration below.
-
-Once the canary stage has completed, _both_ the `canary` and `baseline` server group will be destroyed and the pipeline will continue, likely to a standard deployment stage.  By not including the canary as part of the production deployment stage it adds safety and isolation to the canary.  You can still choose to have your deployment to have a more sophisticated deployment which is completed in phases. 
-
-### Deployment
-
-![Canary Deployment](https://cl.ly/1J1H0W2d2R15/Image%202017-08-07%20at%2011.01.19%20AM.png)
-
-`Canary Lifetime` - The total time period that the canary & baseline server will live and continue analysis before moving onto the next stage.
 
 
-`Terminate unhealthy canary` - If the canary is unhealthy based on analysis it'll continue to collect and analyze information for this period of time until it considers the overall result of the canary a failure.
-
-
-`Baseline version - Account & Clusters` - This is the baseline cluster to use for the canary analysis.  The Canary stage will find the AMI id from the latest deployed cluster and use this for the baseline server group.  In our screenshot above, the canary stage would deploy 2 new server groups: `armoryhellodeplloy-nightly-baseline` and `armoryhellodeplloy-nightly-canary`.
-
-
-### Baseline/Canary Cluster Pair
-
-This configuration determines how the canary will be deployed.  This looks similar to a server group deployment. The difference is that it is managed by Canary stage and has a limited lifespan as defined by `Canary Lifetime` above.  In most cases you'll want to put the canary behind the existing production load balancer which will drive a small percentage of traffic to your new canary and baseline server group.  You can specify a different load balancer but you'll be responsible for creating a different mechanism for traffic shaping.  
-
-
-![Canary Pair Configuration](https://cl.ly/3b2l1N1a0n3Q/Image%202017-08-07%20at%2011.39.16%20AM.png)
-
-## DataDog
-
-If your Administrator has configured DataDog in your Kayenta instance you'll be able to use the metrics and monitors stored in DataDog to inform Kayenta on the health of your service.
-
-### Metrics
-
-The metrics stored in DataDog are compared between the canary and baseline using statistical analysis. Once the service determines that the canary is behaving abnormally it'll mark it as unhealthy. You can specify the metric name, tags, and allowed deviation. The name and tags correspond to metric names and tags within DataDog. The `deviation` is the number of standard deviations the canary must be to the baseline.
-
-Consider this example:
-
-![DataDog Metrics](https://cl.ly/3T2Q0n2m2i2U/Image%202017-08-24%20at%201.59.03%20PM.png)
-
-There are two metrics being considered.
-- `system.net.bytes_sent` must be within `1.0` standard deviation of the baseline.
-- `system.disk_used` limited to the tag `region:us-west-2` must be with half of a deviation.
-
-### Metrics Dashboard
-
-Kayenta can automatically generate a DataDog dashboard showing the metrics you specify for all server groups involved in the canary. Just check the appropriate box under the DataDog section while configuring your canary stage.
-
-### Monitors
-
-You can use pre-existing monitors to fail the canary regardless of how it compares to its `baseline`.  This is good if you have absolute business rules such as "response times can't go over 50ms" or "Number of exceptions must be below 10 per minute".  Kayenta does this by periodically checking the event stream for monitors that have failed and match the canary autoscaling group name.
-
-#### Enabling the monitor
-
-In your DataDog monitor you'll need to aggregate the metric by autoscaling group:
-![ASG Metrics](https://cl.ly/0s0s2N382x02/Image%202017-08-07%20at%2012.04.54%20PM.png)
-
-You'll also need to include the autoscaling group name in the monitor message by checking the box `Include Triggering tags in notification title`:
-
-
-![include asg](https://cl.ly/3L42191Z0o03/Image%202017-08-07%20at%201.23.30%20PM.png)
-
-
-You can enable/disable this behavior by checking the box below.
-![Disable monitor](https://cl.ly/2g1T1b0q2I2S/Image%202017-08-07%20at%2011.53.07%20AM.png)
-
-**Note:** If you aren't able to aggregate by autoscaling group this means either you're not logging through the DataDog agent that is usually placed on the instance or you need to enable `Auto Scaling` and `EC2` integrations from the DataDog integrations screen.
-
-![enabling ec2 and autoscaling](https://cl.ly/0z1h27390b3v/Image%202017-08-07%20at%2012.10.12%20PM.png)
-
-## Elastic Search
-
-If ElasticSearch is configured by your Spinnaker Administrator you can take advantage of using ES queries to further analyze your canary deployments.
-
-Kayenta has the ability to run queries and compare the number of hits to constraints. You can set a maximum and/or minimum number of hits allowed by a query. Besides min and max, you can compare results between queries. A baseline query can be compared to a canary query. The `Deviation` field represents the percentage of difference allowed between the baseline and canary queries.
-
-Consider this example:
-
-![ElasticSearch configuration](https://cl.ly/2Z051c2n2P0o/Image%202017-08-23%20at%203.16.01%20PM.png)
-
-There are two checks being done here:
-- The first check runs a single query. Specifically, it looks for a log line that reads, "Server Started." By setting `Min` to `1`, we are requiring that log line to appear at least once. Also note that this sort of check should be using in conjunction with the 'Warm-up period` settings to ensure that the application starts before the analysis begins.
-- The second check compares the canary query to the baseline query. In this case, the canary query looks for errors involving the git hash of our deployment. The baseline query looks for errors that do not involve the git hash of our deployment. By settings `Deviation` to `5%`, we are requiring the difference between the canary and baseline queries to be less than 5%.
-
-
-## Viewing A Canary Stage
-
-Once a canary stage has been configured you can run the pipeline. You can select the stage in the pipeline execution to view the results.
-
-Here is an example of a successful canary:
-
-![successful canary](https://cl.ly/2g2a1B2i4745/Image%202017-08-24%20at%202.05.41%20PM.png)
-
-If you select `History` you can expect to see something like:
-
-![successful canary history](https://cl.ly/2Y2O3i0C193R/Image%202017-08-24%20at%202.07.18%20PM.png)
-
-Where `Type` represents whether or not the check was against a DataDog metric, a DataDog monitor, or an ElasticSearch query.
-
-Alternatively, here is an example of a failed canary:
-
-![failed canary](https://cl.ly/2Z0F0e2k3r0U/Image%202017-08-24%20at%202.09.38%20PM.png)
-
-We can see by the message that `system.net.bytes_sent` metric on the canary was `46.36` deviations away from the baseline.
-
-Clicking on `History` for the failure also gives more details on the results:
-
-![failed canary history](https://cl.ly/3k0U3O2c363d/Image%202017-08-24%20at%202.15.26%20PM.png)
