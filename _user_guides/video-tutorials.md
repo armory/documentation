@@ -19,24 +19,24 @@ Spinnaker is the continuous delivery platform that codifies the software deliver
 <br/>
 What is Spinnaker
 
-{% include components/youtubePlayer.html id="cQAou8eFCDU" %}<br/>
+{% include components/youtubePlayer.html id="H_rFShgmJHY" %}<br/>
 
 
 Concepts / Naming Conventions<br/>
 
-{% include components/youtubePlayer.html id="VrQjER6evDI" %}
+{% include components/youtubePlayer.html id="H_rFShgmJHY" %}
 
 
 ## How To Create a Pipline
 <br/>
 
-{% include components/youtubePlayer.html id="6skpq8sYh4s" %}
+{% include components/youtubePlayer.html id="NBeUAjlcVJw" %}
 
 
 ## How to Build a Pipeline
 <br/>
 
-{% include components/youtubePlayer.html id="xQj4EflCcio" %}
+{% include components/youtubePlayer.html id="L8bJUFhcqGs" %}
 
 
 ## Various Pipline Stages
@@ -47,6 +47,6 @@ Concepts / Naming Conventions<br/>
  - Check Preconditions
  - Adding a Parallel Stage
  
-{% include components/youtubePlayer.html id="VjAkccQHR4Y" %}
+{% include components/youtubePlayer.html id="dM1trF4rsqU" %}
 
 
