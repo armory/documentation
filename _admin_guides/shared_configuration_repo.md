@@ -5,27 +5,27 @@ order: 101
 ---
 
 ## What to expect
-This guide will walk you through setting up a shared configuration repository between mulitple Spinnaker installations, and using multiple AWS accounts.
+This guide will walk you through setting up a shared configuration repository between multiple Spinnaker installations, and using multiple AWS accounts.
 
 
 ## What you will need
-Her is an [example configuration repository](https://github.com/armory/spinnaker-config-deb) to start with.
+Here is an [example configuration repository](https://github.com/armory/spinnaker-config-deb) to start with.
 
 
 ## Create a new env file
-In your configuration repo, use an existing env file (ex: `env/ha.env`) to create a new [`env/staging.env`](https://github.com/armory/spinnaker-config-deb/tree/master/deb-config/spinnaker/env). Update the values in `env/staging.env` approprately.
+In your configuration repo, use an existing env file (ex: `env/ha.env`) to create a new [`env/staging.env`](https://github.com/armory/spinnaker-config-deb/tree/master/deb-config/spinnaker/env). Update the values in `env/staging.env` appropriately.
 
 To allow Spinnaker to pull in configs, we'll need to update the env variable `SPRING_PROFILES_ACTIVE`, add the following below
 ```bash
 # by default, its set to
 # SPRING_PROFILES_ACTIVE=local
-# To pickup new staging ymls, we'll change it to:
+# To pick up new staging ymls, we'll change it to:
 SPRING_PROFILES_ACTIVE=staging
 ```
 
 
 ## `env/default.env`
-Armory Spinnaker installs some settings in `env/default.env` 
+Armory Spinnaker installs some settings in `env/default.env`
 
 
 ## Setup a new `-staging.yml`
@@ -43,4 +43,6 @@ Now that we have our configs setup for both `ha` and `staging`, we can use the s
 
 ## Additional Links
 [Information on the Debian configuaration repository](https://github.com/armory/spinnaker-config-deb)
+
 [More about env files](https://github.com/armory/spinnaker-config-deb/tree/master/deb-config/spinnaker/env)
+
