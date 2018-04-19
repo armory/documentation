@@ -69,8 +69,7 @@ for more options.
 
 
 
-## Google Groups
-- [Setup a Service Account for Spinnaker](https://www.spinnaker.io/setup/security/authorization/google-groups/)
+## Google
 - Jump to section [Configuring OAuth for Gate](#configuring-oauth-for-gate) to configure gate.
 - Add the following to `/opt/spinnaker/config/gate-local.yml`:
 
@@ -90,6 +89,8 @@ security:
       email: email
       firstName: given_name
       lastName: family_name
+    userInfoRequirements: # Used to filter access by userInfo attributes
+      email: /^.*@armory.io$/ # Accepts a Java regular expression or string to match against
 ```
 
 - Fill in the values for `clientID` and `clientSecret` generated in the previous step.
@@ -102,7 +103,7 @@ AUTH_ENABLED=true
 - Restart Spinnaker `service armory-spinnaker restart`
 - [Enable Sticky Sessions](#enable-sticky-sessions)
 
-
+*A full list of user attributes can be found [here](https://developers.google.com/identity/protocols/OpenIDConnect#obtainuserinfo). Any of these properties can be used as `userInfoRequirements`.*
 
 
 ## Github
@@ -167,7 +168,7 @@ The `organization` field should be the name of the github organization you want 
 
 
 ## Configuring Other OAuth providers
-The configuration below is shown for [Github](#github), however the process is similar with Azure OAuth, Okta, [Google Groups](#google-groups) or Facebook.
+The configuration below is shown for [Github](#github), however the process is similar with Azure OAuth, Okta, Google or Facebook.
 
 - Add the following to `/opt/spinnaker/config/gate-local.yml`:
 
