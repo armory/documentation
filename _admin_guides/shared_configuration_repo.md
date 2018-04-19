@@ -5,7 +5,7 @@ order: 101
 ---
 
 ## What to expect
-This guide will walk you through setting up a shared confiuration repository between mulitple AWS accounts with multiple Spinnaker installations.  
+This guide will walk you through setting up a shared configuration repository between mulitple Spinnaker installations, and using multiple AWS accounts.
 
 
 ## What you will need
