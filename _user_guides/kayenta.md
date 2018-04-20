@@ -223,7 +223,7 @@ blank.  For Stackdriver (and other metrics sources) they are required fields.
 For more information on configuring these scopes, please refer to the
 [Spinnaker Kayenta Documentation](https://www.spinnaker.io/guides/user/canary/stage/#define-the-canary-stage).
 
-### Using In A Pipeline
+### Automating Canary Analysis In A Pipeline
 
 The Kayenta stage lets you run canary analysis against pretty much anything, so
 it's hard to prescribe a specific usage that would best fit your scenario.  To
