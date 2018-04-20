@@ -15,7 +15,7 @@ To get an overview of Pipelines as code, check out the [user guide](http://docs.
 
 ## Steps to follow to configure Pipelines as code:
 
-- Create a personal access token (in either GitHub or Stash) that has read access to all repos where `dinghyfile`s and `module`s reside. Place this token in a file called `github-creds.txt` (or `stash-creds.txt`). The contents of this file should be of the format: `username:token`. Place this file in your secrets management system. By default, this will be the S3 bucket where the other credentials for spinnaker are pulled from.
+- Create a personal access token (in either [GitHub](https://github.com/settings/tokens) or Stash) that has read access to all repos where `dinghyfile`s and `module`s reside. Place this token in a file called `github-creds.txt` (or `stash-creds.txt`). The contents of this file should be of the format: `username:token`. Place this file in your secrets management system. By default, this will be the S3 bucket where the other credentials for spinnaker are pulled from.
 
 > Note: All the below config file changes are either done in the configurator UI `https://your.spinnaker.installation/armory/config` or wherever spinnaker configs are stored in your installation.
 
@@ -30,7 +30,6 @@ templateRepo:      dinghy-templates # name of the repo containing modules
 autoLockPipelines: true # whether or not to lock pipelines in the UI before updating them
 spinAPIUrl:        https://spinnaker.your-company.com:8085
 spinUIUrl:         https://spinnaker.your-company.io
-certPath:          /path/to/client.pem # spinnaker x509 cert
 githubCredsPath:   /path/to/github-creds # credentials for github api (username:token)
 stashCredsPath:    /path/to/github-creds # credentials for stash api (username:token)
 stashEndpoint:     http://stash.mycompany.com/rest/api/1.0", # url where stash is running
