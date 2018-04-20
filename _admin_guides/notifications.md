@@ -39,10 +39,34 @@ service armory-spinnaker restart
 
 Make sure to invite `${YOUR_BOT_NAME}` to any channel you want to be notified by spinnaker alerts.
 
-
 ### E-mail
-### Pager Duty
 
+Below is an exmaple of how to use an email server to send notifications.
+
+Add the following to your `/opt/spinnaker/config/spinnaker-local.yml` file:
+
+```
+mail:
+  enabled: true
+  from: xxxx@yourdomain.com
+spring:
+  mail:
+    host: smtp.youdomain.com
+    username: xxxx@yourdomain.com
+    password: [ App Password - https://support.google.com/accounts/answer/185833?hl=en ]
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+          socketFactory:
+            port: 465
+            class: javax.net.ssl.SSLSocketFactory
+            fallback: false
+```
+
+### Pager Duty
 
 ## Audit Logs
 Audit logs are sent over HTTP to any destination.  Below is configuration for popular centralized logging destinations  
