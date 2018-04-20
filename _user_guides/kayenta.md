@@ -223,6 +223,106 @@ blank.  For Stackdriver (and other metrics sources) they are required fields.
 For more information on configuring these scopes, please refer to the
 [Spinnaker Kayenta Documentation](https://www.spinnaker.io/guides/user/canary/stage/#define-the-canary-stage).
 
+### Automating Canary Analysis In A Pipeline
+
+The Kayenta stage lets you run canary analysis against pretty much anything, so
+it's hard to prescribe a specific usage that would best fit your scenario.  To
+give you a head start, though, take a look at this pipeline:
+
+![Canary Deploy Pipeline](https://cl.ly/0h02343e1j3b/Image%202018-04-20%20at%202.08.37%20PM.png)
+
+After configuration (where you would set up your automated triggers, for
+example), the steps are:
+
+1. Identify Baseline (Find Image from Cluster Configuration)
+
+   In this stage, we want to find our baseline, based on what's currently in
+   production.  We select our production cluster and then look for the
+   "Oldest" enabled Server Group.  This will later be referenced to act as our
+   baseline server group for the canary.
+
+   ![Identify Baseline](https://cl.ly/3W0Q0w0n381j/[16ee274765420799d2f010fb44ac1208]_Image%202018-04-20%20at%202.24.15%20PM.png)
+
+2. Bake
+
+   This is where we actually bake the Canary image, otherwise just like any
+   other bake stage.
+
+3. Deploy Canary (Deploy)
+
+   Here we deploy the baked image to our cluster.  The important note here
+   is that we select the "None" strategy -- we don't want Spinnaker to do
+   anything to the existing server group yet, we want to run the new image
+   alongside the old image.
+
+   ![Canary Cluster Config](https://cl.ly/3T3E0Z2w0s2g/[3683fd1f7f0f72a94e511d9b65f5dce5]_Image%202018-04-20%20at%202.22.42%20PM.png)
+
+4. Canary Analysis
+
+   We configure our canary analysis stage as described above.  In this
+   example, we can get the baseline server group name using SpEL:
+
+   `${ #stage('Identify Baseline')['context']['artifacts'][0]['metadata']['sourceServerGroup'] }`
+
+   (For Datadog, we want to prepend `autoscaling_group:` to
+   this so we get the correct Datadog tag.
+
+   The canary server group can be retrieved with the SpEL:
+
+   `${ deployedServerGroups[0].serverGroup }`
+
+   (again, we prepend `autoscaling_group:` to construct the tag).
+
+   ![Canary Stage Example](https://cl.ly/3J47282d011r/Image%202018-04-20%20at%202.19.17%20PM.png)
+
+   We also need to be sure that we don't stop the pipeline execution if the
+   canary fails -- we want to be able to "clean up" after a failure, so we
+   don't keep the bad canary alive longer than we need to:
+
+   ![Continue On Failure](https://cl.ly/3w2d2X0V1t0j/[41b5e2d8d228eae3e13bdbfaa4b307c6]_Image%202018-04-20%20at%202.37.35%20PM.png)
+
+5. Destroy Canary on Failure (Destroy Server Group)
+
+   The first of two options after the Canary Analysis, we run this conditional
+   on the Canary Analysis stage being in any state other than `SUCCEEDED` --
+   when the canary fails to pass its testing, we want to remove the failed
+   canary server group.  So here we destroy the "Newest Server Group" (the
+   canary) and clean up, leaving the existing good cluster intact.
+
+   ![Destroy Canary](https://cl.ly/1l2E2s1G1H44/[d8482e840534fe6d2dfa2f4d377f499b]_Image%202018-04-20%20at%202.27.00%20PM.png)
+
+   ![Failure Condition](https://cl.ly/162k1B2Y2t01/Image%202018-04-20%20at%203.38.20%20PM.png)
+
+6. Promote Canary on Success (Destroy Server Group)
+
+   If our canary survives the coal mine, we want to deprecate the older code
+   in favor of the cluster.  In this simplistic version, we're presuming both
+   clusters are the same size, so all we need to do is remove the old cluster;
+   a real production pipeline would probably need to resize the canary before
+   removing the old cluster.  It's the same basic logic as the previous stage,
+   except we are destroying the "Oldest Server Group" (the same way we ID'd
+   the baseline in the first stage), conditional on the Canary Analysis stage
+   ending with `SUCCEEDED`:
+
+   ![Destroy Baseline](https://cl.ly/1u0f2N3i2L42/Image%202018-04-20%20at%202.32.44%20PM.png)
+
+   ![Success Condition](https://cl.ly/130z071O0l18/Image%202018-04-20%20at%203.39.14%20PM.png)
+
+7. Check Preconditions
+
+   The purpose of this stage here is to simply fail the pipeline if the canary
+   fails to pass.  Since we are ignoring the failure on the Canary Analysis
+   stage in order to proceed to our cleanup/promotion stages, we want this
+   stage to fail if the canary failed.  Here we just check that the Canary
+   Analysis stage succeeded (and if it did not, it will fail the pipeline).
+
+   ![Check Results](https://cl.ly/2b0T1w32063i/Image%202018-04-20%20at%202.35.22%20PM.png)
+
+
+This should give you some idea of how you might want to integrate the Kayenta
+Canary Analysis stage into your production pipelines, and automate your
+deployments!
+
 
 
 
