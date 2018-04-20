@@ -284,14 +284,14 @@ example), the steps are:
 5. Destroy Canary on Failure (Destroy Server Group)
 
    The first of two options after the Canary Analysis, we run this conditional
-   on the Canary Analysis stage being in the state `FAILED_CONTINUE` -- when
-   the canary fails to pass its testing, we want to remove the failed canary
-   server group.  So here we destroy the "Newest Server Group" (the canary)
-   and clean up, leaving the existing good cluster intact.
+   on the Canary Analysis stage being in any state other than `SUCCEEDED` --
+   when the canary fails to pass its testing, we want to remove the failed
+   canary server group.  So here we destroy the "Newest Server Group" (the
+   canary) and clean up, leaving the existing good cluster intact.
 
    ![Destroy Canary](https://cl.ly/1l2E2s1G1H44/[d8482e840534fe6d2dfa2f4d377f499b]_Image%202018-04-20%20at%202.27.00%20PM.png)
 
-   ![Failure Condition](https://cl.ly/1h2O0o270s1f/Image%202018-04-20%20at%202.29.41%20PM.png)
+   ![Failure Condition](https://cl.ly/162k1B2Y2t01/Image%202018-04-20%20at%203.38.20%20PM.png)
 
 6. Promote Canary on Success (Destroy Server Group)
 
@@ -306,7 +306,7 @@ example), the steps are:
 
    ![Destroy Baseline](https://cl.ly/1u0f2N3i2L42/Image%202018-04-20%20at%202.32.44%20PM.png)
 
-   ![Success Condition](https://cl.ly/1g3U1H403z0S/Image%202018-04-20%20at%202.33.23%20PM.png)
+   ![Success Condition](https://cl.ly/130z071O0l18/Image%202018-04-20%20at%203.39.14%20PM.png)
 
 7. Check Preconditions
 
