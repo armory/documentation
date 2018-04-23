@@ -27,7 +27,7 @@ Concepts / Naming Conventions<br/>
 {% include components/youtubePlayer.html id="H_rFShgmJHY" %}
 
 
-## How To Create a Pipline
+## How To Create a Pipeline
 <br/>
 
 {% include components/youtubePlayer.html id="NBeUAjlcVJw" %}
