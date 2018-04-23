@@ -53,7 +53,7 @@ fiat:  # if you have fiat enabled
 armorywebhooks:
     enabled: true
     forwarding:
-      baseUrl: http://${DEFAULT_DNS_NAME}:8081  # dinghy
+      baseUrl: http://${DEFAULT_DNS_NAME:dinghy}:8081  # dinghy
       endpoint: v1/webhooks
 ```
 - Edit the file: `prod.env` (or `dev.env` if in dev environment) and set the following environment variable `DINGHY_ENABLED=true`
