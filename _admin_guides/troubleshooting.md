@@ -63,7 +63,9 @@ docker logs -f clouddriver
 This should stream all the `clouddriver` logs to your terminal.  You'll want to look for any obvious exceptions or stack-traces to share with the Armory Support team.
 
 #### How can I flush the Redis cache?
+**NOTE: When using Docker or Jenkins triggers, Redis's `FLUSHALL` could leave you vulnerable to extraneous pipeline runs, which could affect production piplines.** 
 
+<br/>
 1.  SSH into an active Armory Spinnaker node
 1.  Install redis server which comes with the cli tool. `apt-get install redis-tools`
 1.  Flush all content.  This will remove old executions.
