@@ -40,6 +40,7 @@ Setting up the V2 provider is similar to the [V1 Kubernetes configuration](http:
 
 ```
 kubernetes:
+  enabled: true
   accounts:
     - name: k8s-v2
       providerVersion: v2
