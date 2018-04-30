@@ -41,7 +41,7 @@ Make sure to invite `${YOUR_BOT_NAME}` to any channel you want to be notified by
 
 ### E-mail
 
-Below is an exmaple of how to use an email server to send notifications.
+Below is an example of how to use an email server to send notifications.
 
 Add the following to your `/opt/spinnaker/config/spinnaker-local.yml` file:
 
