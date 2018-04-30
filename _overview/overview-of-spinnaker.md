@@ -7,7 +7,7 @@ permalink: '/'
 
 ## What is Spinnaker?
 
-<img style="float: left;" src="http://drod.io/1h3I273p002U/video-file.png"> [Watch Ethan explain Spinnaker in three minutes](https://kb.armory.io/spinnaker/what-is-spinnaker/)
+<a href="https://kb.armory.io/spinnaker/what-is-spinnaker"><img height="25" style="float: left;" src="http://drod.io/1h3I273p002U/video-file.png"></a>&nbsp; [Watch Ethan explain Spinnaker in three minutes](https://kb.armory.io/spinnaker/what-is-spinnaker/)
 
 Spinnaker is an open source multi-cloud Continuous Delivery and Deployment tool started by Netflix for fast and stable deployments. 
 
