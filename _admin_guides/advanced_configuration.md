@@ -23,16 +23,16 @@ Spinnaker subservices can share a single Redis. However here are some reasons wh
 - Redis performance issues, which allows you to scale each Redis individually
 
 
-Here's an example for Clouddriver:
+Here's an example for Clouddriver, it's the same pattern for other subservices:
 ```bash
 $ cat /opt/spinnaker/env/prod.env
 ...
-SPRING_PROFILES_ACTIVE=armory,local,clouddriver-redis
+SPRING_PROFILES_ACTIVE=armory,local,redis
 CLOUDDRIVER_REDIS_URL=redis://YOUR_SPECIAL_REDIS_FOR_CLOUDDRIVER_HERE:6379
 ...
 
 
-$ cat /opt/spinnaker/config/clouddriver-clouddriver-redis.yml
+$ cat /opt/spinnaker/config/clouddriver-redis.yml
 redis:
   connection: ${CLOUDDRIVER_REDIS_URL:redis://localhost:6379}
 ```
