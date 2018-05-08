@@ -7,7 +7,9 @@ visible: 1
 
 # 4/2/18 Release Notes
 
-> Note, this is the release notes comparing against [v1.10.207](https://docs.armory.io/release-notes/armoryspinnaker_v1.10.207/), v1.11.262 has stability issues.
+> Note: this is the release notes comparing against [v1.10.207](https://docs.armory.io/release-notes/armoryspinnaker_v1.10.207/), because v1.11.262 has stability issues.
+
+> Note: For some cases we are seeing issues when passing parent parameters using SpEL, or pipeline expressions, to child pipelines from parent pipelines. 
 
 > Note: If you're experiencing production issues after upgrading Spinnaker, rollback to a [previous working version](http://docs.armory.io/admin-guides/troubleshooting/#i-upgraded-spinnaker-and-it-is-no-longer-responding-how-do-i-rollback).
 
