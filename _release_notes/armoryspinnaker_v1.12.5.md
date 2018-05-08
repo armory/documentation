@@ -6,8 +6,6 @@ visible: 1
 ---
 
 # 4/2/18 Release Notes
-> THIS IS CURRENTLY A RELEASE CANDIDATE, this message will be removed as soon as its vetted.
-
 
 > Note: this is the release notes comparing against [v1.10.207](https://docs.armory.io/release-notes/armoryspinnaker_v1.10.207/), because v1.11.262 has stability issues.
 
