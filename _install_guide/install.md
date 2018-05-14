@@ -60,3 +60,11 @@ The installer will download the latest stable version of the Terraform files and
 ### Validating Your Spinnaker Install
 
 ![hello](https://cl.ly/2g163N1z050V/download/98c70de3cd1c9778e50d5aa0e4db15f6_Image%202017-09-13%20at%204.10.04%20PM.png)
+
+### Uninstall Armory Spinnaker
+
+To uninstall Armory Spinnaker, run the install script again with the following environment variable set: `UNINSTALL_ARMORY_SPINNAKER=uninstall`. 
+
+```
+UNINSTALL_ARMORY_SPINNAKER=uninstall bash -c "$(curl -sS https://get.armory.io)"
+```
