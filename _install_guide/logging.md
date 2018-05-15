@@ -204,6 +204,9 @@ monitor:
 
   metric_store:
     - datadog
+
+datadog:
+  api_key: ${API_KEY}
 ```
 
 
