@@ -23,3 +23,25 @@ Setup your deploy stage to deploy a nonpolling cluster. You can scale this clust
 #### "Deploy to Prod Polling"
 Deploy only **1 instance**.
 ![](https://cl.ly/2F072B1o081Z/Image%202018-05-16%20at%2014.37.01.png)
+
+
+
+### Using a isolated Redis for each subservice
+Spinnaker subservices can share a single Redis. However here are some reasons why you may want to have separate Redis's:
+- Subservice isolation
+- Redis performance issues, which allows you to scale each Redis individually
+
+
+Here's an example for Clouddriver, it's the same pattern for other subservices:
+```bash
+$ cat /opt/spinnaker/env/prod.env
+...
+SPRING_PROFILES_ACTIVE=armory,local,redis
+CLOUDDRIVER_REDIS_URL=redis://YOUR_SPECIAL_REDIS_FOR_CLOUDDRIVER_HERE:6379
+...
+
+
+$ cat /opt/spinnaker/config/clouddriver-redis.yml
+redis:
+  connection: ${CLOUDDRIVER_REDIS_URL:redis://localhost:6379}
+```
