@@ -30,7 +30,7 @@ about users and their group membership.
 
 Consider the following sample ldap database:
 
-```
+```yml
 ### Users group
 
 dn: ou=users,dc=mycompany,dc=com
@@ -69,7 +69,7 @@ loginShell: /bin/bash
 This sample data could be handled by adding the following configuration to the
 file `/opt/spinnaker/config/fiat-local.yml`:
 
-```
+```yml
 auth:
   groupMembership:
     service: ldap
@@ -103,7 +103,7 @@ You'll need to generate a personal API access token here: [https://github.com/se
 
 Add the configuration below to: `/opt/spinnaker/config/fiat-local.yml`:
 
-```
+```yml
 auth:
   groupMembership:
     service: github
@@ -133,7 +133,7 @@ To restrict access to an account based on group membership add you'll need to ad
 the `permissions` field to your accounts which is configured in
 `/opt/spinnaker/config/clouddriver-local.yml`.
 
-```
+```yml
 aws:
   accounts:
     - name: mobile-apps-account
@@ -155,9 +155,8 @@ service armory-spinnaker restart
 When fiat is enabled, some Spinnaker operations require [adding a service account](https://www.spinnaker.io/setup/security/authorization/service-accounts/).  The service
 account should be a `memberOf` of `armoryspinnaker`'s permission groups.
 
-This account will be used to shutdown old instances when you re-deploy `armoryspinnaker`. To configure the service account, edit the file spinnaker-local.yml and add the settings:
-
-```
+This account will be used to shutdown old instances when you re-deploy `armoryspinnaker`. To configure the service account, edit `spinnaker-local.yml` to include:
+```yml
 services:
   lighthouse:
     # Put your service account here;
