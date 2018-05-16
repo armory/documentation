@@ -51,12 +51,11 @@ keytool -importkeystore -srckeystore server.p12 -srcstoretype pkcs12 -srcalias s
 
 - Creating a **self-signed CA (EXPIRES IN 360 DAYS)** with java keystore.
 ```
-apt-get install -y openjdk-7-jre-headless;
+apt-get install -y openjdk-7-jre-headless
+export YOUR_KEYSTORE_PASSWORD=""
 echo -e "\n\n\n\n\n\ny\n" | keytool -genkey -keyalg RSA -alias server -keystore keystore.jks -storepass ${YOUR_KEYSTORE_PASSWORD} -validity 360 -keysize 2048
+mv keystore.jks /opt/spinnaker/config/
 ```
-
-
-Place the resulting keystore.jks in `/opt/spinnaker/config`
 
 In `/opt/spinnaker/config/gate-local.yml` add the following, making sure to replace the password with your own that you provided in the previous step:
 
