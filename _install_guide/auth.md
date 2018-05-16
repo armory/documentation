@@ -65,7 +65,13 @@ ldap:
 See the [Spinnaker LDAP Documentation](https://www.spinnaker.io/setup/security/authorization/ldap/#user-dns)
 for more options.
 - [Enable Sticky Sessions](#enable-sticky-sessions)
+- Add the following to your environment file, typically `/opt/spinnaker/env/ha.env`
 
+```
+AUTH_ENABLED=true
+```
+
+- Restart Spinnaker `service armory-spinnaker restart`
 
 
 
