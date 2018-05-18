@@ -10,6 +10,8 @@ For certain components you’ll only want a single instance running on an ASG on
 To set this up, edit your Armory Spinnaker deploy pipeline so it looks like this.
 ![](https://cl.ly/3R2v3u3F2z2O/Image%202018-05-16%20at%2014.39.40.png)
 
+> Note, the cloud_details set to `nonpolling` is required. On boot, Armory Spinnaker will use [/etc/default/server-env](https://kb.armory.io/aws/18-what-is-server-env/) to determine which group this instance belongs to.
+
 #### "Disable Poller" stage
 Armory includes a service (Lighthouse) that will wait for existing jobs to complete before shutting itself down.
 If Fiat is enabled, make sure that you have [configured a service account](https://docs.armory.io/install-guide/authz/#configure-a-service-account).
