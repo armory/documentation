@@ -107,7 +107,7 @@ Armory includes a configurator that will store configurations in s3. This uses t
 
 
 ## Turning on the Configurator
-- edit your env file (`HA.env`) and add:
+- edit your env file (`ha.env`) and add:
 ```
 CONFIGURATOR_ENABLED=true
 ```

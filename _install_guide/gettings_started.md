@@ -4,7 +4,7 @@ title: Getting Started
 order: 10
 ---
 
-In this guide you will learn how to install Armory Spinnaker on AWS. You will learn how to configure Spinnaker so that you can use it to deploy your applications to any environment safely and securely.
+In this guide you will learn how to install Armory Spinnaker in Kubernetes or AWS. You will learn how to configure Spinnaker so that you can use it to deploy your applications to any environment safely and securely.
 
 As you go through this guide, keep in mind that there are four major milestones:
 
@@ -45,7 +45,8 @@ The following steps are broken up into milestones. However, you should follow th
 
 
 ### Installing Armory Spinnaker
-[**Install Armory Spinnaker**]({% link _install_guide/install.md %})  
+[**Here's how to Install Armory Spinnaker**]({% link _install_guide/install.md %})  
+
 The first goal is to get Spinnaker installed and running to the point where we can connect to its UI.
 
 On install, Armory Spinnaker is configured to be in HA mode. 
@@ -64,7 +65,7 @@ Click on the remaining ASG and go to `Advance Settings` > `Edit Advance Settings
 ![gif](https://cl.ly/2A1A1V3t3d2R/Screen%20Recording%202017-09-05%20at%2006.12%20PM.gif)
 
 
-Start by SSH'ing to the single instance of Armory Spinnaker. Throughout this guide you will be making changes to the files in `/opt/spinnaker/`. Checkout [**Understanding config files**]({% link _install_guide/config_repo.md %}#understanding-config-files) for more info. In order for the changes to take affect you will need to restart Armory Spinnaker.
+Start by SSH'ing to the single instance of Armory Spinnaker. Throughout this guide you will be making changes to the files in `/opt/spinnaker/`. Check out [**Understanding config files**]({% link _install_guide/config_repo.md %}#understanding-config-files) for more info. In order for the changes to take affect you will need to restart Armory Spinnaker.
 
 ```
 $ ssh -i ~/.ssh/your-key-here.pem 111.111.111.111
