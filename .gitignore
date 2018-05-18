@@ -1,6 +1,7 @@
 .asset-cache
 .DS_Store
-_site
+_site/
+_dist/
 .sass-cache
 .jekyll-metadata
 *~
