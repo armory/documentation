@@ -2,7 +2,6 @@
 layout: post
 title: v1.12.5 Armory Enterprise Release
 order: 952
-visible: 1
 ---
 
 # 4/2/18 Release Notes
