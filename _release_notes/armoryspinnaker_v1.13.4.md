@@ -11,7 +11,7 @@ hidden: false
 
 
 ## Known Issues
-There's currently no known issues.
+There's currently no known issues with this release.
 
 
 ## Highlighted Updates
@@ -40,7 +40,7 @@ Igor added polling safeguard for Docker, Jenkins, Gitlab, and Travis. This shoul
 ERROR 1 --- [readScheduler-3] c.n.spinnaker.igor.docker.DockerMonitor  : Number of items (1155) to cache exceeds upper threshold (1000) in monitor=DockerMonitor partition=gcr
 ```
 
-**Solution:**
+**Fix:**
 You'll need to add this into your `igor-local.yml`
 ```yaml
 # Added this to igor-local.yml to up the threshold; otherwise
