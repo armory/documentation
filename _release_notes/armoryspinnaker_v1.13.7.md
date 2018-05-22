@@ -30,12 +30,12 @@ There have also been numerous enhancements, fixes and features across all of Spi
 
 
 #### Igor
-Igor added polling safeguard for Docker, Jenkins, Gitlab, and Travis. This shouldn't effect upgrades, unless those service pointers are out of date.
+Igor added polling safeguards for Docker, Jenkins, Gitlab, and Travis. This shouldn't effect upgrades, unless those service pointers are out of date.
 
 **Symptoms:**
 - New Docker, Jenkins, Gitlab, and/or Travis artifacts aren't showing up in the job selector.
 - New Docker, Jenkins, Gitlab, and/or Travis artifacts don't trigger pipelines.
-- A error message for Igor looking like:
+- An error message from Igor looking like:
 ```
 ERROR 1 --- [readScheduler-3] c.n.spinnaker.igor.docker.DockerMonitor  : Number of items (1155) to cache exceeds upper threshold (1000) in monitor=DockerMonitor partition=gcr
 ```
@@ -57,7 +57,6 @@ spinnaker:
 ## Detailed Updates
 ### Armory
 ### Lighthouse&trade; - 86bfefa...d7395c7
- - Argh, that's why. Config covers all of home dir... (#202)
  - Hidden gotcha updating yamltools. (#201)
  - Unpin archaic yamltools lib, update code to match. (#200)
  - Test coverage for get_config_version() (#199)
