@@ -5,9 +5,10 @@ order: 100
 ---
 
 # What To Expect
+{:.no_toc}
 This guide should include:
-- How to give your Spinnaker instance a new domain name
-- SSL Termination at the ELB with Gate and Deck
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 ## Create a DNS Entry for your Load Balancer
 

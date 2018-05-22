@@ -7,6 +7,9 @@ Spinnaker is the composition of a few sub-services for resiliency
 and follows the single-responsibility principle.  It allows for faster iteration on each
 individual component and a more pluggable architecture for custom components.
 
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
+
 ### Orca
 
 Orca is responsible for the orchestration of pipelines, stages and tasks within Spinnaker.  It acts as the "traffic cop" within Spinnaker making sure that sub-services, their executions and states are passed along correctly.

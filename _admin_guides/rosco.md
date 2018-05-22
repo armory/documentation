@@ -5,12 +5,17 @@ order: 120
 ---
 
 # What is Rosco?
+{:.no_toc}
 
 Rosco is the sub-service that manages baking using [Packer](https://www.packer.io/docs/), a cloud agnostic tool that automates the creation of images.  Rosco is a small API which manages the state of packer jobs and their executions so that it can report to other sub-systems. Make sure to read up on [Understanding Bake Scripts (Packer scripts)]({% link _install_guide/packer.md %}).
+
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 
 
 ## Configurations for Baking
+{:.no_toc}
 
 
 ### Templates Location

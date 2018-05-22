@@ -3,8 +3,9 @@ layout: post
 title: Spinnaker on Redhat/Centos
 order: 150
 ---
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
-*This guide assumes that you are deploying Spinnaker with a Spinnaker pipeline.*
 
 ## Using CentOS or Redhat for Armory Spinnaker
 After setting up Spinnaker through the [Spinnaker-Terraform](#spinnaker-terraform) method, change or add the bake stage in the "Spinnaker deploy Spinnaker" pipeline to the following.

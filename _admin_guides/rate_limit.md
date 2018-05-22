@@ -4,6 +4,10 @@ title: Rate Limits
 order: 140
 ---
 #  Rate Limits
+{:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
+
 
 # Running into AWS Rate Limits
 

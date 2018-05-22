@@ -5,7 +5,11 @@ order: 101
 ---
 
 ## What to expect
+{:.no_toc}
+
 This guide will walk you through setting up a shared configuration repository between multiple Spinnaker installations, and using multiple AWS accounts.
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 
 ## What you will need

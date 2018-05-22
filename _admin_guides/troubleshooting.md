@@ -3,7 +3,8 @@ layout: post
 title: Troubleshooting
 order: 200
 ---
-
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 #### I upgraded Spinnaker and it is no longer responding, how do I rollback?
 

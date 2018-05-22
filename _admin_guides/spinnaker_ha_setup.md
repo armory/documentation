@@ -3,6 +3,8 @@ layout: post
 title: Spinnaker HA Setup
 order: 15
 ---
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 ### Setting up Polling and Nonpolling
 For certain components you’ll only want a single instance running on an ASG on “polling” mode. Namely Igor and Echo which need to run on a single instance so that multiple trigger events are not sent to Spinnaker and issuing multiple events for the same build.

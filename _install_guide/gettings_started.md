@@ -8,13 +8,11 @@ In this guide you will learn how to install Armory Spinnaker in Kubernetes or AW
 
 As you go through this guide, keep in mind that there are four major milestones:
 
-- Installing Spinnaker
-- Re-deploying Spinnaker
-- Deploying an Application
-- Production Readiness
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 
-## Spinnaker's Workflow
+## Understand Spinnaker's Workflow
 
 Before we dive in, it is important to understand the workflow that Spinnaker prefers. This will allow us to understand what we need to install and configure and why. Let's go over it from beginning to end. The process starts with a code change and ends with that code running in production. The general case is:
 

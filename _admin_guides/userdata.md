@@ -3,6 +3,8 @@ layout: post
 title: User Data
 order: 100
 ---
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 # Modify Global User-Data For All Deployments
 
