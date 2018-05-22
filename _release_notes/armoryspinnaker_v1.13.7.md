@@ -1,11 +1,11 @@
 ---
 layout: post
-title: v1.13.4 Armory Release
-order: -20180521223040
+title: v1.13.7 Armory Release
+order: -20180522174834
 hidden: false
 ---
 
-# 05/21/18 Release Notes
+# 05/22/18 Release Notes
 
 > Note: If you're experiencing production issues after upgrading Spinnaker, rollback to a [previous working version](http://docs.armory.io/admin-guides/troubleshooting/#i-upgraded-spinnaker-and-it-is-no-longer-responding-how-do-i-rollback) and please report issues to [http://go.armory.io/support](http://go.armory.io/support).
 
@@ -161,7 +161,11 @@ No Changes
 ### Armory Echo  - d0feee3...00219be
  - ignore dinghy endpoints we don't support (#51)
 
-### Armory Deck  - 896d6c8...9a1f2f7
+### Armory Deck  - 896d6c8...f57955c
+ - fix(nginx) regex match symbol comes first (#333)
+ - fix(nginx) allow anything matching /armory/config to redirect to platform/config (#332)
+ - add remaining redux tests (#331)
+ - ENG-1917: show modal asking user if they want to redeploy instead of browser popup (#330)
  - stop updating saml on https update if saml not enabled (#329)
  - I need somebody to wire the button up again (#324)
  - ENG-1906: add about 50% test coverage for redux (#328)
