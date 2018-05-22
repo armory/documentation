@@ -4,16 +4,14 @@ title: Authorization
 order: 120
 published: True
 ---
+# Turning on Fiat
+{:.no_toc}
 
-This guide should include:
-* How to enable and configure Fiat
-* LDAP as an authorization provider
-* Github as an authorization provider
-* Restrict access based on account/application
-* Configure a Service Account for some operations
-
-# Authorization
 Authorization is handled by a micro-service called `Fiat`.  Fiat is responsible for access control for both applications and accounts.  It's also responsible for executing triggers with service accounts. Fiat authorization model is open by default, read more about authorizations [here](https://www.spinnaker.io/setup/security/authorization).
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
+
+
 
 ## Open Port
 

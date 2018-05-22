@@ -6,9 +6,11 @@ published: True
 ---
 
 To configure Kubernetes, you need to:
-* Configure docker registries
-* Create a kubectl config file, and
-* Configure clouddriver to use that kubernetes configuration
+{:.no_toc}
+
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
+
 
 ## Configure your Docker Registries
 
@@ -155,6 +157,6 @@ You should see a similar option in the "Cloud Provider" section of the Edit Appl
 ![EditApplication](/assets/images/kubernetes-editapplication.png)
 
 
-## See Also
+## Additional Information
 
 For additional documentation on configuring Kubernetes, see the [Kubernetes Documentation](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/).

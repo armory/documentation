@@ -6,17 +6,14 @@ order: 60
 
 
 # What To Expect
+{:.no_toc}
 This guide should include:
-- Creating a pipeline that deploys Spinnaker for new configuration or version upgrades
-- How to update and deploy a custom configuration
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 The installer scripts setup an initial Spinnaker environment. To keep Spinnaker up to date and to release changes to configuration, we'll teach Spinnaker how to redeploy itself. We call this the "Spinnaker deploy Spinnaker" pipeline.
 
 This is a step by step guide to creating the pipeline.
-
-
-
-## Full Pipeline
 
 Once the pipeline is fully configured it should look like this:
 

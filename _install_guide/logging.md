@@ -5,13 +5,13 @@ order: 130
 ---
 
 # What To Expect
+{:.no_toc}
 This guide should include:
-- Publishing logs to a centralized logging server like Splunk, Sumo Logic or Syslog
-- Validating configuration for log delivery
-- Exporting metrics to Datadog
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 ## Armory Spinnaker's Application Logs with Docker
-Pushing your logs to a distributed service is as simple as using one of the logging drivers provided by Docker.   All logging comes from STDOUT inside of Docker and can be pushed to various endpoints.
+Pushing your logs to a distributed service is as simple as using one of the logging drivers provided by Docker.   All logging comes from `STDOUT` inside of Docker and can be pushed to various endpoints.
 
 
 ## Enabling A Logging Profile

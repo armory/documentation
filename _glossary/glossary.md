@@ -8,6 +8,9 @@ order: 1000
 
 Below is a list of words and phrases as they apply to Spinnaker and their definitions, including any additional information that may be helpful. 
 
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
+
 
 
 #### Amazon Web Services
@@ -18,8 +21,8 @@ Amazon Machine Images (AMIs) are predetermined 'templates' for instances that ca
 
 
 
-#### [Application]({% link _user_guides/application-screen.md %}) 
-An application inside Spinnaker represents what you would typically find in a single [code repository](#Code-Repository) - and in many cases, an application maps directly to a microservice.
+#### Application
+An [application]({% link _user_guides/application-screen.md %}) inside Spinnaker represents what you would typically find in a single [code repository](#Code-Repository) - and in many cases, an application maps directly to a microservice.
 
 #### Auto-Scaling Group
 An auto-scaling group (ASG) contains a collection of [EC2](#elastic_compute_cloud) instances that share similar characteristics and are treated as a logical grouping for the purposes of instance scaling and management.
@@ -29,8 +32,8 @@ An auto-scaling group (ASG) contains a collection of [EC2](#elastic_compute_clou
 Authorization (Auth) is the level of access to APIs that a user, application or role has within your [AWS](#Amazon_Web_Services) account. This is usually configured by your administrator. 
 
 
-#### [Baking]({% link _user_guides/baking-images.md %})
-The term 'baking' is used within Spinnaker to refer to the process of creating machine images, usually with [AMIs](#Amazon_Machine_Images).
+#### Baking
+The term '[Baking]({% link _user_guides/baking-images.md %})' is used within Spinnaker to refer to the process of creating machine images, usually with [AMIs](#Amazon_Machine_Images).
 
 
 #### Cloud
@@ -91,16 +94,16 @@ In AWS, Spinnaker will name your ASGs and Launch Configurations according to the
 Please note that if your user definition includes a hyphen, it will disrupt the naming convention. 
 
 
-#### [Jenkins]({% link _user_guides/working-with-jenkins.md %}) 
-Jenkins is an open source automation server that can package applications for distribution. Spinnaker pipelines can be [triggered](#trigger) from a build on Jenkins.  
+#### Jenkins
+[Jenkins]({% link _user_guides/working-with-jenkins.md %})  is an open source automation server that can package applications for distribution. Spinnaker pipelines can be [triggered](#trigger) from a build on Jenkins.  
 
 
 #### Lighthouse
 A sub-service within Spinnaker. For more information, go to [sub-services]({% link _admin_guides/subservices.md %}#Armory_Lighthouse).
 
 
-#### [Load Balancer]({% link _overview/load-balancers.md %}) 
-For Spinnaker's purposes, a load balancer is a service that automatically distributes incoming traffic across all instances. The one most commonly used within AWS is the Elastic Load Balancer (ELB).
+#### Load Balancer
+For Spinnaker's purposes, a [load balancer]({% link _overview/load-balancers.md %})  is a service that automatically distributes incoming traffic across all instances. The one most commonly used within AWS is the Elastic Load Balancer (ELB).
 
 
 #### Orca

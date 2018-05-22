@@ -3,10 +3,9 @@ layout: post
 order: 90
 ---
 
-This guide should include:
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
-- Using the AMI Ancestry tool
-- Necessary configuration changes
 
 ## Using the dashboard.
 
