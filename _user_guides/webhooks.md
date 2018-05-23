@@ -4,15 +4,19 @@ order: 105
 ---
 
 This guide should include:
+{:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
-- how to configure Spinnaker to make a web request from a pipeline
-- passing information into the web request
-- polling for completion on long-running tasks
 
+# How does Spinnaker use webhooks?
+{:.no_toc}
 Spinnaker has a stage type called "Webhook" which allows it to call out to APIs as part of running a pipeline:
 
 ![Webhook Type Selection](/assets/images/webhook-type-selection.png)
 
+
+## Setting up the a webhook stage
 The basic configuration is what you might expect. Fill in the URL to make the request against, the HTTP method to use, and depending on the request type the payload and/or additional headers:
 
 ![Webhook Basic Config](/assets/images/webhook-basic.png)
@@ -21,6 +25,8 @@ Of particular note is that you can use [the Spinnaker pipeline expression langua
 
 In this simple configuration the stage will be marked as successful if it gets a 2XX status code back, and will fail on anything else. If the return value from the request itself isn't enough to determine the overall success you can check the "Wait for completion" checkbox and get a set of additional configuration:
 
+
+## Wait for completion using status field
 ![Webhook Wait For Completion](/assets/images/webhook-completion.png)
 
 There are three different techniques Spinnaker can use to lookup the overall status:
@@ -31,6 +37,8 @@ There are three different techniques Spinnaker can use to lookup the overall sta
 
 Spinnaker will use one of those mechanisms to find the status URL, and then repeatedly issue requests against that URL until it finds values that tell it what the final stage status should be. The "Status JsonPath" and mapping fields tell Spinnaker how to interpret the payloads that come back from the status URL. The "Status JsonPath" field is a [JsonPath](https://github.com/json-path/JsonPath) expression that Spinnaker uses to pull a single value from the payload for the status response. It compares the value from the payload to the values given in the SUCCESS, CANCELLED, and TERMINAL status mapping fields. Once there's a match the overall state of the stage is set.
 
+
+## Webhook execution
 Spinnaker records the URL used as part of the webhook, the payload, and the status URL as part of the stage details. If the webhook transaction can run for a long time and there's information available from the API, you can set the "Progress location" expression to also extract info to give some feedback about status in the Spinnaker UI. The "Progress location" value shows up in the Info field of the stage details:
 
 ![Webhook Stage Details](/assets/images/webhook-stage-details.png)

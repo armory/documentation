@@ -14,6 +14,11 @@ Barometer uses real-time data sources to validate that a canary is good or bad. 
 * Elastic Search
 * DataDog
 
+## Overview
+{:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
+
 ## Configuring A Canary Stage
 
 If canarying is enabled for your instance, you should be able to see a stage for canarying:

@@ -5,7 +5,9 @@ order: 74
 published: True
 ---
 
+
 # What is Kayenta
+{:.no_toc}
 
 Kayenta is an automated canarying analysis (ACA) service that is provided through Armory Spinnaker. The goal of Kayenta is to provide the end user with confidence that a deployment is safe through automation and intelligence.
 
@@ -13,6 +15,12 @@ Kayenta uses real-time data sources to validate that a canary is good or bad. To
 
 * DataDog
 * Stackdriver (Google)
+
+
+This guide includes:
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
+
 
 ## Configuring Kayenta on an Application
 

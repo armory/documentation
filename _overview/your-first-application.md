@@ -4,10 +4,9 @@ order: 30
 ---
 
 This guide should tell you:
-
-- What the first page is all about
-- How to create an application
-- How to delete an application
+{:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 
 ## At First Glance
