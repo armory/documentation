@@ -17,7 +17,7 @@ To get an overview of Pipelines as code, check out the [user guide](http://docs.
 
 - Create a personal access token (in either [GitHub](https://github.com/settings/tokens) or Stash) that has read access to all repos where `dinghyfile`s and `module`s reside. Place this token in a file called `github-creds.txt` (or `stash-creds.txt`). The contents of this file should be of the format: `username:token`. Place this file in your secrets management system. By default, this will be the S3 bucket where the other credentials for spinnaker are pulled from.
 
-> Note: All the below config file changes are either done in the configurator UI `https://your.spinnaker.installation/armory/config` or wherever spinnaker configs are stored in your installation.
+> Note: All the below config file changes are either done in the configurator UI `https://your.spinnaker.installation/#/platform/config` or wherever spinnaker configs are stored in your installation.
 
 - Add a line to `/bin/secrets` to copy the credentials created in the previous step to the instance where spinnaker will run. e.g.: `aws s3 cp s3://your-s3-bucket/aws/spinnaker/${ENV}/github-creds.txt "${SPINNAKER_SECRETS_DIR}"`
 
