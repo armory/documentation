@@ -4,14 +4,10 @@ title: Nomenclature and Naming Conventions
 order: 20
 ---
 
-This guide should:
-
-- tell you what these words mean in context of Armory Spinnaker
-- be searchable so you can find a word and its corresponding definition
-- explain Spinnaker’s naming convention
-
-
 ## Nomenclature of Domain Definitions:
+{:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 #### Application
 An application inside Spinnaker represents what you would typically find in a single code repository - and in many cases, an application maps directly to a microservice.

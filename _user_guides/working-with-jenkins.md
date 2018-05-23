@@ -4,11 +4,9 @@ order: 20
 ---
 
 This guide should include:
-
-
-- how to trigger Spinnaker pipelines from Jenkins
-- how to trigger Jenkins' jobs from Spinnaker
-
+{:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 ## Triggering a pipeline with Jenkins
 

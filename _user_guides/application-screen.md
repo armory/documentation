@@ -4,11 +4,9 @@ order: 10
 ---
 
 This guide should include:
-
-- What an application is within Spinnaker
-- Description of the Application detail page
-- How to delete an application
-
+{:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 An application within Spinnaker is a combination of clusters and load balancers. 
 
