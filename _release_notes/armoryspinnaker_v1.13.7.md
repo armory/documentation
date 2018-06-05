@@ -21,13 +21,14 @@ See the [Issue 2606](https://github.com/spinnaker/spinnaker/issues/2606) for mor
 
 Symptoms:
 ```
-unable to read client-key /certs/spinnaker.key for spinnaker due to open /certs/spinnaker.key: permission denied
+unable to read client-key /opt/spinnaker/certs/spinnaker.key for spinnaker due to open /opt/spinnaker/certs/spinnaker.key: permission denied
 ```
 
-Solution:  
-Here's an example for changing ownership of a file in clouddriver for the user `spinnaker` (id 100):
+Workaround:  
+A solution will be provided in a future release. The work around for now is changing the ownership of the file in the running container.
+Here's an example for setting the permissions to `spinnaker` (uid 100, gid 65533). We're running this on the ec2 host, but the uid and gid carries over.
 ```bash
-sudo docker exec -it -u root clouddriver chown 100:65533 /certs/spinnaker.*
+chown 100:65533 /opt/spinnaker/certs/spinnaker.key
 ```
 This can be done in [`/opt/spinnaker/bin/secrets`](https://github.com/armory/spinnaker-config-deb/blob/master/deb-config/spinnaker/bin/secrets) or in your userdata.
 
