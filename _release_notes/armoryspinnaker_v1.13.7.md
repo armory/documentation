@@ -14,7 +14,34 @@ hidden: false
 
 
 ## Known Issues
-There's currently no known issues with this release.
+
+#### Spinnaker can't access some files
+Spinnaker changed the user it runs as in a container from `root` to `spinnaker` for security reasons.
+See the [Issue 2606](https://github.com/spinnaker/spinnaker/issues/2606) for more information.
+
+Symptoms:
+```
+unable to read client-key /certs/spinnaker.key for spinnaker due to open /certs/spinnaker.key: permission denied
+```
+
+Solution:  
+Here's an example for changing ownership of a file in clouddriver for the user `spinnaker` (id 100):
+```bash
+sudo docker exec -it -u root clouddriver chown 100:65533 /certs/spinnaker.*
+```
+This can be done in [`/opt/spinnaker/bin/secrets`](https://github.com/armory/spinnaker-config-deb/blob/master/deb-config/spinnaker/bin/secrets) or in your userdata.
+
+
+#### Armory's Spinnaker Configuration doesn't work
+We've changed to a new configurator, but there's an issue with the redirect `https://spinnaker.armory.io/armory/config/` to `https://spinnaker.armory.io/#/platform/config`
+
+Symptoms:
+- loading `https://spinnaker.armory.io/armory/config/` load the old Configurator
+- cannot save configs using `https://spinnaker.armory.io/armory/config/`
+
+Solution:  
+Visit https://spinnaker.armory.io/#/platform/config instead.
+
 
 
 ## Highlighted Updates
