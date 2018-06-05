@@ -34,14 +34,15 @@ This can be done in [`/opt/spinnaker/bin/secrets`](https://github.com/armory/spi
 
 
 #### Armory's Spinnaker Configuration doesn't work
-We've changed to a new configurator, but there's an issue with the redirect `https://spinnaker.armory.io/armory/config/` to `https://spinnaker.armory.io/#/platform/config`
+We've changed to a new configurator, but there's an issue with the redirect from `https://spinnaker.your_dns_here/armory/config/` to `https://spinnaker.your_dns_here/#/platform/config`. In Chrome, the service worker will get a redirect to the new url, but Chrome security prevents this, therefore the page stays on `/armory/config`. 
 
 Symptoms:
-- loading `https://spinnaker.armory.io/armory/config/` load the old Configurator
-- cannot save configs using `https://spinnaker.armory.io/armory/config/`
+- loading `https://spinnaker.your_dns_here/armory/config/` load the old Configurator
+- cannot save configs using `https://spinnaker.your_dns_here/armory/config/`
 
-Solution:  
-Visit https://spinnaker.armory.io/#/platform/config instead.
+There's two available solutions:  
+- Manually go to [https://spinnaker.your_dns_here/#/platform/config](https://spinnaker.your_dns_here/#/platform/config) for configurations from now on.
+- See [How do I uninstall a Service Worker? (for Chrome)](https://stackoverflow.com/questions/33704791/how-do-i-uninstall-a-service-worker) to remove the service worker for `/armory/config`, then the redirect will now work.
 
 
 
