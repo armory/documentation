@@ -34,7 +34,7 @@ githubCredsPath:   /path/to/github-creds # credentials for github api (username:
 stashCredsPath:    /path/to/github-creds # credentials for stash api (username:token)
 stashEndpoint:     http://stash.mycompany.com/rest/api/1.0", # url where stash is running
 logging:
-    level: ERROR  # one of: (DEBUG, INFO, WARN, ERROR, FATAL, PANIC)
+    level: INFO  # one of: (DEBUG, INFO, WARN, ERROR, FATAL, PANIC)
     file: /var/log/dinghy.log  (This is optional, default is stdout i.e., goes to docker logs)
 orca:
     enabled: true
