@@ -33,6 +33,18 @@ chown 100:65533 /opt/spinnaker/certs/spinnaker.key
 This can be done in [`/opt/spinnaker/bin/secrets`](https://github.com/armory/spinnaker-config-deb/blob/master/deb-config/spinnaker/bin/secrets) or in your userdata.
 
 
+#### Armory's Spinnaker Configuration doesn't work
+We've changed to a new configurator, but there's an issue with the redirect `https://spinnaker.armory.io/armory/config/` to `https://spinnaker.armory.io/#/platform/config`
+
+Symptoms:
+- loading `https://spinnaker.armory.io/armory/config/` load the old Configurator
+- cannot save configs using `https://spinnaker.armory.io/armory/config/`
+
+Solution:  
+Visit https://spinnaker.armory.io/#/platform/config instead.
+
+
+
 ## Highlighted Updates
 ### Armory
 - We've been adding a lot of things preparing for our Armory Kubernetes Installations! Stay tuned!
