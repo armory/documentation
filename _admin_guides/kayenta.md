@@ -129,7 +129,7 @@ Add this indented under the `kayenta:` section in your `kayenta-local.yml` file:
 ### DataDog
 
 Make sure you have your API key and Application key from DataDog handy.  Then
-add this section indented under the `kayenta: section of your
+add this section indented under the `kayenta:` section of your
 `kayenta-local.yml` file:
 
 ```
