@@ -191,7 +191,7 @@ Add a registry entry for each service you wish to monitor in `/opt/spinnaker/con
 metrics_url: http://clouddriver:7002/spectator/metrics
 ```
 
-Add the Spinnaker monitoring configuration file in `/opt/spinnaker/config/spinnaker-monitoring.yml`:
+Add the Spinnaker monitoring configuration file in `/opt/spinnaker/config/spinnaker-monitoring-local.yml`:
 ```
 registry_dir: /opt/spinnaker-monitoring/registry
 
