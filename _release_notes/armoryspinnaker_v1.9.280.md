@@ -5,10 +5,14 @@ order: 960
 ---
 
 # 11/02/17 Release Notes
-
+{:.no_toc}
 > Note: If you're experiencing production issues after upgrading Spinnaker rollback to a [previous working version](http://docs.armory.io/admin-guides/troubleshooting/#i-upgraded-spinnaker-and-it-is-no-longer-responding-how-do-i-rollback)
 
 > Note: This release requires an update to your IAM access policy.  You can alway find the [latest policy in our  documentation](http://docs.armory.io/install-guide/adding_accounts/#assume-roles-in-iam).
+
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
+
 
 ## Highlighted Updates
 ### Armory Enterprise Spinnaker

@@ -1,16 +1,17 @@
 ---
 layout: post
-title: Logging
+title: Logging And Monitoring
 order: 130
 ---
 
 # What To Expect
+{:.no_toc}
 This guide should include:
-- Publishing logs to a centralized logging server like Splunk, Sumo Logic or Syslog
-- Validating configuration for log delivery
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 ## Armory Spinnaker's Application Logs with Docker
-Pushing your logs to a distributed service is as simple as using one of the logging drivers provided by Docker.   All logging comes from STDOUT inside of Docker and can be pushed to various endpoints.
+Pushing your logs to a distributed service is as simple as using one of the logging drivers provided by Docker.   All logging comes from `STDOUT` inside of Docker and can be pushed to various endpoints.
 
 
 ## Enabling A Logging Profile
@@ -128,8 +129,92 @@ After configuring distributed logging make sure logs are arriving before moving 
 
 If not all the logs are showing up you can get info about the logging setup from the Docker daemon. For example to **see information about where clouddriver logs are going** you can use this command:
 
-```{% raw %}
+```
+{% raw %}
 docker inspect -f '{{.HostConfig.LogConfig}}' clouddriver
-{% endraw %}```
+{% endraw %}
+```
 
 If the log config isn't what you expect then something is wrong in the Armory Spinnaker config, and if the config is what you expect the problem is likely in your distributed logging setup.
+
+## Monitoring Spinnaker With Datadog
+
+Spinnaker provides a monitoring container which exports metrics from the core sub-services. We'll need to add two additional containers to our docker-compose setup: `datadog` and `spinnaker-monitoring`.
+
+First, ensure the the metrics endpoint is enabled by adding the following configuration to `spinnaker-local.yml` if it isn't already present.
+
+```
+services:
+  spectator:
+    webEndpoint:
+      enabled: true
+```
+
+Add the following to `/opt/spinnaker/compose/docker-compose.override.yml`
+```
+version: "2.1"
+services:
+  datadog:
+    container_name: datadog
+    hostname: datadog${HOSTNAME_SUFFIX}
+    env_file: /opt/spinnaker/config/datadog_api_token.txt
+    environment:
+      - "SD_BACKEND=docker"
+    image: datadog/docker-dd-agent:latest
+    ports:
+      - "8125:8125"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+  spinnaker-monitoring:
+    container_name: spinnaker-monitoring
+    hostname: spinnaker-monitoring${HOSTNAME_SUFFIX}
+    image: armory/spinnaker-monitoring:version-0.1.0
+    ports:
+      - "8008:8008"
+    volumes:
+      - /opt/spinnaker/config/monitoring/registry/:/opt/spinnaker-monitoring/registry/
+      - /opt/spinnaker/config/:/opt/spinnaker-monitoring/config/
+```
+
+In the configuration above `/opt/spinnaker/config/datadog_api_token.txt` is a [secrets file](https://docs.armory.io/install-guide/config_repo/#secrets) which contains your Datadog API key
+
+```
+API_KEY=${YOUR_DATADOG_API_KEY}
+```
+
+Add a registry entry for each service you wish to monitor in `/opt/spinnaker/config/monitoring/registry`. You'll need to create 1 file per service. The filename should correspond to the service being monitored and the contents should contain a `metrics_url` of the service. For example, an entry for monitoring Clouddriver would have a filename such as `clouddriver.yml` and the contents would be:
+
+```
+# /opt/spinnaker/config/monitoring/registry/clouddriver.yml
+metrics_url: http://clouddriver:7002/spectator/metrics
+```
+
+Add the Spinnaker monitoring configuration file in `/opt/spinnaker/config/spinnaker-monitoring-local.yml`:
+```
+registry_dir: /opt/spinnaker-monitoring/registry
+
+server:
+  host: 0.0.0.0
+  port: 8008
+
+monitor:
+  period: 30
+
+  metric_store:
+    - datadog
+
+datadog:
+  api_key: ${API_KEY}
+```
+
+
+We'll then need to enable Armory to look for the override file.  Add the following in your env file which is located at `/opt/spinnaker/env/${STACK}.env`
+
+```
+DOCKER_COMPOSE_OVERRIDE=true
+```
+
+Then restart Armory Spinnaker:
+`service armory-spinnaker restart`

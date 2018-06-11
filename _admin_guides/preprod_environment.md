@@ -6,10 +6,11 @@ published: true
 ---
 
 # What To Expect
+{:.no_toc}
 This guide should include:
-- Why you need a preprod environment for Spinnaker
-- How to setup a preprod environment for Spinnaker
-- How to create a suite of integration pipelines to validate your preprod environment
+
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 
 ## Why Do I Need A Preprod Environment?

@@ -5,12 +5,17 @@ order: 120
 ---
 
 # What is Rosco?
+{:.no_toc}
 
 Rosco is the sub-service that manages baking using [Packer](https://www.packer.io/docs/), a cloud agnostic tool that automates the creation of images.  Rosco is a small API which manages the state of packer jobs and their executions so that it can report to other sub-systems. Make sure to read up on [Understanding Bake Scripts (Packer scripts)]({% link _install_guide/packer.md %}).
+
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 
 
 ## Configurations for Baking
+{:.no_toc}
 
 
 ### Templates Location
@@ -67,7 +72,7 @@ In some cases you'll want to dynamically generate a Base AMI for all deployments
 
 
 ### Working on Packer Scripts
-There's a few options on getting a config change out. 
+There's a few options on getting a config change out.
 1. Make a change to `spinnaker-config` repo and wait for a redeploy.  
 This method is useful for minor changes and to keep Spinnaker highly available with less downtime. However a bake and deploy will take on a minimum of 5-10 minutes.
 
@@ -94,8 +99,8 @@ If we're making changes to **rosco**, this will require you to restart Armory Sp
 
 3. **SSH into the Spinnaker instance**
 
-4. **sudo su** : 
-Spinnaker runs in root and all the files are owned by root. 
+4. **sudo su** :
+Spinnaker runs in root and all the files are owned by root.
 
 5. **`cd /opt/spinnaker`** :
 This is the home for Spinnaker
@@ -108,7 +113,7 @@ Initialize `/opt/spinnaker` as a git repo. It's helpful to see what exactly is c
 
 ### Modifying Packer Templates and Install Scripts
 
-If your organization uses different repositories between groups or if you need some additional custom logic run when baking images it is possible to customize the files that Rosco uses to drive Packer. As mentioned in the Template Files section above, those templates are normally stored in `/opt/spinnaker/config/packer`. The easiest way to get customizations working is to copy an existing example and add it to your spinnaker config. 
+If your organization uses different repositories between groups or if you need some additional custom logic run when baking images it is possible to customize the files that Rosco uses to drive Packer. As mentioned in the Template Files section above, those templates are normally stored in `/opt/spinnaker/config/packer`. The easiest way to get customizations working is to copy an existing example and add it to your spinnaker config.
 
 
 #### Example: Installing Docker before Each Bake
@@ -145,14 +150,14 @@ Once you have the custom template and script deployed onto your Spinnaker cluste
 The default configurations use `Ubuntu 12.04/14.0` as the default choices for Base OS - these are configurable by adding the configurations below to your `rosco-local.yml`.   You can specify a different `templateFile` per base image which should save time from a user perspective so they don't have to specify an additional parameter.  You can specify multiple base images and visualization settings for each region you need to process bakes.
 
 > **Note** There's currently a bug in the YAML merge that if you specify less than 3 `baseImages` (listed in `rosco.yml`), Spinnaker will show `null null` in the drop down for **Base OS**.
- 
+
 
 Here's a simple version of `rosco-local.yml`. See [Full Version](https://github.com/spinnaker/rosco/blob/master/rosco-web/config/rosco.yml)
 ```
 aws:
   enabled: true
   bakeryDefaults:
-    awsAssociatePublicIpAddress: false
+    awsAssociatePublicIpAddress: true
     templateFile: aws-ebs.json
     defaultVirtualizationType: hvm
     baseImages:
@@ -164,25 +169,44 @@ aws:
         # You can specify the templateFile used for this baseImage.
         # If not specified, the default templateFile will be used.
         templateFile: aws-ebs.json
-        virtualizationSettings:
-        - region: us-east-1
-          virtualizationType: hvm
-          instanceType: t2.micro
-          sourceAmi: ami-d4aed0bc
-          sshUserName: ubuntu
+      virtualizationSettings:
+      - region: us-east-1
+        virtualizationType: hvm
+        instanceType: t2.micro
+        sourceAmi: ami-d4aed0bc
+        sshUserName: ubuntu
+        spotPrice: 0
+        spotPriceAutoProduct: Linux/UNIX (Amazon VPC)
+      - region: us-west-1
+        virtualizationType: hvm
+        instanceType: t2.micro
+        sourceAmi: ami-4f285a2f
+        sshUserName: ubuntu
+        spotPrice: 0
+        spotPriceAutoProduct: Linux/UNIX (Amazon VPC)
     - baseImage:
         id: trusty
         shortDescription: v14.04
         detailedDescription: Ubuntu Trusty Tahr v14.04
         packageType: deb
-        virtualizationSettings:
-        - region: us-east-1
-          virtualizationType: hvm
-          instanceType: t2.micro
-          sourceAmi: ami-9eaa1cf6
-          sshUserName: ubuntu
+        # The following AMI ID's were retrieved from here:
+        # https://cloud-images.ubuntu.com/locator/ec2/
+      virtualizationSettings:
+      - region: us-east-1
+        virtualizationType: hvm
+        instanceType: t2.micro
+        sourceAmi: ami-9d751ee7
+        sshUserName: ubuntu
+        spotPrice: 0
+        spotPriceAutoProduct: Linux/UNIX (Amazon VPC)
+      - region: us-east-2
+        virtualizationType: hvm
+        instanceType: t2.micro
+        sourceAmi: ami-7960481c
+        sshUserName: ubuntu
+        spotPrice: 0
+        spotPriceAutoProduct: Linux/UNIX (Amazon VPC)
 ```
-
 
 
 ### Things to keep in mind
@@ -196,7 +220,7 @@ aws:
 * Instead, on boot time of the image, an machine  should pull the secret from a secret store.
 
 #### Avoid adding all the dependencies into the packer script
-* This will slow the the bake times because bake will be downloading and installing on each new app change. 
+* This will slow the the bake times because bake will be downloading and installing on each new app change.
 * Instead, use a prebake stage or prebaked image to speed up deploy times. Spinnaker will cache an existing bake if no changes have been made.
 
 #### Avoid having too many prebaked images.

@@ -5,8 +5,10 @@ order: 50
 ---
 
 # What To Expect
+{:.no_toc}
 This guide should include:
-- Configuring Jenkins (or multiple masters) as a trigger to kick-off pipelines
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 # Continuous Integration (CI)
 Spinnaker's goal is to leverage existing CI solutions to build and produce an artifact that can be deployed.
@@ -14,7 +16,7 @@ Spinnaker's goal is to leverage existing CI solutions to build and produce an ar
 ## Enabling Spinnaker to Communicate with Jenkins
 
 To enable Spinnaker to communicate with your Jenkins instance you will need to edit your `spinnaker-local.yml` file.
-First prepare to configure Jenkins by finding your password or API Token.  You can find your token here: `http://${YOUR_JENKINS_URL}.armory.io/me/configure`.
+First prepare to configure Jenkins by finding your password or API Token.  You can find your token here: `http://${YOUR_JENKINS_URL}/me/configure`.
 
 Then configure your `/opt/spinnaker/config/spinnaker-local.yml` file and add the following:
 

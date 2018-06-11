@@ -4,12 +4,12 @@ order: 40
 ---
 
 This guide should include:
+{:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
-- How to deploy AMIs
-- Common errors and troubleshooting
 
-
-Prerequisites and Assumptions:
+## Prerequisites and Assumptions:
 
 - You are deploying to Amazon Web Services (AWS)
 - You know how to create pipelines and utilize the [Bake stage]({% link _user_guides/baking-images.md %})

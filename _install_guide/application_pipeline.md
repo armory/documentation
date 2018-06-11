@@ -5,11 +5,11 @@ order: 90
 ---
 
 # What To Expect
+{:.no_toc}
 
 This guide should include:
-* Create a pipeline
-* Configure a `Bake` & `Deploy` stage
-* Execute a deployment pipeline
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 
 ## Creating A Pipeline

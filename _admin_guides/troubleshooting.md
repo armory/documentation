@@ -3,7 +3,8 @@ layout: post
 title: Troubleshooting
 order: 200
 ---
-
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 #### I upgraded Spinnaker and it is no longer responding, how do I rollback?
 
@@ -63,7 +64,9 @@ docker logs -f clouddriver
 This should stream all the `clouddriver` logs to your terminal.  You'll want to look for any obvious exceptions or stack-traces to share with the Armory Support team.
 
 #### How can I flush the Redis cache?
+**NOTE: When using Docker or Jenkins triggers, Redis's `FLUSHALL` could leave you vulnerable to extraneous pipeline runs, which could affect production piplines.** 
 
+<br/>
 1.  SSH into an active Armory Spinnaker node
 1.  Install redis server which comes with the cli tool. `apt-get install redis-tools`
 1.  Flush all content.  This will remove old executions.
@@ -98,4 +101,19 @@ logging:
   level:
     com.netflix.spinnaker.gate: DEBUG
     com.netflix.spinnaker.clouddriver: WARN
+```
+
+#### Accessing a service's `/resolvedEnv` endpoint
+Spinnaker uses Spring underneath the covers.  Spring has a sophisticated property file system which merges property files based on profiles, environment variables, and variable substitution. To see how Spring has resolved a final property set you'll need to disable security before issuing a GET request to the `/resolvedEnv` endpoint of the service.
+
+>Note:  Disabling security will leave secrets exposed through the `resolvedEnv` endpoint and should only be used for debugging purposes
+
+```
+security:
+  basic:
+    enabled: false
+
+management:
+  security:
+    enabled: false
 ```

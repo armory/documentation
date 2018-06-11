@@ -4,11 +4,9 @@ order: 30
 ---
 
 This guide should include:
-
-- How to bake an Amazon Machine Image (AMI)
-- How to use base images
-- Pulling from different package repositories
-- Troubleshooting
+{:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 
 Definition: The term 'Baking' is used within Spinnaker to refer to the process of creating machine images.

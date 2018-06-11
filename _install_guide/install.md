@@ -5,14 +5,18 @@ order: 20
 ---
 # Installing Armory Spinnaker
 {:.no_toc}
-
-The installer is a script that is responsible for asking the user for customer specific inputs like AWS keys, VPC, subnets and S3 buckets. These inputs are kept locally on your system and then passed to Terraform.  You can also install Armory Spinnaker directly from the Debian or RPM package if you don't need the additional resources (S3/ElastiCache/IAM roles) created for you.  Before getting started you'll want to review the [architecture](http://docs.armory.io/admin-guides/architecture/#high-availability-ha) guide, it'll give you an overview of Armory Spinnaker.
-
-
-* Table of Contents
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-## Installing Armory Spinnaker Installer Scripts
+
+## Installing Armory Spinnaker In Kubernetes
+Armory Spinnaker can now be installed in Kubernetes. Please [answer these questions about your Kubernetes installation](http://go.armory.io/kubernetes-questions) so we can help you install Armory.
+
+*Armory is working on making a self-installer available.*
+
+## Installing Armory Spinnaker Installer Scripts In AWS
+The installer is a script that is responsible for asking the user for customer specific inputs like AWS keys, VPC, subnets and S3 buckets. These inputs are kept locally on your system and then passed to Terraform.  You can also install Armory Spinnaker directly from the Debian or RPM package if you don't need the additional resources (S3/ElastiCache/IAM roles) created for you.  Before getting started you'll want to review the [architecture](http://docs.armory.io/admin-guides/architecture/#high-availability-ha) guide, it'll give you an overview of Armory Spinnaker.
+
 Armory Spinnaker comes with an installer that walks you through deploying Spinnaker in your AWS account.  It should only take 15 minutes to have an instance of Armory Spinnaker up and running.  To get started, open up a terminal and execute the following:
 
 `bash -c "$(curl -sS https://get.armory.io)"`
@@ -56,3 +60,11 @@ The installer will download the latest stable version of the Terraform files and
 ### Validating Your Spinnaker Install
 
 ![hello](https://cl.ly/2g163N1z050V/download/98c70de3cd1c9778e50d5aa0e4db15f6_Image%202017-09-13%20at%204.10.04%20PM.png)
+
+### Uninstall Armory Spinnaker
+
+To uninstall Armory Spinnaker, run the install script again with the following environment variable set: `UNINSTALL_ARMORY_SPINNAKER=uninstall`. 
+
+```
+UNINSTALL_ARMORY_SPINNAKER=uninstall bash -c "$(curl -sS https://get.armory.io)"
+```

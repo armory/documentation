@@ -1,13 +1,14 @@
 ---
 layout: post
-title: Understanding Bake Scripts (Packer scripts)
+title: Understanding Bake Scripts (Packer templates)
 order: 80
 ---
 
 # What To Expect
+{:.no_toc}
 This guide should include:
-- Overview of the Spinnaker bake process using Packer
-- Configuration details with Rosco & Packer regarding location and simple usage
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 **Note** If you're using Kubernetes, you can skip this section.
 

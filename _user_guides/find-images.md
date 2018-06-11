@@ -4,13 +4,11 @@ order: 60
 ---
 
 This guide should include:
+{:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
-- How to work with Base AMIs
-- How to select which AMI to use in your pipeline
-- How to use the expression language with the 'Find Image' pipeline stage
-
-
-Prerequisites and Assumptions:
+## Prerequisites and Assumptions:
 
 - You have experience [baking]({% link _user_guides/baking-images.md %}) and [deploying images]({% link _user_guides/deploying.md %}) with Spinnaker
 
