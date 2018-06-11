@@ -49,3 +49,18 @@ $ cat /opt/spinnaker/config/clouddriver-redis.yml
 redis:
   connection: ${CLOUDDRIVER_REDIS_URL:redis://localhost:6379}
 ```
+
+
+### Validate the setup is correct
+Look through your logs for to make sure the nonpolling instances don't poll any resources. Here's some examples:
+
+For `igor`, only the polling instance should have log lines like:
+```
+INFO 1 --- [readScheduler-2] c.n.s.igor.jenkins.JenkinsBuildMonitor   : Polling cycle started: Fri Jun 08 18:15:35 GMT 2018
+INFO 1 --- [readScheduler-2] c.n.s.igor.jenkins.JenkinsBuildMonitor   : Polling cycle done in 1359ms
+```
+
+For `echo`, only the polling instance should have this line:
+```
+INFO 1 --- [pool-5-thread-1] .s.e.s.a.p.i.PipelineConfigsPollingAgent : Running the pipeline configs polling agent...
+```
