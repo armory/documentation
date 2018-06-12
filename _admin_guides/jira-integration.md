@@ -115,6 +115,7 @@ tickets:
     - applicationName: website
       gitHubOrg: armory
       gitHubRepoName: documentation
+      # picks 348ac8f from a image tagged like: armory/example:master-348ac8f
       regexForShaInDockerTag: "(\\w+)$"
       updateFields:
         "Deployed Environments": "{account}:{application}-{stack}"
