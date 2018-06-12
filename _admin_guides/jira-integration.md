@@ -82,5 +82,109 @@ These IDs will be different for every workflow.  Note that if the workflow
 disallows the transition from the current stage to the stage given, this
 stage will fail.
 
+## Updating Jira Tickets on Deploy
 
+If you're using GitHub, you can also configure Spinnaker to update tickets
+based on the git commits that have been included a Deploy.
+
+To enable this feature, add the following to your `spinnaker-local.yml` file:
+
+```
+features:
+  jira:
+    updatesEnabled: true
+    login: system
+    password: "My.Service.Account.Password"
+    url: "https://myjira.atlassian.net/"
+```
+
+Set the `login` and `password` to your service account's credentials, and
+tweak the `url` to be the base URL for your Jira instance.
+
+You'll then need to configure your applications.  Edit (or create) your
+`echo-local.yml` configuration file and add this section:
+
+```
+github:
+  enabled: true
+  authToken: "12345670........0986321"
+
+tickets:
+  enabled: true
+  applications:
+    - applicationName: website
+      gitHubOrg: armory
+      gitHubRepoName: documentation
+      regexForShaInDockerTag: "(\\w+)$"
+      updateFields:
+        "Deployed Environments": "{account}:{application}-{stack}"
+      addComment: "Deployed {application} to {stack} ({account})"
+      transitions: [
+        ["*", "Done"]
+      ]
+    # If you need to add another application, you can do it here...
+    # - applicationName: otherapp
+    #   ...
+```
+
+The `authToken` should be set to your GitHub access token so Spinnaker can
+query your repositories for commit messages.
+
+Under `tickets` you'll want to configure one (or more) applications; each
+entry in the list can support the following keys:
+
+* _`applicationName`_: The name of the application whose Deploy stages should trigger the updates.  This field is required.
+* _`gitHubOrg`_: Your GitHub organization
+* _`gitHubRepoName`_: The name of the repository in that organization
+* _`regexForShaInDockerTag`_:  If using your image tag to maintain your git
+SHA hash, you can identify a regular expression here to pick it out.  The
+example above grabs all alphanumerics from the end of the name. (Optional,
+unless relying on your image to identify git hash)
+* _`updateFields`_:  Within this section, you can identify a Jira field name
+(in this example, we created a custom field named "Deployed Environments"),
+and the value to set/add for those tickets identified in the git commit
+messages (see below). (Optional)
+* _`addComment`_:  An option configuration; if present, will add a comment
+to the relevant tickets. (Optional)
+* _`transitions`_:  This allows you to configure state transitions for tickets;
+each pair represents the "current state" and the "next state".  An asterisk
+matches any current state (and so if used, should be put last in the list).
+The first "current state" match for the ticket will be used to determine the
+next state -- only one transition will occur per Deploy. (Optional)
+
+The `updateFields` section supports several field types, but has been designed
+specifically for Text Field and Labels fields.  If the field is a Text Field,
+the update will overwrite whatever content is already there.  If the field
+is a Labels type, the update will add the value as a new tag, unless the tag
+is already set in the field (case-insensitive comparison).
+
+The values for the `updateFields` and `addComment` allow for a limited set
+of substitutions:
+
+* `{application}`:  The name of the application this pipeline exists on
+* `{account}`:  The cloud service account configured for the pipeline
+* `{stack}`: The stack defined in the Deploy
+
+The Jira tickets to be updated are found from the git commit messages; if
+you reference a Jira ticket in the commit message (as you should, to map
+the commits to the tickets in the first place), then, when a Deploy occurs
+and that commit is included, the update logic configured will be applied to
+those tickets as well.
+
+The only commit entries that will be considered will be those between the
+last successful deploy from that pipeline, up to the current deploy.  If
+this is the first time running the deploy, the system will not update any
+tickets.
+
+Identifying the commit hashes is the tricky part.  If your Jenkins trigger
+has the GitHub repository(ies) configured, the system will find the org
+and repo name from the trigger.  This can support multiple repositories
+being used as the trigger for a pipeline, and the correct git hashes will
+be mapped to the correct repositories for searching.
+
+Alternatively, you can embed the git hash into the image name during your
+build; in this case, since there is no identifiable commit data coming from
+your trigger, the system will use the `gitHubOrg` and `gitHubRepoName`
+configured, and the `regexForShaInDockerTag` regex to identify the part of
+the image name that contains the hash.
 
