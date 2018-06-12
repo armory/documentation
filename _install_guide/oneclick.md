@@ -57,7 +57,12 @@ By default, the 1-Click App Creation performs the following tasks:
 
 - `createGoogleDNSEntry` : This step creates a DNS entry (in GCP for the alpha version) for the app that is deployed.
 
-The follwing is a sample `config/oneclick-local.yml` template that can be used to customize/override defaults. Note how we're skipping the `createLoadBalancer` action in the below yaml file. The `basePipelineApp` is the app in spinnaker where the deploy pipeline is copied over from (the dashes `-` in the name are ignored since spinnaker doesn't allow them in app names). The `repoURL` field is the template repo on which the app is based.
+The follwing is a sample `config/oneclick-local.yml` template that can be used to customize/override defaults. Points to note:
+- We're skipping the `createLoadBalancer` _action_ in the yaml file.
+- The `basePipelineApp` is the app in spinnaker where the deploy pipeline is copied over from (the dashes `-` in the name are ignored since spinnaker doesn't allow them in app names).
+- The `repoURL` field is the template repo on which the app is based.
+- The `name` field is used for the name of the template to copy from (usually same as `basePipelineApp`)
+- The `image` field controls what image is displayed in the modal while choosing templates. (leave it as `gopher` in the alpha version)
 
 ```{% raw %}
 templates: 
