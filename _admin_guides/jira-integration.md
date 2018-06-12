@@ -13,7 +13,7 @@ The Echo service handles all notifications, scheduled pipelines(e.g. cron jobs) 
 To enable the Jira Stages (Create, Transition, Update, and Comment), you'll
 need to edit your `spinnaker-local.yml` to have the following section:
 
-```
+```yaml
 features:
   jira:
     enabled: true
@@ -25,7 +25,7 @@ The `basicAuthToken` is your Jira service account's username and password,
 separated by a colon, and then base64'd.  This can be determined with this
 this command line (tested on Ubuntu and Mac OS X):
 
-```
+```bash
 echo "paul:mypass" | base64
 ```
 
@@ -89,7 +89,7 @@ based on the git commits that have been included a Deploy.
 
 To enable this feature, add the following to your `spinnaker-local.yml` file:
 
-```
+```yaml
 features:
   jira:
     updatesEnabled: true
@@ -104,7 +104,7 @@ tweak the `url` to be the base URL for your Jira instance.
 You'll then need to configure your applications.  Edit (or create) your
 `echo-local.yml` configuration file and add this section:
 
-```
+```yaml
 github:
   enabled: true
   authToken: "12345670........0986321"
@@ -134,23 +134,37 @@ Under `tickets` you'll want to configure one (or more) applications; each
 entry in the list can support the following keys:
 
 * _`applicationName`_: The name of the application whose Deploy stages should trigger the updates.  This field is required.
+
+These fields help identify the GitHub repo that should be checked for commits;
+if you are triggering the pipeline from repo changes, these fields may not be
+necessary, as the URL for the repo can be found in the trigger.  However, if
+you're using containers or images as your trigger, the system will need to 
+know what repository to check against, and how to discover the git hash (SHA)
+from the image name.
+
 * _`gitHubOrg`_: Your GitHub organization
 * _`gitHubRepoName`_: The name of the repository in that organization
 * _`regexForShaInDockerTag`_:  If using your image tag to maintain your git
 SHA hash, you can identify a regular expression here to pick it out.  The
-example above grabs all alphanumerics from the end of the name. (Optional,
-unless relying on your image to identify git hash)
+example above grabs all alphanumerics from the end of the name.  This regex
+uses Java's regular expression syntax, the first capture (in the parens) is
+expected to be the commit hash.
+
+These fields define what action to take on the found tickets; they're all
+optional, although at least one needs to be defined if any action is to be
+taken.
+
 * _`updateFields`_:  Within this section, you can identify a Jira field name
 (in this example, we created a custom field named "Deployed Environments"),
 and the value to set/add for those tickets identified in the git commit
-messages (see below). (Optional)
+messages (see below).
 * _`addComment`_:  An option configuration; if present, will add a comment
-to the relevant tickets. (Optional)
+to the relevant tickets.
 * _`transitions`_:  This allows you to configure state transitions for tickets;
 each pair represents the "current state" and the "next state".  An asterisk
 matches any current state (and so if used, should be put last in the list).
 The first "current state" match for the ticket will be used to determine the
-next state -- only one transition will occur per Deploy. (Optional)
+next state -- only one transition will occur per Deploy.
 
 The `updateFields` section supports several field types, but has been designed
 specifically for Text Field and Labels fields.  If the field is a Text Field,
