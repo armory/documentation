@@ -121,6 +121,7 @@ tickets:
         "Deployed Environments": "{account}:{application}-{stack}"
       addComment: "Deployed {application} to {stack} ({account})"
       transitions: [
+        ["To Do", "In Progress", "Done"],
         ["*", "Done"]
       ]
     # If you need to add another application, you can do it here...
@@ -162,10 +163,14 @@ messages (see below).
 * _`addComment`_:  An option configuration; if present, will add a comment
 to the relevant tickets.
 * _`transitions`_:  This allows you to configure state transitions for tickets;
-each pair represents the "current state" and the "next state".  An asterisk
-matches any current state (and so if used, should be put last in the list).
-The first "current state" match for the ticket will be used to determine the
-next state -- only one transition will occur per Deploy.
+each array represents the "current state" and the sequence of states to
+transition through, in order. An asterisk matches any current state (and so if
+used, should be put last in the list).  In the example above, a ticket found
+in the "To Do" state will be transitioned to "In Progress" and then to "Done".
+Any tickets found in any other state would be transitioned straight to "Done".
+If the transition is illegal, the transition will fail and the error ignored.
+If no transition lists match the current state, the ticket state will be left
+unchanged.
 
 The `updateFields` section supports several field types, but has been designed
 specifically for Text Field and Labels fields.  If the field is a Text Field,
