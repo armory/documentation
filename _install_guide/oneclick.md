@@ -74,4 +74,5 @@ templates:
     image: gopher
     name: oneclick-go-template
     repoURL: "https://github.com/armory-io/oneclick-go-template"
+    githubOrg: "armory-io"
 {% endraw %}```
