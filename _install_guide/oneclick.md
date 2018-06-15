@@ -27,6 +27,12 @@ features:
       uiEnabled: true
 ```
 
+- If this is on the AWS EC2 installation of spinnaker, set the following environment variables in your `prod.env` (or `preprod.env` or `dev.env` depending on where you are running the platform):
+```
+PLATFORM_ENABLED=true
+PLATFORM_UI_ENABLED=true
+```
+
 - Create a new file: `config/platform-local.yml` with the following contents:
 ```
 github:
