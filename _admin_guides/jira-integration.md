@@ -23,7 +23,7 @@ features:
 
 The `basicAuthToken` is your Jira service account's username and password,
 separated by a colon, and then base64'd.  This can be determined with this
-this command line (tested on Ubuntu and Mac OS X):
+command line (tested on Ubuntu and Mac OS X):
 
 ```bash
 echo -n "paul:mypass" | base64
