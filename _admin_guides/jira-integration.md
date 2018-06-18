@@ -26,7 +26,7 @@ separated by a colon, and then base64'd.  This can be determined with this
 this command line (tested on Ubuntu and Mac OS X):
 
 ```bash
-echo "paul:mypass" | base64
+echo -n "paul:mypass" | base64
 ```
 
 The `createIssueUrl` is the API issue create endpoint for the Jira API.  The
