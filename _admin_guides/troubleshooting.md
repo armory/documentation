@@ -101,6 +101,7 @@ logging:
   level:
     com.netflix.spinnaker.gate: DEBUG
     com.netflix.spinnaker.clouddriver: WARN
+    root: DEBUG   # if you want all the debug logs, it's a lot...
 ```
 
 #### Accessing a service's `/resolvedEnv` endpoint
