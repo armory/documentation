@@ -123,6 +123,32 @@ services:
 
 Note that `${ACCESSID}` and `${ACCESSKEY}` in the example above should be replaced with your actual Sumo Logic acceess keys. If this is your first Docker source configured through Sumo Logic you may have to configure the source on the Sumo Logic side. Please see the [Docker Collector documentation from Sumo Logic](https://help.sumologic.com/Send-Data/Data-Types/Docker/01_Collect_Events_and_Statistics_for_the_Docker_App) for info about configuring a source.
 
+## Example: Logging to Datadog
+
+In a similar fashion to Sumo Logic, Datadog uses an agent running on the host to collect and ship logs. To use the Datadog agent with your Armory Spinnaker installation, add/edit `/opt/spinnaker/compose/docker-compose.override.yml` and set `DOCKER_COMPOSE_OVERRIDE=true` in `/opt/spinnaker/env`. If you've created `/opt/spinnaker/componse/docker-compose.override.yml`, you would add the following content to the file:
+
+```
+version: "2.1"
+services:
+  datadog-agent:
+    container_name: dd-agent
+    hostname: dd-agent
+    image: datadog/agent:latest
+    environment:
+      - DD_API_KEY=${DD_API_KEY}
+      - DD_LOGS_ENABLED=true
+      - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /opt/datadog-agent/run:/opt/datadog-agent/run:rw
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+```
+
+You should replace `DD_API_KEY` with you Datadog API Key. For more information about configuring the Datadog agent, checkout their docs [here](https://app.datadoghq.com/logs/onboarding/container).
+
+
+
 ## Validate Log Delivery
 
 After configuring distributed logging make sure logs are arriving before moving on. If this is the first time you're setting up logging just searching for the Spinnaker services such as clouddriver or front50 should be enough. If you need to test a more complicated setup sometimes it's best to run a manual execution for a pipleline or wait for a new pipeline to run, and then use the execution ID from the run to make sure all the parts are appearing that you expect.
