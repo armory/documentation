@@ -45,6 +45,23 @@ There's two available solutions:
 - See [How do I uninstall a Service Worker? (for Chrome)](https://stackoverflow.com/questions/33704791/how-do-i-uninstall-a-service-worker) to remove the service worker for `/armory/config`, then the redirect will now work.
 
 
+#### Cannot deploy AWS encrypted snapshots
+If you're trying to deploy an encrypted snapshot, Spinnaker will throw errors because AWS doesn't allow you to respecify encryption.
+
+Symptoms:  
+In the ASG logs, you will see:
+```
+Parameter encrypted is invalid. You cannot specify the encrypted flag if specifying a snapshot id in a block device mapping. Launching EC2 instance failed.
+```
+
+Workaround:  
+Select `Defaults for selected instance type` on the deploy stage, which will attach an extra, unencrypted volume at runtime.  
+![](https://cl.ly/1V2a0u2n3k2e/Screen%20Shot%202018-07-05%20at%2013.27.33.png)
+
+Fix:  
+Fixed in the next version.
+
+
 
 ## Highlighted Updates
 ### Armory
