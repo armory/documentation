@@ -1,6 +1,6 @@
 ---
 layout: post
-title: v1.14.23 Armory Release
+title: v1.14.x Armory Release
 order: -20180710000252
 hidden: true
 ---
