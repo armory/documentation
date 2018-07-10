@@ -2,7 +2,7 @@
 layout: post
 title: v1.14.23 Armory Release
 order: -20180710000252
-hidden: false
+hidden: true
 ---
 
 # 07/09/18 Release Notes
@@ -32,20 +32,24 @@ Igor added ..... which does.....
 REMOVE ME: QUICK SUMMARY OF WHAT'S CHANGED WITH ARMORY
 
 
-#### Platform
-REMOVE ME: FOR EACH OF OUR SERVICES, PICK OUT SOME NOTIBLE CHANGES
+#### Dinghy
+ - Add download cache for Github and Stash (#65)
+ - feat(github): support github enterprise endpoints (#64)
 
 
+#### Armory Echo
+ - fix(jira) make sure to check for all jira tickets in commit message (#61)
+ - feat(jira) support multiple scms from Jenkins (#60)
+
+
+#### Armory Echo
+ - addding ntp (#362)
 
 
 ###  Spinnaker Community Contributions
-REMOVE ME: link to the spninaker release: https://www.spinnaker.io/community/releases/versions
-REMOVE ME: maybe copy their notable changes here
-<!-- Example message
 There have also been numerous enhancements, fixes and features across all of Spinnaker's other services. See their changes here:
-[Spinnaker's v1.7.0](https://www.spinnaker.io/community/releases/versions/1-7-0-changelog)
-[Spinnaker's v1.7.1](https://www.spinnaker.io/community/releases/versions/1-7-1-changelog)
--->
+[Spinnaker's v1.8.0](https://www.spinnaker.io/community/releases/versions/1-8-0-changelog)
+[Spinnaker's v1.8.1](https://www.spinnaker.io/community/releases/versions/1-8-1-changelog)
 
 
 #### Igor
@@ -64,19 +68,18 @@ Igor added ..... which does.....
 ## Detailed Updates
 ### Armory
 ### Lighthouse&trade; - d7395c7...84a5687
- - fix(health) OSS health checks are on /health (#214)
- - Permitting the use of a "wildcard" migration. (#212)
- - ENG-2083: Update armoryVersion in pipeline after migration (#211)
- - Remove the migration_paths_cache. (#210)
- - Add a /v1/upgrade/current endpoint (#209)
- - Debugging Migrations (#208)
- - Allow a migration definition to be a dict (#207)
- - ENG-1963: Forgot to actually add routes on import (#206)
- - ENG-1955 config migrator (#205)
+ - k8s installation: fix(health) OSS health checks are on /health (#214)
+ - k8s installation: Permitting the use of a "wildcard" migration. (#212)
+ - k8s installation: ENG-2083: Update armoryVersion in pipeline after migration (#211)
+ - k8s installation: Remove the migration_paths_cache. (#210)
+ - k8s installation: Add a /v1/upgrade/current endpoint (#209)
+ - k8s installation: Allow a migration definition to be a dict (#207)
+ - k8s installation: ENG-1963: add routes for front50 (#206)
+ - k8s installation: ENG-1955 add config migrator (#205)
 
 ### Dinghy&trade; - 2015849...f8a6984
- - Add download cache (#65)
- - feat(github): support github endpoint (#64)
+ - Add download cache for Github and Stash (#65)
+ - feat(github): support github enterprise endpoints (#64)
  - feat(config): merge defualt config with -local (#63)
  - Revert "feat(github): make github endpoint configurable (#61)" (#62)
  - feat(github): make github endpoint configurable (#61)
@@ -85,7 +88,6 @@ Igor added ..... which does.....
  - The default value of a var can now come from another var. That var has to be prefixed with an @. e.g.,: "{{ var "discovery-service-name" ?: "@application" }}"
 
 ### Platform&trade; - ff5e90c...8812305
- - I think this will prevent the panic for GoodRx. (#203)
  - feat(logging) log each time we're making a request to slack
  - Removed GitHubOrg from AppCreationTask struct and put it in the template since it can potentially be a different org per template, also removed hardcoding of the org and fixed some typos in env var names (#201)
  - feat(logging) add more debug logging (#200)
@@ -98,25 +100,19 @@ Igor added ..... which does.....
  - feat(assets) add armorybot slack icons
  - feat(settings) try to fetch the password from yaml (#197)
  - read namespace from config (#192)
- - hack(slack-sla) truncate number of SG to rollback
  - change namespace to K8s account available in dev. This should be re-worked so that we read the namespace either from settings or from the UI (#190)
  - fix(rollback) orca changed it's endpoint and content type for tasks (#189)
 
 ### Armory Echo  - 00219be...e8f6375
- - Add armory listener (#65)
  - refactor(jira) rename Armory Jira classes due to OSS conflict (#64)
  - If the substitutions are null, replace with blank. (#63)
  - feat(tests) add doc on how which integration tests to run (#62)
  - fix(jira) make sure to check all tickets (#61)
  - feat(jira) support multiple scms (#60)
- - Try to get things working. (#59)
  - Add README notes (#58)
  - ENG-2009: Remove moniker variables (not supported) (#57)
- - Only dump json for deploy events. (#56)
- - I think this is how to identify stage type now... (#55)
- - Let's try dumping actual JSON. (#54)
- - Add debugging to find out what's going on. (#53)
- - orca:stage:complete to orca:task:complete (#52)
+ - OSS changed the way they identify stages (#55)
+ - OSS changed from orca:stage:complete to orca:task:complete (#52)
 
 ### Armory Deck  - f57955c...85d49d4
  - Eng 1945 autogenerate ui (#376)
@@ -128,56 +124,36 @@ Igor added ..... which does.....
  - Don't even bother checking for updates on AWS (#370)
  - refactor(barometer): removed barometer (#369)
  - Don't except if the parsed URL has no protocol. (#368)
- - feat(oss): pin deck-modules because it's release-1.8.x is breaking (#367)
- - ALWAYS load the HEADER_SHIM, but... (#366)
+ - ALWAYS load the HEADER_SHIM (#366)
  - Eng 2061 disable ui configs (#365)
  - On AWS, always return 'true' for admin permissions (#364)
  - ENG-2045 config link auth (#363)
  - ENG-1900 software update (#359)
- - Revert "remove localhost check (#361)" (#362)
- - remove localhost check (#361)
  - Schema-based configurator (#357)
- - Revert "Revert "Revert "Eng 2045 config link auth (#349)" (#354)" (#355)" (#356)
- - Revert "Revert "Eng 2045 config link auth (#349)" (#354)" (#355)
- - Revert "Eng 2045 config link auth (#349)" (#354)
  - Eng 2045 config link auth (#349)
- - removed debug (#351)
  - moved github org to templates, spinnaker app email now comes from the user through the modal (#350)
  - fix(chaos): allow chaosMonkey enabled (#347)
  - For CORS requests, use the "include" value to allow sending credentia… (#346)
  - inverse header logo and styles (#345)
  - Ui refinements continued (#339)
  - Style modal (#344)
- - fix name (#343)
  - ENG-2015: Remove `Armory` prefix from class names (#342)
  - use session cookie in fetch requests to platform (required for prod) (#341)
  - feat(ArmoryOptimize) ability to hide/show link (#340)
- - no mo(no) (#338)
  - Eng-1978 (#337)
  - Remove monospace font and adjust top bar bg color (#336)
  - fix(configurator-settings) adds missing brace (#335)
- - Jack nav consistency (#334)
 
 ### Armory Gate  - d95a452...f08bd40
  - Forward /configurator/* to configurator (#12)
 
 ### Packager - 5e4e88e...94b3599
  - feat(oss): release-1.8.x upgrade (#366)
- - Put it in the right place yet again (#365)
- - Do not set armory_id to zeros (#364)
  - Move the armory ID step (#363)
  - addding ntp (#362)
- - Use Splunk id to identify armory users (#361)
- - fix(release-1.7.x) don't respecifiy EBS encryption snapshotId is set (#360)
- - fix(release-1.7.x) don't respecifiy EBS encryption if true (#359)
- - fix(release-1.7.x) don't respecifiy EBS encryption if true (#358)
- - -- bringing it back after fixing upstream job -- (#357)
  - Revert "add spinnaker monitoring job to the list of triggers (#355)" (#356)
  - add spinnaker monitoring job to the list of triggers (#355)
  - mount the right dirs for the monitoring container (#354)
- - feat(pin) remove igor pin, PRs merged in (#353)
- - fix(oss) unpin services that were pinned for 1.8 (#352)
- - fix(oss) pinning services broken in our move to release-1.8.x (#351)
  - feat(build) pinning igor for multiple scms (#350)
  - ENG-2016: update orca-armory.yml (#349)
  - monitoring container (#348)
@@ -188,6 +164,16 @@ Igor added ..... which does.....
 
 
 ###  Spinnaker Community Contributions
+To see the detailed changes for each service see: [Spinnaker's v1.8.0](https://www.spinnaker.io/community/releases/versions/1-8-0-changelog#individual-service-changes), [Spinnaker's v1.8.1](https://www.spinnaker.io/community/releases/versions/1-8-1-changelog#individual-service-changes).
+
+<!-- Changes listed below is are extra changes that have not yet made it to another Spinnaer release version: -->
+
+
+
+
+----  YOU GOTTA DO SOME WORK HERE
+----  FILTER OUT SOME OF THIS STUFF SO THAT IT"S EXTRAS
+
 ### Clouddriver  - f432528...973b46b
  - fix(provider/kubernetes): be more tolerant of failing health checks (#2750) (#2752)
  - fix(aws) only set encryption if snapshotId is not provided (#2747)
