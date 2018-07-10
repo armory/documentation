@@ -16,7 +16,8 @@ hidden: true
 
 ## Known Issues
 There's currently no known issues with this release.
-<!-- Example of a problem
+
+<!--- Example of a problem
 Igor added ..... which does.....
 
 **Symptoms:**
@@ -29,7 +30,7 @@ Igor added ..... which does.....
 
 ## Highlighted Updates
 ### Armory
-REMOVE ME: QUICK SUMMARY OF WHAT'S CHANGED WITH ARMORY
+<!--- A quick summary of what's changed with Armory -->
 
 
 #### Dinghy
@@ -54,7 +55,9 @@ There have also been numerous enhancements, fixes and features across all of Spi
 
 #### Igor
 REMOVE ME: FOR EACH OF SPINNAKER'S SERVICES, PICK OUT SOME NOTIBLE CHANGES
-<!-- An example of a problem
+
+<!---
+An example of a problem
 Igor added ..... which does.....
 
 **Symptoms:**
