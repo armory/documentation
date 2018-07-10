@@ -48,21 +48,10 @@ Igor added ..... which does.....
 
 
 ###  Spinnaker Community Contributions
-There have also been numerous enhancements, fixes and features across all of Spinnaker's other services. See their changes here:
-[Spinnaker's v1.8.0](https://www.spinnaker.io/community/releases/versions/1-8-0-changelog)
-[Spinnaker's v1.8.1](https://www.spinnaker.io/community/releases/versions/1-8-1-changelog)
+There have also been numerous enhancements, fixes and features across all of Spinnaker's other services. See their changes here:  
+[Spinnaker's v1.8.0](https://www.spinnaker.io/community/releases/versions/1-8-0-changelog)  
+[Spinnaker's v1.8.1](https://www.spinnaker.io/community/releases/versions/1-8-1-changelog)  
 
-
-#### Igor
-REMOVE ME: FOR EACH OF SPINNAKER'S SERVICES, PICK OUT SOME NOTIBLE CHANGES
-
-<!---
-An example of a problem
-Igor added ..... which does.....
-
-**Symptoms:**
-**Fix:**
--->
 
 
 
@@ -70,7 +59,8 @@ Igor added ..... which does.....
 <br><br><br>
 ## Detailed Updates
 ### Armory
-### Lighthouse&trade; - d7395c7...84a5687
+### Lighthouse&trade; - d7395c7...1ed2b09
+ - k8s installation: ENG-2115 postinstall notes (#215)
  - k8s installation: fix(health) OSS health checks are on /health (#214)
  - k8s installation: Permitting the use of a "wildcard" migration. (#212)
  - k8s installation: ENG-2083: Update armoryVersion in pipeline after migration (#211)
@@ -174,8 +164,11 @@ To see the detailed changes for each service see: [Spinnaker's v1.8.0](https://w
 
 
 
-----  YOU GOTTA DO SOME WORK HERE
-----  FILTER OUT SOME OF THIS STUFF SO THAT IT"S EXTRAS
+<!--- 
+YOU GOTTA DO SOME WORK HERE!!
+remove commits that are already included with 1.8.1, only keep what is on top of 1.8.1
+-->
+
 
 ### Clouddriver  - f432528...973b46b
  - fix(provider/kubernetes): be more tolerant of failing health checks (#2750) (#2752)
