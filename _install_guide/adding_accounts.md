@@ -196,5 +196,5 @@ artifacts:
         username: armory-bot
         password: supersecretpassword
         # usernamePasswordFile should only be used if username and password are not used
-        usernamePasswordFile: /passwords/bitbucketCreds.txt
+        usernamePasswordFile: /passwords/httpCreds.txt
 ```
