@@ -87,3 +87,114 @@ correct trust policy in IAM.  Below is the trust policy you give the `SpinnakerM
 Below is the latest EC2 policy to use for allowing `SpinnakerInstanceProfile`.
 
 <script src="http://gist-it.appspot.com/https://github.com/Armory/spinnaker-aws-policy/blob/master/policies/latest/SpinnakerInstanceProfile.json"></script>
+
+
+# Adding Artifact Accounts
+
+Artifacts are a main driver behind the Kubernetes V2 provider. They allow you to store Kubernetes manifests in external repositories such as Github or S3 and then deploy those artifacts with Spinnaker. There are many different artifact providers and they are all configured in a similar fashion. 
+
+To configure an artifact account, add any of the following snippets to `clouddriver-local.yml` under the top level `artifacts` key. For example, if you wanted to configure 2 artifact accounts, S3 and Github, you would configure them as follows:
+
+```
+# clouddriver-local.yml
+artifacts:
+  s3:
+    enabled: true
+    accounts:
+      - name: s3
+        region: us-west-2
+  github:
+    enabled: true
+    accounts:
+      - name: github
+        token: personalAccessToken
+```
+
+Below are example configuration for all available artifact providers.
+
+## Bitbucket
+
+```
+artifacts:
+  bitbucket:
+    enabled: true
+    accounts:
+      - name: bitbucket-account-name
+        username: armory-bot
+        password: supersecretpassword
+        # usernamePasswordFile should only be used if username and password are not used
+        usernamePasswordFile: /passwords/bitbucketCreds.txt
+```
+
+
+## Github
+
+```
+artifacts:
+  github:
+    enabled: true
+    accounts:
+      - name: github-account-name
+        username: armory-bot
+        password: supersecretpassword
+        # usernamePasswordFile should only be used if username and password are not used
+        usernamePasswordFile: /passwords/githubCreds.txt
+        # token can be used instead of a username/password
+        token: personalAccessToken
+        # tokenFile can be used instead of a token or username/password
+        tokenFile: /passwords/githubToken.txt
+```
+
+## Gitlab
+
+```
+artifacts:
+  gitlab:
+    enabled: true
+    accounts:
+      - name: gitlab-account-name
+        token: gitlabApiToken
+        # tokenFile can be used instead of a token
+        tokenFile: /passwords/gitlabToken.txt
+```
+
+## GCS
+
+```
+artifacts:
+  gcs:
+    enabled: true
+    accounts:
+      - name: gcs-account
+        # optional, jsonPath is the path to GCP credentials file
+        jsonPath: /passwords/gcpServiceAccount.json
+```
+
+## S3
+
+```
+artifacts:
+  s3:
+    enabled: true
+    accounts:
+      - name: s3-account
+        # if using AWS S3, use the region where your bucket lives
+        region: us-west-2
+        # apiEndpoint and apiRegion are used if you're using Minio or another S3 compatible solution
+        apiEndpoint: https://my-minio:9000
+        apiRegion: us-east-1
+```
+
+## HTTP
+
+```
+artifacts:
+  http:
+    enabled: true
+    accounts:
+      - name: http-account-name
+        username: armory-bot
+        password: supersecretpassword
+        # usernamePasswordFile should only be used if username and password are not used
+        usernamePasswordFile: /passwords/bitbucketCreds.txt
+```
