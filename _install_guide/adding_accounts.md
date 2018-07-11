@@ -30,7 +30,7 @@ In AWS, Spinnaker relies on IAM policies to access temporary keys into configure
 
 For adding additional accounts into Spinnaker you'll need to extend Clouddriver by adding your configuration into `clouddriver-local.yml`.  Here is an example of a Clouddriver configuration file that has 3 accounts as described above.
 
-```
+```yaml
 aws:
   defaultAssumeRole: role/SpinnakerManagedProfile
   accounts:
@@ -56,7 +56,7 @@ aws:
 
 You'll also have to set your default account in your `spinnaker-local.yml` file:
 
-```
+```yaml
 providers:
   aws:
     primaryCredentials:
@@ -68,7 +68,7 @@ providers:
 You will need to create a `SpinnakerManagedProfile` role in the target AWS account (prod-account, staging-account, service-account) and give it the
 correct trust policy in IAM.  Below is the trust policy you give the `SpinnakerManagedProfile` in the target account to allow the `SpinakerInstanceProfile`.
 
-```
+```yaml
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -95,7 +95,7 @@ Artifacts are a main driver behind the Kubernetes V2 provider. They allow you to
 
 To configure an artifact account, add any of the following snippets to `clouddriver-local.yml` under the top level `artifacts` key. For example, if you wanted to configure 2 artifact accounts, S3 and Github, you would configure them as follows:
 
-```
+```yaml
 # clouddriver-local.yml
 artifacts:
   s3:
@@ -114,7 +114,7 @@ Below are example configuration for all available artifact providers.
 
 ## Bitbucket
 
-```
+```yaml
 artifacts:
   bitbucket:
     enabled: true
@@ -129,7 +129,7 @@ artifacts:
 
 ## Github
 
-```
+```yaml
 artifacts:
   github:
     enabled: true
@@ -147,7 +147,7 @@ artifacts:
 
 ## Gitlab
 
-```
+```yaml
 artifacts:
   gitlab:
     enabled: true
@@ -160,7 +160,7 @@ artifacts:
 
 ## GCS
 
-```
+```yaml
 artifacts:
   gcs:
     enabled: true
@@ -172,7 +172,7 @@ artifacts:
 
 ## S3
 
-```
+```yaml
 artifacts:
   s3:
     enabled: true
@@ -187,7 +187,7 @@ artifacts:
 
 ## HTTP
 
-```
+```yaml
 artifacts:
   http:
     enabled: true
