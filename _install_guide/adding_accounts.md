@@ -110,6 +110,11 @@ artifacts:
         token: personalAccessToken
 ```
 
+Some providers allow a `usernamePasswordFile` which looks like:
+```
+username:password
+```
+
 Below are example configuration for all available artifact providers.
 
 ## Bitbucket
