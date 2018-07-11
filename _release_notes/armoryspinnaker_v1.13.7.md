@@ -62,6 +62,19 @@ Fix:
 Fixed in the next version.
 
 
+#### `ssh_private_ip` field in custom packer templates has been deprecated
+`ssh_private_ip` has been deprecated in favor for [`ssh_interface`](https://www.packer.io/docs/builders/amazon-ebs.html#ssh_interface). This should only be an issue if you use custom packer templates for baking.
+
+Symptoms:  
+In bake logs you will see:
+```
+bakes fail due to :`1 error(s) occurred: * unknown configuration key: "ssh_private_ip"`
+```
+
+Fix:  
+You'll need to update your custom packer template, removing `ssh_private_ip`, and instead setting `ssh_interface` to either `public_ip`, `private_ip`, `public_dns` or `private_dns`.
+
+
 
 ## Highlighted Updates
 ### Armory
