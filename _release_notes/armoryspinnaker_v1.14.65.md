@@ -34,7 +34,7 @@ Igor added ..... which does.....
 
 #### Dinghy
  - Add download cache for Github and Stash (#65)
- - feat(github): support github enterprise endpoints (#64)
+ - feat(github): support Github enterprise endpoints (#64)
 
 
 #### Armory Echo
@@ -74,10 +74,9 @@ There have also been numerous enhancements, fixes and features across all of Spi
 
 ### Dinghy&trade; - 2015849...f8a6984
  - Add download cache for Github and Stash (#65)
- - feat(github): support github enterprise endpoints (#64)
- - feat(config): merge defualt config with -local (#63)
- - Revert "feat(github): make github endpoint configurable (#61)" (#62)
- - feat(github): make github endpoint configurable (#61)
+ - feat(github): support Github enterprise endpoints (#64)
+ - feat(config): merge default config with -local (#63)
+ - feat(github): make Github endpoint configurable (#61)
  - option to log to file (#60)
  - close http response body the right way
  - The default value of a var can now come from another var. That var has to be prefixed with an @. e.g.,: "{{ var "discovery-service-name" ?: "@application" }}"
@@ -100,12 +99,8 @@ There have also been numerous enhancements, fixes and features across all of Spi
  - fix(rollback) orca changed it's endpoint and content type for tasks (#189)
 
 ### Armory Echo  - 00219be...e8f6375
- - refactor(jira) rename Armory Jira classes due to OSS conflict (#64)
- - If the substitutions are null, replace with blank. (#63)
- - feat(tests) add doc on how which integration tests to run (#62)
  - fix(jira) make sure to check all tickets (#61)
  - feat(jira) support multiple scms (#60)
- - Add README notes (#58)
  - ENG-2009: Remove moniker variables (not supported) (#57)
  - OSS changed the way they identify stages (#55)
  - OSS changed from orca:stage:complete to orca:task:complete (#52)
@@ -113,11 +108,8 @@ There have also been numerous enhancements, fixes and features across all of Spi
 ### Armory Deck  - f57955c...85d49d4
  - Eng 1945 autogenerate ui (#376)
  - adds back "fix(oss): fixes for release-1.8.x (#371)" (#374)" (#375)
- - fetch is async!! duh! (#373)
- - Revert "fix(oss): fixes for release-1.8.x (#371)" (#374)
  - Make sure our api calls are including creds. (#372)
  - fix(oss): fixes for release-1.8.x (#371)
- - Don't even bother checking for updates on AWS (#370)
  - refactor(barometer): removed barometer (#369)
  - Don't except if the parsed URL has no protocol. (#368)
  - ALWAYS load the HEADER_SHIM (#366)
@@ -127,7 +119,7 @@ There have also been numerous enhancements, fixes and features across all of Spi
  - ENG-1900 software update (#359)
  - Schema-based configurator (#357)
  - Eng 2045 config link auth (#349)
- - moved github org to templates, spinnaker app email now comes from the user through the modal (#350)
+ - moved Github org to templates, spinnaker app email now comes from the user through the modal (#350)
  - fix(chaos): allow chaosMonkey enabled (#347)
  - For CORS requests, use the "include" value to allow sending credentia… (#346)
  - inverse header logo and styles (#345)
@@ -147,7 +139,6 @@ There have also been numerous enhancements, fixes and features across all of Spi
  - feat(oss): release-1.8.x upgrade (#366)
  - Move the armory ID step (#363)
  - addding ntp (#362)
- - Revert "add spinnaker monitoring job to the list of triggers (#355)" (#356)
  - add spinnaker monitoring job to the list of triggers (#355)
  - mount the right dirs for the monitoring container (#354)
  - feat(build) pinning igor for multiple scms (#350)
