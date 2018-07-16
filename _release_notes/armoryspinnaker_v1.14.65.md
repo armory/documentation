@@ -30,7 +30,6 @@ Igor added ..... which does.....
 
 ## Highlighted Updates
 ### Armory
-<!--- A quick summary of what's changed with Armory -->
 
 
 #### Dinghy
