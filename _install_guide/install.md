@@ -17,7 +17,7 @@ Armory Spinnaker comes with an installer that walks you through deploying Spinna
 
 ## Installing Armory Spinnaker In EC2 on AWS
 
-*This is an older installer. We highly recommend using the Kubernetes installer, above.*
+*We highly recommend using the Kubernetes installer, above. This installer will be deprecated on 12/31/2018.*
 
 The installer is a script that is responsible for asking the user for customer specific inputs like AWS keys, VPC, subnets and S3 buckets. These inputs are kept locally on your system and then passed to Terraform.  You can also install Armory Spinnaker directly from the Debian or RPM package if you don't need the additional resources (S3/ElastiCache/IAM roles) created for you.  Before getting started you'll want to review the [architecture](http://docs.armory.io/admin-guides/architecture/#high-availability-ha) guide, it'll give you an overview of Armory Spinnaker.
 
