@@ -15,7 +15,8 @@ hidden: false
 
 ## Known Issues
 
-#### Spinnaker can't access some files
+#### Spinnaker can't access some files  
+**Resolved in [v1.14.65](/release-notes/armoryspinnaker_v1.14.65)**  
 Spinnaker changed the user it runs as in a container from `root` to `spinnaker` for security reasons.
 See the [Issue 2606](https://github.com/spinnaker/spinnaker/issues/2606) for more information.
 
@@ -24,8 +25,8 @@ Symptoms:
 unable to read client-key /opt/spinnaker/certs/spinnaker.key for spinnaker due to open /opt/spinnaker/certs/spinnaker.key: permission denied
 ```
 
-Workaround:  
-A solution will be provided in a future release. The work around for now is changing the ownership of the file in the running container.
+Workaround for this release:  
+The work around for this version is to change the ownership of the file in the running container.
 Here's an example for setting the permissions to `spinnaker` (uid 100, gid 65533). We're running this on the ec2 host, but the uid and gid carries over.
 ```bash
 chown 100:65533 /opt/spinnaker/certs/spinnaker.key
@@ -46,6 +47,7 @@ There's two available solutions:
 
 
 #### Cannot deploy AWS encrypted snapshots
+**Resolved in [v1.14.65](/release-notes/armoryspinnaker_v1.14.65)**  
 If you're trying to deploy an encrypted snapshot, Spinnaker will throw errors because AWS doesn't allow you to respecify encryption.
 
 Symptoms:  
