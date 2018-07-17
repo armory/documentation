@@ -8,12 +8,17 @@ order: 20
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
+## Try Armory's Demo Environment
+
+You can [try our Demo Environment](http://go.armory.io/Demo-Environment) before installing Armory.
 
 ## Installing Armory Spinnaker In Kubernetes
 
 Armory Spinnaker comes with an installer that walks you through deploying Spinnaker in your Kubernetes cluster running in your data center or cloud account.  It should only take 15 minutes to have Armory Spinnaker up and running.  To get started, open up a terminal and execute the following:
 
 `bash -c "$(curl -sS https://get-k8s.armory.io)"`
+
+Armory has a "free forever" Teams plan. [Learn more here](http://www.armory.io/pricing).
 
 ## Installing Armory Spinnaker In EC2 on AWS
 
