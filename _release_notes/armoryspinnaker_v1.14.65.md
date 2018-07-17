@@ -79,7 +79,7 @@ There have also been numerous enhancements, fixes and features across all of Spi
  - feat(github): make Github endpoint configurable (#61)
  - option to log to file (#60)
  - close http response body the right way
- - The default value of a var can now come from another var. That var has to be prefixed with an @. e.g.,: "{{ var "discovery-service-name" ?: "@application" }}"
+ - The default value of a var can now come from another var. That var has to be prefixed with an @. e.g.,: "\{\{ var "discovery-service-name" ?: "@application" }}"
 
 ### Platform&trade; - ff5e90c...8812305
  - enable NR APM instrumentation (#204)
