@@ -10,7 +10,7 @@ order: 20
 
 ## Try Armory's Demo Environment
 
-You can [try our Demo Environment](http://go.armory.io/Demo-Environment) before installing Armory.
+You can [try our Demo Environment](https://spinnaker.demo.armory.io) before installing Armory.
 
 ## Installing Armory Spinnaker In Kubernetes
 
