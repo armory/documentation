@@ -10,13 +10,15 @@ order: 20
 
 ## Try Armory's Demo Environment
 
-You can [try our Demo Environment](http://go.armory.io/Demo-Environment) before installing Armory.
+You can [try our Demo Environment](https://spinnaker.demo.armory.io) before installing Armory.
 
 ## Installing Armory Spinnaker In Kubernetes
 
 Armory Spinnaker comes with an installer that walks you through deploying Spinnaker in your Kubernetes cluster running in your data center or cloud account.  It should only take 15 minutes to have Armory Spinnaker up and running.  To get started, open up a terminal and execute the following:
 
-`bash -c "$(curl -sS https://get-k8s.armory.io)"`
+```
+bash -c "$(curl -sS https://get-k8s.armory.io)"
+```
 
 Armory has a "free forever" Teams plan. [Learn more here](http://www.armory.io/pricing).
 
