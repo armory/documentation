@@ -409,5 +409,5 @@ With nested variables, instead of using a hardcoded default value, the default c
 ```{% raw %}
 "waitTime": {{ var "name" ?: "@different_var" }}
 {% endraw %}```
-Here, if the variable `"name"` was not passed into the module call and is not a top-levle variable in the `dinghyfile`, its value will come from a variable called `"different_var"` that is either a top-level variable or another variable passed in when the module is called. Note the `@` syntax for the nested variable. The `@` symbol is only used where the variable is used, not when it is passed in.
+Here, if the variable `"name"` was not passed into the module call and is not a top-level variable in the `dinghyfile`, its value will come from a variable called `"different_var"` that is either a top-level variable or another variable passed in when the module is called. Note the `@` syntax for the nested variable. The `@` symbol is only used where the variable is used, not when it is passed in.
 le
