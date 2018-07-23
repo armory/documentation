@@ -317,7 +317,7 @@ monorepo/
 Notice both `app1` and `app2` are under the same repo, each app has its own `dinghyfile` and its own spinnaker application that can be referenced in the `dinghyfile`.
 
 ### Template validation
-If, while rendering a `dinghyfile`, a malformed JSON file is encountered, the logs should indicate the line number and the column number of the error. The `arm cli` that can be used to validate `dinghyfile`s and `module`s locally without having to put them in source control.
+If, while rendering a `dinghyfile`, a malformed JSON file is encountered, the logs should indicate the line number and the column number of the error. The `arm cli` can be used to validate `dinghyfile`s and `module`s locally without having to put them in source control.
 
 ### Newlines
 For ease of readablilty, you can split a single call to `module` across multiple lines. For example, the following two `dinghyfile`s are both valid & produce identical pipelines in spinnaker:
@@ -400,14 +400,14 @@ Note that top-level variables are overwritten by variables in the call to module
 ### Nested variables
 Another neat little trick with variables is support for nested variables. Consider the following variable usage in a module:
 ```{% raw %}
-"waitTime": {{ var "name" ?: "some-name" }}
+"name": {{ var "name" ?: "some-name" }}
 {% endraw %}```
 Here, if the variable `"name"` was passed in, or is a top-level variable in the `dinghyfile`, then use that value, or else _default to_ `some-name`.
 
 With nested variables, instead of using a hardcoded default value, the default can from another variable. eg:
 
 ```{% raw %}
-"waitTime": {{ var "name" ?: "@different_var" }}
+"name": {{ var "name" ?: "@different_var" }}
 {% endraw %}```
 Here, if the variable `"name"` was not passed into the module call and is not a top-level variable in the `dinghyfile`, its value will come from a variable called `"different_var"` that is either a top-level variable or another variable passed in when the module is called. Note the `@` syntax for the nested variable. The `@` symbol is only used where the variable is used, not when it is passed in.
 le
