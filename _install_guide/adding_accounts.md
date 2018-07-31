@@ -86,12 +86,12 @@ correct trust policy in IAM.  Below is the trust policy you give the `SpinnakerM
 
 Below is the latest EC2 policy to use for allowing `SpinnakerInstanceProfile`.
 
-<script src="http://gist-it.appspot.com/https://github.com/Armory/spinnaker-aws-policy/blob/master/policies/latest/SpinnakerInstanceProfile.json"></script>
+<script src="https://gist-it.appspot.com/https://github.com/Armory/spinnaker-aws-policy/blob/master/policies/latest/SpinnakerInstanceProfile.json"></script>
 
 
 # Adding Artifact Accounts
 
-Artifacts are a main driver behind the Kubernetes V2 provider. They allow you to store Kubernetes manifests in external repositories such as Github or S3 and then deploy those artifacts with Spinnaker. There are many different artifact providers and they are all configured in a similar fashion. 
+Artifacts are a main driver behind the Kubernetes V2 provider. They allow you to store Kubernetes manifests in external repositories such as Github or S3 and then deploy those artifacts with Spinnaker. There are many different artifact providers and they are all configured in a similar fashion.
 
 To configure an artifact account, add any of the following snippets to `clouddriver-local.yml` under the top level `artifacts` key. For example, if you wanted to configure 2 artifact accounts, S3 and Github, you would configure them as follows:
 
