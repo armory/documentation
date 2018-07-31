@@ -6,9 +6,11 @@ published: True
 ---
 
 To configure Kubernetes, you need to:
-* Configure docker registries
-* Create a kubectl config file, and
-* Configure clouddriver to use that kubernetes configuration
+{:.no_toc}
+
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
+
 
 ## Configure your Docker Registries
 
@@ -53,6 +55,42 @@ dockerRegistry:
 
 For additional insight into docker registries, see: [Docker Registries](https://www.spinnaker.io/setup/providers/docker-registry/).
 Note that the program **hal** is not used to configure Armory Spinnaker.
+
+### Using ECR Repositories
+
+[AWS ECR](https://aws.amazon.com/ecr/) repositories require special handling within Spinnaker. This is because ECR credentials expire after 12 hours.
+In order to use ECR repositories, you'll need to refresh credentials on a regular interval to ensure that Spinnaker can continue to communicate with the registry.
+For every interval, `ecr-token-refresh` will request a new password and write it to a file. When configuring your Docker registries, you'll need to use the `passwordFile` option.
+
+To do this, create the configuration file for `ecr-token-refresh` at `/opt/spinnaker/config/ecr/config.yml`
+	
+```
+interval: 30m
+registries:
+  - registryId: 123456789 # aws account id
+    region: us-west-2 # or another aws region
+    passwordFile: /opt/passwords/us-west-2.pass
+```
+
+Then, add the following to `/opt/spinnaker/compose/docker-compose.override.yml`, creating if necessary.
+
+```
+version: "2.1"
+services:
+  clouddriver:
+    volumes:
+      - /opt/spinnaker/config/ecr-passwords/:/opt/passwords/
+  ecr-token-refresh:
+    container_name: ecr-token-refresh
+    hostname: ecr-token-refresh-${HOSTNAME_SUFFIX}
+    image: quay.io/skuid/ecr-token-refresh:latest
+    volumes:
+      - /opt/spinnaker/config/ecr/:/opt/config/ecr-token-refresh/ # config directory
+      - /opt/spinnaker/config/ecr-passwords/:/opt/passwords/ # password directory
+```
+
+Finally, restart Armory Spinnaker by running `service armory-spinnaker restart`.
+
 
 ## Create a Kubectl Config File
 
@@ -155,6 +193,6 @@ You should see a similar option in the "Cloud Provider" section of the Edit Appl
 ![EditApplication](/assets/images/kubernetes-editapplication.png)
 
 
-## See Also
+## Additional Information
 
 For additional documentation on configuring Kubernetes, see the [Kubernetes Documentation](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/).

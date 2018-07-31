@@ -1,11 +1,15 @@
 ---
 layout: post
+title: Overview of Armory Spinnaker
 order: 10
 permalink: '/'
 ---
 
 
 ## What is Spinnaker?
+{:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 <a href="https://kb.armory.io/spinnaker/what-is-spinnaker"><img height="25" style="float: left;" src="http://drod.io/1h3I273p002U/video-file.png"></a>&nbsp; [Watch Ethan explain Spinnaker in three minutes](https://kb.armory.io/spinnaker/what-is-spinnaker/)
 
@@ -25,7 +29,7 @@ Today’s world revolves around software and services working reliably and conti
 
 ## What Armory Spinnaker Does
 
-Armory Spinnaker is a preconfigured distribution of Spinnaker that runs on Amazon Web Services. Spinnaker can help you coordinate and orchestrate complicated tasks with pipelines for deploying software. 
+Armory Spinnaker is a preconfigured distribution of Spinnaker that runs in your Kubernetes cluster. Spinnaker can help you coordinate and orchestrate complicated tasks with pipelines for deploying software. 
 
 
 ## Opinions and Conventions
@@ -39,4 +43,12 @@ If you have questions, comments or suggestions about this documentation *(especi
 
 ## Want to Help?
 
-Join the Spinnaker Open Source Community on the [Spinnaker Slack channel](http://join.spinnaker.io/)!
+- We encourage you to [issue pull requests](https://github.com/armory/documentation) to improve this documentation.
+- Join the Spinnaker Open Source Community on the [Spinnaker Slack channel](http://join.spinnaker.io/)
+
+## Features and Pricing
+
+Armory Spinnaker is an enterprise-grade distribution of Spinnaker that forms the core of Armory's Platform. Armory's Platform helps software teams ship better software, faster.
+
+Armory offers a "free forever" Teams plan, as well as Growth and Enterprise plans. [Learn more here](http://www.armory.io/pricing).
+

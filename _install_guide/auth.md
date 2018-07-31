@@ -6,20 +6,10 @@ published: True
 ---
 
 # What To Expect
+{:.no_toc}
 This guide should include:
-<!-- MarkdownTOC autolink=true bracket=round depth=2 -->
-
-- [Basic Auth](#basic-auth)
-- [LDAP Authentication](#ldap-authentication)
-- [Google Groups](#google-groups)
-- [Github](#github)
-  - [Github Organization Restriction](#github-organization-restriction)
-- [Configuring Other OAuth providers](#configuring-other-oauth-providers)
-- [SAML](#saml)
-- [x509](#x509)
-- [Enable Sticky Sessions](#enable-sticky-sessions)
-
-<!-- /MarkdownTOC -->
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 
 
@@ -65,7 +55,13 @@ ldap:
 See the [Spinnaker LDAP Documentation](https://www.spinnaker.io/setup/security/authorization/ldap/#user-dns)
 for more options.
 - [Enable Sticky Sessions](#enable-sticky-sessions)
+- Add the following to your environment file, typically `/opt/spinnaker/env/ha.env`
 
+```
+AUTH_ENABLED=true
+```
+
+- Restart Spinnaker `service armory-spinnaker restart`
 
 
 

@@ -4,12 +4,9 @@ order: 50
 ---
 
 This guide should tell you:
-
-- How to create a pipeline
-- How to configure a pipeline
-- What do the execution details on the pipeline page mean?
-- How to delete a pipeline
-
+{:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 
 ## How to Create a Pipeline

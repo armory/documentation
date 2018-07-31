@@ -12,6 +12,10 @@ The Armory Spinnaker installation provides a service called "Dinghy" which will 
 
 > NOTE: before you can use this feature, please ensure you have [configured it](http://docs.armory.io/install-guide/dinghy/) correctly.
 
+{:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
+
 ## How it works in a nutshell
 
 GitHub (or BitBucket) webhooks are sent off when either the Templates or the Module definitions are modified. The Dinghy service looks for and fetches all dependent modules and parses the template and updates the pipelines in Spinnaker. The pipelines get automatically updated whenever a module that is used by a pipeline is updated in VCS. This is done by maintaining a dependency graph.  Dinghy will look for `dinghyfile`s in all directories not just the root path.  It currently only applies to changes found in the master branch.
@@ -286,3 +290,124 @@ The spinnaker `pipeline` stage allows you to trigger other pipelines. However, t
 {% endraw %}```
 
 In the above example, we are triggering a pipeline by the name `default-pipeline` under `default-app` spinnaker application. The app name and the pipeline name can be overwritten when calling this module. At any higher level, simply pass in `"triggerApp"` and `"triggerPipeline"` like so: `{% raw %}{{ module "pipeline.stage.module" "triggerApp" "pipelineidtest" "triggerPipeline" "testpipelinename" }}{% endraw %}`
+
+
+## Advanced features:
+
+### Monorepo
+Dinghy supports multiple spinnaker applications under the same git repo. eg:
+```{% raw %}
+monorepo/
+├── app1
+│   ├── bin
+│   ├── lib
+│   ├── pkg
+│   └── src
+│       ├── app1.go
+│       └── dinghyfile
+└── app2
+    ├── bin
+    ├── lib
+    ├── pkg
+    └── src
+        ├── app2.go
+        └── dinghyfile
+{% endraw %}```
+
+Notice both `app1` and `app2` are under the same repo, each app has its own `dinghyfile` and its own spinnaker application that can be referenced in the `dinghyfile`.
+
+### Template validation
+If, while rendering a `dinghyfile`, a malformed JSON file is encountered, the logs should indicate the line number and the column number of the error. The `arm cli` can be used to validate `dinghyfile`s and `module`s locally without having to put them in source control.
+
+### Newlines
+For ease of readablilty, you can split a single call to `module` across multiple lines. For example, the following two `dinghyfile`s are both valid & produce identical pipelines in spinnaker:
+```{% raw %}
+{
+  "application": "yourspinnakerapplicationname",
+  "pipelines": [
+    {
+      "application": "yourspinnakerapplicationname",
+      "name": "Made By Armory Pipeline Templates",
+      "stages": [
+        {{ module "wait.stage.module" "name" "wait-for-cache-warm-up" "waitTime" 42 }}
+      ]
+    }
+  ]
+}
+{% endraw %}```
+
+```{% raw %}
+{
+  "application": "yourspinnakerapplicationname",
+  "pipelines": [
+    {
+      "application": "yourspinnakerapplicationname",
+      "name": "Made By Armory Pipeline Templates",
+      "stages": [
+        {{
+           module "wait.stage.module"
+           "name" "wait-for-cache-warm-up"
+           "waitTime" 42
+        }}
+      ]
+    }
+  ]
+}
+{% endraw %}```
+
+### Top-level variables in dinghyfiles
+When passing in variables to modules, you have the option of defining variables at the top-level `dinghyfile` like so:
+```{% raw %}
+{
+  "application": "yourspinnakerapplicationname",
+  "globals": {
+      "waitTime": "42",
+      "name": "default-name"
+  },
+  "pipelines": [
+    {
+      "application": "yourspinnakerapplicationname",
+      "name": "Made By Armory Pipeline Templates",
+      "stages": [
+        {{ module "wait.stage.module" }}
+      ]
+    }
+  ]
+}
+{% endraw %}```
+In the above example, the variables `waitTime` and `name` (used inside `wait.stage.module`) are defined at the top level, and not explicitly defined when the call to `wait.stage.module` is made.
+
+Note that top-level variables are overwritten by variables in the call to module if both are present. For instance, in the below example, the `waitTime` after the `dinghyfile` is rendered would be `43`:
+```{% raw %}
+{
+  "application": "yourspinnakerapplicationname",
+  "globals": {
+      "waitTime": "42",
+      "name": "default-name"
+  },
+  "pipelines": [
+    {
+      "application": "yourspinnakerapplicationname",
+      "name": "Made By Armory Pipeline Templates",
+      "stages": [
+        {{ module "wait.stage.module" "waitTime": "43" }}
+      ]
+    }
+  ]
+}
+{% endraw %}```
+
+### Nested variables
+Another neat little trick with variables is support for nested variables. Consider the following variable usage in a module:
+```{% raw %}
+"name": {{ var "name" ?: "some-name" }}
+{% endraw %}```
+Here, if the variable `"name"` was passed in, or is a top-level variable in the `dinghyfile`, then use that value, or else _default to_ `some-name`.
+
+With nested variables, instead of using a hardcoded default value, the default can from another variable. eg:
+
+```{% raw %}
+"name": {{ var "name" ?: "@different_var" }}
+{% endraw %}```
+Here, if the variable `"name"` was not passed into the module call and is not a top-level variable in the `dinghyfile`, its value will come from a variable called `"different_var"` that is either a top-level variable or another variable passed in when the module is called. Note the `@` syntax for the nested variable. The `@` symbol is only used where the variable is used, not when it is passed in.
+le

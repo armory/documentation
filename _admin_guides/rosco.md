@@ -5,12 +5,17 @@ order: 120
 ---
 
 # What is Rosco?
+{:.no_toc}
 
 Rosco is the sub-service that manages baking using [Packer](https://www.packer.io/docs/), a cloud agnostic tool that automates the creation of images.  Rosco is a small API which manages the state of packer jobs and their executions so that it can report to other sub-systems. Make sure to read up on [Understanding Bake Scripts (Packer scripts)]({% link _install_guide/packer.md %}).
+
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 
 
 ## Configurations for Baking
+{:.no_toc}
 
 
 ### Templates Location
@@ -87,7 +92,7 @@ This might come from your chef, puppet, ansible, or shell scripts. For the first
 
 1. **Scale down all Spinnaker instances except 1 polling instance** :
 Armory Spinnaker is set to spin up in high availability mode, this means there's a potential for a pipeline to execute on one instance and bake on another instance.
-![gif](https://cl.ly/2A1A1V3t3d2R/Screen%20Recording%202017-09-05%20at%2006.12%20PM.gif)
+![gif](https://dha4w82d62smt.cloudfront.net/items/2u0g2T0p3G160X2c2J1e/Screen%20Recording%202017-09-05%20at%2006.12%20PM.gif)
 
 2. **Set the healthcheck for Spinnaker to be EC2** :
 If we're making changes to **rosco**, this will require you to restart Armory Spinnaker (`service armory-spinnaker restart`). This will prevent the ASG healthchecks from destroying your instance while you're working on it.

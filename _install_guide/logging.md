@@ -5,13 +5,13 @@ order: 130
 ---
 
 # What To Expect
+{:.no_toc}
 This guide should include:
-- Publishing logs to a centralized logging server like Splunk, Sumo Logic or Syslog
-- Validating configuration for log delivery
-- Exporting metrics to Datadog
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 ## Armory Spinnaker's Application Logs with Docker
-Pushing your logs to a distributed service is as simple as using one of the logging drivers provided by Docker.   All logging comes from STDOUT inside of Docker and can be pushed to various endpoints.
+Pushing your logs to a distributed service is as simple as using one of the logging drivers provided by Docker.   All logging comes from `STDOUT` inside of Docker and can be pushed to various endpoints.
 
 
 ## Enabling A Logging Profile
@@ -123,21 +123,58 @@ services:
 
 Note that `${ACCESSID}` and `${ACCESSKEY}` in the example above should be replaced with your actual Sumo Logic acceess keys. If this is your first Docker source configured through Sumo Logic you may have to configure the source on the Sumo Logic side. Please see the [Docker Collector documentation from Sumo Logic](https://help.sumologic.com/Send-Data/Data-Types/Docker/01_Collect_Events_and_Statistics_for_the_Docker_App) for info about configuring a source.
 
+## Example: Logging to Datadog
+
+In a similar fashion to Sumo Logic, Datadog uses an agent running on the host to collect and ship logs. To use the Datadog agent with your Armory Spinnaker installation, add/edit `/opt/spinnaker/compose/docker-compose.override.yml` and set `DOCKER_COMPOSE_OVERRIDE=true` in `/opt/spinnaker/env`. If you've created `/opt/spinnaker/componse/docker-compose.override.yml`, you would add the following content to the file:
+
+```
+version: "2.1"
+services:
+  datadog-agent:
+    container_name: dd-agent
+    hostname: dd-agent
+    image: datadog/agent:latest
+    environment:
+      - DD_API_KEY=${DD_API_KEY}
+      - DD_LOGS_ENABLED=true
+      - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /opt/datadog-agent/run:/opt/datadog-agent/run:rw
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+```
+
+You should replace `DD_API_KEY` with you Datadog API Key. For more information about configuring the Datadog agent, checkout their docs [here](https://app.datadoghq.com/logs/onboarding/container).
+
+
+
 ## Validate Log Delivery
 
 After configuring distributed logging make sure logs are arriving before moving on. If this is the first time you're setting up logging just searching for the Spinnaker services such as clouddriver or front50 should be enough. If you need to test a more complicated setup sometimes it's best to run a manual execution for a pipleline or wait for a new pipeline to run, and then use the execution ID from the run to make sure all the parts are appearing that you expect.
 
 If not all the logs are showing up you can get info about the logging setup from the Docker daemon. For example to **see information about where clouddriver logs are going** you can use this command:
 
-```{% raw %}
+```
+{% raw %}
 docker inspect -f '{{.HostConfig.LogConfig}}' clouddriver
-{% endraw %}```
+{% endraw %}
+```
 
 If the log config isn't what you expect then something is wrong in the Armory Spinnaker config, and if the config is what you expect the problem is likely in your distributed logging setup.
 
 ## Monitoring Spinnaker With Datadog
 
 Spinnaker provides a monitoring container which exports metrics from the core sub-services. We'll need to add two additional containers to our docker-compose setup: `datadog` and `spinnaker-monitoring`.
+
+First, ensure the the metrics endpoint is enabled by adding the following configuration to `spinnaker-local.yml` if it isn't already present.
+
+```
+services:
+  spectator:
+    webEndpoint:
+      enabled: true
+```
 
 Add the following to `/opt/spinnaker/compose/docker-compose.override.yml`
 ```
@@ -173,7 +210,14 @@ In the configuration above `/opt/spinnaker/config/datadog_api_token.txt` is a [s
 API_KEY=${YOUR_DATADOG_API_KEY}
 ```
 
-Add the Spinnaker monitoring configuration file in `/opt/spinnaker/config/spinnaker-monitoring.yml`:
+Add a registry entry for each service you wish to monitor in `/opt/spinnaker/config/monitoring/registry`. You'll need to create 1 file per service. The filename should correspond to the service being monitored and the contents should contain a `metrics_url` of the service. For example, an entry for monitoring Clouddriver would have a filename such as `clouddriver.yml` and the contents would be:
+
+```
+# /opt/spinnaker/config/monitoring/registry/clouddriver.yml
+metrics_url: http://clouddriver:7002/spectator/metrics
+```
+
+Add the Spinnaker monitoring configuration file in `/opt/spinnaker/config/spinnaker-monitoring-local.yml`:
 ```
 registry_dir: /opt/spinnaker-monitoring/registry
 
@@ -186,6 +230,9 @@ monitor:
 
   metric_store:
     - datadog
+
+datadog:
+  api_key: ${API_KEY}
 ```
 
 

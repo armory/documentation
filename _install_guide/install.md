@@ -5,18 +5,29 @@ order: 20
 ---
 # Installing Armory Spinnaker
 {:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
+
+## Try Armory's Demo Environment
+
+You can [try our Demo Environment](https://spinnaker.demo.armory.io) before installing Armory.
+
+## Installing Armory Spinnaker In Kubernetes
+
+Armory Spinnaker comes with an installer that walks you through deploying Spinnaker in your Kubernetes cluster running in your data center or cloud account.  It should only take 15 minutes to have Armory Spinnaker up and running.  To get started, open up a terminal and execute the following:
+
+```
+bash -c "$(curl -sS https://get-k8s.armory.io)"
+```
+
+Armory has a "free forever" Teams plan. [Learn more here](http://www.armory.io/pricing).
+
+## Installing Armory Spinnaker In EC2 on AWS
+
+*We highly recommend using the Kubernetes installer, above. This installer will be deprecated on 12/31/2018.*
 
 The installer is a script that is responsible for asking the user for customer specific inputs like AWS keys, VPC, subnets and S3 buckets. These inputs are kept locally on your system and then passed to Terraform.  You can also install Armory Spinnaker directly from the Debian or RPM package if you don't need the additional resources (S3/ElastiCache/IAM roles) created for you.  Before getting started you'll want to review the [architecture](http://docs.armory.io/admin-guides/architecture/#high-availability-ha) guide, it'll give you an overview of Armory Spinnaker.
 
-
-* Table of Contents
-{:toc}
-
-## Installing Armory Spinnaker With Kubernetes
-Armory Spinnaker can now be installed in Kubernetes. Armory will assist in walking you through the installation. To get more details on installation options visit [this blog post](http://go.Armory.io/kubernetes-install).
-
-
-## Installing Armory Spinnaker Installer Scripts In AWS
 Armory Spinnaker comes with an installer that walks you through deploying Spinnaker in your AWS account.  It should only take 15 minutes to have an instance of Armory Spinnaker up and running.  To get started, open up a terminal and execute the following:
 
 `bash -c "$(curl -sS https://get.armory.io)"`
@@ -60,3 +71,11 @@ The installer will download the latest stable version of the Terraform files and
 ### Validating Your Spinnaker Install
 
 ![hello](https://cl.ly/2g163N1z050V/download/98c70de3cd1c9778e50d5aa0e4db15f6_Image%202017-09-13%20at%204.10.04%20PM.png)
+
+### Uninstall Armory Spinnaker
+
+To uninstall Armory Spinnaker, run the install script again with the following environment variable set: `UNINSTALL_ARMORY_SPINNAKER=uninstall`. 
+
+```
+UNINSTALL_ARMORY_SPINNAKER=uninstall bash -c "$(curl -sS https://get.armory.io)"
+```

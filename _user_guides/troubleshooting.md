@@ -12,6 +12,10 @@ For help with the following topics, please checkout the troubleshooting sections
 
 
 ## FAQ 
+{:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
+
 
 #### Why are tasks hanging on the 'Force Cache Refresh' stage?
 

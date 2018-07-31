@@ -1,22 +1,25 @@
 ---
 layout: post
-title: v1.12.5 Armory Release
+title: v1.12.5 Armory Enterprise Release
 order: 952
-visible: 1
 ---
 
 # 4/2/18 Release Notes
-
+{:.no_toc}
 > Note: this is the release notes comparing against [v1.10.207](https://docs.armory.io/release-notes/armoryspinnaker_v1.10.207/), because v1.11.262 has stability issues.
 
-> Note: For some cases we are seeing issues when passing parent parameters using SpEL, or pipeline expressions, to child pipelines from parent pipelines. 
+> Note: For some cases we are seeing issues when passing parent parameters using SpEL, or pipeline expressions, to child pipelines from parent pipelines.
 
 > Note: If you're experiencing production issues after upgrading Spinnaker, rollback to a [previous working version](http://docs.armory.io/admin-guides/troubleshooting/#i-upgraded-spinnaker-and-it-is-no-longer-responding-how-do-i-rollback).
+> 
+
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 
 ## Highlighted Updates
 ### Armory
- 
+
 #### Platform&trade;
 - Slackbot Alpha
 - Oneclick Alpha

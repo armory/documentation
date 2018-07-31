@@ -4,10 +4,9 @@ order: 40
 ---
 
 This guide should tell you:
-
-- How to create a Load Balancer
-- How to configure a Load Balancer
-- How to delete a Load Balancer
+{:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 
 Things to do beforehand:

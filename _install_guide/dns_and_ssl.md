@@ -5,9 +5,10 @@ order: 100
 ---
 
 # What To Expect
+{:.no_toc}
 This guide should include:
-- How to give your Spinnaker instance a new domain name
-- SSL Termination at the ELB with Gate and Deck
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 ## Create a DNS Entry for your Load Balancer
 
@@ -46,17 +47,18 @@ You can **either** import your own cert **or** create a self signed cert:
 
  - Importing **your own Certificate**.
 ```
+export YOUR_KEY_PASSWORD=""
+export YOUR_KEYSTORE_PASSWORD=""
 keytool -importkeystore -srckeystore server.p12 -srcstoretype pkcs12 -srcalias spinnaker -srcstorepass ${YOUR_KEY_PASSWORD} -destkeystore keystore.jks -deststoretype jks -destalias server -deststorepass ${YOUR_KEY_PASSWORD} -destkeypass ${YOUR_KEYSTORE_PASSWORD}
 ```
 
 - Creating a **self-signed CA (EXPIRES IN 360 DAYS)** with java keystore.
 ```
-apt-get install -y openjdk-7-jre-headless;
+apt-get install -y openjdk-7-jre-headless
+export YOUR_KEYSTORE_PASSWORD="someRandomPa33W0rdForKeystoreForELBtoGateCommunication"
 echo -e "\n\n\n\n\n\ny\n" | keytool -genkey -keyalg RSA -alias server -keystore keystore.jks -storepass ${YOUR_KEYSTORE_PASSWORD} -validity 360 -keysize 2048
+mv keystore.jks /opt/spinnaker/config/
 ```
-
-
-Place the resulting keystore.jks in `/opt/spinnaker/config`
 
 In `/opt/spinnaker/config/gate-local.yml` add the following, making sure to replace the password with your own that you provided in the previous step:
 

@@ -5,6 +5,7 @@ order: 40
 ---
 
 ## What to expect
+{:.no_toc}
 By storing configuration in source control we get all of the benefits that go along with it (versioning, change history, etc.) We provide 2 methods for storing configurations for Armory Spinnaker:
 - [Packaged Configurations](#packaged-configurations)
   + stored in github 
@@ -15,20 +16,10 @@ By storing configuration in source control we get all of the benefits that go al
   + simple revision history
 
 
-Overview:
-<!-- MarkdownTOC autolink=true bracket=round depth=2 -->
-
-- [Understanding config files](#understanding-config-files)
-- [Secrets](#secrets)
-- [Packaged Configurations](#packaged-configurations)
-  - [GitHub Repo](#github-repo)
-  - [Packaging](#packaging)
-  - [Validation](#validation)
-- [S3 Configurations](#s3-configurations)
-  - [Turning on the Configurator](#turning-on-the-configurator)
-  - [Using the Configurator](#using-the-configurator)
-
-<!-- /MarkdownTOC -->
+## Overview
+{:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 
 
@@ -107,7 +98,7 @@ Armory includes a configurator that will store configurations in s3. This uses t
 
 
 ## Turning on the Configurator
-- edit your env file (`HA.env`) and add:
+- edit your env file (`ha.env`) and add:
 ```
 CONFIGURATOR_ENABLED=true
 ```

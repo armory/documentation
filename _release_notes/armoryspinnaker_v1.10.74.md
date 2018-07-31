@@ -5,9 +5,12 @@ order: 957
 ---
 
 # 12/05/17 Release Notes
-
-
+{:.no_toc}
 > Note: If you're experiencing production issues after upgrading Spinnaker, rollback to a [previous working version](http://docs.armory.io/admin-guides/troubleshooting/#i-upgraded-spinnaker-and-it-is-no-longer-responding-how-do-i-rollback).
+
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
+
 
 ## Highlighted Updates
 

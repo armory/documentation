@@ -5,12 +5,9 @@ order: 9
 ---
 
 This guide should include:
-
-- Overview - What is Spinnaker
-- Overview - Concepts / Naming Conventions
-- How to Create Pipelines:
-- How to Build a Pipeline:
-- Various Pipeline Stages:
+{:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 
 Spinnaker is the continuous delivery platform that codifies the software delivery best practices that put Netflix and Google a decade ahead of most other companies.
