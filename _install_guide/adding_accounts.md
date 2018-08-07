@@ -79,6 +79,32 @@ correct trust policy in IAM.  Below is the trust policy you give the `SpinnakerM
         "AWS": "arn:aws:iam::987654321123:role/SpinnakerManagedProfile"
       },
       "Action": "sts:AssumeRole"
+    },
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::123456789012:role/SpinnakerInstanceProfile"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+```
+
+Now that the target account has a `SpinnakerManagedProfile`, you will need to update the Managing account `SpinnakerInstanceProfile` `SpinnakerAssumePolicy` to add each managed account.
+
+```yaml
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Resource": [
+        "arn:aws:iam::987654321123:role/SpinnakerManagedProfile",
+        "arn:aws:iam::123456789012:role/SpinnakerManagedProfile"
+      ],
+      "Effect": "Allow"
     }
   ]
 }
