@@ -93,7 +93,7 @@ The Stackdriver dialog looks like:
 
 ![Stackdriver Metric Dialog](https://cl.ly/0Q0t3Y1E021R/Image%202018-04-18%20at%201.12.46%20PM.png)
 
-In both cases, the Name is free-form and used to label the results and graphs.
+In all cases, the Name is free-form and used to label the results and graphs.
 
 By default the "Fail on" selection of "either" means the comparison of canary
 and baseline metrics will be marked as a failure if the canary's data is
@@ -120,6 +120,15 @@ enter `avg:system.cpu.user`.
 
 Please refer to the [Spinnaker Kayenta documentation](https://www.spinnaker.io/guides/user/canary/config/#create-metric-groups-and-add-metrics) for information
 on configuring Stackdriver metrics.
+
+### New Relic Metrics
+
+For New Relic, the [NRQL query language](https://docs.newrelic.com/docs/insights/nrql-new-relic-query-language/nrql-reference) is ultimately used to query the
+data; we compose the query in pieces.  In the metric, you'll need to enter the
+desired metric (and any aggregation, average, max, etc) plus the table to use.
+For example, to retrieve the average duration of a web request, you'd enter
+`average(duration) FROM Transaction`.  Only one metric can be retrieved in 
+each metric definition.
 
 ## Filter Templates
 
@@ -273,7 +282,11 @@ example), the steps are:
    `${ #stage('Identify Baseline')['context']['artifacts'][0]['metadata']['sourceServerGroup'] }`
 
    (For Datadog, we want to prepend `autoscaling_group:` to
-   this so we get the correct Datadog tag.
+   this so we get the correct Datadog tag.)
+
+   (For New Relic, you'll create a WHERE clause for the NRQL query to select
+   by.  If your code is adding a custom attribute to your data, which we do
+   recommend, you'll want to add the clause where, like `version='${...}'`)
 
    The canary server group can be retrieved with the SpEL:
 
