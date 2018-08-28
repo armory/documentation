@@ -4,6 +4,7 @@ title: Adding Accounts
 order: 70
 ---
 
+{% include components/legacy_documentation.html %}
 
 This guide should include:
 

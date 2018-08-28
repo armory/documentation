@@ -3,6 +3,8 @@ layout: post
 order: 110
 ---
 
+{% include components/legacy_documentation.html %}
+
 
 For help with the following topics, please checkout the troubleshooting sections embedded in the corresponding guide:
 

@@ -4,6 +4,8 @@ title: Getting Started
 order: 10
 ---
 
+{% include components/legacy_documentation.html %}
+
 In this guide you will learn how to install Armory Spinnaker in Kubernetes or AWS. You will learn how to configure Spinnaker so that you can use it to deploy your applications to any environment safely and securely.
 
 As you go through this guide, keep in mind that there are four major milestones:
