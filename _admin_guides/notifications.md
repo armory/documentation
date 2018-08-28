@@ -44,7 +44,7 @@ Make sure to invite `${YOUR_BOT_NAME}` to any channel you want to be notified by
 
 Below is an example of how to use an email server to send notifications.
 
-Add the following to your `/opt/spinnaker/config/spinnaker-local.yml` file:
+Add the following to your `/opt/spinnaker/config/echo-local.yml` file:
 
 ```
 mail:
@@ -52,19 +52,19 @@ mail:
   from: xxxx@yourdomain.com
 spring:
   mail:
-    host: smtp.youdomain.com
+    host: smtp.yourdomain.com
     username: xxxx@yourdomain.com
     password: [ App Password - https://support.google.com/accounts/answer/185833?hl=en ]
+    port: 587
     properties:
       mail:
         smtp:
           auth: true
-          ssl:
+          starttls:
             enable: true
-          socketFactory:
-            port: 465
-            class: javax.net.ssl.SSLSocketFactory
-            fallback: false
+        transport:
+          protocol: smtp
+#       debug: true <- this is useful if you are mucking around with smtp properties  
 ```
 
 ### Pager Duty
