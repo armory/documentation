@@ -77,6 +77,11 @@ Fix:
 You'll need to update your custom packer template, removing `ssh_private_ip`, and instead setting `ssh_interface` to either `public_ip`, `private_ip`, `public_dns` or `private_dns`.
 
 
+#### Hitting polling thresholds for Jenkins or Docker monitors
+Igor added polling thresholds for new items found in Jenkins or Docker registries. This is to protect Igor from accidental re-indexing, which would cause new pipelines to trigger off old build indexes. You'll need to advance the pointer manually, or adjust the thresholds.
+
+See: [https://kb.armory.io/admin/igor-caching-thresholds/](https://kb.armory.io/admin/igor-caching-thresholds/)
+
 
 ## Highlighted Updates
 ### Armory
