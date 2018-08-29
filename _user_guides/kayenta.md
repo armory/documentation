@@ -286,13 +286,13 @@ example), the steps are:
 
    (For New Relic, you'll create a WHERE clause for the NRQL query to select
    by.  If your code is adding a custom attribute to your data, which we do
-   recommend, you'll want to add the clause where, like `version='${...}'`)
+   recommend, you'll want to add the clause here, like `version='${...}'`)
 
    The canary server group can be retrieved with the SpEL:
 
    `${ deployedServerGroups[0].serverGroup }`
 
-   (again, we prepend `autoscaling_group:` to construct the tag).
+   (again, we prepend `autoscaling_group:` to construct the tag for Datadog)
 
    ![Canary Stage Example](https://cl.ly/3J47282d011r/Image%202018-04-20%20at%202.19.17%20PM.png)
 
