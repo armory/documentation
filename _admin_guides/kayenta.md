@@ -154,11 +154,10 @@ as a selector, so making it as descriptive as necessary is recommended.
 
 ### New Relic
 
-Make sure you have your Insights API key and account ID from New Relic handy.
-Then add this section indented under the `kayenta:` section of your
-`kayenta-local.yml` file:
-
+Make sure you have your Insights API key and account ID from New Relic handy. 
+Edit `kayenta-local.yml` file to include:
 ```
+kayenta:
   newrelic:
     enabled: true
     accounts:
