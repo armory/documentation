@@ -12,9 +12,50 @@ order: 10
 
 You can [try our Demo Environment](https://spinnaker.demo.armory.io) before installing Armory.
 
-## Installing Armory Spinnaker In Kubernetes
+## Installing Armory Halyard
 
-Armory Spinnaker can now be installed in Kubernetes. Please [answer these questions about your Kubernetes installation](https://go.armory.io/kubernetes-questions) so we can help you install Armory.
+You can install Armory's version of Halyard on either a Mac OSX system, or
+install it as a Docker image.
 
-Armory has a "free forever" Teams plan. [Learn more here](https://www.armory.io/pricing).
+### On Mac OSX:
+
+You can download the installer and run it with this command:
+
+```
+curl -L https://get.armory.io/halyard/install/latest/macos/InstallArmoryHalyard.sh > InstallArmoryHalyard.sh && sudo bash InstallArmoryHalyard.sh
+```
+
+This should install the `hal` command in `/usr/local/bin`.  You can test that
+you have the correct version in your path by running `hal armory` and see a
+help screen that includes a `SUBCOMMANDS` section with at least an `init`
+option that "Runs Armory installer":
+
+```
+$ hal armory
+ARMORY
+...
+SUBCOMMANDS
+
+  init
+    Runs Armory installer
+```
+
+### Using Docker:
+
+TBD
+
+## Installing Armory Spinnaker
+
+With Armory's version of Halyard installed, you can install Armory Spinnaker
+with the command:
+
+```
+$ hal armory init
+```
+
+This will download the Armory installer and walk you through the initial
+installation of Spinnaker.  You'll need to have a kubectl file already set
+up to use Amazon EKS, and your AWS credentials file handy.
+
+
 
