@@ -15,14 +15,23 @@ hidden: false
 
 
 ## Known Issues
-There's currently no known issues with this release.
+### Cannot bake this version
 
-<!-- Example of a problem
-Igor added ..... which does.....
+#### Symptoms
+This version will fail due to this error found in the bake logs.
+```
+Cannot uninstall 'urllib3'. It is a distutils installed project and thus we cannot accurately determine which files belong to it which would lead to only a partial uninstall.
+dpkg: error processing package armoryspinnaker (--configure):
+ subprocess installed post-installation script returned error exit status 1
+Processing triggers for libc-bin (2.19-0ubuntu6.13) ...
+Errors were encountered while processing:
+ armoryspinnaker
+E: Sub-process /usr/bin/dpkg returned an error code (1)
+```
 
-**Symptoms:**
-**Fix:**
--->
+#### Fix
+For this version, you'll need to change it to `1.14.192-fix-baking`.
+
 
 
 
@@ -82,19 +91,19 @@ export deck_artifacts_url=https://s3-us-west-2.amazonaws.com/armory-artifacts/sp
 
 
 ### Armory
-### Lighthouse&trade; - e70f1e6...2a93314
+#### Lighthouse&trade; - e70f1e6...2a93314
  - feat(upgrades) Adds ability to add a warning entry to upgrade specs (#220)
 
-### Dinghy&trade; - f8a6984...0dce367
+#### Dinghy&trade; - f8a6984...0dce367
  - feat(config) Mark json tags as omitempty (#66)
 
-### Platform&trade; - 12608ac
+#### Platform&trade; - 12608ac
 No Changes
 
-### Armory Echo  - c36d576
+#### Armory Echo  - c36d576
 No Changes
 
-### Armory Deck  - 26d06b4...0365c72
+#### Armory Deck  - 26d06b4...0365c72
  - feat(armory-nav-bar) Add link to classic config for non-k8s installs (#431)
  - feat(configatron) Add repositories textarea for docker (#426)
  - feat(configatron) Cut over to new configurator called configatron (#422)
@@ -115,11 +124,11 @@ No Changes
  - feat(package.json) remove husky git hooks (#402)
  - feat(settings.js) Reference yaml for architecture env var (#382)
 
-### Armory Gate  - dfafe73...ddbea5c
+#### Armory Gate  - dfafe73...ddbea5c
  - fix(wget): update wget (#27)
  - feat(auth) Auth for configurator (#24)
  
-### Packager - 582efc3...32bd04b
+#### Packager - 582efc3...32bd04b
  - feat(build) Build BOM on each commit (#378)
  - fix(kayenta) fix typo in name (#374)
  - feat(kayenta) add the kayenta to the builds. (#373)
@@ -129,7 +138,7 @@ No Changes
 
 
 ###  Spinnaker Community Contributions
-### Clouddriver  - 14c9664...6e56553
+#### Clouddriver  - 14c9664...6e56553
  - fix(core): Fix dependency in Dockerfile (#2890)
  - fix(provider/kubernetes): upgrade to latest version of spinnaker-dependencies to fix spinnaker/spinnaker#3082 (#2807) (#2825)
  - fix(artifacts): fixes multiple http base providers (#2820) (#2824)
@@ -141,30 +150,30 @@ No Changes
  - fix(provider/gce): Null proof cache data relationships. (#2739)
  - chore(provider/gce): Reduce GCE image SSCANs in Redis. (#2734)
 
-### Deck  - 0a33f94...e3122cc
+#### Deck  - 0a33f94...e3122cc
  - fix(provider/google): cloning server group doesnt correctly copy disk (#5554)
  - fix(core/pipeline): Don't fail when checking Force Rebake without a trigger (#5445) (#5545)
 
-### Echo  - 617c567...56a9f63
+#### Echo  - 617c567...56a9f63
  - fix(github): Fail github authentication when header is absent (#302) (#303)
 
-### Fiat  - 112f58a
+#### Fiat  - 112f58a
 No Changes
 
-### Front50  - 93febf2
+#### Front50  - 93febf2
 No Changes
 
-### Gate  - 5d505ca
+#### Gate  - 5d505ca
 No Changes
 
-### Igor  - ae2b329
+#### Igor  - ae2b329
 No Changes
 
-### Kayenta  - 9f62a06
+#### Kayenta  - 9f62a06
 No Changes
 
-### Orca  - de4ab55
+#### Orca  - de4ab55
 No Changes
 
-### Rosco  - adf0e78
+#### Rosco  - adf0e78
 No Changes
