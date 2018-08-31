@@ -44,7 +44,7 @@ Steps to create an AMI that pulls in the Armory package:
 - Make sure to check the `region` where your Armory Spinnaker instance runs
 - Set the **Package** select a version of [Armory](https://docs.armory.io/release-notes/)
 ```
-docker-engine armoryspinnaker=SELECT_A_VERSION
+docker-ce armoryspinnaker=SELECT_A_VERSION
 ```
 - Set the **Base OS** to `trusty (v14.04)`
 - Check the **Show Advanced Options** box to see additional fields
@@ -53,14 +53,14 @@ docker-engine armoryspinnaker=SELECT_A_VERSION
   - Set `aws_instance_type` to `m4.large`
   - Set `repository` to
   ```
-  https://apt.dockerproject.org/repo/ ubuntu-trusty main; https://dl.bintray.com/armory/debians trusty main;
+  https://dl.bintray.com/armory/debians trusty main; https://download.docker.com/linux/ubuntu trusty stable;
   ```
   - (optional) If AWS doesn't add new instances to a subnet, set `aws_subnet_id` to `subnet-11111`.
 - Set `AMI Name` to `armoryspinnaker`
 
 Once configured the stage should look like this:
 
-![Bake armoryspinnaker](https://cl.ly/1J2b0t3u1i2V/Image%202017-12-26%20at%2011.22.55%20AM.png)
+![Bake armoryspinnaker](https://cl.ly/bf5da61fe57e/Screen%20Shot%202018-08-29%20at%2015.31.54.png)
 
 
 
