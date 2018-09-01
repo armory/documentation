@@ -22,7 +22,7 @@ install it as a Docker image.
 You can download the installer and run it with this command:
 
 ```
-curl -L https://get.armory.io/halyard/install/latest/macos/InstallArmoryHalyard.sh > InstallArmoryHalyard.sh && sudo bash InstallArmoryHalyard.sh
+curl -L https://get.armory.io/halyard/install/latest/macos/InstallArmoryHalyard.sh > InstallArmoryHalyard.sh && sudo bash InstallArmoryHalyard.sh --version latest
 ```
 
 This should install the `hal` command in `/usr/local/bin`.  You can test that
