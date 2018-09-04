@@ -12,9 +12,10 @@ order: 10
 
 You can [try our Demo Environment](https://spinnaker.demo.armory.io) before installing Armory.
 
-## Installing Spinnaker with Armory Halyard
+## Installing Armory Halyard
 
-You can install Armory's version of Halyard on Mac OSX.
+You can install Armory's version of Halyard directly on Mac OSX, or use Docker
+to run Halyard and its command line.
 
 ### On Mac OSX:
 
@@ -37,6 +38,28 @@ SUBCOMMANDS
 
   init
     Runs Armory installer
+```
+
+### Using Docker:
+
+If you prefer to use Docker to install Armory Spinnaker, you can start
+Armory Halyard in a Docker container with the following command:
+
+```
+docker run -p 8084:8084 -p 9000:9000  \
+    --name armory-halyard --rm \
+    -v ~/.hal:/home/spinnaker/.hal \
+    -v ~/.kube:/home/spinnaker/.kube \
+    -v ~/.aws:/home/spinnaker/.aws \
+    -v ~/.armory:/.armory \
+    -it docker.io/armory/halyard-armory:latest
+```
+
+Once Armory Halyard is running, you can interact with it by opening a separate
+Terminal and running:
+
+```
+docker exec -it armory-halyard bash
 ```
 
 ## Installing Armory Spinnaker
