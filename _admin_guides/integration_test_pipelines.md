@@ -5,6 +5,8 @@ order: 70
 published: True
 ---
 
+{% include components/legacy_documentation.html %}
+
 This guide should include:
 {:.no_toc}
 

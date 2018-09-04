@@ -47,6 +47,9 @@ collections:
   overview:
     output: true
     permalink: /overview/:title/
+  spinnaker:
+    output: true
+    permalink: /spinnaker/:title/
   user_guides:
     output: true
     permalink: /user-guides/:title/

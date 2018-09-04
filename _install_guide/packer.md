@@ -4,6 +4,8 @@ title: Understanding Bake Scripts (Packer templates)
 order: 80
 ---
 
+{% include components/legacy_documentation.html %}
+
 # What To Expect
 {:.no_toc}
 This guide should include:

@@ -6,6 +6,8 @@ redirect_from:
   - /user-guides/pipeline-templates/
 ---
 
+{% include components/legacy_documentation.html %}
+
 Armory's Pipelines As Code feature provides a way to specify pipeline definitions in source code repos (like GitHub & BitBucket).
 
 The Armory Spinnaker installation provides a service called "Dinghy" which will keep the pipeline in Spinnaker in sync with what is defined in the GitHub repo. Also, users will be able to make a pipeline by composing other pipelines, stages, or tasks and templating certain values.

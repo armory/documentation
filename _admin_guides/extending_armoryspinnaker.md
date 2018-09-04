@@ -4,6 +4,8 @@ title: Extending and Configuring Armory Spinnaker
 order: 150
 published: false
 ---
+{% include components/legacy_documentation.html %}
+
 # Extending Armory Spinnaker
 
 Armory Spinnaker is extendable and allows you to override any properties or code that is used by Armory Spinnaker.

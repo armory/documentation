@@ -4,6 +4,15 @@ title: Jenkins
 order: 50
 ---
 
+{% include components/legacy_documentation.html %}
+
+Refer to the Spinnaker documentation for configuring Jenkins at
+[https://www.spinnaker.io/setup/ci/jenkins/](https://www.spinnaker.io/setup/ci/jenkins/)
+
+<div class="deprecation-warning">
+  The information below has been deprecated.
+</div>
+
 # What To Expect
 {:.no_toc}
 This guide should include:

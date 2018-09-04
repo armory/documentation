@@ -3,6 +3,8 @@ layout: post
 order: 20
 ---
 
+{% include components/legacy_documentation.html %}
+
 Spinnaker is the composition of a few sub-services for resiliency
 and follows the single-responsibility principle.  It allows for faster iteration on each
 individual component and a more pluggable architecture for custom components.

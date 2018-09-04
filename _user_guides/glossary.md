@@ -4,6 +4,8 @@ title: Glossary of Definitions
 published : false
 ---
 
+{% include components/legacy_documentation.html %}
+
 <!-- For colin reference
 
 - [Baking]({% link _user_guides/baking-images.md %}#troubleshooting)

@@ -4,6 +4,8 @@ title: Baking Configuration
 order: 120
 ---
 
+{% include components/legacy_documentation.html %}
+
 # What is Rosco?
 {:.no_toc}
 

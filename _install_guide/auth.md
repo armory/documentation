@@ -5,6 +5,15 @@ order: 110
 published: True
 ---
 
+{% include components/legacy_documentation.html %}
+
+Refer to the Spinnaker documentation for configuring authentication at
+[https://www.spinnaker.io/setup/security/authentication/](https://www.spinnaker.io/setup/security/authentication/)
+
+<div class="deprecation-warning">
+  The information below has been deprecated.
+</div>
+
 # What To Expect
 {:.no_toc}
 This guide should include:

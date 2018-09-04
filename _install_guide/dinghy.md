@@ -4,6 +4,8 @@ title: Pipelines as Code
 order: 130
 ---
 
+{% include components/legacy_documentation.html %}
+
 # What To Expect
 This guide should include:
 - Configurator changes needed before enabling Armory's "Pipelines as code" feature

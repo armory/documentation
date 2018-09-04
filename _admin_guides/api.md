@@ -4,6 +4,8 @@ title: Adding Accounts
 order: 160
 published: false
 ---
+{% include components/legacy_documentation.html %}
+
 # Spinnaker API (Gate)
 Spinnaker is backed by a robust set of RESTful APIs which are all JSON based and easy to use.  Every operation in
 

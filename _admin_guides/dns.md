@@ -4,6 +4,8 @@ title: Domain Name
 order: 60
 ---
 
+{% include components/legacy_documentation.html %}
+
 Add a DNS Entry to your DNS management system.  You should only need to add a DNS entry for the user-facing ELB which is what you use to currently access Spinnaker.   It typically has a name such as the one below
 
 ```

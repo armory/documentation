@@ -3,6 +3,8 @@ layout: post
 title: Subnets
 order: 20
 ---
+{% include components/legacy_documentation.html %}
+
 # VPCs & Subnets
 {:.no_toc}
 

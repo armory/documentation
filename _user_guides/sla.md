@@ -5,6 +5,8 @@ order: 76
 published: False
 ---
 
+{% include components/legacy_documentation.html %}
+
 # What is the SLA?
 
 The Armory Platform exposes an SLA (Service Level Agreement) for the team

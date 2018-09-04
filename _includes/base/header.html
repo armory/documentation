@@ -24,7 +24,17 @@
         </li>
 
         <li class="Nav-list__section">
-          <h3 class="Header--tiny toggle-section-trigger js__toggle-section-trigger" tabindex="0">User Guides</h3>
+          <h3 class="Header--tiny toggle-section-trigger js__toggle-section-trigger" tabindex="0">Armory Spinnaker</h3>
+          <ul class="toggle-section">
+            {% assign sorted_install_guide = site.spinnaker | sort: 'order' %}
+            {% for link in sorted_install_guide %}
+              <li><a class="Nav-list__link{% if page.url == link.url %} is-active{% endif %}" href="{{ link.url | relative_url }}">{{ link.title | escape }}</a></li>
+            {% endfor %}
+          </ul>
+        </li>
+
+        <li class="Nav-list__section">
+          <h3 class="Header--tiny toggle-section-trigger js__toggle-section-trigger" tabindex="0">User Guides (EC2)</h3>
           <ul class="toggle-section">
             {% assign sorted_user_guides = site.user_guides | sort: 'order' %}
             {% for link in sorted_user_guides %}
@@ -34,7 +44,7 @@
         </li>
 
         <li class="Nav-list__section">
-          <h3 class="Header--tiny toggle-section-trigger js__toggle-section-trigger" tabindex="0">Installation Guide</h3>
+          <h3 class="Header--tiny toggle-section-trigger js__toggle-section-trigger" tabindex="0">Installation Guide (EC2)</h3>
           <ul class="toggle-section">
             {% assign sorted_install_guide = site.install_guide | sort: 'order' %}
             {% for link in sorted_install_guide %}
@@ -44,7 +54,7 @@
         </li>
 
         <li class="Nav-list__section">
-          <h3 class="Header--tiny toggle-section-trigger js__toggle-section-trigger" tabindex="0">Admin Guides</h3>
+          <h3 class="Header--tiny toggle-section-trigger js__toggle-section-trigger" tabindex="0">Admin Guides (EC2)</h3>
           <ul class="toggle-section">
             {% assign sorted_admin_guides = site.admin_guides | sort: 'order' %}
             {% for link in sorted_admin_guides %}
