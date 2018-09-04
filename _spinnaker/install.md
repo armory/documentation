@@ -42,7 +42,24 @@ SUBCOMMANDS
 
 ### Using Docker:
 
-TBD
+If you prefer to use Docker to install Armory Spinnaker, you can start Armory Halyard in a Docker container with the following command.
+
+```
+docker run -p 8084:8084 -p 9000:9000 \
+    --name armory-halyard --rm \
+    -v ~/.hal:/home/spinnaker/.hal \
+    -v ~/.kube:/home/.kube \
+    -v ~/.aws:/home/.aws \
+    -it \
+    docker.io/armory/halyard-armory:latest
+```
+
+Once Armory Halyard is running, you can interact with it by opening a separate Terminal and running
+
+```
+docker exec -it armory-halyard bash
+```
+
 
 ## Installing Armory Spinnaker
 
