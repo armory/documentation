@@ -17,7 +17,13 @@ You can [try our Demo Environment](https://spinnaker.demo.armory.io) before inst
 You can install Armory's version of Halyard directly on Mac OSX, or use Docker
 to run Halyard and its command line.
 
-### On Mac OSX:
+### On Mac OSX
+
+#### Before You Start
+
+The current installer requires your `kubectl` to be version 1.10 or greater.
+
+#### Installation
 
 You can download the installer and run it with this command:
 
@@ -40,10 +46,27 @@ SUBCOMMANDS
     Runs Armory installer
 ```
 
-### Using Docker:
+### Using Docker
 
-If you prefer to use Docker to install Armory Spinnaker, you can start
-Armory Halyard in a Docker container with the following command:
+#### Before You Start
+
+The Docker image will contain most of the files you will need.  However,
+you may need to update your `.kube/config` file to use 
+`heptio-authenticator-aws` instead of `aws-iam-authenticator`; although
+both are compatible, the Docker container expects to use the former.
+
+If the .armory and .hal directories you map in the docker command below
+already exist, make sure you have write permission to those directories
+(and read permissions to the others).  If the directories don't exist,
+they'll be created by the docker container.
+
+Our installer currently expects to find your kubeconfig named `config` in
+the `.kube` directory you map below.  If you've named your config something
+else, you'll need to rename or symlink the file accordingly.
+
+#### Installation
+
+You can start Armory Halyard in a Docker container with the following command:
 
 ```
 docker run -p 8084:8084 -p 9000:9000  \
@@ -62,6 +85,8 @@ Terminal and running:
 docker exec -it armory-halyard bash
 ```
 
+From there, you can issue all your halyard commands.
+
 ## Installing Armory Spinnaker
 
 With Armory's version of Halyard installed, you can install Armory Spinnaker
@@ -75,5 +100,9 @@ This will download the Armory installer and walk you through the initial
 installation of Spinnaker.  You'll need to have a kubectl file already set
 up to use Amazon EKS, and your AWS credentials file handy.
 
+The installer will walk you through the selection of clusters, the region
+and bucket names for S3 storage, and the creation of service accounts;
+finally, it will set up the pods to run Spinnaker and then provide you a
+proxy to interact with.
 
 
