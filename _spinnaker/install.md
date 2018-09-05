@@ -23,6 +23,10 @@ to run Halyard and its command line.
 
 The current installer requires your `kubectl` to be version 1.10 or greater.
 
+Our installer currently expects to use your `kubectl` to find your current
+configuration (usually stored in `~/.kube/config`).  Ensure that the config
+file kubectl defaults to is the one you want to use.
+
 #### Installation
 
 You can download the installer and run it with this command:
@@ -55,7 +59,7 @@ you may need to update your `.kube/config` file to use
 `heptio-authenticator-aws` instead of `aws-iam-authenticator`; although
 both are compatible, the Docker container expects to use the former.
 
-If the .armory and .hal directories you map in the docker command below
+If the `.armory` and `.hal` directories you map in the docker command below
 already exist, make sure you have write permission to those directories
 (and read permissions to the others).  If the directories don't exist,
 they'll be created by the docker container.
