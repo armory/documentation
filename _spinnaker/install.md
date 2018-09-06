@@ -114,9 +114,10 @@ You will not be able to access the proxy in the Docker container from your
 machine directly, so you'll need to install kubectl natively on your system
 and then run the following two commands:
 
-```
-$ kubectl -n <namespace> port-forward services/spin-deck 9000:9000 &
-$ kubectl -n <namespace> port-forward services/spin-gate 8084:8084 &
+```bash
+SPINNAKER_NAMESPACE=YOUR_NAMESPACE_HERE
+kubectl -n ${SPINNAKER_NAMESPACE} port-forward services/spin-deck 9000:9000 &
+kubectl -n ${SPINNAKER_NAMESPACE} port-forward services/spin-gate 8084:8084 &
 ```
 
 You should then be able to connect to http://localhost:9000/ with your
