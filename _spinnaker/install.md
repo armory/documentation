@@ -115,8 +115,8 @@ machine directly.  You'll need to install kubectl natively on your system
 and then run the following two commands:
 
 ```
-$ kubectl -n paul-spin port-forward services/spin-deck 9000:9000 &
-$ kubectl -n paul-spin port-forward services/spin-gate 8084:8084 &
+$ kubectl -n <namespace> port-forward services/spin-deck 9000:9000 &
+$ kubectl -n <namespace> port-forward services/spin-gate 8084:8084 &
 ```
 
 You should then be able to connect to http://localhost:9000/ with your
