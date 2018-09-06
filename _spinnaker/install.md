@@ -73,8 +73,7 @@ else, you'll need to rename or symlink the file accordingly.
 You can start Armory Halyard in a Docker container with the following command:
 
 ```
-docker run -p 8084:8084 -p 9000:9000  \
-    --name armory-halyard --rm \
+docker run --name armory-halyard --rm \
     -v ~/.hal:/home/spinnaker/.hal \
     -v ~/.kube:/home/spinnaker/.kube \
     -v ~/.aws:/home/spinnaker/.aws \
@@ -109,4 +108,18 @@ and bucket names for S3 storage, and the creation of service accounts;
 finally, it will set up the pods to run Spinnaker and then provide you a
 proxy to interact with.
 
+### Notes on Docker
+
+You will not be able to access the proxy in the Docker container from your
+machine directly, so you'll need to install kubectl natively on your system
+and then run the following two commands:
+
+```bash
+SPINNAKER_NAMESPACE=YOUR_NAMESPACE_HERE
+kubectl -n ${SPINNAKER_NAMESPACE} port-forward services/spin-deck 9000:9000 &
+kubectl -n ${SPINNAKER_NAMESPACE} port-forward services/spin-gate 8084:8084 &
+```
+
+You should then be able to connect to http://localhost:9000/ with your
+browser and use your newly installed Spinnaker.
 
