@@ -110,8 +110,8 @@ proxy to interact with.
 
 ### Notes on Docker
 
-You may not be able to access the proxy in the Docker container from your
-machine directly.  You'll need to install kubectl natively on your system
+You will not be able to access the proxy in the Docker container from your
+machine directly, so you'll need to install kubectl natively on your system
 and then run the following two commands:
 
 ```
