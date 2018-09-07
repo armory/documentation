@@ -4,6 +4,8 @@ title: Shared Configuration Repositories
 order: 101
 ---
 
+{% include components/legacy_documentation.html %}
+
 ## What to expect
 {:.no_toc}
 

@@ -4,6 +4,8 @@ title: Kayenta
 order: 71
 published: True
 ---
+{% include components/legacy_documentation.html %}
+
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
@@ -98,6 +100,10 @@ kayenta:
     enabled: true
 ```
 
+Note:  The name `your-account` above can be set to anything, but it must be
+unique across all accounts configured.  This name will be displayed in the UI
+as a selector, so making it as descriptive as necessary is recommended.
+
 ## Metrics Account
 
 Add the following to your environment file:
@@ -143,6 +149,31 @@ add this section indented under the `kayenta:` section of your
           - METRICS_STORE
         endpoint.baseUrl: https://app.datadoghq.com
 ```
+
+Note:  The name `your-account` above can be set to anything, but it must be
+unique across all accounts configured.  This name will be displayed in the UI
+as a selector, so making it as descriptive as necessary is recommended.
+
+### New Relic
+
+Make sure you have your Insights API key and account ID from New Relic handy. 
+Edit `kayenta-local.yml` file to include:
+```
+kayenta:
+  newrelic:
+    enabled: true
+    accounts:
+      - name: NewRelic
+        apiKey: "01234567890abcdef"
+        accountId: 12345678
+        supportedTypes:
+          - METRICS_STORE
+        endpoint.baseUrl:  https://insights-api.newrelic.com/
+```
+
+Note:  The name `NewRelic` above can be set to anything, but it must be unique
+across all accounts configured.  This name will be displayed in the UI as a
+selector, so making it as descriptive as necessary is recommended.
 
 ## Restart Spinnaker
 

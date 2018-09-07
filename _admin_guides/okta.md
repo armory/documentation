@@ -5,6 +5,8 @@ order: 70
 published: True
 ---
 
+{% include components/legacy_documentation.html %}
+
 Okta is a authorization and authentication service provider using SAML.
 
 To configure Spinnaker to use Okta, you will need to:

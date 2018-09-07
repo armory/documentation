@@ -4,6 +4,15 @@ title: Storing Configurations
 order: 40
 ---
 
+{% include components/legacy_documentation.html %}
+
+Refer to the Spinnaker documentation for storing configurations at
+[https://www.spinnaker.io/setup/install/backups/](https://www.spinnaker.io/setup/install/backups/)
+
+<div class="deprecation-warning">
+  The information below has been deprecated.
+</div>
+
 ## What to expect
 {:.no_toc}
 By storing configuration in source control we get all of the benefits that go along with it (versioning, change history, etc.) We provide 2 methods for storing configurations for Armory Spinnaker:

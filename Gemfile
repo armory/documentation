@@ -9,8 +9,8 @@ ruby RUBY_VERSION
 #
 # This will help ensure the proper Jekyll version is running.
 # Happy Jekylling!
-gem "jekyll", "3.6.2"
-gem "jekyll-assets", "2.2.8"
+gem "jekyll", "~> 3.6.2"
+gem "jekyll-assets"
 gem "autoprefixer-rails", "6.7.7.1"
 
 # If you want to use GitHub Pages, remove the "gem "jekyll"" above and
@@ -29,7 +29,7 @@ group :jekyll_plugins do
     gem "kramdown", "1.14"
     gem "extras", "0.1.0"
     gem "rack", "1.6.5"
-    gem "sprockets", "3.6.3"
+    gem "sprockets", "~> 3.7.2"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

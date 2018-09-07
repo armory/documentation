@@ -4,6 +4,7 @@ title: Adding Accounts
 order: 70
 ---
 
+{% include components/legacy_documentation.html %}
 
 This guide should include:
 
@@ -79,6 +80,32 @@ correct trust policy in IAM.  Below is the trust policy you give the `SpinnakerM
         "AWS": "arn:aws:iam::987654321123:role/SpinnakerManagedProfile"
       },
       "Action": "sts:AssumeRole"
+    },
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::987654321123:role/SpinnakerInstanceProfile"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+```
+
+Now that the target account has a `SpinnakerManagedProfile`, you will need to update the Managing account `SpinnakerInstanceProfile` `SpinnakerAssumePolicy` to add each managed account.
+
+```yaml
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Resource": [
+        "arn:aws:iam::987654321123:role/SpinnakerManagedProfile",
+        "arn:aws:iam::123456789012:role/SpinnakerManagedProfile"
+      ],
+      "Effect": "Allow"
     }
   ]
 }
@@ -86,12 +113,12 @@ correct trust policy in IAM.  Below is the trust policy you give the `SpinnakerM
 
 Below is the latest EC2 policy to use for allowing `SpinnakerInstanceProfile`.
 
-<script src="http://gist-it.appspot.com/https://github.com/Armory/spinnaker-aws-policy/blob/master/policies/latest/SpinnakerInstanceProfile.json"></script>
+<script src="https://gist-it.appspot.com/https://github.com/Armory/spinnaker-aws-policy/blob/master/policies/latest/SpinnakerInstanceProfile.json"></script>
 
 
 # Adding Artifact Accounts
 
-Artifacts are a main driver behind the Kubernetes V2 provider. They allow you to store Kubernetes manifests in external repositories such as Github or S3 and then deploy those artifacts with Spinnaker. There are many different artifact providers and they are all configured in a similar fashion. 
+Artifacts are a main driver behind the Kubernetes V2 provider. They allow you to store Kubernetes manifests in external repositories such as Github or S3 and then deploy those artifacts with Spinnaker. There are many different artifact providers and they are all configured in a similar fashion.
 
 To configure an artifact account, add any of the following snippets to `clouddriver-local.yml` under the top level `artifacts` key. For example, if you wanted to configure 2 artifact accounts, S3 and Github, you would configure them as follows:
 

@@ -5,6 +5,8 @@ order: 75
 published: True
 ---
 
+{% include components/legacy_documentation.html %}
+
 # What is Barometer
 
 Barometer is an automated canarying analysis (ACA) service that is provided through Armory Spinnaker. The goal of Barometer is to provide the end user with confidence that a deployment is safe through automation and intelligence.

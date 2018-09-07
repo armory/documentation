@@ -77,12 +77,17 @@ Fix:
 You'll need to update your custom packer template, removing `ssh_private_ip`, and instead setting `ssh_interface` to either `public_ip`, `private_ip`, `public_dns` or `private_dns`.
 
 
+#### Hitting polling thresholds for Jenkins or Docker monitors
+Igor added polling thresholds for new items found in Jenkins or Docker registries. This is to protect Igor from accidental re-indexing, which would cause new pipelines to trigger off old build indexes. You'll need to advance the pointer manually, or adjust the thresholds.
+
+See: [https://kb.armory.io/admin/igor-caching-thresholds/](https://kb.armory.io/admin/igor-caching-thresholds/)
+
 
 ## Highlighted Updates
 ### Armory
 - We've been adding a lot of things preparing for our Armory Kubernetes Installations! Stay tuned!
 - For our Configurator users, you can now visit [https://YOUR_SPINNAKER_URL_HERE/#/platform/config/](https://YOUR_SPINNAKER_URL_HERE/#/platform/config/) for our new style.
--❗️We've deprecated Barometer, Armory's canarying solution, in favor for Kayenta. The docs to configure Kayenta can be found here: https://docs.armory.io/user-guides/kayenta/
+- ❗️We've deprecated Barometer, Armory's canarying solution, in favor for Kayenta. The docs to configure Kayenta can be found here: https://docs.armory.io/user-guides/kayenta/
 
 
 ###  Spinnaker Community Contributions

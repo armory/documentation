@@ -4,6 +4,8 @@ title: Application Deployment Pipeline
 order: 90
 ---
 
+{% include components/legacy_documentation.html %}
+
 # What To Expect
 {:.no_toc}
 

@@ -3,6 +3,8 @@ layout: post
 title: Notifications
 order: 80
 ---
+{% include components/legacy_documentation.html %}
+
 The Echo service handles all notifications, scheduled pipelines(e.g. cron jobs) and audit logging to an external sources.  By default it stores events in memory but can also be configured to store results in an external source like Redis.  It is also responsible for triggering pipelines based on one of the available trigger integrations or the result of an executing pipeline.
 
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
@@ -44,7 +46,7 @@ Make sure to invite `${YOUR_BOT_NAME}` to any channel you want to be notified by
 
 Below is an example of how to use an email server to send notifications.
 
-Add the following to your `/opt/spinnaker/config/spinnaker-local.yml` file:
+Add the following to your `/opt/spinnaker/config/echo-local.yml` file:
 
 ```
 mail:
@@ -52,19 +54,19 @@ mail:
   from: xxxx@yourdomain.com
 spring:
   mail:
-    host: smtp.youdomain.com
+    host: smtp.yourdomain.com
     username: xxxx@yourdomain.com
     password: [ App Password - https://support.google.com/accounts/answer/185833?hl=en ]
+    port: 587
     properties:
       mail:
         smtp:
           auth: true
-          ssl:
+          starttls:
             enable: true
-          socketFactory:
-            port: 465
-            class: javax.net.ssl.SSLSocketFactory
-            fallback: false
+        transport:
+          protocol: smtp
+#       debug: true <- this is useful if you are mucking around with smtp properties  
 ```
 
 ### Pager Duty

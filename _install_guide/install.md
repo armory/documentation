@@ -3,6 +3,8 @@ layout: post
 title: Installation
 order: 20
 ---
+{% include components/legacy_documentation.html %}
+
 # Installing Armory Spinnaker
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
@@ -14,19 +16,15 @@ You can [try our Demo Environment](https://spinnaker.demo.armory.io) before inst
 
 ## Installing Armory Spinnaker In Kubernetes
 
-Armory Spinnaker comes with an installer that walks you through deploying Spinnaker in your Kubernetes cluster running in your data center or cloud account.  It should only take 15 minutes to have Armory Spinnaker up and running.  To get started, open up a terminal and execute the following:
+Armory Spinnaker can now be installed in Kubernetes. Please [answer these questions about your Kubernetes installation](https://go.armory.io/kubernetes-questions) so we can help you install Armory.
 
-```
-bash -c "$(curl -sS https://get-k8s.armory.io)"
-```
-
-Armory has a "free forever" Teams plan. [Learn more here](http://www.armory.io/pricing).
+Armory has a "free forever" Teams plan. [Learn more here](https://www.armory.io/pricing).
 
 ## Installing Armory Spinnaker In EC2 on AWS
 
 *We highly recommend using the Kubernetes installer, above. This installer will be deprecated on 12/31/2018.*
 
-The installer is a script that is responsible for asking the user for customer specific inputs like AWS keys, VPC, subnets and S3 buckets. These inputs are kept locally on your system and then passed to Terraform.  You can also install Armory Spinnaker directly from the Debian or RPM package if you don't need the additional resources (S3/ElastiCache/IAM roles) created for you.  Before getting started you'll want to review the [architecture](http://docs.armory.io/admin-guides/architecture/#high-availability-ha) guide, it'll give you an overview of Armory Spinnaker.
+The installer is a script that is responsible for asking the user for customer specific inputs like AWS keys, VPC, subnets and S3 buckets. These inputs are kept locally on your system and then passed to Terraform.  You can also install Armory Spinnaker directly from the Debian or RPM package if you don't need the additional resources (S3/ElastiCache/IAM roles) created for you.  Before getting started you'll want to review the [architecture](https://docs.armory.io/admin-guides/architecture/#high-availability-ha) guide, it'll give you an overview of Armory Spinnaker.
 
 Armory Spinnaker comes with an installer that walks you through deploying Spinnaker in your AWS account.  It should only take 15 minutes to have an instance of Armory Spinnaker up and running.  To get started, open up a terminal and execute the following:
 
