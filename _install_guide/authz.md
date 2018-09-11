@@ -4,6 +4,16 @@ title: Authorization
 order: 120
 published: True
 ---
+
+{% include components/legacy_documentation.html %}
+
+Refer to the Spinnaker documentation for configuring authorization at
+[https://www.spinnaker.io/setup/security/authorization/](https://www.spinnaker.io/setup/security/authorization/)
+
+<div class="deprecation-warning">
+  The information below has been deprecated.
+</div>
+
 # Turning on Fiat
 {:.no_toc}
 

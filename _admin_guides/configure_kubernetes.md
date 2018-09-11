@@ -5,6 +5,8 @@ order: 70
 published: True
 ---
 
+{% include components/legacy_documentation.html %}
+
 To configure Kubernetes, you need to:
 {:.no_toc}
 

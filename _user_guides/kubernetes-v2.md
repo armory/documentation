@@ -3,6 +3,8 @@ layout: post
 title: Early Access Kubernetes V2 Provider Guide
 order: 100
 ---
+{% include components/legacy_documentation.html %}
+
 This guide includes:
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.

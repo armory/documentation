@@ -4,6 +4,8 @@ title: Initial Setup
 order: 1
 published: false
 ---
+{% include components/legacy_documentation.html %}
+
 # Setting Up Armory Spinnaker
 {:.no_toc}
 

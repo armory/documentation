@@ -6,6 +6,8 @@ published: True
 ---
 
 
+{% include components/legacy_documentation.html %}
+
 # What is Kayenta
 {:.no_toc}
 

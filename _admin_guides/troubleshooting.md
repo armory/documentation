@@ -3,6 +3,8 @@ layout: post
 title: Troubleshooting
 order: 200
 ---
+{% include components/legacy_documentation.html %}
+
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
@@ -118,3 +120,7 @@ management:
   security:
     enabled: false
 ```
+
+#### I can't see recently deployed server groups in the infrastructure view with the V2 Kubernetes provider
+
+This is typically a lack of permissions on Kubernetes service account which Spinnaker uses to deploy.  Make sure that you give the service account access to other namespaces in the cluster where you want Spinnaker to deploy to.

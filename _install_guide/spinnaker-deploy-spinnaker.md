@@ -4,6 +4,8 @@ title: Spinnaker Deploy Spinnaker
 order: 60
 ---
 
+{% include components/legacy_documentation.html %}
+
 
 # What To Expect
 {:.no_toc}

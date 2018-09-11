@@ -4,6 +4,8 @@ title: 1-Click App Creation
 order: 125
 ---
 
+{% include components/legacy_documentation.html %}
+
 # What To Expect
 This guide should include:
 - Configuration changes needed to configure the 1-click app/resource provisioning feature

@@ -38,3 +38,15 @@ body {
 		font-size: 16px;
 	}
 }
+
+div.deprecation-warning {
+  min-height: 70px;
+  background-color: lightgray;
+  background-image: url("/images/warning.png");
+  background-repeat:  no-repeat;
+  background-position: 10px 30px;
+  background-size: 50px 50px;
+  padding: 15px 10px 15px 75px;
+  vertical-align: middle;
+}
+

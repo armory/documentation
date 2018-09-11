@@ -5,6 +5,8 @@ order: 110
 published: true
 ---
 
+{% include components/legacy_documentation.html %}
+
 # What To Expect
 {:.no_toc}
 This guide should include:

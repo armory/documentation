@@ -3,6 +3,8 @@ layout: post
 title: Spinnaker on Redhat/Centos
 order: 150
 ---
+{% include components/legacy_documentation.html %}
+
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 

@@ -4,6 +4,8 @@ title: Advanced Configurations
 order: 80
 ---
 
+{% include components/legacy_documentation.html %}
+
 This document reviews some advanced configuration for each of the Armory Spinnaker sub-services
 
 ### Increasing Orca `WaitForCluster` timeout
