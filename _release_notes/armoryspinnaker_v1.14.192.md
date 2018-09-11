@@ -30,7 +30,7 @@ E: Sub-process /usr/bin/dpkg returned an error code (1)
 ```
 
 #### Fix
-For this version, you'll need to change it to `1.14.192-fix-baking`.
+For this version, you'll need to change it to `1.14.192-fix-pip-builds` for debians, or `1.14.192-fixpipbuilds` for rpms.
 
 
 
