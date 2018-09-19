@@ -6,7 +6,11 @@ redirect_from:
   - /user-guides/pipeline-templates/
 ---
 
-{% include components/legacy_documentation.html %}
+<div class="deprecation-warning">
+  The information below was written for a previous version of Armory Spinnaker
+  (v1.13 and earlier).  Please look <a href="/spinnaker/using_dinghy">here</a> for
+  documentation on the latest version.
+</div>
 
 Armory's Pipelines As Code feature provides a way to specify pipeline definitions in source code repos (like GitHub & BitBucket).
 
