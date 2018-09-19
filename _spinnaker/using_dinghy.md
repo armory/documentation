@@ -1,22 +1,14 @@
 ---
 layout: post
-title: Pipelines as Code
-order: 108
-redirect_from:
-  - /user-guides/pipeline-templates/
+title: Using Pipelines as Code
+order: 131
 ---
-
-<div class="deprecation-warning">
-  The information below was written for a previous version of Armory Spinnaker
-  (v1.13 and earlier).  Please look <a href="/spinnaker/using_dinghy">here</a> for
-  documentation on the latest version.
-</div>
 
 Armory's Pipelines As Code feature provides a way to specify pipeline definitions in source code repos (like GitHub & BitBucket).
 
 The Armory Spinnaker installation provides a service called "Dinghy" which will keep the pipeline in Spinnaker in sync with what is defined in the GitHub repo. Also, users will be able to make a pipeline by composing other pipelines, stages, or tasks and templating certain values.
 
-> NOTE: before you can use this feature, please ensure you have [configured it](http://docs.armory.io/install-guide/dinghy/) correctly.
+> NOTE: before you can use this feature, please ensure you have [configured it](http://docs.armory.io/spinnaker/install_dinghy/) correctly.
 
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.

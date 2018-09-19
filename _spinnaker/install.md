@@ -108,6 +108,8 @@ and bucket names for S3 storage, and the creation of service accounts;
 finally, it will set up the pods to run Spinnaker and then provide you a
 proxy to interact with.
 
+Options for [hal armory init](https://docs.armory.io/spinnaker/armory_halyard/#hal-armory-init).
+
 ### Notes on Docker
 
 You will not be able to access the proxy in the Docker container from your
