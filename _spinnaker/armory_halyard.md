@@ -3,14 +3,9 @@ layout: post
 title: Armory Halyard
 order: 100
 ---
-## Table of Contents
-
- * [**hal armory**](#hal-armory)
- * [**hal armory dinghy**](#hal-armory-dinghy)
- * [**hal armory dinghy disable**](#hal-armory-dinghy-disable)
- * [**hal armory dinghy edit**](#hal-armory-dinghy-edit)
- * [**hal armory dinghy enable**](#hal-armory-dinghy-enable)
- * [**hal armory init**](#hal-armory-init)
+{:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 ## hal
 
