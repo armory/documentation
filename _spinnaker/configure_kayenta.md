@@ -24,19 +24,19 @@ to enable the Canary feature in the application's config:
 Make sure you remember to save the change.  We recommend you refresh the page
 in your browser after enabling the feature before continuing.
 
-Your "Pipelines" menu item should now be "Delivery"; if you click on it,
-you'll see "Pipelines" is a submenu item along with "Canary Configs" and
-"Canary Reports".
+Your `Pipelines` menu item should now be `Delivery`; if you click on it,
+you'll see `Pipelines` is a submenu item along with `Canary Configs` and
+`Canary Reports`.
 
 ## Define a Canary Config
 
-Navigate to "Canary Configs" (under "Delivery") to configure the metrics that
+Navigate to `Canary Configs` (under `Delivery`) to configure the metrics that
 will be used to compare your canary deploy to your baseline.  If you've
 configured configs in other application, you may see them here already; you
 can share configs across applications (unless you've disabled this option
 with `--show-all-configs-enabled false` when configuring with halyard).
 
-Click "Add configuration" and you should see a mostly-blank form:
+Click `Add configuration` and you should see a mostly-blank form:
 
 ![Canary Config Form](https://cl.ly/0d3o1e3I3e3e/Image%202018-04-18%20at%2012.56.54%20PM.png)
 
@@ -152,7 +152,7 @@ of whether or not the pipeline should continue.
 ## Configuring A Canary Analysis Stage
 
 If everything is configured properly, you should be able to create a stage
-of Type "Canary Analysis".  The stage form should look like this:
+of Type `Canary Analysis`.  The stage form should look like this:
 
 ![Blank Canary Config](https://cl.ly/0Z001M3g2o0j/Image%202018-04-18%20at%201.48.11%20PM.png)
 
