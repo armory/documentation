@@ -59,10 +59,10 @@ you may need to update your `.kube/config` file to use
 `heptio-authenticator-aws` instead of `aws-iam-authenticator`; although
 both are compatible, the Docker container expects to use the former.
 
-If the `.armory` and `.hal` directories you map in the docker command below
-already exist, make sure you have write permission to those directories
-(and read permissions to the others).  If the directories don't exist,
-they'll be created by the docker container.
+If the `.hal` directory you map in the docker command below
+already exist, make sure you have write permission to that directory
+(and read permissions to the others).  If the directory doesn't exist,
+it will be created by the docker container.
 
 Our installer currently expects to find your kubeconfig named `config` in
 the `.kube` directory you map below.  If you've named your config something
@@ -77,7 +77,6 @@ docker run --name armory-halyard --rm \
     -v ~/.hal:/home/spinnaker/.hal \
     -v ~/.kube:/home/spinnaker/.kube \
     -v ~/.aws:/home/spinnaker/.aws \
-    -v ~/.armory:/.armory \
     -it docker.io/armory/halyard-armory:latest
 ```
 
