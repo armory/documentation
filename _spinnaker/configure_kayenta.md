@@ -249,5 +249,192 @@ environment variable in the manifest, for example), your field might look
 something like `version='canary'`.  Note you can use [pipeline expressions](https://www.spinnaker.io/guides/user/pipeline/expressions/)
 within the quotes, to change out the value being sought.
 
+# Automated Canary Deployment
+
+Here's a simple example of using Kayenta to automate canary analysis before
+promoting a build to full production status.
+
+![Pipeline Overview](https://cl.ly/1c5cbcf18875/Image%202018-09-24%20at%208.51.45%20AM.png)
+
+## Find the Baseline Version
+
+In this example, we are triggering off a Jenkins job that produces a Docker
+image and provides the image hash in a properties file that Spinnaker can
+pick up.  Our first real stage is to figure out what's currently running
+in our production Deployment (`Get Baseline`).  For this, we use a
+`Find Artifacts From Resource (Manifest)` stage:
+
+![Get Baseline](https://cl.ly/983f8713210c/Image%202018-09-24%20at%208.58.19%20AM.png)
+
+## Deploy Baseline Manifest
+
+The next two stages (`Deploy Baseline` and `Deploy Canary`) are both `Deploy
+(Manifest)` stages; in this example we're using text manifests for clarity.
+
+Our baseline manifest is named with a `-baseline` suffix to help identify its
+metrics from regular production metrics.  We use a Spinnaker expression to 
+substitute in the current production image hash we found in the previous
+stage, and set an environment variable on these pods to help them differentiate
+their data from other production pods:
+
+```
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: kayentademo-baseline
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: kayentademo
+    template:
+      metadata:
+        labels:
+          app: kayentademo
+      spec:
+        containers:
+          - image: '${#stage(''Get Baseline'').context["artifacts"][0]["reference"]}'
+            name: kayentademo
+            env:
+            - name: version
+              value: baseline
+```
+
+## Deploy Baseline Manifest
+
+Our canary manifest is very much the same, except we've swapped out the
+references to `baseline` (in the deployment name and environment variable)
+and we're using the trigger's build properties to identify the Docker image
+hash:
+
+```
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: kayentademo-canary
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: kayentademo
+    template:
+      metadata:
+        labels:
+          app: kayentademo
+      spec:
+        containers:
+          - image: 'docker.io/armory/kayentademo-testapp:${trigger.properties["TESTAPP_VERSION"]}'
+            name: kayentademo
+            env:
+            - name: version
+              value: canary
+```
+
+## Run Canary Analysis
+
+The Canary Analysis stage is dependent on both of those stages being complete;
+we don't want to begin our analysis until we're sure both the baseline and
+canary deployments are up and running.
+
+We've selected the `DataDog-K8s` Canary Config, a 1-minute delay before
+starting analysis (to give the pods a little more time to settle), and we're
+looking for 5-minute intervals, growing (so the reports look back from the
+start of the run, growing in length over time), and running for a Lifetime
+of 1 hour.
+
+For the Metric Scope, we can simply hardcode the deployment names --
+`kube_deployment:kayentademo-baseline` and `kube_deployment:kayentademo-canary`
+-- since we set them specifically in the previous manifests.  For DataDog,
+the Location fields aren't used, so we've left them blank.
+
+We select our metrics account (Datadog) and our Storage account, and set the
+Scope Name to `default`.
+
+![Canary Analysis](https://cl.ly/7d167a06658f/Image%202018-09-24%20at%209.08.25%20AM.png)
+
+One more important thing to set on this stage is the `Execution Option`;
+we don't want to stop the pipeline if the canary fails, or we won't have a
+chance to clean up the baseline and canary deployments.  So we choose to
+`ignore the failure`:
+
+![ignore the failure](https://cl.ly/904579f9e586/Image%202018-09-24%20at%209.14.09%20AM.png)
+
+When the analysis stage ends, we want to do few things, all at the same time.
+We want to clean up the baseline and canary stages, regardless of the outcome,
+so we don't have a bad canary or and old baseline serving requests.  We also
+want to deploy the new code (if it passed the canary analysis) to our 
+production deployment.
+
+## Clean Up
+
+Destroying our deployments is easy with the `Delete (Manifest)` stage, we
+just identify the deployment name we used earlier.  We run one stage for
+Baseline and one for Canary, in parallel (just showing the stage for the
+baseline -- for the canary, we just change the name):
+
+![Delete Deployments](https://cl.ly/4ab62d2fd48d/Image%202018-09-24%20at%209.20.55%20AM.png)
+
+## Deploy to Production
+
+Confident our new code performs at least as well under load as our old code,
+we can now deploy the new Docker image to our production deployment name,
+`kayentademo-prod`:
+
+```
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: kayentademo-prod
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: kayentademo
+    template:
+      metadata:
+        labels:
+          app: kayentademo
+      spec:
+        containers:
+          - image: 'docker.io/armory/kayentademo-testapp:${trigger.properties["TESTAPP_VERSION"]}'
+            name: kayentademo
+            env:
+            - name: version
+              value: canary
+```
+
+Of course, we don't want to do this at all if the canary failed to live up
+to expectations, so we only do this stage conditionally.  Under `Execution
+Options` we want to make this `Conditional on Expression` and then we check
+the status of our Canary Analysis stage:
+
+![Conditional on Expression](https://cl.ly/ff8cb8afbbfa/Image%202018-09-24%20at%209.26.17%20AM.png)
+
+## Final Grade
+
+Finally, when all of that cleaup and promotion is done, we want to end on 
+either a total success or a failure.  For this, we'll use a `Check
+Preconditions` to also look back and check to see if the canary was successful
+or not.  We add a precondition and select `Expression` and enter in the same
+condition as for our production deploy stage:
+
+![Add Precondition](https://cl.ly/e5306d0faed9/Image%202018-09-24%20at%209.28.02%20AM.png)
+
+This stage will fail if the condition isn't satisfied, and pass if it has.
+
+Now our pipeline has completed.  If the canary succeeded, our new code has
+been promoted to production and the next change can be picked up.  If the
+canary failed, the pipeline will have cleaned up its canary, production will
+have remained untouched, and the pipeline can be set up to alert someone to
+the failure.  Maybe the next Jenkins job will have the fix...
+
+# See Also
+
+This is just a very lightweight example of how you can use Kayenta to automate
+canary analysis before rolling code out to production.  For different takes
+on the subject, the following resources might be helpful:
+
+* [Automating Canary Analysis on Google Kubernetes Engine with Spinnaker](https://cloud.google.com/solutions/automated-canary-analysis-kubernetes-engine-spinnaker)
+
 
 
