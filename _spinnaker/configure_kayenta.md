@@ -3,7 +3,7 @@ layout: post
 title: Automated Canary Deployments
 order: 50
 ---
-# Automating Deployments with Kayenta
+
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
@@ -249,14 +249,14 @@ environment variable in the manifest, for example), your field might look
 something like `version='canary'`.  Note you can use [pipeline expressions](https://www.spinnaker.io/guides/user/pipeline/expressions/)
 within the quotes, to change out the value being sought.
 
-# Automated Canary Deployment
+## Automated Canary Deployment
 
 Here's a simple example of using Kayenta to automate canary analysis before
 promoting a build to full production status.
 
 ![Pipeline Overview](https://cl.ly/1c5cbcf18875/Image%202018-09-24%20at%208.51.45%20AM.png)
 
-## Find the Baseline Version
+### Find the Baseline Version
 
 In this example, we are triggering off a Jenkins job that produces a Docker
 image and provides the image hash in a properties file that Spinnaker can
@@ -266,7 +266,7 @@ in our production Deployment (`Get Baseline`).  For this, we use a
 
 ![Get Baseline](https://cl.ly/983f8713210c/Image%202018-09-24%20at%208.58.19%20AM.png)
 
-## Deploy Baseline Manifest
+### Deploy Baseline Manifest
 
 The next two stages (`Deploy Baseline` and `Deploy Canary`) are both `Deploy
 (Manifest)` stages; in this example we're using text manifests for clarity.
@@ -300,7 +300,7 @@ their data from other production pods:
               value: baseline
 ```
 
-## Deploy Baseline Manifest
+### Deploy Baseline Manifest
 
 Our canary manifest is very much the same, except we've swapped out the
 references to `baseline` (in the deployment name and environment variable)
@@ -330,7 +330,7 @@ hash:
               value: canary
 ```
 
-## Run Canary Analysis
+### Run Canary Analysis
 
 The Canary Analysis stage is dependent on both of those stages being complete;
 we don't want to begin our analysis until we're sure both the baseline and
@@ -365,7 +365,7 @@ so we don't have a bad canary or and old baseline serving requests.  We also
 want to deploy the new code (if it passed the canary analysis) to our 
 production deployment.
 
-## Clean Up
+### Clean Up
 
 Destroying our deployments is easy with the `Delete (Manifest)` stage, we
 just identify the deployment name we used earlier.  We run one stage for
@@ -374,7 +374,7 @@ baseline -- for the canary, we just change the name):
 
 ![Delete Deployments](https://cl.ly/4ab62d2fd48d/Image%202018-09-24%20at%209.20.55%20AM.png)
 
-## Deploy to Production
+### Deploy to Production
 
 Confident our new code performs at least as well under load as our old code,
 we can now deploy the new Docker image to our production deployment name,
@@ -410,7 +410,7 @@ the status of our Canary Analysis stage:
 
 ![Conditional on Expression](https://cl.ly/ff8cb8afbbfa/Image%202018-09-24%20at%209.26.17%20AM.png)
 
-## Final Grade
+### Final Grade
 
 Finally, when all of that cleaup and promotion is done, we want to end on 
 either a total success or a failure.  For this, we'll use a `Check
@@ -428,7 +428,7 @@ canary failed, the pipeline will have cleaned up its canary, production will
 have remained untouched, and the pipeline can be set up to alert someone to
 the failure.  Maybe the next Jenkins job will have the fix...
 
-# See Also
+## See Also
 
 This is just a very lightweight example of how you can use Kayenta to automate
 canary analysis before rolling code out to production.  For different takes
