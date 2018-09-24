@@ -412,7 +412,7 @@ the status of our Canary Analysis stage:
 
 ### Final Grade
 
-Finally, when all of that cleaup and promotion is done, we want to end on 
+Finally, when all of that cleanup and promotion is done, we want to end on 
 either a total success or a failure.  For this, we'll use a `Check
 Preconditions` to also look back and check to see if the canary was successful
 or not.  We add a precondition and select `Expression` and enter in the same
