@@ -7,6 +7,12 @@ order: 30
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
+## Create an HTTP Ingress
+
+Note:  These instructions are specifically for setting up a load balancer to
+serve Spinnaker installed on AWS EKS; if you've installed Spinnaker on a
+different cloud provider, they may not apply.
+
 ### Install the alb-ingress-controller.
 
 This tutorial takes advantage of the `aws-alb-ingress-controller` project,
@@ -34,8 +40,8 @@ use quotes and separate by commas).
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: demo-ingress
-  namespace: demo
+  name: paul-ingress
+  namespace: paul
   labels:
     app: "spin"
   annotations:
@@ -47,9 +53,8 @@ metadata:
     alb.ingress.kubernetes.io/target-type: "ip"
     alb.ingress.kubernetes.io/security-groups: sg-abcdef12
     alb.ingress.kubernetes.io/subnets: "subnet-aaaaaaaa, subnet-bbbbbbbb, subnet-cccccccc"
-    # HTTPS configuration instructions COMING SOON!
+    # We'll enable SSL later...
     # alb.ingress.kubernetes.io/certificate-arn: my-acm-certificate-arn
-    # alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80,"HTTPS": 443}]'
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
 
     # allow 404s on the health check; Deck doesn't have a /health path.
@@ -57,15 +62,21 @@ metadata:
     alb.ingress.kubernetes.io/success-codes: "200,404"
     
 spec:
+  # We'll enable SSL later...
+  # tls:
+  # - secretName: paul-cert
+  #   hosts:
+  #   - paul.armory.io
+  #   - gate.paul.armory.io
   rules:
-  - host: demo.armory.io
+  - host: paul.armory.io
     http:
       paths:
       - backend:
           serviceName: spin-deck
           servicePort: 9000
         path: /*
-  - host: gate.demo.armory.io 
+  - host: gate.paul.armory.io 
     http:
       paths:
       - backend:
@@ -109,8 +120,40 @@ Spinnaker instance.
 
 ## Secure with SSL
 
-COMING SOON
+This tutorial presumes you've already created a certificate in the AWS
+Certificate Manager.
 
+### Edit Ingress Manifest
+
+To enable SSL, edit the existing Load Balancer (either in Spinnaker, or using
+`kubectl -n demo edit ingress demo-ingress`) to replace this line:
+
+```
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
+```
+
+with this line (remember to replace the value with your ARN):
+
+```
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-west-2:123456789012:certificate/abcdef01-1234-abcd-ef01-a1234567890f
+```
+
+After this change is made, Spinnaker will no longer respond on port 80;
+HTTPS will be required.
+
+### Update the Internal URLS in Spinnaker (again!)
+
+We'll need to update the internal URLs again (Deck will complain about trying
+to call out to an HTTP resource from an HTTPS request).  Update the URLs
+like we did before, but changing the protocols to `https`:
+
+```
+$ hal config security api edit --override-base-url https://gate.demo.armory.io
+$ hal config security ui edit --override-base-url https://demo.armory.io
+$ hal deploy apply
+```
+
+You should now be able to access Spinnaker via HTTPS.
 
 
 
