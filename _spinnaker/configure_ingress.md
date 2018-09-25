@@ -34,8 +34,8 @@ use quotes and separate by commas).
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: paul-ingress
-  namespace: paul
+  name: demo-ingress
+  namespace: demo
   labels:
     app: "spin"
   annotations:
@@ -45,27 +45,27 @@ metadata:
     # set ALB parameters
     alb.ingress.kubernetes.io/scheme: "internet-facing"
     alb.ingress.kubernetes.io/target-type: "ip"
-    alb.ingress.kubernetes.io/security-groups: sg-eced309f
-    alb.ingress.kubernetes.io/subnets: "subnet-bbcbb8f0, subnet-8191c0f8, subnet-e7ddfdbd"
-    # We'll set up HTTPS later...
+    alb.ingress.kubernetes.io/security-groups: sg-abcdef12
+    alb.ingress.kubernetes.io/subnets: "subnet-aaaaaaaa, subnet-bbbbbbbb, subnet-cccccccc"
+    # HTTPS configuration instructions COMING SOON!
     # alb.ingress.kubernetes.io/certificate-arn: my-acm-certificate-arn
     # alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80,"HTTPS": 443}]'
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
 
-    # allow 404s on the health check
+    # allow 404s on the health check; Deck doesn't have a /health path.
     alb.ingress.kubernetes.io/healthcheck-path: "/health"
     alb.ingress.kubernetes.io/success-codes: "200,404"
     
 spec:
   rules:
-  - host: paul.armory.io
+  - host: demo.armory.io
     http:
       paths:
       - backend:
           serviceName: spin-deck
           servicePort: 9000
         path: /*
-  - host: gate.paul.armory.io 
+  - host: gate.demo.armory.io 
     http:
       paths:
       - backend:
@@ -75,12 +75,27 @@ spec:
 
 ```
 
-### Update the Internal URLs
+### Create DNS CNAMEs
 
-Spinnaker will, by default, expect to be running off `localhost` and will
-generate self-referential URLs with that URL.  Now that the public DNS
-entries are working, we need to update Spinnaker's configuration to reflect
-them:
+You should shortly see your new load balancer appear in the AWS console; you
+will need to copy the DNS name from the description.  Alternatively, you should
+also be able to edit the load balancer in Spinnaker and fine the hostname
+at the bottom of the YAML, under `status:`.  Create your CNAMEs using this
+hostname as the canonical name.  You'll need to do this for both your
+Deck and Gate hostnames (demo.armory.io and gate.demo.armory.io in this
+example), using the same canonical name.
+
+It's useful to test the names work at this point.  Point a browser to
+`gate.demo.armory.io/health` and verify you get a JSON response, and try
+`demo.armory.io` (substituting your own hostnames, of course) and verify
+you get at least some of the UI to load (it may not load completely because
+we haven't finished configuring the hostnames).
+
+### Update the Internal URLs in Spinnaker
+
+The reason your UI may not have been working completely when you tried it
+in the previous step is because Spinnaker is expecting to find Gate served
+off `localhost`.  We need to configure it to use the new hostnames:
 
 ```
 $ hal config security api edit --override-base-url http://gate.demo.armory.io
@@ -88,7 +103,14 @@ $ hal config security ui edit --override-base-url http://demo.armory.io
 $ hal deploy apply
 ```
 
-## Securing with SSL
+Once this change has settled, try hitting the Deck URL again, and verify
+everything is working.  You can now use your DNS names to access your
+Spinnaker instance.
+
+## Secure with SSL
+
+COMING SOON
+
 
 
 
