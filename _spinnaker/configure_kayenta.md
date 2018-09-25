@@ -435,6 +435,7 @@ canary analysis before rolling code out to production.  For different takes
 on the subject, the following resources might be helpful:
 
 * [Automating Canary Analysis on Google Kubernetes Engine with Spinnaker](https://cloud.google.com/solutions/automated-canary-analysis-kubernetes-engine-spinnaker)
+* [Automated Canary Analysis Using Spinnaker](https://ordina-jworks.github.io/cloud/2018/06/01/Automated-Canary-Analysis-using-Spinnaker.html)
 
 
 
