@@ -7,46 +7,6 @@ order: 30
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-## Expose Spinnaker with an Ingress
-
-You've gotten Spinnaker [installed](/spinnaker/install) on EKS but it's not
-exposed to your organization yet.  We'll make this happen by creating a
-Kubernetes (k8s) Ingress that takes advantage of Amazon's ALB ingress
-controller.
-
-For more detailed information on options, take a look at
-[Dan Maas' Amazon EKS Ingress Guide](https://medium.com/@dmaas/amazon-eks-ingress-guide-8ec2ec940a70)
-
-### Expose the Deck and Gate Services
-
-By default, the Spinnaker services are hidden away, even from load balancers.
-So we'll need to expose the Deck and Gate services, which are the only two
-actually used by the browser.
-
-```
-$ export NAMESPACE={namespace}
-$ kubectl expose service -n ${NAMESPACE} spin-gate --type LoadBalancer \
-	--port 8084 \
-	--targetPort 8084 \
-	--name spin-gate-public
-$ kubectl expose service -n ${NAMESPACE} spin-deck --type LoadBalancer \
-	--port 9000 \
-	--targetPort 9000 \
-	--name spin-gate-public
-```
-
-You'll need to use halyard to actually configure the base URLs internally,
-since Spinnaker still thinks it's running on "localhost":
-
-```
-$ export NAMESPACE={namespace}
-$ export API_URL=$(kubectl get svc -n $NAMESPACE spin-gate-public -o jsonpath='{.status.loadBalancer.ingress[0].hostname)
-$ export UI_URL=$(kubectl get svc -n $NAMESPACE spin-deck-public -o jsonpath='{.status.loadBalancer.ingress[0].hostname)
-$ hal config security api edit --override-base-url http://${API_URL}:8084
-$ hal config security ui edit --override-base-url http://${UI_URL}:9000
-$ hal deploy apply
-```
-
 ### Install the alb-ingress-controller.
 
 This tutorial takes advantage of the `aws-alb-ingress-controller` project,
@@ -54,6 +14,15 @@ which will automatically create ALBs for your services when you create an
 ingress later.  Follow the
 [walkthrough](https://github.com/kubernetes-sigs/aws-alb-ingress-controller/blob/master/docs/walkthrough.md)
 to get this going first.
+
+### DNS Preparation
+
+We'll be setting up two CNAME entries in our DNS in this example; we won't be
+able to actually configure the DNS until we get an A record from AWS after
+creating the Ingress, but we'll need to select the names in order to configure
+the Ingress below.  For this tutorial, we've selected `demo.armory.io` to be
+our Deck service (the UI), and `gate.demo.armory.io` to be our Gate service
+(the API).
 
 ### Create the Ingress
 
@@ -95,13 +64,31 @@ spec:
       - backend:
           serviceName: spin-deck
           servicePort: 9000
+        path: /*
   - host: gate.paul.armory.io 
     http:
       paths:
       - backend:
           serviceName: spin-gate
           servicePort: 8084
+        path: /*
+
 ```
+
+### Update the Internal URLs
+
+Spinnaker will, by default, expect to be running off `localhost` and will
+generate self-referential URLs with that URL.  Now that the public DNS
+entries are working, we need to update Spinnaker's configuration to reflect
+them:
+
+```
+$ hal config security api edit --override-base-url http://gate.demo.armory.io
+$ hal config security ui edit --override-base-url http://demo.armory.io
+$ hal deploy apply
+```
+
+## Securing with SSL
 
 
 
