@@ -156,4 +156,13 @@ $ hal deploy apply
 You should now be able to access Spinnaker via HTTPS.
 
 
+## Troubleshooting / Common Problems
+
+#### Connection Times Out
+
+Check the security group you have configured to make sure it will accept
+connections on port 80 (or 443 if you're using HTTPS) from your IP (or
+`0.0.0.0` if you want to allow it to be accessible from the world).
+
+
 
