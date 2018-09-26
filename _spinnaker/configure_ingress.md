@@ -40,8 +40,8 @@ use quotes and separate by commas).
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: paul-ingress
-  namespace: paul
+  name: demo-ingress
+  namespace: demo
   labels:
     app: "spin"
   annotations:
@@ -62,21 +62,15 @@ metadata:
     alb.ingress.kubernetes.io/success-codes: "200,404"
     
 spec:
-  # We'll enable SSL later...
-  # tls:
-  # - secretName: paul-cert
-  #   hosts:
-  #   - paul.armory.io
-  #   - gate.paul.armory.io
   rules:
-  - host: paul.armory.io
+  - host: demo.armory.io
     http:
       paths:
       - backend:
           serviceName: spin-deck
           servicePort: 9000
         path: /*
-  - host: gate.paul.armory.io 
+  - host: gate.demo.armory.io 
     http:
       paths:
       - backend:
