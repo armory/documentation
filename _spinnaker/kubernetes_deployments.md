@@ -25,7 +25,7 @@ or via a [Helm bake stage](https://kb.armory.io/kubernetes/using-spinnaker-and-h
 
 ![image](https://cl.ly/912a0bfea50a/%255Bb2347374090ddd8ccff9178ac0cee09a%255D_Image%2525202018-09-27%252520at%2525206.01.23%252520PM.png)
 
-As a matter of fact the deployment manifest is not entirely static, Spinnaker will replace the image name with the actual tagged name from the bound artifact.
+As a matter of fact, the deployment manifest is not entirely static: Spinnaker will replace the image name with the actual tagged name from the bound artifact.
 
 Let's see how a new version of the container gets deployed with this pipeline:
 ![image](/assets/images/rollingupdate-default.gif)
