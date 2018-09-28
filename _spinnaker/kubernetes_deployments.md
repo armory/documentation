@@ -45,4 +45,4 @@ Let's modify our deployment manifest and ensure that we always have 4 pods runni
 Let's see how we deploy with our new configuration:
 ![image](/assets/images/rollingupdate-0.gif)
 
-We keep 4 pods running throughout the deployment and never more than 5 pods (4 pods + 25%) existing at any given time.
+We keep 4 pods running throughout the deployment and never more than 5 non *Terminating* pods (4 pods + 25%) existing at any given time.
