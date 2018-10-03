@@ -49,7 +49,7 @@ SUBCOMMANDS
   init
     Runs Armory installer
 ```
-All standard [halyard commands](https://www.spinnaker.io/reference/halyard/) are also available.
+From there, you can issue all your [halyard commands](https://www.spinnaker.io/reference/halyard/).
 
 ### Using Docker
 
