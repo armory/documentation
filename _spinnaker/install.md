@@ -49,6 +49,7 @@ SUBCOMMANDS
   init
     Runs Armory installer
 ```
+All standard [halyard commands](https://www.spinnaker.io/reference/halyard/) are also available.
 
 ### Using Docker
 
@@ -87,7 +88,7 @@ Terminal and running:
 docker exec -it armory-halyard bash
 ```
 
-From there, you can issue all your halyard commands.
+From there, you can issue all your [halyard commands](https://www.spinnaker.io/reference/halyard/).
 
 ## Installing Armory Spinnaker
 
