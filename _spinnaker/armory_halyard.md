@@ -49,8 +49,74 @@ hal armory [subcommands]
 ```
 
 #### Subcommands
+ * `diagnostics`: configure diagnostics reporting
  * `dinghy`: configure Dinghy pipelines as code
  * `init`: Runs Armory installer
+
+---
+## hal armory diagnostics
+
+configure diagnostics reporting
+
+#### Usage
+```
+hal armory diagnostics [parameters] [subcommands]
+```
+
+#### Parameters
+ * `--deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
+ * `--no-validate`: (*Default*: `false`) Skip validation.
+
+#### Subcommands
+ * `disable`: Set diagnostics as disabled
+ * `edit`: Edit diagnostics settings
+ * `enable`: Set diagnostics as enabled
+
+---
+## hal armory diagnostics disable
+
+Set diagnostics as disabled
+
+#### Usage
+```
+hal armory diagnostics disable [parameters]
+```
+
+#### Parameters
+ * `--deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
+ * `--no-validate`: (*Default*: `false`) Skip validation.
+
+
+---
+## hal armory diagnostics edit
+
+Edit diagnostics settings
+
+#### Usage
+```
+hal armory diagnostics edit [parameters]
+```
+
+#### Parameters
+ * `--deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
+ * `--no-validate`: (*Default*: `false`) Skip validation.
+ * `--uuid`: (*Required*) UUID of the Armory installation
+
+
+---
+## hal armory diagnostics enable
+
+Set diagnostics as enabled
+
+#### Usage
+```
+hal armory diagnostics enable [parameters]
+```
+
+#### Parameters
+ * `--deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
+ * `--no-validate`: (*Default*: `false`) Skip validation.
+
 
 ---
 ## hal armory dinghy
@@ -140,7 +206,7 @@ hal armory init [parameters]
  * `--allow-small`: Passed to armory-install. Don't stop installation if cluster does not have enough resources
  * `--deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
  * `--edge`: Passed to armory-install. Set if you want to run on the latest version
- * `--no-diagnostics`: Passed to armory-install. Turn off diagnostics during the installation
+ * `--no-diagnostics`: Turns off all diagnostics
  * `--no-validate`: (*Default*: `false`) Skip validation.
  * `--path`: The path to where armory-install is already installed
 
