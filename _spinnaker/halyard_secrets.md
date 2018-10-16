@@ -15,5 +15,5 @@ OSS Spinnaker and Halyard stores secrets prompted by **hal commands** into your 
 
 While it's possible to store the halyard configurations files in source control, _it is not recommended_, as this is considered bad practice. If you need revision history, most blob stores (S3, GCS) will keep history for you.
 
-Another method is to turn your `~/.hal/config.yml` and other files into a template and to build a process around hydrating/baking it, then doing a `hal deploy apply`.
+Another method is to turn `config.yml` and other files in your Halyard configuration directory into a template and to build a process around hydrating/baking it, then doing a `hal deploy apply`.
 > Warning: you may lose the ability to run `hal` commands, because halyard may not understand your templates.
