@@ -47,33 +47,35 @@ pod.
 
 ### Deploy With Secrets
 
-#### Configure Your Application
-
-You can safely set the Vault path in your application source (or
-potentially apply it from within Spinnaker).  So long as the token isn't
-available, the actual secret won't be retrievable.
-
-Set up your application to pull the Vault token from a path which is where
-we'll mount the k8s secret that was created earlier.
-
 #### Configure Your Manifest
 
-Configure your deployment manifest to mount the K8s secret into the position
-your application is expecting (see above).  When deployed, your application
-should then be able to call to vault using the policy defined in code, and
-the access token provided by the k8s secret, and retrieve the secrets needed
-(database password, etc).
+To make the Vault token available to your application, you'll need to mount
+the secret within your manifest. The
+[Kubernetes documentation](https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/)
+shows a number of ways in which you can configure your pods to get access to
+the Kubernetes secrets either as a mounted volume or as an environment
+variable.
 
-The [Kubernetes documentation](https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/) shows a number of ways in which you
-can configure your pods to get access to the Kubernetes secrets either as a
-mounted volume or as an environment variable.
+#### Configure Your Application
+
+Now your code (or perhaps just a bootup script) can be written/configured to
+grab the Vault token that was mounted in your Manifest, and, combining that
+with the Vault paths, can retrieve your secrets safely.
+
+One way to do this is with a Kubernetes [init container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/)
+intended to run the Vault image (which provides the `vault` command line tool)
+to log in, retrieve the secrets and write them to disk, where your application
+can pick them up.
+
 
 ## See Also
 
-Here are some other resources that may help you properly configure security in
-Spinnaker:
+Here are some other resources that may provide additional insight into how
+to manage application secrets within your system:
 
-* [Armory Webinar on Authorization](https://blog.armory.io/webinar-configuring-auth-n-z-in-spinnaker-with-isaac-mosquera/)
+* [Boostport's Kubernetes Vault Integration](https://github.com/Boostport/kubernetes-vault) -- This Github project incorporates a controller that watches
+for new pods and injects the secrets into them when they initialize.
+* [Working With Vault Secrets on Kubernetes](https://medium.com/ww-engineering/working-with-vault-secrets-on-kubernetes-fde381137d88)
 
 
 
