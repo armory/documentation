@@ -52,7 +52,7 @@ pod.
 
 #### Configure Your Application
 
-You can safely set the Vault policy name in your application source (or
+You can safely set the Vault path in your application source (or
 potentially apply it from within Spinnaker).  So long as the token isn't
 available, the actual secret won't be retrievable.
 
