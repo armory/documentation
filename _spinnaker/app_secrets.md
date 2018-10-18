@@ -34,11 +34,8 @@ You can read more about Vault policies [here](https://www.vaultproject.io/docs/c
 
 #### Create a token in Vault with the policy associated
 
-How to exactly go about this may depend on how you've configured Vault, but
-the key point is that you've got your authentication token for Vault, and it
-has been associated with the policy you created in the previous step.  The
-application will use this token to request the secrets from Vault, so it
-needs to have the permissions to read the secrets in the policy created.
+Use `vault token create` to create a token attached to the policy you just
+created ([reference](https://www.vaultproject.io/docs/commands/token/create.html)).
 
 #### Create a k8s secret, manually, that contains the token
 
