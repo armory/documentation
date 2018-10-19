@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Automated kubernetes rollbacks
+title: Automated Kubernetes Rollbacks
 order: 140
 ---
 {:.no_toc}
