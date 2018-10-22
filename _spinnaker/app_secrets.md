@@ -54,14 +54,14 @@ between the developer and the actual secrets their code uses:
 
 > NOTE:  Vault (and other tools) have taken this security a step further by connecting the secrets service with the backend systems such that the actual password being used is cycled automatically and is never actually known to any specific person.  If your environment permits this setup, it's definitely a more secure mechanism of password management, but it's also a much more complicated topic, and may not be possible depending on what services you are attempting to secure.
 
-## Configure Vault Access
+## Operations-side Configuration
 
 The first step to securing the secrets is to create a policy in Vault, apply
 the policy to the Vault path(s) that contain the secrets, and create a service
 account that is associated with that policy to access it.  The authorization
 token for this account is what we'll push into the deployed pods via a
 Kubernetes Secret, and will allow that pod to request the current secrets
-from Vault at startup.
+from Vault.
 
 ### Set Up A Secret Path
 
@@ -85,17 +85,6 @@ Your app, using this token, should then have access to the actual secrets.
 
 You can now put in your production secrets into that "bucket" safely.
 
-## Operationalize Vault Access
-
-The Vault access token that grants permission to the secrets will be stored
-as a Kubernetes secret in this example; provided the developers do not have
-direct access to the production kubernetes namespace, they should not have
-any ability to retrieve this secret (note, though, that Kubernetes secrets
-are simply base64-encoded strings, and not using "real" encryption).  We will
-set up the token into a secret and then configure our Kubernetes deployment
-to mount that secret, and initialize the pods with a container that can
-pull down the actual secrets from Vault.
-
 ### Create a K8s Secret
 
 Using `kubectl` you'll want to create a Secret within your namespace that
@@ -103,6 +92,13 @@ contains this token.  The [Kubernetes documentation](https://kubernetes.io/docs/
 discusses in detail the different ways you may create a secret.  Also note
 this documentation discusses how to then mount/use the secret within the
 pod.
+
+## Bringing it all together
+
+Now that your ops team has secured your secrets in Vault, and set up the
+Kubernetes secret, the next step is to have your Kubernetes deployment
+mount the auth token secret, and then finally, arrange for your app to
+use Vault to retrieve the actual production secrets.
 
 ### Configure Your Manifest
 
@@ -115,7 +111,9 @@ variable.
 
 This manifest reference may be visible to developers, but provided developers
 do not have direct access to the Kubernetes cluster, they won't be able to
-retrieve the actual token from the secret.
+retrieve the actual token from the secret; Spinnaker allows the developers to
+still manage the deployments to production, but not to retrieve the secret
+itself.
 
 ### Configure Your Application
 
@@ -131,8 +129,18 @@ can pick them up.
 Alternatively, your code may be able to access Vault directly with the access
 token, storing the secrets retrieved in application memory, where it's not
 readily accessible by someone who manages to gain access to the container's
-shell.
+shell.  Hashicorp provides [documentation on the Vault API](https://www.vaultproject.io/api/index.html)
 
+## Alternatives
+
+We've only scratched the surface of ways in which app secrets can be managed
+and then merged at deploy time by Spinnaker.  We've used Vault as an example
+because it's being used more and more by our customers, but there are other
+products (like Amazon Secrets Manager) and, of course, homebrewed solutions.
+
+In all cases, Spinnaker provides a terrific way to give developers the ability
+to manage their own deployments while still securing production passwords
+separately.
 
 ## See Also
 
