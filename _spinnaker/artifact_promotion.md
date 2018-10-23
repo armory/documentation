@@ -8,7 +8,7 @@ order: 70
 {:toc}
 
 ## Prereqs
-[Configure github to post push events](https://www.spinnaker.io/guides/tutorials/codelabs/kubernetes-v2-source-to-prod/#allow-github-to-post-push-events)
+[Configure Github to post push events](https://www.spinnaker.io/guides/tutorials/codelabs/kubernetes-v2-source-to-prod/#allow-github-to-post-push-events)
 
 [Add two kubernetes accounts (staging and prod)](https://www.spinnaker.io/guides/tutorials/codelabs/kubernetes-v2-source-to-prod/#configure-kubernetes)
 
