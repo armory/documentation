@@ -19,7 +19,7 @@ configure Kayenta via Halyard at
 Before you can use Canary stages in your application's pipelines, you'll need
 to enable the Canary feature in the application's config:
 
-![image](https://dha4w82d62smt.cloudfront.net/items/110k1y0g0l2a2s2w452C/%5Be5cd4808aad349ab8c521f7e97100f50%5D_Image+2018-04-17+at+9.25.33+AM.png)
+![image](https://cl.ly/70fe5e294ead/Image%202018-10-23%20at%203.25.33%20PM.png)
 
 Make sure you remember to save the change.  We recommend you refresh the page
 in your browser after enabling the feature before continuing.
