@@ -42,14 +42,14 @@ to *staging*. With this in mind, we have named it `Deploy to Staging`
 You should now configure the expected artifacts for your pipeline and specify
 how your pipeline should be triggered. In our example we have specified a
 manifest (stored in our Github repo) as our artifact and set our pipeline to 
-tirgger automatically when changes to our manifest are detected.
+trigger automatically when changes to our manifest are detected.
 
 ![Artifact and Trigger](https://cl.ly/2807a66af53c/Image%2525202018-10-23%252520at%2525202.18.14%252520PM.png)
 
 Next, click `Add stage`. Provide your new stage a descriptive name -- we have
 chosen `Deploy to Staging` as ours. In order to deply our artifact, we choose 
-`Deploy (Manifest)` as our *stage type* and specify `Artifact` as our `Manifest
-Source`. Finally, we select our arfifact from the `Expected Artifact` dropdown.
+`Deploy (Manifest)` as our *Stage Type* and specify `Artifact` as our *Manifest
+Source*. Finally, we select our arfifact from the `Expected Artifact` dropdown.
 
 ![Deploy (Manifest)](https://cl.ly/436328d30322/Image%2525202018-10-23%252520at%2525202.26.14%252520PM.png)
 
@@ -92,7 +92,7 @@ dropdown in order to copy our `Deploy to Staging` pipeline.
 You will want to delete the *Automated Trigger* copied from our `Deploy to 
 Staging` pipeline. In its place, create a new one of *Type* `Pipeline`. In 
 the *Pipeline* dropdown select `Staging Judgement`. Lastly, select
-`successful` for *Pipeline Status* and selct `Trigger Enabled`
+`successful` for *Pipeline Status* and select `Trigger Enabled`
 
 ![Automated Trigger](https://cl.ly/321bce55b394/Image%202018-10-23%20at%201.50.56%20PM.png)
 
