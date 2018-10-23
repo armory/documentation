@@ -12,12 +12,12 @@ order: 70
 
 [Add two kubernetes accounts (staging and prod)](https://www.spinnaker.io/guides/tutorials/codelabs/kubernetes-v2-source-to-prod/#configure-kubernetes)
 
-## Overview
+## Background
 
 One of the more powerful and common uses of Spinnaker is the promotion of
 an artifact through a series of environments, i.e. from *staging* to *prod*. 
 
-In this workflow, a pipeline might initially be triggered by the creation or 
+In such a workflow, a pipeline might initially be triggered by the creation or 
 modification of an artifact. While the artifact itself may be a manifest, a 
 Docker image, or a number of other possibilities, what is important is that 
 once it is initially deployed, the artifact's subsequent promotion is 
@@ -27,6 +27,14 @@ environment.
 Determining promotion success can be accomplished through the completion of
 integration tests or another automated method but it can also be determined
 through manual judgement. We make use of the latter case in our example below.
+
+## Overview
+
+Below is an example where we deploy an artifact to our *staging* environment. 
+The successful completion of this pipeline then triggers another pipeline 
+configured with a `Manual Judgement` stage. If *manual judgement* succeeds, a 
+third stage is triggered which takes the same artifact we initially deployed
+into our *staging* environment and deploys it to our *production* environment.
 
 ### Deploy to Staging
 
@@ -101,11 +109,20 @@ stage should mirror the configuration of the `Deploy (Manifest)` stage of
 the *Deploy to Staging* pipeline with the exception that specified account
 should correspond to your production environment. 
 
+## Summary
+
+We have just shown an example of promoting a single artifact through a 
+series of environments. While we relied on a *Manual Judgement* stage in order to 
+validate the deployment of our artifact to *staging* before deploying it to
+*production*, we could also have used automated methods such as the
+successful completion of integration tests or through the use of canary analysis. 
+Finally, although the example relied on only two distinct environments, adding 
+additional environments is trivial.
 
 ## See Also
 
 Here are some other resources that may provide additional insight into the
-promotion of artifacts through a series of environemnts:
+promotion of artifacts through a series of environments:
 
 * [Spinnaker Codelab: Kubernetes Source To Prod (Manifest Based)](https://www.spinnaker.io/guides/tutorials/codelabs/kubernetes-v2-source-to-prod/) -- Steps 6 and 7 are of particular interest.
 
