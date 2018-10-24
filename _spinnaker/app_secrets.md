@@ -24,8 +24,7 @@ Manager.
 
 This guide presumes you've already installed and configured Vault; if you
 are using Vault and have not done so, check Vault's 
-[Getting Started](https://www.vaultproject.io/intro/getting-started/install.html)
-guide.
+[Getting Started](https://learn.hashicorp.com/vault/) guide.
 
 ### Basic Outline
 
