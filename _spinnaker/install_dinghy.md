@@ -34,7 +34,7 @@ In order to configure "Pipelines as code", it has to be enabled. Enable by runni
 hal armory dinghy edit \
   --template-org "armory-io" \
   --template-repo "dinghy-templates" \
-  --github-token $TOKEN
+  --github-token
 
   # For Github enterprise, you may customize the endpoint:
   --github-endpoint "https://your-endpoint-here.com/api/v3"
