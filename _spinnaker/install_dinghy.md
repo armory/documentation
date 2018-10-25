@@ -35,11 +35,13 @@ hal armory dinghy edit \
   --template-org "armory-io" \
   --template-repo "dinghy-templates" \
   --github-token
+
+  # For Github enterprise, you may customize the endpoint:
+  --github-endpoint "https://your-endpoint-here.com/api/v3"
 ```
 
-> If you are using GitHub Enterprise and wish to change the GitHub API endpoint add the following option `--github-endpoint "https://your-endpoint-here.com"`
-
 Setup webhooks at the organization level for Push events. You can do that by going to: https://github.com/organizations/your_org_here/settings/hooks. Set the `Payload URL` to: `https://spinnaker.your-company.com:8084/webhooks/git/github`. You’ll need to have github’s webhooks IP whitelisted. You can find their IPs here: [](https://api.github.com/meta), you can read [github's docs here](https://help.github.com/articles/about-github-s-ip-addresses/).
+
 
 ### Stash Example
 ```
