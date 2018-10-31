@@ -78,7 +78,7 @@ docker run --name armory-halyard --rm \
     -v ~/.hal:/home/spinnaker/.hal \
     -v ~/.kube:/home/spinnaker/.kube \
     -v ~/.aws:/home/spinnaker/.aws \
-    -it docker.io/armory/halyard-armory:latest
+    -it docker.io/armory/halyard-armory:{{ site.data.versions.halyard-armory-version }}
 ```
 
 Once Armory Halyard is running, you can interact with it by opening a separate
