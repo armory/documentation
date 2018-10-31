@@ -18,7 +18,7 @@ different cloud provider, they may not apply.
 This tutorial takes advantage of the `aws-alb-ingress-controller` project,
 which will automatically create ALBs for your services when you create an
 ingress later.  Follow the
-[walkthrough](https://github.com/kubernetes-sigs/aws-alb-ingress-controller/blob/master/docs/walkthrough.md)
+[walkthrough](https://github.com/kubernetes-sigs/aws-alb-ingress-controller/blob/master/docs/guide/walkthrough.md)
 to get this going first.
 
 ### DNS Preparation
