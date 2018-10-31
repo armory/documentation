@@ -84,7 +84,7 @@ spec:
 
 You should shortly see your new load balancer appear in the AWS console; you
 will need to copy the DNS name from the description.  Alternatively, you should
-also be able to edit the load balancer in Spinnaker and fine the hostname
+also be able to edit the load balancer in Spinnaker and find the hostname
 at the bottom of the YAML, under `status:`.  Create your CNAMEs using this
 hostname as the canonical name.  You'll need to do this for both your
 Deck and Gate hostnames (demo.armory.io and gate.demo.armory.io in this
