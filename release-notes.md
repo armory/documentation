@@ -20,7 +20,7 @@ We also provide nightly **ossedge** builds from **OSS master**, which is only bu
 
 
 ### Differences between Releases
-Let's say the releases from Open Source are:
+Given this example:
 - ...
 - `OSS 1.9.1 + Armory`
 - `OSS 1.9.2 + Armory <-- "Armory stable"`
@@ -28,6 +28,7 @@ Let's say the releases from Open Source are:
 - `OSS 1.10.0 + Armory`
 - `OSS 1.10.1 + Armory <-- "Armory next rc"`
 - `OSS master <-- "ossedge"`
+
 
 #### Stable Releases
 ```bash
