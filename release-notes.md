@@ -35,7 +35,7 @@ Given this example:
 $ hal version list
 ```
 A **stable** release is created using the OSS `1.9.2`
-- This version has been tested at Armory and verified that it will work for our normal uses cases.
+- This version has been tested at Armory and verified that it will work for normal uses cases.
 - Most of our customers will be using stable releases.
 
 We use [semantic versioning](https://semver.org/) for tagging, e.g. `12.3.4`.
@@ -51,10 +51,10 @@ $ hal version list --release=rc
 - A **rc** release will be created from OSS `>1.9.2 and <1.10.0`
   + This version is what's currently being used at Armory.
   + We're using this internally and fixing issues as needed.
-  + A few customers maybe using it, but we do not recommend going to production.
+  + A few customers may be using it, but we do not recommend using it in production.
 - A **next rc** will be created from OSS `1.10.*`
   + This version has not been tested at Armory, only built and served.
-  + A few customers maybe using it, but we do not recommend going to production.
+  + A few customers may be using it, but we do not recommend using it in production.
 
 **RC**s also follow semantic versioning with the format like `13.9.3-rc202`.
 
