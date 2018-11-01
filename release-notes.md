@@ -66,7 +66,6 @@ $ hal version list --release=ossedge
 An **ossedge** release is created from OSS `master`.
 - This is created through OSS `hal version list --release=master-latest-unvalidated`
 - This version has not been tested at Armory, only built and served.
-- We may consider a more frequent releases cycle on a case by case basis
 - This is mainly being used for development work by our customers and **should not be** used in production or any critical workloads
 
 Armory uses dates and build numbers for their versions. e.g.:
