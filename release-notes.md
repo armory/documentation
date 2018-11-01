@@ -10,7 +10,7 @@ collection: release_notes
 
 
 ## Understanding Armory + Open Source Spinnaker Releases
-Armory is based off OSS's (Open Source Spinnaker) [Halyard release Cadence](https://www.spinnaker.io/community/releases/release-cadence), in which we extend OSS with Armory features. We provide a few different release types.
+Armory is based off OSS's (Open Source Spinnaker) [release cadence](https://www.spinnaker.io/community/releases/release-cadence), in which we extend OSS with Armory features. We provide a few different release types.
 
 A **stable** release for customers who need stability in their production environment. You can find these [releases here](#stable-armory-releases) or use [Armory Halyard](#differences-between-releases).
 
