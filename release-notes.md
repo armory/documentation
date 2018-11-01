@@ -9,14 +9,14 @@ collection: release_notes
 {:toc}
 
 
-## Understanding Armory + Open Source Spinnaker releases
-Armory is based off of OSS's (Open Source Spinnaker) [Halyard release Cadence](https://www.spinnaker.io/community/releases/release-cadence), in which we extend OSS with Armory features. We provide a few different release types.
+## Understanding Armory + Open Source Spinnaker Releases
+Armory is based off OSS's (Open Source Spinnaker) [Halyard release Cadence](https://www.spinnaker.io/community/releases/release-cadence), in which we extend OSS with Armory features. We provide a few different release types.
 
 A **stable** release for customers who need stability in their production environment. You can find these [releases here](#stable-armory-releases) or use [Armory Halyard](#differences-between-releases).
 
 For customers who want to test the latest Armory + OSS (Open Source Spinnaker) release, we provide **rc** release candidates, which you can find using [Armory Halyard](#differences-between-releases). See OSS's [Release Cadence](https://www.spinnaker.io/community/releases/release-cadence/) for more information.
 
-We also provide nightly **ossedge** builds from **OSS master**, which is only built, but not tested by Armory, which you can find using [Armory Halyard](#differences-between-releases).
+We also provide nightly **ossedge** builds from **OSS master**, which is only built, but not tested by Armory. You can find these versions using [Armory Halyard](#differences-between-releases).
 
 
 ### Differences between Releases
@@ -34,7 +34,7 @@ Given this example:
 ```bash
 $ hal version list
 ```
-A **stable** release is created using the OSS `v1.9.2`
+A **stable** release is created using the OSS `1.9.2`
 - This version has been tested at Armory and verified that it will work for our normal uses cases.
 - Most of our customers will be using stable releases.
 
@@ -48,11 +48,11 @@ We use [semantic versioning](https://semver.org/) for tagging, e.g. `12.3.4`.
 ```bash
 $ hal version list --release=rc
 ```
-- A **rc** release will be created from OSS `>v1.9.2 and <v1.10.0`
+- A **rc** release will be created from OSS `>1.9.2 and <1.10.0`
   + This version is what's currently being used at Armory.
   + We're using this internally and fixing issues as needed.
   + A few customers maybe using it, but we do not recommend going to production.
-- A **next rc** will be created from OSS `v1.10.*`
+- A **next rc** will be created from OSS `1.10.*`
   + This version has not been tested at Armory, only built and served.
   + A few customers maybe using it, but we do not recommend going to production.
 
