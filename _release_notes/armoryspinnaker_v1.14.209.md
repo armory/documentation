@@ -15,15 +15,23 @@ hidden: false
 
 
 ## Known Issues
-There's currently no known issues with this release.
 
-<!--- Example of a problem
-Igor added ..... which does.....
+### awscli conflicts with cloud-init
 
-**Symptoms:**
-**Fix:**
--->
+**Root Issue**
+- awscli >= 1.16.39 upgrades urllib3 to a version that conflicts with the version used by cloud-init
 
+**Symptoms**
+- can't ssh into armoryspinnaker ec2 instances
+- can't run user-data scripts on armoryspinnaker ec2 instances
+
+**Fix**
+
+Add this line to the end of your Packer Template for Armory Spinnaker
+```
+sudo pip install --upgrade urllib3==1.23
+```
+This has been addressed in Armory Spinnaker versions 2.0.0 and later.
 
 
 

@@ -15,9 +15,25 @@ hidden: false
 
 
 ## Known Issues
-### Cannot bake this version
+### awscli conflicts with cloud-init
 
-#### Symptoms
+**Root Issue**
+- awscli >= 1.16.39 upgrades urllib3 to a version that conflicts with the version used by cloud-init
+
+**Symptoms**
+- can't ssh into armoryspinnaker ec2 instances
+- can't run user-data scripts on armoryspinnaker ec2 instances
+
+**Fix**
+
+Add this line to the end of your Packer Template for Armory Spinnaker
+```
+sudo pip install --upgrade urllib3==1.23
+```
+This has been addressed in Armory Spinnaker versions 2.0.0 and later.
+
+### Cannot bake this version
+**Symptoms**
 This version will fail due to this error found in the bake logs.
 ```
 Cannot uninstall 'urllib3'. It is a distutils installed project and thus we cannot accurately determine which files belong to it which would lead to only a partial uninstall.
@@ -29,7 +45,7 @@ Errors were encountered while processing:
 E: Sub-process /usr/bin/dpkg returned an error code (1)
 ```
 
-#### Fix
+**Fix**
 For this version, you'll need to change it to `1.14.192-fix-pip-builds` for debians, or `1.14.192-fixpipbuilds` for rpms.
 
 
