@@ -31,7 +31,7 @@ $ hal version list
   Published: Fri October 12 15:42:49 PDT 2018
   Changelog: https://docs.armory.io/release-notes
 ```
-**Stable** releases have been tested by Armory. Most of our customers will be using stable releases.
+**Stable** releases have been tested by Armory. Most of our customers will be using them.
 
 We use [semantic versioning](https://semver.org/) for tagging, e.g. `12.3.4`.
 - MAJOR versions correspond to an OSS minor release
