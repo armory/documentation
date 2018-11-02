@@ -31,7 +31,7 @@ $ hal version list
   Published: Fri October 12 15:42:49 PDT 2018
   Changelog: https://docs.armory.io/release-notes
 ```
-A **stable** releases have been tested by Armory. Most of our customers will be using stable releases.
+**Stable** releases have been tested by Armory. Most of our customers will be using stable releases.
 
 We use [semantic versioning](https://semver.org/) for tagging, e.g. `12.3.4`.
 - MAJOR versions correspond to an OSS minor release
@@ -50,7 +50,7 @@ $ hal version list --release=rc
    Published: Fri October 12 15:42:49 PDT 2018
    Changelog: https://docs.armory.io/release-notes
 ```
-A **rc** release will be created from OSS versions between `>1.9.2 and <1.10.0`
+A **rc** release reflects the latest from Armory and OSS release branches
 - This version is what's currently being used at Armory.
 - We're using this internally and fixing issues as needed.
 - A few customers may be using it, but we do not recommend using it in production.
