@@ -25,10 +25,10 @@ We also provide nightly **ossedge** builds from OSS master without Armory featur
 $ hal version list
 ...
 - 2.0.1 (OSS 1.9.x):
-  Published: Thu October 12 15:42:49 PDT 2018
+  Published: Fri October 12 15:42:49 PDT 2018
   Changelog: https://docs.armory.io/release-notes
 - 2.0.2 (OSS 1.9.x):
-  Published: Thu October 12 15:42:49 PDT 2018
+  Published: Fri October 12 15:42:49 PDT 2018
   Changelog: https://docs.armory.io/release-notes
 ```
 A **stable** releases have been tested by Armory. Most of our customers will be using stable releases.
@@ -44,10 +44,10 @@ We use [semantic versioning](https://semver.org/) for tagging, e.g. `12.3.4`.
 $ hal version list --release=rc
 ...
  - 2.0.0-rc2447 (OSS 1.9.x):
-   Published: Thu October 12 15:42:49 PDT 2018
+   Published: Fri October 12 15:42:49 PDT 2018
    Changelog: https://docs.armory.io/release-notes
  - 3.0.0-rc2448 (OSS 1.10.x):
-   Published: Thu October 12 15:42:49 PDT 2018
+   Published: Fri October 12 15:42:49 PDT 2018
    Changelog: https://docs.armory.io/release-notes
 ```
 A **rc** release will be created from OSS versions between `>1.9.2 and <1.10.0`
@@ -71,7 +71,7 @@ $ hal version list --release=ossedge
 ...
  - 2018.11.02-ossedge2449 (OSS Edge release):
    Changelog: https://docs.armory.io/release-notes
-   Published: Thu October 12 15:42:49 PDT 2018
+   Published: Fri October 12 15:42:49 PDT 2018
 ```
 An **ossedge** release is created from OSS `master`.
 - This version has not been tested at Armory, only built and served.
