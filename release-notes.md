@@ -51,8 +51,7 @@ $ hal version list --release=rc
    Changelog: https://docs.armory.io/release-notes
 ```
 A **rc** release reflects the latest from Armory and OSS release branches
-- This version is what's currently being used at Armory.
-- We're using this internally and fixing issues as needed.
+- These versions are used internally at Armory
 - A few customers may be using it, but we do not recommend using it in production.
 
 <!--
