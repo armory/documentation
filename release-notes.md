@@ -14,29 +14,24 @@ Armory is based off OSS's (Open Source Spinnaker) [release cadence](https://www.
 
 A **stable** release for customers who need stability in their production environment. You can find these [releases here](#stable-armory-releases) or use [Armory Halyard](#differences-between-releases).
 
-For customers who want to test the latest Armory + OSS (Open Source Spinnaker) release, we provide **rc** release candidates, which you can find using [Armory Halyard](#differences-between-releases). See OSS's [Release Cadence](https://www.spinnaker.io/community/releases/release-cadence/) for more information.
+For customers who want to test the latest Armory + OSS (Open Source Spinnaker) release, we provide **rc** release candidates, which you can find using [Armory Halyard](#differences-between-releases). 
 
-We also provide nightly **ossedge** builds from **OSS master**, which is only built, but not tested by Armory. You can find these versions using [Armory Halyard](#differences-between-releases).
+We also provide nightly **ossedge** builds from OSS master without Armory features, _these are untested_. You can find these versions using [Armory Halyard](#differences-between-releases).
 
 
 ### Differences between Releases
-Given this example:
-- ...
-- `OSS 1.9.1 + Armory`
-- `OSS 1.9.2 + Armory <-- "Armory stable"`
-- `OSS 1.9.2+more + Armory <-- "Armory rc"` (**more** means commits created in OSS for `OSS 1.9.3`, but not officially released)
-- `OSS 1.10.0 + Armory`
-- `OSS 1.10.1 + Armory <-- "Armory next rc"`
-- `OSS master <-- "ossedge"`
-
-
 #### Stable Releases
-```bash
+```yml
 $ hal version list
+...
+- 2.0.1 (OSS 1.9.x):
+  Published: Thu October 12 15:42:49 PDT 2018
+  Changelog: https://docs.armory.io/release-notes
+- 2.0.2 (OSS 1.9.x):
+  Published: Thu October 12 15:42:49 PDT 2018
+  Changelog: https://docs.armory.io/release-notes
 ```
-A **stable** release is created using the OSS `1.9.2`
-- This version has been tested at Armory and verified that it will work for normal uses cases.
-- Most of our customers will be using stable releases.
+A **stable** releases have been tested by Armory. Most of our customers will be using stable releases.
 
 We use [semantic versioning](https://semver.org/) for tagging, e.g. `12.3.4`.
 - MAJOR versions correspond to an OSS minor release
@@ -45,26 +40,40 @@ We use [semantic versioning](https://semver.org/) for tagging, e.g. `12.3.4`.
 
 
 #### RC Releases
-```bash
+```yml
 $ hal version list --release=rc
+...
+ - 2.0.0-rc2447 (OSS 1.9.x):
+   Published: Thu October 12 15:42:49 PDT 2018
+   Changelog: https://docs.armory.io/release-notes
+ - 3.0.0-rc2448 (OSS 1.10.x):
+   Published: Thu October 12 15:42:49 PDT 2018
+   Changelog: https://docs.armory.io/release-notes
 ```
-- A **rc** release will be created from OSS `>1.9.2 and <1.10.0`
-  + This version is what's currently being used at Armory.
-  + We're using this internally and fixing issues as needed.
-  + A few customers may be using it, but we do not recommend using it in production.
+A **rc** release will be created from OSS versions between `>1.9.2 and <1.10.0`
+- This version is what's currently being used at Armory.
+- We're using this internally and fixing issues as needed.
+- A few customers may be using it, but we do not recommend using it in production.
+
+<!--
 - A **next rc** will be created from OSS `1.10.*`
   + This version has not been tested at Armory, only built and served.
   + A few customers may be using it, but we do not recommend using it in production.
+-->
+
 
 **RC**s also follow semantic versioning with the format like `13.9.3-rc202`.
 
 
 #### OSS Edge Releases
-```bash
+```yml
 $ hal version list --release=ossedge
+...
+ - 2018.11.02-ossedge2449 (OSS Edge release):
+   Changelog: https://docs.armory.io/release-notes
+   Published: Thu October 12 15:42:49 PDT 2018
 ```
 An **ossedge** release is created from OSS `master`.
-- This is created through OSS `hal version list --release=master-latest-unvalidated`
 - This version has not been tested at Armory, only built and served.
 - This is mainly being used for development work by our customers and **should not be** used in production or any critical workloads
 
