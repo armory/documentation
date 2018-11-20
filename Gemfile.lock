@@ -57,7 +57,7 @@ GEM
     pathutil (0.16.1)
       forwardable-extended (~> 2.6)
     public_suffix (3.0.3)
-    rack (1.6.5)
+    rack (1.6.11)
     rb-fsevent (0.9.8)
     rb-inotify (0.9.8)
       ffi (>= 0.5.0)
@@ -82,7 +82,7 @@ DEPENDENCIES
   jekyll-redirect-from
   jekyll_version_plugin
   kramdown (= 1.14)
-  rack (= 1.6.5)
+  rack (~> 1.6.11)
   rb-fsevent (= 0.9.8)
   rb-inotify (= 0.9.8)
   sass (= 3.4.23)
@@ -90,7 +90,7 @@ DEPENDENCIES
   tzinfo-data
 
 RUBY VERSION
-   ruby 2.3.3p222
+   ruby 2.4.1p111
 
 BUNDLED WITH
-   1.16.1
+   1.16.5
