@@ -28,7 +28,7 @@ group :jekyll_plugins do
     gem "rb-inotify", "0.9.8"
     gem "kramdown", "1.14"
     gem "extras", "0.1.0"
-    gem "rack", "1.6.5"
+    gem "rack", "~>1.6.11"
     gem "sprockets", "~> 3.7.2"
 end
 
