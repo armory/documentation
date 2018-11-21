@@ -4,7 +4,7 @@ properties([
   pipelineTriggers([
     upstream(
       threshold: 'SUCCESS',
-      upstreamProjects: '../../armory repos/halyard-armory/master'
+      upstreamProjects: '../armory/halyard-armory/master'
     )
   ])
 ])
