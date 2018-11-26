@@ -18,10 +18,9 @@ configure Kayenta via Halyard at
 
 If you are configuring New Relic for your metrics store, you won't be able to
 use Halyard directly to enable it (yet).  Instead, add the following (fill in
-your own apiKey and accountId data from your New Relic Insights API data; you
-can also change the name field to your preference))
-as `kayenta-local.yml` in your `profiles` directory (in
-`.hal/default/profiles`):
+your own `apiKey` and `accountId` data from your New Relic Insights API data;
+you can also change the `name` field to your preference)) as
+`kayenta-local.yml` in your `profiles` directory (in `.hal/default/profiles`):
 
 ```
 kayenta:
