@@ -14,6 +14,28 @@ The open source Spinnaker documentation has a good overview of how to
 configure Kayenta via Halyard at
 [https://www.spinnaker.io/setup/canary/](https://www.spinnaker.io/setup/canary/)
 
+### Configuring New Relic
+
+If you are configuring New Relic for your metrics store, you won't be able to
+use Halyard directly to enable it (yet).  Instead, add the following (fill in
+your own apiKey and accountId data from your New Relic Insights API data; you
+can also change the name field to your preference))
+as `kayenta-local.yml` in your `profiles` directory (in
+`.hal/default/profiles`):
+
+```
+kayenta:
+  newrelic:
+    enabled: true
+    accounts:
+      - name: NewRelic
+        apiKey: "AbCdEf12345689...""
+        accountId: "1234567"
+        supportedTypes:
+          - METRICS_STORE
+        endpoint.baseUrl:  https://insights-api.newrelic.com
+```
+
 ## Enable Canarying in Application
 
 Before you can use Canary stages in your application's pipelines, you'll need
