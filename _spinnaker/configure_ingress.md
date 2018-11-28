@@ -49,30 +49,24 @@ hal config security ui edit --override-base-url http://${UI_URL}:9000
 hal deploy apply
 ```
 
-### Cleanup
-If you’d like to undo what we’ve done in the steps above you can simply delete the Kubernetes Services and reset the UI and API endpoints.
-
-```
-export NAMESPACE={namespace}
-kubectl delete svc -n ${NAMESPACE} spin-gate-public spin-deck-public
-hal config security api edit --override-base-url http://localhost:8084
-hal config security ui edit --override-base-url http://localhost:9000
-hal deploy apply
-```
-
-### Secure with SSL
+### Secure with SSL on EKS
 
 This tutorial presumes you've already created a certificate in the AWS Certificate Manager.
+
+First get the certificate arn and run
+```
+ACM_CERT_ARN="arn:::::your:cert"
+```
 
 Edit the LoadBalancer service `spin-gate-public` and  `spin-deck-public` we will include 3 annotations for each.
 
 ```
 kubectl annotate svc -n ${NAMESPACE} spin-gate-public service.beta.kubernetes.io/aws-load-balancer-backend-protocol=http
-kubectl annotate svc -n ${NAMESPACE} spin-gate-public service.beta.kubernetes.io/aws-load-balancer-ssl-cert={acm-cert-arn}
+kubectl annotate svc -n ${NAMESPACE} spin-gate-public service.beta.kubernetes.io/aws-load-balancer-ssl-cert=${ACM_CERT_ARN}
 kubectl annotate svc -n ${NAMESPACE} spin-gate-public service.beta.kubernetes.io/aws-load-balancer-ssl-ports=80,443
 
 kubectl annotate svc -n ${NAMESPACE} spin-deck-public service.beta.kubernetes.io/aws-load-balancer-backend-protocol=http
-kubectl annotate svc -n ${NAMESPACE} spin-deck-public service.beta.kubernetes.io/aws-load-balancer-ssl-cert={acm-cert-arn}
+kubectl annotate svc -n ${NAMESPACE} spin-deck-public service.beta.kubernetes.io/aws-load-balancer-ssl-cert=${ACM_CERT_ARN}
 kubectl annotate svc -n ${NAMESPACE} spin-deck-public service.beta.kubernetes.io/aws-load-balancer-ssl-ports=80,443
 ```
 
@@ -136,3 +130,7 @@ Note: It may take a few minutes for GKE to allocate an external IP address and s
 You need to update your DNS records to have the demo.armory.io host point to the IP address generated.
 
 After doing that you can visit http://demo.dev.armory.io:9000/ to view spinnaker.
+
+### Secure with SSL on GKE
+To enable SSL and configure your certificates you can follow this guide:
+`https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-multi-ssl
