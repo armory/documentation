@@ -65,15 +65,15 @@ $ hal deploy apply
 
 This tutorial presumes you've already created a certificate in the AWS Certificate Manager.
 
-* Edit the LoadBalancer service `spin-gate-public` and  `spin-deck-public` we will include 3 annotations.
+* Edit the LoadBalancer service `spin-gate-public` and  `spin-deck-public` we will include 3 annotations for each.
 ```
-kubectl annotate svc -n karlotaco spin-gate-public service.beta.kubernetes.io/aws-load-balancer-backend-protocol=http
-kubectl annotate svc -n karlotaco spin-gate-public service.beta.kubernetes.io/aws-load-balancer-ssl-cert={acm-cert-arn}
-kubectl annotate svc -n karlotaco spin-gate-public service.beta.kubernetes.io/aws-load-balancer-ssl-ports=80,443
+kubectl annotate svc -n ${NAMESPACE} spin-gate-public service.beta.kubernetes.io/aws-load-balancer-backend-protocol=http
+kubectl annotate svc -n ${NAMESPACE} spin-gate-public service.beta.kubernetes.io/aws-load-balancer-ssl-cert={acm-cert-arn}
+kubectl annotate svc -n ${NAMESPACE} spin-gate-public service.beta.kubernetes.io/aws-load-balancer-ssl-ports=80,443
 
-kubectl annotate svc -n karlotaco spin-deck-public service.beta.kubernetes.io/aws-load-balancer-backend-protocol=http
-kubectl annotate svc -n karlotaco spin-deck-public service.beta.kubernetes.io/aws-load-balancer-ssl-cert={acm-cert-arn}
-kubectl annotate svc -n karlotaco spin-deck-public service.beta.kubernetes.io/aws-load-balancer-ssl-ports=80,443
+kubectl annotate svc -n ${NAMESPACE} spin-deck-public service.beta.kubernetes.io/aws-load-balancer-backend-protocol=http
+kubectl annotate svc -n ${NAMESPACE} spin-deck-public service.beta.kubernetes.io/aws-load-balancer-ssl-cert={acm-cert-arn}
+kubectl annotate svc -n ${NAMESPACE} spin-deck-public service.beta.kubernetes.io/aws-load-balancer-ssl-ports=80,443
 ```
 
 ### Update the Internal URLS in Spinnaker
@@ -88,11 +88,48 @@ We’ll need to update the internal URLs (Deck will complain about trying to cal
 ## Exposing Spinnaker on GKE with Ingress
 ### Setting up HTTP Load Balancing with Ingress
 
-To save time typing your project ID and Compute Engine zone options in the gcloud command-line tool, you can set the defaults:
+GKE has a “built-in” ingress controller and that's what we will use.
+
+First create a file called basic-ingress.yaml and paste it the following
 ```
-gcloud config set project [PROJECT_ID]
-gcloud config set compute/zone us-central1-b
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: basic-ingress
+
+spec:
+  rules:
+  - host: demo.armory.io
+    http:
+      paths:
+      - backend:
+          serviceName: spin-deck
+          servicePort: 9000
+        path: /
+  - host: gate.demo.armory.io
+    http:
+      paths:
+      - backend:
+          serviceName: spin-gate
+          servicePort: 8084
+        path: /
 ```
 
-Create a container cluster named loadbalancedcluster by running:
-`gcloud container clusters create loadbalancedcluster`
+Then apply this
+`kubectl apply -f basic-ingress.yaml`
+
+Find out the external IP address of the load balancer serving your application by running:
+`kubectl get ingress basic-ingress`
+
+
+Output:
+```
+NAME            HOSTS                                       ADDRESS         PORTS     AGE
+basic-ingress   demo.armory.io, gate.demo.armory.io         203.0.113.12    80        2m
+```
+
+Note: It may take a few minutes for GKE to allocate an external IP address and set up forwarding rules until the load balancer is ready to serve your application. In the meanwhile, you may get errors such as HTTP 404 or HTTP 500 until the load balancer configuration is propagated across the globe.
+
+You need to update your DNS records to have the demo.armory.io host point to the IP address generated.
+
+After doing that you can visit http://demo.dev.armory.io:9000/ to view spinnaker.
