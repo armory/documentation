@@ -17,7 +17,7 @@ our Deck service (the UI), and `gate.demo.armory.io` to be our Gate service
 (the API).
 
 ## Exposing Spinnaker on EKS
-###Create a LoadBalancer service
+### Create a LoadBalancer service
 
 Note: This guide assumes you’re deploying Spinnaker on Kubernetes using the Distributed deployment type with Halyard.
 
@@ -27,14 +27,12 @@ First, we’ll start by creating LoadBalancer Services which will expose the A
 NAMESPACE is the Kubernetes namespace where your Spinnaker install is located. Halyard defaults to spinnaker unless explicitly overridden.
 
 ```
-  export NAMESPACE={namespace}
- 
-  kubectl expose service -n ${NAMESPACE} spin-gate --type LoadBalancer \
+export NAMESPACE={namespace}
+kubectl expose service -n ${NAMESPACE} spin-gate --type LoadBalancer \
   --port 8084 \
   --target-port 8084 \
   --name spin-gate-public
- 
-  kubectl expose service -n ${NAMESPACE} spin-deck --type LoadBalancer \
+kubectl expose service -n ${NAMESPACE} spin-deck --type LoadBalancer \
   --port 9000 \
   --target-port 9000 \
   --name spin-deck-public
@@ -43,29 +41,31 @@ NAMESPACE is the Kubernetes namespace where your Spinnaker install is located. 
 Once these Services have been created, we’ll need to update our Spinnaker deployment so that the UI understands where the API is located. To do this, we’ll use Halyard to override the base URL for both the API and the UI and then redeploy Spinnaker.
 
 ```
-  export NAMESPACE={namespace}
-  export API_URL=$(kubectl get svc -n $NAMESPACE spin-gate-public -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-  export UI_URL=$(kubectl get svc -n $NAMESPACE spin-deck-public -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-  hal config security api edit --override-base-url http://${API_URL}:8084
-  hal config security ui edit --override-base-url http://${UI_URL}:9000
-  hal deploy apply
+export NAMESPACE={namespace}
+export API_URL=$(kubectl get svc -n $NAMESPACE spin-gate-public -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+export UI_URL=$(kubectl get svc -n $NAMESPACE spin-deck-public -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+hal config security api edit --override-base-url http://${API_URL}:8084
+hal config security ui edit --override-base-url http://${UI_URL}:9000
+hal deploy apply
 ```
 
 ### Cleanup
 If you’d like to undo what we’ve done in the steps above you can simply delete the Kubernetes Services and reset the UI and API endpoints.
+
 ```
-$ export NAMESPACE={namespace}
-$ kubectl delete svc -n ${NAMESPACE} spin-gate-public spin-deck-public
-$ hal config security api edit --override-base-url http://localhost:8084
-$ hal config security ui edit --override-base-url http://localhost:9000
-$ hal deploy apply
+export NAMESPACE={namespace}
+kubectl delete svc -n ${NAMESPACE} spin-gate-public spin-deck-public
+hal config security api edit --override-base-url http://localhost:8084
+hal config security ui edit --override-base-url http://localhost:9000
+hal deploy apply
 ```
 
 ### Secure with SSL
 
 This tutorial presumes you've already created a certificate in the AWS Certificate Manager.
 
-* Edit the LoadBalancer service `spin-gate-public` and  `spin-deck-public` we will include 3 annotations for each.
+Edit the LoadBalancer service `spin-gate-public` and  `spin-deck-public` we will include 3 annotations for each.
+
 ```
 kubectl annotate svc -n ${NAMESPACE} spin-gate-public service.beta.kubernetes.io/aws-load-balancer-backend-protocol=http
 kubectl annotate svc -n ${NAMESPACE} spin-gate-public service.beta.kubernetes.io/aws-load-balancer-ssl-cert={acm-cert-arn}
@@ -78,6 +78,7 @@ kubectl annotate svc -n ${NAMESPACE} spin-deck-public service.beta.kubernetes.io
 
 ### Update the Internal URLS in Spinnaker
 We’ll need to update the internal URLs (Deck will complain about trying to call out to an HTTP resource from an HTTPS request). Update the URLs like we did before, but changing the protocols to https:
+
 ```
   hal config security api edit --override-base-url https://gate.demo.armory.io
   hal config security ui edit --override-base-url https://demo.armory.io
@@ -91,6 +92,7 @@ We’ll need to update the internal URLs (Deck will complain about trying to cal
 GKE has a “built-in” ingress controller and that's what we will use.
 
 First create a file called basic-ingress.yaml and paste it the following
+
 ```
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -123,6 +125,7 @@ Find out the external IP address of the load balancer serving your application b
 
 
 Output:
+
 ```
 NAME            HOSTS                                       ADDRESS         PORTS     AGE
 basic-ingress   demo.armory.io, gate.demo.armory.io         203.0.113.12    80        2m
