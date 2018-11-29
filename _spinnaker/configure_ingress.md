@@ -129,7 +129,7 @@ Note: It may take a few minutes for GKE to allocate an external IP address and s
 
 You need to update your DNS records to have the demo.armory.io host point to the IP address generated.
 
-After doing that you can visit [http://demo.dev.armory.io:9000/](http://demo.dev.armory.io:9000/) to view spinnaker.
+After doing that you can visit http://demo.dev.armory.io:9000/ to view spinnaker.
 
 ### Secure with SSL on GKE
 To enable SSL and configure your certificates you can follow this guide:
