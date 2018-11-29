@@ -126,7 +126,7 @@ You'll need to adjust poll cycle time and/or timeouts ([defaults here](https://g
 fiat:
   writeMode:
     # Poll cycle interval, "check if a user belongs to a group every X ms"
-    # syncDelayMs:   # the default is usually fine
+    # syncDelayMs:   # the default 600000 (10 mins) is usually fine
 
     # The amount of time to wait for a poll job to complete,
     # the more users there are, the longer the job takes.
