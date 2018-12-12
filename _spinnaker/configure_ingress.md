@@ -33,7 +33,7 @@ kubectl expose service -n ${NAMESPACE} spin-gate --type LoadBalancer \
   --target-port 8084 \
   --name spin-gate-public
 kubectl expose service -n ${NAMESPACE} spin-deck --type LoadBalancer \
-  --port 9000 \
+  --port 443 \
   --target-port 9000 \
   --name spin-deck-public
 ```
@@ -55,7 +55,7 @@ This tutorial presumes you've already created a certificate in the AWS Certifica
 
 First get the certificate arn and run
 ```
-ACM_CERT_ARN="arn:::::your:cert"
+export ACM_CERT_ARN="arn:::::your:cert"
 ```
 
 Edit the LoadBalancer service `spin-gate-public` and  `spin-deck-public` we will include 3 annotations for each.
@@ -129,7 +129,7 @@ Note: It may take a few minutes for GKE to allocate an external IP address and s
 
 You need to update your DNS records to have the demo.armory.io host point to the IP address generated.
 
-After doing that you can visit http://demo.dev.armory.io:9000/ to view spinnaker.
+After doing that you can visit http://demo.armory.io:9000/ to view spinnaker.
 
 ### Secure with SSL on GKE
 To enable SSL and configure your certificates you can follow this guide:
