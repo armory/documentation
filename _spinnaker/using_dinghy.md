@@ -409,3 +409,23 @@ With nested variables, instead of using a hardcoded default value, the default c
 {% endraw %}```
 Here, if the variable `"name"` was not passed into the module call and is not a top-level variable in the `dinghyfile`, its value will come from a variable called `"different_var"` that is either a top-level variable or another variable passed in when the module is called. Note the `@` syntax for the nested variable. The `@` symbol is only used where the variable is used, not when it is passed in.
 le
+
+### Create a dinghyfile from an existing pipeline
+If you have already created a pipeline in the Spinnaker UI, you can create a dinghyfile with some simple steps. 
+
+1. You need to go to the spinnaker UI and click on the `Configure` option of the pipeline you want.
+2. Click on the `Pipeline Actions` dropdown and select 'Edit as JSON'
+3. Copy/Paste this data into a new file, you will need to wrap this JSON with the following
+
+ ```
+{
+  "application": "yourspinnakerapplicationname",
+  "pipelines": [
+     The JSON obtained from the UI
+   ]
+}
+```
+
+Save this file as `dinghyfile` in the root of your project and push it to your repository.
+
+You may want to follow the [deleting stale pipelines](http://localhost:4000/spinnaker/using_dinghy/#deleting-stale-pipelines).
