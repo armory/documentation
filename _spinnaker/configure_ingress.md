@@ -80,6 +80,17 @@ We’ll need to update the internal URLs (Deck will complain about trying to cal
 ```
 
 
+### Enabling sticky sessions
+
+If you're Armory Spinnaker installation will be using [authentication](https://docs.armory.io/install-guide/auth/) and you expect to scale the API server (Gate) beyond more than one instance you'll want to enable sticky sessions. This will ensure that clients will connect and authenticate with the same server each time. Otherwise, you may be forced to reauthenticate if you get directed to a new server. To enable sticky sessions, you'll want to enable session affinity on the Gate service created above.
+
+```
+kubectl patch -n ${NAMESPACE} service/spin-gate-public --patch '{"spec": {"sessionAffinity": "ClientIP"}}'
+```
+
+For more details about session affinity, see the Kubernetes documentation on [Services](https://kubernetes.io/docs/concepts/services-networking/service/).
+
+
 ## Exposing Spinnaker on GKE with Ingress
 ### Setting up HTTP Load Balancing with Ingress
 
