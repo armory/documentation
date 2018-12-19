@@ -17,6 +17,9 @@ In order to automate updating the token, we will use a sidecar container with a 
 The sidecar we're going to add does not start with an access token, it needs to be able to request an access token from ECR. The Spinnaker installation must have the `AmazonEC2ContainerRegistryReadOnly` policy attached to the role assigned in order to request and update the required access token.
 
 
+Note: This will become easier to do in 1.10, you will be able to use the `--password-command` option to pass the command to update your access token. There will documentation for this once it becomes available in an Armory release.
+
+
 ## Update Configs
 
 ### Add a Sidecar for Token Refresh
