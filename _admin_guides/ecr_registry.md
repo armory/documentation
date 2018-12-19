@@ -21,7 +21,7 @@ The sidecar we're going to add does not start with an access token, it needs to 
 
 ### Add a Sidecar for Token Refresh
 
-In your `~/.hal/config`, update the deploymentEnvironment.sidecars section:
+In your `~/.hal/config`, update the `deploymentEnvironment.sidecars` section:
 ```
   deploymentEnvironment:
     sidecars:
@@ -47,15 +47,9 @@ dockerRegistry:
     passwordFile: /etc/passwords/my-ecr-registry.pass
 ```
 
+Note: You can configure multiple registries here by adding another registry to the list
 
-### Update your Spinnaker installation
-```
-hal deploy apply --service-names clouddriver
-```
-
-
-
-Create a token-refresh.yml
+Create a `config.yml`
 
 ```
 interval: 30m # defines refresh interval
@@ -69,6 +63,12 @@ Apply it to the cluster with:
 ```
 kubectl -n <namespace> create configmap token-refresh-config --from-file <token-refresh.yml location>
 ```
+
+### Update your Spinnaker installation
+```
+hal deploy apply --service-names clouddriver
+```
+
 
 Now you can add ECR as a docker registry in the configuration stage
 
