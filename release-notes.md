@@ -14,7 +14,7 @@ Armory is based off OSS's (Open Source Spinnaker) [release cadence](https://www.
 
 A **stable** release for customers who need stability in their production environment. You can find these [releases here](#stable-armory-releases) or use [Armory Halyard](#differences-between-releases).
 
-For customers who want to test the latest Armory + OSS (Open Source Spinnaker) release, we provide **rc** release candidates, which you can find using [Armory Halyard](#differences-between-releases). 
+For customers who want to test the latest Armory + OSS (Open Source Spinnaker) release, we provide **rc** release candidates, which you can find using [Armory Halyard](#differences-between-releases).
 
 We also provide nightly **ossedge** builds from OSS master without Armory features, _these are untested_. You can find these versions using [Armory Halyard](#differences-between-releases).
 
@@ -24,33 +24,40 @@ We also provide nightly **ossedge** builds from OSS master without Armory featur
 ```yml
 $ hal version list
 ...
-- 2.0.1 (OSS 1.9.x):
-  Published: Fri October 12 15:42:49 PDT 2018
-  Changelog: https://docs.armory.io/release-notes
-- 2.0.2 (OSS 1.9.x):
-  Published: Fri October 12 15:42:49 PDT 2018
-  Changelog: https://docs.armory.io/release-notes
+ - 2.0.0 (OSS Release 1.9.5):
+   Changelog: https://docs.armory.io/release-notes/armoryspinnaker_v2.0.0/
+   Published: Fri Nov 02 16:42:47 PDT 2018
+   (Requires Halyard >= 1.2.0)
+ - 2.0.1 (OSS Release 1.9.5):
+   Changelog: https://docs.armory.io/release-notes/armoryspinnaker_v2.0.1/
+   Published: Fri Dec 14 18:32:56 PST 2018
+   (Requires Halyard >= 1.2.0)
 ```
 **Stable** releases have been tested by Armory. Most of our customers will be using them.
 
 We use [semantic versioning](https://semver.org/) for tagging, e.g. `12.3.4`.
-- MAJOR versions correspond to an OSS minor release
-- MINOR versions are released on Armory's own cadence
-- PATCH versions are reserved for fixes to minor versions
+- MAJOR versions correspond to major Armory platform changes.
+- MINOR versions correspond to a new OSS release branch.
+- PATCH versions are reserved for minor changes in the same OSS branch.
 
+| Armory Release | OSS Release Branch |
+| -------------- | ----------- |
+| 1.14.x | 1.8.x |
+| 2.0.x | 1.9.x |
+| 2.1.x | 1.10.x |
 
 #### RC Releases
 ```yml
 $ hal version list --release=rc
 ...
- - 2.0.0-rc2447 (OSS 1.9.x):
+ - 2.0.1-rc2447 (OSS 1.9.x):
    Published: Fri October 12 15:42:49 PDT 2018
    Changelog: https://docs.armory.io/release-notes
- - 3.0.0-rc2448 (OSS 1.10.x):
+ - 2.1.0-rc2448 (OSS 1.10.x):
    Published: Fri October 12 15:42:49 PDT 2018
    Changelog: https://docs.armory.io/release-notes
 ```
-A **rc** release reflects the latest from Armory and OSS release branches
+An **rc** release reflects the latest from Armory and OSS release branches
 - These versions are used internally at Armory
 - A few customers may be using it, but we do not recommend using it in production.
 
@@ -61,7 +68,7 @@ A **rc** release reflects the latest from Armory and OSS release branches
 -->
 
 
-**RC**s also follow semantic versioning with the format like `13.9.3-rc202`.
+**RC**s also follow semantic versioning with the format like `1.2.3-rc202`.
 
 
 #### OSS Edge Releases
