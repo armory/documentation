@@ -12,7 +12,7 @@ When configuring a registry, you normally use the `hal` command for [adding a Do
 
 This works great for Dockerhub, but ECR requires a bit more work for configuration. Amazon ECR requires access tokens to access the images and those access tokens expire after a time.
 
-In order to automate updating the token, we will use a sidecar container with a script that does it for us. Since both Clouddriver and the sidecar container both need access to the ECR access token, we will use a shared volume to store the access token.
+In order to automate updating the token, we will use a [sidecar container](https://docs.microsoft.com/en-us/azure/architecture/patterns/sidecar) with a script that does it for us. Since both Clouddriver and the sidecar container need access to the ECR access token, we will use a shared volume to store the access token.
 
 The sidecar we're going to add does not start with an access token, it needs to be able to request an access token from ECR. The Spinnaker installation must have the `AmazonEC2ContainerRegistryReadOnly` policy attached to the role assigned in order to request and update the required access token.
 
@@ -39,6 +39,8 @@ In your `~/.hal/config`, update the `deploymentEnvironment.sidecars` section:
 
 ### Define ECR registry
 
+
+
 Create `~/.hal/<deployment>/profiles/clouddriver-local.yml`:
 ```
 dockerRegistry:
@@ -50,8 +52,6 @@ dockerRegistry:
     passwordFile: /etc/passwords/my-ecr-registry.pass
 ```
 
-Note: You can configure multiple registries here by adding another registry to the list
-
 Create a `config.yml`
 
 ```
@@ -61,6 +61,9 @@ registries: # list of registries to refresh
     region: "<aws-region>"
     passwordFile: "/etc/passwords/my-ecr-registry.pass"
 ```
+
+Note: You can configure multiple registries here by adding another registry to both files listed above.
+
 
 Apply it to the cluster with:
 ```
