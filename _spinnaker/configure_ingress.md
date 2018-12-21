@@ -28,11 +28,11 @@ NAMESPACE is the Kubernetes namespace where your Spinnaker install is located. 
 
 ```
 export NAMESPACE={namespace}
-kubectl expose service -n ${NAMESPACE} spin-gate --type LoadBalancer \
+kubectl -n ${NAMESPACE} expose service spin-gate --type LoadBalancer \
   --port 8084 \
   --target-port 8084 \
   --name spin-gate-public
-kubectl expose service -n ${NAMESPACE} spin-deck --type LoadBalancer \
+kubectl -n ${NAMESPACE} expose service spin-deck --type LoadBalancer \
   --port 443 \
   --target-port 9000 \
   --name spin-deck-public
@@ -42,8 +42,8 @@ Once these Services have been created, we’ll need to update our Spinnaker depl
 
 ```
 export NAMESPACE={namespace}
-export API_URL=$(kubectl get svc -n $NAMESPACE spin-gate-public -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-export UI_URL=$(kubectl get svc -n $NAMESPACE spin-deck-public -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+export API_URL=$(kubectl -n $NAMESPACE get svc spin-gate-public -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+export UI_URL=$(kubectl -n $NAMESPACE get svc spin-deck-public -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 hal config security api edit --override-base-url http://${API_URL}:8084
 hal config security ui edit --override-base-url http://${UI_URL}:9000
 hal deploy apply
@@ -61,13 +61,13 @@ export ACM_CERT_ARN="arn:::::your:cert"
 Edit the LoadBalancer service `spin-gate-public` and  `spin-deck-public` we will include 3 annotations for each.
 
 ```
-kubectl annotate svc -n ${NAMESPACE} spin-gate-public service.beta.kubernetes.io/aws-load-balancer-backend-protocol=http
-kubectl annotate svc -n ${NAMESPACE} spin-gate-public service.beta.kubernetes.io/aws-load-balancer-ssl-cert=${ACM_CERT_ARN}
-kubectl annotate svc -n ${NAMESPACE} spin-gate-public service.beta.kubernetes.io/aws-load-balancer-ssl-ports=80,443
+kubectl -n ${NAMESPACE} annotate svc spin-gate-public service.beta.kubernetes.io/aws-load-balancer-backend-protocol=http
+kubectl -n ${NAMESPACE} annotate svc spin-gate-public service.beta.kubernetes.io/aws-load-balancer-ssl-cert=${ACM_CERT_ARN}
+kubectl -n ${NAMESPACE} annotate svc spin-gate-public service.beta.kubernetes.io/aws-load-balancer-ssl-ports=80,443
 
-kubectl annotate svc -n ${NAMESPACE} spin-deck-public service.beta.kubernetes.io/aws-load-balancer-backend-protocol=http
-kubectl annotate svc -n ${NAMESPACE} spin-deck-public service.beta.kubernetes.io/aws-load-balancer-ssl-cert=${ACM_CERT_ARN}
-kubectl annotate svc -n ${NAMESPACE} spin-deck-public service.beta.kubernetes.io/aws-load-balancer-ssl-ports=80,443
+kubectl -n ${NAMESPACE} annotate svc spin-deck-public service.beta.kubernetes.io/aws-load-balancer-backend-protocol=http
+kubectl -n ${NAMESPACE} annotate svc spin-deck-public service.beta.kubernetes.io/aws-load-balancer-ssl-cert=${ACM_CERT_ARN}
+kubectl -n ${NAMESPACE} annotate svc spin-deck-public service.beta.kubernetes.io/aws-load-balancer-ssl-ports=80,443
 ```
 
 ### Update the Internal URLS in Spinnaker
@@ -85,7 +85,7 @@ We’ll need to update the internal URLs (Deck will complain about trying to cal
 If you're Armory Spinnaker installation will be using [authentication](https://docs.armory.io/install-guide/auth/) and you expect to scale the API server (Gate) beyond more than one instance you'll want to enable sticky sessions. This will ensure that clients will connect and authenticate with the same server each time. Otherwise, you may be forced to reauthenticate if you get directed to a new server. To enable sticky sessions, you'll want to enable session affinity on the Gate service created above.
 
 ```
-kubectl patch -n ${NAMESPACE} service/spin-gate-public --patch '{"spec": {"sessionAffinity": "ClientIP"}}'
+kubectl -n ${NAMESPACE} patch service/spin-gate-public --patch '{"spec": {"sessionAffinity": "ClientIP"}}'
 ```
 
 For more details about session affinity, see the Kubernetes documentation on [Services](https://kubernetes.io/docs/concepts/services-networking/service/).
