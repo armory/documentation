@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Terraform (alpha)
+title: Terraform Integration
 order: 141
 ---
 
