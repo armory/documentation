@@ -41,10 +41,10 @@ We use [semantic versioning](https://semver.org/) for tagging, e.g. `12.3.4`.
 - PATCH versions are reserved for minor changes in the same OSS branch.
 
 | Armory Release | OSS Release Branch |
-| -------------- | ----------- |
-| 1.14.x | 1.8.x |
-| 2.0.x | 1.9.x |
-| 2.1.x | 1.10.x |
+| -------------- | -----------        |
+| 1.14.x         | 1.8.x              |
+| 2.0.x          | 1.9.x              |
+| 2.1.x          | 1.10.x             |
 
 #### RC Releases
 ```yml
