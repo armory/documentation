@@ -36,7 +36,7 @@ $ hal version list
 **Stable** releases have been tested by Armory. Most of our customers will be using them.
 
 We use [semantic versioning](https://semver.org/) for tagging, e.g. `12.3.4`.
-- MAJOR versions correspond to major Armory platform changes.
+- MAJOR versions correspond to any major Armory platform changes or breaking OSS changes.
 - MINOR versions correspond to a new OSS release branch.
 - PATCH versions are reserved for minor changes in the same OSS branch.
 
