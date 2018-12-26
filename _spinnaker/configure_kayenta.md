@@ -321,7 +321,7 @@ their data from other production pods:
               value: baseline
 ```
 
-### Deploy Baseline Manifest
+### Deploy Canary Manifest
 
 Our canary manifest is very much the same, except we've swapped out the
 references to `baseline` (in the deployment name and environment variable)
