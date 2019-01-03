@@ -12,6 +12,10 @@ order: 10
 
 You can [try our Demo Environment](https://spinnaker.demo.armory.io) before installing Armory.
 
+## Prerequisites
+
+Make sure you have a kubernetes cluster with a minimum of **15 GB** of memory and **8 CPU's** total _available_ to be used by Spinnaker. At least a single node should have 4 GB and 1 CPU available.
+
 ## Installing Armory Halyard
 
 You can install Armory's version of Halyard directly on Mac OSX, or use Docker
