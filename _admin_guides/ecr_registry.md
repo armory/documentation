@@ -52,7 +52,7 @@ dockerRegistry:
     passwordFile: /etc/passwords/my-ecr-registry.pass
 ```
 
-Create a `config.yml`
+Create a `config.yaml`
 
 ```
 interval: 30m # defines refresh interval
