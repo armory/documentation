@@ -67,7 +67,7 @@ Note: You can configure multiple registries here by adding another registry to b
 
 Apply it to the cluster with:
 ```
-kubectl -n <namespace> create configmap token-refresh-config --from-file <token-refresh.yml location>
+kubectl -n <namespace> create configmap token-refresh-config --from-file <config.yml location>
 ```
 
 ### Update your Spinnaker installation
