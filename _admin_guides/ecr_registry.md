@@ -52,7 +52,7 @@ dockerRegistry:
     passwordFile: /etc/passwords/my-ecr-registry.pass
 ```
 
-Create a `config.yml`
+Create a `config.yaml`
 
 ```
 interval: 30m # defines refresh interval
@@ -67,7 +67,7 @@ Note: You can configure multiple registries here by adding another registry to b
 
 Apply it to the cluster with:
 ```
-kubectl -n <namespace> create configmap token-refresh-config --from-file <config.yml location>
+kubectl -n <namespace> create configmap token-refresh-config --from-file <config.yaml location>
 ```
 
 ### Update your Spinnaker installation
