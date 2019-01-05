@@ -129,4 +129,4 @@ You should see a progress bar where blue represents running and green represents
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/431f381I1z0y2K3w2s3M/Image%202017-03-24%20at%204.45.33%20PM.png)
 
-If your pipeline does not succeed, refer to one of the troubleshooting sections in the [pipelines]({% link _user_guides/pipelines.md %}#troubleshooting), [baking]({% link _user_guides/baking-images.md %}#troubleshooting), or [deploying]({% link _user_guides/deploying.md %}#common-errors-and-troubleshooting) guides.
+If your pipeline does not succeed, refer to one of the troubleshooting sections in the [pipelines]({% link _user_guides/pipelines.md %}#troubleshooting), [baking]({% link _spinnaker_user_guides/baking-images.md %}#troubleshooting), or [deploying]({% link _spinnaker_user_guides/deploying.md %}#common-errors-and-troubleshooting) guides.

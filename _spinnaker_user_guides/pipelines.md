@@ -77,5 +77,5 @@ You can select different revisions using the dropdown menu labeled 'Revision' in
 
 ### Hanging or Timed Out Pipelines
 
-A lot of the time pipelines hang because of a misconfigured stage. This is a common occurrence when a server group does not complete its deploy because the deployed instances never pass the healthcheck. This happens both when the healthcheck is misconfigured and/or when the image doesn't bake as expected. These two areas should be investigated first. For more information you can see the troubleshooting topic in the [deployment guide]({% link _user_guides/deploying.md %}).
+A lot of the time pipelines hang because of a misconfigured stage. This is a common occurrence when a server group does not complete its deploy because the deployed instances never pass the healthcheck. This happens both when the healthcheck is misconfigured and/or when the image doesn't bake as expected. These two areas should be investigated first. For more information you can see the troubleshooting topic in the [deployment guide]({% link _spinnaker_user_guides/deploying.md %}).
 

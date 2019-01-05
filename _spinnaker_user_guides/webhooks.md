@@ -21,7 +21,7 @@ The basic configuration is what you might expect. Fill in the URL to make the re
 
 ![Webhook Basic Config](/assets/images/webhook-basic.png)
 
-Of particular note is that you can use [the Spinnaker pipeline expression language](/user-guides/expression-language/) both as part of the URL field and within the payload, making it easy to pass anything that's available as part of the pipeline context.
+Of particular note is that you can use [the Spinnaker pipeline expression language](/spinnaker-user-guides/expression-language/) both as part of the URL field and within the payload, making it easy to pass anything that's available as part of the pipeline context.
 
 In this simple configuration the stage will be marked as successful if it gets a 2XX status code back, and will fail on anything else. If the return value from the request itself isn't enough to determine the overall success you can check the "Wait for completion" checkbox and get a set of additional configuration:
 
