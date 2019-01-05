@@ -53,12 +53,9 @@ collections:
   spinnaker_user_guides:
     output: true
     permalink: /spinnaker-user-guides/:title/
-  spinnaker_install_guides:
+  spinnaker_install_admin_guides:
     output: true
-    permalink: /spinnaker-install-guides/:title/
-  spinnaker_admin_guides:
-    output: true
-    permalink: /spinnaker-admin-guides/:title/
+    permalink: /spinnaker-install-admin-guides/:title/
   user_guides:
     output: true
     permalink: /user-guides/:title/
