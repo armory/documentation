@@ -2,7 +2,7 @@
 layout: post
 title: Kubernetes Configuration
 order: 70
-published: True
+published: false
 ---
 
 

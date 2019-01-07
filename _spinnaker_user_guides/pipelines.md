@@ -1,6 +1,6 @@
 ---
 layout: post
-order: 50
+order: 15
 ---
 
 This guide includes:

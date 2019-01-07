@@ -2,7 +2,7 @@
 layout: post
 title: Authorization
 order: 120
-published: True
+published: false
 ---
 
 {% include components/legacy_documentation.html %}

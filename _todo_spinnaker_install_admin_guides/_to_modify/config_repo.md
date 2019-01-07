@@ -2,6 +2,7 @@
 layout: post
 title: Storing Configurations
 order: 40
+published: false
 ---
 
 {% include components/legacy_documentation.html %}

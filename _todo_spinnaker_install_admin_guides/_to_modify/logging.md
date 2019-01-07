@@ -2,6 +2,7 @@
 layout: post
 title: Logging And Monitoring
 order: 130
+published: false
 ---
 
 {% include components/legacy_documentation.html %}

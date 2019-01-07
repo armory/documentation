@@ -2,7 +2,7 @@
 layout: post
 title: Preprod Environment for Spinnaker
 order: 110
-published: true
+published: false
 ---
 
 {% include components/legacy_documentation.html %}

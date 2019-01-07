@@ -2,6 +2,7 @@
 layout: post
 title: Pipelines as Code
 order: 130
+published: false
 ---
 
 <div class="deprecation-warning">

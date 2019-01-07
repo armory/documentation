@@ -1,3 +1,9 @@
+---
+layout: post
+title: Placeholder
+published: false
+---
+
 ## Setting Up The V2 Provider
 
 Setting up the V2 provider is similar to the [V1 Kubernetes configuration](http://docs.armory.io/admin-guides/configure_kubernetes/#configure-clouddriver-to-use-the-kubectl-config-file) however we'll need to change the provider flag in `/opt/spinnaker/config/clouddriver-local.yml` to `v2`.  For example:

@@ -2,6 +2,7 @@
 layout: post
 title: Getting Started
 order: 10
+published: false
 ---
 
 {% include components/legacy_documentation.html %}

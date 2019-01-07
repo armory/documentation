@@ -2,7 +2,7 @@
 layout: post
 title: Authentication
 order: 110
-published: True
+published: false
 ---
 
 Refer to the Spinnaker documentation for configuring authentication at

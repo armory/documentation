@@ -2,6 +2,7 @@
 layout: post
 title: Jenkins
 order: 50
+published: false
 ---
 
 Refer to the Spinnaker documentation for configuring Jenkins at

@@ -1,3 +1,9 @@
+---
+layout: post
+title: Placeholder
+published: false
+---
+
 ## Baking Using `chroot`
 
 Baking using the `chroot` builder for packer allows you to bake an AMI without having to spin up a new instance.  Instead, a new EBS volume is mounted to the running Spinnaker instance, `chroot` is executed on the new volume, packer installs the required packages on the volume, a snapshot is taken, and then volume is cleanly detached.  To enable `chroot` style baking, we'll need to configure `rosco` with some additional properties.  Add the following to `/opt/spinnaker/compose/docker-compose.override.yml`:

@@ -2,6 +2,7 @@
 layout: post
 title: Advanced Configurations
 order: 80
+published: false
 ---
 
 {% include components/legacy_documentation.html %}
