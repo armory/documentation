@@ -1,8 +1,8 @@
-*--
+---
 layout: post
 title: Application Deployment Pipeline (AWS EC2)
-order: 90
-*--
+order: 65
+---
 
 # What To Expect
 {:.no_toc}
