@@ -2,6 +2,7 @@
 layout: post
 title: Architecture
 order: 10
+# This is not to be redirected to the Armory Spinnaker architecture page, as it has different content.
 ---
 {% include components/legacy_documentation.html %}
 

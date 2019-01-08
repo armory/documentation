@@ -2,6 +2,8 @@
 layout: post
 title: Video Tutorials
 order: 9
+# migrated to spinnaker-user-gudies/video-tutorials
+published: false
 ---
 
 {% include components/legacy_documentation.html %}

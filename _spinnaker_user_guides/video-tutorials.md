@@ -2,6 +2,14 @@
 layout: post
 title: Video Tutorials
 order: 9
+redirect_from:
+  - /user-guides/video-tutorials/
+  - /user-guides/video_tutorials/
+  - /user_guides/video-tutorials/
+  - /user_guides/video_tutorials/
+  - /spinnaker_user_guides/video_tutorials/
+  - /spinnaker_user_guides/video-tutorials/
+  - /spinnaker-user-guides/video_tutorials/
 ---
 
 This guide includes:

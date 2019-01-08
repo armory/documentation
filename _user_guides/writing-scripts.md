@@ -1,6 +1,8 @@
 ---
 layout: post
 order: 100
+# migrated to spinnaker-user-guides/writing-scripts
+published: false
 ---
 
 {% include components/legacy_documentation.html %}

@@ -1,6 +1,8 @@
 ---
 layout: post
 order: 80
+# migrated to spinnaker-user-guides/expression-langauge
+published: false
 ---
 
 {% include components/legacy_documentation.html %}

@@ -2,6 +2,9 @@
 layout: post
 title: Understanding Bake Scripts (Packer templates)
 order: 80
+# Substantially different from install_guide/packer
+redirect_from:
+  - /spinnaker_install_admin_guides/packer/
 ---
 
 # What To Expect
@@ -12,23 +15,29 @@ This guide includes:
 
 **Note** This section focuses on configuring packer scripts to build machine images (such as AMIs).  If you're only deploying to Kubernetes, you can skip this section.
 
+# What exactly are packer scripts?
+Spinnaker works best when deploying immutable artifacts to immutable machine images. When working with machine images, packer scripts are used during the **Bake Stage** to create an immutable machine image.
 
-# What exactly is the packer script?
-Spinnaker works best when deploying immutable artifacts to immutable machine images. The packer script is used during the **Bake Stage** to create a immutable machine image.
+Spinnaker has a microservice called Rosco, which uses [Packer](https://www.packer.io/) to bake machine images (such as Amazon Machine Images or AMIs).  Out of the box, it comes with the packer templates and scripts listed [here](https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer).
 
-Spinnaker knows which packer script to use by specifying the packer's configuration json in the **Bake Stage**, in the **`Template File Name`**.
-The default is `aws-ebs.json`, which sources `install_package.sh` for debians.
+By default, Rosco performs the following actions in a "Bake" stage:
+* Takes a list of desired packages specified in the pipeline definition
+* Identifies the `deb` files produced by your CI pipeline and matches those to the desired package
+* Creates a set of Packer variables using the name/repository of the matched `deb` file(s)
+* Bakes an AMI using the `aws-ebs.json` packer template (visible [here](https://github.com/spinnaker/rosco/blob/master/rosco-web/config/packer/aws-ebs.json))
+* Runs the `install_packages.sh` script (visible [here](https://github.com/spinnaker/rosco/blob/master/rosco-web/config/packer/install_packages.sh)) to install the identified `deb` packages into the AMI
+* Make the AMI ID available to later stages in the Spinnaker pipeline (such as deployments)
 
-The provided way to do this is by debian/rpm packages stored into a artifact repository (Bintry, Nexus, Artifactory, etc.). The packer script will  pull from the artifact repository and install it onto the machine. Spinnaker will then package up the image and make it available in the next stage of a pipeline.
+In a bake stage configuration, you can specify other packer templates to use.
 
-If your app is using zip, tarballs or you'll need some customization, you'll need to create a new packer script. See [Rosco/Baking Configuration](http://docs.armory.io/admin-guides/rosco/) for steps on how to do this.
+If your app is using zip, tarballs or you'll need some customization, you'll need to create a new packer script (see below).
 
-
-# Adding custom packer scripts
+# Adding custom packer scripts to Armory Spinnaker
 
 Out of the box, Armory Spinnaker comes with these built-in packer templates and scripts: https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer
 
 If you'd like to add additional packer template or script files, you can add them via Halyard:
+
 * If it does not already exist, create this directory: `~/.hal/<deployment-name>/profiles/rosco/packer/`
   * For example, if you're using the default Halyard deployment, then create this directory: `~/.hal/default/profiles/rosco/packer/`
 * Add the templates and scripts to the created directory.
@@ -36,10 +45,6 @@ If you'd like to add additional packer template or script files, you can add the
     * `~/.hal/default/profiles/rosco/packer/aws-custom.json`
     * `~/.hal/default/profiles/rosco/packer/setup-base.sh`
 * Run `hal deploy apply` to apply your changes.  Your scripts will be added to a Kubernetes secret and added to the Rosco Kubernetes pod(s).
-
-# Using and Verifying The Packer Script
-This is is for Ubuntu, with minor changes for Redhat and CentOS.
-The default template used is `aws-ebs.json` and `install_package.sh`.
 
 **Bake Configuration** in Spinnaker
 Spinnaker can send pipeline variables such as `repository` to the packer script by adding it in the extended attributes. Some attributes are prefilled because of selecting `trusty` as the base OS.

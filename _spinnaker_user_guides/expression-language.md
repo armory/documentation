@@ -1,6 +1,14 @@
 ---
 layout: post
 order: 80
+redirect_from:
+  - /user-guides/expression-language/
+  - /user-guides/expression_language/
+  - /user_guides/expression-language/
+  - /user_guides/expression_language/
+  - /spinnaker_user_guides/expression_language/
+  - /spinnaker_user_guides/expression-language/
+  - /spinnaker-user-guides/expression_language/
 ---
 
 This guide includes:

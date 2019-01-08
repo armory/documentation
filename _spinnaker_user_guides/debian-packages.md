@@ -1,6 +1,14 @@
 ---
 layout: post
 order: 90
+redirect_from:
+  - /user-guides/debian-packages/
+  - /user-guides/debian_packages/
+  - /user_guides/debian-packages/
+  - /user_guides/debian_packages/
+  - /spinnaker_user_guides/debian_packages/
+  - /spinnaker_user_guides/debian-packages/
+  - /spinnaker-user-guides/debian_packages/
 ---
 
 This guide includes:

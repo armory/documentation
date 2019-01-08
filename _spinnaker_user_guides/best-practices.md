@@ -2,6 +2,14 @@
 layout: post
 title: Best Practices
 order: 70
+redirect_from:
+  - /user-guides/best-practices/
+  - /user-guides/best_practices/
+  - /user_guides/best-practices/
+  - /user_guides/best_practices/
+  - /spinnaker_user_guides/best-practices/
+  - /spinnaker_user_guides/best_practices/
+  - /spinnaker-user-guides/best_practices/
 ---
 
 This guide includes:

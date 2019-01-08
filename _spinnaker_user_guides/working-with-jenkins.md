@@ -2,6 +2,14 @@
 layout: post
 published : true
 order: 20
+redirect_from:
+  - /user-guides/working-with-jenkins/
+  - /user-guides/working_with_jenkins/
+  - /user_guides/working-with-jenkins/
+  - /user_guides/working_with_jenkins/
+  - /spinnaker_user_guides/working_with_jenkins/
+  - /spinnaker_user_guides/working-with-jenkins/
+  - /spinnaker-user-guides/working_with_jenkins/
 ---
 
 This guide includes:

@@ -2,6 +2,13 @@
 layout: post
 title: Configuring AWS Subnets
 order: 20
+redirect_from:
+  # If redirecting and filename has a single component:
+  - /install_guide/subnets/
+  - /install-guide/subnets/
+  - /spinnaker_install_admin_guides/aws-subnets/
+  - /spinnaker_install_admin_guides/aws_subnets/
+  - /spinnaker-install-admin-guides/aws_subnets/
 ---
 
 # VPCs & Subnets

@@ -2,6 +2,11 @@
 layout: post
 title: Kubernetes V2 Provider Guide
 order: 100
+# This is different from user-guides/kubernetes - no redirect
+redirect_from:
+  - /spinnaker_user_guides/kubernetes-v2/
+  - /spinnaker_user_guides/kubernetes_v2/
+  - /spinnaker-user-guides/kubernetes_v2/
 ---
 
 This guide includes:

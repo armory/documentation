@@ -2,6 +2,10 @@
 layout: post
 title: Baking Images (AWS EC2)
 order: 30
+redirect_from:
+  - /user-guides/baking/
+  - /user_guides/baking/
+  - /spinnaker_user_guides/baking/
 ---
 
 This guide includes:

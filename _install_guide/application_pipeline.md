@@ -2,6 +2,8 @@
 layout: post
 title: Application Deployment Pipeline
 order: 90
+# Migrated to spinnaker-user-guides/application-pipeline
+published: false
 ---
 
 {% include components/legacy_documentation.html %}

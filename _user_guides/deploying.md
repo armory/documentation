@@ -1,6 +1,8 @@
 ---
 layout: post
 order: 40
+# migrated to spinnaker-user-guides/deploying
+published: false
 ---
 
 {% include components/legacy_documentation.html %}

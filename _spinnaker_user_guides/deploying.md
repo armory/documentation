@@ -2,6 +2,10 @@
 layout: post
 title: Deploying (AWS EC2)
 order: 40
+redirect_from:
+  - /user-guides/deploying/
+  - /user_guides/deploying/
+  - /spinnaker_user_guides/deploying/
 ---
 
 This guide includes:
