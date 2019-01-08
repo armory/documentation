@@ -10,7 +10,6 @@ redirect_from:
   - /spinnaker_install_admin_guides/rate_limit/
   - /spinnaker_install_admin_guides/rate-limit/
   - /spinnaker-install-admin-guides/rate_limit/
----
 
 #  Rate Limits
 {:.no_toc}
