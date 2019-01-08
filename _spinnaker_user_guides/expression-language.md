@@ -42,7 +42,7 @@ The user-data field needs to be base64 encoded. It is possible to create this dy
 
 ## Examples
 
-You can find the expression language used in the examples within the [baking images]({% link _user_guides/baking-images.md %}), [deploying]({% link _user_guides/deploying.md %}), [working with Jenkins]({% link _user_guides/working-with-jenkins.md %}) and [finding images]({% link _user_guides/find-images.md %}) guides.
+You can find the expression language used in the examples within the [baking images]({% link _spinnaker_user_guides/baking-images.md %}), [deploying]({% link _spinnaker_user_guides/deploying.md %}), [working with Jenkins]({% link _spinnaker_user_guides/working-with-jenkins.md %}) and [finding images]({% link _spinnaker_user_guides/find-images.md %}) guides.
 
 ## Troubleshooting
 

@@ -19,7 +19,7 @@ This guide includes:
 
 ## Prerequisites and Assumptions:
 
-- You have experience [baking]({% link _user_guides/baking-images.md %}) and [deploying images]({% link _user_guides/deploying.md %}) with Spinnaker
+- You have experience [baking]({% link _spinnaker_user_guides/baking-images.md %}) and [deploying images]({% link _spinnaker_user_guides/deploying.md %}) with Spinnaker
 
 
 
@@ -32,7 +32,7 @@ Sometimes you may want to build your AMI in several different pipelines before d
 Let's go through an example.
 
 
-I have created a multi-region bake pipeline that creates AMIs from a package built on Jenkins. For directions on how to create a pipeline like this, check out the [baking guide]({% link _user_guides/baking-images.md %}). You can see it running here:
+I have created a multi-region bake pipeline that creates AMIs from a package built on Jenkins. For directions on how to create a pipeline like this, check out the [baking guide]({% link _spinnaker_user_guides/baking-images.md %}). You can see it running here:
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/211e0R3W2O301C0T1c30/Image%202017-04-04%20at%2011.01.25%20AM.png)
 
@@ -43,7 +43,7 @@ Next I want to create a pipeline that is triggered by a Jenkins job and installs
 I start by creating a new pipeline.
 
 
-I add an automated trigger to build from a Jenkins' job. For a more detailed example of this, check out the [baking guide]({% link _user_guides/baking-images.md %}).
+I add an automated trigger to build from a Jenkins' job. For a more detailed example of this, check out the [baking guide]({% link _spinnaker_user_guides/baking-images.md %}).
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/1g1Y3H3A3c2D1q3h0O2d/Image%202017-04-04%20at%202.47.40%20PM.png)
 
@@ -55,7 +55,7 @@ Now I add a 'Find Images From Tags' stage and input 'armoryami' in the 'Package'
 By checking the 'us-west-2' checkbox, I am telling Spinnaker to find images in only that regions and make it available to the rest of the pipeline.
 
 
-Next I want to add my own package to this AMI. First, I add a bake stage. Since my Jenkins' job created an artifact named 'armory-hello-deploy', I input that into the 'Package' field. The next part is a little tricky. I need to specify the correct base AMI by checking the 'Show Advanced Options' and using the [expression language]({% link _user_guides/expression-language.md %}) in the 'Base AMI' field. 
+Next I want to add my own package to this AMI. First, I add a bake stage. Since my Jenkins' job created an artifact named 'armory-hello-deploy', I input that into the 'Package' field. The next part is a little tricky. I need to specify the correct base AMI by checking the 'Show Advanced Options' and using the [expression language]({% link _spinnaker_user_guides/expression-language.md %}) in the 'Base AMI' field. 
 
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/1K1R053I1U231a472j3N/Image%202017-04-04%20at%203.03.22%20PM.png)
@@ -80,4 +80,4 @@ We can now execute the pipeline with the above inputs.
 
 Notice the 'Results' box in the lower right hand corner. After inspecting it and comparing it to the bake pipeline in the very beginning of the example, I can see that Spinnaker did indeed choose the correct AMI.
 
-If you wanted to deploy this image, you can just add a deploy step and Spinnaker will deploy the correct AMI. For more instructions on deploying, check out the [deployment guide]({% link _user_guides/deploying.md %}).
+If you wanted to deploy this image, you can just add a deploy step and Spinnaker will deploy the correct AMI. For more instructions on deploying, check out the [deployment guide]({% link _spinnaker_user_guides/deploying.md %}).

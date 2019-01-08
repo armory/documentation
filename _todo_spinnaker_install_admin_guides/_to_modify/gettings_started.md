@@ -93,7 +93,7 @@ Next we will configure Spinnaker so that Spinnaker can re-deploy Spinnaker. This
 
 We will do the following:
 
-- [Tag AWS Subnets]({% link _install_guide/subnets.md %})
+- [Tag AWS Subnets]({% link _spinnaker_install_admin_guides/aws-subnets.md %})
 - [Store Spinnaker's configuration files in a repo]({% link _install_guide/config_repo.md %})
 - [Configure Spinnaker to trigger from Jenkins]({% link _install_guide/jenkins.md %})
 - [Create a pipeline for Spinnaker to deploy Spinnaker]({% link _install_guide/spinnaker-deploy-spinnaker.md %})
@@ -108,7 +108,7 @@ We will do the following:
 
 - [Add additional cloud provider accounts (and possibly subnets)]({% link _install_guide/adding_accounts.md %})
 - [Understanding Packer Scripts]({% link _install_guide/packer.md %})
-- [Create a pipeline to deploy the application]({% link _install_guide/application_pipeline.md %})
+- [Create a pipeline to deploy the application]({% link _spinnaker_user_guides/application-pipeline.md %})
 
 
 ### Production Ready
@@ -117,7 +117,7 @@ Before opening Spinnaker up for general availability within your organization, t
 
 We will do the following:
 
-- [Add a DNS name and SSL]({% link _install_guide/dns_and_ssl.md %})
+- [Add a DNS name and SSL]({% link _spinnaker_install_admin_guides/dns-and-ssl.md %})
 - [Setup Authentication]({% link _install_guide/auth.md %})
 - [Setup Authorization]({% link _install_guide/authz.md %})
 - [Configure centralized logging]({% link _install_guide/logging.md %})
@@ -136,5 +136,5 @@ Optionally, you may want to:
 Once you have Spinnaker production ready, it is time to onboard users. You may want to:
 
 - Make Packer scripts to help migrate from Chef, Puppet or Salt.
-- Share the [User Guides]({% link _user_guides/application-screen.md %})
+- Share the [User Guides]({% link _spinnaker_user_guides/application-screen.md %})
 - Provide example pipelines that are specific to your organization

@@ -8,9 +8,9 @@ order: 110
 
 For help with the following topics, please checkout the troubleshooting sections embedded in the corresponding guide:
 
-- [Baking]({% link _user_guides/baking-images.md %}#troubleshooting)
-- [Deploying]({% link _user_guides/deploying.md %}#common-errors-and-troubleshooting)
-- [Expression language]({% link _user_guides/expression-language.md %}#troubleshooting)
+- [Baking]({% link _spinnaker_user_guides/baking-images.md %}#troubleshooting)
+- [Deploying]({% link _spinnaker_user_guides/deploying.md %}#common-errors-and-troubleshooting)
+- [Expression language]({% link _spinnaker_user_guides/expression-language.md %}#troubleshooting)
 
 
 ## FAQ 

@@ -63,7 +63,7 @@ Note that the program **hal** is not used to configure Armory Spinnaker.
 In order to use ECR repositories, you'll need to refresh credentials on a regular interval to ensure that Spinnaker can continue to communicate with the registry.
 
 
-[**Here's an easy way of setting up ECR with Spinnaker**]({% link _admin_guides/ecr_registry.md %})
+[**Here's an easy way of setting up ECR with Spinnaker**]({% link _spinnaker_install_admin_guides/ecr-registry.md %})
 
 ## Create a Kubectl Config File
 

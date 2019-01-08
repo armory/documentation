@@ -27,7 +27,7 @@ First let's go through an example of baking, then we can go into some details an
 
 ## Example
 
-In this example we will bake an image containing a Debian package created by a Jenkins' job. If you like, you can check out the [working with Jenkins guide]({% link _user_guides/working-with-jenkins.md %}) for more information on how Jenkins and Spinnaker can work together. We also have a guide on [creating debian packages]({% link _user_guides/debian-packages.md %}).
+In this example we will bake an image containing a Debian package created by a Jenkins' job. If you like, you can check out the [working with Jenkins guide]({% link _spinnaker_user_guides/working-with-jenkins.md %}) for more information on how Jenkins and Spinnaker can work together. We also have a guide on [creating debian packages]({% link _spinnaker_user_guides/debian-packages.md %}).
 
 
 First let's look at the the Jenkins job that builds our package.
@@ -127,7 +127,7 @@ Often you will want to specify a base image for use in your bake. In that case y
 
 In this situation, the base OS selection (ubuntu/trusty/windows) will be ignored.
 
-You can also select a base AMI more dynamically by combing the 'Bake' stage type with the 'Find Image' stage type. For more details check out the [Find Images Guide]({% link _user_guides/find-images.md %})
+You can also select a base AMI more dynamically by combing the 'Bake' stage type with the 'Find Image' stage type. For more details check out the [Find Images Guide]({% link _spinnaker_user_guides/find-images.md %})
 
 
 ### Adding Debian Repositories
