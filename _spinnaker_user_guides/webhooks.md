@@ -1,6 +1,10 @@
 ---
 layout: post
 order: 105
+redirect_from:
+  - /user-guides/webhooks/
+  - /user_guides/webhooks/
+  - /spinnaker_user_guides/webhooks/
 ---
 
 This guide includes:

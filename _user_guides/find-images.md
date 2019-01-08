@@ -1,6 +1,8 @@
 ---
 layout: post
 order: 60
+# migrated to spinnaker-user-guides/find-images
+published: false
 ---
 
 {% include components/legacy_documentation.html %}

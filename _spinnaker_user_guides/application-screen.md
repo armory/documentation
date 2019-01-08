@@ -2,6 +2,14 @@
 layout: post
 published : true
 order: 10
+redirect_from:
+  - /user-guides/application-screen/
+  - /user_guides/application-screen/
+  - /user-guides/application_screen/
+  - /user_guides/application_screen/
+  - /spinnaker_user_guides/application_screen/
+  - /spinnaker_user_guides/application-screen/
+  - /spinnaker-user-guides/application_screen/
 ---
 
 This guide includes:

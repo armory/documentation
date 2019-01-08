@@ -1,6 +1,8 @@
 ---
 layout: post
 order: 10
+published: false
+# migrated to spinnaker-user-guides/application-screen
 ---
 
 {% include components/legacy_documentation.html %}

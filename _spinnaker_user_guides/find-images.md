@@ -2,6 +2,14 @@
 layout: post
 title: Finding Images (AWS EC2)
 order: 60
+redirect_from:
+  - /user-guides/find-images/
+  - /user-guides/find_images/
+  - /user_guides/find-images/
+  - /user_guides/find_images/
+  - /spinnaker_user_guides/find_images/
+  - /spinnaker_user_guides/find-images/
+  - /spinnaker-user-guides/find_images/
 ---
 
 This guide includes:

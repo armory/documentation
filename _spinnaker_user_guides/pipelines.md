@@ -1,6 +1,10 @@
 ---
 layout: post
 order: 15
+redirect_from:
+  - /user-guides/pipelines/
+  - /user_guides/pipelines/
+  - /spinnaker_user_guides/pipelines/
 ---
 
 This guide includes:

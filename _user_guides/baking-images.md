@@ -1,6 +1,8 @@
 ---
 layout: post
 order: 30
+published: false
+# migrated to spinnaker-user-guides/baking-images
 ---
 
 {% include components/legacy_documentation.html %}

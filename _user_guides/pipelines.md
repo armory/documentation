@@ -1,6 +1,8 @@
 ---
 layout: post
 order: 50
+# Migrated to spinnaker-user-guides/pipelines
+published: false
 ---
 
 {% include components/legacy_documentation.html %}

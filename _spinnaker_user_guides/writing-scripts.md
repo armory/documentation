@@ -2,6 +2,14 @@
 layout: post
 title: Automating Spinnaker
 order: 100
+redirect_from:
+  - /user-guides/writing-scripts/
+  - /user-guides/writing_scripts/
+  - /user_guides/writing-scripts/
+  - /user_guides/writing_scripts/
+  - /spinnaker_user_guides/writing_scripts/
+  - /spinnaker_user_guides/writing-scripts/
+  - /spinnaker-user-guides/writing_scripts/
 ---
 
 This guide includes:

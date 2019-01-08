@@ -1,6 +1,8 @@
 ---
 layout: post
 order: 20
+redirect_from:
+  - /spinnaker_install_admin_guides/architecture/
 ---
 
 Spinnaker is the composition of a few microservices for resiliency
@@ -18,7 +20,7 @@ The smallest atomic unit within Orca is a task - stages are composed of tasks an
 
 ### Clouddriver
 
-Clouddriver is a core component of Spinnaker which facilitates the interactions between a given cloud provider such as AWS, GCP or Kubernetes.  There is a common interface that is used so that additional cloud providers can be added.  
+Clouddriver is a core component of Spinnaker which facilitates the interactions between a given cloud provider such as AWS, GCP or Kubernetes.  There is a common interface that is used so that additional cloud providers can be added.
 
 ### Gate
 
@@ -42,3 +44,8 @@ Echo is the service for Spinnaker which manages notifications, alerts and schedu
 
 ### Front50
 Front50 is the persistent datastore for Spinnaker. Most notabily pipelines, configurations, and jobs.
+
+### Dinghy
+Dinghy is the Armory-specific microservice used to manage Pipelines as Code.  It supports two main capabilities:
+* Automatically synchronizing pipeline definitions from an external Github or BitBucket repository to Armory Spinnaker.
+* Creating a library of pipeline modules (components) that can be templatized and used in Dinghy-managed pipeline definitions.
