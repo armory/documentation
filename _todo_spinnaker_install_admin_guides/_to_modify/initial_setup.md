@@ -10,7 +10,7 @@ published: false
 # Setting Up Armory Spinnaker
 {:.no_toc}
 
-The [installation guide]({% link _install_guide/subnets.md %}) described how to install Armory Spinnaker for the first time. Once it is installed you will need to configure your environment in order to fully utilize Spinnaker.
+The [installation guide]({% link _spinnaker_install_admin_guides/aws-subnets.md %}) described how to install Armory Spinnaker for the first time. Once it is installed you will need to configure your environment in order to fully utilize Spinnaker.
 
 An ideal EC2 based deployment has the following workflow:
 1. A change is made to master in your code repository.
@@ -67,7 +67,7 @@ You should see something like this:
 Verify that the `accountId`s match what you intended.
 
 ## Subnets
-After you have your accounts added to Spinnaker, you will need to configure the tags on the subnets. Only configured subnets can be deployed to by Spinnaker. Spinnaker would like you to categorize your subnets so that it knows which ones are similar enough to deploy to for different purposes. There is a seperate guide on configuring your subnets that you can find [here]({% link _install_guide/subnets.md %})
+After you have your accounts added to Spinnaker, you will need to configure the tags on the subnets. Only configured subnets can be deployed to by Spinnaker. Spinnaker would like you to categorize your subnets so that it knows which ones are similar enough to deploy to for different purposes. There is a seperate guide on configuring your subnets that you can find [here]({% link _spinnaker_install_admin_guides/aws-subnets.md %})
 
 
 ## Jenkins
