@@ -2,6 +2,14 @@
 layout: post
 title: Application Deployment Pipeline (AWS EC2)
 order: 65
+redirect_from:
+  - /install-guide/application-pipeline/
+  - /install-guide/application_pipeline/
+  - /install_guide/application-pipeline/
+  - /install_guide/application_pipeline/
+  - /spinnaker_user_guides/application_pipeline/
+  - /spinnaker_user_guides/application-pipeline/
+  - /spinnaker-user-guides/application_pipeline/
 ---
 
 # What To Expect
