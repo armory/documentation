@@ -104,4 +104,4 @@ And for an older release of Clouddriver that does not support decryption:
 ```
 
 ### Non Halyard configuration
-Without Halyard or if we need to provide secrets in `*-local.yml` configuration files, we can directly reference encrypted secrets. Anything can be treated as a secret:
+We can also provide secret references directly in `*-local.yml` profile files or directly to Spinnaker services.
