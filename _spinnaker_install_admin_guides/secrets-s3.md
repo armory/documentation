@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Spinnaker Secrets and S3
-order: 30
+order: 150
 ---
 Managing Spinnaker secrets separately from its configuration is a necessary step to enabling Spinnaker through an SCM like git. This document describes how to store secrets in s3 and these secrets are used in Spinnaker and Halyard.
 
