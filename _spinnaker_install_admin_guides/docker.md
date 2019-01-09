@@ -21,7 +21,7 @@ a look at the [Halyard command reference](https://www.spinnaker.io/reference/hal
 If you haven't done this yet (for example, if you've just installed Armory
 Spinnaker fresh), you'll need to enable Docker registry providers:
 
-```
+```bash
 hal config provider docker-registry enable
 ```
 
@@ -34,7 +34,7 @@ public.  In most cases, you'll be configuring a private registry and the
 authentication credentials will be required, so the options are shown here
 as an example.
 
-```
+```bash
 hal config provider docker-registry account add my-docker-registry \
   --address index.docker.io
   --repositories armory/demoapp

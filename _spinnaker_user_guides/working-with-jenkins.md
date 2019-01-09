@@ -99,7 +99,7 @@ When the execution gets to the manual judgement stage, you should see the word `
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/1y2b0r462m2s390a1B3Q/Image%202017-03-28%20at%202.06.45%20PM.png)
 
-## Runnings scripts on Spinnaker
+## Running scripts on Spinnaker
 
 You can also run arbitrary scripts on Spinnaker (behind the scenes it is pushing this work off to a Jenkins master). Simply select the `Script` type stage while configuring a pipeline. You should see a screen like:
 
