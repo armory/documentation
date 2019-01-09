@@ -1,6 +1,8 @@
 ---
 layout: post
 order: 50
+# Migrated to spinnaker-user-guides/pipelines
+published: false
 ---
 
 {% include components/legacy_documentation.html %}
@@ -19,7 +21,7 @@ Take this screenshot for example:
 
 There is a pipeline called 'Deploy' with two executions, both labeled 'Manual Start'. The top execution is marked as 'Succeeded' while the bottom is marked as 'Cancelled'. 
 
-For more information on creating bake and deploy pipelines, checkout the [baking]({% link _user_guides/baking-images.md %}) and [deploying]({% link _user_guides/deploying.md %}) guides.
+For more information on creating bake and deploy pipelines, checkout the [baking]({% link _spinnaker_user_guides/baking-images.md %}) and [deploying]({% link _spinnaker_user_guides/deploying.md %}) guides.
 
 
 ## Manual Execution
@@ -79,5 +81,5 @@ You can select different revisions using the dropdown menu labeled 'Revision' in
 
 ### Hanging or Timed Out Pipelines
 
-A lot of the time pipelines hang because of a misconfigured stage. This is a common occurrence when a server group does not complete its deploy because the deployed instances never pass the healthcheck. This happens both when the healthcheck is misconfigured and/or when the image doesn't bake as expected. These two areas should be investigated first. For more information you can see the troubleshooting topic in the [deployment guide]({% link _user_guides/deploying.md %}).
+A lot of the time pipelines hang because of a misconfigured stage. This is a common occurrence when a server group does not complete its deploy because the deployed instances never pass the healthcheck. This happens both when the healthcheck is misconfigured and/or when the image doesn't bake as expected. These two areas should be investigated first. For more information you can see the troubleshooting topic in the [deployment guide]({% link _spinnaker_user_guides/deploying.md %}).
 

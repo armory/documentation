@@ -2,6 +2,7 @@
 layout: post
 title: Jira Integration
 order: 85
+# This is different from the new JIRA integration configuration; no redirects
 ---
 {% include components/legacy_documentation.html %}
 

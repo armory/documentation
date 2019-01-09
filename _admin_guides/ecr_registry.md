@@ -2,6 +2,8 @@
 layout: post
 title: Configuring an ECR as a registry
 order: 120
+# migrated to spinnaker-install-admin-guides/ecr-registry
+published: false
 ---
 
 This document reviews configuring ECR as a registry for a Spinnaker installation

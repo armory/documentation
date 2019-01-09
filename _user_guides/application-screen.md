@@ -1,6 +1,8 @@
 ---
 layout: post
 order: 10
+published: false
+# migrated to spinnaker-user-guides/application-screen
 ---
 
 {% include components/legacy_documentation.html %}
@@ -60,7 +62,7 @@ This page shows two pipelines, 'Deploy' and 'Cron Deploy'. The 'Deploy' pipeline
 Now I can see that the execution failed because of a subnet issue.
 
 
-For more information about pipelines, check out the [pipeline guide]({% link _user_guides/pipelines.md %})
+For more information about pipelines, check out the [pipeline guide]({% link _spinnaker_user_guides/pipelines.md %})
 
 
 ## Deleting an application

@@ -3,6 +3,7 @@ layout: post
 title: Barometer
 order: 75
 published: True
+# this only applies to ec2 installer, I think.
 ---
 
 {% include components/legacy_documentation.html %}

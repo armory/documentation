@@ -2,6 +2,7 @@
 layout: post
 title: Understanding Bake Scripts (Packer templates)
 order: 80
+# Do not redirect; substantially different from new version.
 ---
 
 {% include components/legacy_documentation.html %}
