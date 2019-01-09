@@ -3,9 +3,17 @@ layout: post
 title: Baking Images (AWS EC2)
 order: 30
 redirect_from:
+  # I don't think the `baking` ones are necessary, but they also won't hurt
   - /user-guides/baking/
   - /user_guides/baking/
   - /spinnaker_user_guides/baking/
+  - /user-guides/baking-images/
+  - /user-guides/baking_images/
+  - /user_guides/baking-images/
+  - /user_guides/baking_images/
+  - /spinnaker_user_guides/baking_images/
+  - /spinnaker_user_guides/baking-images/
+  - /spinnaker-user-guides/baking_images/
 ---
 
 This guide includes:
