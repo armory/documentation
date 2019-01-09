@@ -1,6 +1,8 @@
 ---
 layout: post
 order: 90
+# migrated to spinnaker-user-guides/debian-packages
+published: false
 ---
 
 {% include components/legacy_documentation.html %}

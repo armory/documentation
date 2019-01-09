@@ -1,7 +1,9 @@
 ---
 layout: post
-title: Rate Limits
+title: Rate Limiting Spinnaker API Calls
 order: 140
+# migrated to spinnaker-install-admin-guides/rate-limit
+published: false
 ---
 {% include components/legacy_documentation.html %}
 

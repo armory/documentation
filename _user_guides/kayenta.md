@@ -2,7 +2,8 @@
 layout: post
 title: Kayenta
 order: 74
-published: True
+# migrated to spinnaker-user-guides/kayenta
+published: false
 ---
 
 

@@ -50,6 +50,12 @@ collections:
   spinnaker:
     output: true
     permalink: /spinnaker/:title/
+  spinnaker_user_guides:
+    output: true
+    permalink: /spinnaker-user-guides/:title/
+  spinnaker_install_admin_guides:
+    output: true
+    permalink: /spinnaker-install-admin-guides/:title/
   user_guides:
     output: true
     permalink: /user-guides/:title/

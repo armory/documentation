@@ -2,6 +2,8 @@
 layout: post
 title: Subnets
 order: 20
+published: false
+# This has been redirected to spinnaker-install-admin-guides/aws-subnets
 ---
 {% include components/legacy_documentation.html %}
 

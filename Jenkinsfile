@@ -25,7 +25,17 @@ node {
                 ''')
             }
         } else {
-            print("Not on master. not publishing")
+            print("Not on master. not publishing prod")
+        }
+
+        if (env.BRANCH_NAME == "staging") {
+            stage("Publish Staging") {
+                sh('''#!/bin/bash -x
+                bin/publish_stage
+                ''')
+            }
+        } else {
+            print("Not on staging. not publishing staging")
         }
         
         archiveArtifacts artifacts: '_site/**',
