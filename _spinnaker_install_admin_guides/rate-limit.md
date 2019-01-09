@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Rate Limits
+title: Rate Limiting Spinnaker API Calls
 order: 140
 redirect_from:
   - /admin-guides/rate-limit/
