@@ -1,6 +1,8 @@
 ---
 layout: post
 order: 70
+published: false
+# migrated to spinnaker-user-guides/best-practices
 ---
 
 {% include components/legacy_documentation.html %}

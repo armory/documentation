@@ -34,6 +34,26 @@
         </li>
 
         <li class="Nav-list__section">
+          <h3 class="Header--tiny toggle-section-trigger js__toggle-section-trigger" tabindex="0">User Guides</h3>
+          <ul class="toggle-section">
+            {% assign sorted_spinnaker_user_guides = site.spinnaker_user_guides | sort: 'order' %}
+            {% for link in sorted_spinnaker_user_guides %}
+              <li><a class="Nav-list__link{% if page.url == link.url %} is-active{% endif %}" href="{{ link.url | relative_url }}">{{ link.title | escape }}</a></li>
+            {% endfor %}
+          </ul>
+        </li>
+
+        <li class="Nav-list__section">
+          <h3 class="Header--tiny toggle-section-trigger js__toggle-section-trigger" tabindex="0">Installation and Administration Guides</h3>
+          <ul class="toggle-section">
+            {% assign sorted_spinnaker_install_admin_guides = site.spinnaker_install_admin_guides | sort: 'order' %}
+            {% for link in sorted_spinnaker_install_admin_guides %}
+              <li><a class="Nav-list__link{% if page.url == link.url %} is-active{% endif %}" href="{{ link.url | relative_url }}">{{ link.title | escape }}</a></li>
+            {% endfor %}
+          </ul>
+        </li>
+
+        <li class="Nav-list__section">
           <h3 class="Header--tiny toggle-section-trigger js__toggle-section-trigger" tabindex="0">User Guides (EC2)</h3>
           <ul class="toggle-section">
             {% assign sorted_user_guides = site.user_guides | sort: 'order' %}

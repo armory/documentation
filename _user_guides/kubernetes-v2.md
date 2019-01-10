@@ -2,6 +2,7 @@
 layout: post
 title: Early Access Kubernetes V2 Provider Guide
 order: 100
+# No redirect - setup for ec2 vs. halyard installer is diffferent.
 ---
 {% include components/legacy_documentation.html %}
 

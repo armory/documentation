@@ -1,6 +1,8 @@
 ---
 layout: post
 order: 105
+# migrated to spinnaker-user-guides/webhooks
+published: false
 ---
 
 {% include components/legacy_documentation.html %}

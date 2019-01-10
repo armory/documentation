@@ -1,6 +1,8 @@
 ---
 layout: post
 order: 20
+# migrated to spinnaker-user-gudies/working-with-jenkins
+published: false
 ---
 
 {% include components/legacy_documentation.html %}

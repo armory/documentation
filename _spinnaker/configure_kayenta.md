@@ -16,6 +16,11 @@ configure Kayenta via Halyard at
 
 ### Configuring New Relic
 
+> *NOTE:*  Armory Spinnaker 2.1.0 has deprecated our New Relic support, in
+> preparation for the inclusion of OSS Spinnaker's version.  This documentation
+> will be updated to reflect the OSS configuration when it is available in
+> Armory Spinnaker.
+
 If you are configuring New Relic for your metrics store, you won't be able to
 use Halyard directly to enable it (yet).  Instead, add the following (fill in
 your own `apiKey` and `accountId` data from your New Relic Insights API data;
@@ -321,7 +326,7 @@ their data from other production pods:
               value: baseline
 ```
 
-### Deploy Baseline Manifest
+### Deploy Canary Manifest
 
 Our canary manifest is very much the same, except we've swapped out the
 references to `baseline` (in the deployment name and environment variable)
