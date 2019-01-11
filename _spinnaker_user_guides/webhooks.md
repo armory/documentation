@@ -7,13 +7,18 @@ redirect_from:
   - /spinnaker_user_guides/webhooks/
 ---
 
+> Spinnaker uses "webhooks" in two ways -- as a trigger for pipeline execution,
+> and as a stage that can make arbitrary calls to another service.  If you're
+> looking for information on configuring a webhook trigger that you can use
+> to run a pipeline, the open source community [has a very good guide for that](https://www.spinnaker.io/guides/user/pipeline/triggers/webhooks/).  Below we
+> discuss the use of the Webhook stage used in pipelines.
+
 This guide includes:
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-
-# How does Spinnaker use webhooks?
+## How does Spinnaker use webhooks?
 {:.no_toc}
 Spinnaker has a stage type called "Webhook" which allows it to call out to APIs as part of running a pipeline:
 

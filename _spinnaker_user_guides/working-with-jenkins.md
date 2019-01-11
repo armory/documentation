@@ -17,25 +17,22 @@ This guide includes:
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-## Triggering a pipeline with Jenkins
+> Before you start, you'll need to [configure Jenkins](/spinnaker-install-admin-guides/jenkins/) using Halyard.  If
+> you don't see Jenkins as an option, or you're not seeing the correct
+> master/job combination in the UI, you'll need to double-check your Spinnaker
+> is configured to use that resource.
 
+## Triggering a pipeline with Jenkins
 
 To add a Jenkins trigger to your pipeline, go to your configurations stage and select "add trigger", then select "Jenkins" from the Type dropdown menu. Select a Master from the Master category list and then select a Job to trigger from the pipeline.
 
-
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/333F39092F0z1o220U2U/Image%202017-03-27%20at%204.47.35%20PM.png)
-
-
 
 Note: Make sure you archive your package files and your properties file in Jenkins.
 
-
-
 ### Property File
 
-
 The property file is a way to transfer information about your build from Jenkins to Spinnaker. The file needs to be archived by the Jenkins job and should contain key value pairs.
-
 
 As an example, if you had your Jenkins job create and archive a file named `build.properties` which looks like:
 
@@ -102,7 +99,7 @@ When the execution gets to the manual judgement stage, you should see the word `
 
 ![](https://d1ax1i5f2y3x71.cloudfront.net/items/1y2b0r462m2s390a1B3Q/Image%202017-03-28%20at%202.06.45%20PM.png)
 
-## Runnings scripts on Spinnaker
+## Running scripts on Spinnaker
 
 You can also run arbitrary scripts on Spinnaker (behind the scenes it is pushing this work off to a Jenkins master). Simply select the `Script` type stage while configuring a pipeline. You should see a screen like:
 
