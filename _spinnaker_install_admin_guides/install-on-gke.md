@@ -5,9 +5,9 @@ order: 0
 # Change this to true
 published: true
 redirect_from:
-  - /spinnaker_install_admin_guides/gke_installation/
-  - /spinnaker_install_admin_guides/gke-installation/
-  - /spinnaker-install-admin-guides/gke_installation/
+  - /spinnaker_install_admin_guides/install_on_gke/
+  - /spinnaker_install_admin_guides/install-on-gke/
+  - /spinnaker-install-admin-guides/install_on_gke/
 ---
 
 <div class="alpha-warning">
