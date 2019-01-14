@@ -370,7 +370,7 @@ hal config deploy edit \
   --location ${NAMESPACE}
 ```
 
-# Configure Spinnaker to use your GCS bucket
+## Configure Spinnaker to use your GCS bucket
 Use the Halyard `hal` command line tool to configure Halyard to configure Spinnaker to use your GCS bucket
 
 **You MUST update the PROJECT field with your GCP project name**
