@@ -10,6 +10,10 @@ redirect_from:
   - /spinnaker-install-admin-guides/gke_installation/
 ---
 
+<div class="alpha-warning">
+  Installation of Armory Spinnaker on GKE is in beta stage with Armory. <a href="https://www.armory.io/contact">Get in touch</a> and give us feedback!
+</div>
+
 This guide describes how to install Spinnaker in GKE.  It will create / use the following Google Cloud resources:
 * A GKE (Google Kubernetes Engine) cluster (you can use an existing one if you already have one)
 * A GCS (Google Cloud Storage) bucket (you can use an existing one if you already have one)
