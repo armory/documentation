@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Jira Integration
-order: 85
+order: 81
 redirect_from:
   - /spinnaker_install_admin_guides/jira_integration/
   - /spinnaker_install_admin_guides/jira-integration/

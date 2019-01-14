@@ -1,6 +1,6 @@
 ---
 layout: post
-order: 20
+order: 10
 redirect_from:
   - /spinnaker_install_admin_guides/architecture/
 ---

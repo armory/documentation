@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Docker Registries
-order: 120
+order: 51
 redirect_from:
   - /spinnaker_install_admin_guides/docker/
 ---

@@ -1,17 +1,16 @@
 ---
 layout: post
-title: Installing Spinnaker in GKE
-order: 22
-published: true
+title: Installing Spinnaker in EKS
+order: 0
+# Change this to true
+published: false
 redirect_from:
-  - /spinnaker_install_admin_guides/install_on_gke/
-  - /spinnaker_install_admin_guides/install-on-gke/
-  - /spinnaker-install-admin-guides/install_on_gke/
+  - /spinnaker_install_admin_guides/install_on_eks/
+  - /spinnaker_install_admin_guides/install-on-eks/
+  - /spinnaker-install-admin-guides/install_on_eks/
 ---
 
-<div class="alpha-warning">
-  Installation of Armory Spinnaker on GKE is in beta stage with Armory. <a href="https://www.armory.io/contact">Get in touch</a> and give us feedback!
-</div>
+# This is a placeholder document and should not be published until it is complete
 
 This guide describes how to install Spinnaker in GKE.  It will create / use the following Google Cloud resources:
 * A GKE (Google Kubernetes Engine) cluster (you can use an existing one if you already have one)
