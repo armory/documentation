@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Configuring an ECR as a registry
-order: 121
+order: 52
 redirect_from:
   - /admin-guides/ecr-registry/
   - /admin-guides/ecr_registry/

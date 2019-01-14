@@ -1,7 +1,7 @@
 ---
 layout: post
 title: DNS and SSL
-order: 100
+order: 31
 # This has different content than install-guide/dns-and-ssl
 redirect_from:
   - /spinnaker_install_admin_guides/dns_and_ssl/

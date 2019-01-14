@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Understanding Bake Scripts (Packer templates)
-order: 80
+order: 75
 # Substantially different from install_guide/packer
 redirect_from:
   - /spinnaker_install_admin_guides/packer/

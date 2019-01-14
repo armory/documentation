@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Configure Jenkins
-order: 30
+order: 50
 redirect_from:
   - /spinnaker_install_admin_guides/jenkins/
 ---
