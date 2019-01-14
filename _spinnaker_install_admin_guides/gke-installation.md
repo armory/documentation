@@ -293,6 +293,8 @@ mv spinnaker-gcs-account.json ${WORKING_DIRECTORY}/.secret
 
 On the `docker machine`, start the Halyard container (see the `armory/halyard-armory` [tag list](https://hub.docker.com/r/armory/halyard-armory/tags)) for the latest Armory Halyard Docker image tag.
 
+*If you want to install OSS Spinnaker instead, use `gcr.io/spinnaker-marketplace/halyard:stable` for the Docker image*
+
 ```bash
 WORKING_DIRECTORY=~/gke-spinnaker/
 
@@ -396,6 +398,10 @@ You can get a list of available versions of spinnaker with this command:
 ```bash
 hal version list
 ```
+
+*If you are installing Armory Spinnaker, you will get a version that starts with `2.x.x`*
+
+*If you are installing OSS Spinnaker and using `gcr.io/spinnaker-marketplace/halyard:stable`, you will get a version that starts with `1.x.x`*
 
 And then you can select the version with this:
 
