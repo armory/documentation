@@ -13,133 +13,30 @@ If you decide to enable this feauture and have any feedback you'd like to submit
 
 ## Prerequisites
 
-1. A Armory Spinnaker installation running on Kubernetes and installed via Armory Halyard. ([instructions](/spinnaker/install)).
+1. A Armory Spinnaker installation running on Kubernetes and installed via Armory Halyard. ([instructions](/spinnaker/install)). If you haven't updated Armory Halyard in a while, you'll need to do so to get access to these new features.
 2. A Github API token that has access to your Terraform project. See [this documentation](https://blog.github.com/2013-05-16-personal-api-tokens/) for details on how to generate this token.
-3. An AWS keypair with with enough permission to access your state store in S3 and manage the resources created by Terraform.
+3. Pre-release candidate of Armory Spinnaker. At the time of this writing, `2.1.1-rc2582` contains the first alpha release of our Terraform integration. You can view a list of all current release candidates using `hal version list --release rc`.
 
 ## Installation
 
-#### Deploying the Terraformer service
+### Enabling the Terraform integration
 
-The core of our Terraform integration is the Terraformer service. This is the service which is responsible for fetching your Terraform code and executing it. To do this, we'll need to install the following Kubernetes manifest using `kubectl`. *Note: we'll be adding support for deploying Terraformer via Halyard in future releases.* 
-
-You'll need to replace 4 references before doing so:
-1. `your-github-api-token` - the API token which will be used to fetch your repository
-2. `profile-name` - the name of the AWS profile which your Terraform code will use to provision infrastructure
-3. `your-aws-access-key` - the AWS Access Key ID of your keypair
-4. `your-aws-secret-access=key` - the AWS Secret Access Key of your keypair
-
+You can enable the Terraform integration via Armory Halyard. Before you do, be sure you have a Github access token. This will enable the Terraform integration to interact with entire Github repositories.
 ```
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: terraformer-config
-  namespace: spinnaker
-data:
-  terraformer.yml: |
-    server:
-      host: 0.0.0.0
-      port: 7088
-    redis:
-      enabled: ${services.redis.enabled}
-      host: ${services.redis.address}
-      port: ${services.redis.port}
-    clouddriver:
-      baseUrl: http://spin-clouddriver:7002
-    git:
-      token: {your-github-api-token}
-    executor:
-      workers: 3
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: terraformer-credentials
-  namespace: spinnaker
-data:
-  credentials: |
-    [profile-name]
-    aws_access_key_id = {your-aws-access-key}
-    aws_secret_access_key = {your-aws-secret-access-key}
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: spin-terraformer
-  namespace: spinnaker
-  labels:
-    app: spin
-    cluster: spin-terraformer
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: spin
-      cluster: spin-terraformer
-  template:
-    metadata:
-      labels:
-        app: spin
-        cluster: spin-terraformer
-    spec:
-      containers:
-      - name: terraformer
-        image: docker.io/armory/terraformer:0.0.1-master-cc65a45
-        ports:
-        - containerPort: 7088
-        volumeMounts:
-        - name: terraformer-config
-          mountPath: /opt/spinnaker/config
-        - name: terraformer-credentials
-          mountPath: /root/.aws
-      volumes:
-      - name: terraformer-config
-        configMap:
-          name: terraformer-config
-      - name: terraformer-credentials
-        configMap:
-          name: terraformer-credentials
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: spin-terraformer
-  namespace: spinnaker
-  labels:
-    app: spin
-    cluster: spin-terraformer
-spec:
-  selector:
-    app: spin
-    cluster: spin-terraformer
-  ports:
-  - protocol: TCP
-    port: 7088
-    targetPort: 7088
-  type: ClusterIP
+$ hal config version edit --version {release-candidate-number} --alpha
+$ hal armory terraform edit --git-enabled --git-access-token --alpha
+$ hal armory terraform enable --alpha
+$ hal deploy apply
 ```
+
+You should now see an additional service, Terraformer, deployed alongside the rest of Spinnaker by running `kubectl get pods -n {your-spinnaker-namespace}`.
 
 
 ### Configuring other services
 
-In order to enable the Terraform stage, you'll need to override the Orca Docker image that is deployed by Halyard. Future releases will include this by default but, since this feature is in alpha, we need to use a special version of Orca. To do so, we'll override the `artifactId` for Orca by creating a file called `~/.hal/default/service-settings/orca.yml` with the following content.
+Terraform's primary source of feedback are it's logs. While there is no native UI for Terraform in Armory Spinnaker (yet!) we'll need a different way to expose these logs to users in the UI. To do this, we'll configure Gate with a proxy configuration. This proxy will allow us to configure stages with a direct link to the output for Terraform `plan` or `apply`.
 
-```
-# ~/.hal/default/service-settings/orca.yml
-artifactId: docker.io/armory/orca:1.0.2-e52579de1ad0e7e1f01f5468af0249d0f4f21bca-b5-b8d7410
-```
-
-Next, we need to enable Terraform support within Orca by creating a custom configuration profile. In a file called `~/.hal/default/profiles/orca-local.yml` add the following configuration
-
-```
-# ~/.hal/default/profiles/orca-local.yml
-terraformer:
-  enabled: true
-  baseUrl: http://spin-terraformer:7088
-````
-
-Finally, we'll add a proxy configuration to Gate. This will enable us to access the log output from Terraform executions via the UI. Create a file called `~/.hal/default/profiles/gate-local.yml` with the following configuration.
-
+First, we'll add the configuration to `~/.hal/default/profiles/gate-local.yml`
 ```
 proxies:
   - id: terraform
@@ -148,12 +45,16 @@ proxies:
       - GET
 ```
 
-Roll these configuration changes out with `hal deploy apply`. 
+Then, we can roll these changes out with 
+```
+$ hal deploy apply --service-names gate
+```
 
+We'll reference this proxy in future steps!
 
 ## Configuring a Terraform stage
 
-Our Terraform integration exposes a new stage in Spinnaker called `terraform`. Since there's no UI for Terraform (yet) we'll need to edit the stage as JSON. The JSON representation for this stage is as follows:
+Our Terraform integration exposes a new stage in Spinnaker called `terraform`. Since there's no UI for Terraform,  we'll need to edit the stage as JSON. The JSON representation for this stage is as follows:
 
 ```
 
@@ -198,7 +99,68 @@ Terraform's primary interface for user feedback is logging. When executed on you
 View the logs <a href="https://your-gate-url/proxies/terraform/api/v1/job/${#stage('Plan')['context']['status']['id']}/logs">here</a>
 ```
 
-
 ## Reference pipeline
 
 A reference pipeline which uses this feature can be found [here](https://gist.github.com/ethanfrogers/5123a5336f7e6ae4fd5fcda76536199b). It should help you get started! To use it, simply create a pipeline in the UI and click "Edit as JSON" under the "Pipeline Actions" dropdown and past the pipeline JSON into the text box.
+
+
+## Under the hood
+
+At the core of the Terraform integration is the Terraformer service. This service is reponsible for fetching your Terraform projects from source and exeuting various Terraform commands against them. When a `terraform` stage starts, Orca will submit the task to Terraformer and monitor it until completion. Once a task is submitted, Terraformer will fetch your target project, run `terraform init` to initialize the project and then run your desired `action` (`plan` or `apply`). If the task is successful, the stage will marked successful as well. If the task fails, the stage will be marked as a failure and halt the pipeline. 
+
+Terraformer ships with Terraform 0.11.10. In the future, we'll offer multiple versions of Terraform so that you can choose the version to execute against.
+
+## Configuring Terraform for your cloud provider
+
+Since Terraformer executes all Terraform commands against the `terraform` binary all methods of configuring authentication are supported for your desired cloud provider. We're still in the process of gathering feedback on how best to expose this via Armory Halyard but you can still configure the Terraformer environment with your credentials! This section will document how to accomplish this for various cloud providers.
+
+### Configuration for AWS
+
+There are many ways to enable Terraform to authenticate with AWS. You can find the full list [here](https://www.terraform.io/docs/providers/aws/#authentication). Each of these methods is supported, however, you may need to do some additional configuration to enable them for this integration.
+
+#### Shared credentials file
+
+Terraform supports the ability to reference AWS profiles defined via a [shared credentials file](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/create-shared-credentials-file.html). This file will contain a list of AWS profiles alongside their access and secret keys. In order for Terraformer to utilize this file, we'll need to inject it into the environment in which Terraformer runs. 
+
+First, create a Kubernetes `ConfigMap` containing the contents of this config file and put it in a temporary file.
+
+_Note - Feel free to swap the `ConfigMap` for a `Secret` if you prefer. The `ConfigMap` is used in this documentation for simplicity._
+
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: terraformer-credentials
+  namespace: {your-spinnaker-namespace}
+data:
+  credentials: |
+    [profile-name]
+    aws_access_key_id = {your-aws-access-key}
+    aws_secret_access_key = {your-aws-secret-access-key}
+```
+
+Then, apply this `ConfigMap` via `kubectl apply -f {temp-filename}`.
+
+Next, we'll need to configure Terraformer to mount this `ConfigMap` at runtime. To do this, we'll add the following [Service Setting]() to `~/.hal/default/service-settings/terraformer.yml`.
+
+```
+kubernetes:
+  volumes:
+  - id: terraformer-credentials
+    type: configMap
+    mountPath: /home/spinnaker/.aws/
+```
+
+We can deploy these changes via `hal deploy apply`. Once successfully deployed, you'll be able to reference these profiles in your Terraform state and provider configuration. See the below snippet for an example.
+
+```
+terraform {
+  backend "s3" {
+    profile = "dev"
+  }
+}
+
+provider "aws" {
+  profile = "dev"
+}
+```
