@@ -13,9 +13,9 @@ redirect_from:
 # This is a placeholder document and should not be published until it is complete
 
 This guide describes how to install Spinnaker in GKE.  It will create / use the following Google Cloud resources:
-* A GKE (Google Kubernetes Engine) cluster (you can use an existing one if you already have one)
-* A GCS (Google Cloud Storage) bucket (you can use an existing one if you already have one)
-* An NGINX Ingress controller in your GKE cluster
+* An Amazon AWS (Amazon Web Services) EKS (Elastic Container Services for Kubernetes)  cluster (you can use an existing one if you already have one)
+* An Amazon S3 (Simple Storage Service) bucket (you can use an existing one if you already have one)
+* An NGINX Ingress controller in your EKS cluster
 
 This document currently does not fully cover the following (see [Next Steps](#next-steps) for some links to achieve these)
 * TLS Encryption
@@ -33,37 +33,52 @@ Note: This document is focused on Armory Spinnaker, but can be adapted to instal
 
 This document is written with the following workflow in mind:
 
-* You have a machine (referred to as the `workstation machine` in this document) configured to use the `gcloud` Google Cloud SDK and a recent version of `kubectl` tool 
-* You have a machine (referred to as the `docker machine` in this document) with the Docker daemon installed, and can run Docker containers on it
-* You can transfer files created on the `workstation machine` to the `docker machine` (to a directory mounted on a running Docker container)
+* You have a machine (referred to as the `workstation machine` in this document) configured to use the `aws` CLI tool and a recent version of `kubectl` tool
+* You have a machine (referred to as the `Halyard machine` in this document) with the Docker daemon installed, and can run Docker containers on it
+* You can transfer files created on the `workstation machine` to the `Halyard machine` (to a directory mounted on a running Docker container)
 * These two machines can be the same machine
 
 Furthermore:
 
-On the `docker machine`:
-* Halyard (the tool used to install and manage Spinnaker) is run in a Docker container on the `docker machine`
-* The Halyard container on the `docker machine` will be configured with the following volume mounts, which should be persisted or preserved to manage your Spinnaker cluster
+On the `Halyard machine`:
+* Halyard (the tool used to install and manage Spinnaker) is run in a Docker container on the `Halyard machine`
+* The Halyard container on the `Halyard machine` will be configured with the following volume mounts, which should be persisted or preserved to manage your Spinnaker cluster
   * `.hal` directory (mounted to `/home/spinnaker/.hal`) - stores all Halyard Spinnaker configurations in a `.hal/config` YAML file and assorted subdirectories
   * `.secret` directory (mounted to `/home/spinnaker/.secret`) stores all external secret keys and files used by Halyard
   * `resources` directory (mounted to `/home/spinnaker/resources`) stores all Kubernetes manifests and other resources that help create Kubernetes resources
 * You will create `kubeconfig` files and Google IAM service account keys, that will be added to the `.secret` directory
 
-On the `workstation machine`:
-* You can use `gcloud` to create Google resources:
-  * GKE clusters (or, alternatley, have a GKE cluster already built)
-  * GCS buckets (or, alternately, have a GCS bucket already built)
+On the `workstation machine` (installation of these items will be partially covered in this document):
+* You can use the `aws` CLI tool to interact with the AWS API:
+  * EKS clusters (or, alternatley, have a EKS cluster already built)
+  * S3 buckets (or, alternately, have an S3 bucket already built)
 * You have the `kubectl` (Kubernetes CLI tool) installed and are able to use it to interact with your GKE cluster, if you're using a prebuilt GKE cluster
-* You will create GKE resources, such as service accounts, that will be permanently associated with your Spinnaker cluster
+* You have a persistent working directory in which to work in.  One option here is `~/eks`
+* You will create AWS resources, such as service accounts, that will be permanently associated with your Spinnaker cluster
 
-## Create the GKE cluster
+## Environment Variables
+This document will use these environment variables:
+```bash
+STACK_NAME=eks-spinnaker
+```
 
-This assumes you have already configured the `gcloud` SDK with a project, zone, and region (see directions [here](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-cluster)
+## Create the EKS cluster
 
-This creates a minimal GKE cluster in your default region and zone.  Follow the official GKE instructions to set up a different type of GKE cluster.
+
+
+
+
+
+This assumes you have already configured the `aws` CLI with credentials and a default region / availability zone (see installation directions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) and configuration directions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html))
+
+### Create the VPC and Subnets for EKS
+And EKS cluster will be built
+This creates a minimal EKS cluster in your default region and zone.  Follow the official EKS instructions to set more complex type of EKS cluster.
 
 Run this command to create the GKE cluster (from the `workstation machine`):
 ```bash
-gcloud container clusters create spinnaker-cluster
+STACK_NAME
+aws cloudformation create-stack --stack
 ```
 
 Run this command to configure `kubectl` to use the cluster you've created:
@@ -77,6 +92,69 @@ gcloud ccontainer clusters get-credentials <your-cluster-name>
 ```
 
 (Feel free to use a different region and zones)
+
+```bash
+CF_STACK_NAME=jlee-kubernetes-training-vpc-deleteafter20190120
+ROLE_NAME=jlee-kubernetes-training-role-deleteafter20190120
+
+tee assume-role-policy-document.json <<-'EOF'
+{
+  "Version": "2012-10-17",
+  "Statement": [
+      {
+          "Effect": "Allow",
+          "Principal": {
+              "Service": "eks.amazonaws.com"
+          },
+          "Action": "sts:AssumeRole"
+      }
+  ]
+}
+EOF
+
+aws iam create-role --role-name ${ROLE_NAME} \
+  --assume-role-policy-document file://assume-role-policy-document.json
+
+aws cloudformation create-stack \
+  --stack-name ${CF_STACK_NAME} \
+  --template-url https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2019-01-09/amazon-eks-vpc-sample.yaml
+
+aws cloudformation wait stack-create-complete \
+  --stack-name ${CF_STACK_NAME}
+
+STACK_VPC=$(aws cloudformation describe-stacks \
+    --stack-name ${CF_STACK_NAME} \
+    --query 'Stacks[0].Outputs[?OutputKey==`VpcId`].OutputValue' \
+    --output text)
+
+STACK_SUBNETS=$(aws cloudformation describe-stacks \
+    --stack-name ${CF_STACK_NAME} \
+    --query 'Stacks[0].Outputs[?OutputKey==`SubnetIds`].OutputValue' \
+    --output text)
+
+STACK_CONTROL_PLANE_SECURITY_GROUP=$(aws cloudformation describe-stacks \
+    --stack-name ${CF_STACK_NAME} \
+    --query 'Stacks[0].Outputs[?OutputKey==`SecurityGroups`].OutputValue' \
+    --output text)
+
+ROLE_ARN=
+
+aws eks create-cluster --name devel --role-arn arn:aws:iam::111122223333:role/eks-service-role-AWSServiceRoleForAmazonEKS-EXAMPLEBKZRQR --resources-vpc-config subnetIds=subnet-a9189fe2,subnet-50432629,securityGroupIds=sg-f5c54184
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Create a `kubeconfig` file for Halyard/Spinnaker
 Spinnaker will be installed in its own namespace in your GKE cluster.  We're going to create the following:
@@ -147,6 +225,12 @@ rules:
 - apiGroups: ["extensions", "apps"]
   resources: ["deployments", "replicasets", "ingresses"]
   verbs: ["create", "delete", "deletecollection", "get", "list", "patch", "update", "watch"]
+- apiGroups: [""]
+  resources: ["replicationcontrollers/scale"]
+  verbs: ["get", "update"]
+- apiGroups: ["extensions"]
+  resources: ["deployments/scale", "replicasets/scale"]
+  verbs: ["get", "update"]
 # These permissions are necessary for Halyard to operate. We use this role also to deploy Spinnaker itself.
 - apiGroups: [""]
   resources: ["services/proxy", "pods/portforward"]
@@ -264,8 +348,8 @@ gcloud --project ${PROJECT} iam service-accounts keys create ${SERVICE_ACCOUNT_F
     --iam-account ${SA_EMAIL}
 ```
 
-## Move files to `docker machine`
-On the `docker machine`, choose a local working directory for Halyard.  In it, we will create two folders:
+## Move files to `Halyard machine`
+On the `Halyard machine`, choose a local working directory for Halyard.  In it, we will create two folders:
 * `WORKING_DIRECTORY/.hal`
 * `WORKING_DIRECTORY/.secret`
 * `WORKING_DIRECTORY/resources`
@@ -283,7 +367,7 @@ You should have two files:
 * A kubeconfig file (`kubeconfig-spinnaker-sa`) with the credentials for GKE service account
 * A JSON key file (`spinnaker-gcs-account.json`) with credentials for a Google IAM service account with Google storage permissions
 
-Copy the key files over to the `docker machine` (if it's a different machine) (use whatever file transfer mechanism works best for you, such as `scp`)
+Copy the key files over to the `Halyard machine` (if it's a different machine) (use whatever file transfer mechanism works best for you, such as `scp`)
 
 Put the two files in the `.secret` directory:
 ```bash
@@ -293,7 +377,7 @@ mv spinnaker-gcs-account.json ${WORKING_DIRECTORY}/.secret
 
 ## Start the Halyard container
 
-On the `docker machine`, start the Halyard container (see the `armory/halyard-armory` [tag list](https://hub.docker.com/r/armory/halyard-armory/tags)) for the latest Armory Halyard Docker image tag.
+On the `Halyard machine`, start the Halyard container (see the `armory/halyard-armory` [tag list](https://hub.docker.com/r/armory/halyard-armory/tags)) for the latest Armory Halyard Docker image tag.
 
 *If you want to install OSS Spinnaker instead, use `gcr.io/spinnaker-marketplace/halyard:stable` for the Docker image*
 
@@ -309,7 +393,7 @@ docker run --name armory-halyard -it --rm \
 
 ## Enter the Halyard container
 
-From a separate terminal session on your `docker machine`, create a second bash/shell session on the Docker container:
+From a separate terminal session on your `Halyard machine`, create a second bash/shell session on the Docker container:
 ```bash
 docker exec -it armory-halyard bash
 

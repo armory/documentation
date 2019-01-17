@@ -148,6 +148,12 @@ rules:
 - apiGroups: ["extensions", "apps"]
   resources: ["deployments", "replicasets", "ingresses"]
   verbs: ["create", "delete", "deletecollection", "get", "list", "patch", "update", "watch"]
+- apiGroups: [""]
+  resources: ["replicationcontrollers/scale"]
+  verbs: ["get", "update"]
+- apiGroups: ["extensions"]
+  resources: ["deployments/scale", "replicasets/scale"]
+  verbs: ["get", "update"]
 # These permissions are necessary for Halyard to operate. We use this role also to deploy Spinnaker itself.
 - apiGroups: [""]
   resources: ["services/proxy", "pods/portforward"]
