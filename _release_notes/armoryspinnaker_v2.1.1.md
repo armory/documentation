@@ -28,9 +28,6 @@ There are currently no known issues with this release.
 ###  Spinnaker Community Contributions
 There have also been numerous fixes across all of Spinnaker's other services. See their changes here:  
 [Spinnaker's v1.10.11](https://www.spinnaker.io/community/releases/versions/1-10-11-changelog)  
-<!--- Example message
-[Spinnaker's v1.7.1](https://www.spinnaker.io/community/releases/versions/1-7-1-changelog)  
--->
 
 <br><br><br>
 ## Detailed Updates
@@ -84,7 +81,6 @@ export SERVICE_HASH=c9abb38e5</code>
 No Changes
 
 #### Dinghy&trade; - d861f34...8261525
- - docs(readme): add seq diagram on how dinghy works (#90)
  - chore(docker): run as spinnaker user (#89)
 
 #### Platform&trade; - 30ccd55
@@ -108,7 +104,6 @@ No Changes
  - fix(build): Services as an array (#443)
  - chore(build): Add build and service definitions (#441)
  - chore(terraformer): add terraformer trigger (#440)
- - chore(readme): add link to armory's infrastructure doc (#439)
  - Bump version 2.1.1 (#438)
 
 
