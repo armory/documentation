@@ -112,8 +112,11 @@ Inside wait.stage.module, we can then include these variables inline:
 
 ```{% raw %}
 {
+  "name": "{{ var "name" ?: "defaultname" }}",
+  "refId": "1",
+  "requisiteStageRefIds": [],
+  "type": "wait",
   "waitTime": {{ var "waitTime" ?: 10 }}
-  "name": {{ var "name" ?: "defaultname" }},
 }
 {% endraw %}
 ```
