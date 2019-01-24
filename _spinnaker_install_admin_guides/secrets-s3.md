@@ -57,17 +57,17 @@ Note: we could also have base 64 encoded the file content and stored in the yaml
 Now that secrets are safely stored in our bucket, we'll reference them from Spinnaker with the following format:
 
 ```
-encrypted:s3!<bucket and path to file>!<optional key>
+encrypted:s3!r:<region>!b:<bucket>!f:<path to file>!k:<optional key>
 ```
 
 For example to reference `github.password`, we'll use:
 ```
-encrypted:s3!mybucket.us-west-2.amazonaws.com/spinnaker-secrets.yml!github.password
+encrypted:s3!r:us-west-2!b:mybucket!f:spinnaker-secrets.yml!k:github.password
 ```
 
 And to reference the content of our kubeconfig file:
 ```
-encrypted:s3!mybucket.us-west-2.amazonaws.com/mykubeconfig
+encrypted:s3!r:us-west-2!b:mybucket!f:mykubeconfig
 ```
 
 ## Using Secrets
@@ -78,7 +78,7 @@ Halyard can understand the secrets we provided. If the service we're deploying i
 For instance, after deploying the following change:
 ```
 hal config artifact github account edit github \
-  --token=encrypted:s3!mybucket.us-west-2.amazonaws.com/spinnaker-secrets.yml!github.token
+  --token=encrypted:s3!r:us-west-2!b:mybucket!f:spinnaker-secrets.yml!k:github.token
 ```
 
 We'd find the following in clouddriver.yml:
@@ -88,7 +88,7 @@ We'd find the following in clouddriver.yml:
     enabled: true
     accounts:
     - name: github
-      token: encrypted:s3!mybucket.us-west-2.amazonaws.com/spinnaker-secrets.yml!github.token
+      token: encrypted:s3!r:us-west-2!b:mybucket!f:spinnaker-secrets.yml!k:github.token
 ...
 ```
 
