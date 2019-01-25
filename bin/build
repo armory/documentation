@@ -5,9 +5,10 @@ chmod -R 777 "$(pwd)"
 rm -dfr _site
 
 # fetch latest halyard-armory docker tag
-halyard_armory_version="$(arm jenkins /job/armory/job/halyard-armory/job/master/lastSuccessfulBuild/artifact/build.properties | grep HALYARD_ARMORY_VERSION | cut -d= -f2)"
-sed "s|halyard-armory-version:.*|halyard-armory-version: $halyard_armory_version|" _data/versions.yml > _data/versions.yml.new
-mv _data/versions.yml.new _data/versions.yml
+# commenting this out, we'll need it later. This was accidently releasing RCs instead of actual versions
+# halyard_armory_version="$(arm jenkins /job/armory/job/halyard-armory/job/master/lastSuccessfulBuild/artifact/build.properties | grep HALYARD_ARMORY_VERSION | cut -d= -f2)"
+# sed "s|halyard-armory-version:.*|halyard-armory-version: $halyard_armory_version|" _data/versions.yml > _data/versions.yml.new
+# mv _data/versions.yml.new _data/versions.yml
 
 docker build -t armory/documentation .
 
