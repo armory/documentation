@@ -60,6 +60,8 @@ Now that secrets are safely stored in our bucket, we'll reference them from Spin
 encrypted:s3!r:<region>!b:<bucket>!f:<path to file>!k:<optional key>
 ```
 
+Note: The S3 specific parameters, e.g. r:<region>, b:<bucket>, etc, can be in any order
+
 For example to reference `github.password`, we'll use:
 ```
 encrypted:s3!r:us-west-2!b:mybucket!f:spinnaker-secrets.yml!k:github.password
@@ -67,7 +69,7 @@ encrypted:s3!r:us-west-2!b:mybucket!f:spinnaker-secrets.yml!k:github.password
 
 And to reference the content of our kubeconfig file:
 ```
-encrypted:s3!r:us-west-2!b:mybucket!f:mykubeconfig
+encrypted:s3!f:mykubeconfig!r:us-west-2!b:mybucket
 ```
 
 ## Using Secrets
