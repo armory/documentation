@@ -3,7 +3,7 @@
 node {
     dir("new master") {
         checkout scm
-        
+
         stage("Build") {
             sh("""#!/bin/bash -x
             bin/build
@@ -26,11 +26,11 @@ node {
                 ''')
             }
         } else {
-            print("Not on staging. not publishing staging")
+            print("Not on staging. Not publishing staging")
         }
-        
+
         archiveArtifacts artifacts: '_site/**',
             fingerprint: true
-        
+
     }
 }
