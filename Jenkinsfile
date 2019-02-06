@@ -1,14 +1,5 @@
 #!/usr/bin/env groovy
 
-properties([
-  pipelineTriggers([
-    upstream(
-      threshold: 'SUCCESS',
-      upstreamProjects: '../../armory/halyard-armory/master'
-    )
-  ])
-])
-            
 node {
     dir("new master") {
         checkout scm
