@@ -1,5 +1,8 @@
 #!/usr/bin/env groovy
 
+// See https://issues.jenkins-ci.org/browse/JENKINS-41875
+properties([])
+
 node {
     dir("new master") {
         checkout scm
