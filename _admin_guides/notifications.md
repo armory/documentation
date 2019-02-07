@@ -124,16 +124,16 @@ you to send notifications to an ARN whenever an ASG changes state.  This is usef
 ```
 aws:
   accounts:
-- name:
-   accountId: "0123456578999
-   regions:
-     - name: us-west-2
-   lifecycleHooks:
-     - defaultResult: 'CONTINUE'
-       heartbeatTimeout: 7200
-       lifecycleTransition: 'autoscaling:EC2_INSTANCE_TERMINATING'
-       notificationTargetARN: 'arn:aws:sns:{{region}}:{{accountId}}:spinnaker-instance-terminating'
-       roleARN: 'arn:aws:iam::{{accountId}}:role/SpinnakerManagedRole'
+    - name:
+      accountId: "0123456578999
+      regions:
+        - name: us-west-2
+      lifecycleHooks:
+        - defaultResult: 'CONTINUE'
+          heartbeatTimeout: 7200
+          lifecycleTransition: 'autoscaling:EC2_INSTANCE_TERMINATING'
+          notificationTargetARN: 'arn:aws:sns:{{region}}:{{accountId}}:spinnaker-instance-terminating'
+          roleARN: 'arn:aws:iam::{{accountId}}:role/SpinnakerManagedRole'
 ```
 
 > Note: in the example above, Spinnaker will replace {{region}} and {{accountId}} with valid values at runtime
