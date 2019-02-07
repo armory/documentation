@@ -4,8 +4,24 @@ cd "$(dirname "$0")"/..
 chmod -R 777 "$(pwd)"
 rm -dfr _site
 
-# fetch latest halyard-armory docker tag
-halyard_armory_version="$(arm jenkins /job/armory/job/halyard-armory/job/master/lastSuccessfulBuild/artifact/build.properties | grep stable_halyard-armory_SERVICE_FULL_VERSION | cut -d= -f2)"
+
+SEMVER_REGEX='\d+\.\d+\.\d+'
+SEMVER_REGEX='^[0-9]+\.[0-9]+\.[0-9]+$'
+
+PAGE_NUM=1
+halyard_armory_version=
+while [ -z ${halyard_armory_version} ]; do
+    echo "Getting tags for halyard-armory, page: ${PAGE_NUM}"
+    TAGS=$(wget -O - -q https://registry.hub.docker.com/v2/repositories/armory/halyard-armory/tags?page=${PAGE_NUM} | docker run -i --rm realguess/jq:1.4 jq --raw-output '."results" | .[] .name | select(. != "latest")')
+    for TAG in $TAGS; do
+        if [[ "${TAG}" =~ ${SEMVER_REGEX} ]]; then
+            halyard_armory_version="${TAG}"
+            break
+        fi
+    done
+    PAGE_NUM=$((${PAGE_NUM} + 1))
+done
+
 sed "s|halyard-armory-version:.*|halyard-armory-version: $halyard_armory_version|" _data/versions.yml > _data/versions.yml.new
 mv _data/versions.yml.new _data/versions.yml
 
