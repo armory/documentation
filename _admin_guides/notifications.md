@@ -125,7 +125,7 @@ you to send notifications to an ARN whenever an ASG changes state.  This is usef
 aws:
   accounts:
     - name:
-      accountId: "0123456578999
+      accountId: "0123456578999"
       regions:
         - name: us-west-2
       lifecycleHooks:
