@@ -4,8 +4,6 @@ cd "$(dirname "$0")"/..
 chmod -R 777 "$(pwd)"
 rm -dfr _site
 
-
-SEMVER_REGEX='\d+\.\d+\.\d+'
 SEMVER_REGEX='^[0-9]+\.[0-9]+\.[0-9]+$'
 
 PAGE_NUM=1
