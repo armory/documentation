@@ -29,7 +29,7 @@ NAMESPACE is the Kubernetes namespace where your Spinnaker install is located. 
 ```
 export NAMESPACE={namespace}
 kubectl -n ${NAMESPACE} expose service spin-gate --type LoadBalancer \
-  --port 8084 \
+  --port 443 \
   --target-port 8084 \
   --name spin-gate-public
 kubectl -n ${NAMESPACE} expose service spin-deck --type LoadBalancer \
