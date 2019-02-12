@@ -26,12 +26,28 @@ While there are many ways to expose Spinnaker, we find the method described in t
 First, we’ll start by creating LoadBalancer Services which will expose the API (Gate) and the UI (Deck) via a Load Balancer in your cloud provider. We’ll do this by running the commands below and creating the spin-gate-public and spin-deck-public Services.
 NAMESPACE is the Kubernetes namespace where your Spinnaker install is located. Halyard defaults to spinnaker unless explicitly overridden.
 
+Note: You can Secure the service with SSL, if you wish to do so, change the ports to listen on port 443 for both services. You can edit this later on, or you can do it from the start to skip one step.
+
 ```
 export NAMESPACE={namespace}
 kubectl -n ${NAMESPACE} expose service spin-gate --type LoadBalancer \
   --port 443 \
   --target-port 8084 \
   --name spin-gate-public
+
+kubectl -n ${NAMESPACE} expose service spin-deck --type LoadBalancer \
+  --port 9000 \
+  --target-port 9000 \
+  --name spin-deck-public
+```
+
+```
+export NAMESPACE={namespace}
+kubectl -n ${NAMESPACE} expose service spin-gate --type LoadBalancer \
+  --port 443 \
+  --target-port 8084 \
+  --name spin-gate-public
+  
 kubectl -n ${NAMESPACE} expose service spin-deck --type LoadBalancer \
   --port 443 \
   --target-port 9000 \
@@ -50,6 +66,12 @@ hal deploy apply
 ```
 
 ### Secure with SSL on EKS
+
+Note: If you created the services with port 8084 and 9000, you will need to edit them to make SSL work. To do so run 
+`kubectl -n spinnaker edit service spin-gate-public`
+and 
+`kubectl -n spinnaker edit service spin-deck-public`
+and change the port to 443
 
 This tutorial presumes you've already created a certificate in the AWS Certificate Manager.
 
