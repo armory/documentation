@@ -98,3 +98,10 @@ Armory uses dates and build numbers for their versions. e.g.:
 <div class="Post__content" itemprop="articleBody">
   {% include components/articles-list.html %}
 </div>
+
+## Selecting a version to install
+```yml
+$ hal config version edit --version 2.1.0
+```
+See [halyard reference](https://www.spinnaker.io/reference/halyard/commands/#hal-config-version-edit) for additional information.
+
