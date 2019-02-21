@@ -50,7 +50,9 @@ func main() {
           for _, urlString := range urls[1:] {
             localImgPath := downloadUrl(opts, urlString)
 
-            newLine = strings.Replace(newLine, urlString, localImgPath, -1)
+            if localImgPath != "" {
+              newLine = strings.Replace(newLine, urlString, localImgPath, -1)
+            }
           }
         }
 
