@@ -1,0 +1,1805 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <title>AWS Services That Publish CloudWatch
+         Metrics - Amazon CloudWatch
+      </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="home" href="#top" />
+      <link rel="up" href="WhatIsCloudWatch.html" title="What is Amazon CloudWatch?" />
+      <link rel="prev" href="troubleshooting-CloudWatch-Agent.html" title="Troubleshooting the CloudWatch Agent" />
+      <link rel="next" href="CloudWatch-Agent-SDK-Metrics.html" title="Monitor Applications Using AWS SDK Metrics" />
+      <meta name="description" content="The following AWS services publish metrics to CloudWatch. For information about the metrics and dimensions, see the specified documentation." />
+      <meta name="deployment_region" content="IAD" />
+      <meta name="product" content="Amazon CloudWatch" />
+      <meta name="guide" content="User Guide" />
+      <meta name="guide-locale" content="en_us" />
+      <meta name="tocs" content="toc-contents.json" />
+      <link rel="icon" type="image/ico" href="/images/favicon.ico" />
+      <link rel="shortcut icon" type="image/ico" href="/images/favicon.ico" />
+      <link rel="canonical" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html" />
+      <link rel="stylesheet" type="text/css" href="/css/jquery-ui.min.css" />
+      <link rel="stylesheet" type="text/css" href="/font/css/font-awesome.min.css" />
+      <link rel="stylesheet" type="text/css" href="/css/google-font.css" />
+      <link id="code-style" rel="stylesheet" type="text/css" href="/css/code/light.css" />
+      <link rel="stylesheet" type="text/css" href="/css/jquery-ui.theme.css" />
+      <link rel="stylesheet" type="text/css" href="/css/colorbox.css" />
+      <link rel="stylesheet" type="text/css" href="/css/awsdocs.css?v=20181221" /><script type="text/javascript" src="/js/highlight.pack.js"></script><script type="text/javascript" src="/js/jquery.min.js"></script><script type="text/javascript" src="/js/jquery-ui.min.js"></script><script type="text/javascript" src="/js/jquery.colorbox.js"></script><script type="text/javascript" src="/js/awsdocs.min.js?v=20181221"></script></head>
+   <body id="top">
+      <div xmlns:db="http://docbook.org/ns/docbook" id="aws-nav" class="aws-nav-header">
+         <div class="aws-nav-header-left">
+            <div class="aws-nav-logo">
+               <!--aws_logo_105x39.png--><a href="http://aws.amazon.com"><img src="/images/aws_logo_105x39.png" alt="Amazon Web Services" /></a></div>
+         </div>
+         <div id="aws-nav-header-right" class="aws-nav-header-right">
+            <div class="aws-nav-cta-button-outer"><a id="aws-nav-cta-button" class="aws-nav-button" href="https://console.aws.amazon.com/console/home">Sign In to the Console</a></div>
+            <div class="aws-nav-popover-trigger" data-dropdown="aws-nav-dropdown-lang"><select id="languageSelection" onchange="SelectLanguage()">
+                  <option value="/de_de/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html">Deutsch</option>
+                  <option value="/en_us/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html" selected="selected">English</option>
+                  <option value="/es_es/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html">Español</option>
+                  <option value="/fr_fr/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html">Français</option>
+                  <option value="/it_it/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html">Italiano</option>
+                  <option value="/ja_jp/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html">日本語</option>
+                  <option value="/ko_kr/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html">한국어</option>
+                  <option value="/pt_br/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html">Português</option>
+                  <option value="/zh_cn/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html">中文 (简体)</option>
+                  <option value="/zh_tw/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html">中文 (繁體)</option></select></div><a class="btn btn-rss-link" id="rss-link-top" target="_blank" href="amazon-cloudwatch-document-history.rss" title="View RSS Feed"></a><a class="btn btn-kindle-link" id="kindle-link-top" target="_blank" href="http://www.amazon.com/dp/B07643SJ8F" title="Open Kindle"></a><a class="btn btn-pdf-link" id="pdf-link-top" href="acw-ug.pdf#aws-services-cloudwatch-metrics" target="_blank" title="Open PDF"></a><a class="btn btn-github-link" id="github-link-top" href="https://github.com/awsdocs/amazon-cloudwatch-user-guide/tree/master/doc_source/aws-services-cloudwatch-metrics.md" target="_blank" title="Edit on GitHub"></a><div id="aws-nav-quicklinks-separator" class="aws-nav-quicklinks-separator">
+               <div class="aws-nav-left"></div>
+               <div class="aws-nav-right"></div>
+            </div>
+         </div>
+      </div>
+      <div id="content-container">
+         <div id="left-column">
+            <div id="left-col-header">
+               <div xmlns:db="http://docbook.org/ns/docbook" id="left-col-top-content">
+                  <div id="service-name">Amazon CloudWatch </div>
+                  <div id="search"><i id="search-icon" class="fa fa-search fa-2x"></i></div>
+                  <div id="guide-info">User Guide
+                     <div id="content-button"><i id="toggle-contents" class="fa fa-bars"></i></div>
+                  </div>
+               </div>
+               <form id="finegrainedSearch" method="get" onsubmit="return searchFormSubmit(this);" action="/search/doc-search.html">
+                  <div id="search-form"><select id="search-select" name="searchPath">
+                        <option value="all">Entire Site</option>
+                        <option value="AWSMarketplace">AMIs from AWS Marketplace</option>
+                        <option value="amis">AMIs from All Sources</option>
+                        <option value="articles">Articles &amp; Tutorials</option>
+                        <option value="products_and_info">AWS Product Information</option>
+                        <option value="case_studies">Case Studies</option>
+                        <option value="customerapps">Customer Apps</option>
+                        <option value="documentation">Documentation</option>
+                        <option value="documentation-product">Documentation - This Product</option>
+                        <option value="documentation-guide" selected="selected">Documentation - This Guide</option>
+                        <option value="datasets">Public Data Sets</option>
+                        <option value="releasenotes">Release Notes</option>
+                        <option value="solution_providers">Partners</option>
+                        <option value="code">Sample Code &amp; Libraries</option></select><br /><input id="search-query" name="searchQuery" type="text" placeholder="Search" /><input id="search-button" src="/images/search-button.png" alt="Go" type="image" /></div><input type="hidden" name="this_doc_product" id="this_doc_product" value="Amazon CloudWatch" /><input type="hidden" name="this_doc_guide" id="this_doc_guide" value="User Guide" /><input type="hidden" name="doc_locale" value="en_us" /></form>
+            </div>
+            <div id="toc"></div>
+         </div>
+         <div id="main-column">
+            <div id="main">
+               <div id="main-content">
+                  <div id="main-col-body">
+                     <table summary="Breadcrumbs">
+                        <tr>
+                           <td>
+                              <div class="breadcrumb"><a href="/index.html">AWS Documentation</a> » <a href="/cloudwatch/index.html">Amazon CloudWatch</a> » <a href="index.html">User Guide</a> » <span class="breadcrumb">AWS Services That Publish CloudWatch
+                                    Metrics</span></div>
+                           </td>
+                        </tr>
+                     </table>
+                     <div id="language-notice">
+                        <div class="language-notice-text"></div>
+                     </div>
+                     <div></div>
+                     <h1 class="topictitle" id="aws-services-cloudwatch-metrics">AWS Services That Publish CloudWatch
+                        Metrics
+                     </h1>
+                     <p>The following AWS services publish metrics to CloudWatch. For information about the
+                        metrics and
+                        dimensions, see the specified documentation.
+                     </p>
+                     <div class="table">
+                        <div class="table-contents">
+                           <table id="w188aac21b5">
+                              
+                              <tr>
+                                 
+                                 <th>Service</th>
+                                 
+                                 <th>Namespace</th>
+                                 
+                                 <th>Documentation</th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon API Gateway</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/ApiGateway</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/monitoring-cloudwatch.html">Monitor API
+                                          Execution with Amazon CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>AppStream 2.0</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/AppStream</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/appstream2/latest/developerguide/monitoring.html">Monitoring Amazon AppStream 2.0 Resources</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>AWS Billing and Cost Management</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/Billing</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/monitor-charges.html">Monitoring Charges with Alerts and Notifications</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon CloudFront</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/CloudFront</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/monitoring-using-cloudwatch.html">Monitoring CloudFront Activity Using CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon CloudSearch</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/CloudSearch</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/cloudsearch/latest/developerguide/cloudwatch-monitoring.html">Monitoring an Amazon CloudSearch Domain with Amazon CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon CloudWatch Events</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/Events</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/CloudWatch-Events-Monitoring-CloudWatch-Metrics.html">Monitoring Usage with CloudWatch Metrics</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon CloudWatch Logs</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/Logs</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CloudWatch-Logs-Monitoring-CloudWatch-Metrics.html">Monitoring Usage with CloudWatch Metrics</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>AWS CodeBuild</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/CodeBuild</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/codebuild/latest/userguide/monitoring-builds.html">Monitoring AWS CodeBuild</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Cognito</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/Cognito</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-viewing-advanced-security-metrics.html">Viewing Advanced Security Metrics</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Connect</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/Connect</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/connect/latest/adminguide/monitoring-cloudwatch.html">Monitoring Amazon Connect in Amazon CloudWatch Metrics</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>AWS Database Migration Service</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/DMS</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Monitoring.html">Monitoring AWS DMS Tasks</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>AWS Direct Connect</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/DX</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/directconnect/latest/UserGuide/monitoring-cloudwatch.html">Monitoring with Amazon CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon DynamoDB</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/DynamoDB</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/MonitoringDynamoDB.html">Monitoring DynamoDB</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon EC2</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/EC2</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-cloudwatch.html">Monitoring Your Instances Using CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon EC2 Spot Fleet</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/EC2Spot</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-fleet-cloudwatch-metrics.html">CloudWatch Metrics for Spot Fleet</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon EC2 Auto Scaling</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/AutoScaling</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-monitoring.html">Monitoring Your Auto Scaling Groups and Instances Using CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>AWS Elastic Beanstalk</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/ElasticBeanstalk</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/health-enhanced-cloudwatch.html">Publishing Amazon CloudWatch Custom Metrics for an Environment</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Elastic Block Store</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/EBS</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/monitoring-volume-status.html">Monitoring the Status of Your Volumes</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Elastic Container Service</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/ECS</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cloudwatch-metrics.html">Amazon ECS CloudWatch Metrics</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Elastic File System</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/EFS</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/efs/latest/ug/monitoring-cloudwatch.html">Monitoring with CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Elastic Inference</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/ElasticInference</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/cloudwatch-metrics-ei.html">Using CloudWatch Metrics to Monitor Amazon EI</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Elastic Load Balancing</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/ApplicationELB</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-cloudwatch-metrics.html">CloudWatch Metrics for Your Application Load Balancer</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Elastic Load Balancing</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/ELB</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-cloudwatch-metrics.html">CloudWatch Metrics for Your Classic Load Balancer</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Elastic Load Balancing</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/NetworkELB</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/network/load-balancer-cloudwatch-metrics.html">CloudWatch Metrics for Your Network Load Balancer</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Elastic Transcoder</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/ElasticTranscoder</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/elastictranscoder/latest/developerguide/monitoring-cloudwatch.html">Monitoring with Amazon CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon ElastiCache for Memcached</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/ElastiCache</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/AmazonElastiCache/latest/mem-ug/CacheMetrics.html">Monitoring Use with CloudWatch Metrics</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon ElastiCache for Redis</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/ElastiCache</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/CacheMetrics.html">Monitoring Use with CloudWatch Metrics</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Elasticsearch Service</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/ES</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-managedomains.html#es-managedomains-cloudwatchmetrics">Monitoring Cluster Metrics and Statistics with CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon EMR</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/ElasticMapReduce</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/emr/latest/ManagementGuide/UsingEMR_ViewingMetrics.html">Monitor Metrics with CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 
+                                 <td>
+                                    
+                                    <p>AWS Elemental MediaConnect</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/MediaConnect</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/mediaconnect/latest/ug/monitor-with-cloudwatch.html">Monitoring AWS Elemental MediaConnect with Amazon CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 
+                                 <td>
+                                    
+                                    <p>AWS Elemental MediaConvert</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/MediaConvert</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/mediaconvert/latest/ug/MediaConvert-metrics.html">CloudWatch Metrics</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 
+                                 <td>
+                                    
+                                    <p>AWS Elemental MediaPackage</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/MediaPackage</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/mediapackage/latest/ug/monitoring-cloudwatch.html#metrics">CloudWatch Metrics</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 
+                                 <td>
+                                    
+                                    <p>AWS Elemental MediaTailor</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/MediaTailor</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/mediatailor/latest/ug/monitoring-cloudwatch.html">Monitoring AWS Elemental MediaTailor with Amazon CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon FSx for Lustre</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/FSx</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/fsx/latest/LustreGuide/monitoring_overview.html">Monitoring Amazon FSx for Lustre</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon GameLift</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/GameLift</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/gamelift/latest/developerguide/monitoring-cloudwatch.html">Monitor Amazon GameLift with CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>AWS Glue</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/Glue</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/glue/latest/dg/monitoring-awsglue-with-cloudwatch-metrics.html">Monitoring AWS Glue Using CloudWatch Metrics</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Inspector</p>
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/Inspector</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/inspector/latest/userguide/using-cloudwatch.html">Monitoring Amazon Inspector Using CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>AWS IoT</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/IoT</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/iot/latest/developerguide/monitoring-cloudwatch.html">Monitoring with Amazon CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>AWS IoT Analytics</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/IoTAnalytics</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/iotanalytics/latest/userguide/cloudwatch.html#aws-iot-analytics-cloudwatch-metrics">Namespace, Metrics, and Dimensions</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>AWS IoT Things Graph</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/ThingsGraph</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/thingsgraph/latest/ug/iot-tg-metrics.html">Metrics</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>AWS Key Management Service</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/KMS</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/kms/latest/developerguide/monitoring-cloudwatch.html">Monitoring with CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Kinesis Data Analytics</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/KinesisAnalytics</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><em>Kinesis Data Analytics</em>: <a href="https://docs.aws.amazon.com/kinesisanalytics/latest/dev/monitoring-cloudwatch.html">Monitoring with CloudWatch</a></p>
+                                    
+                                    <p><em>Kinesis Data Analytics for Java Applications</em>: <a href="https://docs.aws.amazon.com/kinesisanalytics/latest/java/metrics-dimensions.html">Viewing Amazon Kinesis Data Analytics Metrics and Dimensions</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Kinesis Data Firehose</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/Firehose</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/firehose/latest/dev/monitoring-with-cloudwatch-metrics.html">Monitoring Kinesis Data Firehose Using CloudWatch Metrics </a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Kinesis Data Streams</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/Kinesis</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/streams/latest/dev/monitoring-with-cloudwatch.html">Monitoring Amazon Kinesis Data Streams with Amazon CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Kinesis Video Streams</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/KinesisVideo</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/kinesisvideostreams/latest/dg/monitoring-cloudwatch.html">Monitoring Kinesis Video Streams Metrics with CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>AWS Lambda</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/Lambda</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/lambda/latest/dg/monitoring-functions-metrics.html">AWS Lambda Metrics</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Lex</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/Lex</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/lex/latest/dg/monitoring-aws-lex-cloudwatch.html">Monitoring Amazon Lex with CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Machine Learning</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/ML</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/machine-learning/latest/dg/cw-doc.html">Monitoring Amazon ML with CloudWatch Metrics</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Managed Streaming for Kafka</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/Kafka</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/msk/latest/developerguide/monitoring.html">Monitoring Amazon MSK with Amazon CloudWatch</a></p>
+                                    
+                                 </td>   
+                                 
+                              </tr> 
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon MQ</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/AmazonMQ</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/amazon-mq-monitoring-cloudwatch.html">Monitoring Amazon MQ Brokers Using Amazon CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Neptune</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/Neptune</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/neptune/latest/userguide/cloudwatch.html">Monitoring Neptune with CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>AWS OpsWorks</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/OpsWorks</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/opsworks/latest/userguide/monitoring-cloudwatch.html">Monitoring Stacks using Amazon CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Polly</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/Polly</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/polly/latest/dg/cloud-watch.html">Integrating CloudWatch with Amazon Polly</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Redshift</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/Redshift</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/redshift/latest/mgmt/metrics-listing.html">Amazon Redshift Performance Data</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Relational Database Service</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/RDS</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/MonitoringOverview.html#monitoring-cloudwatch">Monitoring with Amazon CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Route 53</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/Route53</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/monitoring-overview.html">Monitoring Amazon Route 53</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon SageMaker</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/SageMaker</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/sagemaker/latest/dg/monitoring-cloudwatch.html">Monitoring Amazon SageMaker with CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>AWS Shield Advanced</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/DDoSProtection</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/waf/latest/developerguide/monitoring-cloudwatch.html">Monitoring with CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Simple Email Service</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/SES</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/ses/latest/DeveloperGuide/event-publishing-retrieving-cloudwatch.html">Retrieving Amazon SES Event Data from CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Simple Notification Service</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/SNS</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/sns/latest/dg/MonitorSNSwithCloudWatch.html">Monitoring Amazon SNS with CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Simple Queue Service</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/SQS</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-monitoring-using-cloudwatch.html">Monitoring Amazon SQS Queues Using CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Simple Storage Service</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/S3</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/cloudwatch-monitoring.html">Monitoring Metrics with Amazon CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Simple Workflow Service</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/SWF</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/cw-metrics.html">Amazon SWF Metrics for CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>AWS Step Functions</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/States</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/step-functions/latest/dg/procedure-cw-metrics.html">Monitoring Step Functions Using CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>AWS Storage Gateway</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/StorageGateway</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/storagegateway/latest/userguide/Main_monitoring-gateways-common.html">Monitoring Your Gateway and Resources</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Textract</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/Textract</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/textract/latest/dg/cloudwatch-metricsdim.html">CloudWatch Metrics for Amazon Textract</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>   
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon Translate</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/Translate</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/translate/latest/dg/translate-cloudwatch.html">CloudWatch Metrics and Dimensions for Amazon Translate</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>AWS Trusted Advisor</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/TrustedAdvisor</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/awssupport/latest/user/cloudwatch-metrics-ta.html">Creating Trusted Advisor Alarms Using CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon VPC</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/NATGateway</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway-cloudwatch.html">Monitoring Your NAT Gateway with CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon VPC</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/TransitGateway</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-cloudwatch-metrics.html">CloudWatch Metrics for Your Transit Gateways</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon VPC</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/VPN</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/vpc/latest/userguide/monitoring-cloudwatch-vpn.html">Monitoring with CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>AWS WAF</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">WAF</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/waf/latest/developerguide/monitoring-cloudwatch.html">Monitoring with CloudWatch</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>Amazon WorkSpaces</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><code class="code">AWS/WorkSpaces</code></p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p><a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/cloudwatch-metrics.html">Monitor Your WorkSpaces Using CloudWatch Metrics</a></p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+                  <noscript>
+                     <div>
+                        <div>
+                           <div>
+                              <div id="js_error_message">
+                                 <p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p>
+                                 <p>To use the AWS Documentation, Javascript must be enabled. Please refer to your browser's
+                                    Help pages for instructions.
+                                 </p>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </noscript>
+                  <div id="main-col-footer">
+                     <div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div>
+                     <div id="next"><a class="awstoc" accesskey="p" href="troubleshooting-CloudWatch-Agent.html">« Previous </a><a class="awstoc" accesskey="n" href="CloudWatch-Agent-SDK-Metrics.html">Next »</a></div>
+                     <div id="copyright-main-footer">© 2019, Amazon Web Services, Inc. or its affiliates. All rights reserved.</div>
+                  </div>
+               </div>
+            </div>
+            <div id="right-expanded">
+               <div id="right-content-wrapper"></div>
+            </div>
+         </div>
+      </div>
+      <div id="cookie-notice">
+         <div class="cookie-notice-text">We use cookies to provide and improve our services. By using our site, you consent
+            to cookies. <a href="http://aws.amazon.com/legal/cookies">Learn more</a></div>
+      </div>
+      <div id="footer">
+         <div id="footer_short_fb" class="hide" title="Feedback"><a target="_blank" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CloudWatch&amp;topic_url=http://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html&amp;hidden_guide_name=User Guide&amp;hidden_api_version=&amp;hidden_file_name=aws-services-cloudwatch-metrics"><i class="awsdocs-footer-text fa fa-envelope-o"></i></a></div>
+         <div id="footer_toggle" class="mediaobject">
+            <div id="footer_toggle_img" class="awsdocs-footer-text fa fa-caret-down"></div>
+            <div id="footer_toggle_img_collapse" class="hide awsdocs-footer-text fa fa-caret-right"></div>
+         </div>
+         <div id="footer-left"><a class="awsdocs-footer-text" target="_top" href="http://aws.amazon.com/terms">Terms of Use</a><span class="awsdocs-footer-text"> | </span><a class="awsdocs-footer-text" target="_top" href="http://aws.amazon.com/privacy">Privacy</a><span class="awsdocs-footer-text"> | </span><span class="awsdocs-footer-text">© 2019, Amazon Web Services, Inc. or its affiliates. All rights reserved.</span></div>
+         <div id="footer-right">
+            <div id="feedback">
+               <div id="forums"><a id="forum_link" target="_blank" href="http://forums.aws.amazon.com/forum.jspa?forumID=138" class="awsdocs-footer-text">Have a question? Try the Forums.</a></div>
+               <div id="feedback-message" class="awsdocs-footer-text">Did this page help you?</div>
+               <div id="feedback-yesno-buttons"><a class="awstoc btn btn-default" target="_blank" href="feedbackyes.html?topic_url=http://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html">Yes</a><a class="awstoc btn btn-default" target="_blank" href="feedbackno.html?topic_url=http://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html">No</a></div>
+               <div id="feedback-feedback-button"><a class="awstoc btn btn-default" target="_blank" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CloudWatch&amp;topic_url=http://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html&amp;hidden_guide_name=User Guide&amp;hidden_api_version=&amp;hidden_file_name=aws-services-cloudwatch-metrics">Feedback</a></div>
+            </div>
+         </div>
+      </div>
+      <!-- SiteCatalyst code version: H.25.2.
+            Copyright 1996-2012 Adobe, Inc. All Rights Reserved
+            More info available at http://www.omniture.com --><script language="JavaScript" type="text/javascript" src="https://a0.awsstatic.com/s_code/js/1.0/awshome_s_code.js"></script><script language="JavaScript" type="text/javascript">
+         <!--
+
+            // Documentation Service Name
+            s.prop66='Amazon CloudWatch';
+            s.eVar66='D=c66';
+  
+            // Documentation Guide Name                                                                 
+            s.prop65='User Guide';
+            s.eVar65='D=c65';
+
+            var s_code=s.t();if(s_code)document.write(s_code)//--></script><script language="JavaScript" type="text/javascript">
+         <!--
+                if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+'-')
+                //--></script><noscript><img src="https://amazonwebservices.d2.sc.omtrdc.net/b/ss/awsamazondev/1/H.25.2--NS/0" height="1" width="1" border="0" alt="" /></noscript>
+      <!--/DO NOT REMOVE/-->
+      <!-- End SiteCatalyst code version: H.25.2. -->
+   </body>
+</html>
