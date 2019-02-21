@@ -8,7 +8,6 @@ import (
   "net/http"
   "net/url"
   "os"
-  "path"
   "path/filepath"
   "regexp"
   "strings"
@@ -39,8 +38,7 @@ func main() {
     if markdownImageUrlMatch.Match(fileContents) {
       lines := strings.Split(string(fileContents), "\n")
 
-      oldFilePath := path.Base(filePath)
-      newFilePath := path.Base(filePath) + ".new"
+      newFilePath := filePath + ".new"
       newFile, _ := os.Create(newFilePath)
 
       newLine := ""
@@ -59,7 +57,7 @@ func main() {
         _, _ = newFile.WriteString(newLine + "\n")
       }
 
-      _ = os.Rename(newFilePath, oldFilePath)
+      _ = os.Rename(newFilePath, filePath)
     }
     return nil
   })
