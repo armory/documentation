@@ -6,3 +6,5 @@ _site
 *~
 .bundle
 *.swp
+
+venv/
