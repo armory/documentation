@@ -39,7 +39,9 @@ func main() {
     if markdownImageUrlMatch.Match(fileContents) {
       lines := strings.Split(string(fileContents), "\n")
 
-      newFile, _ := os.Create(path.Base(filePath) + ".new")
+      oldFilePath := path.Base(filePath)
+      newFilePath := path.Base(filePath) + ".new"
+      newFile, _ := os.Create(newFilePath)
 
       newLine := ""
       for _, line := range lines {
@@ -57,6 +59,7 @@ func main() {
         _, _ = newFile.WriteString(newLine + "\n")
       }
 
+      _ = os.Rename(newFilePath, oldFilePath)
     }
     return nil
   })
