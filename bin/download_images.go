@@ -89,9 +89,10 @@ func downloadUrl(opts Opts, urlString string) string {
     return relativeImgPath
   }
 
-  fmt.Printf("downloading %s   ->   %s", urlString, absImgPath)
+  fmt.Printf("downloading %s   ->   %s\n", urlString, absImgPath)
   resp, err := http.Get(urlString)
   if err != nil || resp.StatusCode > 200 {
+    fmt.Printf("ERROR! %s\n", err.Error())
     return ""
   }
   defer resp.Body.Close()
@@ -99,7 +100,7 @@ func downloadUrl(opts Opts, urlString string) string {
   defer f.Close()
   _, _ = io.Copy(f, resp.Body)
 
-  fmt.Println("  saved!")
+  fmt.Printf("SAVED!\n")
 
   return relativeImgPath
 }
