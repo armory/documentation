@@ -33,6 +33,13 @@ exclude:
   - Gemfile.lock
   - .git
   - .github
+  - .idea
+  - .assets-cache
+  - bin/
+  - Dockerfile
+  - Jenkinsfile
+  - README.md
+keep_files: [images]
 assets:
   sources:
     - _assets/css
