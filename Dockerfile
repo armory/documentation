@@ -1,8 +1,15 @@
 FROM jekyll/jekyll:3.8
 
 EXPOSE 4000
-EXPOSE 5678
+
+# USER jekyll
+
+RUN gem install bundler
+
+WORKDIR /srv/jekyll
 
 COPY Gemfile* /srv/jekyll/
-WORKDIR /srv/jekyll
-RUN bundle install
+
+RUN touch Gemfile.lock \
+  && chmod a+w Gemfile.lock \
+  && bundle install

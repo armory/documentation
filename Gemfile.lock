@@ -79,7 +79,7 @@ PLATFORMS
 DEPENDENCIES
   autoprefixer-rails (= 6.7.7.1)
   extras (= 0.1.0)
-  jekyll (>= 3.6.3)
+  jekyll (>= 3.8.5)
   jekyll-assets
   jekyll-feed (~> 0.6)
   jekyll-livereload
@@ -91,10 +91,9 @@ DEPENDENCIES
   rb-inotify (= 0.9.8)
   sass (= 3.4.23)
   sprockets (~> 3.7.2)
-  tzinfo-data
 
 RUBY VERSION
-   ruby 2.3.3p222
+   ruby 2.6.1p33
 
 BUNDLED WITH
-   1.16.5
+   1.17.3
