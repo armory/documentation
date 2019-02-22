@@ -41,7 +41,7 @@ Below is an example configuration for global rate limits for all services that y
 ```yml
 serviceLimits:
   defaults:
-    rateLimit: 20
+    rateLimit: 20   # ms between each call
 ```
 
 If you have multiple cloud providers, you can limit each one differently:
@@ -50,7 +50,7 @@ If you have multiple cloud providers, you can limit each one differently:
 serviceLimits:
   cloudProviderOverrides:
     aws:
-      rateLimit: 15
+      rateLimit: 15   # ms between each call
 ```
 
 You can provide account specific overrides as well in case you have significantly more resources in one account while others have less:
@@ -58,30 +58,81 @@ You can provide account specific overrides as well in case you have significantl
 ```yml
 serviceLimits:
   accountOverrides:
-    test:
-      rateLimit: 5
-    prod:
-      rateLimit: 100
+    my-test:
+      rateLimit: 5   # ms between each call
+    my-prod:
+      rateLimit: 100   # ms between each call
 ```
 
-And finally, you can have more fine-grained control for particular AWS endpoints that might have a different rate limits:
+And finally, you can have more fine-grained control for particular AWS endpoints that might have a different rate limits. This list was generated from the [AmazonClientProvider.java@4179f7](https://github.com/spinnaker/clouddriver/blob/4179f7fd8a5cd2cb64f238bd61b042bdca6193dd/clouddriver-aws/src/main/groovy/com/netflix/spinnaker/clouddriver/aws/security/AmazonClientProvider.java) on 02/22/2019 by filtering for `proxyHandlerBuilder.getProxyHandler(*.class` classes.
 
 ```yml
- implementationLimits:
-
+serviceLimits:
+  implementationLimits:
+    AWSApplicationAutoScaling:
+      defaults:
+        rateLimit: 200   # ms between each call
+    AWSLambda:
+      defaults:
+        rateLimit: 200   # ms between each call
+    AWSLambdaAsync:
+      defaults:
+        rateLimit: 200   # ms between each call
+    AWSSecretsManager:
+      defaults:
+        rateLimit: 200   # ms between each call
+    AWSShield:
+      defaults:
+        rateLimit: 200   # ms between each call
+    AmazonAutoScaling:
+      defaults:
+        rateLimit: 200   # ms between each call
+    AmazonCloudFormation:
+      defaults:
+        rateLimit: 200   # ms between each call
+    AmazonCloudWatch:
+      defaults:
+        rateLimit: 200   # ms between each call
     AmazonEC2:
       defaults:
-        rateLimit: 200
-      accountOverrides:
-        prod:
-          rateLimit: 500
-
+        rateLimit: 200   # ms between each call
+    AmazonECR:
+      defaults:
+        rateLimit: 200   # ms between each call
+    AmazonECS:
+      defaults:
+        rateLimit: 200   # ms between each call
     AmazonElasticLoadBalancing:
       defaults:
-        rateLimit: 10
+        rateLimit: 200   # ms between each call
+    AmazonIdentityManagement:
+      defaults:
+        rateLimit: 200   # ms between each call
+    AmazonIdentityManagement:
+      defaults:
+        rateLimit: 200   # ms between each call
+    AmazonRoute53:
+      defaults:
+        rateLimit: 200   # ms between each call
+    AmazonS3:
+      defaults:
+        rateLimit: 200   # ms between each call
+    AmazonSNS:
+      defaults:
+        rateLimit: 200   # ms between each call
+    AmazonSQS:
+      defaults:
+        rateLimit: 200   # ms between each call
+    AmazonSimpleWorkflow:
+      defaults:
+        rateLimit: 200   # ms between each call
 ```
 
 Using these rate limits will help you avoid hitting the rate limits and potentially make Spinnaker more responsive as the cloud provider clients won't have to implement back-off strategy to continue to query the infrastructure. 
+
+<!--
+  Armory's halyard does not currently provide any defaults
+  You will need to set your own defaults, as it differs for each installation
 
 ### Default Service Limits
 
@@ -91,18 +142,19 @@ The Armory Spinnaker distribution comes with the following default service limit
 serviceLimits:
   cloudProviderOverrides:
     aws:
-      rateLimit: 15.0
+      rateLimit: 15   # ms between each call
 
   implementationLimits:
     AmazonAutoScaling:
       defaults:
-        rateLimit: 3.0
+        rateLimit: 3   # ms between each call
     AmazonElasticLoadBalancing:
       defaults:
-        rateLimit: 5.0
+        rateLimit: 5   # ms between each call
 ```
 
 If you require a higher rate limit on these APIs then you will need to overwrite them directly. Overwriting the global service default is not sufficient.
+-->
 
 ## Request Retry
 
@@ -113,7 +165,7 @@ aws:
   client:
     maxErrorRetry: 4
 ```
-This is the number of retries before failing the request. It is on an exponential backoff maxing out at 20 seconds. By default Armory Spinnaker sets `maxErrorRetry` to `20`.
+This is the number of retries before failing the request. It is on an exponential backoff maxing out at 20 seconds.
 
 
 
