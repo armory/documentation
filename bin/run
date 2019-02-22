@@ -2,12 +2,16 @@
 
 set -x
 
-rm -rf _site/
-
 docker build -t armory/documentation .
+
+# make sure to grab the gemlock from the built container
+docker create -ti --name armory_docs_container armory/documentation
+docker cp armory_docs_container:/srv/jekyll/Gemfile.lock Gemfile.lock
+docker rm -fv armory_docs_container
+
 
 docker run --rm -ti \
   --name=documentation \
-  -p 4000:4000 -p 5678:5678 \
+  -p 4000:4000 -p 5678:5678 -p 35729:35729 \
   -v "$(pwd):/srv/jekyll" armory/documentation \
   jekyll serve --watch --incremental --livereload --reload_port 5678
