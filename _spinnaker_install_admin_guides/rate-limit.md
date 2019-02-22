@@ -34,14 +34,14 @@ There are several things you can do to help reduce the effects of throttling:
 
 ## Fine Grained Rate Limits
 
-Spinnaker queries your cloud provider (AWS, GCP, Azure, Kubernetes, etc) frequently to understand the state of your existing infrastructure and current deployments.  However, by doing so you might run into rate limits imposed by the cloud provider. To help avoid this Spinnaker provides controls to limit the number of requests it generates. The unit used for these controls is "requests per second".
+Spinnaker queries your cloud provider (AWS, GCP, Azure, Kubernetes, etc) frequently to understand the state of your existing infrastructure and current deployments.  However, by doing so you might run into rate limits imposed by the cloud provider. To help avoid this Spinnaker provides controls to limit the number of requests it generates. The unit used for these controls is "requests per second" (a double float value). Global defaults are `10.0`.
 
 Below is an example configuration for global rate limits for all services that you would place in `~/.hal/<deployment-name>/profiles/clouddriver-local.yml`:
 
 ```yml
 serviceLimits:
   defaults:
-    rateLimit: 20   # ms between each call
+    rateLimit: 10.0   # default max req/second
 ```
 
 If you have multiple cloud providers, you can limit each one differently:
@@ -50,7 +50,7 @@ If you have multiple cloud providers, you can limit each one differently:
 serviceLimits:
   cloudProviderOverrides:
     aws:
-      rateLimit: 15   # ms between each call
+      rateLimit: 10.0   # default max req/second
 ```
 
 You can provide account specific overrides as well in case you have significantly more resources in one account while others have less:
@@ -59,9 +59,9 @@ You can provide account specific overrides as well in case you have significantl
 serviceLimits:
   accountOverrides:
     my-test:
-      rateLimit: 5   # ms between each call
+      rateLimit: 10.0   # default max req/second
     my-prod:
-      rateLimit: 100   # ms between each call
+      rateLimit: 10.0   # default max req/second
 ```
 
 And finally, you can have more fine-grained control for particular AWS endpoints that might have a different rate limits. This list was generated from the [AmazonClientProvider.java@4179f7](https://github.com/spinnaker/clouddriver/blob/4179f7fd8a5cd2cb64f238bd61b042bdca6193dd/clouddriver-aws/src/main/groovy/com/netflix/spinnaker/clouddriver/aws/security/AmazonClientProvider.java) on 02/22/2019 by filtering for `proxyHandlerBuilder.getProxyHandler(*.class` classes.
@@ -71,61 +71,61 @@ serviceLimits:
   implementationLimits:
     AWSApplicationAutoScaling:
       defaults:
-        rateLimit: 200   # ms between each call
+        rateLimit: 10.0   # default max req/second
     AWSLambda:
       defaults:
-        rateLimit: 200   # ms between each call
+        rateLimit: 10.0   # default max req/second
     AWSLambdaAsync:
       defaults:
-        rateLimit: 200   # ms between each call
+        rateLimit: 10.0   # default max req/second
     AWSSecretsManager:
       defaults:
-        rateLimit: 200   # ms between each call
+        rateLimit: 10.0   # default max req/second
     AWSShield:
       defaults:
-        rateLimit: 200   # ms between each call
+        rateLimit: 10.0   # default max req/second
     AmazonAutoScaling:
       defaults:
-        rateLimit: 200   # ms between each call
+        rateLimit: 10.0   # default max req/second
     AmazonCloudFormation:
       defaults:
-        rateLimit: 200   # ms between each call
+        rateLimit: 10.0   # default max req/second
     AmazonCloudWatch:
       defaults:
-        rateLimit: 200   # ms between each call
+        rateLimit: 10.0   # default max req/second
     AmazonEC2:
       defaults:
-        rateLimit: 200   # ms between each call
+        rateLimit: 10.0   # default max req/second
     AmazonECR:
       defaults:
-        rateLimit: 200   # ms between each call
+        rateLimit: 10.0   # default max req/second
     AmazonECS:
       defaults:
-        rateLimit: 200   # ms between each call
+        rateLimit: 10.0   # default max req/second
     AmazonElasticLoadBalancing:
       defaults:
-        rateLimit: 200   # ms between each call
+        rateLimit: 10.0   # default max req/second
     AmazonIdentityManagement:
       defaults:
-        rateLimit: 200   # ms between each call
+        rateLimit: 10.0   # default max req/second
     AmazonIdentityManagement:
       defaults:
-        rateLimit: 200   # ms between each call
+        rateLimit: 10.0   # default max req/second
     AmazonRoute53:
       defaults:
-        rateLimit: 200   # ms between each call
+        rateLimit: 10.0   # default max req/second
     AmazonS3:
       defaults:
-        rateLimit: 200   # ms between each call
+        rateLimit: 10.0   # default max req/second
     AmazonSNS:
       defaults:
-        rateLimit: 200   # ms between each call
+        rateLimit: 10.0   # default max req/second
     AmazonSQS:
       defaults:
-        rateLimit: 200   # ms between each call
+        rateLimit: 10.0   # default max req/second
     AmazonSimpleWorkflow:
       defaults:
-        rateLimit: 200   # ms between each call
+        rateLimit: 10.0   # default max req/second
 ```
 
 Using these rate limits will help you avoid hitting the rate limits and potentially make Spinnaker more responsive as the cloud provider clients won't have to implement back-off strategy to continue to query the infrastructure. 
@@ -142,15 +142,15 @@ The Armory Spinnaker distribution comes with the following default service limit
 serviceLimits:
   cloudProviderOverrides:
     aws:
-      rateLimit: 15   # ms between each call
+      rateLimit: 10.0   # default max req/second
 
   implementationLimits:
     AmazonAutoScaling:
       defaults:
-        rateLimit: 3   # ms between each call
+        rateLimit: 10.0   # default max req/second
     AmazonElasticLoadBalancing:
       defaults:
-        rateLimit: 5   # ms between each call
+        rateLimit: 10.0   # default max req/second
 ```
 
 If you require a higher rate limit on these APIs then you will need to overwrite them directly. Overwriting the global service default is not sufficient.
@@ -163,7 +163,7 @@ You can set the number of retries per request with the following setting:
 ```yml
 aws:
   client:
-    maxErrorRetry: 4
+    maxErrorRetry: 3 # default
 ```
 This is the number of retries before failing the request. It is on an exponential backoff maxing out at 20 seconds.
 
@@ -176,7 +176,6 @@ If Fiat is configured to poll Github or Google, you may end up seeing rate limit
 
 ```
 GithubTeamsUserRolesProvider : [] HTTP 403 Forbidden. Rate limit info: X-RateLimit-Limit
--- or --
 GoogleDirectoryUserRolesProvider : [] Failed to fetch groups for user x: Rate Limit Exceeded
 ```
 
