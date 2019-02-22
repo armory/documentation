@@ -57,7 +57,7 @@ We'll want to do local configuration changes on 1 instance only, the polling ins
 
 - Scale down Spinnaker to be just 1 instance.  
 Click on `nonpolling` server group and go to `Server Group Actions` > `Resize`
-![gif](https://cl.ly/003B1D0b0P0C/Screen%20Recording%202017-09-05%20at%2006.06%20PM.gif)
+![gif](images/Screen Recording 2017-09-05 at 06.06 PM.gif)
 
 
 - Change the Auto Scaling Group Healthcheck from `ELB` to `EC2`. This will allow you to restart Armory Spinnaker without the ASG terminating the instance.  

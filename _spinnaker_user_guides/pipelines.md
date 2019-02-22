@@ -56,23 +56,23 @@ Pipelines are represented as JSON behind the scenes. The JSON is interpreted and
 
 1. Click 'Configure' on your pipeline:
 
-![](https://cl.ly/1x281l0v0X27/download/Image%202017-05-04%20at%204.23.33%20PM.png)
+![](images/Image 2017-05-04 at 4.23.33 PM.png)
 
 2. Press the 'Pipeline Actions' button in the upper right to display a dropdown menu.
 
-![](https://cl.ly/191c1W0h0E2r/download/Image%202017-05-04%20at%204.30.11%20PM.png)
+![](images/Image 2017-05-04 at 4.30.11 PM.png)
 
 There are two JSON related options on this dropdown menu:
 
 a. If you select 'Edit as JSON' then you should see something like:
 
-![](https://cl.ly/15240u372F2T/download/Image%202017-05-04%20at%204.32.03%20PM.png)
+![](images/Image 2017-05-04 at 4.32.03 PM.png)
 
 From this screen you can edit the JSON directly. **Remember to always save your changes**, so they will be used in the next execution of your pipeline.
 
 b. If you select 'Show Revision History' then you should see something like:
 
-![](https://cl.ly/3K3O1C46410Q/download/Image%202017-05-04%20at%204.35.39%20PM.png)
+![](images/Image 2017-05-04 at 4.35.39 PM.png)
 
 You can select different revisions using the dropdown menu labeled 'Revision' in the top left. You can compare it to different versions using the 'compare to' dropdown menu in the upper right. 
 

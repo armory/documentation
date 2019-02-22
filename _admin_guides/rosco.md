@@ -41,10 +41,10 @@ In some cases you'll want to bake in multiple multiple regions but in order to d
 When selecting a **Base OS**, the default template will be used. The default is **Base OS** is `Ubuntu 12.04/14.0`, which uses `aws-ebs.json` and `install_package.sh`. See [Setting Up Base OS Defaults for Baking](#setting-up-base-o-s-defaults-for-baking) on how to change the defaults.
 
 You can also specify a template in the bake stage.  The example below shows the template being set to `mycompany-ebs.json` using the **Template File Name** setting for the stage. Spinnaker allows variables so you can even make each template dynamic.  
-![bake configuration](https://cl.ly/1g1M192j3M2D/Image%202017-08-07%20at%2012.45.20%20PM.png)
+![bake configuration](images/Image 2017-08-07 at 12.45.20 PM.png)
 
 Example of baking `armory-spinnaker` in CentOS (without defining the correct Base OS):
-![img](https://cl.ly/3h2K0p0z1W06/Screen%20Shot%202017-09-07%20at%205.40.01%20PM.png)
+![img](images/Screen Shot 2017-09-07 at 5.40.01 PM.png)
 
 
 

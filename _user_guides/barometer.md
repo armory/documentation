@@ -26,7 +26,7 @@ Barometer uses real-time data sources to validate that a canary is good or bad. 
 
 If canarying is enabled for your instance, you should be able to see a stage for canarying:
 
-![Canary Stage](https://cl.ly/2H0T1P1j2J15/Image%202017-08-07%20at%2010.57.58%20AM.png)
+![Canary Stage](images/Image 2017-08-07 at 10.57.58 AM.png)
 
 The canary stage starts by deploying 2 new server-groups: a `baseline` and `canary`.   The `baseline` server group is deployed with the AMI that was most recently deployed for the chosen template server-group.  The `canary` server group is deployed with release candidate AMI which is pull from a previous `Bake` or `Find Image` stage in the pipeline.  Once both server groups are up and "in service" the analysis will be begin.  The analysis is based on additional configuration below.
 
@@ -34,7 +34,7 @@ Once the canary stage has completed, _both_ the `canary` and `baseline` server g
 
 ### Deployment
 
-![Canary Deployment](https://cl.ly/1J1H0W2d2R15/Image%202017-08-07%20at%2011.01.19%20AM.png)
+![Canary Deployment](images/Image 2017-08-07 at 11.01.19 AM.png)
 
 `Canary Lifetime` - The total time period that the canary & baseline server will live and continue analysis before moving onto the next stage.
 
@@ -50,7 +50,7 @@ Once the canary stage has completed, _both_ the `canary` and `baseline` server g
 This configuration determines how the canary will be deployed.  This looks similar to a server group deployment. The difference is that it is managed by Canary stage and has a limited lifespan as defined by `Canary Lifetime` above.  In most cases you'll want to put the canary behind the existing production load balancer which will drive a small percentage of traffic to your new canary and baseline server group.  You can specify a different load balancer but you'll be responsible for creating a different mechanism for traffic shaping.  
 
 
-![Canary Pair Configuration](https://cl.ly/3b2l1N1a0n3Q/Image%202017-08-07%20at%2011.39.16%20AM.png)
+![Canary Pair Configuration](images/Image 2017-08-07 at 11.39.16 AM.png)
 
 ## DataDog
 
@@ -62,7 +62,7 @@ The metrics stored in DataDog are compared between the canary and baseline using
 
 Consider this example:
 
-![DataDog Metrics](https://cl.ly/3T2Q0n2m2i2U/Image%202017-08-24%20at%201.59.03%20PM.png)
+![DataDog Metrics](images/Image 2017-08-24 at 1.59.03 PM.png)
 
 There are two metrics being considered.
 - `system.net.bytes_sent` must be within `1.0` standard deviation of the baseline.
@@ -79,20 +79,20 @@ You can use pre-existing monitors to fail the canary regardless of how it compar
 #### Enabling the monitor
 
 In your DataDog monitor you'll need to aggregate the metric by autoscaling group:
-![ASG Metrics](https://cl.ly/0s0s2N382x02/Image%202017-08-07%20at%2012.04.54%20PM.png)
+![ASG Metrics](images/Image 2017-08-07 at 12.04.54 PM.png)
 
 You'll also need to include the autoscaling group name in the monitor message by checking the box `Include Triggering tags in notification title`:
 
 
-![include asg](https://cl.ly/3L42191Z0o03/Image%202017-08-07%20at%201.23.30%20PM.png)
+![include asg](images/Image 2017-08-07 at 1.23.30 PM.png)
 
 
 You can enable/disable this behavior by checking the box below.
-![Disable monitor](https://cl.ly/2g1T1b0q2I2S/Image%202017-08-07%20at%2011.53.07%20AM.png)
+![Disable monitor](images/Image 2017-08-07 at 11.53.07 AM.png)
 
 **Note:** If you aren't able to aggregate by autoscaling group this means either you're not logging through the DataDog agent that is usually placed on the instance or you need to enable `Auto Scaling` and `EC2` integrations from the DataDog integrations screen.
 
-![enabling ec2 and autoscaling](https://cl.ly/0z1h27390b3v/Image%202017-08-07%20at%2012.10.12%20PM.png)
+![enabling ec2 and autoscaling](images/Image 2017-08-07 at 12.10.12 PM.png)
 
 ## Elastic Search
 
@@ -102,7 +102,7 @@ Barometer has the ability to run queries and compare the number of hits to const
 
 Consider this example:
 
-![ElasticSearch configuration](https://cl.ly/2Z051c2n2P0o/Image%202017-08-23%20at%203.16.01%20PM.png)
+![ElasticSearch configuration](images/Image 2017-08-23 at 3.16.01 PM.png)
 
 There are two checks being done here:
 - The first check runs a single query. Specifically, it looks for a log line that reads, "Server Started." By setting `Min` to `1`, we are requiring that log line to appear at least once. Also note that this sort of check should be using in conjunction with the 'Warm-up period` settings to ensure that the application starts before the analysis begins.
@@ -115,20 +115,20 @@ Once a canary stage has been configured you can run the pipeline. You can select
 
 Here is an example of a successful canary:
 
-![successful canary](https://cl.ly/2g2a1B2i4745/Image%202017-08-24%20at%202.05.41%20PM.png)
+![successful canary](images/Image 2017-08-24 at 2.05.41 PM.png)
 
 If you select `History` you can expect to see something like:
 
-![successful canary history](https://cl.ly/2Y2O3i0C193R/Image%202017-08-24%20at%202.07.18%20PM.png)
+![successful canary history](images/Image 2017-08-24 at 2.07.18 PM.png)
 
 Where `Type` represents whether or not the check was against a DataDog metric, a DataDog monitor, or an ElasticSearch query.
 
 Alternatively, here is an example of a failed canary:
 
-![failed canary](https://cl.ly/2Z0F0e2k3r0U/Image%202017-08-24%20at%202.09.38%20PM.png)
+![failed canary](images/Image 2017-08-24 at 2.09.38 PM.png)
 
 We can see by the message that `system.net.bytes_sent` metric on the canary was `46.36` deviations away from the baseline.
 
 Clicking on `History` for the failure also gives more details on the results:
 
-![failed canary history](https://cl.ly/3k0U3O2c363d/Image%202017-08-24%20at%202.15.26%20PM.png)
+![failed canary history](images/Image 2017-08-24 at 2.15.26 PM.png)

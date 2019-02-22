@@ -50,11 +50,11 @@ oneClick:
 
 With the above config changes, once you redeploy Armory spinnaker, you should see a navbar on top that looks like this:
 
-![navbar](http://f.cl.ly/items/0P0u2v2J3l3f103Z2N0e/navbar.png)
+![navbar](images/navbar.png)
 
 Clicking on the `Create App` button on the top right corner should bring up a modal that will allow you to select a template, enter an application name to provision the app:
 
-![modal](http://f.cl.ly/items/1D3D0y2y1Z3C0w29253L/1-click-modal.png)
+![modal](images/1-click-modal.png)
 
 By default, the 1-Click App Creation performs the following tasks:
 - `createPipeline` : This step creates a Deploy pipeline in spinnaker for the new app. If the spinnaker application doesn't exist, it creates the application first before creating the pipeline. This pipeline is copied over from a template pipeline that is already in spinnaker and defaults to `oneclickgotemplate` app in spinnker. The default app to copy from can be overwritten in the configs (explained below)

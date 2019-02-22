@@ -42,7 +42,7 @@ func main() {
       newFile, _ := os.Create(newFilePath)
 
       newLine := ""
-      for _, line := range lines {
+      for i, line := range lines {
         newLine = line
 
         if markdownImageUrlMatch.MatchString(line) {
@@ -56,7 +56,10 @@ func main() {
           }
         }
 
-        _, _ = newFile.WriteString(newLine + "\n")
+        // don't add an extra new line at the end of the file
+        if i < len(lines)-1 {
+          _, _ = newFile.WriteString(newLine + "\n")
+        }
       }
 
       _ = os.Rename(newFilePath, filePath)

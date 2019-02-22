@@ -22,7 +22,7 @@ GitHub (or BitBucket) webhooks are sent off when either the Templates or the Mod
 
 - **Modules**: These are templates that define a Stage/Task in the pipeline. They are kept in a single GitHub repo that is configurable when the dinghy service starts. eg:
 
-![](http://f.cl.ly/items/3R0B3W3o2l3h2K0E3e1G/dinghy-template-repo.png)
+![](images/dinghy-template-repo.png)
 
  They are JSON files with replacable values in them. e.g., a module that defines a wait stage in a pipeline might look like:
 ```
@@ -36,7 +36,7 @@ GitHub (or BitBucket) webhooks are sent off when either the Templates or the Mod
 ```
 - **Pipeline definitions**: These define a pipeline for an application in a file called `dinghyfile`. The `dinghyfile` usually resides at the root level of the application repo. eg:
 
-![](http://f.cl.ly/items/3t3z0Q2Z040f0i0V2P3O/dinghyfile.png)
+![](images/dinghyfile.png)
 
 You can compose stage/task templates to make a full definition. e.g., a Pipeline definition that has a single wait stage might look like:
 ```
@@ -127,7 +127,7 @@ Optionally, you can include a default parameter: `{% raw %}{{ var "waitName" ?: 
 
 Let us create a more realistic pipeline using templates. One that would look like this:
 
-![](http://f.cl.ly/items/1z3z3Z2w3j2w35171U39/Screen%20Shot%202018-03-12%20at%2011.18.38%20AM.png)
+![](images/Screen Shot 2018-03-12 at 11.18.38 AM.png)
 
 You would use the following JSON to create such. Note that any of the stages could have come from an imported module, but we show the full JSON here for readability:
 
@@ -258,7 +258,7 @@ This module inherits two stages and overrides variables within them. The `wait.s
 
 Note how the `requisiteStageRefIds` is overwritten while calling the module so that the deploy stage _depends on_ the wait stage. This pipeline would look like this in the spinnaker UI:
 
-![](http://f.cl.ly/items/0p353C431U1G2g2H2N13/Screen_Shot_2018-03-26_at_5_06_25_PM.png)
+![](images/Screen_Shot_2018-03-26_at_5_06_25_PM.png)
 
 ## Deleting stale pipelines
 

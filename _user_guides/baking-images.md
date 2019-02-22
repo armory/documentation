@@ -137,7 +137,7 @@ It is common practice to use a base image throughout your team or organization. 
 
 If you need to add repositories on a per bake basis, you can use the 'Extended Attributes' within the 'Advanced Options' section. You can add a key/value pair where the key is labeled 'repository' and the value is a space separated list of repository URLs. For example:
 
-![](https://cl.ly/3Z1A2w171n0s/Image%202017-04-17%20at%2010.41.20%20AM.png)
+![](images/Image 2017-04-17 at 10.41.20 AM.png)
 
 This will add Armory's bintray debian repository to the bake.
 

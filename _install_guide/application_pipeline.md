@@ -68,7 +68,7 @@ Click the add stage button in the visual representations section.
 
 #### Step 9: Select Bake from the different types category.
 
-![](https://cl.ly/043q3u1K1a2V/Image%202017-09-05%20at%204.47.51%20PM.png)
+![](images/Image 2017-09-05 at 4.47.51 PM.png)
 
 #### Step 10: Select the region you want to bake in.
 Enter the name of the package that was archived by the Jenkins job.

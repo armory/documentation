@@ -18,16 +18,16 @@ This guide should include:
 
 Using Spinnaker's orchestration engine, we can quickly create pipelines that exercise the integration between Spinnaker and your cloud environment before deploying any upgrades to Spinnaker.  We'll walk through creating a master pipeline that kicks off sub-pipelines asynchronously and waits for them complete.
 
-![integration test pipeline](https://cl.ly/0E2A470S0a36/Image%202018-04-05%20at%209.25.12%20PM.png)
+![integration test pipeline](images/Image 2018-04-05 at 9.25.12 PM.png)
 
 For each stage in the pipeline we're just calling other pipelines that contain the real functionality. This essentially makes the master pipeline your "test suite runner" and reports failures.
 
-![](https://cl.ly/3T2m3g1x091S/Image%202018-04-06%20at%2011.32.51%20AM.png)
+![](images/Image 2018-04-06 at 11.32.51 AM.png)
 
 ### Where & When Should My Tests Run
 The tests should run on a [pre-prod or staging environment](https://docs.armory.io/admin-guides/preprod_environment/) and should be integrated as part of your [Spinnaker deploy Spinnaker](https://docs.armory.io/install-guide/spinnaker-deploy-spinnaker/) pipeline.  We'll use a Jenkins stage to execute the integration pipeline on the pre-prod or dev environment.
 
-![pipeline image](https://cl.ly/3h1Y1I301v0f/Image%202018-04-05%20at%209.45.15%20PM.png)
+![pipeline image](images/Image 2018-04-05 at 9.45.15 PM.png)
 
 # Types of Test Pipelines
 These pipelines will be based on your usage of Spinnaker and should be similar to your production pipelines.  You won't need to deploy into your production accounts to validate Spinnaker functionality but you should deploy into multiple accounts from your pre-prod/dev environments. Below are some of the potential pipeline/stages you can consider.
