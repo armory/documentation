@@ -85,6 +85,11 @@ docker run --name armory-halyard --rm \
     -it docker.io/armory/halyard-armory:{{ site.data.versions.halyard-armory-version }}
 ```
 
+> Note: If you're installing to Google Cloud, you'll want to change the 
+> ".aws" mapping above to your Google credentials json file, and then
+> you'll need to set the environment variable GOOGLE_APPLICATION_CREDENTIALS
+> within the shell so the installer can find it.
+
 Once Armory Halyard is running, you can interact with it by opening a separate
 Terminal and running:
 
