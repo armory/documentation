@@ -163,7 +163,7 @@ Or remotely - if you can reach the service - by issuing:
 hal deploy apply --daemon-endpoint https://HALYARD_HOSTNAME --deployment DEPLOYMENT_NAME
 ```
 
-Finally, you keep the option of deploying Spinnaker from another remote machine with a [local Halyard installation](/spinnaker/install/#installation-1) if your network access allows it.
+Finally, you still have the option of deploying Spinnaker from another remote machine with a [local Halyard installation](/spinnaker/install/#installation-1) if your network access allows it.
 
 # Usage
 To make configuration changes to Spinnaker:
