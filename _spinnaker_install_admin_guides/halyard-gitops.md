@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Deploying Spinnaker gitops with Halyard
-order: 150
+title: Spinnaker Gitops with Halyard
+order: 152
 ---
-Spinnaker allows teams to deploy applications automatically. What about Spinnaker itself? This article describes how to set up Halyard to automatically deploy Spinnaker.
+This article describes how to set up Halyard to automate the deployment of Spinnaker and manage its configuration in source control.
 
 <div class="alpha-warning">
   This feature is in alpha stage with Armory Spinnaker. <a href="https://www.armory.io/contact">Get in touch</a> and give us feedback!
@@ -115,11 +115,10 @@ We can then expose Halyard. Refer to [Kubernetes](https://kubernetes.io/docs/ref
 kubectl -n YOUR_NAMESPACE expose deployment halyard-armory --type=LoadBalancer --port=80
 ```
 
-
 Don't forget to:
 - Refer to your cloud provider documentation to create a secure endpoint.
 - Secure Halyard's endpoints by limiting IP sources or using security groups of your cloud provider.
-- Add a DNS entry for Halyard
+- Add a DNS record for Halyard
 
 # Deploy Spinnaker automatically
 ## Option 1: Direct webhook
@@ -131,25 +130,25 @@ In Github, navigate to the settings of the repository containing your Spinnaker 
 
 ![Github Webhook](/assets/images/halyard-webhook-github.png)
 
-Note: You'll need to make sure that the service is exposed externally and reachable by Github. You can restrict which IP are reachable only by [Github servers](https://help.github.com/en/articles/about-githubs-ip-addresses).
+Note: You'll need to make sure that the service is exposed externally and reachable by [Github servers](https://help.github.com/en/articles/about-githubs-ip-addresses).
 
 ## Option 2: Use CI
 You may already have a CI tool configured with Github that validates pull requests and reacts to merges.
 
 To validate, run a simple script - replacing `DEPLOYMENT_NAME` with the value specified in `halyard.yml` (staging and prod in the examples above):
 ```
-curl -XPOST https://halyard.spinnaker.acmecorp.com/v1/config/deployments/DEPLOYMENT_NAME/generate
+curl -XPOST https://HALYARD_HOSTNAME/v1/config/deployments/DEPLOYMENT_NAME/generate
 ```
 
 To deploy:
 ```
-curl -XPOST https://halyard.spinnaker.acmecorp.com/v1/config/deployments/DEPLOYMENT_NAME/deploy
+curl -XPOST https://HALYARD_HOSTNAME/v1/config/deployments/DEPLOYMENT_NAME/deploy
 ```
 
 Note that you'll need to determine the `DEPLOYMENT_NAME` from the CI's job trigger if you use the same repository for multiple Spinnaker configurations.
 
 ## Option 3: Use Spinnaker
-A third option is to use Spinnaker itself to deploy configuration changes. Your CI tool keep validating changes as above but deployments occur via a Spinnaker pipeline triggered by Github artifacts.
+A third option is to use Spinnaker itself to deploy configuration changes. Your CI tool keeps validating changes as above but deployments occur via a Spinnaker pipeline triggered by Github artifacts adding visibility into what was deployed.
 
 
 ## Forcing redeploy
@@ -166,7 +165,7 @@ hal deploy apply --daemon-endpoint https://HALYARD_HOSTNAME --deployment DEPLOYM
 
 
 # Usage
-When an engineer wants to add a new account:
+To make changes to Spinnaker:
 
 ```
 git checkout git@github.com:acmecorp/spinnaker-configs.git
@@ -175,7 +174,7 @@ git checkout -b new-accounts
 # Make the change to the config
 ...
 # Push the branch and make a pull request
+...
 ```
 
-You can control who can make or apply changes through your current organization authorization policies and ensure that any configuration change
-is auditable, reviewed, and reversible.
+Changes are controlled via your current organization authorization policies ensuring any configuration change is auditable, reviewed, and reversible.
