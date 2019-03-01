@@ -152,22 +152,22 @@ A third option is to use Spinnaker itself to deploy configuration changes. Your 
 
 
 ## Forcing redeploy
-If webhooks or CI jobs fail, you can still force a redeployment by going to the Halyard pod and issuing:
-```
+If webhooks or CI jobs fail, you can still force a redeployment by going into the Halyard pod and issuing:
+```bash
 hal deploy apply --deployment DEPLOYMENT_NAME
 ```
 
 Or remotely - if you can reach the service - by issuing:
 
-```
+```bash
 hal deploy apply --daemon-endpoint https://HALYARD_HOSTNAME --deployment DEPLOYMENT_NAME
 ```
 
 
 # Usage
-To make changes to Spinnaker:
+To make configuration changes to Spinnaker:
 
-```
+```bash
 git checkout git@github.com:acmecorp/spinnaker-configs.git
 cd spinnaker-configs
 git checkout -b new-accounts
