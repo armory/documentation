@@ -13,7 +13,7 @@ This guide should tell you:
 
 When you first log in to Spinnaker, the landing page should look like this:
 
-![](https://d2ddoduugvun08.cloudfront.net/items/2z1u24101u2v463O3u1M/Image%202017-03-24%20at%203.15.34%20PM.png)
+![](images/Image 2017-03-24 at 3.15.34 PM.png)
 
 The navigation bar at the top allows you to access Projects, Applications, and Infrastructure.
 The search bar allows you to search through your Infrastructure. 
@@ -32,11 +32,11 @@ Remember that Spinnaker considers an application to be anything you would put in
 
 **Step 2:** Click the “Actions” button and select from the drop-down menu “Create Application”
 
-![](https://d2ddoduugvun08.cloudfront.net/items/0H383p1h120p1D2n2y19/Image%202017-03-24%20at%203.20.41%20PM.png)
+![](images/Image 2017-03-24 at 3.20.41 PM.png)
 
 **Step 3:** Fill out the pop-up form with desired user definitions.
 
-![](https://d2ddoduugvun08.cloudfront.net/items/2B3k3E2o3h442H0x2U3S/Image%202017-03-24%20at%203.22.30%20PM.png)
+![](images/Image 2017-03-24 at 3.22.30 PM.png)
 
 Notes: 
 
@@ -46,7 +46,7 @@ Notes:
 
 **Step 4:** After you fill out the form you should see this:
 
-![](https://d2ddoduugvun08.cloudfront.net/items/2T1h1b1c052n2x1g1R1y/Image%202017-03-24%20at%203.26.40%20PM.png)
+![](images/Image 2017-03-24 at 3.26.40 PM.png)
 
 **Step 5:** If you wish to modify the settings for the application, click on “Config” for configurations.
 
@@ -57,4 +57,4 @@ Note that by now you should have created an application, but as you have not cre
 
 Go to your application, click on “Config” and scroll all the way down. There will be a prompt to confirm if you would like to delete your application. 
 
-![](https://d2ddoduugvun08.cloudfront.net/items/2v0j1E0A1p06461K0A1c/Image%202017-03-24%20at%203.28.14%20PM.png)
+![](images/Image 2017-03-24 at 3.28.14 PM.png)

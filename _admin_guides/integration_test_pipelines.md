@@ -35,7 +35,7 @@ These pipelines will be based on your usage of Spinnaker and should be similar t
 * **Bake and Deploy** - In this pipeline you'll want to test your Rosco and Packer template configuration to make sure bakes happen properly as well as feed the resulting AMI to a deploy stage. The application yoo choose to deploy should be a simple application.  We use our [Hello Deploy application](https://github.com/armory-io/armory-hello-deploy) which has deb/rpm packaging as well as a docker image for your containerized deployments.
 >Note: If you're using multiple regions make sure to test this functionality as it may expose networking issues and invalid templates.
 
-![](https://d2ddoduugvun08.cloudfront.net/items/1G0x022Q3I2c2Y1F173Z/Image%202018-04-06%20at%2011.49.13%20AM.png?X-CloudApp-Visitor-Id=2686178)
+![](images/Image 2018-04-06 at 11.49.13 AM.png)
 
 * **Kubernetes Deploy** - If you're using Kubernetes you'll want to create a pipeline with a stage that deploys into Kubernetes. If you're using other stages that scale/modify clusters such as `resize a server group`, `clone server group`,`scale down cluster`, make sure to include that as part of your test pipeline.
 

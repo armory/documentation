@@ -20,7 +20,7 @@ Step 1: After you select your Application, click on the Load Balancers tab.
 
 Step 2: Click the “Create Load Balancer” button. 
 
-![](https://d2ddoduugvun08.cloudfront.net/items/3J0z36211O2h3T0e2Q14/Image%202017-03-24%20at%204.50.37%20PM.png)
+![](images/Image 2017-03-24 at 4.50.37 PM.png)
 
 Step 3: The Stack and Detail should be kept in mind when creating the pipeline because the pipeline’s deployment of server group should be using the same Stack and Detail. 
 
@@ -33,4 +33,4 @@ Step 1: Go to your Load Balancers in your Applications.
 
 Step 2: Select a Load Balancer, then to the right a column with the Load Balancer’s details should appear. Select the drop down menu and press “Delete”. 
 
-![](https://d2ddoduugvun08.cloudfront.net/items/461H0a3H1F1G0L1s2538/Image%202017-03-24%20at%204.56.31%20PM.png)
+![](images/Image 2017-03-24 at 4.56.31 PM.png)
