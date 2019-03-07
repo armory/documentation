@@ -40,7 +40,7 @@ In this example we will bake an image containing a Debian package created by a J
 
 First let's look at the the Jenkins job that builds our package.
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/2c3e2Z0d1u1t1M1E1S3a/Image%202017-03-29%20at%2012.43.31%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/2c3e2Z0d1u1t1M1E1S3a/Image%202017-03-29%20at%2012.43.31%20PM.png)
 As you can see, the last run archived a package named `armory-hello-deploy_0.5.0-h5.c4baff4_all.deb`
 
 
@@ -52,11 +52,11 @@ Next I add a bake stage (add stage -> Type: Bake)
 
 Select the `us-west-2` region. For the Package field, I enter the base name of my package. In my case, the entire package filename is `armory-hello-deploy_0.5.0-h5.c4baff4_all.deb` so I will input `armory-hello-deploy`. Also, I know that my package is created for Ubuntu 14, so I make sure to select the 'trusty (v14.04)' option.
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/0F0N3R3Y1V0o2e0Z2X31/Image%202017-03-29%20at%201.35.13%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/0F0N3R3Y1V0o2e0Z2X31/Image%202017-03-29%20at%201.35.13%20PM.png)
 
 like:
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/2Z3g3D320P1P2A29423M/Image%202017-03-29%20at%201.45.09%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/2Z3g3D320P1P2A29423M/Image%202017-03-29%20at%201.45.09%20PM.png)
 
 At this point if I want to see more details about my bake, I can click the 'View Bakery Details' box. A new window will open up with the bakery logs. In my case, the first few lines look like:
 
@@ -87,7 +87,7 @@ The thing I wanted to point out here is that the correct version of the package 
 
 After the bake is successful, I see:
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/3N3U1K1t1P1V3P301L45/Image%202017-03-29%20at%201.49.44%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/3N3U1K1t1P1V3P301L45/Image%202017-03-29%20at%201.49.44%20PM.png)
 
 
 Notice that the AMI name and ID are shared in the lower right's blue box - in this example it is "armory-hello-deploy-all-20170329204459-trusty (ami-c78410a7)".
@@ -95,7 +95,7 @@ Notice that the AMI name and ID are shared in the lower right's blue box - in th
 
 If I press 'Start Manual Execution' again, since the package version hasn't changed, it will reuse the same image rather than rebaking. The screen for that looks like:
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/0a2v2n3Z0v2D0t2W0b41/Image%202017-03-29%20at%201.55.52%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/0a2v2n3Z0v2D0t2W0b41/Image%202017-03-29%20at%201.55.52%20PM.png)
 
 Notice the whole pipeline only ran for '00:00' and in the lower right Spinnaker says 'No changes detected; reused existing bake'
 
@@ -105,7 +105,7 @@ You can do additional things like use a specific base AMI, specify your baked AM
 
 If you would like to change the name in AWS of your AMI, you can do so by selecting the 'Show Advanced Options' checkbox in the Bake Stage Configuration. Continuing from our example above, when I see:
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/2J1Z2Q3O162v2e140q1b/Image%202017-03-29%20at%202.29.08%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/2J1Z2Q3O162v2e140q1b/Image%202017-03-29%20at%202.29.08%20PM.png)
 
 What do all of these fields mean? Great question!
 
@@ -114,15 +114,15 @@ What do all of these fields mean? Great question!
 
 If I were to instead input 'mycustomname' into the 'AMI Name' field, like:
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/14173t0S0C353V1P2J0j/Image%202017-03-29%20at%202.55.24%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/14173t0S0C353V1P2J0j/Image%202017-03-29%20at%202.55.24%20PM.png)
 
 After re-running the pipeline, I see that Spinnaker named the AMI `mycustomname-all-20170329220104-trusty`
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/1v3H120C2q3K1Z2I2J2t/Image%202017-03-29%20at%203.05.57%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/1v3H120C2q3K1Z2I2J2t/Image%202017-03-29%20at%203.05.57%20PM.png)
 
 Then I add 'mycustomsuffix' to the 'AMI Suffix' field:
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/3g0r2g201f0t2E3c1m3Z/Image%202017-03-29%20at%203.14.07%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/3g0r2g201f0t2E3c1m3Z/Image%202017-03-29%20at%203.14.07%20PM.png)
 
 Repeating the bake, I see that Spinnaker named the AMI `mycustomname-all-mycustomsuffix-trusty`
 
@@ -130,7 +130,7 @@ Repeating the bake, I see that Spinnaker named the AMI `mycustomname-all-mycusto
 
 Often you will want to specify a base image for use in your bake. In that case you will use the 'Base AMI' field, not to be confused with the 'Base Name' field. As an example, I have specified `ami-4d78c02d`:
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/1i3j2G0G3T1r311l1Y1A/Image%202017-03-29%20at%204.06.24%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/1i3j2G0G3T1r311l1Y1A/Image%202017-03-29%20at%204.06.24%20PM.png)
 
 
 In this situation, the base OS selection (ubuntu/trusty/windows) will be ignored.
@@ -191,7 +191,7 @@ This allows you to just specify `subscriberha` as the `package` in your bake sta
 ## Troubleshooting
 When you have a failing bake step and you do not know why, a good place to start is with the bakery log. You can find a link to the bakery log in the Detail of your bake step on the pipeline execution screen
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/2j1i1y2E0S2P022C1129/Image%202017-03-29%20at%201.59.18%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/2j1i1y2E0S2P022C1129/Image%202017-03-29%20at%201.59.18%20PM.png)
 
 Click the link that says 'View Bakery Details'. It can be helpful to track down the last command that the bakery executed.
 
