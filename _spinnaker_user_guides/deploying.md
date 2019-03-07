@@ -32,52 +32,81 @@ To start off, let's go through an example. This example continues from the examp
 
 ## Example
 
+### Creating a Load Balancer
 In this example we are going to deploy a simple web server that serves a page with details about its environment.
 
-First I go to the application screen to create a load balancer. Select the 'Load Balancers' tab:
+Go to the application screen to create a load balancer. Select the 'Load Balancers' tab:
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/3s143p0B2t2X2c3n2C0e/Image%202017-03-30%20at%2012.33.45%20PM.png)
+![](https://cl.ly/c2f9bc57a635/Image%202019-02-21%20at%2015.27.01.png)
 
-Press the '+' on the right to create a new load balancer. The screen that pops up looks like:
+Press the '+' on the right to create a new load balancer, you may need to select AWS > then select a Load Balance Type.
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/2L2C1X1F2W23470b1d3T/Image%202017-03-30%20at%2012.46.05%20PM.png)
+![](https://cl.ly/f3a62cc9b76b/Screen%20Shot%202019-02-21%20at%2015.32.49.png)
 
-I input 'example' into the 'Stack' field, set my [VPC Subnet Type]({% link _spinnaker_install_admin_guides/aws-subnets.md %}), use my pre-created security group, forward the correct ports and most importantly set my healthcheck. Finally, I press 'Create'.
+We'll enter 'prod' into the 'Stack' field because our environment contains dev, stage, and prod.
+
+Set the [VPC Subnet Type]({% link _spinnaker_install_admin_guides/aws-subnets.md %}), which maps to our pre-created security group, set the correct forwarding ports and most importantly set the healthcheck. 
+
+Now we can hit create.
+
+![](https://cl.ly/1305207ea5da/Image%202019-02-21%20at%2016.33.44.png)
 
 
-Now to create the Deploy stage in our pipeline,  I navigate to the configuration screen of the previously created pipeline from the [Baking guide]({% link _spinnaker_user_guides/baking-images.md %}).
+### Creating a Deploy Pipeline
 
-Select 'Add Stage' and select 'Deploy' from the 'Type' dropdown menu.
+Navigate to the configuration screen of the previously created pipeline from the [Baking guide]({% link _spinnaker_user_guides/baking-images.md %}).
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/3a1T3E0N0M2V292e3P3h/Image%202017-03-30%20at%2012.17.51%20PM.png)
+Select **Add Stage** and select **Deploy** from the *Type* dropdown.
 
-Now, I press the 'Add server group' option in the 'Deploy Configuration'
+Select **Add server group** option in the 'Deploy Configuration'
 
-You'll be given the option to copy a configuration from a currently running server group if a server group for this application already exists. In my case, I select 'None' and continue. Now I see:
+Select **AWS** option for the provider.
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/012G3Q0X0j3D3z19333e/Image%202017-03-30%20at%202.44.53%20PM.png)
+We'll be shown the option to copy a configuration from a currently running server group if a server group for this application already exists. In our case, let's select 'None' and continue.
 
-I select the same 'VPC Subnet' type as the ELB I just made. Remember to input 'example' to the 'Stack' field since that is what was used when creating the ELB.
+![](https://cl.ly/70a684ab01b9/ezgif.com-gif-maker%20(3).gif)
 
-For this example, I'm going to use a Red/Black (also known as Blue/Green) deployment strategy. Then I scroll down and select the load balancer that I just created from the list and select my pre-created security group.
+Let's select the same **VPC Subnet** type as the ELB we just made. Remember to input 'prod' to the **Stack** field since that is what was used when creating the ELB.
 
-Under the 'Instance Type' section, select 'Micro Utility'. I scroll all the way down to the 'Advanced Settings' section and change the 'Health Check Type' from 'EC2' to 'ELB'. I then erase the 'IAM Instance Profile' field. We do so in our example because we don't need access to any other AWS resources and the field may be filled in by default.
+For this example, we'll use a Red/Black (also known as Blue/Green) **deployment strategy**. Leave 3 **maximum server groups** alive for normal services allows you to manually rollback in case of emergency easily.
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/3i2e3T0u3w0o063T0p06/Image%202017-03-30%20at%203.15.18%20PM.png)
+Scroll down and select the **load balancer** that was just created from the list and select the pre-configured security group.
 
-Then press 'Add' to complete this step. After returning to the Deploy Stage Configuration screen, the Deploy Configuration section looks like:
+Note, the Firewall in this case will be for the EC2 instances.
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/3A3g3Y171E322V0g0w3m/Image%202017-03-30%20at%203.17.25%20PM.png)
+Under the **Instance Type** section, select 'Micro Utility'. 
 
-Finally, I press 'Save Changes' and select the 'Pipelines' tab to return to the Pipeline Executions screen.
+We'll set the capacity at 1 for now, but we can later set it up to do auto-scaling.
+
+![](https://cl.ly/087e0f38b096/Screen%20Shot%202019-02-21%20at%2016.44.29.png)
+
+
+Scroll all the way down to the **Advanced Settings** section and change the **Health Check Type** from 'EC2' to 'ELB', we'll later see green boxes for health instances, gray for EC2 healthcheck instances, or red for unhealthy instances.
+
+Select the keypair for the EC2 instances in **Key Name**.
+
+Erase the **IAM Instance Profile** field. In our example, we don't need access to any other AWS resources and the field may be filled in by default depending on your configurations.
+
+![](https://cl.ly/2b4dfdd82c26/Image%202019-02-21%20at%2016.51.16.png)
+
+
+Then click **Add** to complete this step. 
+
+We return back to the deploy stage, with it now looking like:
+
+Finally, we can click **Save Changes** and select the back arror to return to the Pipeline Executions screen.
+
+![](https://cl.ly/fd4cb31c19a0/Screen%20Shot%202019-02-21%20at%2016.58.56.png)
+
+
 
 I press 'Start Manual Execution' on my pipeline. This is what I see:
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/253w2f0b3h052v010u0E/Image%202017-03-30%20at%203.19.57%20PM.png)
+![](https://cl.ly/c6ace98946f8/ezgif.com-gif-maker%20(4).gif)
 
-As this deploy is happening, I can click on the 'Clusters' tab to see a new server group come up.
+When this pipeline finishes the Bake stage, we can see it's current stage/tasks status and we can also see it in the **Clusters** tab to see a new server group come up.
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/0s2m1Z14300J0N280b0q/Image%202017-03-30%20at%203.23.24%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/0s2m1Z14300J0N280b0q/Image%202017-03-30%20at%203.23.24%20PM.png)
 
 For more information about the details of this screen, check out the [application screen description guide]({% link _spinnaker_user_guides/application-screen.md %})
 
@@ -86,17 +115,17 @@ I can see here that a new server has indeed come up and is healthy. Healthy in t
 Now, to demonstrate the Blue/Green, I go back to the Pipeline Executions screen and press 'Start Manual Execution' again. Then I go back to the 'Clusters' tab to watch the execution process.
 
 First I see that a new server group named `v001` is being created. It doesn't have any instances in it yet:
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/1i26272z0v1L1w12393G/Image%202017-03-30%20at%203.46.44%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/1i26272z0v1L1w12393G/Image%202017-03-30%20at%203.46.44%20PM.png)
 
 After a few moments an instance is created and is initially 'unhealthy':
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/2q0y3z0I3d0E1X1G0c2Y/Image%202017-03-30%20at%203.47.16%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/2q0y3z0I3d0E1X1G0c2Y/Image%202017-03-30%20at%203.47.16%20PM.png)
 
 Once it passes its healthchecks and becomes healthy, it will visually indicate so by turning green. At this point Spinnaker will add the server group to the load balancer.
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/3V0x0a2C0V0d2t46423x/Image%202017-03-30%20at%203.50.01%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/3V0x0a2C0V0d2t46423x/Image%202017-03-30%20at%203.50.01%20PM.png)
 
 Immediately after that, the old server group is removed from the load balancer. Spinnaker will turn the old server group's instances blue. This means that they are disabled and no longer receiving traffic.
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/0T3m0K1J0x0i1B1q451J/Image%202017-03-30%20at%203.50.18%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/0T3m0K1J0x0i1B1q451J/Image%202017-03-30%20at%203.50.18%20PM.png)
 
 Because of how I configured my deploy stage, the old Blue server group will stick around until I either manually scale it down or destroy it. If you like, you can configure your deploy stage to automatically scale down the old server group after the new one is healthy.
 
@@ -113,7 +142,7 @@ Often when your deploy stage is timing out, it is because your instances are nev
 
 Select your red instance and hover your cursor over the red triangle next to the load balancer under the 'Status' section. This should display some helpful information for understanding why your instance is not deploying correctly.
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/3o1J0A292M1x2C1m2x2q/Image%202017-03-30%20at%203.29.02%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/3o1J0A292M1x2C1m2x2q/Image%202017-03-30%20at%203.29.02%20PM.png)
 
 ### Incorrect Healthcheck
 
@@ -134,7 +163,7 @@ Sometimes you may encounter an 'Unknown Error' message when executing your deplo
 
 This strategy will deploy a fresh server group and add it to the load balancer. The older server group will then be [disabled](#what-does-disabled-mean).
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/0u0N300q3L3U3q2b2w3d/Image%202017-03-30%20at%205.23.57%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/0u0N300q3L3U3q2b2w3d/Image%202017-03-30%20at%205.23.57%20PM.png)
 
 When you configure this stragey you can choose to scale down the old server group. You can always scale it back up if you need it for a rollback. Also, you can choose how many old server groups to leave in the cluster.
 
@@ -157,7 +186,7 @@ You can re-enable a server group by selecting it from the 'Cluster' screen, clic
 
 You can pass custom information to your deployed instances through the 'User Data' field under the 'Advanced Settings' section of the deploy stage configuration.
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/0g1I3d3A1y0h2A443h1y/Image%202017-03-30%20at%204.30.36%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/0g1I3d3A1y0h2A443h1y/Image%202017-03-30%20at%204.30.36%20PM.png)
 
 Make sure to base64 encode the content before putting it into the field in the options.
 
@@ -193,11 +222,11 @@ Yup. Sometimes you need to rollback to a known previously working state.
 
 From the 'Cluster' tab, select a server group. Click the button on the right pane labeled 'Server Group Actions' and press 'Rollback'
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/2q2t3u3L2e01150x2k3S/Image%202017-03-30%20at%205.14.14%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/2q2t3u3L2e01150x2k3S/Image%202017-03-30%20at%205.14.14%20PM.png)
 
 In the window that pops up, you can select which server group to rollback to.
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/0D1w1w0Z371F2v0T1A3U/Image%202017-03-30%20at%205.15.27%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/0D1w1w0Z371F2v0T1A3U/Image%202017-03-30%20at%205.15.27%20PM.png)
 
 The server group that you select will re-enabled and scaled up to the necessary number of replicas. Then the rolled back server group will be disabled.
 
@@ -263,6 +292,6 @@ In order to use a subnet within Spinnaker, you will need to tag it in AWS a cert
 
 There are two ways you can tag them. One option is to use the convention `spinnaker.<internal|external>.<region>` for the subnet's name. In the screenshot below, you can see that is what I have done on my subnets.
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/1R0c3l3u3P3h3P1e0h1y/Image%202017-03-30%20at%201.48.35%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/1R0c3l3u3P3h3P1e0h1y/Image%202017-03-30%20at%201.48.35%20PM.png)
 
 Another option is to create a tag named `immutable_metadata` with value `{"purpose": "MySubnetNameInsideSpinnaker"}`

@@ -29,7 +29,7 @@ Let's go through an example.
 
 I have created a multi-region bake pipeline that creates AMIs from a package built on Jenkins. For directions on how to create a pipeline like this, check out the [baking guide]({% link _spinnaker_user_guides/baking-images.md %}). You can see it running here:
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/211e0R3W2O301C0T1c30/Image%202017-04-04%20at%2011.01.25%20AM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/211e0R3W2O301C0T1c30/Image%202017-04-04%20at%2011.01.25%20AM.png)
 
 
 Next I want to create a pipeline that is triggered by a Jenkins job and installs the package that Jenkins created. However, I want that package to be installed on top of one of the AMIs from the multi-region bake above.
@@ -40,12 +40,12 @@ I start by creating a new pipeline.
 
 I add an automated trigger to build from a Jenkins' job. For a more detailed example of this, check out the [baking guide]({% link _spinnaker_user_guides/baking-images.md %}).
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/1g1Y3H3A3c2D1q3h0O2d/Image%202017-04-04%20at%202.47.40%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/1g1Y3H3A3c2D1q3h0O2d/Image%202017-04-04%20at%202.47.40%20PM.png)
 
 
 Now I add a 'Find Images From Tags' stage and input 'armoryami' in the 'Package' field. The 'package' you input needs to match the package installed by the baked AMI in the prior bake pipeline.
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/230X2J3e303n2K3L1E01/Image%202017-04-04%20at%202.40.14%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/230X2J3e303n2K3L1E01/Image%202017-04-04%20at%202.40.14%20PM.png)
 
 By checking the 'us-west-2' checkbox, I am telling Spinnaker to find images in only that regions and make it available to the rest of the pipeline.
 
@@ -53,7 +53,7 @@ By checking the 'us-west-2' checkbox, I am telling Spinnaker to find images in o
 Next I want to add my own package to this AMI. First, I add a bake stage. Since my Jenkins' job created an artifact named 'armory-hello-deploy', I input that into the 'Package' field. The next part is a little tricky. I need to specify the correct base AMI by checking the 'Show Advanced Options' and using the [expression language]({% link _spinnaker_user_guides/expression-language.md %}) in the 'Base AMI' field. 
 
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/1K1R053I1U231a472j3N/Image%202017-04-04%20at%203.03.22%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/1K1R053I1U231a472j3N/Image%202017-04-04%20at%203.03.22%20PM.png)
 
 As you can see, the expression I use is:
 
@@ -71,7 +71,7 @@ ${ #stage('Find Image from Tags')['context']['amiDetails'][0]['imageId'] }
 
 We can now execute the pipeline with the above inputs. 
 
-![](https://d1ax1i5f2y3x71.cloudfront.net/items/211N2V3p2y2C1e2j410z/Image%202017-04-04%20at%203.22.17%20PM.png)
+![](https://d2ddoduugvun08.cloudfront.net/items/211N2V3p2y2C1e2j410z/Image%202017-04-04%20at%203.22.17%20PM.png)
 
 Notice the 'Results' box in the lower right hand corner. After inspecting it and comparing it to the bake pipeline in the very beginning of the example, I can see that Spinnaker did indeed choose the correct AMI.
 

@@ -55,4 +55,4 @@ If the `purpose` field is non-null then things are configured correctly.
 ## I Don't See My Subnets or VPCs
 Spinnaker caches as much as possible to keep performance through the UI responsive.  If you don't see the subnets and you believe you configured them correctly, then make sure to refresh the cache.  You can find the cache going to the _config_ section of your application and clicking _refresh all caches_.  You should also make sure to refresh your browswer cache by using your browser's development tools and deleting any browser databases.
 
-![refresh all caches](https://d1ax1i5f2y3x71.cloudfront.net/items/030K0N2F411T1J113J0g/%5B75a6d5a8966231fe9cfeba7a14d57864%5D_Image+2017-04-13+at+1.59.38+PM.png?X-CloudApp-Visitor-Id=2686178&v=a3c2b44c)
+![refresh all caches](https://d2ddoduugvun08.cloudfront.net/items/030K0N2F411T1J113J0g/%5B75a6d5a8966231fe9cfeba7a14d57864%5D_Image+2017-04-13+at+1.59.38+PM.png?X-CloudApp-Visitor-Id=2686178&v=a3c2b44c)
