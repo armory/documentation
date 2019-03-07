@@ -63,7 +63,7 @@ We provide two methods of installing Spinnaker: Stand-Alone and High-Availabilit
 
 Below is a diagram of the architecture & components deployed in a stand-alone configuration.
 
-![](http://f.cl.ly/items/1v2S0C0l0p3m18060g06/Image%202017-01-26%20at%2012.03.11%20PM.png?v=3aa888eb)
+![](images/Image 2017-01-26 at 12.03.11 PM.png)
 
 
 ### Security Groups
@@ -86,7 +86,7 @@ By default, we create an instance with a private IP and keys which should only b
 
 Below is a diagram of the architecture & components deployed in an HA configuration.
 
-![](http://f.cl.ly/items/3a272r1D3S1j0R2N3H2f/Image%202017-01-26%20at%2011.18.35%20AM.png?v=38d7cea6)
+![](images/Image 2017-01-26 at 11.18.35 AM.png)
 
 ## Polling and Non-Polling environments
 

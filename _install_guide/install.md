@@ -46,7 +46,7 @@ You will need a AWS user/profile with permission to create the following resourc
 If you want to learn more about what is happening behind the scenes, you can go through the components below.
 
 ### Continuing From A Previous Install
-![previous](https://cl.ly/0T2O2i0Q2f1q/Image%202017-04-14%20at%209.15.55%20AM.png)
+![previous](images/Image 2017-04-14 at 9.15.55 AM.png)
 
 ### Terraform Templates
 
@@ -68,7 +68,7 @@ The installer will download the latest stable version of the Terraform files and
 
 ### Validating Your Spinnaker Install
 
-![hello](https://cl.ly/2g163N1z050V/download/98c70de3cd1c9778e50d5aa0e4db15f6_Image%202017-09-13%20at%204.10.04%20PM.png)
+![hello](images/98c70de3cd1c9778e50d5aa0e4db15f6_Image 2017-09-13 at 4.10.04 PM.png)
 
 ### Uninstall Armory Spinnaker
 

@@ -25,7 +25,7 @@ Spinnaker supports adding multiple AWS accounts with some users reaching 100s of
 ## Spinnaker's Account Model
 In AWS, Spinnaker relies on IAM policies to access temporary keys into configured accounts by [assuming a role](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_passrole.html). This allows an administrator to limit and audit the actions that Spinnaker is taking in configured accounts.
 
-![spinnaker assume role](https://d2ddoduugvun08.cloudfront.net/items/1w1h3D3e1r2a2X1F3u3h/Image%202017-04-17%20at%208.32.48%20AM.png?X-CloudApp-Visitor-Id=2686178)
+![spinnaker assume role](images/Image 2017-04-17 at 8.32.48 AM.png)
 
 ## Clouddriver Configuration
 

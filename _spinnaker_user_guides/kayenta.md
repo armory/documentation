@@ -26,7 +26,7 @@ This guide includes:
 If Kayenta is enabled for you instance, if you go to an application's config
 you should see a checkbox to enable Canarying:
 
-![image](https://cl.ly/70fe5e294ead/Image%202018-10-23%20at%203.25.33%20PM.png)
+![image](images/Image 2018-10-23 at 3.25.33 PM.png)
 
 Make sure it's checked and saved.
 
@@ -49,12 +49,12 @@ after enabling the Canary above)
 Your menubar should show "Delivery" and you should see the option for
 "Canary Configs" as a hover, or as a submenu element:
 
-![Canary Configs Menu Item](https://cl.ly/00181r2Q372S/[069c7e1865637f78eb92a091172c92da]_Image%202018-04-18%20at%2012.45.18%20PM.png)
+![Canary Configs Menu Item](images/[069c7e1865637f78eb92a091172c92da]_Image 2018-04-18 at 12.45.18 PM.png)
 
 Click on "Canary Configs" and "Add configuration".  You should see a
 mostly-blank form:
 
-![Canary Config Form](https://cl.ly/0d3o1e3I3e3e/Image%202018-04-18%20at%2012.56.54%20PM.png)
+![Canary Config Form](images/Image 2018-04-18 at 12.56.54 PM.png)
 
 *Configuration Name*:  Spaces are not allowed, only alphanumerics, hyphens and
 underscores.  This name will be displayed as an option in the canary stage
@@ -86,11 +86,11 @@ metrics or groups of metrics (see "Scoring" below).
 When you add a metric, the UI will be slightly different depending on what
 Metric Store you selected earlier.  The DataDog dialog looks like:
 
-![DataDog Metric Dialog](https://cl.ly/2p1s1A2k131c/Image%202018-04-18%20at%201.11.59%20PM.png)
+![DataDog Metric Dialog](images/Image 2018-04-18 at 1.11.59 PM.png)
 
 The Stackdriver dialog looks like:
 
-![Stackdriver Metric Dialog](https://cl.ly/0Q0t3Y1E021R/Image%202018-04-18%20at%201.12.46%20PM.png)
+![Stackdriver Metric Dialog](images/Image 2018-04-18 at 1.12.46 PM.png)
 
 In all cases, the Name is free-form and used to label the results and graphs.
 
@@ -110,7 +110,7 @@ For DataDog, the metric is simply the aggregation function you wish to use
 [DataDog Metrics Explorer](https://app.datadoghq.com/metric/explorer) to find
 these names:
 
-![DataDog Metrics Explorer](https://cl.ly/1g360s0l1o3F/Image%202018-04-18%20at%201.20.25%20PM.png)
+![DataDog Metrics Explorer](images/Image 2018-04-18 at 1.20.25 PM.png)
 
 For example, if you wanted to measure the average amount of CPU used, you could
 enter `avg:system.cpu.user`.
@@ -168,7 +168,7 @@ of whether or not the pipeline should continue.
 If everything is configured properly, you should be able to create a stage
 of Type "Canary Analysis".  The stage form should look like this:
 
-![Blank Canary Config](https://cl.ly/0Z001M3g2o0j/Image%202018-04-18%20at%201.48.11%20PM.png)
+![Blank Canary Config](images/Image 2018-04-18 at 1.48.11 PM.png)
 
 *Analysis Type*:  "Real Time" (default) or "Retrospective".  If you select
 Retrospective, you'll see two additional fields appear, where you will set
@@ -245,7 +245,7 @@ The Kayenta stage lets you run canary analysis against pretty much anything, so
 it's hard to prescribe a specific usage that would best fit your scenario.  To
 give you a head start, though, take a look at this pipeline:
 
-![Canary Deploy Pipeline](https://cl.ly/0h02343e1j3b/Image%202018-04-20%20at%202.08.37%20PM.png)
+![Canary Deploy Pipeline](images/Image 2018-04-20 at 2.08.37 PM.png)
 
 After configuration (where you would set up your automated triggers, for
 example), the steps are:
@@ -257,7 +257,7 @@ example), the steps are:
    "Oldest" enabled Server Group.  This will later be referenced to act as our
    baseline server group for the canary.
 
-   ![Identify Baseline](https://cl.ly/3W0Q0w0n381j/[16ee274765420799d2f010fb44ac1208]_Image%202018-04-20%20at%202.24.15%20PM.png)
+   ![Identify Baseline](images/[16ee274765420799d2f010fb44ac1208]_Image 2018-04-20 at 2.24.15 PM.png)
 
 2. Bake
 
@@ -271,7 +271,7 @@ example), the steps are:
    anything to the existing server group yet, we want to run the new image
    alongside the old image.
 
-   ![Canary Cluster Config](https://cl.ly/3T3E0Z2w0s2g/[3683fd1f7f0f72a94e511d9b65f5dce5]_Image%202018-04-20%20at%202.22.42%20PM.png)
+   ![Canary Cluster Config](images/[3683fd1f7f0f72a94e511d9b65f5dce5]_Image 2018-04-20 at 2.22.42 PM.png)
 
 4. Canary Analysis
 
@@ -293,13 +293,13 @@ example), the steps are:
 
    (again, we prepend `autoscaling_group:` to construct the tag for Datadog)
 
-   ![Canary Stage Example](https://cl.ly/3J47282d011r/Image%202018-04-20%20at%202.19.17%20PM.png)
+   ![Canary Stage Example](images/Image 2018-04-20 at 2.19.17 PM.png)
 
    We also need to be sure that we don't stop the pipeline execution if the
    canary fails -- we want to be able to "clean up" after a failure, so we
    don't keep the bad canary alive longer than we need to:
 
-   ![Continue On Failure](https://cl.ly/3w2d2X0V1t0j/[41b5e2d8d228eae3e13bdbfaa4b307c6]_Image%202018-04-20%20at%202.37.35%20PM.png)
+   ![Continue On Failure](images/[41b5e2d8d228eae3e13bdbfaa4b307c6]_Image 2018-04-20 at 2.37.35 PM.png)
 
 5. Destroy Canary on Failure (Destroy Server Group)
 
@@ -309,9 +309,9 @@ example), the steps are:
    canary server group.  So here we destroy the "Newest Server Group" (the
    canary) and clean up, leaving the existing good cluster intact.
 
-   ![Destroy Canary](https://cl.ly/1l2E2s1G1H44/[d8482e840534fe6d2dfa2f4d377f499b]_Image%202018-04-20%20at%202.27.00%20PM.png)
+   ![Destroy Canary](images/[d8482e840534fe6d2dfa2f4d377f499b]_Image 2018-04-20 at 2.27.00 PM.png)
 
-   ![Failure Condition](https://cl.ly/162k1B2Y2t01/Image%202018-04-20%20at%203.38.20%20PM.png)
+   ![Failure Condition](images/Image 2018-04-20 at 3.38.20 PM.png)
 
 6. Promote Canary on Success (Destroy Server Group)
 
@@ -324,9 +324,9 @@ example), the steps are:
    the baseline in the first stage), conditional on the Canary Analysis stage
    ending with `SUCCEEDED`:
 
-   ![Destroy Baseline](https://cl.ly/1u0f2N3i2L42/Image%202018-04-20%20at%202.32.44%20PM.png)
+   ![Destroy Baseline](images/Image 2018-04-20 at 2.32.44 PM.png)
 
-   ![Success Condition](https://cl.ly/130z071O0l18/Image%202018-04-20%20at%203.39.14%20PM.png)
+   ![Success Condition](images/Image 2018-04-20 at 3.39.14 PM.png)
 
 7. Check Preconditions
 
@@ -336,7 +336,7 @@ example), the steps are:
    stage to fail if the canary failed.  Here we just check that the Canary
    Analysis stage succeeded (and if it did not, it will fail the pipeline).
 
-   ![Check Results](https://cl.ly/2b0T1w32063i/Image%202018-04-20%20at%202.35.22%20PM.png)
+   ![Check Results](images/Image 2018-04-20 at 2.35.22 PM.png)
 
 
 This should give you some idea of how you might want to integrate the Kayenta

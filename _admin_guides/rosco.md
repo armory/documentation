@@ -29,7 +29,7 @@ rosco:
   configDir: ${services.rosco.configDir:/opt/rosco/config/packer}
 ```
 
-![baking templates](https://d2ddoduugvun08.cloudfront.net/items/0K1S1l3L2M0z373A0L1o/Image%202017-04-17%20at%207.06.45%20AM.png?X-CloudApp-Visitor-Id=2686178)
+![baking templates](images/Image 2017-04-17 at 7.06.45 AM.png)
 
 
 ### Region Templates
@@ -41,10 +41,10 @@ In some cases you'll want to bake in multiple multiple regions but in order to d
 When selecting a **Base OS**, the default template will be used. The default is **Base OS** is `Ubuntu 12.04/14.0`, which uses `aws-ebs.json` and `install_package.sh`. See [Setting Up Base OS Defaults for Baking](#setting-up-base-o-s-defaults-for-baking) on how to change the defaults.
 
 You can also specify a template in the bake stage.  The example below shows the template being set to `mycompany-ebs.json` using the **Template File Name** setting for the stage. Spinnaker allows variables so you can even make each template dynamic.  
-![bake configuration](https://cl.ly/1g1M192j3M2D/Image%202017-08-07%20at%2012.45.20%20PM.png)
+![bake configuration](images/Image 2017-08-07 at 12.45.20 PM.png)
 
 Example of baking `armory-spinnaker` in CentOS (without defining the correct Base OS):
-![img](https://cl.ly/3h2K0p0z1W06/Screen%20Shot%202017-09-07%20at%205.40.01%20PM.png)
+![img](images/Screen Shot 2017-09-07 at 5.40.01 PM.png)
 
 
 
@@ -94,7 +94,7 @@ This might come from your chef, puppet, ansible, or shell scripts. For the first
 
 1. **Scale down all Spinnaker instances except 1 polling instance** :
 Armory Spinnaker is set to spin up in high availability mode, this means there's a potential for a pipeline to execute on one instance and bake on another instance.
-![gif](https://d2ddoduugvun08.cloudfront.net/items/2u0g2T0p3G160X2c2J1e/Screen%20Recording%202017-09-05%20at%2006.12%20PM.gif)
+![gif](images/Screen Recording 2017-09-05 at 06.12 PM.gif)
 
 2. **Set the healthcheck for Spinnaker to be EC2** :
 If we're making changes to **rosco**, this will require you to restart Armory Spinnaker (`service armory-spinnaker restart`). This will prevent the ASG healthchecks from destroying your instance while you're working on it.

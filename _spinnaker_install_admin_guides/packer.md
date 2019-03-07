@@ -48,4 +48,4 @@ If you'd like to add additional packer template or script files, you can add the
 
 **Bake Configuration** in Spinnaker
 Spinnaker can send pipeline variables such as `repository` to the packer script by adding it in the extended attributes. Some attributes are prefilled because of selecting `trusty` as the base OS.
-![example](https://cl.ly/41113D0o1h3x/Screen%20Shot%202017-09-05%20at%204.34.58%20PM.png)
+![example](images/Screen Shot 2017-09-05 at 4.34.58 PM.png)

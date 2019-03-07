@@ -107,7 +107,7 @@ Fiat supports application and AWS account access based on [Github teams](https:/
 You'll need to generate a personal API access token here: [https://github.com/settings/tokens](https://github.com/settings/tokens). It only needs to have `read:org` permissions.
 > *Note*: You might want to create a GitHub Bot account for this and add it to your organization
 
-![](http://drod.io/3n1w1L2C1E0L/Image%202017-01-06%20at%205.23.33%20PM.png)
+![](images/Image 2017-01-06 at 5.23.33 PM.png)
 
 Add the configuration below to: `/opt/spinnaker/config/fiat-local.yml`:
 
@@ -129,11 +129,11 @@ OKTA has its own [separate guide](/admin-guides/okta/) due to its lengthy config
 
 To modify an application's access go to `application -> config > edit application attributes -> permissions`
 
-![application permissions](https://cl.ly/0Z3j0k1L3Q0m/Image%202017-08-09%20at%2012.34.13%20PM.png)
+![application permissions](images/Image 2017-08-09 at 12.34.13 PM.png)
 
 Once you have your authorization provider configured you should be able to see available groups for your user.  For each group that is added to the list you can select "Read-Only" or "Read/Write" Permissions.  Once groups are added to the list no other users will be able to access that application.
 
-![application permissions](https://cl.ly/2K3D0V3F170i/Image%202017-08-09%20at%2012.35.25%20PM.png)
+![application permissions](images/Image 2017-08-09 at 12.35.25 PM.png)
 
 ## Account Access
 

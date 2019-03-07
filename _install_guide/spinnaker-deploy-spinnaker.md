@@ -62,7 +62,7 @@ docker-engine armoryspinnaker=SELECT_A_VERSION
 
 Once configured the stage should look like this:
 
-![Bake armoryspinnaker](https://cl.ly/1J2b0t3u1i2V/Image%202017-12-26%20at%2011.22.55%20AM.png)
+![Bake armoryspinnaker](images/Image 2017-12-26 at 11.22.55 AM.png)
 
 
 

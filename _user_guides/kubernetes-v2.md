@@ -76,25 +76,25 @@ Then restart Armory Spinnaker: `service armory-spinnaker restart`
 ### Configuring The Pipeline Trigger
 We'll begin by creating a pipeline that is triggered from Kubernetes artifacts and delivered through Github.  Below we'll define two artifacts that will be deployed as Kubernetes manifests: `deployment.yml` and `config-map.yml` which are valid Kubernetes manifests.  Make sure to select the source as `Github`.
 
-![artifacts](https://cl.ly/091z2h232r0d/page.png)
+![artifacts](images/page.png)
 
 After configuring the artifacts we'll need to associate them with a Github trigger so the pipeline is triggered whenever there are modifications pushed to Github.  For example, the pipeline below will only trigger when _either_ `deployment.yml` _or_ `config-map.yml` are modified and pushed to the repository.  If the manifest isn't modified it'll use the latest version that was deployed.
 
 > Note: If you haven't already, you'll need to configure [Github webhooks](https://www.spinnaker.io/setup/features/notifications/#github) for your Spinnaker instance.
 
-![github trigger](https://cl.ly/3G1T0W3N1o3Q/trigger.png)
+![github trigger](images/trigger.png)
 
 
 ### Configuring The Config Map Manifest Delivery
 
 We'll configure the `configMap` to be deployed first. Add a `Deploy (Manifest)` stage to your pipelines.
 
-![deploy manifest](https://cl.ly/3p3T360a3f37/deploy_manifest.png)
+![deploy manifest](images/deploy_manifest.png)
 
 
 Once you've added the stage, select `Artifact` from the `Manifest Source` below and it will allow you to choose one of the expected artifacts that we configured in the previous section.  Choose `config-map.yml` and hit `save`. Spinnaker will deploy the chosen artifact but append a version to the name of the artifact. For [our example config map](https://github.com/Armory/spinnaker-k8s-v2-example/blob/master/config-map.yml). So for the name `k8-v2-config-map` it will appear in the Kubernetes cluster with `k8-v2-config-map-v001`.
 
-![config map](https://cl.ly/1Q0s2B1b0n0D/config-map.png)
+![config map](images/config-map.png)
 
 ### Configuring Deployment Manifest Delivery
 
@@ -115,12 +115,12 @@ volumes:
       name: k8-v2-config-map-v000
 ```
 
-![deployment](https://cl.ly/0v1o1o0t2x2A/Image%202018-01-26%20at%205.36.53%20PM.png)
+![deployment](images/Image 2018-01-26 at 5.36.53 PM.png)
 
 ### Executing The Pipeline
 
 Your final pipeline should look similar to the one below.
-![final pipeline](https://cl.ly/2V32230w301Q/pipeline.png)
+![final pipeline](images/pipeline.png)
 
 In order to execute your pipeline the first time you'll need to edit both the `config-map.yml` and `deployment.yml`, commit the changes to git and push the changes to Github. The pipeline should trigger and execute flawlessly =)
 

@@ -16,7 +16,7 @@ After setting up Spinnaker through the [Spinnaker-Terraform](#spinnaker-terrafor
 - Any selection of `Base OS` will work, it'll be used for AMI naming. Changes can be made through the `spinnaker-local.yml`.
 - `Show Advance Options` needs to be checked for the following.
 
-![screenshot of bake stage](https://cl.ly/431n1T2r1O0U/Screen%20Shot%202017-07-24%20at%204.39.17%20PM.png)
+![screenshot of bake stage](images/Screen Shot 2017-07-24 at 4.39.17 PM.png)
 
 
 #### CentOS
@@ -62,7 +62,7 @@ Key: repository
 Value: https://dl.bintray.com/armory/internal trusty main
 ```
 
-![bake stage](https://cl.ly/2X443i1W2u3z/Image%202017-08-16%20at%203.31.06%20PM.png)
+![bake stage](images/Image 2017-08-16 at 3.31.06 PM.png)
 
 2. Update `Package` field
 
@@ -70,4 +70,4 @@ Update the package field with the new version given to you by Armory, for exampl
 
 `armoryspinnaker=1.8.48`
 
-![edit package field](https://cl.ly/072E001Q0O46/Image%202017-08-16%20at%203.36.36%20PM.png)
+![edit package field](images/Image 2017-08-16 at 3.36.36 PM.png)

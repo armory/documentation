@@ -30,7 +30,7 @@ Notice that this uses port `8084`.
 
 You should see a screen that looks like:
 
-![](https://d2ddoduugvun08.cloudfront.net/items/1D1R2G270O070o0g0T00/Image%202017-04-03%20at%204.06.51%20PM.png)
+![](images/Image 2017-04-03 at 4.06.51 PM.png)
 
 You can click on the controller you are interested in to see endpoints related to it. You can even test out hitting these different endpoints right in the UI.
 
