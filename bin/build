@@ -17,7 +17,14 @@ while [ -z ${halyard_armory_version} ]; do
             break
         fi
     done
+
     PAGE_NUM=$((${PAGE_NUM} + 1))
+
+
+    # let's not go too crazy
+    if [ $PAGE_NUM -gt 10 ]; then
+      break
+    fi
 done
 
 sed "s|halyard-armory-version:.*|halyard-armory-version: $halyard_armory_version|" _data/versions.yml > _data/versions.yml.new
