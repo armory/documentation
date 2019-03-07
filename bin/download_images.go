@@ -26,6 +26,8 @@ func main() {
     os.Exit(1)
   }
 
+  fmt.Println("Looking for images to download")
+
   _ = filepath.Walk(opts.Directory, func(filePath string, info os.FileInfo, err error) error {
     if !strings.Contains(filePath, ".md") && !strings.Contains(filePath, ".html") {
       return nil
