@@ -39,6 +39,7 @@ exclude:
   - Dockerfile
   - Jenkinsfile
   - README.md
+  - vendor/
 keep_files: [images]
 assets:
   sources:
