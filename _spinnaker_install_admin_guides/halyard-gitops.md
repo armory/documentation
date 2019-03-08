@@ -3,21 +3,17 @@ layout: post
 title: Spinnaker Gitops with Halyard
 order: 152
 ---
-This article describes how to set up Halyard to automate the deployment of Spinnaker and manage its configuration in source control.
-
-<div class="alpha-warning">
-  This feature is in alpha stage with Armory Spinnaker. <a href="https://www.armory.io/contact">Get in touch</a> and give us feedback!
-</div>
-
+This article describes how to automate the deployment of Spinnaker and manage its configuration in source control.
+{:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
-
-## Overview
-Halyard Armory can be configured to read configurations from source control and automatically deploy Spinnaker when changes on a specific branch are detected.
 
 ## Store your current configuration in source control
 You can group configurations of different Spinnakers in a single repository, use different repositories, or even use a single `config` file with multiple deployments.
 
-As a pre-requisite, you should [store secrets outside of your configuration](../secrets-s3).
+As a pre-requisite:
+- you should [store secrets outside of your configuration](../secrets-s3).
+- you should also not store multiple deployments in the same `config` file. This makes it easier to see the history of configuration changes and avoid deploying all configurations when only one has changed.
 
 ## Configure Halyard
 In `halyard.yml`, configure the deployments you'd like to manage:
@@ -43,32 +39,32 @@ halyard:
 
 The `path` should be to the root of the directory containing the `config` file.
 
-Note: When using mutiple deployments in a single file or if the deployment name is not `default`, you should distinguish between deployments by using `deploymentName`:
 
-```yaml
-halyard:
-  halconfig:
-    storage:
-      github:
-        token: encrypted:...
-    configs:
-    - name: staging
-      github:
-        path: github.com:acmecorp/spinnaker-configs
-        branch: master
-        deploymentName: staging
-    - name: prod
-      github:
-        path: github.com:acmecorp/spinnaker-configs
-        branch: master
-        deploymentName: prod
-...
+Note: Make sure the `currentDeploymentName` in the configuration is the one you want to deploy (or `default` if not specified).
+
+## Option 1: Deploy from the CI tool environment
+
+Configure your CI tool to perform the following action on pushes to `master` (or the branch of your choice):
+
+```
+docker run  \
+    -e AWS_ACCESS_KEY_ID:${AWS_ACCESS_KEY_ID} \
+    -e AWS_SECRET_ACCESS_KEY:${AWS_SECRET_ACCESS_KEY} \
+    docker.io/armory/halyard-armory:{{ site.data.versions.halyard-armory-version }} \
+    hal deploy apply
 ```
 
+`AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables specify an account that has access to your configuration secrets. [Other authentication methods](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html) are available.
 
-## Deploy Halyard as a service
 
-We recommend deploying Halyard in the same cluster as Spinnaker so validations are more accurate. You can however deploy Halyard in its own namespace.
+## Option 2: Deploy Halyard as a service
+Halyard Armory can be configured to read configurations from source control and automatically deploy Spinnaker when changes on a specific branch are detected. This allows Halyard to be deployed in the same cluster as Spinnaker making validations more accurate.
+
+
+<div class="alpha-warning">
+  This feature is in alpha stage with Armory Spinnaker. <a href="https://www.armory.io/contact">Get in touch</a> and give us feedback!
+</div>
+
 
 Create a config map for Halyard's configuration:
 ```
@@ -118,10 +114,10 @@ kubectl -n YOUR_NAMESPACE expose deployment halyard-armory --type=LoadBalancer -
 Don't forget to:
 - Refer to your cloud provider documentation to create a secure endpoint.
 - Secure Halyard's endpoints by limiting IP sources or using security groups of your cloud provider.
+- Make sure Halyard is configured to decrypt secrets.
 - Add a DNS record for Halyard
 
-# Deploy Spinnaker automatically
-## Option 1: Direct webhook
+### Option 2a: Direct webhook
 Note: As of this time, only Github webhooks are supported.
 
 In Github, navigate to the settings of the repository containing your Spinnaker configuration, find the webhook section, and select "Add webhook".
@@ -132,7 +128,7 @@ In Github, navigate to the settings of the repository containing your Spinnaker 
 
 Note: You'll need to make sure that the service is exposed externally and reachable by [Github servers](https://help.github.com/en/articles/about-githubs-ip-addresses).
 
-## Option 2: Use CI
+### Option 2b: Use CI
 You may already have a CI tool configured with Github that validates pull requests and reacts to merges.
 
 To validate, run a simple script - replacing `DEPLOYMENT_NAME` with the value specified in `halyard.yml` (staging and prod in the examples above):
@@ -147,8 +143,8 @@ curl -XPOST https://HALYARD_HOSTNAME/v1/config/deployments/DEPLOYMENT_NAME/deplo
 
 Note that you'll need to determine the `DEPLOYMENT_NAME` from the CI's job trigger if you use the same repository for multiple Spinnaker configurations.
 
-## Option 3: Use Spinnaker
-A third option is to use Spinnaker itself to deploy configuration changes. Your CI tool keeps validating changes as above but deployments occur via a Spinnaker pipeline triggered by Github artifacts adding visibility into what was deployed.
+### Option 2c: CI + Spinnaker
+A third option is to use Spinnaker itself to deploy configuration changes and keep your CI tool validating changes.
 
 
 ## Forcing redeploy
@@ -165,11 +161,11 @@ hal deploy apply --daemon-endpoint https://HALYARD_HOSTNAME --deployment DEPLOYM
 
 Finally, you still have the option of deploying Spinnaker from another remote machine with a [local Halyard installation](/spinnaker/install/#installation-1) if your network access allows it.
 
-# Usage
-To make configuration changes to Spinnaker:
+## Usage
+Making configuration changes to Spinnaker is as easy as a pull request:
 
 ```bash
-git checkout git@github.com:acmecorp/spinnaker-configs.git
+git clone git@github.com:acmecorp/spinnaker-configs.git
 cd spinnaker-configs
 git checkout -b new-accounts
 # Make the change to the config
