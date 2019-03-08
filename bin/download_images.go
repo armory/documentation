@@ -11,40 +11,93 @@ import (
   "path/filepath"
   "regexp"
   "strings"
+  "unicode"
 )
 
 type Opts struct {
-  Directory string `short:"d" long:"directory" description:"The absolute path of the dir to scan" required:"true"`
-  ImageDir  string `short:"i" long:"image-dir" description:"The absolute path of where to put images" required:"true"`
+  Directory string `short:"d" long:"directory" description:"The absolute path of the dir to scan, try '-d $PWD'" required:"true"`
+  ImageDir  string `short:"i" long:"image-dir" description:"The absolute path of where to put images, try '-i $PWD/images/'" required:"true"`
+  CheckOnly bool   `long:"check" description:"Exits non zero on images not hosted by Armory or stored in the repo" required:"false"`
 }
+
 
 func main() {
   var opts Opts
-
   _, err := flags.Parse(&opts)
   if err != nil {
     os.Exit(1)
   }
 
-  fmt.Println("Looking for images to download")
+  switch {
+  case opts.CheckOnly:
+    imgUrls := imgsNotHostedByArmory(opts)
+    if len(imgUrls) > 0 {
+      fmt.Printf("Found %d images that are external to this this repo or Armory.\n\n", len(imgUrls))
+      for _, s := range imgUrls {
+        fmt.Println(s)
+      }
+      fmt.Println(`
+You can download them by doing:
+  docker run -v "$(pwd):/src" --workdir /src golang:1.12.0 go run -mod=vendor bin/download_images.go -d /src -i /src/images/`)
+      os.Exit(1)
+    }
+  default:
+    fmt.Println("Looking for images to download")
+    _ = filepath.Walk(opts.Directory, rewriteMarkdownWithSavedImages(opts))
+  }
+
+  return
+}
+
+const markdownImageUrlRegex = `!\[.*]\((https?://.*)\)`
+
+func imgsNotHostedByArmory(opts Opts) []string {
+  var imageUrls []string
 
   _ = filepath.Walk(opts.Directory, func(filePath string, info os.FileInfo, err error) error {
-    if !strings.Contains(filePath, ".md") && !strings.Contains(filePath, ".html") {
+    if !shouldExploreFilePath(filePath) {
       return nil
     }
 
     fileContents, _ := ioutil.ReadFile(filePath)
 
-    markdownImageUrlMatch := regexp.MustCompile(`!\[.*\]\((https?://.*)\)`)
+    markdownImageUrlMatch := regexp.MustCompile(markdownImageUrlRegex)
 
     if markdownImageUrlMatch.Match(fileContents) {
       lines := strings.Split(string(fileContents), "\n")
 
+      for _, line := range lines {
+        if markdownImageUrlMatch.MatchString(line) {
+          imgs := markdownImageUrlMatch.FindStringSubmatch(line)
+          imageUrls = append(imageUrls, imgs[1:]...)
+        }
+      }
+    }
+    return nil
+  })
+
+  return imageUrls
+}
+
+func rewriteMarkdownWithSavedImages(opts Opts) filepath.WalkFunc {
+  return func(filePath string, info os.FileInfo, err error) error {
+    if !shouldExploreFilePath(filePath) {
+      return nil
+    }
+
+    fileContents, _ := ioutil.ReadFile(filePath)
+
+    markdownImageUrlMatch := regexp.MustCompile(markdownImageUrlRegex)
+
+    if markdownImageUrlMatch.Match(fileContents) {
+      var newFileContents string
       newFilePath := filePath + ".new"
       newFile, _ := os.Create(newFilePath)
 
+      lines := strings.Split(string(fileContents), "\n")
+
       newLine := ""
-      for i, line := range lines {
+      for _, line := range lines {
         newLine = line
 
         if markdownImageUrlMatch.MatchString(line) {
@@ -58,21 +111,26 @@ func main() {
           }
         }
 
-        // don't add an extra new line at the end of the file
-        if i < len(lines)-1 {
-          _, _ = newFile.WriteString(newLine + "\n")
-        }
+        newFileContents += newLine + "\n"
       }
 
+      // remove all trailing whitespace and add just \n at end of the file
+      _, _ = newFile.WriteString(strings.TrimRightFunc(newFileContents, unicode.IsSpace) + "\n")
       _ = os.Rename(newFilePath, filePath)
     }
     return nil
-  })
-
-  return
+  }
 }
 
-// returns relative imagePath
+func shouldExploreFilePath(filePath string) bool {
+  if strings.Contains(filePath, "vendor") {
+    return false
+  }
+
+  return strings.HasSuffix(filePath, ".md") || strings.HasSuffix(filePath, ".html")
+}
+
+// downloadUrl returns relative imagePath
 func downloadUrl(opts Opts, urlString string) string {
   u, err := url.Parse(urlString)
 
@@ -97,9 +155,10 @@ func downloadUrl(opts Opts, urlString string) string {
     fmt.Printf("ERROR! %s\n", err.Error())
     return ""
   }
-  defer resp.Body.Close()
+
+  defer func() { _ = resp.Body.Close() }()
   f, _ := os.Create(absImgPath)
-  defer f.Close()
+  defer func() { _ = f.Close() }()
   _, _ = io.Copy(f, resp.Body)
 
   fmt.Printf("SAVED!\n")
