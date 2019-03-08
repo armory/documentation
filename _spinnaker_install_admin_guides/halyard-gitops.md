@@ -114,7 +114,7 @@ kubectl -n YOUR_NAMESPACE expose deployment halyard-armory --type=LoadBalancer -
 Don't forget to:
 - Refer to your cloud provider documentation to create a secure endpoint.
 - Secure Halyard's endpoints by limiting IP sources or using security groups of your cloud provider.
-- Make sure Halyard is configured to decrypt secrets.
+- Make sure Halyard is configured to access to your secret store so it can decrypt secrets.
 - Add a DNS record for Halyard
 
 ### Option 2a: Direct webhook
