@@ -38,7 +38,7 @@ func main() {
       }
       fmt.Println(`
 You can download them by doing:
-  docker run -v $(pwd):/src --workdir /src golang:1.12.0 go run -mod=vendor bin/download_images.go -d /src -i /src/images/`)
+  docker run -v "$(pwd):/src" --workdir /src golang:1.12.0 go run -mod=vendor bin/download_images.go -d /src -i /src/images/`)
       os.Exit(1)
     }
   default:
