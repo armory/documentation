@@ -30,7 +30,7 @@ func main() {
 
   switch {
   case opts.CheckOnly:
-    imgUrls := checkForImgsNotHostedByArmory(opts)
+    imgUrls := imgsNotHostedByArmory(opts)
     if len(imgUrls) > 0 {
       fmt.Printf("Found %d images that are external to this this repo or Armory.\n\n", len(imgUrls))
       for _, s := range imgUrls {
@@ -51,7 +51,7 @@ You can download them by doing:
 
 const markdownImageUrlRegex = `!\[.*]\((https?://.*)\)`
 
-func checkForImgsNotHostedByArmory(opts Opts) []string {
+func imgsNotHostedByArmory(opts Opts) []string {
   var imageUrls []string
 
   _ = filepath.Walk(opts.Directory, func(filePath string, info os.FileInfo, err error) error {
