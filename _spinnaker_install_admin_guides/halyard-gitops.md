@@ -131,17 +131,17 @@ Note: You'll need to make sure that the service is exposed externally and reacha
 ### Option 2b: Use CI
 You may already have a CI tool configured with Github that validates pull requests and reacts to merges.
 
-To validate, run a simple script - replacing `DEPLOYMENT_NAME` with the value specified in `halyard.yml` (staging and prod in the examples above):
+To validate, run a simple script - replacing `CONFIG_NAME` with the value specified in `halyard.yml` (staging and prod in the examples above):
 ```
-curl -XPOST https://HALYARD_HOSTNAME/v1/config/deployments/DEPLOYMENT_NAME/generate
+curl -XPOST https://HALYARD_HOSTNAME/v1/config/deployments/CONFIG_NAME/generate
 ```
 
 To deploy:
 ```
-curl -XPOST https://HALYARD_HOSTNAME/v1/config/deployments/DEPLOYMENT_NAME/deploy
+curl -XPOST https://HALYARD_HOSTNAME/v1/config/deployments/CONFIG_NAME/deploy
 ```
 
-Note that you'll need to determine the `DEPLOYMENT_NAME` from the CI's job trigger if you use the same repository for multiple Spinnaker configurations.
+Note that you'll need to determine the `CONFIG_NAME` from the CI's job trigger if you use the same repository for multiple Spinnaker configurations.
 
 ### Option 2c: CI + Spinnaker
 A third option is to use Spinnaker itself to deploy configuration changes and keep your CI tool validating changes.
