@@ -7,7 +7,7 @@ rm -dfr _site
 SEMVER_REGEX='^[0-9]+\.[0-9]+\.[0-9]+$'
 
 PAGE_NUM=1
-halyard_armory_version=
+halyard_armory_version=0.0.0
 while [ -z ${halyard_armory_version} ]; do
     echo "Getting tags for halyard-armory, page: ${PAGE_NUM}"
     TAGS=$(wget -O - -q https://registry.hub.docker.com/v2/repositories/armory/halyard-armory/tags?page=${PAGE_NUM} | docker run -i --rm realguess/jq:1.4 jq --raw-output '."results" | .[] .name | select(. != "latest")')
