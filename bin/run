@@ -2,6 +2,8 @@
 
 set -x
 
+rm -rf _site/
+
 docker build -t armory/documentation .
 
 # make sure to grab the gemlock from the built container
