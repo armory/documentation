@@ -53,15 +53,15 @@ The SLA is configured from the Application Config screen, which you can
 get to by clicking on "CONFIG" in the upper-right corner of your screen,
 or by click on the SLA menu item.
 
-![Application Config](images/[87aa1b00f4a1191efe3e2035d10daa4b]_Image 2018-02-13 at 11.34.05 AM.png)
+![Application Config](/images/[87aa1b00f4a1191efe3e2035d10daa4b]_Image 2018-02-13 at 11.34.05 AM.png)
 
 Then click "Edit Application Attributes":
 
-![Edit Application Attributes](images/[88d39b8093055dbbcfbdae6b42669873]_Image 2018-02-13 at 11.36.29 AM.png)
+![Edit Application Attributes](/images/[88d39b8093055dbbcfbdae6b42669873]_Image 2018-02-13 at 11.36.29 AM.png)
 
 From here, you can choose to add CloudWatch (AWS) or DataDog metrics (or both!)
 
-![Add SLA Metric](images/[a6a463f037bb70b519ffbd0042846866]_Image 2018-02-13 at 11.47.50 AM.png)
+![Add SLA Metric](/images/[a6a463f037bb70b519ffbd0042846866]_Image 2018-02-13 at 11.47.50 AM.png)
 
 ### Cloudwatch Metrics
 
@@ -70,7 +70,7 @@ Name correlates to the AWS/ELB metric name, such as "Latency",
 "HTTPCode_ELB_5XX_Count".  For a complete reference, refer to the
 [AWS documentation](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/elb-metricscollected.html)
 
-![Example Cloudwatch Metric](images/Image 2018-02-13 at 12.45.18 PM.png)
+![Example Cloudwatch Metric](/images/Image 2018-02-13 at 12.45.18 PM.png)
 
 #### A Note About Units
 
@@ -101,6 +101,6 @@ may have sending data into DataDog.  The fields correlate directly with
 what would go into a DataDog query; the example below is turned into the
 metrics query `avg:system.cpu.user{host:foo}`
 
-![Example DataDog Metric](images/Image 2018-02-13 at 12.44.27 PM.png)
+![Example DataDog Metric](/images/Image 2018-02-13 at 12.44.27 PM.png)
 
 

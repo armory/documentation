@@ -33,7 +33,7 @@ In this example we will bake an image containing a Debian package created by a J
 
 First let's look at the the Jenkins job that builds our package.
 
-![](images/Image 2017-03-29 at 12.43.31 PM.png)
+![](/images/Image 2017-03-29 at 12.43.31 PM.png)
 As you can see, the last run archived a package named `armory-hello-deploy_0.5.0-h5.c4baff4_all.deb`
 
 
@@ -45,11 +45,11 @@ Next I add a bake stage (add stage -> Type: Bake)
 
 Select the `us-west-2` region. For the Package field, I enter the base name of my package. In my case, the entire package filename is `armory-hello-deploy_0.5.0-h5.c4baff4_all.deb` so I will input `armory-hello-deploy`. Also, I know that my package is created for Ubuntu 14, so I make sure to select the 'trusty (v14.04)' option.
 
-![](images/Image 2017-03-29 at 1.35.13 PM.png)
+![](/images/Image 2017-03-29 at 1.35.13 PM.png)
 
 like:
 
-![](images/Image 2017-03-29 at 1.45.09 PM.png)
+![](/images/Image 2017-03-29 at 1.45.09 PM.png)
 
 At this point if I want to see more details about my bake, I can click the 'View Bakery Details' box. A new window will open up with the bakery logs. In my case, the first few lines look like:
 
@@ -80,7 +80,7 @@ The thing I wanted to point out here is that the correct version of the package 
 
 After the bake is successful, I see:
 
-![](images/Image 2017-03-29 at 1.49.44 PM.png)
+![](/images/Image 2017-03-29 at 1.49.44 PM.png)
 
 
 Notice that the AMI name and ID are shared in the lower right's blue box - in this example it is "armory-hello-deploy-all-20170329204459-trusty (ami-c78410a7)".
@@ -88,7 +88,7 @@ Notice that the AMI name and ID are shared in the lower right's blue box - in th
 
 If I press 'Start Manual Execution' again, since the package version hasn't changed, it will reuse the same image rather than rebaking. The screen for that looks like:
 
-![](images/Image 2017-03-29 at 1.55.52 PM.png)
+![](/images/Image 2017-03-29 at 1.55.52 PM.png)
 
 Notice the whole pipeline only ran for '00:00' and in the lower right Spinnaker says 'No changes detected; reused existing bake'
 
@@ -98,7 +98,7 @@ You can do additional things like use a specific base AMI, specify your baked AM
 
 If you would like to change the name in AWS of your AMI, you can do so by selecting the 'Show Advanced Options' checkbox in the Bake Stage Configuration. Continuing from our example above, when I see:
 
-![](images/Image 2017-03-29 at 2.29.08 PM.png)
+![](/images/Image 2017-03-29 at 2.29.08 PM.png)
 
 What do all of these fields mean? Great question!
 
@@ -107,15 +107,15 @@ What do all of these fields mean? Great question!
 
 If I were to instead input 'mycustomname' into the 'AMI Name' field, like:
 
-![](images/Image 2017-03-29 at 2.55.24 PM.png)
+![](/images/Image 2017-03-29 at 2.55.24 PM.png)
 
 After re-running the pipeline, I see that Spinnaker named the AMI `mycustomname-all-20170329220104-trusty`
 
-![](images/Image 2017-03-29 at 3.05.57 PM.png)
+![](/images/Image 2017-03-29 at 3.05.57 PM.png)
 
 Then I add 'mycustomsuffix' to the 'AMI Suffix' field:
 
-![](images/Image 2017-03-29 at 3.14.07 PM.png)
+![](/images/Image 2017-03-29 at 3.14.07 PM.png)
 
 Repeating the bake, I see that Spinnaker named the AMI `mycustomname-all-mycustomsuffix-trusty`
 
@@ -123,7 +123,7 @@ Repeating the bake, I see that Spinnaker named the AMI `mycustomname-all-mycusto
 
 Often you will want to specify a base image for use in your bake. In that case you will use the 'Base AMI' field, not to be confused with the 'Base Name' field. As an example, I have specified `ami-4d78c02d`:
 
-![](images/Image 2017-03-29 at 4.06.24 PM.png)
+![](/images/Image 2017-03-29 at 4.06.24 PM.png)
 
 
 In this situation, the base OS selection (ubuntu/trusty/windows) will be ignored.
@@ -137,7 +137,7 @@ It is common practice to use a base image throughout your team or organization. 
 
 If you need to add repositories on a per bake basis, you can use the 'Extended Attributes' within the 'Advanced Options' section. You can add a key/value pair where the key is labeled 'repository' and the value is a space separated list of repository URLs. For example:
 
-![](images/Image 2017-04-17 at 10.41.20 AM.png)
+![](/images/Image 2017-04-17 at 10.41.20 AM.png)
 
 This will add Armory's bintray debian repository to the bake.
 
@@ -203,7 +203,7 @@ This allows you to just specify `subscriberha` as the `package` in your bake sta
 ## Troubleshooting
 When you have a failing bake step and you do not know why, a good place to start is with the bakery log. You can find a link to the bakery log in the Detail of your bake step on the pipeline execution screen
 
-![](images/Image 2017-03-29 at 1.59.18 PM.png)
+![](/images/Image 2017-03-29 at 1.59.18 PM.png)
 
 Click the link that says 'View Bakery Details'. It can be helpful to track down the last command that the bakery executed.
 

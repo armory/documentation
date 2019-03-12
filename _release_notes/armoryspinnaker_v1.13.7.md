@@ -58,7 +58,7 @@ Parameter encrypted is invalid. You cannot specify the encrypted flag if specify
 
 Workaround:  
 Select `Defaults for selected instance type` on the deploy stage, which will attach an extra, unencrypted volume at runtime.  
-![](images/Screen Shot 2018-07-05 at 13.27.33.png)
+![](/images/Screen Shot 2018-07-05 at 13.27.33.png)
 
 Fix:  
 Fixed in the next version.

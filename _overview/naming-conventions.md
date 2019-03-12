@@ -12,42 +12,42 @@ order: 20
 #### Application
 An application inside Spinnaker represents what you would typically find in a single code repository - and in many cases, an application maps directly to a microservice.
 
-![](images/Image 2017-03-24 at 3.07.57 PM.png)
+![](/images/Image 2017-03-24 at 3.07.57 PM.png)
 
 #### Cluster
 A server group is a regional view of servers, whereas a cluster is a world-wide view of server groups. 
 
-![](images/Image 2017-03-24 at 3.05.04 PM.png)
+![](/images/Image 2017-03-24 at 3.05.04 PM.png)
 
 #### Execution
 When a pipeline runs, the end result is called an execution. 
 
-![](images/Image 2017-03-24 at 3.06.50 PM.png)
+![](/images/Image 2017-03-24 at 3.06.50 PM.png)
 
 #### Pipeline
 A pipeline in Spinnaker is a series of stages linked together that can be executed serially or in parallel. All pipelines are defined in the context of an application. A typical pipeline will contain stages for “creating images”, “testing”, and “deploying”. The process of “creating images” is also commonly referred to as a “bake”.
 
-![](images/Image 2017-03-24 at 3.06.29 PM.png)
+![](/images/Image 2017-03-24 at 3.06.29 PM.png)
 
 #### Project
 A project inside Spinnaker is a logical grouping of applications. For example, we might create a project called “Spinnaker” and its applications would be “Deck”, “Orca”, “Clouddriver”, etc. Spinnaker provides a helpful dashboard view for each project to visualize its applications and status of each application contained within it.
 
-![](images/Image 2017-03-24 at 3.08.23 PM.png)
+![](/images/Image 2017-03-24 at 3.08.23 PM.png)
 
 #### Server Group
 From an Amazon Web Service (AWS) point of view, a server group is represented by an auto-scaling group (ASGs). All applications that are deployed by Spinnaker are deployed to server groups. 
 
-![](images/Image 2017-03-24 at 3.05.04 PM.png)
+![](/images/Image 2017-03-24 at 3.05.04 PM.png)
 
 #### Stage
 Within a pipeline, the tasks that pipeline performs are called stages.
 
-![](images/Image 2017-03-24 at 3.06.29 PM.png)
+![](/images/Image 2017-03-24 at 3.06.29 PM.png)
 
 #### Trigger
 A trigger is the entry point to a pipeline. 
 
-![](images/Image 2017-03-24 at 3.06.29 PM.png)
+![](/images/Image 2017-03-24 at 3.06.29 PM.png)
 
 
 ## Spinnaker Naming Conventions
@@ -73,6 +73,6 @@ The infrastructure's version number; such as v011, v012, etc. This is automatica
 
 In AWS, Spinnaker will name your ASGs and Launch Configurations according to the naming convention mentioned above (ie. “armoryspinnaker-prod-polling-v015”). 
 
-![](images/Image 2017-03-24 at 3.10.53 PM.png)
+![](/images/Image 2017-03-24 at 3.10.53 PM.png)
 
 Please note that if your user definition includes a hyphen, it will disrupt the naming convention. 

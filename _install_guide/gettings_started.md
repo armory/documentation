@@ -57,12 +57,12 @@ We'll want to do local configuration changes on 1 instance only, the polling ins
 
 - Scale down Spinnaker to be just 1 instance.  
 Click on `nonpolling` server group and go to `Server Group Actions` > `Resize`
-![gif](images/Screen Recording 2017-09-05 at 06.06 PM.gif)
+![gif](/images/Screen Recording 2017-09-05 at 06.06 PM.gif)
 
 
 - Change the Auto Scaling Group Healthcheck from `ELB` to `EC2`. This will allow you to restart Armory Spinnaker without the ASG terminating the instance.  
 Click on the remaining ASG and go to `Advance Settings` > `Edit Advance Settings`
-![gif](images/Screen Recording 2017-09-05 at 06.12 PM.gif)
+![gif](/images/Screen Recording 2017-09-05 at 06.12 PM.gif)
 
 
 Start by SSH'ing to the single instance of Armory Spinnaker. Throughout this guide you will be making changes to the files in `/opt/spinnaker/`. Check out [**Understanding config files**]({% link _install_guide/config_repo.md %}#understanding-config-files) for more info. In order for the changes to take affect you will need to restart Armory Spinnaker.
