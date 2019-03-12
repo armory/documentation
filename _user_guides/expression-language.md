@@ -29,11 +29,11 @@ Before we go into examples and troubleshooting, check out the guide on spinnaker
 
 If you are creating a deployment configuration for AWS, Spinnaker gives you the option to provide [user-data](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html#instancedata-add-user-data). As you can see here:
 
-![](images/Image 2017-05-26 at 11.20.47 AM.png)
+![](/images/Image 2017-05-26 at 11.20.47 AM.png)
 
 The user-data field needs to be base64 encoded. It is possible to create this dynamically with the built in expression language. To do this you can use the `${ #toBase64() }` command. For example, You can pass the build number to the user-data via:
 
-![](images/Image 2017-05-26 at 11.29.23 AM.png)
+![](/images/Image 2017-05-26 at 11.29.23 AM.png)
 
 
 ## Examples
@@ -53,7 +53,7 @@ Sometimes the UI doesn't display the autocomplete popup menu. This is because it
 Sometimes your expression is just printed out plainly and not evaluated. Usually this happens when the expression is invalid and/or can not be resolved and does not mean that Spinnaker isn't trying to evaluate it. Try double checking that what you are referencing does exist. To check that it does exist, go to your pipeline's execution details and click the 'Source' link in the very bottom right hand corner. 
 
 For example:
-![](images/Image 2017-04-03 at 3.37.57 PM.png)
+![](/images/Image 2017-04-03 at 3.37.57 PM.png)
 
 You should see a page full of JSON. It doesn't print in a very readable format, so you may want to copy and paste it into a text editor or another tool that will help you read it (I usually just curl this URL and pipe it to `jq`). You can navigate to the JSON field 'stages' for a list of stages in your pipeline. These stages are not necessarily in order. In the stage you'll see another field called 'context'. This is the information avaliable to the expression language. Make sure what you are referencing is in the context of the appropriate stage.
 

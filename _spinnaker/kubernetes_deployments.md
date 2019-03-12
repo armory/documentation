@@ -17,13 +17,13 @@ Pods are created in batches and when a pod is deemed [healthy](https://kubernete
 We've defined a simple pipeline where we first define an artifact (a Docker image) with a version coming from a pipeline parameter.
 You'd usually get the image from a trigger via container registry or a Jenkins job with the same result.
 
-![image](images/%5Bf1c1b353770f4fcb2ef259a94c46a9ca%5D_Image%25202018-09-27%2520at%25204.47.42%2520PM.png)
+![image](/images/%5Bf1c1b353770f4fcb2ef259a94c46a9ca%5D_Image%25202018-09-27%2520at%25204.47.42%2520PM.png)
 
 
 The second step defines the deployment of that image. It's a simple "*Deploy (Manifest)*" stage. Here we're adding the static deployment manifest via a text field but you'd usually retrieve it as an artifact directly
 or via a [Helm bake stage](https://kb.armory.io/kubernetes/using-spinnaker-and-helm/).
 
-![image](images/%5Bb2347374090ddd8ccff9178ac0cee09a%5D_Image%25202018-09-27%2520at%25206.01.23%2520PM.png)
+![image](/images/%5Bb2347374090ddd8ccff9178ac0cee09a%5D_Image%25202018-09-27%2520at%25206.01.23%2520PM.png)
 
 As a matter of fact, the deployment manifest is not entirely static: Spinnaker will replace the image name with the actual tagged name from the bound artifact.
 
@@ -40,7 +40,7 @@ Two [parameters](https://kubernetes.io/docs/concepts/workloads/controllers/deplo
 
 Let's modify our deployment manifest and ensure that we always have 4 pods running during deployment:
 
-![image](images/%5Be955d4e3d765b2bba04eca65d1f87153%5D_Image%25202018-09-27%2520at%25205.58.29%2520PM.png)
+![image](/images/%5Be955d4e3d765b2bba04eca65d1f87153%5D_Image%25202018-09-27%2520at%25205.58.29%2520PM.png)
 
 Let's see how we deploy with our new configuration:
 ![image](/assets/images/rollingupdate-0.gif)

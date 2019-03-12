@@ -86,7 +86,7 @@ DECK_HOST=https://spinnaker.example-domain.com
 
 Update your ELB to contain the following port mappings:
 
-![elb](images/Image 2017-12-18 at 10.36.37 AM.png)
+![elb](/images/Image 2017-12-18 at 10.36.37 AM.png)
 
 
 Now you can restart Armory Spinnaker by doing

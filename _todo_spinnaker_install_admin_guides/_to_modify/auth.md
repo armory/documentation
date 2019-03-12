@@ -112,7 +112,7 @@ AUTH_ENABLED=true
 ## Github
 - Go to [https://github.com/organizations/YOUR_ORG_HERE/settings/applications/new](https://github.com/organizations/YOUR_ORG_HERE/settings/applications/new)
 - Set it up to look like:
-![](images/Image 2018-01-16 at 2.47.43 PM.png)
+![](/images/Image 2018-01-16 at 2.47.43 PM.png)
   * Armory's Logo: [http://go.Armory.io/shield-white](http://go.Armory.io/shield-white)
   * Fill in `Homepage URL`
   * Fill in `Authorization callback URL`
@@ -154,7 +154,7 @@ AUTH_ENABLED=true
 By default Github OAuth only requires that a user has a Github account without any restrictions on that account. Many installations will also want to require the user belong to a company organization to be authenticated successfully. When using the organization restriction members must have their visibility set to `Public`. You can view the visibility setting for members on the `People` tab of your organization.
 
 - Ensure that everyone in your organization has their visibility set to Public if they plan to login to Spinnaker:
-![Armory People Screen](images/Image 2018-04-09 at 10.30.55.png)
+![Armory People Screen](/images/Image 2018-04-09 at 10.30.55.png)
 - Add a `providerRequirements` section to the file at `/opt/spinnaker/config/gate-local.yml` under **security.oauth2** so that your configuration looks like the following:
 
 ```
@@ -314,4 +314,4 @@ Then restart Armory
 Before you configure authentication you'll need to enable sticky sessions for the external ELB for port `8084` (Gate).  This must be done through the AWS console.  
 - For an infinite session leave the `Expiration Period` blank.
 - *Note* Make sure to use load balancer generated cookies.
-![Adding Sticky Sessions](images/Image 2017-10-11 at 9.26.58 AM.png)
+![Adding Sticky Sessions](/images/Image 2017-10-11 at 9.26.58 AM.png)

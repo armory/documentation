@@ -13,7 +13,7 @@ This guide should tell you:
 
 When you first log in to Spinnaker, the landing page should look like this:
 
-![](images/Image 2017-03-24 at 3.15.34 PM.png)
+![](/images/Image 2017-03-24 at 3.15.34 PM.png)
 
 The navigation bar at the top allows you to access Projects, Applications, and Infrastructure.
 The search bar allows you to search through your Infrastructure. 
@@ -32,11 +32,11 @@ Remember that Spinnaker considers an application to be anything you would put in
 
 **Step 2:** Click the “Actions” button and select from the drop-down menu “Create Application”
 
-![](images/Image 2017-03-24 at 3.20.41 PM.png)
+![](/images/Image 2017-03-24 at 3.20.41 PM.png)
 
 **Step 3:** Fill out the pop-up form with desired user definitions.
 
-![](images/Image 2017-03-24 at 3.22.30 PM.png)
+![](/images/Image 2017-03-24 at 3.22.30 PM.png)
 
 Notes: 
 
@@ -46,7 +46,7 @@ Notes:
 
 **Step 4:** After you fill out the form you should see this:
 
-![](images/Image 2017-03-24 at 3.26.40 PM.png)
+![](/images/Image 2017-03-24 at 3.26.40 PM.png)
 
 **Step 5:** If you wish to modify the settings for the application, click on “Config” for configurations.
 
@@ -57,4 +57,4 @@ Note that by now you should have created an application, but as you have not cre
 
 Go to your application, click on “Config” and scroll all the way down. There will be a prompt to confirm if you would like to delete your application. 
 
-![](images/Image 2017-03-24 at 3.28.14 PM.png)
+![](/images/Image 2017-03-24 at 3.28.14 PM.png)

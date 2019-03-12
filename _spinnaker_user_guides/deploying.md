@@ -37,11 +37,11 @@ In this example we are going to deploy a simple web server that serves a page wi
 
 Go to the application screen to create a load balancer. Select the 'Load Balancers' tab:
 
-![](images/Image 2019-02-21 at 15.27.01.png)
+![](/images/Image 2019-02-21 at 15.27.01.png)
 
 Press the '+' on the right to create a new load balancer, you may need to select AWS > then select a Load Balance Type.
 
-![](images/Screen Shot 2019-02-21 at 15.32.49.png)
+![](/images/Screen Shot 2019-02-21 at 15.32.49.png)
 
 We'll enter 'prod' into the 'Stack' field because our environment contains dev, stage, and prod.
 
@@ -49,7 +49,7 @@ Set the [VPC Subnet Type]({% link _spinnaker_install_admin_guides/aws-subnets.md
 
 Now we can hit create.
 
-![](images/Image 2019-02-21 at 16.33.44.png)
+![](/images/Image 2019-02-21 at 16.33.44.png)
 
 
 ### Creating a Deploy Pipeline
@@ -64,7 +64,7 @@ Select **AWS** option for the provider.
 
 We'll be shown the option to copy a configuration from a currently running server group if a server group for this application already exists. In our case, let's select 'None' and continue.
 
-![](images/ezgif.com-gif-maker (3).gif)
+![](/images/ezgif.com-gif-maker (3).gif)
 
 Let's select the same **VPC Subnet** type as the ELB we just made. Remember to input 'prod' to the **Stack** field since that is what was used when creating the ELB.
 
@@ -78,7 +78,7 @@ Under the **Instance Type** section, select 'Micro Utility'.
 
 We'll set the capacity at 1 for now, but we can later set it up to do auto-scaling.
 
-![](images/Screen Shot 2019-02-21 at 16.44.29.png)
+![](/images/Screen Shot 2019-02-21 at 16.44.29.png)
 
 
 Scroll all the way down to the **Advanced Settings** section and change the **Health Check Type** from 'EC2' to 'ELB', we'll later see green boxes for health instances, gray for EC2 healthcheck instances, or red for unhealthy instances.
@@ -87,7 +87,7 @@ Select the keypair for the EC2 instances in **Key Name**.
 
 Erase the **IAM Instance Profile** field. In our example, we don't need access to any other AWS resources and the field may be filled in by default depending on your configurations.
 
-![](images/Image 2019-02-21 at 16.51.16.png)
+![](/images/Image 2019-02-21 at 16.51.16.png)
 
 
 Then click **Add** to complete this step. 
@@ -96,17 +96,17 @@ We return back to the deploy stage, with it now looking like:
 
 Finally, we can click **Save Changes** and select the back arror to return to the Pipeline Executions screen.
 
-![](images/Screen Shot 2019-02-21 at 16.58.56.png)
+![](/images/Screen Shot 2019-02-21 at 16.58.56.png)
 
 
 
 I press 'Start Manual Execution' on my pipeline. This is what I see:
 
-![](images/ezgif.com-gif-maker (4).gif)
+![](/images/ezgif.com-gif-maker (4).gif)
 
 When this pipeline finishes the Bake stage, we can see it's current stage/tasks status and we can also see it in the **Clusters** tab to see a new server group come up.
 
-![](images/Image 2017-03-30 at 3.23.24 PM.png)
+![](/images/Image 2017-03-30 at 3.23.24 PM.png)
 
 For more information about the details of this screen, check out the [application screen description guide]({% link _spinnaker_user_guides/application-screen.md %})
 
@@ -115,17 +115,17 @@ I can see here that a new server has indeed come up and is healthy. Healthy in t
 Now, to demonstrate the Blue/Green, I go back to the Pipeline Executions screen and press 'Start Manual Execution' again. Then I go back to the 'Clusters' tab to watch the execution process.
 
 First I see that a new server group named `v001` is being created. It doesn't have any instances in it yet:
-![](images/Image 2017-03-30 at 3.46.44 PM.png)
+![](/images/Image 2017-03-30 at 3.46.44 PM.png)
 
 After a few moments an instance is created and is initially 'unhealthy':
-![](images/Image 2017-03-30 at 3.47.16 PM.png)
+![](/images/Image 2017-03-30 at 3.47.16 PM.png)
 
 Once it passes its healthchecks and becomes healthy, it will visually indicate so by turning green. At this point Spinnaker will add the server group to the load balancer.
-![](images/Image 2017-03-30 at 3.50.01 PM.png)
+![](/images/Image 2017-03-30 at 3.50.01 PM.png)
 
 Immediately after that, the old server group is removed from the load balancer. Spinnaker will turn the old server group's instances blue. This means that they are disabled and no longer receiving traffic.
 
-![](images/Image 2017-03-30 at 3.50.18 PM.png)
+![](/images/Image 2017-03-30 at 3.50.18 PM.png)
 
 Because of how I configured my deploy stage, the old Blue server group will stick around until I either manually scale it down or destroy it. If you like, you can configure your deploy stage to automatically scale down the old server group after the new one is healthy.
 
@@ -142,7 +142,7 @@ Often when your deploy stage is timing out, it is because your instances are nev
 
 Select your red instance and hover your cursor over the red triangle next to the load balancer under the 'Status' section. This should display some helpful information for understanding why your instance is not deploying correctly.
 
-![](images/Image 2017-03-30 at 3.29.02 PM.png)
+![](/images/Image 2017-03-30 at 3.29.02 PM.png)
 
 ### Incorrect Healthcheck
 
@@ -163,7 +163,7 @@ Sometimes you may encounter an 'Unknown Error' message when executing your deplo
 
 This strategy will deploy a fresh server group and add it to the load balancer. The older server group will then be [disabled](#what-does-disabled-mean).
 
-![](images/Image 2017-03-30 at 5.23.57 PM.png)
+![](/images/Image 2017-03-30 at 5.23.57 PM.png)
 
 When you configure this stragey you can choose to scale down the old server group. You can always scale it back up if you need it for a rollback. Also, you can choose how many old server groups to leave in the cluster.
 
@@ -186,7 +186,7 @@ You can re-enable a server group by selecting it from the 'Cluster' screen, clic
 
 You can pass custom information to your deployed instances through the 'User Data' field under the 'Advanced Settings' section of the deploy stage configuration.
 
-![](images/Image 2017-03-30 at 4.30.36 PM.png)
+![](/images/Image 2017-03-30 at 4.30.36 PM.png)
 
 Make sure to base64 encode the content before putting it into the field in the options.
 
@@ -222,11 +222,11 @@ Yup. Sometimes you need to rollback to a known previously working state.
 
 From the 'Cluster' tab, select a server group. Click the button on the right pane labeled 'Server Group Actions' and press 'Rollback'
 
-![](images/Image 2017-03-30 at 5.14.14 PM.png)
+![](/images/Image 2017-03-30 at 5.14.14 PM.png)
 
 In the window that pops up, you can select which server group to rollback to.
 
-![](images/Image 2017-03-30 at 5.15.27 PM.png)
+![](/images/Image 2017-03-30 at 5.15.27 PM.png)
 
 The server group that you select will re-enabled and scaled up to the necessary number of replicas. Then the rolled back server group will be disabled.
 
@@ -292,6 +292,6 @@ In order to use a subnet within Spinnaker, you will need to tag it in AWS a cert
 
 There are two ways you can tag them. One option is to use the convention `spinnaker.<internal|external>.<region>` for the subnet's name. In the screenshot below, you can see that is what I have done on my subnets.
 
-![](images/Image 2017-03-30 at 1.48.35 PM.png)
+![](/images/Image 2017-03-30 at 1.48.35 PM.png)
 
 Another option is to create a tag named `immutable_metadata` with value `{"purpose": "MySubnetNameInsideSpinnaker"}`

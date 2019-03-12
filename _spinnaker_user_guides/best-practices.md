@@ -73,4 +73,4 @@ It is best to have Spinnaker trigger off of a push to a Docker registry instead 
 
 Sometimes you may need extra information if you're triggering off of Docker images. For instance you might want to release anything on the master branch to production, but release any other branch to the staging area. In order to do so, put the extra information into the tag, and the pipeline triggers in Spinnaker can use regular expression matches on the tag name in Docker to determine which pipeline to execute. Here is an example:
 
-![](images/Image 2017-04-17 at 4.35.46 PM.png)
+![](/images/Image 2017-04-17 at 4.35.46 PM.png)

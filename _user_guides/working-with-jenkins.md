@@ -18,7 +18,7 @@ This guide should include:
 To add a Jenkins trigger to your pipeline, go to your configurations stage and select "add trigger", then select "Jenkins" from the Type dropdown menu. Select a Master from the Master category list and then select a Job to trigger from the pipeline.
 
 
-![](images/Image 2017-03-27 at 4.47.35 PM.png)
+![](/images/Image 2017-03-27 at 4.47.35 PM.png)
 
 
 
@@ -75,11 +75,11 @@ In this example, we will create a pipeline with a Jenkin's job stage and a manua
 
 First we navigate to my Jenkins Master and create a new Jenkins 2.0 Pipeline Job. As you can see in the image below, this job creates and archives a file named `build.properties` which contains the key value pair `KEY=VAL`.
 
-![](images/Image 2017-03-27 at 5.20.02 PM.png)
+![](/images/Image 2017-03-27 at 5.20.02 PM.png)
 
 Then we go back to Spinnaker and create a new pipeline. We will skip over the Jenkins trigger for this example and create a Jenkins stage. Make sure to name the stage `Jenkins`. Make sure to type `build.properties` into the Properties field so that Spinnaker know where to source the property values.
 
-![](images/Image 2017-03-27 at 5.21.05 PM.png)
+![](/images/Image 2017-03-27 at 5.21.05 PM.png)
 
 To demonstrate accessing our properties file, let's create a new `Manual Judgement` stage. In the Instructions text box input:
 {% highlight shell %}
@@ -89,16 +89,16 @@ Spinnaker has added the key value pairs from `build.properties` in the Jenkins' 
 
 Don't forget to press the save button in the lower right corner. Your pipeline configuration should look like:
 
-![](images/Image 2017-03-28 at 2.04.43 PM.png)
+![](/images/Image 2017-03-28 at 2.04.43 PM.png)
 
 Finally, navigate back to the pipeline execution screen an start a manual execution of the pipeline you just configured.
 
 When the execution gets to the manual judgement stage, you should see the word `VAL` in the intructions text area.
 
-![](images/Image 2017-03-28 at 2.06.45 PM.png)
+![](/images/Image 2017-03-28 at 2.06.45 PM.png)
 
 ## Runnings scripts on Spinnaker
 
 You can also run arbitrary scripts on Spinnaker (behind the scenes it is pushing this work off to a Jenkins master). Simply select the `Script` type stage while configuring a pipeline. You should see a screen like:
 
-![](images/Image 2017-03-28 at 2.10.26 PM.png)
+![](/images/Image 2017-03-28 at 2.10.26 PM.png)
