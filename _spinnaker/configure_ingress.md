@@ -24,44 +24,43 @@ Note: This guide assumes you’re deploying Spinnaker on Kubernetes using the D
 While there are many ways to expose Spinnaker, we find the method described in this post to be the easiest way to get started. If your organization has other requirements, this post may be helpful as you start working through the process.
 
 First, we’ll start by creating LoadBalancer Services which will expose the API (Gate) and the UI (Deck) via a Load Balancer in your cloud provider. We’ll do this by running the commands below and creating the spin-gate-public and spin-deck-public Services.
-NAMESPACE is the Kubernetes namespace where your Spinnaker install is located. Halyard defaults to spinnaker unless explicitly overridden.
 
-Note: You can Secure the service with SSL, if you wish to do so, change the ports to listen on port 443 for both services. You can edit this later on, or you can do it from the start to skip one step.
+`NAMESPACE` is the Kubernetes namespace where your Spinnaker install is located. Halyard defaults to spinnaker unless explicitly overridden.
 
-```
-export NAMESPACE={namespace}
+Note: if you want to secure each endpoint with SSL, change it to `443` and continue through the guide.
+```bash
+export NAMESPACE=spinnaker
 kubectl -n ${NAMESPACE} expose service spin-gate --type LoadBalancer \
-  --port 443 \
+  --port 80/443 \
   --target-port 8084 \
   --name spin-gate-public
 
 kubectl -n ${NAMESPACE} expose service spin-deck --type LoadBalancer \
-  --port 9000 \
+  --port 80/443 \
   --target-port 9000 \
   --name spin-deck-public
 ```
 
+If you have a DNS in mind set it up like:
 ```
-export NAMESPACE={namespace}
-kubectl -n ${NAMESPACE} expose service spin-gate --type LoadBalancer \
-  --port 443 \
-  --target-port 8084 \
-  --name spin-gate-public
-  
-kubectl -n ${NAMESPACE} expose service spin-deck --type LoadBalancer \
-  --port 443 \
-  --target-port 9000 \
-  --name spin-deck-public
+spinnaker-gate.armory.io CNAME --> (spin-gate-public dns) aaaaa-1111.us-west-2.elb.amazonaws.com
+spinnaker.armory.io      CNAME --> (spin-deck-public dns) aaaaa-2222.us-west-2.elb.amazonaws.com
 ```
 
 Once these Services have been created, we’ll need to update our Spinnaker deployment so that the UI understands where the API is located. To do this, we’ll use Halyard to override the base URL for both the API and the UI and then redeploy Spinnaker.
 
-```
-export NAMESPACE={namespace}
-export API_URL=$(kubectl -n $NAMESPACE get svc spin-gate-public -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-export UI_URL=$(kubectl -n $NAMESPACE get svc spin-deck-public -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-hal config security api edit --override-base-url http://${API_URL}:8084
-hal config security ui edit --override-base-url http://${UI_URL}:9000
+```bash
+# use the newly created LBs
+# export API_URL=$(kubectl -n $NAMESPACE get svc spin-gate-public -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+# export UI_URL=$(kubectl -n $NAMESPACE get svc spin-deck-public -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+
+# or use DNS records
+# export API_URL=spinnaker-gate.armory.io
+# export UI_URL=spinnaker.armory.io
+
+# note, we're not using SSL yet, later in the guide we will.
+hal config security api edit --override-base-url http://${API_URL}
+hal config security ui edit --override-base-url http://${UI_URL}
 hal deploy apply
 ```
 
@@ -71,18 +70,18 @@ Note: If you created the services with port 8084 and 9000, you will need to edit
 `kubectl -n spinnaker edit service spin-gate-public`
 and 
 `kubectl -n spinnaker edit service spin-deck-public`
-and change the port to 443
+and change the public port to 443
 
 This tutorial presumes you've already created a certificate in the AWS Certificate Manager.
 
 First get the certificate arn and run
-```
+```bash
 export ACM_CERT_ARN="arn:::::your:cert"
 ```
 
 Edit the LoadBalancer service `spin-gate-public` and  `spin-deck-public` we will include 3 annotations for each.
 
-```
+```bash
 kubectl -n ${NAMESPACE} annotate svc spin-gate-public service.beta.kubernetes.io/aws-load-balancer-backend-protocol=http
 kubectl -n ${NAMESPACE} annotate svc spin-gate-public service.beta.kubernetes.io/aws-load-balancer-ssl-cert=${ACM_CERT_ARN}
 kubectl -n ${NAMESPACE} annotate svc spin-gate-public service.beta.kubernetes.io/aws-load-balancer-ssl-ports=80,443
@@ -92,10 +91,10 @@ kubectl -n ${NAMESPACE} annotate svc spin-deck-public service.beta.kubernetes.io
 kubectl -n ${NAMESPACE} annotate svc spin-deck-public service.beta.kubernetes.io/aws-load-balancer-ssl-ports=80,443
 ```
 
-### Update the Internal URLS in Spinnaker
+### Update the Internal URLS in Spinnaker to https
 We’ll need to update the internal URLs (Deck will complain about trying to call out to an HTTP resource from an HTTPS request). Update the URLs like we did before, but changing the protocols to https:
 
-```
+```bash
   hal config security api edit --override-base-url https://gate.demo.armory.io
   hal config security ui edit --override-base-url https://demo.armory.io
   hal deploy apply
