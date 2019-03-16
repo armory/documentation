@@ -33,7 +33,7 @@ Note: This document is focused on Armory Spinnaker, but can be adapted to instal
 
 This document is written with the following workflow in mind:
 
-* You have a machine (referred to as the `workstation machine` in this document) configured to use the `gcloud` Google Cloud SDK and a recent version of `kubectl` tool 
+* You have a machine (referred to as the `workstation machine` in this document) configured to use the `gcloud` Google Cloud SDK and a recent version of `kubectl` tool
 * You have a machine (referred to as the `docker machine` in this document) with the Docker daemon installed, and can run Docker containers on it
 * You can transfer files created on the `workstation machine` to the `docker machine` (to a directory mounted on a running Docker container)
 * These two machines can be the same machine
@@ -199,7 +199,7 @@ TOKEN_DATA=$(kubectl get secret ${SECRET_NAME} \
   --namespace ${NAMESPACE} \
   -o jsonpath='{.data.token}')
 
-TOKEN=$(echo ${TOKEN_DATA} | base64 -d) 
+TOKEN=$(echo ${TOKEN_DATA} | base64 -d)
 # Use this command if you're on a mac:
 # TOKEN=$(echo ${TOKEN_DATA} | base64 -D)
 ```
@@ -304,7 +304,7 @@ docker run --name armory-halyard -it --rm \
   -v ${WORKING_DIRECTORY}/.hal:/home/spinnaker/.hal \
   -v ${WORKING_DIRECTORY}/.secret:/home/spinnaker/.secret \
   -v ${WORKING_DIRECTORY}/resources:/home/spinnaker/resources \
-  armory/halyard-armory:1.3.0
+  armory/halyard-armory:{{ site.data.versions.halyard-armory-version }}
 ```
 
 ## Enter the Halyard container
