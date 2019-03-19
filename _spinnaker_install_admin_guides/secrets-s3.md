@@ -5,14 +5,10 @@ order: 150
 ---
 Managing Spinnaker secrets separately from its configuration is a necessary step to enabling Spinnaker through an SCM like git. This document describes how to store secrets in s3 and these secrets are used in Spinnaker and Halyard.
 
-<div class="alpha-warning">
-  This feature is in alpha stage with Armory Spinnaker. <a href="https://www.armory.io/contact">Get in touch</a> and give us feedback!
-</div>
-
 {:toc}
 
 ## Overview
-We can now store secrets (tokens, passwords, sensitive files) separately from the Spinnaker and Halyard configurations. We'll provide references to these secrets to services that need them.
+We can now store secrets (tokens, passwords, sensitive files) separately from the Spinnaker and Halyard configurations as of `halyard-armory:1.4.1`. We'll provide references to these secrets to services that need them.
 
 - Spinnaker services that support decryption will decrypt these secrets upon startup.
 - Halyard can decrypt these secrets when it needs to use them (e.g. when validating resources).
