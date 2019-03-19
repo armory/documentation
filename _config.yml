@@ -76,6 +76,9 @@ collections:
   release_notes:
     output: true
     permalink: /release-notes/:title/
+  halyard_release_notes:
+    output: true
+    permalink: /halyard-release-notes/:title/
   glossary:
     output: true
     permalink: /glossary/:title/
