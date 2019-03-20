@@ -31,7 +31,7 @@ with common patterns or partial matches.
 
 {% include components/regex_vs_wildcard.md %}
 
-![Configure Github Trigger](/images/Screen%2520Recording%25202019-01-09%2520at%252004.10%2520PM.gif)
+![Configure Github Trigger](/images/github-user-guide-1.gif)
 
 ## Using Artifacts from Github
 
