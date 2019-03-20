@@ -32,7 +32,7 @@ expression here to limit triggering to tag pattern names (for example,
 
 {% include components/regex_vs_wildcard.md %}
 
-![Add Trigger](/images/Screen%2520Recording%25202019-01-09%2520at%252010.05%2520AM.gif)
+![Add Trigger](/images/docker-user-guide-1.gif)
 
 ## Referencing the New Image
 

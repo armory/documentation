@@ -29,7 +29,7 @@ env:
 
 ## Bake Stage
 
-![Bake Stage](/images/Image%25202019-02-18%2520at%252017.17.36.png)
+![Bake Stage](/images/bake-and-share-1.png)
 
 Make sure to check the `Show Advanced Options` checkbox. Then where it says `Template File Name` use [aws-multi-ebs.json](https://github.com/spinnaker/rosco/blob/ccb004e511b14642218aaf229923fefa0a9c250c/rosco-web/config/packer/aws-multi-ebs.json) as the value.
 

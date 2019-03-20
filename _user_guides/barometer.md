@@ -2,7 +2,7 @@
 layout: post
 title: Barometer
 order: 75
-published: True
+published: False
 # this only applies to ec2 installer, I think.
 ---
 
