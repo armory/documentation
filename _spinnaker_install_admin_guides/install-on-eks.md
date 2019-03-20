@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Installing Spinnaker in EKS
-order: 0
-# Change this to true
+order: 22
+# Change this to true when ready
 published: false
 redirect_from:
   - /spinnaker_install_admin_guides/install_on_eks/
