@@ -33,7 +33,7 @@ List of items for order:
 
 31~ Add Kubernetes account
 32~ Add AWS account
-33  aws subnets
+33  aws subnets (goes with 32)
 
 43  dns-and-ssl
 
