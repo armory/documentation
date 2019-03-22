@@ -12,10 +12,10 @@ redirect_from:
 
 # This is a placeholder document and should not be published until it is complete
 
-This guide describes how to install Spinnaker in GKE.  It will create / use the following Google Cloud resources:
-* A GKE (Google Kubernetes Engine) cluster (you can use an existing one if you already have one)
-* A GCS (Google Cloud Storage) bucket (you can use an existing one if you already have one)
-* An NGINX Ingress controller in your GKE cluster
+This guide describes how to install Spinnaker in EKS.  It will create / use the following Google Cloud resources:
+* A EKS (Elastic Kubernetes Service) cluster (you can use an existing one if you already have one)
+* An S3 (Simple Storage Service) bucket (you can use an existing one if you already have one)
+* An NGINX Ingress controller in your EKS cluster
 
 This document currently does not fully cover the following (see [Next Steps](#next-steps) for some links to achieve these)
 * TLS Encryption
@@ -33,7 +33,7 @@ Note: This document is focused on Armory Spinnaker, but can be adapted to instal
 
 This document is written with the following workflow in mind:
 
-* You have a machine (referred to as the `workstation machine` in this document) configured to use the `gcloud` Google Cloud SDK and a recent version of `kubectl` tool 
+* You have a machine (referred to as the `workstation machine` in this document) configured to use the `aws` Amazon CLI tool and a recent version of `kubectl` tool 
 * You have a machine (referred to as the `docker machine` in this document) with the Docker daemon installed, and can run Docker containers on it
 * You can transfer files created on the `workstation machine` to the `docker machine` (to a directory mounted on a running Docker container)
 * These two machines can be the same machine
@@ -49,7 +49,7 @@ On the `docker machine`:
 * You will create `kubeconfig` files and Google IAM service account keys, that will be added to the `.secret` directory
 
 On the `workstation machine`:
-* You can use `gcloud` to create Google resources:
+* You can use `aws` to create Amazon resources:
   * GKE clusters (or, alternatley, have a GKE cluster already built)
   * GCS buckets (or, alternately, have a GCS bucket already built)
 * You have the `kubectl` (Kubernetes CLI tool) installed and are able to use it to interact with your GKE cluster, if you're using a prebuilt GKE cluster

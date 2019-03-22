@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Installing Spinnaker in GKE
-order: 22
+order: 23
 published: true
 redirect_from:
   - /spinnaker_install_admin_guides/install_on_gke/
