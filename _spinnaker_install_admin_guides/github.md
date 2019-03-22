@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Configure Github
-order: 41
+order: 48
 redirect_from:
   - /spinnaker_install_admin_guides/github/
 ---

@@ -22,15 +22,24 @@ redirect_from:
 List of items for order:
 10  Architecture
 
-21~  Install-on-EKS
-22  Install-on-GKE
-23~  Add Kubernetes account
-24~  Add AWS account
-25  aws subnets
+21~ EKS Prereqs
+22~ Install on EKS
+23~ GKE Prereqs
+24 Install on GKE
+25~ AKS Prereqs
+26~ Install on AKS
+27~ Minikube / Docker Desktop Kubernetes Prereqs
+28~ Install on Minikube/Docker Desktop
 
-31  dns-and-ssl
+31~ Add Kubernetes account
+32~ Add AWS account
+33  aws subnets (goes with 32)
 
-41  Github
+43  dns-and-ssl
+
+
+
+48  Github
 
 ----50-59 - trigger integrations
 50  Jenkins
@@ -47,3 +56,4 @@ List of items for order:
 
 140 Rate limit
 150 Secrets S3
+152 Gitops
