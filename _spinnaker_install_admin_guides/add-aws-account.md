@@ -3,7 +3,7 @@ layout: post
 title: Creating and Adding AWS Accounts to Spinnaker (Deployment Target)
 order: 32
 # Change this to true when ready to publish
-published: false
+published: true
 redirect_from:
   - /spinnaker_install_admin_guides/add-aws-account/
   - /spinnaker_install_admin_guides/add_aws_account/
