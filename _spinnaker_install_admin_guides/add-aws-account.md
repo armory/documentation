@@ -64,9 +64,9 @@ This document assumes the following:
 * You have permissions to create IAM roles using IAM policies and permissions, in all relevant AWS accounts
   * You should also be able to set up cross-account trust relationships between IAM roles.
 * If you want to add the IAM Role to Spinnaker via an Access Key/Secret Access Key, you have permissions to create an IAM User
-* If you want to add the IAM Role to Spinnaker via IAM instance profiles/policies, you haev permissions to modify the IAM instance 
+* If you want to add the IAM Role to Spinnaker via IAM instance profiles/policies, you have permissions to modify the IAM instance 
 
-_All configuration with AWS in this document will be handled via the browser-based AWS Console.  All configurations could _alternately_ be configured via the `aws` CLI, but this is not currently covered in this document._
+_All configuration with AWS in this document will be handled via the browser-based AWS Console.  All configurations could **alternately** be configured via the `aws` CLI, but this is not currently covered in this document._
 
 Also - we will be granting AWS Power User Access to each of the Managed Account Roles.  You could optionally grant fewer permisisons, but those more limited permissions are not covered in this document.
 
@@ -165,54 +165,61 @@ For each account you want to deploy to, perform the following:
 1. Click on the "Trust relationships" tab.
 1. Click on "Edit trust relationship"
 1. Replace the Policy Document with this (Update the ARN with the node role ARN from "Instance Role Part 3")
-  ```json
-  {
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Effect": "Allow",
-        "Principal": {
-          "AWS": [
-            "arn:aws:iam::123456789010:role/node-role"
-          ]
-        },
-        "Action": "sts:AssumeRole"
-      }
-    ]
-  }
-  ```
-1. Click "Update Trust Policy", in the bottom right.
+
+    ```json
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "AWS": [
+              "arn:aws:iam::123456789010:role/node-role"
+            ]
+          },
+          "Action": "sts:AssumeRole"
+        }
+      ]
+    }
+    ```
+
+8. Click "Update Trust Policy", in the bottom right.
 
 ### Instance Role Part 5: Adding the Managed Accounts to Spinnaker via Halyard
 
 The Clouddriver pod(s) should be now able to assume each of the Managed Roles (Target Roles) in each of your Deployment Target accounts.  We need to configure Spinnaker to be aware of the accounts and roles its allowed to consume.  This is done via Halyard.
 
 For each of the Managed (Target) accounts you want to deploy to, perform the following from your Halyard instance:
-1. Run this command, **replacing field as follows**:
-  * `AWS_ACCOUNT_NAME` should be a unique name which is used in the Spinnaker UI and API to identify the deployment target.  For example, `aws-dev-1` or `aws-dev-2`
-  * `ACCOUNT_ID` should be the account ID for the Managed Role (Target Role) you are assuming.  For example, if the role ARN is `arn:aws:iam::123456789012:role/DevSpinnakerManagedRole`, then ACCOUNT_ID would be `123456789012`
-  * `ROLE_NAME` should be the full role name within the account, including the type of object (`role`).  For example, if the role ARN is `arn:aws:iam::123456789012:role/DevSpinnakerManagedRole`, then ROLE_NAME would be `role/DevSpinnakerManagedRole`
-  ```bash
-  # Enter the account name you want Spinnaker to use to identify the deployment target, the account ID, and the role name.
-  export AWS_ACCOUNT_NAME=aws-dev-1
-  export ACCOUNT_ID=123456789012
-  export ROLE_NAME=role/DevSpinnakerManagedRole
 
-  hal config provider aws account add ${AWS_ACCOUNT_NAME} \
-      --account-id ${ACCOUNT_ID} \
-      --assume-role ${ROLE_NAME}
-  ```
+1. Run this command, **updating fields as follows**:
+    * `AWS_ACCOUNT_NAME` should be a unique name which is used in the Spinnaker UI and API to identify the deployment target.  For example, `aws-dev-1` or `aws-dev-2`
+    * `ACCOUNT_ID` should be the account ID for the Managed Role (Target Role) you are assuming.  For example, if the role ARN is `arn:aws:iam::123456789012:role/DevSpinnakerManagedRole`, then ACCOUNT_ID would be `123456789012`
+    * `ROLE_NAME` should be the full role name within the account, including the type of object (`role`).  For example, if the role ARN is `arn:aws:iam::123456789012:role/DevSpinnakerManagedRole`, then ROLE_NAME would be `role/DevSpinnakerManagedRole`
+  
+    ```bash
+    # Enter the account name you want Spinnaker to use to identify the deployment target, the account ID, and the role name.
+    export AWS_ACCOUNT_NAME=aws-dev-1
+    export ACCOUNT_ID=123456789012
+    export ROLE_NAME=role/DevSpinnakerManagedRole
+
+    hal config provider aws account add ${AWS_ACCOUNT_NAME} \
+        --account-id ${ACCOUNT_ID} \
+        --assume-role ${ROLE_NAME}
+    ```
+
 1. Optionally, edit the account with additional options such as those indicated in the [halyard documentation](https://www.spinnaker.io/reference/halyard/commands/#hal-config-provider-aws-account-edit).  For example, to set the regions that you can deploy to:
-  ```bash
-  export AWS_ACCOUNT_NAME=aws-dev-1
-  hal config provider aws account edit ${AWS_ACCOUNT_NAME} \
-      --regions us-east-1,us-west-2
-  ```
+
+    ```bash
+    export AWS_ACCOUNT_NAME=aws-dev-1
+    hal config provider aws account edit ${AWS_ACCOUNT_NAME} \
+        --regions us-east-1,us-west-2
+    ```
 
 ### Instance Role Part 6: Adding/Enabling the AWS Cloudprovider to Spinnaker
 
 Once you've added all of the Managed (Target) accounts, run these commands to set up and enable the AWS cloudprovider setting as whole (this can be run multiple times with no ill effects):
-1. Enable AWS Provider
+
+1. Enable the AWS Provider
   ```bash
   hal config provider aws enable
   ```
@@ -231,6 +238,7 @@ If you are not running Spinnaker on AWS, or if you don't want to use AWS IAM rol
 In each account that you want Spinnaker to deploy to, you should create an IAM role for Spinnaker to assume.
 
 For each account you want to deploy to, perform the following:
+
 1. Log into the browser-based AWS Console
 1. Navigate to the IAM page (click on "Services" at the top, then on "IAM" under "Security, Identity, & Compliance")
 1. Click on "Roles" on the left hand side
@@ -247,6 +255,7 @@ For each account you want to deploy to, perform the following:
 1. Copy the Role ARN and save it.  It should look something like this: `arn:aws:iam::123456789012:role/DevSpinnakerManagedRole`.  **This will be used in the next section, "IAM User Part 2", and in the Halyard section, "IAM User Part 5"***
 
 You will end up with a Role ARN for each Managed / Target account.  The Role names do not have to be the same (although it is a bit cleaner if they are).  For example, you may end up with roles that look like this:
+
 * `arn:aws:iam::123456789012:role/DevSpinnakerManagedRole`
 * `arn:aws:iam::123456789013:role/DevSpinnakerManagedRole`
 * `arn:aws:iam::123456789014:role/DevSpinnakerManaged`
@@ -326,22 +335,24 @@ For each account you want to deploy to, perform the following:
 1. Click on the "Trust relationships" tab.
 1. Click on "Edit trust relationship"
 1. Replace the Policy Document with this (Update the ARN with the node role ARN from "Instance Role Part 3")
-  ```json
-  {
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Effect": "Allow",
-        "Principal": {
-          "AWS": [
-            "arn:aws:iam::123456789010:user/DevSpinnakerManagingAccount",
-          ]
-        },
-        "Action": "sts:AssumeRole"
-      }
-    ]
-  }
-  ```
+
+    ```json
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "AWS": [
+              "arn:aws:iam::123456789010:user/DevSpinnakerManagingAccount",
+            ]
+          },
+          "Action": "sts:AssumeRole"
+        }
+      ]
+    }
+    ```
+
 1. Click "Update Trust Policy", in the bottom right.
 
 ### IAM User Part 5: Adding the Managing Account User and Managed Accounts to Spinnaker via Halyard
@@ -349,27 +360,30 @@ For each account you want to deploy to, perform the following:
 The Clouddriver pod(s) should be now able to assume each of the Managed Roles (Target Roles) in each of your Deployment Target accounts.  We need to configure Spinnaker to be aware of the accounts and roles its allowed to consume.  This is done via Halyard.
 
 For each of the Managed (Target) accounts you want to deploy to, perform the following from your Halyard instance:
-1. Run this command, **replacing field as follows**:
-  * `AWS_ACCOUNT_NAME` should be a unique name which is used in the Spinnaker UI and API to identify the deployment target.  For example, `aws-dev-1` or `aws-dev-2`
-  * `ACCOUNT_ID` should be the account ID for the Managed Role (Target Role) you are assuming.  For example, if the role ARN is `arn:aws:iam::123456789012:role/DevSpinnakerManagedRole`, then ACCOUNT_ID would be `123456789012`
-  * `ROLE_NAME` should be the full role name within the account, including the type of object (`role`).  For example, if the role ARN is `arn:aws:iam::123456789012:role/DevSpinnakerManagedRole`, then ROLE_NAME would be `role/DevSpinnakerManagedRole`
-  ```bash
-  # Enter the account name you want Spinnaker to use to identify the deployment target, the account ID, and the role name.
-  export AWS_ACCOUNT_NAME=aws-dev-1
-  export ACCOUNT_ID=123456789012
-  export ROLE_NAME=role/DevSpinnakerManagedRole
+1. Run this command, **updating fields as follows**:
 
-  hal config provider aws account add ${AWS_ACCOUNT_NAME} \
-      --account-id ${ACCOUNT_ID} \
-      --assume-role ${ROLE_NAME}
-  ```
+    * `AWS_ACCOUNT_NAME` should be a unique name which is used in the Spinnaker UI and API to identify the deployment target.  For example, `aws-dev-1` or `aws-dev-2`
+    * `ACCOUNT_ID` should be the account ID for the Managed Role (Target Role) you are assuming.  For example, if the role ARN is `arn:aws:iam::123456789012:role/DevSpinnakerManagedRole`, then ACCOUNT_ID would be `123456789012`
+    * `ROLE_NAME` should be the full role name within the account, including the type of object (`role`).  For example, if the role ARN is `arn:aws:iam::123456789012:role/DevSpinnakerManagedRole`, then ROLE_NAME would be `role/DevSpinnakerManagedRole`
+
+    ```bash
+    # Enter the account name you want Spinnaker to use to identify the deployment target, the account ID, and the role name.
+    export AWS_ACCOUNT_NAME=aws-dev-1
+    export ACCOUNT_ID=123456789012
+    export ROLE_NAME=role/DevSpinnakerManagedRole
+
+    hal config provider aws account add ${AWS_ACCOUNT_NAME} \
+        --account-id ${ACCOUNT_ID} \
+        --assume-role ${ROLE_NAME}
+    ```
+
 1. Optionally, edit the account with additional options such as those indicated in the [halyard documentation](https://www.spinnaker.io/reference/halyard/commands/#hal-config-provider-aws-account-edit).  For example, to set the regions that you can deploy to:
 
-  ```bash
-  export AWS_ACCOUNT_NAME=aws-dev-1
-  hal config provider aws account edit ${AWS_ACCOUNT_NAME} \
-      --regions us-east-1,us-west-2
-  ```
+    ```bash
+    export AWS_ACCOUNT_NAME=aws-dev-1
+    hal config provider aws account edit ${AWS_ACCOUNT_NAME} \
+        --regions us-east-1,us-west-2
+    ```
 
 ### IAM User Part 6: Adding/Enabling the AWS Cloudprovider to Spinnaker
 
@@ -377,21 +391,21 @@ Once you've added all of the Managed (Target) accounts, run these commands to se
 
 1. Add the AWS access key and secret access key from "IAM User Part 3" using Halyard (don't forget to provide the correct access key).
   
-  ```bash
-  export ACCESS_KEY_ID=AKIA1234567890ABCDEF
-  hal config provider aws edit --access-key-id ${ACCESS_KEY_ID} \
-    --secret-access-key # do not supply the key here, you will be prompted
-  ```
+    ```bash
+    export ACCESS_KEY_ID=AKIA1234567890ABCDEF
+    hal config provider aws edit --access-key-id ${ACCESS_KEY_ID} \
+      --secret-access-key # do not supply the key here, you will be prompted
+    ```
 
 1. Enable AWS Provider
 
-  ```bash
-  hal config provider aws enable
-  ```
+    ```bash
+    hal config provider aws enable
+    ```
 
 1. Apply all Spinnaker changes:
 
-  ```bash
-  # Apply changes
-  hal deploy apply
-  ```
+    ```bash
+    # Apply changes
+    hal deploy apply
+    ```
