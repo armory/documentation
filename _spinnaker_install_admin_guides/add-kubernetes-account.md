@@ -1,18 +1,37 @@
 ---
 layout: post
-title: Adding Kubernetes Deployment Targets
+title: Creating and Adding a Kubernetes Account to Spinnaker (Deployment Target)
 order: 31
+# Change this to true when ready to publish
+published: true
 redirect_from:
   - /spinnaker_install_admin_guides/aws-kubernetes-account/
   - /spinnaker_install_admin_guides/add_kubernetes_account/
   - /spinnaker-install-admin-guides/add_kubernetes_account/
 ---
 
-# Creating and Adding a Kubernetes Spinnaker Account (Cloud Provider / Deployment Target)
-
-Once you have (OSS or Armory) Spinnaker up and running, you'll want to start adding deployment targets.  *(This document assumes Spinnaker was installed with halyard, that you have access to your current halconfig (and a way to operate `hal` against it), and that you have a kubeconfig and `kubectl` with permissions to create the relevant Kubernetes entities (`service account`, `role`, and `rolebinding`)*
+Once you have (OSS or Armory) Spinnaker up and running in Kubernetes, you'll want to start adding deployment targets.  *(This document assumes Spinnaker was installed with halyard, that you have access to your current halconfig (and a way to operate `hal` against it), and that you have a kubeconfig and `kubectl` with permissions to create the relevant Kubernetes entities (`service account`, `role`, and `rolebinding`)*
 
 _This document only covers the Kubernetes V2 provider_
+
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
+
+## Overview
+
+This document will guide you through the following:
+
+* Creating the namespace that the Service Account will live in (if it does not yet exist)
+* Creating the service account in the Service Account namespace
+* If granting cluster admin (`cluster-admin`), a clusterrolebinding attaching the `cluster-admin` ClusterRole to the service account
+* If granting namespace-specific access, the following:
+  * For each namespace, the namespace (if it does not exist)
+  * For each target namespace, an admin role
+  * For each target namespace, a rolebinding attaching the admin role to the service account
+* Creating a minified kubeconfig containing only the service account
+* Adding the account to Spinnaker using Halyard
+
+## Background
 
 At a high level, Spinnaker operates in the following way when deploying to Kubernetes:
 
@@ -49,18 +68,6 @@ So here are some takeaways and guiding principles that result from the above:
     * More specific permissions in your cluster (this is not covered in the scope of this document)
 * It is preferable to create a distinct kubeconfig file for each Spinnaker Cloud Provider Kubernetes account; each of these kubeconfigs should have **one** cluster, **one** user, and **one** context referencing the cluster and user.  Its default context should reference the single context
 
-This document will guide you through the following:
-
-* Creating the namespace that the Service Account will live in (if it does not yet exist)
-* Creating the service account in the Service Account namespace
-* If granting cluster admin (`cluster-admin`), a clusterrolebinding attaching the `cluster-admin` ClusterRole to the service account
-* If granting namespace-specific access, the following:
-  * For each namespace, the namespace (if it does not exist)
-  * For each target namespace, an admin role
-  * For each target namespace, a rolebinding attaching the admin role to the service account
-* Create a minified kubeconfig containing only the service account
-* Adding the account to Spinnaker using Halyard
-
 ## Prerequisites
 
 This document assumes the following:
@@ -72,9 +79,9 @@ This document assumes the following:
 
 The first several steps of this document will take place on a system that has `kubectl` and the kubeconfig.
 
-# Setting up the Service Account
+## Setting up the Service Account
 
-## Set up bash parameters
+### Set up bash parameters
 
 First, we'll set up bash environment variables that will be used by later commands
 
@@ -104,7 +111,7 @@ export ROLE_NAME="spinnaker-role"
 export ACCOUNT_NAME="spinnaker-dev"
 ```
 
-## Create the service account namespace and service account
+### Create the service account namespace and service account
 
 ```bash
 # Create a manifest containing the service account and namespace
@@ -131,14 +138,14 @@ sed -i.bak \
 kubectl --context ${CONTEXT} apply -f ${SA_NAMESPACE}-${SERVICE_ACCOUNT_NAME}-service-account.yml
 ```
 
-## Add permissions
+### Add permissions
 
 There are two options:
 
 * Add cluster-admin permissions
 * Add namespace-specific permissions
 
-### Option 1: Add cluster-admin permissions
+#### Option 1: Add cluster-admin permissions
 
 ```bash
 # Create a manifest containing the ClusterRoleBinding
@@ -167,7 +174,7 @@ sed -i.bak \
 kubectl --context ${CONTEXT} apply -f ${SA_NAMESPACE}-${SERVICE_ACCOUNT_NAME}-admin-clusterrolebinding.yml
 ```
 
-### Option 2: Add namespace-specific permissions
+#### Option 2: Add namespace-specific permissions
 
 ```bash
 # Create template for roles/rolebinding manifests
@@ -218,7 +225,7 @@ for TARGET_NS in ${TARGET_NAMESPACES[@]}; do
 done
 ```
 
-# Creating the (minified) Kubeconfig
+## Creating the (minified) Kubeconfig
 
 In order for Spinnaker to talk to a Kubernetes cluster, it must be provided a kubeconfig.  We're going to create a trimmed-down kubeconfig that only has the service account and token.
 
