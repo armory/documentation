@@ -287,8 +287,8 @@ We will use all of these below.
 
 Gate expects all certificates in JKS (Java KeyStore) format, so we have to do some conversion and combination.  Specifically, we will generate a JKS that has these two items in it:
 
-    * An entry containing the **Gate** private key and public certificate
-    * An entry containing the **CA** public certificate
+  * An entry containing the **Gate** private key and public certificate
+  * An entry containing the **CA** public certificate
 
 1. Convert the `pem` format Gate server certificate into a PKCS12 (`p12`) file,
 which is importable into a Java Keystore (JKS).  
@@ -729,37 +729,40 @@ To a client certificate, construct a string with the groups delimited by `\n`, l
 
 Then, add that to a configuration file that looks like this (replacing `GROUP_STRING` with your group string)
 
-    ```bash
-    # group.conf
-    [ req ]
-    distinguished_name	= req_distinguished_name
-    attributes		= req_attributes
-    req_extensions = v3_req
+  ```bash
+  # group.conf
+  [ req ]
+  distinguished_name	= req_distinguished_name
+  attributes		= req_attributes
+  req_extensions = v3_req
 
-    [ req_distinguished_name ]
-    countryName			= Country Name (2 letter code)
-    countryName_min			= 2
-    countryName_max			= 2
-    stateOrProvinceName		= State or Province Name (full name)
-    localityName			= Locality Name (eg, city)
-    0.organizationName		= Organization Name (eg, company)
-    organizationalUnitName		= Organizational Unit Name (eg, section)
-    commonName			= Common Name (eg, fully qualified host name)
-    commonName_max			= 64
-    emailAddress			= Email Address
-    emailAddress_max		= 64
+  [ req_distinguished_name ]
+  countryName			= Country Name (2 letter code)
+  countryName_min			= 2
+  countryName_max			= 2
+  stateOrProvinceName		= State or Province Name (full name)
+  localityName			= Locality Name (eg, city)
+  0.organizationName		= Organization Name (eg, company)
+  organizationalUnitName		= Organizational Unit Name (eg, section)
+  commonName			= Common Name (eg, fully qualified host name)
+  commonName_max			= 64
+  emailAddress			= Email Address
+  emailAddress_max		= 64
 
-    [ req_attributes ]
-    challengePassword		= A challenge password
-    challengePassword_min		= 4
-    challengePassword_max		= 20
+  [ req_attributes ]
+  challengePassword		= A challenge password
+  challengePassword_min		= 4
+  challengePassword_max		= 20
 
-    [ v3_req ]
-    keyUsage = nonRepudiation, digitalSignature, keyEncipherment
-    1.2.840.10070.8.1 = ASN1:UTF8String:GROUP_STRING
-    ```
+  [ v3_req ]
+  keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+  1.2.840.10070.8.1 = ASN1:UTF8String:GROUP_STRING
+  ```
 
 For example:
+
+
+1. Create the configuration file
 
     ```bash
     tee group.conf <<-'EOF'
@@ -792,7 +795,20 @@ For example:
     EOF
     ```
 
-Then, specify that file when you generate the CSR with the `-config group.conf`
+1. Create the client key. Keep this file safe!
+
+    ```bash
+    # This will be the passphrase used to encrypt the client private key
+    CLIENT_PASSWORD=SOME_CLIENT_PASSPHRASE
+
+    openssl genrsa \
+      -des3 \
+      -out client.key \
+      -passout pass:${CLIENT_PASSWORD} \
+      4096
+    ```
+
+1. Specify the configuration file when you generate the CSR with the `-config group.conf`
 
     ```bash
     # This should be the same passphrase used to encrypt the client private key
@@ -806,7 +822,7 @@ Then, specify that file when you generate the CSR with the `-config group.conf`
       -config group.conf
     ```
 
-And specify that file when you use the CA to sign the certificate with the `-extensions v3_req` and `-extfile group.conf` flags:
+1. Specify the configuration file when you use the CA to sign the certificate with the `-extensions v3_req` and `-extfile group.conf` flags:
 
     ```bash
     # This should be the passphrase used to encrypt the self-signed CA private key
@@ -827,7 +843,7 @@ And specify that file when you use the CA to sign the certificate with the `-ext
 
 Now, when you use the generated certificate and key, your API client will be able to access Spinnaker items that are restricted to those groups.
 
-## Configuring Spinnaker to parse out usernames from client certificate(s)
+### Configuring Spinnaker to parse out usernames from client certificate(s)
 When looking at audit logs, it can be helpful to differentiate different API clients.  One way to achieve this is to parse out a "username" from the client for each API client certificate.  This is achieved by configuring Spinnaker to use regex to pull out a subject from the certificate.  This is set up with the `subject principal regex` field, which is configured via Halyard like this:
 
 ```bash
