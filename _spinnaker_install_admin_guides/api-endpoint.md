@@ -32,21 +32,21 @@ This document details the following:
 
 At the end of this process, you will end up with three endpoints for Spinnaker:
 * A UI endpoint on the Deck microservice.  You can terminate TLS on the load balancer (Ingress other load balancer), and end up with a flow that looks like this:
-    ```bash
-    [Browser] ---HTTPS--> [Load Balancer with TLS Termination] ---HTTPS--> [Deck:9000]
-    ```
+  ```bash
+  [Browser] ---HTTPS--> [Load Balancer with TLS Termination] ---HTTPS--> [Deck:9000]
+  ```
 * An API endpoint on the Gate microservice for browser clients.  You can terminate TLS on the load balancer (Ingress other load balancer).  Authentication will be handled by your primary authentication provider (LDAP, SAML, OAuth2.0, etc.).  You may end up with a flow that looks like this:
-    ```bash
-    [Browser] ---HTTPS--> [Load Balancer with TLS Termination] ---HTTPS--> [Gate:8084]
-    ```
+  ```bash
+  [Browser] ---HTTPS--> [Load Balancer with TLS Termination] ---HTTPS--> [Gate:8084]
+  ```
 * An API endpoint on the Gate microservice for automation clients.  Clients must present an x509 client certificate in order to use this endpoint, so you *cannot* terminate TLS on a load balancer in front of Gate.  The data flow may look something like this:
-    ```bash
-    [API Client] ---HTTPS--> [TCP Load Balancer] ---HTTPS--> [Gate:8085]
-    ```
-    or
-    ```bash
-    [API Client] ---HTTPS--> [TLS Pass Through Load Balancer] ---HTTPS--> [Gate:8085]
-    ```
+  ```bash
+  [API Client] ---HTTPS--> [TCP Load Balancer] ---HTTPS--> [Gate:8085]
+  ```
+  or
+  ```bash
+  [API Client] ---HTTPS--> [TLS Pass Through Load Balancer] ---HTTPS--> [Gate:8085]
+  ```
 
 ### Decision Points
 
@@ -93,30 +93,30 @@ a self-signed Certificate Authority.
 
 1. Create the CA key, which will be encrypted with a passphrase.  You can remove the `-passout` flag to have the command prompt for the passphrase.
 
-    ```bash
-    CA_KEY_PASSWORD=SOME_PASSWORD_FOR_CA_KEY
-
-    openssl genrsa \
-      -des3 \
-      -out ca.key \
-      -passout pass:${CA_KEY_PASSWORD} \
-      4096
-    ```
+   ```bash
+   CA_KEY_PASSWORD=SOME_PASSWORD_FOR_CA_KEY
+   
+   openssl genrsa \
+     -des3 \
+     -out ca.key \
+     -passout pass:${CA_KEY_PASSWORD} \
+     4096
+   ```
 
 1. Self-sign the CA certificate.  You can remove the `-passin` flag to have the command prompt for the passphrase.  This should be the pass phrase used to 
 encrypt `ca.key`.
 
-    ```bash
-    CA_KEY_PASSWORD=SOME_PASSWORD_FOR_CA_KEY
-
-    openssl req \
-      -new \
-      -x509 \
-      -days 365 \
-      -key ca.key \
-      -out ca.crt \
-      -passin pass:${CA_KEY_PASSWORD}
-    ```
+   ```bash
+   CA_KEY_PASSWORD=SOME_PASSWORD_FOR_CA_KEY
+   
+   openssl req \
+     -new \
+     -x509 \
+     -days 365 \
+     -key ca.key \
+     -out ca.crt \
+     -passin pass:${CA_KEY_PASSWORD}
+   ```
 
 ## Obtain or Generate a Server Certificate for the Deck (UI) Service
 
@@ -140,48 +140,48 @@ If you want to generate your own certificates (for example, from the self-signed
 
 1. Create a server key for Deck. Keep this file safe!
 
-    ```bash
-    # This will be the passphrase used to encrypt the Deck private key
-    DECK_KEY_PASSWORD=SOME_PASSWORD_FOR_DECK_KEY
-
-    openssl genrsa \
-      -des3 \
-      -out deck.key \
-      -passout pass:${DECK_KEY_PASSWORD} \
-      4096
-    ```
+   ```bash
+   # This will be the passphrase used to encrypt the Deck private key
+   DECK_KEY_PASSWORD=SOME_PASSWORD_FOR_DECK_KEY
+   
+   openssl genrsa \
+     -des3 \
+     -out deck.key \
+     -passout pass:${DECK_KEY_PASSWORD} \
+     4096
+   ```
 
 1. Generate a certificate signing request (CSR) for Deck. Specify `localhost` or
 Deck's eventual fully-qualified domain name (FQDN) as the Common Name (CN).  
 
-    ```bash
-    # This should be the passphrase used to encrypt the Deck private key
-    DECK_KEY_PASSWORD=SOME_PASSWORD_FOR_DECK_KEY
-
-    openssl req \
-      -new \
-      -key deck.key \
-      -out deck.csr \
-      -passin pass:${DECK_KEY_PASSWORD}
-    ```
+   ```bash
+   # This should be the passphrase used to encrypt the Deck private key
+   DECK_KEY_PASSWORD=SOME_PASSWORD_FOR_DECK_KEY
+   
+   openssl req \
+     -new \
+     -key deck.key \
+     -out deck.csr \
+     -passin pass:${DECK_KEY_PASSWORD}
+   ```
 
 1. Use the CA to sign the server's request and create the Deck server certificate
 (in `pem` format). If using an external CA, they will do this for you.  
 
-    ```bash
-    # This should be the passphrase used to encrypt the self-signed CA private key
-    CA_KEY_PASSWORD=SOME_PASSWORD_FOR_CA_KEY
-
-    openssl x509 \
-      -req \
-      -days 365 \
-      -in deck.csr \
-      -CA ca.crt \
-      -CAkey ca.key \
-      -CAcreateserial \
-      -out deck.crt \
-      -passin pass:${CA_KEY_PASSWORD}
-    ```
+   ```bash
+   # This should be the passphrase used to encrypt the self-signed CA private key
+   CA_KEY_PASSWORD=SOME_PASSWORD_FOR_CA_KEY
+   
+   openssl x509 \
+     -req \
+     -days 365 \
+     -in deck.csr \
+     -CA ca.crt \
+     -CAkey ca.key \
+     -CAcreateserial \
+     -out deck.crt \
+     -passin pass:${CA_KEY_PASSWORD}
+   ```
 
 1. You should end up with these two files:
     * `deck.key`: a `pem`-formatted private key, which will have a pass phrase
@@ -215,54 +215,54 @@ If you want to generate your own certificates (for example, from the self-signed
 
 1. Create a server key for Gate. Keep this file safe!
 
-    This will prompt for a pass phrase to encrypt the key.
+   This will prompt for a pass phrase to encrypt the key.
 
-    ```bash
-    # This will be the passphrase used to encrypt the Gate private key
-    GATE_KEY_PASSWORD=SOME_PASSWORD_FOR_GATE_KEY
-    
-    openssl genrsa \
-      -des3 \
-      -out gate.key \
-      -passout pass:${GATE_KEY_PASSWORD} \
-      4096
-    ```
+   ```bash
+   # This will be the passphrase used to encrypt the Gate private key
+   GATE_KEY_PASSWORD=SOME_PASSWORD_FOR_GATE_KEY
+   
+   openssl genrsa \
+     -des3 \
+     -out gate.key \
+     -passout pass:${GATE_KEY_PASSWORD} \
+     4096
+   ```
 
 1. Generate a certificate signing request (CSR) for Deck. Ideally, specify 
 Gate's eventual fully-qualified domain name (FQDN) as the Common Name (CN).  
 
-    This will prompt for the pass phrase for `deck.key`.
+   This will prompt for the pass phrase for `deck.key`.
 
-    ```bash
-    # This should be the passphrase used to encrypt the Gate private key
-    GATE_KEY_PASSWORD=SOME_PASSWORD_FOR_GATE_KEY
-
-    openssl req \
-      -new \
-      -key gate.key \
-      -out gate.csr \
-      -passin pass:${GATE_KEY_PASSWORD}
-    ```
+   ```bash
+   # This should be the passphrase used to encrypt the Gate private key
+   GATE_KEY_PASSWORD=SOME_PASSWORD_FOR_GATE_KEY
+   
+   openssl req \
+     -new \
+     -key gate.key \
+     -out gate.csr \
+     -passin pass:${GATE_KEY_PASSWORD}
+   ```
 
 1. Use the CA to sign the server's request and create the Deck server certificate
 (in `pem` format). If using an external CA, they will do this for you.  
 
-    This will prompt for the pass phrase used to encrypt `ca.key`.
+   This will prompt for the pass phrase used to encrypt `ca.key`.
 
-    ```bash
-    # This should be the passphrase used to encrypt the self-signed CA private key
-    CA_KEY_PASSWORD=SOME_PASSWORD_FOR_CA_KEY
-
-    openssl x509 \
-      -req \
-      -days 365 \
-      -in gate.csr \
-      -CA ca.crt \
-      -CAkey ca.key \
-      -CAcreateserial \
-      -out gate.crt \
-      -passin pass:${CA_KEY_PASSWORD}
-    ```
+   ```bash
+   # This should be the passphrase used to encrypt the self-signed CA private key
+   CA_KEY_PASSWORD=SOME_PASSWORD_FOR_CA_KEY
+   
+   openssl x509 \
+     -req \
+     -days 365 \
+     -in gate.csr \
+     -CA ca.crt \
+     -CAkey ca.key \
+     -CAcreateserial \
+     -out gate.crt \
+     -passin pass:${CA_KEY_PASSWORD}
+   ```
 
 1. You should end up with these two files:
     * `gate.key`: a `pem`-formatted private key, which will have a pass phrase
@@ -293,81 +293,81 @@ Gate expects all certificates in JKS (Java KeyStore) format, so we have to do so
 1. Convert the `pem` format Gate server certificate into a PKCS12 (`p12`) file,
 which is importable into a Java Keystore (JKS).  
 
-    ```bash
-    # GATE_KEY_PASSWORD should be the passphrase you used to encrypt `gate.key`
-    GATE_KEY_PASSWORD=SOME_PASSWORD_FOR_GATE_KEY
+   ```bash
+   # GATE_KEY_PASSWORD should be the passphrase you used to encrypt `gate.key`
+   GATE_KEY_PASSWORD=SOME_PASSWORD_FOR_GATE_KEY
+   
+   # GATE_EXPORT_PASSWORD can be a new passphrase that will be used to encrypted `gate.p12`
+   GATE_EXPORT_PASSWORD=SOME_PASSWORD_FOR_GATE_P12
+   
+   openssl pkcs12 \
+     -export \
+     -clcerts \
+     -in gate.crt \
+     -inkey gate.key \
+     -out gate.p12 \
+     -name gate \
+     -passin pass:${GATE_KEY_PASSWORD} \
+     -password pass:${GATE_EXPORT_PASSWORD}
+   ```
 
-    # GATE_EXPORT_PASSWORD can be a new passphrase that will be used to encrypted `gate.p12`
-    GATE_EXPORT_PASSWORD=SOME_PASSWORD_FOR_GATE_P12
-
-    openssl pkcs12 \
-      -export \
-      -clcerts \
-      -in gate.crt \
-      -inkey gate.key \
-      -out gate.p12 \
-      -name gate \
-      -passin pass:${GATE_KEY_PASSWORD} \
-      -password pass:${GATE_EXPORT_PASSWORD}
-    ```
-
-    This creates a p12 keystore file with your certificate imported under the alias "gate".
+   This creates a p12 keystore file with your certificate imported under the alias "gate".
 
 1. Create a new Java Keystore (JKS) containing your `p12`-formatted Gate server certificate.
 
-    Because Gate assumes that the keystore password and the password for the key
-    in the keystore are the same, we must provide both via the command line.
-
-    ```bash
-    # GATE_EXPORT_PASSWORD should be the passphrase that was used to encrypted `gate.p12`
-    GATE_EXPORT_PASSWORD=SOME_PASSWORD_FOR_GATE_P12
-
-    # JKS_PASSWORD can be a new password that will be used to encrypt `gate.jks`
-    JKS_PASSWORD=SOME_JKS_PASSWORD
-
-    keytool -importkeystore \
-      -srckeystore gate.p12 \
-      -srcstoretype pkcs12 \
-      -srcalias gate \
-      -destkeystore gate.jks \
-      -destalias gate \
-      -deststoretype pkcs12 \
-      -deststorepass ${JKS_PASSWORD} \
-      -destkeypass ${JKS_PASSWORD} \
-      -srcstorepass ${GATE_EXPORT_PASSWORD}
-    ```
+   Because Gate assumes that the keystore password and the password for the key
+   in the keystore are the same, we must provide both via the command line.
+ 
+   ```bash
+   # GATE_EXPORT_PASSWORD should be the passphrase that was used to encrypted `gate.p12`
+   GATE_EXPORT_PASSWORD=SOME_PASSWORD_FOR_GATE_P12
+ 
+   # JKS_PASSWORD can be a new password that will be used to encrypt `gate.jks`
+   JKS_PASSWORD=SOME_JKS_PASSWORD
+ 
+   keytool -importkeystore \
+     -srckeystore gate.p12 \
+     -srcstoretype pkcs12 \
+     -srcalias gate \
+     -destkeystore gate.jks \
+     -destalias gate \
+     -deststoretype pkcs12 \
+     -deststorepass ${JKS_PASSWORD} \
+     -destkeypass ${JKS_PASSWORD} \
+     -srcstorepass ${GATE_EXPORT_PASSWORD}
+   ```
 
 1. Import the CA certificate into the Java Keystore.  
     
 
-    ```bash
-    # JKS_PASSWORD should be the password that was used to encrypt `gate.jks`
-    JKS_PASSWORD=SOME_JKS_PASSWORD
-
-    keytool -importcert \
-      -keystore gate.jks \
-      -alias ca \
-      -file ca.crt \
-      -storepass ${JKS_PASSWORD} \
-      -noprompt
-    ```
+   ```bash
+   # JKS_PASSWORD should be the password that was used to encrypt `gate.jks`
+   JKS_PASSWORD=SOME_JKS_PASSWORD
+ 
+   keytool -importcert \
+     -keystore gate.jks \
+     -alias ca \
+     -file ca.crt \
+     -storepass ${JKS_PASSWORD} \
+     -noprompt
+   ```
 
 1. Verify the Java Keystore contains the correct contents.
 
-    ```bash
-    # JKS_PASSWORD should be the password that was used to encrypt `gate.jks`
-    JKS_PASSWORD=SOME_JKS_PASSWORD
-
-    keytool \
-      -list \
-      -keystore gate.jks \
-      -storepass ${JKS_PASSWORD}
-    ```
-
-    It should contain two entries:
-
-    * `gate` as a `PrivateKeyEntry`
-    * `ca` as a `trustedCertEntry`
+   ```bash
+   # JKS_PASSWORD should be the password that was used to encrypt `gate.jks`
+   JKS_PASSWORD=SOME_JKS_PASSWORD
+ 
+   keytool \
+     -list \
+     -keystore gate.jks \
+     -storepass ${JKS_PASSWORD}
+   ```
+ 
+   It should contain two entries:
+ 
+   * `gate` as a `PrivateKeyEntry`
+   * `ca` as a `trustedCertEntry`
 
 ## Back Up Your Spinnaker Configuration
 
@@ -449,16 +449,16 @@ The mechanism to achieve this will depend on what type of Ingress you are using.
 
 * If you are using an NGINX Ingress Controller, you will need to add these annotations to the `Ingress` resource that is set up for Deck and gate:
 
-    ```
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-    ```
+  ```
+  nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+  ```
 
 * If you are using the Amazon AWS ALB Ingress Controller, you will need to add these annotations to the `Ingress` resource that is set up for Deck and gate:
 
-    ```
-    alb.ingress.kubernetes.io/backend-protocol: "HTTPS"
-    alb.ingress.kubernetes.io/healthcheck-protocol: "HTTPS"
-    ```
+  ```
+  alb.ingress.kubernetes.io/backend-protocol: "HTTPS"
+  alb.ingress.kubernetes.io/healthcheck-protocol: "HTTPS"
+  ```
 
 ### Changing URL Overrides
 
@@ -487,9 +487,9 @@ Before actually enabling the API endpoint, we should apply the changes that we'v
 
 1. Apply your Halyard changes:
 
-    ```bash
-    hal deploy apply
-    ```
+   ```bash
+   hal deploy apply
+   ```
 
 1. Apply your Ingress / Service changes, as indicated abvoe in the **Changing Ingress** section.
 
@@ -499,9 +499,9 @@ Before actually enabling the API endpoint, we should apply the changes that we'v
 
 1. If you have any issues, perform various troubleshooting steps (such as those related to HTTPS in our [KB](https://kb.armory.io/category/troubleshooting/)), or restore your prior Halyard configuration with this command:
 
-    ```bash
-    hal backup restore --backup-path <backup-name>.tar
-    ```
+   ```bash
+   hal backup restore --backup-path <backup-name>.tar
+   ```
 
 ## Gate-local
 
@@ -509,22 +509,22 @@ Once you've verified that your existing Gate and Deck endpoints continue to work
 
 1. Enable x509 Authentication
 
-    ```bash
-    hal config security authn x509 enable
-    ```
+   ```bash
+   hal config security authn x509 enable
+   ```
 
 1. Configure Gate to use a second port for the x509 API port.  This must currently be done via a local profile override.  Create and/or update the file `.hal/default/profiles/gate-local.yml` with these contents:
 
-    ```yml
-    default:
-      apiPort: 8085
-    ```
+   ```yml
+   default:
+     apiPort: 8085
+   ```
 
 1. Apply your changes
 
-    ```bash
-    hal deploy apply
-    ```
+   ```bash
+   hal deploy apply
+   ```
 
 Gate will now have a second API port set up listening on port 8085, which will expect an x509 client certificate from all clients trying to communicate with it.  We have to expose this port externally.
 
@@ -535,67 +535,68 @@ You must expose port 8085 on your Gate containers externally, and you should **n
 We detail two of these options here.
 
 If your Kubernetes cluster is configured to set up a TCP load balancer for `LoadBalancer` Services:
-  ```bash
-  # Replace this with the namespace where Spinnaker is installed
-  NAMESPACE=spinnaker
 
-  tee gate-api-service.yml <<-'EOF'
-  apiVersion: v1
-  kind: Service
-  metadata:
-    labels:
-      app: spin
-      cluster: spin-gate
-    name: spin-gate-api
-    namespace: NAMESPACE
-  spec:
-    ports:
-    - port: 8085
-      protocol: TCP
-      targetPort: 8085
-    selector:
-      app: spin
-      cluster: spin-gate
-    sessionAffinity: None
-    type: LoadBalancer
-  EOF
+```bash
+# Replace this with the namespace where Spinnaker is installed
+NAMESPACE=spinnaker
 
-  sed -i "s|NAMESPACE|${NAMESPACE}|g" gate-api-service.yml
+tee gate-api-service.yml <<-'EOF'
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: spin
+    cluster: spin-gate
+  name: spin-gate-api
+  namespace: NAMESPACE
+spec:
+  ports:
+  - port: 8085
+    protocol: TCP
+    targetPort: 8085
+  selector:
+    app: spin
+    cluster: spin-gate
+  sessionAffinity: None
+  type: LoadBalancer
+EOF
 
-  kubectl apply -f gate-api-service.yml
-  ```
+sed -i "s|NAMESPACE|${NAMESPACE}|g" gate-api-service.yml
+
+kubectl apply -f gate-api-service.yml
+```
 
 Otherwise, if you're going to use a NodePort:
 
-  ```bash
-  # Replace this with the namespace where Spinnaker is installed
-  NAMESPACE=spinnaker
+```bash
+# Replace this with the namespace where Spinnaker is installed
+NAMESPACE=spinnaker
 
-  tee gate-api-service.yml <<-'EOF'
-  apiVersion: v1
-  kind: Service
-  metadata:
-    labels:
-      app: spin
-      cluster: spin-gate
-    name: spin-gate-api
-    namespace: NAMESPACE
-  spec:
-    ports:
-    - port: 8085
-      protocol: TCP
-      targetPort: 8085
-    selector:
-      app: spin
-      cluster: spin-gate
-    sessionAffinity: None
-    type: NodePort
-  EOF
+tee gate-api-service.yml <<-'EOF'
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: spin
+    cluster: spin-gate
+  name: spin-gate-api
+  namespace: NAMESPACE
+spec:
+  ports:
+  - port: 8085
+    protocol: TCP
+    targetPort: 8085
+  selector:
+    app: spin
+    cluster: spin-gate
+  sessionAffinity: None
+  type: NodePort
+EOF
 
-  sed -i "s|NAMESPACE|${NAMESPACE}|g" gate-api-service.yml
+sed -i "s|NAMESPACE|${NAMESPACE}|g" gate-api-service.yml
 
-  kubectl apply -f gate-api-service.yml
-  ```
+kubectl apply -f gate-api-service.yml
+```
 
 This should expose the endpoint.  For example, with the LoadBalancer configuration in EKS, you will get an ELB endpoint (get this with `kubectl -n NAMESPACE get svc -owide`).  With the NodePort configuration, you can use any instance in your cluster with the generated NodePort port.
 
@@ -641,46 +642,46 @@ If you created a self-signed CA, you can use that CA to sign certificates for yo
 
 1. Create the client key. Keep this file safe!
 
-    ```bash
-    # This will be the passphrase used to encrypt the client private key
-    CLIENT_PASSWORD=SOME_CLIENT_PASSPHRASE
-
-    openssl genrsa \
-      -des3 \
-      -out client.key \
-      -passout pass:${CLIENT_PASSWORD} \
-      4096
-    ```
+   ```bash
+   # This will be the passphrase used to encrypt the client private key
+   CLIENT_PASSWORD=SOME_CLIENT_PASSPHRASE
+ 
+   openssl genrsa \
+     -des3 \
+     -out client.key \
+     -passout pass:${CLIENT_PASSWORD} \
+     4096
+   ```
 
 1. Generate a certificate signing request for the client. Ensure the `Common Name` is set to a non-empty value.
 
-    ```bash
-    # This should be the same passphrase used to encrypt the client private key
-    CLIENT_PASSWORD=SOME_CLIENT_PASSPHRASE
-
-    openssl req \
-      -new \
-      -key client.key \
-      -out client.csr \
-      -passin pass:${CLIENT_PASSWORD}
-    ```
+   ```bash
+   # This should be the same passphrase used to encrypt the client private key
+   CLIENT_PASSWORD=SOME_CLIENT_PASSPHRASE
+ 
+   openssl req \
+     -new \
+     -key client.key \
+     -out client.csr \
+     -passin pass:${CLIENT_PASSWORD}
+   ```
 
 1. Use the CA to sign the client's request.
     
-    ```bash
-    # This should be the passphrase used to encrypt the self-signed CA private key
-    CA_KEY_PASSWORD=SOME_PASSWORD_FOR_CA_KEY
-
-    openssl x509 \
-      -req \
-      -days 365 \
-      -in client.csr \
-      -CA ca.crt \
-      -CAkey ca.key \
-      -CAcreateserial \
-      -out client.crt \
-      -passin pass:${CA_KEY_PASSWORD}
-    ```
+   ```bash
+   # This should be the passphrase used to encrypt the self-signed CA private key
+   CA_KEY_PASSWORD=SOME_PASSWORD_FOR_CA_KEY
+ 
+   openssl x509 \
+     -req \
+     -days 365 \
+     -in client.csr \
+     -CA ca.crt \
+     -CAkey ca.key \
+     -CAcreateserial \
+     -out client.crt \
+     -passin pass:${CA_KEY_PASSWORD}
+   ```
 
 1. You should end up with these two files:
     * `client.key`: a `pem`-formatted private key, which will have a pass phrase
@@ -729,117 +730,116 @@ To a client certificate, construct a string with the groups delimited by `\n`, l
 
 Then, add that to a configuration file that looks like this (replacing `GROUP_STRING` with your group string)
 
-  ```bash
-  # group.conf
-  [ req ]
-  distinguished_name	= req_distinguished_name
-  attributes		= req_attributes
-  req_extensions = v3_req
+ ```bash
+ # group.conf
+ [ req ]
+ distinguished_name	= req_distinguished_name
+ attributes		= req_attributes
+ req_extensions = v3_req
+ 
+ [ req_distinguished_name ]
+ countryName			= Country Name (2 letter code)
+ countryName_min			= 2
+ countryName_max			= 2
+ stateOrProvinceName		= State or Province Name (full name)
+ localityName			= Locality Name (eg, city)
+ 0.organizationName		= Organization Name (eg, company)
+ organizationalUnitName		= Organizational Unit Name (eg, section)
+ commonName			= Common Name (eg, fully qualified host name)
+ commonName_max			= 64
+ emailAddress			= Email Address
+ emailAddress_max		= 64
+ 
+ [ req_attributes ]
+ challengePassword		= A challenge password
+ challengePassword_min		= 4
+ challengePassword_max		= 20
+ 
+ [ v3_req ]
+ keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+ 1.2.840.10070.8.1 = ASN1:UTF8String:GROUP_STRING
+ ```
 
-  [ req_distinguished_name ]
-  countryName			= Country Name (2 letter code)
-  countryName_min			= 2
-  countryName_max			= 2
-  stateOrProvinceName		= State or Province Name (full name)
-  localityName			= Locality Name (eg, city)
-  0.organizationName		= Organization Name (eg, company)
-  organizationalUnitName		= Organizational Unit Name (eg, section)
-  commonName			= Common Name (eg, fully qualified host name)
-  commonName_max			= 64
-  emailAddress			= Email Address
-  emailAddress_max		= 64
-
-  [ req_attributes ]
-  challengePassword		= A challenge password
-  challengePassword_min		= 4
-  challengePassword_max		= 20
-
-  [ v3_req ]
-  keyUsage = nonRepudiation, digitalSignature, keyEncipherment
-  1.2.840.10070.8.1 = ASN1:UTF8String:GROUP_STRING
-  ```
-
-For example:
-
+Here's an example of how to use this:
 
 1. Create the configuration file
 
-    ```bash
-    tee group.conf <<-'EOF'
-    [ req ]
-    distinguished_name	= req_distinguished_name
-    attributes		= req_attributes
-    req_extensions = v3_req
-
-    [ req_distinguished_name ]
-    countryName			= Country Name (2 letter code)
-    countryName_min			= 2
-    countryName_max			= 2
-    stateOrProvinceName		= State or Province Name (full name)
-    localityName			= Locality Name (eg, city)
-    0.organizationName		= Organization Name (eg, company)
-    organizationalUnitName		= Organizational Unit Name (eg, section)
-    commonName			= Common Name (eg, fully qualified host name)
-    commonName_max			= 64
-    emailAddress			= Email Address
-    emailAddress_max		= 64
-
-    [ req_attributes ]
-    challengePassword		= A challenge password
-    challengePassword_min		= 4
-    challengePassword_max		= 20
-
-    [ v3_req ]
-    keyUsage = nonRepudiation, digitalSignature, keyEncipherment
-    1.2.840.10070.8.1 = ASN1:UTF8String:spinnaker-example0\nspinnaker-example1
-    EOF
-    ```
+   ```bash
+   tee group.conf <<-'EOF'
+   [ req ]
+   distinguished_name	= req_distinguished_name
+   attributes		= req_attributes
+   req_extensions = v3_req
+ 
+   [ req_distinguished_name ]
+   countryName			= Country Name (2 letter code)
+   countryName_min			= 2
+   countryName_max			= 2
+   stateOrProvinceName		= State or Province Name (full name)
+   localityName			= Locality Name (eg, city)
+   0.organizationName		= Organization Name (eg, company)
+   organizationalUnitName		= Organizational Unit Name (eg, section)
+   commonName			= Common Name (eg, fully qualified host name)
+   commonName_max			= 64
+   emailAddress			= Email Address
+   emailAddress_max		= 64
+ 
+   [ req_attributes ]
+   challengePassword		= A challenge password
+   challengePassword_min		= 4
+   challengePassword_max		= 20
+ 
+   [ v3_req ]
+   keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+   1.2.840.10070.8.1 = ASN1:UTF8String:spinnaker-example0\nspinnaker-example1
+   EOF
+   ```
 
 1. Create the client key. Keep this file safe!
 
-    ```bash
-    # This will be the passphrase used to encrypt the client private key
-    CLIENT_PASSWORD=SOME_CLIENT_PASSPHRASE
-
-    openssl genrsa \
-      -des3 \
-      -out client.key \
-      -passout pass:${CLIENT_PASSWORD} \
-      4096
-    ```
+   ```bash
+   # This will be the passphrase used to encrypt the client private key
+   CLIENT_PASSWORD=SOME_CLIENT_PASSPHRASE
+ 
+   openssl genrsa \
+     -des3 \
+     -out client.key \
+     -passout pass:${CLIENT_PASSWORD} \
+     4096
+   ```
 
 1. Specify the configuration file when you generate the CSR with the `-config group.conf`
 
-    ```bash
-    # This should be the same passphrase used to encrypt the client private key
-    CLIENT_PASSWORD=SOME_CLIENT_PASSPHRASE
-
-    openssl req \
-      -new \
-      -key client.key \
-      -out client.csr \
-      -passin pass:${CLIENT_PASSWORD} \
-      -config group.conf
-    ```
+   ```bash
+   # This should be the same passphrase used to encrypt the client private key
+   CLIENT_PASSWORD=SOME_CLIENT_PASSPHRASE
+ 
+   openssl req \
+     -new \
+     -key client.key \
+     -out client.csr \
+     -passin pass:${CLIENT_PASSWORD} \
+     -config group.conf
+   ```
 
 1. Specify the configuration file when you use the CA to sign the certificate with the `-extensions v3_req` and `-extfile group.conf` flags:
 
-    ```bash
-    # This should be the passphrase used to encrypt the self-signed CA private key
-    CA_KEY_PASSWORD=SOME_PASSWORD_FOR_CA_KEY
-
-    openssl x509 \
-      -req \
-      -days 365 \
-      -in client.csr \
-      -CA ca.crt \
-      -CAkey ca.key \
-      -CAcreateserial \
-      -out client.crt \
-      -passin pass:${CA_KEY_PASSWORD} \
-      -extensions v3_req \
-      -extfile group.conf
-    ```
+   ```bash
+   # This should be the passphrase used to encrypt the self-signed CA private key
+   CA_KEY_PASSWORD=SOME_PASSWORD_FOR_CA_KEY
+ 
+   openssl x509 \
+     -req \
+     -days 365 \
+     -in client.csr \
+     -CA ca.crt \
+     -CAkey ca.key \
+     -CAcreateserial \
+     -out client.crt \
+     -passin pass:${CA_KEY_PASSWORD} \
+     -extensions v3_req \
+     -extfile group.conf
+   ```
 
 Now, when you use the generated certificate and key, your API client will be able to access Spinnaker items that are restricted to those groups.
 
