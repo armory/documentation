@@ -17,14 +17,6 @@ hidden: false
 ## Known Issues
 There's currently no known issues with this release.
 
-<!--- Example of a problem
-Igor added ..... which does.....
-
-**Symptoms:**
-**Fix:**
--->
-
-
 
 ## Highlighted Updates
 ### Armory
@@ -33,30 +25,11 @@ Igor added ..... which does.....
 
 
 ###  Spinnaker Community Contributions
-REMOVE ME: link to the spninaker release: https://www.spinnaker.io/community/releases/versions
-REMOVE ME: maybe copy their notable changes here
+See Spinnaker's release notes that are included in this release:
+* [Spinnaker's v1.12.7](https://www.spinnaker.io/community/releases/versions/1-12-7-changelog#spinnaker-release-1-12-9)  
 
-<!--- Example message
-There have also been numerous enhancements, fixes and features across all of Spinnaker's other services. See their changes here:
-[Spinnaker's v1.7.0](https://www.spinnaker.io/community/releases/versions/1-7-0-changelog)
-[Spinnaker's v1.7.1](https://www.spinnaker.io/community/releases/versions/1-7-1-changelog)
--->
+<br>
 
-
-#### Igor
-REMOVE ME: FOR EACH OF SPINNAKER'S SERVICES, PICK OUT SOME NOTIBLE CHANGES
-
-<!--- An example of a problem
-Igor added ..... which does.....
-
-**Symptoms:**
-**Fix:**
--->
-
-
-
-
-<br><br><br>
 ## Detailed Updates
 
 ### version.manifest
@@ -284,8 +257,143 @@ See Spinnaker's release notes that are included in this release:
 <!-- UNCOMMENT ME: Changes listed below is are extra changes that have not yet made it to another Spinnaer release version: -->
 <!-- You may need to pick out some extra contributions from OSS -->
 
-#### Clouddriver  - 171c3ba
-No Changes
+#### Clouddriver  - 5fd694ffe...171c3ba
+ - fix(provider/kubernetes): Properly set unstable flag for deployment (#3477) (#3478)
+ - fix(appengine): Allow suppression of sequence in deployed servergroup names (#3453) (#3457)
+ - fix(appengine): add configurable caching agent interval (#3446)
+ - fix(provider/kubernetes): Support the renaming of the heptio-authenticator-aws to aws-iam-authenticator (#3316) (#3437)
+ - fix(provider/azure): add support for Azure US Government environment (#3400) (#3418)
+ - fix(google): Fix search for Google provider (#3419) (#3420)
+ - fix(dependencies): have spinnaker-dependencies manage common-langs version (#3388) (#3410)
+ - fix(artifacts/github): Fix threading bug in github artifact resolver (#3386) (#3408)
+ - fix(kubernetes/v2): Parallelize checking for omitKinds (#3366) (#3407)
+ - fix(kubernetes): return only valid kinds from UnregisteredCrdCachingAgent.primaryKinds (#3394) (#3397)
+ - fix(search/cats): Avoid short-circuiting when filters are empty. (#3393) (#3396)
+ - fix(dependencies): have spinnaker-dependencies manage common-langs version
+ - fix(dependencies): specify version for commons-lang3
+ - fix(provider/kubernetes): Fix NPE on ingress with no http (#3379) (#3380)
+ - fix(provider/appengine): Fix NPE thrown when deploying GCS object using default creds (#3377) (#3378)
+ - fix(kubernetes): fix image resolution for project clusters view (#3286) (#3375)
+ - fix(provider/kubernetes): Set podSecurityPolicy to not be namespaced (#3350) (#3374)
+ - fix(provider/kubernetes): Allow for custom suffix on managed-by label. (#3369) (#3373)
+ - fix(provider/aws): change STS endpoints for GovCloud and China regions (#3352) (#3370)
+ - fix(provider/gce): Fix metadata for autoscaler deletes. (#3368) (#3371)
+ - fix(provider/aws): Only describe instance health for ELBs (#2699) (#3196) (#3360)
+ - chore(*): Pin spring-boot-starter-test to springBoot version (#3336) (#3341)
+ - fix(provider/kubernetes): fix NPE on KubernetesV2ServerGroup disabled… (#3325) (#3334)
+ - fix(provider/kubernetes): fix NPE on KubernetesV2ServerGroup disabled… (#3325) (#3331)
+ - chore(dependencies): Bump spinnaker-dependencies (#3329)
+ - fix(provider/kubernetes): events relate to cluster-scope objs (#3312) (#3314)
+ - Fix missing jars release 1.11.x (#3306)
+ - chore(provider/kubernetes): add agent type to caching logs (#3307) (#3313)
+ - chore(dependencies): Autobump spinnaker-dependencies (#3302) (#3303)
+ - chore(dependencies): Autobump spinnaker-dependencies (#3300) (#3301)
+ - chore(dependencies): Autobump spinnaker-dependencies (#3298)
+ - config(google): Update GCE's base URL to the new domain (#3288)
+ - feat(provider/gce): Support accelerator types for zonal migs. (#3296)
+ - fix(titus): streaming agent is authoritative for clusters (#3289)
+ - fix(kubernetes): fix image resolution for project clusters view (#3286)
+ - feat(aws/cloudformation): Add cloudformation caching agent and provider (#3278)
+ - chore(dependencies): Autobump spinnaker-dependencies (#3287)
+ - feat(ecs): Copy scaling policies from source server group (#3238)
+ - feat(core): Add DualTaskRepository (#3283)
+ - fix(google): differentiate among autohealing health check kinds (#3282) (#3285)
+ - fix(google): differentiate among autohealing health check kinds (#3282)
+ - chore(dependencies): Autobump spinnaker-dependencies (#3284)
+ - perf(aws): Restrict the relationships fetched for aws load balancers (#3281)
+ - perf(cats): small improvement when storing cache data (#3111)
+ - feat(provider/kubernetes): apply sequence label (#3277)
+ - fix(aws): Fix concurrent list modification exception (#3276)
+ - chore(test): Move ProviderCache coverage to cats-test (#3275)
+ - fix(*): Consolidate default ObjectMapper mutations (#3274)
+ - chore(dependencies): Autobump spinnaker-dependencies (#3259)
+ - fix(provider/kubernetes): ensure crds are registered before using creds (#3272) (#3273)
+ - fix(provider/kubernetes): ensure crds are registered before using creds (#3272)
+ - fix(provider/kubernetes): sync updates to account properties (#3270) (#3271)
+ - fix(provider/kubernetes): sync updates to account properties (#3270)
+ - fix(search): Add sane defaults to search executor config. (#3261) (#3269)
+ - fix(provider/gce): Adds flexibility to autoscaler upsert for scaleDown (#3260) (#3264)
+ - fix(titus): Cloning does not respect default stack or details (#3236)
+ - fix(google): prevent parent server group from overwriting null clone autohealing policies (#3268)
+ - fix(google): prevent parent server group from overwriting null clone autohealing policies (#3266)
+ - chore(core): Decouple scheduler backend from cache backend (#3265)
+ - fix(search): Add sane defaults to search executor config. (#3261)
+ - fix(provider/gce): Adds flexibility to autoscaler upsert for scaleDown (#3260)
+ - fix(cf): repair scale-to-zero issue (#3257)
+ - fix(provider/docker): No longer depend on service in authentication (#3772) (#3237)
+ - chore(dependencies): Autobump spinnaker-dependencies (#3256)
+ - fix(artifacts): fixed property prefix for maven artifacts (#3255)
+ - fix(provider/gce): Decorate XPN resources when upserting instance (#3252) (#3253)
+ - fix(provider/gce): Decorate XPN resources when upserting instance (#3252)
+ - feat(provider/kubernetes): allow v2 to set a cacheIntervalSeconds (#3251)
+ - fix(kubernetes): fix fetching clusters for project (#3247) (#3250)
+ - fix(kubernetes): fix fetching clusters for project (#3247)
+ - feat(cf): support user provided services (#3243)
+ - fix(provider/kubernetes): v2 handle 0 replica scale-down (#3248) (#3249)
+ - fix(provider/kubernetes): v2 handle 0 replica scale-down (#3248)
+ - chore(dependencies): Autobump spinnaker-dependencies (#3246)
+ - fix(core): include instanceCounts when fetching project clusters, fix ClassCastException for gce and appengine fetch cluster methods (#3244) (#3245)
+ - fix(core): include instanceCounts when fetching project clusters, fix ClassCastException for gce and appengine fetch cluster methods (#3244)
+ - fix(provider/kubernetes): bail out of caching on error (#3241) (#3242)
+ - fix(provider/kubernetes): bail out of caching on error (#3241)
+ - perf(provider/kubernetes): ignore ondemand requests for other accounts (#3234) (#3240)
+ - fix(provider/cf): handle error when route exists in other org/space (#3239)
+ - fix(provider/cf): show SG and Instance info with LoadBalancers (#3235)
+ - fix(ecs): check for null service before getTaskDefinition (#3231)
+ - feat(ecs): Migrate to standard server group name resolver (#3233)
+ - Fix evictions typo (#3232)
+ - perf(provider/kubernetes): ignore ondemand requests for other accounts (#3234)
+ - feat(entitytags): a simple `deleteByNamespace` admin api (#3229)
+ - perf(provider/kubernetes): check for caching behavior before crd lookup (#3230)
+ - feat(provider/kubernetes): 'liveManifestCall' mode (#3227)
+ - chore(dependencies): Autobump spinnaker-dependencies (#3228)
+ - fix(ecs): support multiple network binds for non-network-interfaced containers (#3222)
+ - Log scope (#3176)
+ - fix(provider/titus): reworks titus streaming provider so it just uses a buffer for updates (#3224)
+ - fix(provider/ecs): Include port in Fargate health checks (#3220)
+ - feat(provider/cf): multi buildpack push support (#3225)
+ - fix(provider/cf): cloning across CF foundations fails (#3226)
+ - chore(titus): add log when job is null (#3221)
+ - fix(aws/region support): Use RegionUtils instead of Regions (#3223)
+ - feat(artifacts): Add support for helm/chart artifacts (#3108)
+ - fix(core): Make uses of snakeyaml threadsafe (#3219)
+ - feat(provider/lambda) : adding support for aws lambda (#3040)
+ - chore(dependencies): Autobump spinnaker-dependencies (#3217)
+ - fix(provider/titus): improve lookup of security group details (#3218)
+ - fix(provider/oracle): fix update/edit LoadBalancer (#3162) (#3216)
+ - feat(provider/cf): add SG clone action (#3215)
+ - feat(provider/cf): add metrics links to SG (#3210)
+ - feat(provider/cf): manifest based service config (#3188)
+ - chore(oracle/dependency): upgrade oracle oci sdk version to 1.3.2 (#3214)
+ - fix(provider/aws): Only describe instance health for ELBs (#2699) (#3196)
+ - chore(dependencies): Autobump spinnaker-dependencies (#3212) (#3213)
+ - refactor(provider/cf): convert tests to junit5 (#3137)
+ - refactor(cats): Moving non-redis cats classes to cats-core (#3211)
+ - chore(dependencies): Autobump spinnaker-dependencies (#3212)
+ - fix(provider/ecs): Handle different CPU/mem limit settings in server group details view (#3203)
+ - feat(provider/cf): update the appsManagerUri to the specific serverGroup (#3192)
+ - fix(provider/kubernetes): fix v2 cronjob status (#3207) (#3209)
+ - fix(security): Fix CVE-2017-5929 security issue threat level 9 (#3206) (#3208)
+ - fix(provider/kubernetes): fix v2 cronjob status (#3207)
+ - fix(security): Fix CVE-2017-5929 security issue threat level 9 (#3206)
+ - fix(provider/oracle): fix update/edit LoadBalancer (#3162)
+ - chore(cats): update test for future logic change (#3204)
+ - perf(provider/kubernetes): share CRD list between threads (#3201) (#3202)
+ - perf(provider/kubernetes): share CRD list between threads (#3201)
+ - fix(cache/introspection): sort by descending execution (#3199) (#3200)
+ - fix(cache/introspection): sort by descending execution (#3199)
+ - fix(titus): fix when job data is cached apart from instances (#3198)
+ - chore(cats): getter for allowableRelationshipPrefixes (#3197)
+ - fix(provider/cf): use ServerGroup.Capacity type for scaling server groups
+ - fix(provider/cf): provide more info when JSON conversion fails on Retrofit call
+ - fix(provider/cf): correct pagination logic when iterating
+ - chore(cache): adds introspection to caching agents (#3194) (#3195)
+ - chore(cache): adds introspection to caching agents (#3194)
+ - fix(provider/cf): set the status to DOWN when no process stats returned (#3186)
+ - fix(provider/oracle): fix missing oci-sdk jars in web startScript (#3160)
+ - fix(provider/kubernetes): hold entries in on-demand longer (#3190) (#3191)
+ - fix(provider/kubernetes): hold entries in on-demand longer (#3190)
+ - feat(provider/cf): display cf health check details for app (#3185)
 
 #### Deck  - 48a3495c1...6324862
  - fix(google): select all zones by default when deploying a regional gce server group (#6751) (#6755)
