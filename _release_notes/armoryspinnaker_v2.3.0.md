@@ -37,7 +37,7 @@ There's currently no known issues with this release.
 
 
 ###  Spinnaker Community Contributions
-- GovCLoud and China Regions are now supported [clouddriver/6529edd](https://github.com/spinnaker/clouddriver/commit/6529edd80807f8c9e88ef32a381541bc43cfe2c7)
+- GovCloud and China Regions are now supported [clouddriver/6529edd](https://github.com/spinnaker/clouddriver/commit/6529edd80807f8c9e88ef32a381541bc43cfe2c7)
 - Deck: The JSON pipeline config editor now supports syntax checking and syntax highlighting.
 - The webhook stage now allows users to specify HTTP status codes that cause the stage to fail fast.
 - Kayenta: This release adds support for Graphite as a metrics service. A standalone canary analysis module was also added, and this makes it easier to consume Kayenta from non-Spinnaker environments.
