@@ -1,6 +1,6 @@
 ---
 layout: post
-title: v2.2.0 Armory Release
+title: v2.2.0 Armory Release (OSS v1.11.x)
 order: -20190223190554
 hidden: false
 ---
