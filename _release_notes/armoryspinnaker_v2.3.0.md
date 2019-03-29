@@ -20,13 +20,34 @@ There's currently no known issues with this release.
 
 ## Highlighted Updates
 ### Armory
-<!--- A quick summary of what's changed with Armory -->
+
+#### Dinghy
+- fix(bitbucket/cloud): Added bitbucket cloud specific implementation
+
+#### Terraformer
+- feat(git): add branch to clone options
+- fix(artifacts): fix varfile artifacts (#41)
+
+#### Armory Deck
+- chore(docker): alpine + apache2
+
+#### Armory Gate
+ - feat(auth/saml): Allow saml.maxAuthenticationAge (kludge)
 
 
 
 ###  Spinnaker Community Contributions
+- GovCLoud and China Regions are now supported [clouddriver/6529edd](https://github.com/spinnaker/clouddriver/commit/6529edd80807f8c9e88ef32a381541bc43cfe2c7)
+- Deck: The JSON pipeline config editor now supports syntax checking and syntax highlighting.
+- The webhook stage now allows users to specify HTTP status codes that cause the stage to fail fast.
+- Kayenta: This release adds support for Graphite as a metrics service. A standalone canary analysis module was also added, and this makes it easier to consume Kayenta from non-Spinnaker environments.
+
+
 See Spinnaker's release notes that are included in this release:
-* [Spinnaker's v1.12.7](https://www.spinnaker.io/community/releases/versions/1-12-7-changelog#spinnaker-release-1-12-9)  
+- [Spinnaker v1.12.0](https://www.spinnaker.io/community/releases/versions/1-12-7-changelog#spinnaker-release-1-12-0)
+- [Spinnaker's v1.12.7](https://www.spinnaker.io/community/releases/versions/1-12-7-changelog#spinnaker-release-1-12-9)
+
+
 
 <br>
 
@@ -72,30 +93,29 @@ export fiat_version=1.3.2-daf21b2-stable4</code>
 ### Armory
 #### Dinghy&trade; - 0c66ede...b491663
  - fix(stalePipelines): pass parameter from dinghyfile instead of always taking it as false (#121)
- - fix to dinghyfiles not on root being reported as not changes to dinghyfile (#120)
+ - fix(dinghyfiles): fix to dinghyfiles not on root being reported as not changes to dinghyfile (#120)
  - chore(build): jenkins provides the docker tag
  - fix(preprocessor): return error from ParseGlobalVar
  - refactor(dinghy): standardize logging and error handling (#117)
  - chore(build): Shared pipeline
- - modules(feature): declare variable for redability
- - modules(feature): change test to check the actual result without removing whitespaces
- - modules(feature): declare variable for redability
- - fix broken test
- - modules(feature): allow passing variables from dinghyfile to module inside a module
+ - feat(modules): declare variable for redability
+ - feat(modules): change test to check the actual result without removing whitespaces
+ - feat(modules): declare variable for redability
+ - chore(tests): fix broken test
+ - feat(modules): allow passing variables from dinghyfile to module inside a module
  - fix(dinghy/github): Added missing initialization of configs
  - feat(test): small unit tests in util
- - fix issue for all request where PipelineAPI was not being setup properly
+ - fix(modules): fix issue for all request where PipelineAPI was not being setup properly
  - chore(dependencies): Added more tests
  - chore(dependencies): Don't ignore vendor folder
- - Merge from master
  - chore(bitbucket/cloud): Added tests, refactored logic
  - refactor(spinnaker): refactor spinnaker package (#110)
  - fix(bitbucket/cloud): Added bitbucket cloud specific implementation (#106)
  - refactor(settings): no reference global settings (#109)
  - refactor(settings): refactor settings to be more testable (#108)
  - chore(build): use consistent commit-hash length (7) (#107)
- - use armory golang-dep for images (#105)
-
+ - chore(build): use armory golang-dep for images (#105)
+s
 #### Terraformer&trade; - a1adbb1...661752d
  - refactor(executor): no mas workers (#46)
  - chore(build): jenkins provides the dockertag
@@ -133,7 +153,7 @@ export fiat_version=1.3.2-daf21b2-stable4</code>
  - chore(build): Add directory index, re-add require (#490)
  - chore(build): remove Require usage (#489)
  - chore(build): Remove require (#488)
- - Feature/alpine apache2 (#487)
+ - chore(docker): alpine + apache2 (#487)
  - chore(build): use consistent commit-hash length (7) (#486)
 
 #### Armory Echo  - 7c03592...a6b93b0
