@@ -82,21 +82,21 @@ Generate a keystore and key with some password:
 
 ### 2: Configure spinnaker to use SAML
 ```bash
- KEYSTORE_PATH=/Users/armory/.hal/saml/saml.jks
- KEYSTORE_PASSWORD=<password-entered-in-step-1>
- METADATA_PATH=/Users/armory/.hal/saml/metadata.xml
- SERVICE_ADDR_URL=https://<gate-URL>:8084
- ISSUER_ID=io.armory.spinnaker.oktatest
+KEYSTORE_PATH=/Users/armory/.hal/saml/saml.jks
+KEYSTORE_PASSWORD=<password-entered-in-step-1>
+METADATA_PATH=/Users/armory/.hal/saml/metadata.xml
+SERVICE_ADDR_URL=https://<gate-URL>:8084
+ISSUER_ID=io.armory.spinnaker.oktatest
+
+hal config security authn saml edit \
+  --keystore $KEYSTORE_PATH \
+  --keystore-alias saml \
+  --keystore-password $KEYSTORE_PASSWORD \
+  --metadata $METADATA_PATH \
+  --issuer-id $ISSUER_ID \
+  --service-address-url $SERVICE_ADDR_URL
     
- hal config security authn saml edit \
-   --keystore $KEYSTORE_PATH \
-   --keystore-alias saml \
-   --keystore-password $KEYSTORE_PASSWORD \
-   --metadata $METADATA_PATH \
-   --issuer-id $ISSUER_ID \
-   --service-address-url $SERVICE_ADDR_URL
-      
- hal config security authn saml enable
+hal config security authn saml enable
 ```
 
 > Note: The value you enter for `issuerId` must match the value entered in "Audience URI (SP Entity ID)" when configuring the app in Okta
