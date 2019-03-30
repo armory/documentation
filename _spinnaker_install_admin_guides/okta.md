@@ -77,8 +77,10 @@ Under the "Optional" section near the bottom, copy the contents of IDP metadata 
 
 Generate a keystore and key with some password:
 
-    KEYSTORE_PATH=/Users/armory/.hal/saml/saml.jks
-    keytool -genkey -v -keystore $KEYSTORE_PATH -alias saml -keyalg RSA -keysize 2048 -validity 10000
+```bash
+KEYSTORE_PATH=/Users/armory/.hal/saml/saml.jks
+keytool -genkey -v -keystore $KEYSTORE_PATH -alias saml -keyalg RSA -keysize 2048 -validity 10000
+```
 
 ### 2: Configure spinnaker to use SAML
 ```bash
