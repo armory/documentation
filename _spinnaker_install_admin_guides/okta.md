@@ -40,7 +40,7 @@ On "Create SAML Integration" page, enter an app name and hit the green "Next" bu
 
 On the "Configure SAML page", configure the following settings:
 
-* *Single sign on URL* -> Enter the URL for your Gate service, with the path /saml/SSO;
+* *Single sign on URL* -> Enter the URL for your Gate service, with the path /saml/SSO.
   For example, `https://oktaspinnaker.spinnaker.armory.io:8084/saml/SSO`
 
 * *Audience URI (SP Entity ID)* -> Enter a unique entity id. For example, `io.armory.spinnaker.oktatest`
