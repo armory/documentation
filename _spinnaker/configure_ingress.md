@@ -50,7 +50,6 @@ spinnaker.armory.io      CNAME --> (spin-deck-public dns) aaaaa-2222.us-west-2.e
 Once these Services have been created, we’ll need to update our Spinnaker deployment so that the UI understands where the API is located. To do this, we’ll use Halyard to override the base URL for both the API and the UI and then redeploy Spinnaker.
 
 ```bash
-
 # use the newly created LBs
 export NAMESPACE={namespace}
 export API_URL=$(kubectl -n $NAMESPACE get svc spin-gate-public -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
