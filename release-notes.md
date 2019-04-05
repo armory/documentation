@@ -10,21 +10,19 @@ redirect_from:
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-
-## Understanding Armory + Open Source Spinnaker Releases
+## Different Armory Release Types
 Armory is based off OSS's (Open Source Spinnaker) [release cadence](https://www.spinnaker.io/community/releases/release-cadence), in which we extend OSS with Armory features. We provide a few different release types.
 
-A **stable** release for customers who need stability in their production environment. You can find these [releases here](#stable-armory-releases) or use [Armory Halyard](#differences-between-releases).
+| Release Type | Description                                       |
+| ------------ | ------------------------------------------------- |
+| `stable`     | Stable release for use in production environments |
+| `rc`         | Latest Armory + OSS release candidates            |
+| `ossedge`    | OSS nightly builds (_untested_)                   |
+| `edge`       | Armory nightly + OSS nightly builds (_untested_)  |
 
-For customers who want to test the latest Armory + OSS (Open Source Spinnaker) release, we provide **rc** release candidates, which you can find using [Armory Halyard](#differences-between-releases).
 
-We also provide nightly **ossedge** builds from OSS master without Armory features, _these are untested_. You can find these versions using [Armory Halyard](#differences-between-releases).
-
-We don't consistently build, but provide when a customer has need for it, **edge** builds. These consist of nightly OSS master along with Armory edge features, _both of which are untested_.
-
-
-### Differences between Releases
-#### Stable Releases
+## Understanding Armory + Open Source Spinnaker Releases
+### Stable Releases
 ```yml
 $ hal version list
 ...
@@ -52,7 +50,7 @@ We use [semantic versioning](https://semver.org/) for tagging, e.g. `12.3.4`.
 | 2.2.x          | 1.11.x             |
 | 2.3.x          | 1.12.x             |
 
-#### RC Releases
+### RC Releases
 ```yml
 $ hal version list --release=rc
 ...
@@ -65,8 +63,8 @@ $ hal version list --release=rc
    Published: Mon Apr 01 16:53:33 GMT 2019
    (Requires Halyard >= 1.2.0)
 ```
-An **rc** release reflects the latest from Armory and OSS release branches
-- These versions are used internally at Armory
+An **rc** release reflects the latest from Armory and OSS release branches.
+- These versions are used internally at Armory.
 - A few customers may be using it, but we do not recommend using it in production.
 
 <!--
@@ -79,38 +77,49 @@ An **rc** release reflects the latest from Armory and OSS release branches
 **RC**s also follow semantic versioning with the format like `1.2.3-rc202`.
 
 
-#### OSS Edge Releases
+### OSS Edge Releases
 ```yml
 $ hal version list --release=ossedge
 ...
- - 2019.04.03-edge2143 (OSS Edge release):
+ - 2019.04.03-ossedge2143 (OSS Edge release):
    Changelog: https://docs.armory.io/release-notes
    Published: Wed Apr 03 18:34:18 GMT 2019
    (Requires Halyard >= 1.2.0)
 ```
 An **ossedge** release is created from OSS `master`.
 - This version has not been tested at Armory, only built and served.
-- This is mainly being used for development work by our customers and **should not be** used in production or any critical workloads
+- This is mainly being used for development work by our customers and **should not be** used in production or any critical workloads.
 
 Armory uses dates and build numbers for their versions. e.g.:
-- `2019.04.03-edge2143`
-- `2019.04.02-edge2142`
-- `2019.04.01-edge2141`
+- `2019.04.03-ossedge2143`
+- `2019.04.02-ossedge2142`
+- `2019.04.01-ossedge2141`
 - (Weekend! 🎉💃)
-- `2019.03.29-edge2140`
-- `2019.03.28-edge2139`
-- `2019.03.27-edge2138`
+- `2019.03.29-ossedge2140`
+- `2019.03.28-ossedge2139`
+- `2019.03.27-ossedge2138`
 - ...
+
+### Edge Releases
+```yml
+bash-4.4$ hal version list --release=edge
+....
+ - 2018.11.01-edge1031 (Edge release):
+   Changelog: https://docs.armory.io/release-notes
+   Published: Thu Nov 01 20:10:29 GMT 2018
+```
+An **edge** release is created from OSS `master` and Armory `master`.
+- These aren't actively maintained, but can be built when a customer has need for it.
+- This is mainly being used for development work by our customers and **should not be** used in production or any critical workloads.
+
+## Selecting a version to install
+```yml
+$ hal config version edit --version 2.3.0
+```
+See [halyard reference](https://www.spinnaker.io/reference/halyard/commands/#hal-config-version-edit) for additional information.
 
 
 ## List of Stable Armory Releases
 <div class="Post__content" itemprop="articleBody">
   {% include components/articles-list.html %}
 </div>
-
-## Selecting a version to install
-```yml
-$ hal config version edit --version 2.1.0
-```
-See [halyard reference](https://www.spinnaker.io/reference/halyard/commands/#hal-config-version-edit) for additional information.
-
