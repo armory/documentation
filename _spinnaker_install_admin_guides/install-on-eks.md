@@ -162,7 +162,7 @@ You can create an IAM user with credentials, and provide that to Spinnaker via H
 1. Click on "Add user"
 1. Give your user a distinct name, per your organization's naming conventions.  For this document, we will use `s3-spinnaker-jq6cqvmpro`
 1. Click on "Programmatic access"
-1. We will not be adding a distinct policy to this user.  Click on "Next: Tags"
+1. We will not be adding a distinct policy to this user.  Click on "Next: Tags".  *You may receive a warning about how there are no policies attached to this user - this warning can be ignored.*
 1. Optionally, add tags, then click on "Next: Review"
 1. Click "Create user"
 1. Save the Access Key ID and Secret Access Key - these will be used later, during Halyard configuration
@@ -286,13 +286,6 @@ export KUBECONFIG_FULL=/home/spinnaker/.secret/kubeconfig-spinnaker-system-sa
 
 Use the Halyard `hal` command line tool to add a Kubernetes account using your minified kubeconfig
 
-Enable the "Artifacts" feature:
-
-```bash
-# Enable artifacts
-hal config features edit --artifacts true
-```
-
 Configure the kubeconfig and account:
 
 ```bash
@@ -366,6 +359,19 @@ By default, Halyard will configure Spinnaker to use the folder `front50` in your
 ROOT_FOLDER=not_front50
 hal config storage s3 edit --root-folder ${ROOT_FOLDER}
 ```
+
+## Enable Other Features
+
+Within Spinnaker, 'artifacts' are consumable references to items that live outside of Spinnaker (for example, a file in a git repository or a file in an S3 bucket are two examples of artifacts).  This feature must be explicitly turned on.
+
+Enable the "Artifacts" feature:
+
+```bash
+# Enable artifacts
+hal config features edit --artifacts true
+```
+
+(In order to add specific types of artifacts, there are further configuration items that must be completed.  For now, it is sufficient to just turn on the artifacts feature).
 
 ## Choose the Spinnaker version
 
