@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Configuring Slack Notifications
-order: 88
+order: 87
 ---
 This article describes how to configure Spinnaker to send Slack notifications.  
 {:.no_toc}
@@ -9,12 +9,12 @@ This article describes how to configure Spinnaker to send Slack notifications.
 {:toc}
 
 ## Create A Slack Application
-Go to the Apps Management url and click on the “Create New App” button. Once done, you would get access to the basic configuration pane. You might want to customize some settings, like the color or the logo of your application at the bottom of it.
+Go to the Apps Management URL and click on the “Create New App” button. Once done, you will get access to the basic configuration pane. You might want to customize some settings, like the color or the logo of your application at the bottom of it.
 
 ![Github Webhook](/assets/images/slack-notifications-1.png)
 
 ## Create A Bot
-Once the application has been created, you will want to create a Bot. Next, select the “Add features and functionality” menu and then select “Bots”.
+Once the application has been created, you will create a Bot. Next, select the “Add features and functionality” menu and then select “Bots”.
 
 Enter the following fields:
 
@@ -27,23 +27,22 @@ Select the “Install your app to your workspace” from the Bot “Basic Inform
 
 ![Github Webhook](/assets/images/slack-notifications-2.png)
 
-
 ## Configure Halyard
 In `halyard.yml`, configure the deployments you'd like to manage:
 
 ## Invite The Bot To A Channel
 
-Spinnaker only requires to be able to publish on a channel to interact with Slack, so all you have to do is connect to a channel or create a new channel and name the bot you’ve just created. Slack will propose to invite the bot. Accept the invitation.
+Spinnaker only requires to be able to publish on a channel to interact with Slack. All you have to do is connect to a channel or create a new channel and name the bot you’ve just created. Slack will propose to invite the bot. Accept the invitation.
 
 ## Register The Slack Token With spinnaker
-You are now ready to configure Spinnaker the bot you’ve just registered. Start by setting the variables below.
+You are now ready to configure Spinnaker with the bot you’ve just registered. Start by setting the variables below:
 
 ```bash
     export TOKEN_FROM_SLACK="xoxb-xxxxxxxx-xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxx"
     export SLACK_BOT=spinnaker
 ```
 
-Register the token and bot name in the configuration
+Register the token and bot name in the configuration:
 
 ```bash
 $ echo $TOKEN_FROM_SLACK | hal config notification slack edit --bot-name \
@@ -56,7 +55,7 @@ Set the configuration that enables Slack:
 $ hal config notification slack enable
 ```
 
-Redeploy the configuration
+Redeploy the configuration:
 
 ```bash
 $ hal deploy apply
