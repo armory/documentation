@@ -105,8 +105,8 @@ hal config security authn saml enable
 
 ## Troubleshooting
 
-Make sure the dns are correctly poiting to the loadbalancers of gate-URL and deck-URL.
+Make sure the dns are correctly pointing to the loadbalancers of gate-URL and deck-URL.
 
-Verify that the gate-URL is the one entered in otka with `:8084/saml/SSO` appended to it.
+Verify that the gate-URL is the one entered in Okta with `:8084/saml/SSO` appended to it.
 
 Validate that the service-addess-url in your halconfig file is the gate-URL.
