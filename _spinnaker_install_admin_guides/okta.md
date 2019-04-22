@@ -87,7 +87,7 @@ keytool -genkey -v -keystore $KEYSTORE_PATH -alias saml -keyalg RSA -keysize 204
 KEYSTORE_PATH=/Users/armory/.hal/saml/saml.jks
 KEYSTORE_PASSWORD=<password-entered-in-step-1>
 METADATA_PATH=/Users/armory/.hal/saml/metadata.xml
-SERVICE_ADDR_URL=https://<gate-URL>:8084
+SERVICE_ADDR_URL=https://<gate-URL>
 ISSUER_ID=io.armory.spinnaker.oktatest
 
 hal config security authn saml edit \
@@ -102,3 +102,11 @@ hal config security authn saml enable
 ```
 
 > Note: The value you enter for `issuerId` must match the value entered in "Audience URI (SP Entity ID)" when configuring the app in Okta
+
+## Troubleshooting
+
+Make sure the dns are correctly pointing to the loadbalancers of gate-URL and deck-URL.
+
+Verify that the gate-URL is the one entered in Okta with `:8084/saml/SSO` appended to it.
+
+Validate that the service-addess-url in your halconfig file is the gate-URL.
