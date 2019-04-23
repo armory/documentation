@@ -21,6 +21,8 @@ Make sure you have a kubernetes cluster with a minimum of **15 GB** of memory an
 You can install Armory's version of Halyard directly on Mac OSX, or use Docker
 to run Halyard and its command line.
 
+See also [Armory Halyard configuration](/spinnaker-install-admin-guides/configure-halyard/).
+
 ### On Mac OSX
 
 #### Before You Start
@@ -85,7 +87,7 @@ docker run --name armory-halyard --rm \
     -it docker.io/armory/halyard-armory:{{ site.data.versions.halyard-armory-version }}
 ```
 
-> Note: If you're installing to Google Cloud, you'll want to change the 
+> Note: If you're installing to Google Cloud, you'll want to change the
 > ".aws" mapping above to your Google credentials json file, and then
 > you'll need to set the environment variable GOOGLE_APPLICATION_CREDENTIALS
 > within the shell so the installer can find it.
