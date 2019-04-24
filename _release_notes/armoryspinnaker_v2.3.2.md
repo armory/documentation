@@ -1,7 +1,7 @@
 ---
 layout: post
 title: v2.3.2 Armory Release
-order: --20190423221741
+order: -20190423221741
 hidden: false
 ---
 
