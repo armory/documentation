@@ -13,7 +13,7 @@ hidden: false
 
 
 ## Known Issues
-There's currently no known issues with this release.
+There are currently no known issues with this release.
 
 ###  Spinnaker Community Contributions
 ## Detailed Updates
