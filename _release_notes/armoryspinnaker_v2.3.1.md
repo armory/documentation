@@ -13,7 +13,8 @@ hidden: false
 
 
 ## Known Issues
-There's currently no known issues with this release.
+Fiat service accounts are not used properly by Dinghy; please upgrade to Armory Spinnaker v2.3.3
+
 
 ###  Spinnaker Community Contributions
 ## Detailed Updates
