@@ -15,8 +15,11 @@ hidden: false
 
 
 ## Known Issues
-There's currently no known issues with this release.
+The following known issues exist in this release. 
+- Fiat service accounts are not used properly by Dinghy
+- Enabling SSL Termination at Deck results in Deck failing to start
 
+Please upgrade to Armory Spinnaker 2.3.4
 
 ## Highlighted Updates
 ### Armory
