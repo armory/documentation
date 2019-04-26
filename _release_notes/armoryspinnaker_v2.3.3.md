@@ -16,6 +16,7 @@ hidden: false
 ## Known Issues
 The following known issues exist in this release. 
 - Enabling SSL Termination at Deck results in Deck failing to start
+- Terraformer fails to resolve Redis baseUrl
 
 Please upgrade to Armory Spinnaker 2.3.4
 

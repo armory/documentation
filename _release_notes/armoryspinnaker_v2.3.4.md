@@ -94,11 +94,11 @@ No Changes
 
 ###  Spinnaker Community Contributions
 
-#### Clouddriver  - d893ca5...44e0457
- - fix(provider/google): Prevent returning all security groups targeting (#3593) (#3595)
+#### Clouddriver  - 44e0457
+No Changes
 
-#### Deck  - caad681...da50323
- - fix(docker): Fix subscription leak in DockerTriggerTemplate (#6874)
+#### Deck  - da50323
+No Changes
 
 #### Echo  - 5db9d43
 No Changes
