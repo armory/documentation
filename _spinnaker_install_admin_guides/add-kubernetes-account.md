@@ -92,7 +92,7 @@ This document uses the newly-created Armory `spinnaker-tools` Go CLI (available 
 
 ### Get the tool
 
-First, obtain the tool.  Go to https://github.com/armory/spinnaker-tools/releases, and downloaded the latest release for your operating system (OSX and Linux available).  You can also use curl:
+First, obtain the tool.  Go to https://github.com/armory/spinnaker-tools/releases, and download the latest release for your operating system (OSX and Linux available).  You can also use curl:
 
 ```bash
 # If you're not already in the directory

@@ -2,7 +2,6 @@
 layout: post
 title: Installing Spinnaker in EKS
 order: 22
-# Change this to true
 published: true
 redirect_from:
   - /spinnaker_install_admin_guides/install_on_eks/
@@ -57,7 +56,7 @@ On the `Halyard machine`:
   * `resources` directory (mounted to `/home/spinnaker/resources`) stores all Kubernetes manifests and other resources that help create Kubernetes resources
 * You will create `kubeconfig` files that will be added to the `.secret` directory
 
-On the `workstation machine` (installation of these items will be partially covered in this document):
+On the `workstation machine`:
 
 * You can use the `aws` CLI tool to interact with the AWS API:
   * EKS clusters (or, alternatley, have a EKS cluster already built)
@@ -91,7 +90,8 @@ This assumes you have already configured the `aws` CLI with credentials and a de
 
 ## Create a `kubeconfig` file for Halyard/Spinnaker
 
-Spinnaker will be installed in its own namespace in your AWS cluster.  For the purposes of this document, we will be installing Spinnaker in the `spinnaker-system` namespace; you're welcome to use a different namespace for this.
+Spinnaker will be installed in its own namespace in your AWS/EKS cluster.
+For the purposes of this document, we will be installing Spinnaker in the `spinnaker-system` namespace; you're welcome to use a different namespace for this.
 
 We're going to create the following:
 
@@ -101,6 +101,8 @@ We're going to create the following:
 * A kubeconfig containing credentials for the service account
 
 This document uses the Armory `spinnaker-tools` Go CLI (available on [Github](https://github.com/armory/spinnaker-tools)) to create many of these resources.  There are separate instructions to perform these steps manually.
+
+Halyard uses this Kubeconfig file to create the Kubernetes deployment objects that create the microservices that compose Spinnaker.  This same Kubeconfig is passed to Spinnaker so that Spinnaker can see and manage its own resources.
 
 1. Obtain the `spinnaker-tools` CLI tool.  Go to https://github.com/armory/spinnaker-tools/releases, and download the latest release for your operating system (OSX and Linux available).  You can also use curl:
 
@@ -115,6 +117,7 @@ This document uses the Armory `spinnaker-tools` Go CLI (available on [Github](ht
 1. Run the tool.  Feel free to substitute other values for the parameters:
 
    ```bash
+   # The 'aws eks update-kubeconfig' command from above will create/update this file
    SOURCE_KUBECONFIG=kubeconfig-eks
    # Get the name of the context created by the aws tool)
    CONTEXT=$(kubectl --kubeconfig ${SOURCE_KUBECONFIG} config current-context)
@@ -227,22 +230,38 @@ Alternately, you can attach an IAM policy to the role attached to your EKS nodes
 1. Give your inline policy some name.  For example `s3-spinnaker-jq6cqvmpro`
 1. Click "Create Policy"
 
-## Start Halyard
+## Stage files on the `Halyard machine`
+
+On the `Halyard machine`, choose a local working directory for Halyard.  In it, we will create two folders:
+
+* `WORKING_DIRECTORY/.hal`
+* `WORKING_DIRECTORY/.secret`
+* `WORKING_DIRECTORY/resources`
+
+```bash
+# Feel free to use some other directory for this; make sure it is a persistent directory.
+# Also, make sure this directory doesn't live on an NFS mount, as that can cause issues
+WORKING_DIRECTORY=~/eks-spinnaker/
+mkdir -p ${WORKING_DIRECTORY}/.hal
+mkdir -p ${WORKING_DIRECTORY}/.secret
+mkdir -p ${WORKING_DIRECTORY}/resources
+```
+
+You should have one files:
+
+* A kubeconfig file (`kubeconfig-spinnaker-system-sa`) with the credentials for a service account in your GKE cluster
+
+Copy it into `.secret` so it is available to your Halyard docker container:
+
+```bash
+cp kubeconfig-spinnaker-system-sa ${WORKING_DIRECTORY}/.secret
+```
+
+## Start the Halyard container
 
 On the `docker machine`, start the Halyard container (see the `armory/halyard-armory` [tag list](https://hub.docker.com/r/armory/halyard-armory/tags)) for the latest Armory Halyard Docker image tag.
 
 *If you want to install OSS Spinnaker instead, use `gcr.io/spinnaker-marketplace/halyard:stable` for the Docker image*
-
-```bash
-WORKING_DIRECTORY=~/eks-spinnaker
-mkdir -p ${WORKING_DIRECTORY}/.secret
-mkdir -p ${WORKING_DIRECTORY}/.hal
-mkdir -p ${WORKING_DIRECTORY}/resources
-mv kubeconfig-spinnaker-system-sa ~{WORKING_DIRECTORY}/.secret/
-
-Copy the kubeconfig created earlier into .secret so it is available to your Halyard docker container:
-
-Then start the Halyard container:
 
 ```bash
 docker run --name armory-halyard -it --rm \
@@ -270,7 +289,7 @@ cd ~
 
 ## Add the kubeconfig and cloud provider to Spinnaker (via Halyard)
 
-From the `kubectl exec` separate terminal session, add (re-export) the relevant environment variables
+From the `docker exec` separate terminal session, add (re-export) the relevant environment variables
 
 ```bash
 ###### Use the same values as the start of the document
@@ -312,6 +331,19 @@ hal config deploy edit \
   --account-name ${ACCOUNT_NAME} \
   --location ${NAMESPACE}
 ```
+
+## Enable Artifacts
+
+Within Spinnaker, 'artifacts' are consumable references to items that live outside of Spinnaker (for example, a file in a git repository or a file in an S3 bucket are two examples of artifacts).  This feature must be explicitly turned on.
+
+Enable the "Artifacts" feature:
+
+```bash
+# Enable artifacts
+hal config features edit --artifacts true
+```
+
+(In order to add specific types of artifacts, there are further configuration items that must be completed.  For now, it is sufficient to just turn on the artifacts feature).
 
 ## Configure Spinnaker to use your S3 bucket
 
@@ -360,19 +392,6 @@ ROOT_FOLDER=not_front50
 hal config storage s3 edit --root-folder ${ROOT_FOLDER}
 ```
 
-## Enable Other Features
-
-Within Spinnaker, 'artifacts' are consumable references to items that live outside of Spinnaker (for example, a file in a git repository or a file in an S3 bucket are two examples of artifacts).  This feature must be explicitly turned on.
-
-Enable the "Artifacts" feature:
-
-```bash
-# Enable artifacts
-hal config features edit --artifacts true
-```
-
-(In order to add specific types of artifacts, there are further configuration items that must be completed.  For now, it is sufficient to just turn on the artifacts feature).
-
 ## Choose the Spinnaker version
 
 Before Halyard will install Spinnaker, you should specify the version of Spinnaker you want to use.
@@ -419,7 +438,7 @@ kubectl -n ${NAMESPACE} port-forward ${GATE_POD} 8084 &
 
 Then, you can access Spinnaker at http://localhost:9000
 
-(If you are doing this on a remote machine, this will not work because your browser attempt to access localhost on your local workstation rather than on the remote machine where the port is fotwarded)
+(If you are doing this on a remote machine, this will not work because your browser attempts to access localhost on your local workstation rather than on the remote machine where the port is forwarded)
 
 ## Install the NGINX ingress controller
 
