@@ -100,15 +100,15 @@ We're going to create the following:
 * A role and rolebinding in that namespace, granting permissions to the service account
 * A kubeconfig containing credentials for the service account
 
-This document uses the newly-created Armory `spinnaker-tools` Go CLI (available on [Github](https://github.com/armory/spinnaker-tools)) to create many of these resources.  There are separate instructions to perform these steps manually.
+This document uses the Armory `spinnaker-tools` Go CLI (available on [Github](https://github.com/armory/spinnaker-tools)) to create many of these resources.  There are separate instructions to perform these steps manually.
 
-1. First, obtain the tool.  Go to https://github.com/armory/spinnaker-tools/releases, and downloaded the latest release for your operating system (OSX and Linux available).  You can also use curl:
+1. Obtain the `spinnaker-tools` CLI tool.  Go to https://github.com/armory/spinnaker-tools/releases, and download the latest release for your operating system (OSX and Linux available).  You can also use curl:
 
    ```bash
    # If you're not already in the directory
    cd ~/eks-spinnaker
    # Replace this with the correct version and link for your workstation
-   curl -L https://github.com/armory/spinnaker-tools/releases/download/0.0.2/spinnaker-tools-darwin -o spinnaker-tools
+   curl -L https://github.com/armory/spinnaker-tools/releases/download/0.0.3/spinnaker-tools-darwin -o spinnaker-tools
    chmod +x spinnaker-tools
    ```
 
@@ -234,16 +234,16 @@ On the `docker machine`, start the Halyard container (see the `armory/halyard-ar
 *If you want to install OSS Spinnaker instead, use `gcr.io/spinnaker-marketplace/halyard:stable` for the Docker image*
 
 ```bash
-WORKING_DIRECTORY=~/eks-spinnaker/
-mkdir .secret
-mkdir .hal
-mkdir resources
+WORKING_DIRECTORY=~/eks-spinnaker
+mkdir -p ${WORKING_DIRECTORY}/.secret
+mkdir -p ${WORKING_DIRECTORY}/.hal
+mkdir -p ${WORKING_DIRECTORY}/resources
+mv kubeconfig-spinnaker-system-sa ~{WORKING_DIRECTORY}/.secret/
 ```
 
 Copy the kubeconfig created earlier into .secret so it is available to your Halyard docker container:
 
 ```bash
-cp kubeconfig-spinnaker-system-sa .secret/
 ```
 
 Then start the Halyard container:
@@ -259,6 +259,7 @@ docker run --name armory-halyard -it --rm \
 ## Enter the Halyard container
 
 From a separate terminal session on your `docker machine`, create a second bash/shell session on the Docker container:
+
 ```bash
 docker exec -it armory-halyard bash
 
@@ -273,11 +274,11 @@ cd ~
 
 ## Add the kubeconfig and cloud provider to Spinnaker (via Halyard)
 
-From the `kubectl exec` separate terminal session, add (re-export) the relevant environment variables
+From the separate terminal session, add (re-export) the relevant environment variables
 
 ```bash
 ###### Use the same values as the start of the document
-# Enter the namespace that you want to install Spinnaker in.  This can already exist, or can be created.
+# Enter the namespace that you want to install Spinnaker in.  This should have been created in the previous step.
 export NAMESPACE="spinnaker-system"
 
 # Enter the name you want Spinnaker to use to identify the cloud provider account
@@ -299,7 +300,6 @@ hal config features edit --artifacts true
 Configure the kubeconfig and account:
 
 ```bash
-# Replace with the filename for the kubeconfig, if it's different
 # Enable the Kubernetes cloud provider
 hal config provider kubernetes enable
 
@@ -311,9 +311,10 @@ hal config provider kubernetes account add ${ACCOUNT_NAME} \
   --namespaces ${NAMESPACE}
 ```
 
+## Configure Spinnaker to install in Kubernetes
+
 **Important: This will by default limit your Spinnaker to deploying to the namespace specified.  If you want to be able to deploy to other namespaces, either add a second cloud provider target or remove the `--namespaces` flag.**
 
-Configure Spinnaker to install in Kubernetes
 Use the Halyard `hal` command line tool to configure Halyard to install Spinnaker in your Kubernetes cluster
 
 ```bash
@@ -388,7 +389,7 @@ And then you can select the version with this:
 
 ```bash
 # Replace with version of choice:
-export VERSION=2.3.0
+export VERSION=2.3.4
 hal config version edit --version $VERSION
 ```
 
@@ -407,11 +408,10 @@ Once this is complete, congratulations!  Spinnaker is installed.  Now we have to
 If you have kubectl on a local machine with access to your Kubernetes cluster, you can test connecting to it with the following:
 
 ```bash
-NAMESPACE=spinnaker-system
-DECK_POD=$(kubectl -n ${NAMESPACE} get pod -l cluster=spin-deck -ojsonpath='{.items[0].metadata.name}')
-GATE_POD=$(kubectl -n ${NAMESPACE} get pod -l cluster=spin-gate -ojsonpath='{.items[0].metadata.name}')
-kubectl -n ${NAMESPACE} port-forward ${DECK_POD} 9000 &
-kubectl -n ${NAMESPACE} port-forward ${GATE_POD} 8084 &
+DECK_POD=$(kubectl -n spinnaker get pod -l cluster=spin-deck -ojsonpath='{.items[0].metadata.name}')
+GATE_POD=$(kubectl -n spinnaker get pod -l cluster=spin-gate -ojsonpath='{.items[0].metadata.name}')
+kubectl -n spinnaker port-forward ${DECK_POD} 9000 &
+kubectl -n spinnaker port-forward ${GATE_POD} 8084 &
 ```
 
 Then, you can access Spinnaker at http://localhost:9000
@@ -456,7 +456,7 @@ SPIN_GATE_ENDPOINT=api.some-url.com
 NAMESPACE=spinnaker
 ```
 
-Create a Kubernetes Ingress manifest to expose spin-deck and spin-gate
+Create a Kubernetes Ingress manifest to expose spin-deck and spin-gate (change your hosts and namespace accordingly):
 
 ```bash
 tee spin-ingress.yaml <<-'EOF'
@@ -570,6 +570,7 @@ Configuration of TLS certificates for ingresses is often very organization-speci
   ```
 
 ## Next Steps
+
 Now that you have Spinnaker up and running, here are some of the next things you may want to do:
 
 * Configuration of certificates to secure your cluster (see [this section](#configuring-tls-certificates) for notes on this)

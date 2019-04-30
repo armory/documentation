@@ -81,203 +81,79 @@ The first several steps of this document will take place on a system that has `k
 
 ## Setting up the Service Account
 
+We're going to create the following:
+
+* A namespace to create the service account in
+* A service account in that namespace
+* A role and rolebinding in that namespace, granting permissions to the service account
+* A kubeconfig containing credentials for the service account
+
+This document uses the newly-created Armory `spinnaker-tools` Go CLI (available on [Github](https://github.com/armory/spinnaker-tools)) to create many of these resources.  There are separate instructions to perform these steps manually.
+
+### Get the tool
+
+First, obtain the tool.  Go to https://github.com/armory/spinnaker-tools/releases, and downloaded the latest release for your operating system (OSX and Linux available).  You can also use curl:
+
+```bash
+# If you're not already in the directory
+cd ~/eks-spinnaker
+# Replace this with the correct version and link for your workstation (use https://github.com/armory/spinnaker-tools/releases/download/0.0.3/spinnaker-tools-linux if you're on Linux instead of Mac)
+curl -L https://github.com/armory/spinnaker-tools/releases/download/0.0.3/spinnaker-tools-darwin -o spinnaker-tools
+chmod +x spinnaker-tools
+```
+
 ### Set up bash parameters
 
 First, we'll set up bash environment variables that will be used by later commands
 
 ```bash
+# If you're using a different source kubeconfig, specify it here
+export SOURCE_KUBECONFIG=${HOME}/.kube/config
+
 # Specify the name of the kubernetes context that has permissions in your target cluster.
 # To get context names, you can run "kubectl config get-contexts".
 export CONTEXT="aws-armory-dev"
 
 # Enter the namespace where you want the Spinnaker service account to live
-export SA_NAMESPACE="spinnaker-system"
+export SPINNAKER_NAMESPACE="spinnaker-system"
 
 # Enter the name of the service account you want to create in the target namespace.  
 # If you are creating multiple Kubernetes Cloud Provider Accounts to point to
 # different namespaces in to the same Kubernetes cluster, make sure you use a
 # unique service account name.
-export SERVICE_ACCOUNT_NAME="spinnaker-dev-sa"
+export SPINNAKER_SERVICE_ACCOUNT_NAME="spinnaker-dev-sa"
+
+# Specify where you want the new kubeconfig to be created
+export DEST_KUBECONFIG=${PWD}/kubeconfig-dev-sa
 
 # If you want to deploy to a specific set of namespaces, enter the namespaces
 # that you want to deploy to (space-delimited).
 # These namespaces can already exist, or you can create them.
-export TARGET_NAMESPACES=(dev-1 dev-2)
-
-# Enter the name of the role you want to create in the target namespace.
-export ROLE_NAME="spinnaker-role"
-
-# Enter the account name you want Spinnaker to use to identify the deployment target.
-export ACCOUNT_NAME="spinnaker-dev"
+export TARGET_NAMESPACES_COMMA_SEPARATED=dev-1,dev-2
 ```
 
-### Create the service account namespace and service account
+### Option 1: Create the service account with cluster-admin permissions
 
 ```bash
-# Create a manifest containing the service account and namespace
-tee ${SA_NAMESPACE}-${SERVICE_ACCOUNT_NAME}-service-account.yml <<-'EOF'
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: SA_NAMESPACE
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: SERVICE_ACCOUNT_NAME
-  namespace: SA_NAMESPACE
-EOF
-
-# Update the manifest with bash environment variables
-sed -i.bak \
-  -e "s/SA_NAMESPACE/${SA_NAMESPACE}/g" \
-  -e "s/SERVICE_ACCOUNT_NAME/${SERVICE_ACCOUNT_NAME}/g" \
-  ${SA_NAMESPACE}-${SERVICE_ACCOUNT_NAME}-service-account.yml
-
-# Create the service account
-kubectl --context ${CONTEXT} apply -f ${SA_NAMESPACE}-${SERVICE_ACCOUNT_NAME}-service-account.yml
-```
-
-### Add permissions
-
-There are two options:
-
-* Add cluster-admin permissions
-* Add namespace-specific permissions
-
-#### Option 1: Add cluster-admin permissions
-
-```bash
-# Create a manifest containing the ClusterRoleBinding
-tee ${SA_NAMESPACE}-${SERVICE_ACCOUNT_NAME}-admin-clusterrolebinding.yml <<-'EOF'
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: SERVICE_ACCOUNT_NAME-admin
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-- kind: ServiceAccount
-  name: SERVICE_ACCOUNT_NAME
-  namespace: SA_NAMESPACE
-EOF
-
-# Update the manifest with bash environment variables
-sed -i.bak \
-  -e "s/SA_NAMESPACE/${SA_NAMESPACE}/g" \
-  -e "s/SERVICE_ACCOUNT_NAME/${SERVICE_ACCOUNT_NAME}/g" \
-  ${SA_NAMESPACE}-${SERVICE_ACCOUNT_NAME}-admin-clusterrolebinding.yml
-
-# Create the ClusterRoleBinding
-kubectl --context ${CONTEXT} apply -f ${SA_NAMESPACE}-${SERVICE_ACCOUNT_NAME}-admin-clusterrolebinding.yml
-```
-
-#### Option 2: Add namespace-specific permissions
-
-```bash
-# Create template for roles/rolebinding manifests
-tee service-account-template.yml <<-'EOF'
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: TARGET_NS
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  name: ROLE_NAME
-  namespace: TARGET_NS
-rules:
-- apiGroups: ["*"]
-  resources: ["*"]
-  verbs: ["*"]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: SERVICE_ACCOUNT_NAME-ROLE_NAME-binding
-  namespace: TARGET_NS
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: ROLE_NAME
-subjects:
-- namespace: SA_NAMESPACE
-  kind: ServiceAccount
-  name: SERVICE_ACCOUNT_NAME
-EOF
-
-# For each target namespace, stamp out a Kubernetes manifest from the template
-for TARGET_NS in ${TARGET_NAMESPACES[@]}; do
-  sed \
-    -e "s/TARGET_NS/${TARGET_NS}/g" \
-    -e "s/ROLE_NAME/${ROLE_NAME}/g" \
-    -e "s/SA_NAMESPACE/${SA_NAMESPACE}/g" \
-    -e "s/SERVICE_ACCOUNT_NAME/${SERVICE_ACCOUNT_NAME}/g" \
-    service-account-template.yml > ${TARGET_NS}-rolebinding.yml
-done
-
-# For each target namespace, apply the manifest
-for TARGET_NS in ${TARGET_NAMESPACES[@]}; do
-  kubectl --context ${CONTEXT} apply -f ${TARGET_NS}-rolebinding.yml
-done
-```
-
-## Creating the (minified) Kubeconfig
-
-In order for Spinnaker to talk to a Kubernetes cluster, it must be provided a kubeconfig.  We're going to create a trimmed-down kubeconfig that only has the service account and token.
-
-```bash
-#################### Create minified kubeconfig
-NEW_CONTEXT=${SA_NAMESPACE}-sa
-KUBECONFIG_FILE="kubeconfig-${CONTEXT}-${ACCOUNT_NAME}-${SA_NAMESPACE}-${SERVICE_ACCOUNT_NAME}"
-
-SECRET_NAME=$(kubectl get serviceaccount ${SERVICE_ACCOUNT_NAME} \
+./spinnaker-tools create-service-account \
+  --kubeconfig ${SOURCE_KUBECONFIG} \
   --context ${CONTEXT} \
-  --namespace ${SA_NAMESPACE} \
-  -o jsonpath='{.secrets[0].name}')
-TOKEN_DATA=$(kubectl get secret ${SECRET_NAME} \
-  --context ${CONTEXT} \
-  --namespace ${SA_NAMESPACE} \
-  -o jsonpath='{.data.token}')
-
-# This is necessary to handle both OSX and bash base64, which have different flags
-# Any errors on the first command can be ignored
-TOKEN=$(echo ${TOKEN_DATA} | base64 -d)
-if [[ ! $? -eq 0 ]]; then TOKEN=$(echo ${TOKEN_DATA} | base64 -D); fi
-
-# Create dedicated kubeconfig
-# Create a full copy
-kubectl config view --raw > ${KUBECONFIG_FILE}.full.tmp
-# Switch working context to correct context
-kubectl --kubeconfig ${KUBECONFIG_FILE}.full.tmp config use-context ${CONTEXT}
-# Minify
-kubectl --kubeconfig ${KUBECONFIG_FILE}.full.tmp \
-  config view --flatten --minify > ${KUBECONFIG_FILE}.tmp
-# Rename context
-kubectl config --kubeconfig ${KUBECONFIG_FILE}.tmp \
-  rename-context ${CONTEXT} ${NEW_CONTEXT}
-# Create token user
-kubectl config --kubeconfig ${KUBECONFIG_FILE}.tmp \
-  set-credentials ${CONTEXT}-${SA_NAMESPACE}-token-user \
-  --token ${TOKEN}
-# Set context to use token user
-kubectl config --kubeconfig ${KUBECONFIG_FILE}.tmp \
-  set-context ${NEW_CONTEXT} --user ${CONTEXT}-${SA_NAMESPACE}-token-user
-# Set context to correct namespace
-kubectl config --kubeconfig ${KUBECONFIG_FILE}.tmp \
-  set-context ${NEW_CONTEXT} --namespace ${SA_NAMESPACE}
-# Flatten/minify kubeconfig
-kubectl config --kubeconfig ${KUBECONFIG_FILE}.tmp \
-  view --flatten --minify > ${KUBECONFIG_FILE}
-# Remove tmp
-rm ${KUBECONFIG_FILE}.full.tmp
-rm ${KUBECONFIG_FILE}.tmp
+  --output ${DEST_KUBECONFIG} \
+  --namespace ${SPINNAKER_NAMESPACE} \
+  --serviceAccountName ${SPINNAKER_SERVICE_ACCOUNT_NAME}
 ```
 
-You should end up with a kubeconfig file with a filename like `kubeconfig-${CONTEXT}-${ACCOUNT_NAME}-${SA_NAMESPACE}-${SERVICE_ACCOUNT_NAME}` (you can rename this to something shorter, if you'd like).
+### Option 2: Create the service account with namespace-specific permissions
+
+```bash
+./spinnaker-tools create-service-account \
+  --kubeconfig ${SOURCE_KUBECONFIG} \
+  --context ${CONTEXT} \
+  --output ${DEST_KUBECONFIG} \
+  --namespace ${SPINNAKER_NAMESPACE} \
+  --serviceAccountName ${SPINNAKER_SERVICE_ACCOUNT_NAME} \
+  --target-namespaces ${TARGET_NAMESPACES_COMMA_SEPARATED}
+```
 
 ## Add the kubeconfig and cloud provider to Spinnaker
 
