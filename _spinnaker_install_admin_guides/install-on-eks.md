@@ -2,7 +2,6 @@
 layout: post
 title: Installing Spinnaker in EKS
 order: 22
-# Change this to true
 published: true
 redirect_from:
   - /spinnaker_install_admin_guides/install_on_eks/
@@ -57,7 +56,7 @@ On the `Halyard machine`:
   * `resources` directory (mounted to `/home/spinnaker/resources`) stores all Kubernetes manifests and other resources that help create Kubernetes resources
 * You will create `kubeconfig` files that will be added to the `.secret` directory
 
-On the `workstation machine` (installation of these items will be partially covered in this document):
+On the `workstation machine`:
 
 * You can use the `aws` CLI tool to interact with the AWS API:
   * EKS clusters (or, alternatley, have a EKS cluster already built)
@@ -91,7 +90,8 @@ This assumes you have already configured the `aws` CLI with credentials and a de
 
 ## Create a `kubeconfig` file for Halyard/Spinnaker
 
-Spinnaker will be installed in its own namespace in your AWS cluster.  For the purposes of this document, we will be installing Spinnaker in the `spinnaker-system` namespace; you're welcome to use a different namespace for this.
+Spinnaker will be installed in its own namespace in your AWS/EKS cluster.
+For the purposes of this document, we will be installing Spinnaker in the `spinnaker-system` namespace; you're welcome to use a different namespace for this.
 
 We're going to create the following:
 
@@ -100,21 +100,24 @@ We're going to create the following:
 * A role and rolebinding in that namespace, granting permissions to the service account
 * A kubeconfig containing credentials for the service account
 
-This document uses the newly-created Armory `spinnaker-tools` Go CLI (available on [Github](https://github.com/armory/spinnaker-tools)) to create many of these resources.  There are separate instructions to perform these steps manually.
+This document uses the Armory `spinnaker-tools` Go CLI (available on [Github](https://github.com/armory/spinnaker-tools)) to create many of these resources.  There are separate instructions to perform these steps manually.
 
-1. First, obtain the tool.  Go to https://github.com/armory/spinnaker-tools/releases, and downloaded the latest release for your operating system (OSX and Linux available).  You can also use curl:
+Halyard uses this Kubeconfig file to create the Kubernetes deployment objects that create the microservices that compose Spinnaker.  This same Kubeconfig is passed to Spinnaker so that Spinnaker can see and manage its own resources.
+
+1. Obtain the `spinnaker-tools` CLI tool.  Go to https://github.com/armory/spinnaker-tools/releases, and download the latest release for your operating system (OSX and Linux available).  You can also use curl:
 
    ```bash
    # If you're not already in the directory
    cd ~/eks-spinnaker
    # Replace this with the correct version and link for your workstation
-   curl -L https://github.com/armory/spinnaker-tools/releases/download/0.0.2/spinnaker-tools-darwin -o spinnaker-tools
+   curl -L https://github.com/armory/spinnaker-tools/releases/download/0.0.3/spinnaker-tools-darwin -o spinnaker-tools
    chmod +x spinnaker-tools
    ```
 
 1. Run the tool.  Feel free to substitute other values for the parameters:
 
    ```bash
+   # The 'aws eks update-kubeconfig' command from above will create/update this file
    SOURCE_KUBECONFIG=kubeconfig-eks
    # Get the name of the context created by the aws tool)
    CONTEXT=$(kubectl --kubeconfig ${SOURCE_KUBECONFIG} config current-context)
@@ -162,7 +165,7 @@ You can create an IAM user with credentials, and provide that to Spinnaker via H
 1. Click on "Add user"
 1. Give your user a distinct name, per your organization's naming conventions.  For this document, we will use `s3-spinnaker-jq6cqvmpro`
 1. Click on "Programmatic access"
-1. We will not be adding a distinct policy to this user.  Click on "Next: Tags"
+1. We will not be adding a distinct policy to this user.  Click on "Next: Tags".  *You may receive a warning about how there are no policies attached to this user - this warning can be ignored.*
 1. Optionally, add tags, then click on "Next: Review"
 1. Click "Create user"
 1. Save the Access Key ID and Secret Access Key - these will be used later, during Halyard configuration
@@ -227,26 +230,38 @@ Alternately, you can attach an IAM policy to the role attached to your EKS nodes
 1. Give your inline policy some name.  For example `s3-spinnaker-jq6cqvmpro`
 1. Click "Create Policy"
 
-## Start Halyard
+## Stage files on the `Halyard machine`
+
+On the `Halyard machine`, choose a local working directory for Halyard.  In it, we will create two folders:
+
+* `WORKING_DIRECTORY/.hal`
+* `WORKING_DIRECTORY/.secret`
+* `WORKING_DIRECTORY/resources`
+
+```bash
+# Feel free to use some other directory for this; make sure it is a persistent directory.
+# Also, make sure this directory doesn't live on an NFS mount, as that can cause issues
+WORKING_DIRECTORY=~/eks-spinnaker/
+mkdir -p ${WORKING_DIRECTORY}/.hal
+mkdir -p ${WORKING_DIRECTORY}/.secret
+mkdir -p ${WORKING_DIRECTORY}/resources
+```
+
+You should have one files:
+
+* A kubeconfig file (`kubeconfig-spinnaker-system-sa`) with the credentials for a service account in your GKE cluster
+
+Copy it into `.secret` so it is available to your Halyard docker container:
+
+```bash
+cp kubeconfig-spinnaker-system-sa ${WORKING_DIRECTORY}/.secret
+```
+
+## Start the Halyard container
 
 On the `docker machine`, start the Halyard container (see the `armory/halyard-armory` [tag list](https://hub.docker.com/r/armory/halyard-armory/tags)) for the latest Armory Halyard Docker image tag.
 
 *If you want to install OSS Spinnaker instead, use `gcr.io/spinnaker-marketplace/halyard:stable` for the Docker image*
-
-```bash
-WORKING_DIRECTORY=~/eks-spinnaker/
-mkdir .secret
-mkdir .hal
-mkdir resources
-```
-
-Copy the kubeconfig created earlier into .secret so it is available to your Halyard docker container:
-
-```bash
-cp kubeconfig-spinnaker-system-sa .secret/
-```
-
-Then start the Halyard container:
 
 ```bash
 docker run --name armory-halyard -it --rm \
@@ -259,6 +274,7 @@ docker run --name armory-halyard -it --rm \
 ## Enter the Halyard container
 
 From a separate terminal session on your `docker machine`, create a second bash/shell session on the Docker container:
+
 ```bash
 docker exec -it armory-halyard bash
 
@@ -273,11 +289,11 @@ cd ~
 
 ## Add the kubeconfig and cloud provider to Spinnaker (via Halyard)
 
-From the `kubectl exec` separate terminal session, add (re-export) the relevant environment variables
+From the `docker exec` separate terminal session, add (re-export) the relevant environment variables
 
 ```bash
 ###### Use the same values as the start of the document
-# Enter the namespace that you want to install Spinnaker in.  This can already exist, or can be created.
+# Enter the namespace that you want to install Spinnaker in.  This should have been created in the previous step.
 export NAMESPACE="spinnaker-system"
 
 # Enter the name you want Spinnaker to use to identify the cloud provider account
@@ -289,17 +305,9 @@ export KUBECONFIG_FULL=/home/spinnaker/.secret/kubeconfig-spinnaker-system-sa
 
 Use the Halyard `hal` command line tool to add a Kubernetes account using your minified kubeconfig
 
-Enable the "Artifacts" feature:
-
-```bash
-# Enable artifacts
-hal config features edit --artifacts true
-```
-
 Configure the kubeconfig and account:
 
 ```bash
-# Replace with the filename for the kubeconfig, if it's different
 # Enable the Kubernetes cloud provider
 hal config provider kubernetes enable
 
@@ -311,9 +319,10 @@ hal config provider kubernetes account add ${ACCOUNT_NAME} \
   --namespaces ${NAMESPACE}
 ```
 
+## Configure Spinnaker to install in Kubernetes
+
 **Important: This will by default limit your Spinnaker to deploying to the namespace specified.  If you want to be able to deploy to other namespaces, either add a second cloud provider target or remove the `--namespaces` flag.**
 
-Configure Spinnaker to install in Kubernetes
 Use the Halyard `hal` command line tool to configure Halyard to install Spinnaker in your Kubernetes cluster
 
 ```bash
@@ -322,6 +331,19 @@ hal config deploy edit \
   --account-name ${ACCOUNT_NAME} \
   --location ${NAMESPACE}
 ```
+
+## Enable Artifacts
+
+Within Spinnaker, 'artifacts' are consumable references to items that live outside of Spinnaker (for example, a file in a git repository or a file in an S3 bucket are two examples of artifacts).  This feature must be explicitly turned on.
+
+Enable the "Artifacts" feature:
+
+```bash
+# Enable artifacts
+hal config features edit --artifacts true
+```
+
+(In order to add specific types of artifacts, there are further configuration items that must be completed.  For now, it is sufficient to just turn on the artifacts feature).
 
 ## Configure Spinnaker to use your S3 bucket
 
@@ -388,7 +410,7 @@ And then you can select the version with this:
 
 ```bash
 # Replace with version of choice:
-export VERSION=2.3.0
+export VERSION=2.3.4
 hal config version edit --version $VERSION
 ```
 
@@ -416,7 +438,7 @@ kubectl -n ${NAMESPACE} port-forward ${GATE_POD} 8084 &
 
 Then, you can access Spinnaker at http://localhost:9000
 
-(If you are doing this on a remote machine, this will not work because your browser attempt to access localhost on your local workstation rather than on the remote machine where the port is fotwarded)
+(If you are doing this on a remote machine, this will not work because your browser attempts to access localhost on your local workstation rather than on the remote machine where the port is forwarded)
 
 ## Install the NGINX ingress controller
 
@@ -456,7 +478,7 @@ SPIN_GATE_ENDPOINT=api.some-url.com
 NAMESPACE=spinnaker
 ```
 
-Create a Kubernetes Ingress manifest to expose spin-deck and spin-gate
+Create a Kubernetes Ingress manifest to expose spin-deck and spin-gate (change your hosts and namespace accordingly):
 
 ```bash
 tee spin-ingress.yaml <<-'EOF'
@@ -570,6 +592,7 @@ Configuration of TLS certificates for ingresses is often very organization-speci
   ```
 
 ## Next Steps
+
 Now that you have Spinnaker up and running, here are some of the next things you may want to do:
 
 * Configuration of certificates to secure your cluster (see [this section](#configuring-tls-certificates) for notes on this)
