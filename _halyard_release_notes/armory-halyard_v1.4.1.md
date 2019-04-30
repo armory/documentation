@@ -7,9 +7,6 @@ order: 1
 # 03/18/2019 Release Notes
 {:.no_toc}
 
-* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
-{:toc}
-
 
 ## Halyard Armory Enterprise Spinnaker
 

@@ -239,12 +239,8 @@ mkdir -p ${WORKING_DIRECTORY}/.secret
 mkdir -p ${WORKING_DIRECTORY}/.hal
 mkdir -p ${WORKING_DIRECTORY}/resources
 mv kubeconfig-spinnaker-system-sa ~{WORKING_DIRECTORY}/.secret/
-```
 
 Copy the kubeconfig created earlier into .secret so it is available to your Halyard docker container:
-
-```bash
-```
 
 Then start the Halyard container:
 
@@ -274,7 +270,7 @@ cd ~
 
 ## Add the kubeconfig and cloud provider to Spinnaker (via Halyard)
 
-From the separate terminal session, add (re-export) the relevant environment variables
+From the `kubectl exec` separate terminal session, add (re-export) the relevant environment variables
 
 ```bash
 ###### Use the same values as the start of the document
@@ -408,10 +404,11 @@ Once this is complete, congratulations!  Spinnaker is installed.  Now we have to
 If you have kubectl on a local machine with access to your Kubernetes cluster, you can test connecting to it with the following:
 
 ```bash
-DECK_POD=$(kubectl -n spinnaker get pod -l cluster=spin-deck -ojsonpath='{.items[0].metadata.name}')
-GATE_POD=$(kubectl -n spinnaker get pod -l cluster=spin-gate -ojsonpath='{.items[0].metadata.name}')
-kubectl -n spinnaker port-forward ${DECK_POD} 9000 &
-kubectl -n spinnaker port-forward ${GATE_POD} 8084 &
+NAMESPACE=spinnaker-system
+DECK_POD=$(kubectl -n ${NAMESPACE} get pod -l cluster=spin-deck -ojsonpath='{.items[0].metadata.name}')
+GATE_POD=$(kubectl -n ${NAMESPACE} get pod -l cluster=spin-gate -ojsonpath='{.items[0].metadata.name}')
+kubectl -n ${NAMESPACE} port-forward ${DECK_POD} 9000 &
+kubectl -n ${NAMESPACE} port-forward ${GATE_POD} 8084 &
 ```
 
 Then, you can access Spinnaker at http://localhost:9000
