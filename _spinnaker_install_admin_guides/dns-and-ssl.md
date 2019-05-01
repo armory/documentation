@@ -16,6 +16,7 @@ This guide includes:
 {:toc}
 
 In order to use Spinnaker in your organization, you're going to want to configure your infrastructure so that users can access Spinnaker.  This has several steps:
+
 * Expose the Spinnaker endpoints (Deck and Gate)
 * Configure TLS encryption for the exposed endpoints
 * Create DNS entries for your endpoints
@@ -23,16 +24,20 @@ In order to use Spinnaker in your organization, you're going to want to configur
 
 ## Expose the Spinnaker endpoints
 Spinnaker users need access to two endpoints within Spinnaker
+
 * Deck (the Spinnaker UI microservice), which listens on port 9000
 * Gate (the spinnaker API microservice), which listens on port 8084
 
 There are a number of ways to expose these endpoints, and your configuration of these will be heavily dependent on the Kubernetes environment where Spinnaker is installed.  Several common options are as follows:
+
 * Set up an ALB ingress controller within your Kubernetes environment, and add an ingress for the `spin-deck` and `spin-gate` services.
 * Set up an nginx ingress controller within your Kubernetes environment, and add an ingress for the `spin-deck` and `spin-gate` services.
 * Create Kubernetes `loadbalancer` services for both the `spin-deck` and `spin-gate` Kubernetes deployments
 
 ## Configure TLS encryption for the exposed endpoints
+
 It's recommended to encrypt the exposed Spinnaker endpoints.  There are three high-level ways of achieving this:
+
 * Most common: Terminate TLS on the load balancer(s) in front of the endpoints, and allow HTTP traffic between the load balancer and the endpoint backends.
 * Terminate TLS on the load balancer(s) in front of the endpoints, and configure the load balancer and endpoint backends with TLS between them, as well.
 * Least common: Configure your load balancer(s) to support the SNI so that the load balancer passes the initial TLS connection to the backends.
