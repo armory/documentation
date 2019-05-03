@@ -84,6 +84,6 @@ Field Descriptions:
 * `json`: This is the JSON payload, as a string, representing the pipeline, as it would appear if you were to use the UI to "Edit as JSON" a pipeline.  For those values that need to be substituted, put in the variable markers you defined in the `options` field (in this abbreviated example, you can see where the application would be substituted).
 
 Remember, this is a very alpha feature.  Errors in the template may result in
-Front50 failing to boot properly; if this happens, you should be able to find the pipeline in your S3 bucket and delete it manually, and Front50 should then recover.
+Front50 failing to boot properly; if this happens, you should be able to find the pipeline in your storage bucket and delete it manually, and Front50 should then recover.
 
 
