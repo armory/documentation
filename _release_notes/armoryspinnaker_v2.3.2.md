@@ -16,8 +16,9 @@ hidden: false
 The following known issues exist in this release. 
 - Fiat service accounts are not used properly by Dinghy
 - Enabling SSL Termination at Deck results in Deck failing to start
+- Dinghy does not properly create/update pipelines
 
-Please upgrade to Armory Spinnaker 2.3.4
+Please upgrade to Armory Spinnaker 2.3.5
 
 ###  Spinnaker Community Contributions
 ## Detailed Updates
