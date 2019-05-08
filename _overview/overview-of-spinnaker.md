@@ -47,7 +47,4 @@ If you have questions, comments or suggestions about this documentation *(especi
 
 ## Features and Pricing
 
-Armory Spinnaker is an enterprise-grade distribution of Spinnaker that forms the core of Armory's Platform. Armory's Platform helps software teams ship better software, faster.
-
-Armory offers a "free forever" Teams plan, as well as Growth and Enterprise plans. [Learn more here](http://www.armory.io/pricing).
-
+Armory Spinnaker is an enterprise-grade distribution of Spinnaker that forms the core of Armory's Platform. Armory's Platform helps software teams ship better software, faster.  [Learn more here](http://www.armory.io/pricing).
