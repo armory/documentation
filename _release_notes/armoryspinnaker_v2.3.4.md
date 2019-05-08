@@ -14,7 +14,10 @@ hidden: false
 
 
 ## Known Issues
-There are currently no known issues with this release.
+The following known issues exist in this release. 
+- Dinghy does not properly create/update pipelines
+
+Please upgrade to Armory Spinnaker 2.3.5
 
 ###  Spinnaker Community Contributions
 ## Detailed Updates
