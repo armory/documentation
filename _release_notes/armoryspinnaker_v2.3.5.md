@@ -1,6 +1,6 @@
 ---
 layout: post
-title: v2.3.5 Armory Release
+title: v2.3.5 Armory Release (OSS Release 1.12.x)
 order: -20190508042505
 hidden: false
 ---
@@ -14,7 +14,10 @@ hidden: false
 
 
 ## Known Issues
-There are currently no known issues with this release.
+The following known issues exist in this release. 
+- Dinghy does not populate expected artifacts
+
+Please upgrade to Armory Spinnaker 2.3.6
 
 ###  Spinnaker Community Contributions
 ## Detailed Updates

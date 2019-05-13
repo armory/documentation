@@ -1,6 +1,6 @@
 ---
 layout: post
-title: v2.3.3 Armory Release
+title: v2.3.3 Armory Release (OSS Release 1.12.x)
 order: -20190424201749
 hidden: false
 ---
@@ -18,8 +18,9 @@ The following known issues exist in this release.
 - Enabling SSL Termination at Deck results in Deck failing to start
 - Terraformer fails to resolve Redis baseUrl
 - Dinghy does not properly create/update pipelines
+- Dinghy does not populate expected artifacts
 
-Please upgrade to Armory Spinnaker 2.3.5
+Please upgrade to Armory Spinnaker 2.3.6
 
 ###  Spinnaker Community Contributions
 ## Detailed Updates

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: v2.3.1 Armory Release
+title: v2.3.1 Armory Release (OSS Release 1.12.x)
 order: -20190418211949
 hidden: false
 ---
@@ -17,8 +17,9 @@ The following known issues exist in this release.
 - Fiat service accounts are not used properly by Dinghy
 - Enabling SSL Termination at Deck results in Deck failing to start
 - Dinghy does not properly create/update pipelines
+- Dinghy does not populate expected artifacts
 
-Please upgrade to Armory Spinnaker 2.3.5
+Please upgrade to Armory Spinnaker 2.3.6
 
 ###  Spinnaker Community Contributions
 ## Detailed Updates
