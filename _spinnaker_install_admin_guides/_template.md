@@ -55,6 +55,8 @@ List of items for order:
 81 JIRA integration
 
 140 Rate limit
-150 Secrets S3
-152 Gitops
+150 Secrets
+151 S3 secrets
+152 Vault secrets
+158 Gitops
 160 Okta
