@@ -11,7 +11,7 @@ This article describes how to configure Spinnaker to send Slack notifications.
 ## Create A Slack Application
 Go to the Apps Management URL and click on the “Create New App” button. Once done, you will get access to the basic configuration pane. You might want to customize some settings, like the color or the logo of your application at the bottom of it.
 
-![Github Webhook](/assets/images/slack-notifications-1.png)
+![Github Webhook](/images/slack-notifications-1.png)
 
 ## Create A Bot
 Once the application has been created, you will create a Bot. Next, select the “Add features and functionality” menu and then select “Bots”.
@@ -25,7 +25,7 @@ Enter the following fields:
 ##  Deploy The Bot
 Select the “Install your app to your workspace” from the Bot “Basic Information” page and deploy it. Then select the “OAuth & Permissions” menu and note the “Bot User OAuth Access Token”. That is the one starting with “xoxb-” like in the screenshot below:
 
-![Github Webhook](/assets/images/slack-notifications-2.png)
+![Github Webhook](/images/slack-notifications-2.png)
 
 ## Configure Halyard
 In `halyard.yml`, configure the deployments you'd like to manage:
@@ -64,4 +64,4 @@ $ hal deploy apply
 ## Test Spinnaker
 You should then make sure Spinnaker can send the notifications as expected. You can configure a notification within a channel you have invited your bot in and test by running a test pipeline. See example below:
 
-![Github Webhook](/assets/images/slack-notifications-3.png)
+![Github Webhook](/images/slack-notifications-3.png)
