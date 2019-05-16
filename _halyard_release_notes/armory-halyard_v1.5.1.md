@@ -1,6 +1,6 @@
 ---
 layout: post
-title: v1.5.0 Armory Halyard
+title: v1.5.1 Armory Halyard
 order: -20190516173156
 ---
 
