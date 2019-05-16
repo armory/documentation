@@ -1,7 +1,7 @@
 ---
 layout: post
 title: v1.5.0 Armory Halyard
-order: 1
+order: -20190422000000
 ---
 
 # 04/22/2019 Release Notes
