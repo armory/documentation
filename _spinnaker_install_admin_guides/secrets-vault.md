@@ -12,7 +12,7 @@ This document describes how to set up Spinnaker secrets in Hashicorp's Vault. In
 
 ## Authorization
 
-We currently support two methods of authenticatiion with Vault servers.
+We currently support two methods of authentication with Vault servers.
 
 ### 1. Kubernetes service account (recommended)
 
