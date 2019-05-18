@@ -65,6 +65,23 @@ On the `workstation machine`:
 * You have a persistent working directory in which to work in.  One option here is `~/eks-spinnaker`
 * You will create AWS resources, such as service accounts, that will be permanently associated with your Spinnaker cluster
 
+## Installation Summary
+
+In order to install Spinnaker, this document covers the following things:
+
+* Generating a `kubeconfig` file, which is a Kubernetes credential file that Halyard and Spinnaker will use to communicate with the Kubernetes cluster where Spinnaker will be installed
+* Creating an S3 bucket for Spinnaker to store persistent configuration in
+* Creating an IAM user that Spinnaker will use to access the S3 bucket
+* Running the Halyard daemon in a Docker container
+  * Persistent configuration directories from the workstation/host will be mounted into the container
+* Running the `hal` client interactively in the same Docker container, to:
+  * Build out the halconfig YAML file (`.hal/config)
+  * Configure Spinnaker/Halyard to use the kubeconfig to install Spinnaker
+  * Configure Spinnaker with the IAM credentials and bucket information
+  * Turn on other recommended settings (artifacts and http artifact provider)
+  * Install Spinnaker
+  * Expose Spinnaker
+
 ## Connect to the EKS cluster
 
 This assumes you have already configured the `aws` CLI with credentials and a default region / availability zone (see installation directions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) and configuration directions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html))
@@ -109,8 +126,9 @@ Halyard uses this Kubeconfig file to create the Kubernetes deployment objects th
    ```bash
    # If you're not already in the directory
    cd ~/eks-spinnaker
-   # Replace this with the correct version and link for your workstation
-   curl -L https://github.com/armory/spinnaker-tools/releases/download/0.0.3/spinnaker-tools-darwin -o spinnaker-tools
+   # If you're on Linux instead of OSX, use this URL instead:
+   # https://github.com/armory/spinnaker-tools/releases/download/0.0.5/spinnaker-tools-linux
+   curl -L https://github.com/armory/spinnaker-tools/releases/download/0.0.5/spinnaker-tools-darwin -o spinnaker-tools
    chmod +x spinnaker-tools
    ```
 
@@ -336,14 +354,18 @@ hal config deploy edit \
 
 Within Spinnaker, 'artifacts' are consumable references to items that live outside of Spinnaker (for example, a file in a git repository or a file in an S3 bucket are two examples of artifacts).  This feature must be explicitly turned on.
 
-Enable the "Artifacts" feature:
+Enable the "Artifacts" feature and the "http" artifact provider:
 
 ```bash
 # Enable artifacts
 hal config features edit --artifacts true
+hal config artifact http enable
 ```
 
-(In order to add specific types of artifacts, there are further configuration items that must be completed.  For now, it is sufficient to just turn on the artifacts feature).
+(In order to add specific types of artifacts, there are further configuration
+items that must be completed.  For now, it is sufficient to just turn on the
+artifacts feature with the http artifact provider.  This will allow Spinnaker
+to retrieve files via unauthenticated http.)
 
 ## Configure Spinnaker to use your S3 bucket
 
