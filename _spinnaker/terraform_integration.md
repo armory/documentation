@@ -6,7 +6,6 @@ order: 141
 
 The following tutorial will walk you through how to setup the alpha version of our Terraform integration and execute Terraform code stored in a Github repo as part of a Spinnaker pipeline. We'll assume that you're using Terraform to create and manage infrastructure on AWS.
 
-
 ## How to submit feedback
 
 If you decide to enable this feauture and have any feedback you'd like to submit, please let us know at [go.armory.io/ideas](go.armory.io/ideas)! We're constantly iterating on customer feedback to ensure that the features we build make your life easier!
@@ -19,25 +18,98 @@ If you decide to enable this feauture and have any feedback you'd like to submit
 
 ## Installation
 
-### Enabling the Terraform integration
+### Generating a Github Personal Accsess Token
 
-You can enable the Terraform integration via Armory Halyard. Before you do, be sure you have a Github access token. This will enable the Terraform integration to interact with entire Github repositories.
+You can enable the Terraform integration via Armory Halyard. Before you do, be
+sure you have a Github personal access token. This will enable the Terraform
+integration to interact with entire Github repositories.  This Github access
+token must be configured in two places: once for Terraformer to be able to pull
+a directory of Terraform Templates from Github, and once to be able to pull the
+`tfvar` file (which uses Spinnaker's Github artifact provider).
+
+If you don't already have a Github personal access token, you can create one:
+
+1. Log into Github (potentially using a Service Account)
+1. Click on your user icon in the top right, then on "Settings"
+1. Click on "Developer Settings"
+1. Click on to "Personal access tokens"
+1. Click on "Generate new token"
+1. Give your token a distinct name, and select the `repo` scope
+1. Click "Generate token"
+1. Save the token
+
+Additionally, if SSO is enabled for your Github organization, you *must* enable
+SSO on the token.  On the "Personal access tokens" page, click "Enable SSO" for
+your token and "Authorize" it for the organization which hosts the repo where
+your Terraform template(s) and Terraform `tfvar` files will live.
+
+### Enabling and configuring the Github Artifact Provider
+
+Spinnaker uses the Github Artifact Provider to download any referenced `tfvar`
+files, so it must be configured with the Github token to pull these files.
+
+If you already have a Github artifact account configured in Spinnaker, you can
+skip this step.
+
+Feel free to replace `github-for-terraform` with any unique identifier to identify
+the artifact account.
+
+```bash
+hal config artifact github enable
+
+# This will prompt for the token
+hal config artifact github account add github-for-terraform --token
 ```
-$ hal config version edit --version {release-candidate-number} --alpha
-$ hal armory terraform edit --git-enabled --git-access-token --alpha
-$ hal armory terraform enable --alpha
-$ hal deploy apply
+
+### Enabling and configuring the Terraform integration
+
+The Terraformer module also needs access to the Github token to download full
+Github directories hosting your Terraform templates
+
+```bash
+hal armory terraform enable --alpha
+
+# This will prompt for the token
+hal armory terraform edit --git-enabled --git-access-token --alpha
+```
+
+### Selecting the Terraform version
+
+Terraformer currently ships with four versions of the Terraform binary:
+
+* 0.11.10
+* 0.11.11
+* 0.11.12
+* 0.11.13
+
+In order to use Terraform, you must indicate to the Terraformer microservice
+the path to the binary within the microservice to use.  This should be done by
+creating the file `.hal/default/profiles/terraformer-local.yml` (replace
+`0.11.11` with the version that you want):
+
+```yml
+terraform:
+  executablePath: /terraform/versions/0.11.11/terraform
+```
+
+### Installation
+
+After making the above changes, you must run `hal deploy apply` to tell Halyard
+to apply your changes to the Spinnaker cluster:
+
+```bash
+hal deploy apply
 ```
 
 You should now see an additional service, Terraformer, deployed alongside the rest of Spinnaker by running `kubectl get pods -n {your-spinnaker-namespace}`.
-
 
 ### Configuring other services
 
 Terraform's primary source of feedback are it's logs. While there is no native UI for Terraform in Armory Spinnaker (yet!) we'll need a different way to expose these logs to users in the UI. To do this, we'll configure Gate with a proxy configuration. This proxy will allow us to configure stages with a direct link to the output for Terraform `plan` or `apply`.
 
 First, we'll add the configuration to `~/.hal/default/profiles/gate-local.yml`
-```
+
+```yaml
 proxies:
   - id: terraform
     uri: http://spin-terraformer:7088
@@ -56,7 +128,7 @@ We'll reference this proxy in future steps!
 
 Our Terraform integration exposes a new stage in Spinnaker called `terraform`. Since there's no UI for Terraform,  we'll need to edit the stage as JSON. The JSON representation for this stage is as follows:
 
-```
+```json
 
 {
   "action": "{terraform-command-to-execute}",
@@ -66,6 +138,13 @@ Our Terraform integration exposes a new stage in Spinnaker called `terraform`. S
       "type": "git/repo"
     }
   ],
+  "backendArtifact": {
+    "artifactAccount": "{github-artifact-account-name}",
+    "reference": "{github-api-endpoint-for-tfvar-file}",
+    "type": "github/file"
+  },
+  "overrides": {
+  },
   "dir": "{target-terraform-directory}",
   "type": "terraform"
 }
@@ -73,7 +152,7 @@ Our Terraform integration exposes a new stage in Spinnaker called `terraform`. S
 
 So, for example, if you want to execute `terraform plan` against a Github repository stored at `https://github.com/myorg/my-terraform-repo` the stage would be configured as such.
 
-```
+```json
 {
   "action": "plan",
   "artifacts": [
@@ -82,6 +161,14 @@ So, for example, if you want to execute `terraform plan` against a Github reposi
       "type": "git/repo"
     }
   ],
+  "backendArtifact": {
+    "artifactAccount": "github-for-terraform",
+    "reference": "https://api.github.com/repos/myorg/my-terraform-repo/contents/backend.tfvars",
+    "type": "github/file"
+  },
+  "overrides": {
+    "environment_name": "${parameters.environment_name}"
+  },
   "dir": "/",
   "type": "terraform"
 }
@@ -143,7 +230,7 @@ Then, apply this `ConfigMap` via `kubectl apply -f {temp-filename}`.
 
 Next, we'll need to configure Terraformer to mount this `ConfigMap` at runtime. To do this, we'll add the following [Service Setting]() to `~/.hal/default/service-settings/terraformer.yml`.
 
-```
+```yaml
 kubernetes:
   volumes:
   - id: terraformer-credentials
@@ -153,7 +240,7 @@ kubernetes:
 
 We can deploy these changes via `hal deploy apply`. Once successfully deployed, you'll be able to reference these profiles in your Terraform state and provider configuration. See the below snippet for an example.
 
-```
+```yaml
 terraform {
   backend "s3" {
     profile = "dev"
