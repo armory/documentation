@@ -126,8 +126,8 @@ Halyard uses this Kubeconfig file to create the Kubernetes deployment objects th
    ```bash
    # If you're not already in the directory
    cd ~/eks-spinnaker
-   # If you're on Linux instead of OSX, use
-   # https://github.com/armory/spinnaker-tools/releases/download/0.0.5/spinnaker-tools-darwin
+   # If you're on Linux instead of OSX, use this URL instead:
+   # https://github.com/armory/spinnaker-tools/releases/download/0.0.5/spinnaker-tools-linux
    curl -L https://github.com/armory/spinnaker-tools/releases/download/0.0.5/spinnaker-tools-darwin -o spinnaker-tools
    chmod +x spinnaker-tools
    ```
