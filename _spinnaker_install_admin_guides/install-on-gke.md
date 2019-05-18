@@ -145,7 +145,7 @@ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-ad
    cd ~/gke-spinnaker
    # If you're on Linux instead of OSX, use this URL instead:
    # https://github.com/armory/spinnaker-tools/releases/download/0.0.5/spinnaker-tools-linux
-   curl -L https://github.com/armory/spinnaker-tools/releases/download/0.0.3/spinnaker-tools-darwin -o spinnaker-tools
+   curl -L https://github.com/armory/spinnaker-tools/releases/download/0.0.5/spinnaker-tools-darwin -o spinnaker-tools
    chmod +x spinnaker-tools
    ```
 
