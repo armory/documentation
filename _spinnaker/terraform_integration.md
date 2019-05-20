@@ -12,7 +12,7 @@ If you decide to enable this feauture and have any feedback you'd like to submit
 
 ## Prerequisites
 
-1. A Armory Spinnaker installation (version 2.3.x or above) running on Kubernetes and installed via Armory Halyard. ([instructions](/spinnaker/install)). If you haven't updated Armory Halyard in a while, you'll need to do so to get access to these new features.
+1. An Armory Spinnaker installation (version 2.3.x or above) running on Kubernetes and installed via Armory Halyard. ([instructions](/spinnaker/install)). If you haven't updated Armory Halyard in a while, you'll need to do so to get access to these new features.
 1. Credentials (in the form of basic auth) to your Terraform git repository.  This can take one of several forms:
     1. If your Terraform repo is in Github, you can use a Personal Acccess Token (potentially associated with a service account) as the 'token'.  See [this documentation](https://blog.github.com/2013-05-16-personal-api-tokens/) for details on how to generate this token in Github.
     1. If your Terraform repo is in BitBucket, you can use a username/password that has access to your BitBucket repo
