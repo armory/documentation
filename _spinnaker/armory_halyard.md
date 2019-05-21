@@ -49,14 +49,15 @@ hal armory [subcommands]
 ```
 
 #### Subcommands
- * `diagnostics`: configure diagnostics reporting
- * `dinghy`: configure Dinghy pipelines as code
+ * `diagnostics`: Configure diagnostics reporting
+ * `dinghy`: Configure Dinghy pipelines as code
+ * `secrets`: Configure secrets management
  * `init`: Runs Armory installer
 
 ---
 ## hal armory diagnostics
 
-configure diagnostics reporting
+Configure diagnostics reporting
 
 #### Usage
 ```
@@ -68,14 +69,14 @@ hal armory diagnostics [parameters] [subcommands]
  * `--no-validate`: (*Default*: `false`) Skip validation.
 
 #### Subcommands
- * `disable`: Set diagnostics as disabled
+ * `disable`: Disable diagnostics
  * `edit`: Edit diagnostics settings
- * `enable`: Set diagnostics as enabled
+ * `enable`: Enable diagnostics
 
 ---
 ## hal armory diagnostics disable
 
-Set diagnostics as disabled
+Disable diagnostics
 
 #### Usage
 ```
@@ -106,7 +107,7 @@ hal armory diagnostics edit [parameters]
 ---
 ## hal armory diagnostics enable
 
-Set diagnostics as enabled
+Enable diagnostics
 
 #### Usage
 ```
@@ -121,7 +122,7 @@ hal armory diagnostics enable [parameters]
 ---
 ## hal armory dinghy
 
-configure Dinghy pipelines as code
+Configure Dinghy pipelines as code
 
 #### Usage
 ```
@@ -133,14 +134,14 @@ hal armory dinghy [parameters] [subcommands]
  * `--no-validate`: (*Default*: `false`) Skip validation.
 
 #### Subcommands
- * `disable`: Set Dinghy as disabled
+ * `disable`: Disable Dinghy
  * `edit`: Edit Dinghy settings
- * `enable`: Set Dinghy as enabled
+ * `enable`: Enable Dinghy
 
 ---
 ## hal armory dinghy disable
 
-Set Dinghy as disabled
+Disable Dinghy
 
 #### Usage
 ```
@@ -180,7 +181,7 @@ hal armory dinghy edit [parameters]
 ---
 ## hal armory dinghy enable
 
-Set Dinghy as enabled
+Enable Dinghy
 
 #### Usage
 ```
@@ -211,4 +212,88 @@ hal armory init [parameters]
  * `--path`: The path to where armory-install is already installed
 
 
+## hal armory secrets 
+
+Configure secrets management
+
+#### Usage
+```
+hal armory secrets [subcommands] [parameters]
+```
+
+#### Parameters
+ * `--deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
+ * `--no-validate`: (*Default*: `false`) Skip validation.
+
+#### Subcommands
+ * `vault`: Configure secrets management with Vault
+
 ---
+## hal armory secrets vault
+
+Configure settings for secrets management with Vault in the Spinnaker services. [See our documentation for configuring Halyard itself to use Vault](https://docs.armory.io/spinnaker-install-admin-guides/secrets-vault/#configuring-halyard-to-use-vault-secrets).
+
+#### Usage
+```
+hal armory secrets vault [subcommands] [parameters]
+```
+
+#### Parameters
+ * `--deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
+ * `--no-validate`: (*Default*: `false`) Skip validation.
+
+#### Subcommands
+ * `disable`: Disable secret engine
+ * `edit`: Edit secrets settings
+ * `enable`: Enable secret engine
+
+---
+## hal armory secrets vault disable
+
+Disable Vault secret engine
+
+#### Usage
+```
+hal armory secrets vault disable [parameters]
+```
+
+#### Parameters
+ * `--deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
+ * `--no-validate`: (*Default*: `false`) Skip validation.
+
+---
+## hal armory secrets vault edit
+
+Edit Vault secret engine settings
+
+#### Usage
+```
+hal armory secrets vault edit [parameters]
+```
+
+#### Parameters
+ * `--auth-method`: (*Required*) Method used to authenticate with the Vault endpoint. Must be either `KUBERNETES` for [Kubernetes service account auth](https://www.vaultproject.io/docs/auth/kubernetes.html) or `TOKEN` for [Vault token auth](https://www.vaultproject.io/docs/auth/token.html). The `TOKEN` method will require a `VAULT_TOKEN` environment variable set [for Halyard and the services](https://docs.armory.io/spinnaker-install-admin-guides/secrets-vault/#2-token-authentication).
+ * `--deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
+ * `--no-validate`: (*Default*: `false`) Skip validation.
+ * `--path`: (*Default*: `kubernetes`) (Applies to `KUBERNETES` [authentication method](https://www.vaultproject.io/docs/auth/kubernetes.html)) Path of the kubernetes authentication backend mount.
+ * `--role`: (Applies to `KUBERNETES` [authentication method](https://www.vaultproject.io/docs/auth/kubernetes.html)) Name of the role against which the login is being attempted.
+ * `--url`: (*Required*) URL of the Vault endpoint from Spinnaker services.
+
+
+---
+## hal armory secrets vault enable
+
+Enable Vault secret engine
+
+#### Usage
+```
+hal armory secrets vault enable [parameters]
+```
+
+#### Parameters
+ * `--deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
+ * `--no-validate`: (*Default*: `false`) Skip validation.
+
+
+
+
