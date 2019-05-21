@@ -32,7 +32,7 @@ secrets:
 
 ### 2. Token authentication
 
-This method is not recommended but it is supported if you choose. For token authentication, you'll need to have a `VAULT_TOKEN` environment variable set for halyard and each of the services.
+This method is not recommended but it is supported if you choose. We recommend this for testing and development purposes only. For token authentication, you'll need to have a `VAULT_TOKEN` environment variable set for halyard and each of the services.
 
 ```yaml
 secrets:
@@ -43,7 +43,7 @@ secrets:
 ```
 
 ## Configuring Halyard to use Vault secrets
-The Halyard daemon will need access to the Vault server in order to decrypt secrets for validation and deployment. So you'll also need to add the config block to your `halyard.yml`:
+Halyard will need access to the Vault server in order to decrypt secrets for validation and deployment. While the Spinnaker services are configured through `~/.hal/config`, the Halyard daemon has its own configuration file found at `/opt/spinnaker/config/halyard.yml`. You'll need to add the same config block to this file as well:
 
 ```yaml
 secrets:
@@ -58,25 +58,25 @@ Then restart the daemon (you'll only need to do this the first time):
 ```
 hal shutdown
 ```
-Your next hal command will automatically bring the daemon back up if you're running Halyard locally. If it's running within a docker container, you'll need to restart the container.
+Your next hal command will automatically bring the daemon back up if you're running Halyard locally. If it's running within a docker container, you'll need to mount the volume containing the updated `halyard.yml` and restart the container.
 
 
 ## Storing secrets
+To store a file, simply prepend the file path with `@`. It will accept relative paths but cannot resolve `~`: 
 
 ```
-vault write secret/staging/github password=<password> token=<token>
+vault kv put secret/spinnaker/kubernetes config=@path/to/kube/config
 ```
-
-Use the `@` prefix for storing files: 
-
+The command above stores a single key-value pair at the `secret/spinnaker/kubernetes` path. **Any updates to that path will replace the existing values even if using a different key!** In order to store multiple secrets at the same path, it must be done in a single command, like so:
 ```
-vault write secret/staging/kubernetes config=@path/to/kube/config
+vault kv put secret/spinnaker/github password=<password> token=<token>
 ```
+Otherwise, just store different secrets at different paths, like we're doing in these examples.
 
 Make sure to base64 encode any binary files:
 ```
 base64 -i saml.jks -o saml.b64
-vault write secret/staging/saml base64keystore=@saml.b64
+vault kv put secret/spinnaker/saml base64keystore=@saml.b64
 ```
 
 
@@ -93,19 +93,19 @@ encrypted:vault!e:<secret engine>!n:<namespace>!k:<key>!b:<is base64 encoded?>
 
 For example, to reference the GitHub password:
 ```
-encrypted:vault!e:secret!n:staging/github!k:password
+encrypted:vault!e:secret!n:spinnaker/github!k:password
 ```
 
 And the same for referencing a file:
 ```
-encrypted:vault!e:secret!n:staging/kubernetes!k:config
+encrypted:vault!e:secret!n:spinnaker/kubernetes!k:config
 ```
 
 ### Binary files
 
 Important! Spinnaker needs to base64 decode binary files on the way out of Vault, so make sure to add the `b:true` to the encrypted syntax. For example, to reference the Java keystore:
 ```
-encrypted:vault!e:secret!n:staging/saml!k:base64keystore!b:true
+encrypted:vault!e:secret!n:spinnaker/saml!k:base64keystore!b:true
 ```
 
 
