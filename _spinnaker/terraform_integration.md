@@ -85,7 +85,7 @@ hal armory terraform enable --alpha
 
 # This will prompt for the token
 hal armory terraform edit \
-  --alpha
+  --alpha \
   --git-enabled \
   --git-access-token
 ```
