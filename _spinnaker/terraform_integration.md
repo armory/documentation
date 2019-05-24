@@ -208,11 +208,16 @@ So, for example, if you want to execute `terraform plan` against a Github reposi
     {
       "reference": "https://github.com/myorg/my-terraform-repo",
       "type": "git/repo"
+    },
+    {
+    "artifactAccount": "github-for-terraform",
+    "reference": "https://api.github.com/repos/myorg/my-terraform-repo/contents/terraform/environments/varfile.tfvars",
+    "type": "github/file"
     }
   ],
   "backendArtifact": {
     "artifactAccount": "github-for-terraform",
-    "reference": "https://api.github.com/repos/myorg/my-terraform-repo/contents/backend.tfvars",
+    "reference": "https://api.github.com/repos/myorg/my-terraform-repo/contents/backend.tf",
     "type": "github/file"
   },
   "overrides": {
@@ -223,9 +228,36 @@ So, for example, if you want to execute `terraform plan` against a Github reposi
 }
 ```
 
-(For the `backendArtifact`, you can replace `github/file` with some other artifact type)
+In the mandatory `artifacts` field, you must have exactly one `git/repo` artifact.  You may optionally have additional artifacts; these will be used as `-var-file` parameters.
+In the optional `backendArtifact` field, you may specify a backend configuration.
 
-When run, this stage will tell Terraformer to clone your repository and execute `terraform plan` against it. In order to run `terraform apply` simply change the `action` from `plan` to `apply`. *Note: we execute `terraform init` before all Terraform actions to initialize the project.*
+This stage definition will do the following:
+* Perform a `git clone` on the provided `git/repo`, and operate in the provided `dir` (in this case, `/`) in the given repository
+* Perform a `terraform init`.  If your stage has the optional `backendArtifact` field, Spinnaker will download that artifact (using the corresponding Spinnaker artifact provider and artifactAccount) and use it using `-backend-config`
+* Download all other (non-`git/repo`) artifacts referenced in the `artifact` array using their corresponding artifact providers and accounts.
+* Perform the provided action (in this case, `plan`) in the provided directory.  If you have downloaded other artifacts, they will be appended to the command with `-var-file`
+
+So the above example will essentially perform these two commands:
+* `terraform init -backend-config=backend.tf`
+* `terraform plan -var-file varfile.tfvars`
+
+(For the `backendArtifact` and other artifacts, you can replace `github/file` with some other artifact type; for example, if you're using the BitBucket artifact provider, specify `bitbucket/file` and the corresponding artifact account)
+
+We currently support the following actions:
+* plan
+* apply
+* destroy
+
+Additionally, you can do a `plan destroy` with this additional field:
+
+```json
+{
+  "action": "plan",
+  "planForDestroy": true,
+...
+  "type": "terraform"
+}
+```
 
 ## Viewing Terraform log output
 
