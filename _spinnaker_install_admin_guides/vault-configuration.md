@@ -86,7 +86,7 @@ $ export K8S_HOST=<your_API_server_endpoint>
 # Enable the Kubernetes auth method at the default path ("auth/kubernetes")
 $ vault auth enable kubernetes
 
-# Tell Vault how to communicate with the Kubernetes (Minikube) cluster
+# Tell Vault how to communicate with the Kubernetes cluster
 $ vault write auth/kubernetes/config \
         token_reviewer_jwt="$SA_JWT_TOKEN" \
         kubernetes_host="https://$K8S_HOST" \
@@ -111,7 +111,7 @@ It is time verify that the Kubernetes auth method has been properly configured.
 
 ```$ kubectl apply -f  https://raw.githubusercontent.com/armory/docker-debugging-tools/master/deployment.yml```
 
-6. exec into the pod
+6. `exec` into the pod
 
 ```
 $ POD_NAME=$(kubectl get pod -l app=debugging-tools -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}' --sort-by=".status.startTime" | tail -n 1)
@@ -127,7 +127,7 @@ $ SA_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
 $ vault write auth/kubernetes/login role=spinnaker jwt=$SA_TOKEN
 ```
 
-This command should return output like the foloowing
+This command should return output like the following
 ```
 Key                                       Value
 ---                                       -----
@@ -154,7 +154,7 @@ $ vault login s.bKSSrYOcETCADGvGxhbDaaaD
 Once logged in you should be able to read secrets
 
 ```
-$ vault kv get sevret/spinnaker/test
+$ vault kv get secret/spinnaker/test
 ```
 
 As a reminder, the policy we created provides ro access *only* so you will need to have written the secret using a separate authenticated client.
