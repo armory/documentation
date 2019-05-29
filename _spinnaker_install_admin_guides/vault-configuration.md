@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Configuring Vault for the Kubernetes Auth
+title: Configuring Vault for Kubernetes Auth
 order: 153
 ---
 
