@@ -232,18 +232,21 @@ In the mandatory `artifacts` field, you must have exactly one `git/repo` artifac
 In the optional `backendArtifact` field, you may specify a backend configuration.
 
 This stage definition will do the following:
+
 * Perform a `git clone` on the provided `git/repo`, and operate in the provided `dir` (in this case, `/`) in the given repository
 * Perform a `terraform init`.  If your stage has the optional `backendArtifact` field, Spinnaker will download that artifact (using the corresponding Spinnaker artifact provider and artifactAccount) and use it using `-backend-config`
 * Download all other (non-`git/repo`) artifacts referenced in the `artifact` array using their corresponding artifact providers and accounts.
 * Perform the provided action (in this case, `plan`) in the provided directory.  If you have downloaded other artifacts, they will be appended to the command with `-var-file`
 
 So the above example will essentially perform these two commands:
+
 * `terraform init -backend-config=backend.tf`
 * `terraform plan -var-file varfile.tfvars`
 
 (For the `backendArtifact` and other artifacts, you can replace `github/file` with some other artifact type; for example, if you're using the BitBucket artifact provider, specify `bitbucket/file` and the corresponding artifact account)
 
 We currently support the following actions:
+
 * plan
 * apply
 * destroy
@@ -256,6 +259,16 @@ Additionally, you can do a `plan destroy` with this additional field:
   "planForDestroy": true,
 ...
   "type": "terraform"
+}
+```
+
+By default, Terraformer will pull the `master` branch.  If you want to specify a different branch, you can add a `version` field to the `git/repo` spec.  For example:
+
+```json
+{
+  "reference": "https://github.com/myorg/my-terraform-repo",
+  "type": "git/repo",
+  "version": "refs/heads/my-new-branch"
 }
 ```
 
