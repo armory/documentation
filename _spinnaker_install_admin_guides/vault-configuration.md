@@ -76,7 +76,6 @@ $ export SA_JWT_TOKEN=$(kubectl get secret $VAULT_SA_NAME -o jsonpath="{.data.to
 # Set SA_CA_CRT to the PEM encoded CA cert used to talk to Kubernetes API
 $ export SA_CA_CRT=$(kubectl get secret $VAULT_SA_NAME -o jsonpath="{.data['ca\.crt']}" | base64 --decode; echo)
 
-# Set K8S_HOST to minikube IP address
 # Look in your cloud provider console for this value
 $ export K8S_HOST=<your_API_server_endpoint>
 ```
