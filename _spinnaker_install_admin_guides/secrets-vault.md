@@ -9,14 +9,13 @@ order: 152
 
 This document describes how to set up Spinnaker secrets in Hashicorp's Vault. In this example, we'll be using the default KV secret engine called `secret` and will be storing GitHub credentials, a kubeconfig file and a Java keystore for SAML SSO.
 
-
 ## Authorization
 
 We currently support two methods of authentication with Vault servers.
 
 ### 1. Kubernetes service account (recommended)
 
-You'll need to configure Vault to authenticate with Kubernetes per [Hashicorp's documentation](https://www.vaultproject.io/docs/auth/kubernetes.html#configuration). 
+You'll need to configure Vault to authenticate with Kubernetes per our [Vault Configuration Guide](/spinnaker-install-admin-guides/vault-configuration/) or [Hashicorp's documentation](https://www.vaultproject.io/docs/auth/kubernetes.html#configuration).
 
 Note: If multiple clusters need to access the same Vault server, you'll need to use the [-path flag](https://www.vaultproject.io/docs/commands/auth/enable.html#usage) and give each cluster a different path name. This becomes `<cluster auth path>` in the example below. If using just one cluster, you can use the default `vault auth enable kubernetes` command, in which case your path will be `kubernetes`.
 
