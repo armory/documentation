@@ -67,6 +67,13 @@ be the one you referenced in the environment file.
 *Description*:  Free form text to help your coworkers know what this canary
 is doing.
 
+Note: If you see the following error `The was an error saving your config: 400` when you are trying to save your "Canary Config", try adding the following settings in `.hal/default/profiles/gate-local.yml`
+```yaml
+services:
+  kayenta:
+    canaryConfigStore: true
+```
+
 ## Groups
 
 A Canary Config can contain multiple groups of metrics, and each group can
