@@ -104,6 +104,13 @@ Note:  The name `your-account` above can be set to anything, but it must be
 unique across all accounts configured.  This name will be displayed in the UI
 as a selector, so making it as descriptive as necessary is recommended.
 
+If you receive a `The was an error saving your config: 400` when you are trying to save your "Canary Config", try adding the following settings in `.hal/default/profiles/gate-local.yml`
+```yaml
+services:
+  kayenta:
+    canaryConfigStore: true
+```
+
 ## Metrics Account
 
 Add the following to your environment file:
