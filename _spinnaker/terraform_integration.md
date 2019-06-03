@@ -250,6 +250,7 @@ We currently support the following actions:
 * plan
 * apply
 * destroy
+* output
 
 Additionally, you can do a `plan destroy` with this additional field:
 
@@ -282,10 +283,29 @@ Terraform's primary interface for user feedback is logging. When executed on you
 View the logs <a href="https://your-gate-url/proxies/terraform/api/v1/job/${#stage('Plan')['context']['status']['id']}/logs">here</a>
 ```
 
+## Consuming Terraform Output via SpEL
+
+If you have a Terraform template configured with [Output Values](https://www.terraform.io/docs/configuration/outputs.html), then you can use the `Output` stage to parse the output and add it to your pipeline execution context.
+
+For example, if you have a Terraform template that has this:
+
+```hcl
+output "bucket_arn" {
+    value = "${aws_s3_bucket.my_bucket.arn}"
+}
+```
+
+Then you can set up an `Output` stage that exposes this in the pipeline execution context.  For example, if you had an `Output` stage with the stage name "My Output Stage", then after running the `Output` stage, you could access the bucket ARN with this:
+
+```java
+${#stage('My Output Stage')["context"]["status"]["outputs"]["bucket_arn"]["value"]}
+```
+
+*This feature requires Armory Spinnaker 2.4.1 or above*
+
 ## Reference pipeline
 
-A reference pipeline which uses this feature can be found [here](https://gist.github.com/ethanfrogers/5123a5336f7e6ae4fd5fcda76536199b). It should help you get started! To use it, simply create a pipeline in the UI and click "Edit as JSON" under the "Pipeline Actions" dropdown and past the pipeline JSON into the text box.
-
+A reference pipeline which uses this feature can be found [here](https://gist.github.com/ethanfrogers/5123a5336f7e6ae4fd5fcda76536199b) or [here](https://gist.github.com/justinrlee/3abe62e38f957ecd0ba3c417a6125555). It should help you get started! To use it, simply create a pipeline in the UI and click "Edit as JSON" under the "Pipeline Actions" dropdown and past the pipeline JSON into the text box.
 
 ## Under the hood
 
