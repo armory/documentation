@@ -19,32 +19,40 @@ You'll need to configure Vault to authenticate with Kubernetes per our [Vault Co
 
 Note: If multiple clusters need to access the same Vault server, you'll need to use the [-path flag](https://www.vaultproject.io/docs/commands/auth/enable.html#usage) and give each cluster a different path name. This becomes `<cluster auth path>` in the example below. If using just one cluster, you can use the default `vault auth enable kubernetes` command, in which case your path will be `kubernetes`.
 
-```yaml
-secrets:
-  vault:
-    enabled: true
-    url: <Vault server URL>
-    authMethod: KUBERNETES
-    role: <k8s role with access to Vault>
-    path: <cluster auth path>
+After configuring authentication on the Vault side, use the following hal commands to enable Vault secrets in Spinnaker:
+```
+hal armory secrets vault enable
+hal armory secrets vault edit \
+    --auth-method KUBERNETES \
+    --url <Vault server URL>:<port, if required> \
+    --role <k8s role with access to Vault> \
+    --path <k8s cluster path> (*optional*, default is 'kubernetes')
 ```
 
 ### 2. Token authentication
 
 This method is not recommended but it is supported if you choose. We recommend this for testing and development purposes only. For token authentication, you'll need to have a `VAULT_TOKEN` environment variable set for halyard and each of the services.
 
-```yaml
-secrets:
-  vault:
-    enabled: true
-    url: <Vault server URL>
-    authMethod: TOKEN
+Use the following hal commands to enable Vault secrets using token auth:
+```
+hal armory secrets vault enable
+hal armory secrets vault edit \
+    --auth-method TOKEN \
+    --url <Vault server URL>:<port, if required>
 ```
 
 ## Configuring Halyard to use Vault secrets
-Halyard will need access to the Vault server in order to decrypt secrets for validation and deployment. While the Spinnaker services are configured through `~/.hal/config`, the Halyard daemon has its own configuration file found at `/opt/spinnaker/config/halyard.yml`. You'll need to add the same config block to this file as well:
+Halyard will need access to the Vault server in order to decrypt secrets for validation and deployment. While the Spinnaker services are configured through `~/.hal/config`, the Halyard daemon has its own configuration file found at `/opt/spinnaker/config/halyard.yml`. The contents of your file may look different than this example, but just make sure to add the secrets block somewhere at the root level:
 
-```yaml
+```
+halyard:
+  halconfig:
+    ...
+
+spinnaker:
+  artifacts:
+    ...
+
 secrets:
   vault:
     enabled: true
