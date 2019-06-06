@@ -42,8 +42,31 @@ hal armory secrets vault edit \
 ```
 
 ## Configuring Halyard to use Vault secrets
-Halyard will need access to the Vault server in order to decrypt secrets for validation and deployment. While the Spinnaker services are configured through `~/.hal/config`, the Halyard daemon has its own configuration file found at `/opt/spinnaker/config/halyard.yml`. The contents of your file may look different than this example, but just make sure to add the secrets block somewhere at the root level:
+>Note: You'll need to be running Armory Halyard version 1.5.1 or later.
+```
+sudo update-halyard --version 1.5.1
+``` 
 
+Halyard will need access to the Vault server in order to decrypt secrets for validation and deployment. While the Spinnaker services are configured through `~/.hal/config`, the Halyard daemon has its own configuration file found at `/opt/spinnaker/config/halyard.yml`. The contents of your file may look different than this example, but just make sure to add the secrets block somewhere at the root level.
+
+If you're running Halyard locally, you can use Token auth method. Set your `VAULT_TOKEN` environment variable and add the secrets block to `halyard.yml` like so:
+
+```
+halyard:
+  halconfig:
+    ...
+
+spinnaker:
+  artifacts:
+    ...
+
+secrets:
+  vault:
+    enabled: true
+    url: <Vault server URL>
+    authMethod: TOKEN
+```
+Or if you're running Halyard in Kubernetes, you can have Halyard use Kubernetes auth:
 ```
 halyard:
   halconfig:
@@ -65,7 +88,7 @@ Then restart the daemon (you'll only need to do this the first time):
 ```
 hal shutdown
 ```
-Your next hal command will automatically bring the daemon back up if you're running Halyard locally. If it's running within a docker container, you'll need to mount the volume containing the updated `halyard.yml` and restart the container.
+Your next hal command will automatically bring the daemon back up if you're running Halyard locally. If it's running within a docker container, you'll need to mount the volume containing the updated `halyard.yml` and restart the container. And if Halyard is in Kubernetes, you'll need to restart the pod. 
 
 
 ## Storing secrets
