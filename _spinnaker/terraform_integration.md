@@ -291,6 +291,25 @@ Terraformer also supports selection and creation of terraform workspaces during 
 
 For more information on `terraform workspace` please read the [documentation](https://www.terraform.io/docs/state/workspaces.html)
 
+#### State Locking
+
+Terraformer supports the ability to ignore backend state locking.  *Note: This is potentially dangerous.  Only use this feature if you're sure you know the consequences.*
+
+Locking flags are only used on the apply and destroy operations.
+
+*This feature requires Armory Spinnaker 2.4.2 or above*
+
+```json
+{
+  "action": "plan",
+...
+  "terraformVersion": "0.12.1",
+  "lock": false,
+  "workspace": "armory-dev",
+  "type": "terraform"
+}
+```
+
 #### Actions
 
 We currently support the following actions:
