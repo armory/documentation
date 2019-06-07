@@ -266,6 +266,28 @@ Our terraform integration also supports selecting a version of terraform during 
 ```
 *Note: The `terraformVersion` field is optional. If you specify this field then all terraform stages that modify state (apply, output, destroy) will require the same version.*
 
+
+Terraformer also supports selection and creation of terraform workspaces during a stage.  You can configure the workspace that terraform should use with the following example:
+
+*Note: if the workspace specified does not exist, terraformer will create it.*
+
+*This feature requires Armory Spinnaker 2.4.2 or above*
+
+```json
+{
+  "action": "plan",
+...
+  "terraformVersion": "0.12.1",
+  "workspace": "armory-dev",
+  "type": "terraform"
+}
+```
+
+*Note: The `workspace` field is optional. If you specify this field then all terraform stages that reference state (plan, apply, output, destroy) will require the same workspace.*
+
+For more information on `terraform workspace` please read the [documentation](https://www.terraform.io/docs/state/workspaces.html)
+
+
 We currently support the following actions:
 
 * plan
