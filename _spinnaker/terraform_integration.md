@@ -252,6 +252,8 @@ So the above example will essentially perform these two commands:
 
 (For the `backendArtifact` and other artifacts, you can replace `github/file` with some other artifact type; for example, if you're using the BitBucket artifact provider, specify `bitbucket/file` and the corresponding artifact account)
 
+#### Terraform Versions
+
 Our terraform integration also supports selecting a version of terraform during a stage.  You can configure the version of terraform to run with the following example:
 
 *This feature requires Armory Spinnaker 2.4.2 or above*
@@ -266,6 +268,8 @@ Our terraform integration also supports selecting a version of terraform during 
 ```
 *Note: The `terraformVersion` field is optional. If you specify this field then all terraform stages that modify state (apply, output, destroy) will require the same version.*
 
+
+#### Terraform Workspaces
 
 Terraformer also supports selection and creation of terraform workspaces during a stage.  You can configure the workspace that terraform should use with the following example:
 
@@ -287,6 +291,7 @@ Terraformer also supports selection and creation of terraform workspaces during 
 
 For more information on `terraform workspace` please read the [documentation](https://www.terraform.io/docs/state/workspaces.html)
 
+#### Actions
 
 We currently support the following actions:
 
