@@ -100,7 +100,7 @@ files, so it must be configured with the Github token to pull these files.
 If you already have a BitBucket artifact account configured in Spinnaker, you
 can skip this step.
 
-Feel free to replace `bitbucket-for-terraform` with any unique identifier to 
+Feel free to replace `bitbucket-for-terraform` with any unique identifier to
 identify the artifact account.
 
 ```bash
@@ -130,12 +130,17 @@ hal armory terraform edit \
 
 ### Selecting the Terraform version
 
-Terraformer currently ships with four versions of the Terraform binary:
+Terraformer currently ships with the following versions of the Terraform binary:
 
 * 0.11.10
 * 0.11.11
 * 0.11.12
 * 0.11.13
+* 0.11.14
+* 0.12.0
+* 0.12.1
+
+*Note: Terraform binaries are verified by checksum and with hashicorp's GPG key before being installed into our release.*
 
 In order to use Terraform, you must indicate to the Terraformer microservice
 the path to the binary within the microservice to use.  This should be done by
@@ -146,6 +151,8 @@ creating the file `.hal/default/profiles/terraformer-local.yml` (replace
 terraform:
   executablePath: /terraform/versions/0.11.11/terraform
 ```
+
+*Note: If you specify a terraform version in your stage configuration this value is ignored.*
 
 ### Configuring Gate proxy to access Terraform logs
 
@@ -245,6 +252,66 @@ So the above example will essentially perform these two commands:
 
 (For the `backendArtifact` and other artifacts, you can replace `github/file` with some other artifact type; for example, if you're using the BitBucket artifact provider, specify `bitbucket/file` and the corresponding artifact account)
 
+#### Terraform Versions
+
+Our terraform integration also supports selecting a version of terraform during a stage.  You can configure the version of terraform to run with the following example:
+
+*This feature requires Armory Spinnaker 2.4.2 or above*
+
+```json
+{
+  "action": "plan",
+...
+  "terraformVersion": "0.12.1",
+  "type": "terraform"
+}
+```
+*Note: The `terraformVersion` field is optional. If you specify this field then all terraform stages that modify state (apply, output, destroy) will require the same version.*
+
+
+#### Terraform Workspaces
+
+Terraformer also supports selection and creation of terraform workspaces during a stage.  You can configure the workspace that terraform should use with the following example:
+
+*Note: if the workspace specified does not exist, terraformer will create it.*
+
+*This feature requires Armory Spinnaker 2.4.2 or above*
+
+```json
+{
+  "action": "plan",
+...
+  "terraformVersion": "0.12.1",
+  "workspace": "armory-dev",
+  "type": "terraform"
+}
+```
+
+*Note: The `workspace` field is optional. If you specify this field then all terraform stages that reference state (plan, apply, output, destroy) will require the same workspace.*
+
+For more information on `terraform workspace` please read the [documentation](https://www.terraform.io/docs/state/workspaces.html)
+
+#### State Locking
+
+Terraformer supports the ability to ignore backend state locking.  *Note: This is potentially dangerous.  Only use this feature if you're sure you know the consequences.*
+
+Locking flags are only used on the apply and destroy operations.
+
+*This feature requires Armory Spinnaker 2.4.2 or above*
+
+```json
+{
+  "action": "plan",
+...
+  "terraformVersion": "0.12.1",
+  "lock": false,
+  "workspace": "armory-dev",
+  "type": "terraform"
+}
+```
+
+#### Actions
+
 We currently support the following actions:
 
 * plan
@@ -309,7 +376,7 @@ A reference pipeline which uses this feature can be found [here](https://gist.gi
 
 ## Under the hood
 
-At the core of the Terraform integration is the Terraformer service. This service is reponsible for fetching your Terraform projects from source and exeuting various Terraform commands against them. When a `terraform` stage starts, Orca will submit the task to Terraformer and monitor it until completion. Once a task is submitted, Terraformer will fetch your target project, run `terraform init` to initialize the project and then run your desired `action` (`plan` or `apply`). If the task is successful, the stage will marked successful as well. If the task fails, the stage will be marked as a failure and halt the pipeline. 
+At the core of the Terraform integration is the Terraformer service. This service is reponsible for fetching your Terraform projects from source and exeuting various Terraform commands against them. When a `terraform` stage starts, Orca will submit the task to Terraformer and monitor it until completion. Once a task is submitted, Terraformer will fetch your target project, run `terraform init` to initialize the project and then run your desired `action` (`plan` or `apply`). If the task is successful, the stage will marked successful as well. If the task fails, the stage will be marked as a failure and halt the pipeline.
 
 Terraformer ships with Terraform 0.11.10. In the future, we'll offer multiple versions of Terraform so that you can choose the version to execute against.
 
@@ -323,7 +390,7 @@ There are many ways to enable Terraform to authenticate with AWS. You can find t
 
 #### Shared credentials file
 
-Terraform supports the ability to reference AWS profiles defined via a [shared credentials file](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/create-shared-credentials-file.html). This file will contain a list of AWS profiles alongside their access and secret keys. In order for Terraformer to utilize this file, we'll need to inject it into the environment in which Terraformer runs. 
+Terraform supports the ability to reference AWS profiles defined via a [shared credentials file](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/create-shared-credentials-file.html). This file will contain a list of AWS profiles alongside their access and secret keys. In order for Terraformer to utilize this file, we'll need to inject it into the environment in which Terraformer runs.
 
 First, create a Kubernetes `ConfigMap` containing the contents of this config file and put it in a temporary file.
 
