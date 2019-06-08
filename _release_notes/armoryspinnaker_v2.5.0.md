@@ -31,20 +31,6 @@ There are currently no known issues with this release.
 
 [Spinnaker 1.14.3 Release Notes](https://www.spinnaker.io/community/releases/versions/1-14-3-changelog)  
 
-
-#### Igor
-REMOVE ME: FOR EACH OF SPINNAKER'S SERVICES, PICK OUT SOME NOTIBLE CHANGES
-
-<!--- An example of a problem
-Igor added ..... which does.....
-
-**Symptoms:**
-**Fix:**
--->
-
-
-
-
 <br><br><br>
 ## Detailed Updates
 
