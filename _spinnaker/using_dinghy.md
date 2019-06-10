@@ -405,7 +405,7 @@ Another neat little trick with variables is support for nested variables. Consid
 {% endraw %}```
 Here, if the variable `"name"` was passed in, or is a top-level variable in the `dinghyfile`, then use that value, or else _default to_ `some-name`.
 
-With nested variables, instead of using a hardcoded default value, the default can from another variable. eg:
+With nested variables, instead of using a hardcoded default value, the default can come from another variable. eg:
 
 ```{% raw %}
 "name": "{{ var "name" ?: "@different_var" }}"
