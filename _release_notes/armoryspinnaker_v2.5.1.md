@@ -36,8 +36,8 @@ There are currently no known issues with this release.
 Here's the bom for this version.
 <details><summary>Expand</summary>
 <pre class="highlight">
-<code>version: 2.5.1-rc178
-timestamp: "2019-06-11 19:11:56"
+<code>version: 2.5.1-rc179
+timestamp: "2019-06-11 21:04:24"
 services:
   clouddriver:
     version: 4.6.0-b343903-deec487-rc111
@@ -46,7 +46,7 @@ services:
   dinghy:
     version: 0.0.3-4c4879c-rc7
   echo:
-    version: 2.5.0-445f4ca-e23ee15-rc113
+    version: 2.5.0-445f4ca-e68a464-rc114
   fiat:
     version: 1.5.0-7c1b280-381db2c-rc103
   front50:
@@ -74,7 +74,6 @@ artifactSources:
   dockerRegistry: docker.io/armory</code>
 </pre>
 </details>
-
 
 
 ### Armory
@@ -128,8 +127,8 @@ See Spinnaker's release notes that are included in this release:
 #### Deck  - b1f75ef
 No Changes
 
-#### Echo  - e23ee15
-No Changes
+#### Echo  - e23ee15...e68a464
+ - fix(webhooks): bitbucket server or cloud determination (#572) (#575)
 
 #### Fiat  - 381db2c
 No Changes
