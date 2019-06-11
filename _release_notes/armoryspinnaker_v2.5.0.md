@@ -15,8 +15,10 @@ hidden: false
 
 
 ## Known Issues
-There are currently no known issues with this release.
 
+The ECS `Configure Cluster Deployment` wizard is broken in this release.
+
+Please update to Armory Spinnaker `2.5.1`
 
 ## Highlighted Updates
 ### Armory
