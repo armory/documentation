@@ -416,6 +416,16 @@ Configuring Plugins:
  ...
 }
 ```
+
+Terraformer will cache all plugins defined by default and won't redownload them.  To force Terraformer to re-download a plugin, under the metadata key in the artifact object, place the following:
+
+```json
+"metadata": {
+    "sha256sum": "longString",
+    "forceDownload": true,
+}
+```
+
 *Note: if any terraformer stage in a pipeline defines a custom plugin, all terraformer stages must then define that same plugin in that pipeline.*
 
 #### Actions
