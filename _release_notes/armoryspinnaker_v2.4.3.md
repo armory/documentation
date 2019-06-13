@@ -1,11 +1,11 @@
 ---
 layout: post
-title: v2.4.2 Armory Release (OSS Release 1.13.9)
-order: -20190611215013
+title: v2.4.3 Armory Release (OSS Release 1.13.9)
+order: -20190613232138
 hidden: false
 ---
 
-# 06/11/19 Release Notes
+# 06/13/19 Release Notes
 {:.no_toc}
 
 > Note: If you're experiencing production issues after upgrading Spinnaker, rollback to a [previous working version](http://docs.armory.io/admin-guides/troubleshooting/#i-upgraded-spinnaker-and-it-is-no-longer-responding-how-do-i-rollback) and please report issues to [http://go.armory.io/support](http://go.armory.io/support).
@@ -15,18 +15,12 @@ hidden: false
 
 
 ## Known Issues
-
-A fix made in `Armory Spinnaker 2.3.x` to provide configurable timeout for SAML is broken in this release due to `OSS 1.13.x` Gate changes.  
-
-Please upgrade to `Armory Spinnaker 2.4.3`
+There are currently no known issues with this release.
 
 ## Highlighted Updates
 ### Armory
 
-**Terraformer**
-
-* You can now select your Terraform version
-* Added support for Terraform Workspaces
+* Fix for SAML timeout issue
 
 ###  Spinnaker Community Contributions
 
@@ -40,8 +34,8 @@ Please upgrade to `Armory Spinnaker 2.4.3`
 Here's the bom for this version.
 <details><summary>Expand</summary>
 <pre class="highlight">
-<code>version: 2.4.2-rc116
-timestamp: "2019-06-11 21:09:14"
+<code>version: 2.4.3-rc120
+timestamp: "2019-06-13 21:17:41"
 services:
   clouddriver:
     version: 4.4.6-409682d-0724ff9-rc28
@@ -56,7 +50,7 @@ services:
   front50:
     version: 0.16.2-18ed588-b796e80-rc24
   gate:
-    version: 1.7.2-68ad717-28beaaa-rc25
+    version: 1.7.2-cd74006-28beaaa-rc27
   igor:
     version: 1.2.1-faf13ca-98de62d-rc25
   kayenta:
@@ -70,7 +64,7 @@ services:
   rosco:
     version: 0.11.0-e1fc510-95a2e29-rc26
   terraformer:
-    version: 0.0.1-e745818-rc16
+    version: 0.0.1-3023e2e-rc18
 dependencies:
   redis:
     version: 2:2.8.4-2
@@ -82,21 +76,15 @@ artifactSources:
 
 
 ### Armory
-#### Dinghy&trade; - e37d9a2...4c4879c
- - chore(build): pull in latest OC dinghy (#170)
+#### Dinghy&trade; - 4c4879c
+No Changes
 
-#### Terraformer&trade; - cc82d20...e745818
- - feat(planfiles): persist plan output for later use in stage (#70)
- - chore(log): spit out what we're doing in logs (#69)
- - feat(locking): allow disable of backend lock with flag (#68)
- - feat(workspaces): select workspace for stage (#67)
- - chore(make): auto-incr git tags for releases (#66)
- - fix(error): we should return an error if the terraform version is missing (#65)
- - feat(redis): add redis monitor, proper logging passthrough (#63)
- - feat(version): select terraform version at runtime (#64)
+#### Terraformer&trade; - e745818...3023e2e
+ - fix(exe): create dir structure for exe to be copied (#72)
+ - feat(customProviders): add terraform custom provider download (#71)
 
-#### Armory Clouddriver  - ccad514...409682d
- - chore(build): add armory-commons (#32)
+#### Armory Clouddriver  - 409682d
+No Changes
 
 #### Armory Deck  - 9c13904
 No Changes
@@ -110,8 +98,8 @@ No Changes
 #### Armory Front50  - 18ed588
 No Changes
 
-#### Armory Gate  - 68ad717
-No Changes
+#### Armory Gate  - 68ad717...cd74006
+ - fix(saml): Fix of the workaround to override SAML max age. Broken from changes in Gate 1.13.x (#66)
 
 #### Armory Igor  - faf13ca
 No Changes
@@ -119,9 +107,8 @@ No Changes
 #### Armory Kayenta  - 39c3a6b
 No Changes
 
-#### Armory Orca  - 3ae75fe...5ca6c7b
- - feat(workspace): support terraform workspace selection (#40) (#42)
- - feat(version): support dynamic terraform version for run (#37) (#38)
+#### Armory Orca  - 5ca6c7b
+No Changes
 
 #### Armory Rosco  - e1fc510
 No Changes
@@ -130,17 +117,14 @@ No Changes
 
 ###  Spinnaker Community Contributions
 
-See Spinnaker's release notes that are included in this release:  
-[Spinnaker's v1.13.9](https://www.spinnaker.io/community/releases/versions/1-13-9-changelog#individual-service-changes)
-
-#### Clouddriver  - a7ce3a5...0724ff9
- - perf(kubernetes): Reduce memory allocation during caching cycles (#3736) (#3746)
+#### Clouddriver  - 0724ff9
+No Changes
 
 #### Deck  - 6a9b0a2
 No Changes
 
-#### Echo  - 9ea33eb...d69a577
- - fix(webhooks): bitbucket server or cloud determination (#572) (#574)
+#### Echo  - d69a577
+No Changes
 
 #### Fiat  - 13f855f
 No Changes
