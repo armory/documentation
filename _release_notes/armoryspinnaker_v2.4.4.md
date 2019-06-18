@@ -1,11 +1,11 @@
 ---
 layout: post
-title: v2.4.3 Armory Release (OSS Release 1.13.9)
-order: -20190613232138
+title: v2.4.4 Armory Release (OSS Release 1.13.9)
+order: -20190618202512
 hidden: false
 ---
 
-# 06/13/19 Release Notes
+# 06/18/19 Release Notes
 {:.no_toc}
 
 > Note: If you're experiencing production issues after upgrading Spinnaker, rollback to a [previous working version](http://docs.armory.io/admin-guides/troubleshooting/#i-upgraded-spinnaker-and-it-is-no-longer-responding-how-do-i-rollback) and please report issues to [http://go.armory.io/support](http://go.armory.io/support).
@@ -15,17 +15,13 @@ hidden: false
 
 
 ## Known Issues
-Igor and Clouddriver do not properly import `armory-commons` in this release. As a result, these services will fail to start when `Vault Secrets` are enabled.
-
-Please upgrade to `Armory Spinnaker 2.4.4`
+There are currently no known issues with this release.
 
 ## Highlighted Updates
 ### Armory
-
-* Fix for SAML timeout issue
+This release addresses an issue with `Vault Secrets` for the Igor and Clouddriver services.
 
 ###  Spinnaker Community Contributions
-
 * [Spinnaker's 1.13.9 Release Notes](https://www.spinnaker.io/community/releases/versions/1-13-9-changelog#individual-service-changes)
 
 
@@ -36,37 +32,37 @@ Please upgrade to `Armory Spinnaker 2.4.4`
 Here's the bom for this version.
 <details><summary>Expand</summary>
 <pre class="highlight">
-<code>version: 2.4.3-rc120
-timestamp: "2019-06-13 21:17:41"
+<code>version: 2.4.4-rc126
+timestamp: "2019-06-18 17:20:56"
 services:
   clouddriver:
-    version: 4.4.6-409682d-0724ff9-rc28
+    version: 4.4.6-87cabfc-0724ff9-rc30
   deck:
     version: 2.8.6-9c13904-6a9b0a2-rc10
   dinghy:
     version: 0.0.3-4c4879c-rc22
   echo:
-    version: 2.4.3-ae6694f-d69a577-rc27
+    version: 2.4.3-ae6694f-d69a577-rc28
   fiat:
-    version: 1.4.1-641cb40-13f855f-rc28
+    version: 1.4.1-641cb40-13f855f-rc29
   front50:
-    version: 0.16.2-18ed588-b796e80-rc24
+    version: 0.16.2-18ed588-b796e80-rc25
   gate:
-    version: 1.7.2-cd74006-28beaaa-rc27
+    version: 1.7.2-cd74006-28beaaa-rc28
   igor:
-    version: 1.2.1-faf13ca-98de62d-rc25
+    version: 1.2.1-8963aab-98de62d-rc29
   kayenta:
-    version: 0.7.1-39c3a6b-f95afd1-rc25
+    version: 0.7.1-39c3a6b-f95afd1-rc26
   monitoring-daemon:
     version: 0.12.1-efa6f3f-edge1
   monitoring-third-party:
     version: 0.12.1-efa6f3f-edge1
   orca:
-    version: 2.6.3-5ca6c7b-92bc10d-rc27
+    version: 2.6.3-5ca6c7b-3072865-rc29
   rosco:
-    version: 0.11.0-e1fc510-95a2e29-rc26
+    version: 0.11.0-e1fc510-95a2e29-rc27
   terraformer:
-    version: 0.0.1-3023e2e-rc18
+    version: 0.0.1-ab4618d-rc19
 dependencies:
   redis:
     version: 2:2.8.4-2
@@ -81,12 +77,11 @@ artifactSources:
 #### Dinghy&trade; - 4c4879c
 No Changes
 
-#### Terraformer&trade; - e745818...3023e2e
- - fix(exe): create dir structure for exe to be copied (#72)
- - feat(customProviders): add terraform custom provider download (#71)
+#### Terraformer&trade; - 3023e2e...ab4618d
+ - fix(output): terraform command output should be in a hash to catch problems with each individual command and for machine processing (#73)
 
-#### Armory Clouddriver  - 409682d
-No Changes
+#### Armory Clouddriver  - 409682d...87cabfc
+ - fix(secrets): Fix @ComponentScan (#38)
 
 #### Armory Deck  - 9c13904
 No Changes
@@ -100,11 +95,11 @@ No Changes
 #### Armory Front50  - 18ed588
 No Changes
 
-#### Armory Gate  - 68ad717...cd74006
- - fix(saml): Fix of the workaround to override SAML max age. Broken from changes in Gate 1.13.x (#66)
-
-#### Armory Igor  - faf13ca
+#### Armory Gate  - cd74006
 No Changes
+
+#### Armory Igor  - faf13ca...8963aab
+ - fix(secrets): Add armory-commons dependencies (#26)
 
 #### Armory Kayenta  - 39c3a6b
 No Changes
@@ -118,6 +113,8 @@ No Changes
 
 
 ###  Spinnaker Community Contributions
+See Spinnaker's release notes that are included in this release:  
+[Spinnaker's v1.13.9](https://www.spinnaker.io/community/releases/versions/1-13-9-changelog#individual-service-changes)
 
 #### Clouddriver  - 0724ff9
 No Changes
@@ -143,8 +140,8 @@ No Changes
 #### Kayenta  - f95afd1
 No Changes
 
-#### Orca  - 92bc10d
-No Changes
+#### Orca  - 92bc10d...3072865
+ - perf(artifacts): use pageSize=1 when resolving prior artifacts (#2955) (#2990)
 
 #### Rosco  - 95a2e29
 No Changes
