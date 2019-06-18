@@ -15,7 +15,9 @@ hidden: false
 
 
 ## Known Issues
-There are currently no known issues with this release.
+* Igor and Clouddriver do not properly import `armory-commons` in this release. As a result, these services will fail to start when `Vault Secrets` are enabled.
+
+Please upgrade to `Armory Spinnaker 2.5.2`
 
 ## Highlighted Updates
 ### Armory
