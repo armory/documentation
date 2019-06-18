@@ -310,6 +310,124 @@ Locking flags are only used on the apply and destroy operations.
 }
 ```
 
+#### Plan Artifact
+
+Terraformer has support for `terraform plan -out=file`. The output of the plan command is saved to a base64-encoded spinnaker artifact and is injected into context.  You can then use this artifact and combine it with a webhook to send the plan data to an external system or to use it in Terraformer's apply stage.
+
+The following json describes how this feature is configured and used (comments are in-line):
+
+For the plan stage, the expectedArtifacts key is required.
+
+*Plan Stage:*
+```json
+{
+  "action": "plan",
+...
+  "expectedArtifacts": [
+    {
+      "defaultArtifact": {},
+      "id": "2d3519d9-040a-41ff-b258-a8a2fee7bf5f", // any string
+      "matchArtifact": {
+        "name": "planfile", // required
+        "type": "embedded/base64" // required
+      },
+      "useDefaultArtifact": false
+    }
+  ],
+  "overrides": {
+    "environment_name": "${parameters.environment_name}"
+  },
+  "terraformVersion": "0.12.1",
+  "type": "terraform",
+  "workspace": "foo"
+}
+```
+
+The apply stage requires this (or similar) SpEL expression(s) to pass the data in.
+
+*Apply Stage:*
+```json
+{
+  "action": "apply",
+  "artifacts": [
+    {
+      "reference": "https://github.com/someorg/somerepo",
+      "type": "git/repo",
+      "version": "refs/heads/branch-testing"
+    },
+    {
+      "name": "planfile", // required
+      "reference": "${#stage('Plan')['context']['artifacts'][0]['reference']}", // the actual base64 encoded data from the previous stage
+      "type": "embedded/base64" // required
+    }
+  ],
+  "backendArtifact": {
+    "artifactAccount": "github-for-terraform",
+    "reference": "https://api.github.com/repos/someorg/somerepo/contents/backend.tf",
+    "type": "github/file"
+  },
+  "dir": "workspace",
+  "overrides": {
+    "environment_name": "${parameters.environment_name}"
+  },
+  "terraformVersion": "0.12.1",
+  "type": "terraform",
+  "workspace": "foo"
+}
+```
+
+*This feature requires Armory Spinnaker 2.5.2 and above*
+
+### Custom Plugins
+
+*This feature requires Armory Spinnaker 2.5.2 and above*
+
+Terraformer supports the use of custom terraform providers and plugins. Terraformer will download these plugins and inject them into each stage dynamically as needed to ensure the terraform code can be run.
+
+Plugin Requirements:
+* zip, tar, gzip, tar-gzip or executable
+* If compressed, the plugin must be at the root of the archive
+* Must be x86-64 (amd64) Linux binaries
+* Must have a SHA256 Sum
+
+In addition, the plugin name must follow terraform's [conventions](https://www.terraform.io/docs/extend/how-terraform-works.html#discovery).
+
+Configuring Plugins:
+
+```json
+{
+  "action": "plan",
+  "artifacts": [
+    {
+      "reference": "https://github.com/someorg/terraformer",
+      "type": "git/repo",
+      "version": "refs/heads/branch-testing"
+    },
+    {
+      "metadata": {
+        "sha256sum": "fda6273f803c540ba8771534247db54817603b46784628e63eff1ce7890994e4"
+      },
+      "name": "terraform-provider-foo",
+      "reference": "https://github.com/armory/terraform-provider-foo/releases/download/v0.1.19/terraform-provider-foo_0.1.19_linux_amd64.zip",
+      "type": "terraform/custom",
+      "version": "v0.1.19"
+    }
+  ],
+ ...
+}
+```
+
+Terraformer will cache all plugins defined by default and won't redownload them.  To force Terraformer to re-download a plugin, under the metadata key in the artifact object, place the following:
+
+```json
+"metadata": {
+    "sha256sum": "longString",
+    "forceDownload": true,
+}
+```
+
+*Note: if any terraformer stage in a pipeline defines a custom plugin, all terraformer stages must then define that same plugin in that pipeline.*
+
 #### Actions
 
 We currently support the following actions:
