@@ -1,6 +1,6 @@
 ---
 layout: post
-title: v1.6.0 Armory Halyard (OSS 1.20)
+title: v1.6.1 Armory Halyard (OSS 1.20)
 order: -20190619173156
 ---
 
