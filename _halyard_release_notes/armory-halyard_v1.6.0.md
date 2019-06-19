@@ -1,7 +1,7 @@
 ---
 layout: post
 title: v1.6.0 Armory Halyard (OSS 1.20)
-order: -20190619173156
+order: -20190618173156
 ---
 
 # 06/18/2019 Release Notes
