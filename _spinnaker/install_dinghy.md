@@ -56,6 +56,7 @@ hal armory dinghy edit \
   --stash-username "stash_user" \
   --stash-endpoint "https://your-endpoint-here.com"
 ```
+Note: If you're using Bitbucket Server append `/rest/api/1.0` to the endpoint, like so: `--stash-endpoint "https://your-endpoint-here.com/rest/api/1.0"`
 
 You'll need to setup webhooks for each project that has the dinghyfile or module separately. Make the webhook POST to: `https://spinnaker.your-company.com:8084/webhooks/git/stash`. If you're using stash `<v3.11.6`, you'll need to install the following [webhook plugin](https://marketplace.atlassian.com/plugins/com.atlassian.stash.plugin.stash-web-post-receive-hooks-plugin/server/overview) to be able to setup webhooks.
 
