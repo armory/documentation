@@ -16,7 +16,7 @@ the LoadBalancer.  For this tutorial, we've selected `demo.armory.io` to be
 our Deck service (the UI), and `gate.demo.armory.io` to be our Gate service
 (the API).
 
-## Exposing Spinnaker on EKS
+## Exposing Spinnaker on EKS with a public Load Balancer
 ### Create a LoadBalancer service
 
 Note: This guide assumes you’re deploying Spinnaker on Kubernetes using the Distributed deployment type with Halyard.
@@ -111,6 +111,88 @@ kubectl -n ${NAMESPACE} patch service/spin-gate-public --patch '{"spec": {"sessi
 ```
 
 For more details about session affinity, see the Kubernetes documentation on [Services](https://kubernetes.io/docs/concepts/services-networking/service/).
+
+
+
+## Exposing Spinnaker on EKS with an internal Load balancer
+
+In this option the goal is to use AWS ALB's of type `internal` for exposing Spinnaker only within an organization's private VPC. This consists of 3 steps: configuring Kubernetes services of type `NodePort`, creating AWS internal ALB's and updating Spinnaker with final DNS names.
+
+### Step 1: Create Kubernetes NodePort services
+
+A `NodePort` Kubernetes service opens the same port (automatically chosen) on all EKS worker nodes, and forwards requests to internal pods. In this case we'll be creating two services: one for Deck (Spinnaker's UI) and one for Gate (Spinnaker's API). 
+Replace the namespace by the one where spinnaker is installed:
+
+```bash
+export NAMESPACE=spinnaker
+kubectl -n ${NAMESPACE} expose service spin-gate --type NodePort \
+  --port 8084 \
+  --target-port 8084 \
+  --name spin-gate-nodeport
+
+kubectl -n ${NAMESPACE} expose service spin-deck --type NodePort \
+  --port 9000 \
+  --target-port 9000 \
+  --name spin-deck-nodeport
+```
+
+After a few seconds you can view which ports were opened in EKS worker nodes, you'll need them in the next step:
+
+```
+DECK_PORT=$(kubectl get service spin-deck-nodeport -o jsonpath='{.spec.ports[0].nodePort}')
+GATE_PORT=$(kubectl get service spin-gate-nodeport -o jsonpath='{.spec.ports[0].nodePort}')
+```
+
+### Step 2: Create AWS internal load balancers
+
+We'll describe how to create these load balancers from AWS console, but you can use any preferred method for provisioning infrastructure. We'll create a Load Balancer for Deck and other for Gate.
+
+Navigate to AWS EC2 management console, in `Load Balancers` section, and click on `Create New Load Balancer`
+
+![image](/assets/images/configure_ingress_new_lb.png)
+
+We'll be creating a new Application Load Balancer:
+
+![image](/assets/images/configure_ingress_create_alb.png)
+
+Make sure to select `internal` scheme, and if you have a SSL certificate available, use `HTTPS` protocol:
+
+![image](/assets/images/configure_ingress_alb_1.png)
+
+Select the VPC and subnets where EKS worker nodes live:
+ 
+![image](/assets/images/configure_ingress_alb_2.png)
+
+If you selected `HTTPS` for the protocol, you can configure here the ACM certificate:
+
+![image](/assets/images/configure_ingress_alb_ssl.png)
+
+In the next screen you can either select an existing security group or create a new one for your load balancer:
+
+![image](/assets/images/configure_ingress_sg.png)
+
+Now you want to create a new target group that points to `DECK_PORT` or `GATE_PORT`, taken from the NodePort created in the previous step:
+
+![image](/assets/images/configure_ingress_tg.png)
+
+Finally, you need to select all EKS worker nodes to be registered with the load balancer target, review and save the changes:
+
+![image](/assets/images/configure_ingress_register_targets.png)
+
+If for some reason you get `Unhealthy` status in the target group you created, make sure that EKS worker nodes security groups allow traffic to the target ports, at least from Load Balancer's security groups.
+
+Finally repeat the same steps for creating Gate Load balancer.
+
+### Step 3: Update Spinnaker configuration
+
+Spinnaker needs to know which url's are used to access it. After you have updated your DNS with the Load Balancers CNAME's created in the previous step, the next step is to update Spinnaker configuration:
+
+```bash
+  hal config security api edit --override-base-url https://${GATE_DNS_NAME}
+  hal config security ui edit --override-base-url https://${DECK_DNS_NAME}
+  hal deploy apply
+```
+
 
 
 ## Exposing Spinnaker on GKE with Ingress
