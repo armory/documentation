@@ -15,7 +15,9 @@ hidden: false
 
 
 ## Known Issues
-There are currently no known issues with this release.
+Jenkins triggers are not working properly in this release due to a broken dependency.
+
+Please update to `Armory Spinnaker 2.4.5`
 
 ## Highlighted Updates
 ### Armory
