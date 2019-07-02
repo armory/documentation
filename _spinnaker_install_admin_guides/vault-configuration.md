@@ -18,28 +18,28 @@ Configuration of Vault for the Kubernetes auth method requires configuring both 
 
 **vault-auth-service-account.yml**
 ```
-  ---
-  apiVersion: rbac.authorization.k8s.io/v1beta1
-  kind: ClusterRoleBinding
-  metadata:
-    name: role-tokenreview-binding
-    namespace: default
-  roleRef:
-    apiGroup: rbac.authorization.k8s.io
-    kind: ClusterRole
-    name: system:auth-delegator
-  subjects:
-  - kind: ServiceAccount
-    name: vault-auth
-    namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: role-tokenreview-binding
+  namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:auth-delegator
+subjects:
+- kind: ServiceAccount
+  name: vault-auth
+  namespace: default
 ```
 
 ```
 # Create a service account, 'vault-auth'
-$ kubectl create serviceaccount vault-auth
+$ kubectl -n default create serviceaccount vault-auth
 
 # Update the 'vault-auth' service account
-$ kubectl apply --filename vault-auth-service-account.yml
+$ kubectl -n default apply --filename vault-auth-service-account.yml
 ```
 
 ## Vault Configuration
@@ -95,8 +95,8 @@ $ vault write auth/kubernetes/config \
 # Create a role named, 'spinnaker' to map Kubernetes Service Account to
 # Vault policies and default token TTL
 $ vault write auth/kubernetes/role/spinnaker \
-        bound_service_account_names=vault-auth \
-        bound_service_account_namespaces=default \
+        bound_service_account_names=default \
+        bound_service_account_namespaces='*' \
         policies=myapp-kv-ro \
         ttl=24h
 ```
