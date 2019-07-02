@@ -97,7 +97,7 @@ $ vault write auth/kubernetes/config \
 $ vault write auth/kubernetes/role/spinnaker \
         bound_service_account_names=default \
         bound_service_account_namespaces='*' \
-        policies=myapp-kv-ro \
+        policies=spinnaker-kv-ro \
         ttl=24h
 ```
 
