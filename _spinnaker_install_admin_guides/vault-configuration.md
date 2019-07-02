@@ -68,13 +68,13 @@ $ vault policy write spinnaker-kv-ro spinnaker-kv-ro.hcl
 
 ```
 # Set VAULT_SA_NAME to the service account you created earlier
-$ export VAULT_SA_NAME=$(kubectl get sa vault-auth -o jsonpath="{.secrets[*]['name']}")
+$ export VAULT_SA_NAME=$(kubectl -n default get sa vault-auth -o jsonpath="{.secrets[*]['name']}")
 
 # Set SA_JWT_TOKEN value to the service account JWT used to access the TokenReview API
-$ export SA_JWT_TOKEN=$(kubectl get secret $VAULT_SA_NAME -o jsonpath="{.data.token}" | base64 --decode; echo)
+$ export SA_JWT_TOKEN=$(kubectl -n default get secret $VAULT_SA_NAME -o jsonpath="{.data.token}" | base64 --decode; echo)
 
 # Set SA_CA_CRT to the PEM encoded CA cert used to talk to Kubernetes API
-$ export SA_CA_CRT=$(kubectl get secret $VAULT_SA_NAME -o jsonpath="{.data['ca\.crt']}" | base64 --decode; echo)
+$ export SA_CA_CRT=$(kubectl -n default get secret $VAULT_SA_NAME -o jsonpath="{.data['ca\.crt']}" | base64 --decode; echo)
 
 # Look in your cloud provider console for this value
 $ export K8S_HOST=<your_API_server_endpoint>
