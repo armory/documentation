@@ -4,6 +4,7 @@ title: Installation
 order: 10
 redirect_from:
   - /install_guide/install/
+  - /install-guide/gettings_started/
 ---
 # Installing Armory Spinnaker
 {:.no_toc}
