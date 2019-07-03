@@ -48,7 +48,7 @@ monitor:
 
 ## Initial Run
 
-Once you've provisioned your RDBMS and ensured connectivity from Spinnaker, you'll need to create the database. You can skip this step if you create the database during provisioning - such with Terraform:
+Once you've provisioned your RDBMS and ensured connectivity from Spinnaker, you'll need to create the database. You can skip this step if you create the database during provisioning - for instance with Terraform:
 
 ```sql
 CREATE SCHEMA `orca` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
