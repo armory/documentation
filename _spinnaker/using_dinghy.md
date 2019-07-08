@@ -414,7 +414,7 @@ Here, if the variable `"name"` was not passed into the module call and is not a 
 le
 
 ### Create a dinghyfile from an existing pipeline
-If you have already created a pipeline in the Spinnaker UI, you can create a dinghyfile with some simple steps. 
+If you have already created a pipeline in the Spinnaker UI, you can create a dinghyfile with some simple steps.
 
 1. You need to go to the spinnaker UI and click on the `Configure` option of the pipeline you want.
 2. Click on the `Pipeline Actions` dropdown and select 'Edit as JSON'
@@ -432,3 +432,70 @@ If you have already created a pipeline in the Spinnaker UI, you can create a din
 Save this file as `dinghyfile` in the root of your project and push it to your repository.
 
 You may want to follow the [deleting stale pipelines](http://localhost:4000/spinnaker/using_dinghy/#deleting-stale-pipelines).
+
+# Alternate Template Formats
+
+When using an alternate template format all of your modules must also be in that same format.
+
+## YAML Template Format
+
+YAML formatting works just like the JSON formatting does.  However, all of your templates will need to be YAML if you've configured dinghy to use YAML as its template fomat.
+
+Example:
+```{% raw %}
+---
+application: "My awesome application"
+# You can do inline comments now
+globals:
+  waitTime: 42
+  retries: 5
+pipelines:
+- application: "My awesome application"
+  name: "My cool pipeline"
+  appConfig: {}
+  keepWaitingPipelines: false
+  limitConcurrent: true
+  stages:
+  - name: Wait For It...
+    refId: '1'
+    requisiteStageRefIds: []
+    type: wait
+    waitTime: 4
+  {{ module "some.stage.module" "something" }}
+  triggers: []
+{% endraw %}```
+
+*Note: YAML has strict spacing requirements.  Your modules must indent properly for the template to be rendered correctly.*
+
+## HCL Template Format
+
+```{% raw %}
+"application" = "Some App"
+"globals" = {
+    "waitTime" = 42
+}
+"pipelines" = [
+  {
+    "appConfig" = {}
+      "application" = "Some App"
+      "keepWaitingPipelines" = false
+      "limitConcurrent" = true
+      "name" = "Foo"
+      "stages" = [
+        {
+          "name" = "Wait For It..!"
+          "refId" = "1"
+          "requisiteStageRefIds" = []
+          "type" = "wait"
+          "waitTime" = 5
+        },
+        { 
+            {{ module "some.stage.module" "something" }} 
+        }
+      ]
+      "triggers" = []
+  }
+]
+{% endraw %}```
+
+*Note: HCL format can have some quirks.  Though the spec allows you to specify arrays and objects in various ways, that may not always serialize to json correctly once dinghy submits the pipeline to the spinnaker api. The above form is recommended when specifying arrays of objects.*

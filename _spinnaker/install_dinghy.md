@@ -68,3 +68,27 @@ You'll need to setup webhooks for each project that has the dinghyfile or module
 * If you want to disable lock pipelines in the UI before overwriting changes, add `--autolock-pipelines false`
 
 For a complete listing of options check out [hal armory](/spinnaker/armory_halyard/#hal-armory-dinghy-edit)
+
+### Other Template Formats
+
+*Note: this feature requires armory spinnaker 2.5.4 or above.*
+
+Dinghy supports two additional template formats in addition to JSON:
+* [HCL](https://github.com/hashicorp/hcl)
+* [YAML](https://yaml.org/)
+
+*Note: Selecting one of these parsers means that all of your dinghy templates must also be in that format.*
+
+To use one of these alternate formats, you'll need to configure a local override with one of these parsers set in `~/.hal/default/profiles/dinghy-local.yml`:
+
+```yaml
+parserFormat: hcl
+```
+
+The `parserFormat` configuration only accepts the following values:
+* json (Default. There is no need to specify this if you want to keep using json.)
+* yaml
+* hcl
+
+*Note: in the future armory will add this configuration to halyard cli.
+
