@@ -137,6 +137,7 @@ hal armory dinghy [parameters] [subcommands]
  * `disable`: Disable Dinghy
  * `edit`: Edit Dinghy settings
  * `enable`: Enable Dinghy
+ * `slack`: Configure Slack notifications (Halyard >= 1.6.3)
 
 ---
 ## hal armory dinghy disable
@@ -192,6 +193,52 @@ hal armory dinghy enable [parameters]
  * `--deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
  * `--no-validate`: (*Default*: `false`) Skip validation.
 
+---
+## hal armory dinghy slack
+
+Configure Dinghy to send processing results to a Slack channel  (Halyard >= 1.6.3)
+
+#### Usage
+```
+hal armory dinghy slack [enable|disable]
+```
+
+#### Parameters
+ * `--deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
+ * `--no-validate`: (*Default*: `false`) Skip validation.
+
+#### Subcommands
+ * `enable`: Enable Slack notifications/edit Slack channel
+ * `disable`: Disable Slack notifications
+
+---
+## hal armory dinghy slack enable
+
+Enable Slack notifications from Dinghy (Halyard >= 1.6.3)
+
+#### Usage
+```
+hal armory dinghy slack enable [parameters]
+```
+
+#### Parameters
+ * `--channel`: If supplied, sets the channel notifications will be sent to.
+ * `--deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
+ * `--no-validate`: (*Default*: `false`) Skip validation.
+
+---
+## hal armory dinghy slack disable (Halyard >= 1.6.3)
+
+Disable Slack notifications from Dinghy
+
+#### Usage
+```
+hal armory dinghy slack disable [parameters]
+```
+
+#### Parameters
+ * `--deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
+ * `--no-validate`: (*Default*: `false`) Skip validation.
 
 ---
 ## hal armory init
