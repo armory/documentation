@@ -477,11 +477,11 @@ pipelines:
 "pipelines" = [
   {
     "appConfig" = {}
-      "application" = "Some App"
-      "keepWaitingPipelines" = false
-      "limitConcurrent" = true
-      "name" = "Foo"
-      "stages" = [
+    "application" = "Some App"
+    "keepWaitingPipelines" = false
+    "limitConcurrent" = true
+    "name" = "Foo"
+    "stages" = [
         {
           "name" = "Wait For It..!"
           "refId" = "1"
@@ -493,7 +493,7 @@ pipelines:
             {{ module "some.stage.module" "something" }} 
         }
       ]
-      "triggers" = []
+    "triggers" = []
   }
 ]
 ```
