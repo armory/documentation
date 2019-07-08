@@ -17,7 +17,7 @@ This guide should include:
 * Setting up GitHub or Bitbucket/Stash webhooks to work with the "Pipelines as code" feature
 
 ## Overview
-To get an overview of Pipelines as code, check out the [user guide](http://docs.armory.io/spinnaker/using_dinghy)
+To get an overview of Pipelines as code, check out the [user guide](/spinnaker/using_dinghy)
 
 ## Enabling Pipelines as code
 In order to configure "Pipelines as code", it has to be enabled. Enable by running the following command:
@@ -67,7 +67,7 @@ You'll need to setup webhooks for each project that has the dinghyfile or module
 
 * If you want to disable lock pipelines in the UI before overwriting changes, add `--autolock-pipelines false`
 
-For a complete listing of options check out [hal armory](https://docs.armory.io/spinnaker/armory_halyard/#hal-armory-dinghy-edit)
+For a complete listing of options check out [hal armory](/spinnaker/armory_halyard/#hal-armory-dinghy-edit)
 
 ### Other Template Formats
 
@@ -91,3 +91,4 @@ The `parserFormat` configuration only accepts the following values:
 * hcl
 
 *Note: in the future armory will add this configuration to halyard cli.
+
