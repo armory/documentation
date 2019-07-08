@@ -442,7 +442,7 @@ When using an alternate template format all of your modules must also be in that
 YAML formatting works just like the JSON formatting does.  However, all of your templates will need to be YAML if you've configured dinghy to use YAML as its template fomat.
 
 Example:
-```yaml
+```{% raw %}
 ---
 application: "My awesome application"
 # You can do inline comments now
@@ -463,13 +463,13 @@ pipelines:
     waitTime: 4
   {{ module "some.stage.module" "something" }}
   triggers: []
-```
+{% endraw %}```
 
 *Note: YAML has strict spacing requirements.  Your modules must indent properly for the template to be rendered correctly.*
 
 ## HCL Template Format
 
-```
+```{% raw %}
 "application" = "Some App"
 "globals" = {
     "waitTime" = 42
@@ -477,11 +477,11 @@ pipelines:
 "pipelines" = [
   {
     "appConfig" = {}
-    "application" = "Some App"
-    "keepWaitingPipelines" = false
-    "limitConcurrent" = true
-    "name" = "Foo"
-    "stages" = [
+      "application" = "Some App"
+      "keepWaitingPipelines" = false
+      "limitConcurrent" = true
+      "name" = "Foo"
+      "stages" = [
         {
           "name" = "Wait For It..!"
           "refId" = "1"
@@ -493,9 +493,9 @@ pipelines:
             {{ module "some.stage.module" "something" }} 
         }
       ]
-    "triggers" = []
+      "triggers" = []
   }
 ]
-```
+{% endraw %}```
 
 *Note: HCL format can have some quirks.  Though the spec allows you to specify arrays and objects in various ways, that may not always serialize to json correctly once dinghy submits the pipeline to the spinnaker api. The above form is recommended when specifying arrays of objects.*
