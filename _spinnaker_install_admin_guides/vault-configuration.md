@@ -114,7 +114,7 @@ It is time verify that the Kubernetes auth method has been properly configured.
 6. `exec` into the pod
 
 ```
-$ POD_NAME=$(kubectl get pod -l app=debugging-tools -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}' --sort-by=".status.startTime" | tail -n 1)
+$ POD_NAME=$(kubectl get pod -l app=debugging-tools -o go-template --template '{% raw %}{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}{% endraw %}' --sort-by=".status.startTime" | tail -n 1)
 $ kubectl exec -it $POD_NAME bash
 ```
 
