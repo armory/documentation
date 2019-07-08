@@ -227,9 +227,9 @@ hal armory dinghy slack enable [parameters]
  * `--no-validate`: (*Default*: `false`) Skip validation.
 
 ---
-## hal armory dinghy slack disable (Halyard >= 1.6.3)
+## hal armory dinghy slack disable
 
-Disable Slack notifications from Dinghy
+Disable Slack notifications from Dinghy (Halyard >= 1.6.3)
 
 #### Usage
 ```
