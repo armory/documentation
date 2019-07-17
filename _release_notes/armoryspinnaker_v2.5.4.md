@@ -1,7 +1,7 @@
 ---
 layout: post
 title: v2.5.4 Armory Release (OSS Release 1.14.9)
-order: -20190717221945
+order: -20520190717221945
 hidden: false
 ---
 
