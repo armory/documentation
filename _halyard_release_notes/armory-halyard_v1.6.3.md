@@ -4,7 +4,7 @@ title: v1.6.3 Armory Halyard (OSS 1.20)
 order: -20190716173156
 ---
 
-# 06/25/2019 Release Notes
+# 07/16/2019 Release Notes
 {:.no_toc}
 
 ## Full Version
