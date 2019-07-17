@@ -18,8 +18,9 @@ hidden: false
 
 * A fix made in `Armory Spinnaker 2.3.x` to provide configurable timeout for SAML is broken in this release due to `OSS 1.13.x` Gate changes.
 * Igor and Clouddriver do not properly import `armory-commons` in this release. As a result, these services will fail to start when `Vault Secrets` are enabled.
+* SAML timeout cannot be overridden in this release
 
-Please upgrade to `Armory Spinnaker 2.4.4`
+Please upgrade to `Armory Spinnaker 2.4.5`
 
 ## Highlighted Updates
 ### Armory
