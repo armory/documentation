@@ -15,7 +15,9 @@ hidden: false
 
 
 ## Known Issues
-There are currently no known issues with this release.
+* SAML timeout cannot be overridden in this release
+
+Please upgrade to `Armory Spinnaker 2.4.5`
 
 ## Highlighted Updates
 ### Armory

@@ -17,8 +17,9 @@ hidden: false
 ## Known Issues
 * The ECS `Configure Cluster Deployment` wizard is broken in this release.
 * Igor and Clouddriver do not properly import `armory-commons` in this release. As a result, these services will fail to start when `Vault Secrets` are enabled.
+* SAML timeout cannot be overridden in this release
 
-Please upgrade to `Armory Spinnaker 2.5.2`
+Please upgrade to `Armory Spinnaker 2.5.3`
 
 ## Highlighted Updates
 ### Armory
