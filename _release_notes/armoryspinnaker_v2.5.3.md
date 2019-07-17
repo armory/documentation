@@ -14,7 +14,10 @@ hidden: false
 {:toc}
 
 ## Known Issues
-There are currently no known issues with this release.
+
+* non-gradle5 JDK services (`Front50`, `Kayenta`, and `Rosco`) do not support `K/V v2` with the `Kubernetes Secrets` engine in this release
+
+Please upgrade to `Armory Spinnaker 2.5.4`
 
 ## Highlighted Updates
 ### Armory
