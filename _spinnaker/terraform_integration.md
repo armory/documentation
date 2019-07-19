@@ -6,8 +6,12 @@ order: 141
 
 The following tutorial will walk you through how to setup the alpha version of our Terraform integration and execute Terraform code stored in a Github repo as part of a Spinnaker pipeline. We'll assume that you're using Terraform to create and manage infrastructure on AWS.
 
-## How to submit feedback
+{:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
+## How to submit feedback
+{:.no_toc} 
 If you decide to enable this feauture and have any feedback you'd like to submit, please let us know at [go.armory.io/ideas](go.armory.io/ideas)! We're constantly iterating on customer feedback to ensure that the features we build make your life easier!
 
 ## Prerequisites
@@ -68,6 +72,8 @@ skip this step.
 Feel free to replace `github-for-terraform` with any unique identifier to identify
 the artifact account.
 
+Note that if you have a github token, you don't need to provide a user name for it.
+
 ```bash
 hal config artifact github enable
 
@@ -78,7 +84,7 @@ hal config artifact github account add github-for-terraform --token
 #### Enabling and configuring the Terraform integration with a Github token
 
 The Terraformer module also needs access to the Github token to download full
-Github directories hosting your Terraform templates
+Github directories hosting your Terraform templates. A user name is not needed when a Github token is available.
 
 ```bash
 hal armory terraform enable --alpha
@@ -250,7 +256,23 @@ So the above example will essentially perform these two commands:
 * `terraform init -backend-config=backend.tf`
 * `terraform plan -var-file varfile.tfvars`
 
-(For the `backendArtifact` and other artifacts, you can replace `github/file` with some other artifact type; for example, if you're using the BitBucket artifact provider, specify `bitbucket/file` and the corresponding artifact account)
+(For the `backendArtifact` and other artifacts, you can replace `github/file` with some other artifact type; for example, if you're using the BitBucket artifact provider, specify `bitbucket/file` and the corresponding artifact account).
+
+#### Github file artifacts url
+
+For artifacts of type `github/file` you must supply the _API_ url of the file, which is different from the url you get when you click `Raw` from Github page. Here's the syntax:
+
+Regular Github:
+
+```
+https://api.github.com/repos/{org}/{repo}/contents/{file path}
+``` 
+
+Github Enterprise:
+
+```
+https://{host}/api/v3/repos/{org}/{repo}/contents/{file path}
+``` 
 
 #### Terraform Versions
 
@@ -462,10 +484,18 @@ By default, Terraformer will pull the `master` branch.  If you want to specify a
 
 Terraform's primary interface for user feedback is logging. When executed on your workstation, this log output is streamed to `stdout`. Out integration captures that output and makes it available via the API. While we work on fine-tuning the UI for this integration these logs can be viewed by inserting the following spinnet into the Comments section of the `terraform` stage or the Instructions section of a Manual Judgement stage.
 
-*Note: replace the reference to `your-gate-url` with the actual URL for Gate and the `Plan` stage name to the name of your plan or apply stages.*
+*Note: replace the reference to `your-gate-url` with the actual URL for Gate, the `Plan` stage name to the name of your plan or apply stages, and `plan_stdout`and `plan_stderr` for the corresponding action name*
 
 ```
-View the logs <a href="https://your-gate-url/proxies/terraform/api/v1/job/${#stage('Plan')['context']['status']['id']}/logs">here</a>
+Init Out:
+<pre>${#stage('Plan')['outputs']['status']['logs']['init_stdout']}</pre>
+Init Err:
+<pre>${#stage('Plan')['outputs']['status']['logs']['init_stderr']}</pre>
+Plan Out:
+<pre>${#stage('Plan')['outputs']['status']['logs']['plan_stdout']}</pre>
+Plan Err:
+<pre>${#stage('Plan')['outputs']['status']['logs']['plan_stderr']}</pre>
+<a target="_blank" href="http://your-gate-url/proxies/terraform/api/v1/job/${#stage('Plan')['outputs']['status']['id']}">Full job output</a>
 ```
 
 ## Consuming Terraform Output via SpEL
