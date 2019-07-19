@@ -484,10 +484,18 @@ By default, Terraformer will pull the `master` branch.  If you want to specify a
 
 Terraform's primary interface for user feedback is logging. When executed on your workstation, this log output is streamed to `stdout`. Out integration captures that output and makes it available via the API. While we work on fine-tuning the UI for this integration these logs can be viewed by inserting the following spinnet into the Comments section of the `terraform` stage or the Instructions section of a Manual Judgement stage.
 
-*Note: replace the reference to `your-gate-url` with the actual URL for Gate and the `Plan` stage name to the name of your plan or apply stages.*
+*Note: replace the reference to `your-gate-url` with the actual URL for Gate, the `Plan` stage name to the name of your plan or apply stages, and `plan_stdout`and `plan_stderr` for the corresponding action name*
 
 ```
-View the logs <a href="https://your-gate-url/proxies/terraform/api/v1/job/${#stage('Plan')['context']['status']['id']}/logs">here</a>
+Init Out:
+<pre>${#stage('Plan')['outputs']['status']['logs']['init_stdout']}</pre>
+Init Err:
+<pre>${#stage('Plan')['outputs']['status']['logs']['init_stderr']}</pre>
+Plan Out:
+<pre>${#stage('Plan')['outputs']['status']['logs']['plan_stdout']}</pre>
+Plan Err:
+<pre>${#stage('Plan')['outputs']['status']['logs']['plan_stderr']}</pre>
+<a target="_blank" href="http://your-gate-url/proxies/terraform/api/v1/job/${#stage('Plan')['outputs']['status']['id']}">Full job output</a>
 ```
 
 ## Consuming Terraform Output via SpEL
