@@ -17,8 +17,9 @@ hidden: false
 ## Known Issues
 * Igor and Clouddriver do not properly import `armory-commons` in this release. As a result, these services will fail to start when `Vault Secrets` are enabled.
 * SAML timeout cannot be overridden in this release
+* This version of Armory Spinnaker includes an older version of `deck-kayenta` modules.
 
-Please upgrade to `Armory Spinnaker 2.5.3`
+Please upgrade to `Armory Spinnaker 2.5.5`
 
 ## Highlighted Updates
 ### Armory

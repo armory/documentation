@@ -15,13 +15,16 @@ hidden: false
 
 
 ## Known Issues
-There are currently no known issues with this release.
+* This version of Armory Spinnaker includes an older version of `deck-kayenta` modules.
+
+Please upgrade to `Armory Spinnaker 2.5.5`
 
 ## Highlighted Updates
 ### Armory
 
 * This release addresses an issue with `Vault Secrets` for the Igor and Clouddriver services.
 * Fix for SAML timeout issue
+
 
 ###  Spinnaker Community Contributions
 [Spinnaker 1.14.6 Release Notes](https://www.spinnaker.io/community/releases/versions/1-14-6-changelog)
