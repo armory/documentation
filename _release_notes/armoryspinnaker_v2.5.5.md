@@ -1,11 +1,11 @@
 ---
 layout: post
-title: v2.5.4 Armory Release (OSS Release 1.14.9)
-order: -20520190717221945
+title: v2.5.5 Armory Release (OSS Release 1.14.10)
+order: -20520190719225428
 hidden: false
 ---
 
-# 07/17/19 Release Notes
+# 07/19/19 Release Notes
 {:.no_toc}
 
 > Note: If you're experiencing production issues after upgrading Spinnaker, rollback to a [previous working version](http://docs.armory.io/admin-guides/troubleshooting/#i-upgraded-spinnaker-and-it-is-no-longer-responding-how-do-i-rollback) and please report issues to [http://go.armory.io/support](http://go.armory.io/support).
@@ -15,17 +15,15 @@ hidden: false
 
 
 ## Known Issues
-This version of Armory Spinnaker includes an older version of `deck-kayenta` modules.
-
-Please upgrade to `Armory Spinnaker 2.5.5`
+There are currently no known issues with this release.
 
 ## Highlighted Updates
 ### Armory
 
-This release updates a dependency in the non-gradle5 JDK services (`Front50`, `Kayenta`, and `Rosco`) which provides support for `K/V v2` with the `Kubernetes Secrets` engine.
+This release updates the `deck-kayenta` module.
 
 ###  Spinnaker Community Contributions
-[Spinnaker 1.14.9 Release Notes](https://www.spinnaker.io/community/releases/versions/1-14-9-changelog)
+[Spinnaker 1.14.10 Release Notes](https://www.spinnaker.io/community/releases/versions/1-14-10-changelog)
 
 <br>
 
@@ -35,37 +33,37 @@ This release updates a dependency in the non-gradle5 JDK services (`Front50`, `K
 Here's the bom for this version.
 <details><summary>Expand</summary>
 <pre class="highlight">
-<code>version: 2.5.4-rc590
-timestamp: "2019-07-17 21:48:47"
+<code>version: 2.5.5-rc650
+timestamp: "2019-07-20 00:26:43"
 services:
   clouddriver:
-    version: 4.6.5-651caee-387dde5-rc126
+    version: 4.7.0-651caee-387dde5-rc127
   deck:
-    version: 2.0.0-6fedca0-b1f75ef-rc13
+    version: 2.0.0-fec48f6-b1f75ef-rc15
   dinghy:
-    version: 0.0.4-1090363-rc369
+    version: 0.0.4-eb0bb9c-rc422
   echo:
     version: 2.5.1-7f44a96-afcbb51-rc118
   fiat:
-    version: 1.5.1-b557350-ff44172-rc108
+    version: 1.5.2-b557350-ff44172-rc109
   front50:
-    version: 0.17.0-bf00a4f-0540599-rc10
+    version: 0.17.0-bf00a4f-0540599-rc11
   gate:
-    version: 1.8.2-83b6e52-935a334-rc107
+    version: 1.8.3-83b6e52-97f6477-rc109
   igor:
-    version: 1.3.0-c3c7850-b3f354f-rc107
+    version: 1.3.0-c3c7850-b3f354f-rc108
   kayenta:
-    version: 0.9.0-39c3a6b-dd8a91d-rc10
+    version: 0.9.1-39c3a6b-dd8a91d-rc11
   monitoring-daemon:
     version: 0.13.0-bf01bf2-rc1
   monitoring-third-party:
     version: 0.13.0-bf01bf2-rc1
   orca:
-    version: 2.7.4-62b8988-8c46567-rc117
+    version: 2.7.5-62b8988-dfafeef-rc119
   rosco:
-    version: 0.12.0-e1fc510-59f7929-rc8
+    version: 0.12.0-e1fc510-59f7929-rc9
   terraformer:
-    version: 0.0.2-9d63ba2-rc21
+    version: 0.0.2-88b8e1c-rc24
 dependencies:
   redis:
     version: 2:2.8.4-2
@@ -75,19 +73,20 @@ artifactSources:
 </details>
 
 
-
 ### Armory
-#### Dinghy&trade; - 9cece7f...1090363
- - fix(slack): include error in slack message (#179)
+#### Dinghy&trade; - 1090363...eb0bb9c
+ - chore(updateos): updates for changes to OS Dinghy (#180)
 
-#### Terraformer&trade; - c845d1d...9d63ba2
- - chore(durability): harden terraformer by making it wait on background threads and currently executing terraform jobs (#81)
+#### Terraformer&trade; - 9d63ba2...88b8e1c
+ - fix(replay): revert the replay logic. (#84)
+ - chore(versions): add 0.12.2-0.12.4 to container (#83)
+ - fix(timeout): make sure we set a deadline for the http server to terminate (#82)
 
 #### Armory Clouddriver  - 651caee
 No Changes
 
-#### Armory Deck  - 6fedca0
-No Changes
+#### Armory Deck  - 6fedca0...fec48f6
+ - chore(kayenta): Update deck-kayenta package (#513)
 
 #### Armory Echo  - 7f44a96
 No Changes
@@ -96,7 +95,7 @@ No Changes
 No Changes
 
 #### Armory Front50  - bf00a4f
-* Updated `armory-commons`
+No Changes
 
 #### Armory Gate  - 83b6e52
 No Changes
@@ -105,13 +104,13 @@ No Changes
 No Changes
 
 #### Armory Kayenta  - 39c3a6b
-* Updated `armory-commons`
+No Changes
 
 #### Armory Orca  - 62b8988
 No Changes
 
 #### Armory Rosco  - e1fc510
-* Updated `armory-commons`
+No Changes
 
 
 
@@ -134,8 +133,8 @@ No Changes
 #### Front50  - 0540599
 No Changes
 
-#### Gate  - 935a334
-No Changes
+#### Gate  - 935a334...97f6477
+ - fix(auth): Enable auth to all connectors except API port (1.14.x) (#857)
 
 #### Igor  - b3f354f
 No Changes
@@ -143,8 +142,8 @@ No Changes
 #### Kayenta  - dd8a91d
 No Changes
 
-#### Orca  - 8c46567
-No Changes
+#### Orca  - 8c46567...dfafeef
+ - fix(core): Plan templated pipelines before triggering from start tasks (#3039) (#3048)
 
 #### Rosco  - 59f7929
 No Changes
