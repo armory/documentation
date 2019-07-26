@@ -1,11 +1,11 @@
 ---
 layout: post
-title: v2.5.5 Armory Release (OSS Release 1.14.10)
-order: -20520190719225428
+title: v2.5.6 Armory Release (OSS Release 1.14.11)
+order: -20520190726174146
 hidden: false
 ---
 
-# 07/19/19 Release Notes
+# 07/26/19 Release Notes
 {:.no_toc}
 
 > Note: If you're experiencing production issues after upgrading Spinnaker, rollback to a [previous working version](http://docs.armory.io/admin-guides/troubleshooting/#i-upgraded-spinnaker-and-it-is-no-longer-responding-how-do-i-rollback) and please report issues to [http://go.armory.io/support](http://go.armory.io/support).
@@ -15,15 +15,17 @@ hidden: false
 
 
 ## Known Issues
-The "pipelineID" function in Dinghy was causing update failures.  Please update to v2.5.6.
+There are currently no known issues with this release.
 
 ## Highlighted Updates
 ### Armory
+<!--- A quick summary of what's changed with Armory -->
 
-This release updates the `deck-kayenta` module.
+This release fixes an issue with the pipelineID function in Dinghyfiles.
+
 
 ###  Spinnaker Community Contributions
-[Spinnaker 1.14.10 Release Notes](https://www.spinnaker.io/community/releases/versions/1-14-10-changelog)
+[Spinnaker 1.14.11 Release Notes](https://www.spinnaker.io/community/releases/versions/1-14-11-changelog)
 
 <br>
 
@@ -33,15 +35,15 @@ This release updates the `deck-kayenta` module.
 Here's the bom for this version.
 <details><summary>Expand</summary>
 <pre class="highlight">
-<code>version: 2.5.5-rc650
-timestamp: "2019-07-20 00:26:43"
+<code>version: 2.5.6-rc813
+timestamp: "2019-07-26 16:05:02"
 services:
   clouddriver:
-    version: 4.7.0-651caee-387dde5-rc127
+    version: 4.7.0-651caee-9e336dd-rc128
   deck:
     version: 2.0.0-fec48f6-b1f75ef-rc15
   dinghy:
-    version: 0.0.4-eb0bb9c-rc422
+    version: 0.0.4-8dfa005-rc584
   echo:
     version: 2.5.1-7f44a96-afcbb51-rc118
   fiat:
@@ -63,7 +65,7 @@ services:
   rosco:
     version: 0.12.0-e1fc510-59f7929-rc9
   terraformer:
-    version: 0.0.2-88b8e1c-rc24
+    version: 0.0.2-8361728-rc25
 dependencies:
   redis:
     version: 2:2.8.4-2
@@ -73,20 +75,19 @@ artifactSources:
 </details>
 
 
-### Armory
-#### Dinghy&trade; - 1090363...eb0bb9c
- - chore(updateos): updates for changes to OS Dinghy (#180)
 
-#### Terraformer&trade; - 9d63ba2...88b8e1c
- - fix(replay): revert the replay logic. (#84)
- - chore(versions): add 0.12.2-0.12.4 to container (#83)
- - fix(timeout): make sure we set a deadline for the http server to terminate (#82)
+### Armory
+#### Dinghy&trade; - eb0bb9c...8dfa005
+ - fix(pipelineID): fix issue with pipelineID parsing in Dinghyfiles
+
+#### Terraformer&trade; - 88b8e1c...8361728
+No Changes
 
 #### Armory Clouddriver  - 651caee
 No Changes
 
-#### Armory Deck  - 6fedca0...fec48f6
- - chore(kayenta): Update deck-kayenta package (#513)
+#### Armory Deck  - fec48f6
+No Changes
 
 #### Armory Echo  - 7f44a96
 No Changes
@@ -115,11 +116,11 @@ No Changes
 
 
 ###  Spinnaker Community Contributions
-See Spinnaker's release notes that are included in this release:  
-* [Spinnaker 1.14.10 Release Notes](https://www.spinnaker.io/community/releases/versions/1-14-10-changelog)
+See Spinnaker's release notes that are included in this release:
+* [Spinnaker 1.14.11 Release Notes](https://www.spinnaker.io/community/releases/versions/1-14-11-changelog)
 
-#### Clouddriver  - 387dde5
-No Changes
+#### Clouddriver  - 387dde5...9e336dd
+ - fix(ecs): search through whole list of tasks for vpc ID (#3886) (#3903)
 
 #### Deck  - b1f75ef
 No Changes
@@ -133,8 +134,8 @@ No Changes
 #### Front50  - 0540599
 No Changes
 
-#### Gate  - 935a334...97f6477
- - fix(auth): Enable auth to all connectors except API port (1.14.x) (#857)
+#### Gate  - 97f6477
+No Changes
 
 #### Igor  - b3f354f
 No Changes
@@ -142,8 +143,9 @@ No Changes
 #### Kayenta  - dd8a91d
 No Changes
 
-#### Orca  - 8c46567...dfafeef
- - fix(core): Plan templated pipelines before triggering from start tasks (#3039) (#3048)
+#### Orca  - dfafeef
+No Changes
 
 #### Rosco  - 59f7929
 No Changes
+
