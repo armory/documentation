@@ -228,10 +228,10 @@ If you want to generate your own certificates (for example, from the self-signed
      4096
    ```
 
-1. Generate a certificate signing request (CSR) for Deck. Ideally, specify 
+1. Generate a certificate signing request (CSR) for Gate. Ideally, specify 
 Gate's eventual fully-qualified domain name (FQDN) as the Common Name (CN).  
 
-   This will prompt for the pass phrase for `deck.key`.
+   This will prompt for the pass phrase for `gate.key`.
 
    ```bash
    # This should be the passphrase used to encrypt the Gate private key
@@ -244,7 +244,7 @@ Gate's eventual fully-qualified domain name (FQDN) as the Common Name (CN).
      -passin pass:${GATE_KEY_PASSWORD}
    ```
 
-1. Use the CA to sign the server's request and create the Deck server certificate
+1. Use the CA to sign the server's request and create the Gate server certificate
 (in `pem` format). If using an external CA, they will do this for you.  
 
    This will prompt for the pass phrase used to encrypt `ca.key`.
