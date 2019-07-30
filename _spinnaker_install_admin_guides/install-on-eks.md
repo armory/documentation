@@ -470,7 +470,7 @@ In order to expose Spinnaker to end users, you have perform the following action
 * Expose the spin-gate (API) Kubernetes service on some URL endpoint
 * Update Spinnaker (via Halyard) to be aware of the new endpoints
 
-We're going to install the NGINX ingress controller on EKS (this uses the Layer 4 ELB, as indicated in the NGINX ingress controller [documentation](https://kubernetes.github.io/ingress-nginx/deploy/#aws) - you can use other NGINX ingress controller configurations such as the Layer 7 load balancer per your organization's ingress policy.)
+We're going to install the NGINX ingress controller on EKS (this uses the Layer 4 ELB, as indicated in the NGINX ingress controller [documentation](https://github.com/kubernetes/ingress-nginx/blob/master/docs/deploy/index.md#aws) - you can use other NGINX ingress controller configurations such as the Layer 7 load balancer per your organization's ingress policy.)
 
 (Both of these are configurable with Spinnaker, but the NGINX ingress controller is also generally much more configurable)
 
@@ -479,14 +479,14 @@ From the `workstation machine` (where `kubectl` is installed):
 Install the NGINX ingress controller components:
 
 ```bash
-kubectl --kubeconfig kubeconfig-eks apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml
+kubectl --kubeconfig kubeconfig-eks apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
 ```
 
 Install the NGINX ingress controller AWS-specific service:
 
 ```bash
-kubectl --kubeconfig kubeconfig-eks apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/provider/aws/service-l4.yaml
-kubectl --kubeconfig kubeconfig-eks apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/provider/aws/patch-configmap-l4.yaml
+kubectl --kubeconfig kubeconfig-eks apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/aws/service-l4.yaml
+kubectl --kubeconfig kubeconfig-eks apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/aws/patch-configmap-l4.yaml
 ```
 
 ## Set up the Ingress for `spin-deck` and `spin-gate`
