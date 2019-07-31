@@ -24,7 +24,7 @@ The Armory Spinnaker installation provides a service called "Dinghy" which will 
 
 ## How it works in a nutshell
 
-GitHub (or BitBucket) webhooks are sent off when either the Templates or the Module definitions are modified. The Dinghy service looks for and fetches all dependent modules and parses the template and updates the pipelines in Spinnaker. The pipelines get automatically updated whenever a module that is used by a pipeline is updated in VCS. This is done by maintaining a dependency graph.  Dinghy will look for `dinghyfile`s in all directories not just the root path.  It currently only applies to changes found in the master branch.
+GitHub (or BitBucket) webhooks are sent off when either the Templates or the Module definitions are modified. The Dinghy service looks for and fetches all dependent modules and parses the template and updates the pipelines in Spinnaker. The pipelines get automatically updated whenever a module that is used by a pipeline is updated in VCS. This is done by maintaining a dependency graph.  Dinghy will look for `dinghyfile`s in all directories not just the root path. Unless otherwise configured, Dinghy will process changes found in the master branch. For more information on how to configure branches, see [Custom branch configuration](http://docs.armory.io/spinnaker/install_dinghy/#custom-branch-configuration)
 
 ## Primitives
 
