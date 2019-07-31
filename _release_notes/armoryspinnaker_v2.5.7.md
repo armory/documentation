@@ -17,19 +17,9 @@ hidden: false
 ## Known Issues
 There are currently no known issues with this release.
 
-<!--- Example of a problem
-Igor added ..... which does.....
-
-**Symptoms:**
-**Fix:**
--->
-
-
-
 ## Highlighted Updates
 ### Armory
-<!--- A quick summary of what's changed with Armory -->
-
+This release fixes yaml parsing of Dinghyfiles
 
 
 ###  Spinnaker Community Contributions
