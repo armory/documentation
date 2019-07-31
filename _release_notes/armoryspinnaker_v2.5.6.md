@@ -15,11 +15,12 @@ hidden: false
 
 
 ## Known Issues
-Dinghyfile yaml parsing issues with nested maps.  Please upgrade to 2.5.7 to fix this issue.
+Dinghyfile yaml parsing issues with nested maps.  
+
+Please upgrade to `Armory Spinnaker 2.5.7` to fix this issue.
 
 ## Highlighted Updates
 ### Armory
-<!--- A quick summary of what's changed with Armory -->
 
 This release fixes an issue with the pipelineID function in Dinghyfiles.
 
