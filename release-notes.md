@@ -5,13 +5,15 @@ permalink: /release-notes/
 description: Release Notes For Armory Spinnaker
 collection: release_notes
 redirect_from:
-  - /releases
-  - /release
-  - /version
-  - /versions
+  - /releases/
+  - /release/
+  - /version/
+  - /versions/
 ---
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
+
+> You can also find [Armory's Halyard releases notes here.](https://docs.armory.io/halyard-release-notes/).
 
 ## Different Armory Release Types
 Armory is based off OSS's (Open Source Spinnaker) [release cadence](https://www.spinnaker.io/community/releases/release-cadence), in which we extend OSS with Armory features. We provide a few different release types.
