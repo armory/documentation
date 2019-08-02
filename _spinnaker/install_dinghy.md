@@ -66,9 +66,9 @@ You'll need to setup webhooks for each project that has the dinghyfile or module
 By default, Dinghy will use the Master branch in your repository. If you wish to use a different default branch for your repository, this can be configured using the `repoConfig` tag in your yaml configuration. 
 
 The `repoConfig` tag supports a collection of the following values. Each node in the collection must contain all of the fields listed below. 
-* branch - the full path to the branch you wish to use
-* provider - the name of the provider (see below for available providers)
-* repo - the name of the repository
+* `branch` - the name of the branch you wish to use
+* `provider` - the name of the provider (see below for available providers)
+* `repo` - the name of the repository
 
 All providers available in Dinghy are supported. Please refer to the list below for the proper name to use in the configuration for each provider. 
 * `github`
@@ -77,10 +77,10 @@ All providers available in Dinghy are supported. Please refer to the list below 
 
 ```yaml
 repoConfig:
-  - branch: refs/heads/some_branch
+  - branch: some_branch
     provider: bitbucket-server
     repo: my-bitbucket-repository
-  - branch: refs/heads/some_branch
+  - branch: some_branch
     provider: github
     repo: my-github-repository
 ```
