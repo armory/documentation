@@ -98,7 +98,7 @@ metrics or groups of metrics (see "Scoring" below).
 When you add a metric, the UI will be slightly different depending on what
 Metric Store you selected earlier.  The DataDog dialog looks like:
 
-![DataDog Metric Dialog](/images/Image 2018-04-18 at 1.11.59 PM.png)
+![Datadog Metric Dialog](/images/datadog_metric_dialog.png)
 
 The Stackdriver dialog looks like:
 
@@ -115,17 +115,16 @@ usage, etc, where a significant improvement is not a failure), or, conversely,
 select "decrease" for the opposite (useful for metrics that measure things
 where bigger numbers are always better).
 
-#### DataDog Metrics
+#### DataDog Metrics Aggregator
 
-For DataDog, the metric is simply the aggregation function you wish to use
-(avg, min, max, sum), a colon, and the name of the metric.  You can use the
-[DataDog Metrics Explorer](https://app.datadoghq.com/metric/explorer) to find
-these names:
-
-![DataDog Metrics Explorer](/images/Image 2018-04-18 at 1.20.25 PM.png)
-
-For example, if you wanted to measure the average amount of CPU used, you could
-enter `avg:system.cpu.user`.
+For DataDog, you need to select an aggregation function, either
+"Average", "Sum", "Max" or "Min".  Kayenta will request DataDog apply
+this function across all matching services when doing its query.  Which
+function you use depends on what you're measuring, and how you've set up
+your canary instances -- if you have several instances running your
+canary, you may want to 'average' the CPU use across them, but perhaps
+you want to check for the "max" response time, or "sum" the amount of
+disk being used.
 
 #### Stackdriver Metrics
 
