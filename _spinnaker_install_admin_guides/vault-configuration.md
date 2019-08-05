@@ -81,6 +81,14 @@ $ export K8S_HOST=<your_API_server_endpoint>
 ```
 
 4. Configure Vault's Kubernetes auth method
+---
+**NOTE on TTL and Token Renewal**
+
+The Kubernetes Vault Auth Secrets Engine does not currently support token renewal. As such the `spinnaker` role created below provides a `TTL` of `two months`.
+
+**Important:** Spinnaker must be redeployed sometime during the defined `TTL` window -- we recommend this be done by updating to a new version of Spinnaker and running `hal deploy apply`.
+
+---
 
 ```
 # Enable the Kubernetes auth method at the default path ("auth/kubernetes")
@@ -98,7 +106,7 @@ $ vault write auth/kubernetes/role/spinnaker \
         bound_service_account_names=default \
         bound_service_account_namespaces='*' \
         policies=spinnaker-kv-ro \
-        ttl=24h
+        ttl=1440h
 ```
 
 ## Verify Configuration
