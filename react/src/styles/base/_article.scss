@@ -1,0 +1,117 @@
+.Article {
+  margin-top: 3rem;
+  margin-bottom: 6rem;
+  
+  a {
+    color: #444;
+    position: relative;
+    text-decoration: underline;
+
+    &:hover {
+      color: darken($color-primary, 10%);
+    }
+  }
+
+  blockquote {
+    @extend .testimonial__text;
+  }
+
+  .blockquote-author {
+    display: block;
+    @extend .testimonial__author;
+    font-weight: 500;
+  }
+
+  blockquote {
+    border-left: 5px solid #EEEEEE;
+    margin: 3rem 0;
+    padding-left: 1rem;
+    position: relative;
+    width: 80%;
+
+    p {
+      font-size: 1.4rem;
+      margin: 0;
+    }
+  }
+
+  a.Button,
+  .Button {
+    color: #FFF;
+    text-decoration: none;
+
+    &:hover {
+      color: #FFF;
+    }
+
+    &:after {
+      display: none;
+    }
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  .Button--light {
+    color: $color-teal!important;
+
+    &:hover {
+      color: $color-teal!important;
+    }
+  }
+}
+
+.Article__body {
+  p, ul, ol, li, table {
+    color: #444;
+    font-size: 1.125rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  ul, ol {
+    list-style-type: disc;
+    margin-bottom: 2rem;
+    margin-top: -0.5rem;
+    padding-left: 2rem;
+  }
+
+  ol {
+    list-style-type: decimal;
+  }
+
+  li {
+    margin-bottom: 0.25rem;
+  }
+
+  table {
+    margin: 1.5rem 0 3rem 0;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  img {
+    display: block;
+    margin: 0 auto 2rem auto;
+    max-width: 100%;
+    position: relative;
+    width: auto;
+  }
+
+  h2 {
+    @extend .Header--medium-large;
+    margin-bottom: 1rem;
+    margin-top: 3rem;
+    font-weight: 500!important;
+  }
+
+  h3 {
+    @extend .Header--medium;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+    font-weight: 600!important;
+  }
+}

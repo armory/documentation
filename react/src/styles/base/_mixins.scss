@@ -1,0 +1,78 @@
+// Mixins.less
+// Snippets of reusable CSS to develop faster and keep code readable
+// -----------------------------------------------------------------
+
+
+// UTILITY MIXINS
+// --------------------------------------------------
+
+// Clearfix
+// --------
+// For clearing floats like a boss h5bp.com/q
+@mixin c {
+  &:after {
+    content:"";
+    display:table;
+    clear:both;
+  }
+}
+
+
+// Sizing shortcuts
+// -------------------------
+@mixin size($width: 5px, $height: 5px) {
+  width: $width;
+  height: $height;
+}
+
+@mixin sq($size: 5px) {
+  @include size($size, $size);
+}
+
+
+// FONTS
+// --------------------------------------------------
+
+@mixin serif() {
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+@mixin sans-serif() {
+  font-family: 'Open Sans', 'Arial CE', Arial, sans-serif;
+}
+
+@mixin font-size($font-size: 16, $line: 1) {
+  $rem: ($font-size / 10);
+  font-size: $font-size * 1px;
+  font-size: #{$rem}rem;
+  line-height: $line;
+}
+
+// Border Radius
+@mixin border-radius($radius: 5px) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+          border-radius: $radius;
+}
+
+// Drop shadows
+@mixin box-shadow($shadow: 0 1px 3px rgba(0,0,0,.25)) {
+  -webkit-box-shadow: $shadow;
+     -moz-box-shadow: $shadow;
+          box-shadow: $shadow;
+}
+
+// Transitions
+@mixin transition($transition) {
+  -webkit-transition: $transition;
+     -moz-transition: $transition;
+      -ms-transition: $transition;
+       -o-transition: $transition;
+          transition: $transition;
+}
+
+// Opacity
+@mixin opacity($opacity: 100) {
+  opacity: $opacity / 100;
+  // filter: e(%("alpha(opacity=%d)", $opacity));
+}

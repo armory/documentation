@@ -1,0 +1,185 @@
+// Typography.less
+// Headings, body text, lists, code, and more for a versatile and durable typography system
+// ----------------------------------------------------------------------------------------
+
+// BODY TEXT
+// ---------
+
+p {
+  margin: 0;
+}
+
+// HEADINGS
+// --------
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+  line-height: 1.2;
+}
+
+// LISTS
+// -----
+
+// Unordered and Ordered lists
+ul,
+ol {
+  padding: 0;
+  margin: 0;
+}
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+  margin-bottom: 0;
+}
+ul {
+  list-style: none;
+}
+ol {
+  list-style: none;
+}
+li {
+}
+
+// Description Lists
+dl {
+  margin-bottom: 0;
+}
+dt,
+dd {
+}
+dt {
+}
+dd {
+}
+
+// MISC
+// ----
+
+// Horizontal rules
+hr {
+  margin: 0;
+  border: 0;
+}
+
+// Emphasis
+strong {
+  font-weight: bold;
+}
+em {
+  font-style: italic;
+}
+
+// Abbreviations and acronyms
+abbr {
+  font-size: 90%;
+  text-transform: uppercase;
+  border-bottom: 1px dotted #ddd;
+  cursor: help;
+}
+
+// Misc
+small {
+  font-size: 100%;
+}
+cite {
+  font-style: normal;
+}
+
+// LINKS
+// ---------
+a {
+  color: $color-primary;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+hr {
+  border-top: 1px solid #ccc;
+  margin: 2rem 0;
+}
+
+p {
+  color: #444;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.border-none {
+  border: none !important;
+}
+
+.no-click {
+  pointer-events: none;
+  user-select: none;
+}
+
+@include media-breakpoint-down(sm) {
+  .Header--large {
+    font-size: 2.4rem;
+  }
+
+  .Header--medium-large {
+    font-size: 1.8rem;
+  }
+
+  .Header--medium {
+    font-size: 1.4rem;
+  }
+
+  .Header--small {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .Header--caps {
+    font-size: 0.875rem;
+  }
+
+  .Header--caps--large {
+    font-size: 1.2rem;
+  }
+
+  .Lead {
+    font-size: 1.4rem;
+  }
+
+  .Section {
+    margin: 4rem 0;
+  }
+
+  .Section--large {
+    margin: 6rem 0;
+  }
+
+  img {
+    max-width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .section {
+    margin: 60px 0;
+  }
+
+  .section__header {
+    h2 {
+      font-size: 34px;
+    }
+
+    h3 {
+      font-size: 16px;
+    }
+  }
+}

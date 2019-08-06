@@ -1,3 +1,4 @@
+node_modules
 .asset-cache
 .DS_Store
 _site
