@@ -16,4 +16,4 @@ docker run --rm -ti \
   --name=documentation \
   -p 4000:4000 -p 5678:5678 -p 35729:35729 \
   -v "$(pwd):/srv/jekyll" armory/documentation \
-  jekyll serve
+  jekyll serve --incremental
