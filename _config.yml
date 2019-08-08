@@ -40,10 +40,12 @@ exclude:
   - Jenkinsfile
   - README.md
   - vendor/
+  - react/
 keep_files: [images]
 assets:
   sources:
     - _assets/css
+    - _assets/build
   compress:
     css: true
   autoprefixer:

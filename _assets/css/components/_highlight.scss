@@ -73,14 +73,14 @@
 
 figure {
 	border-radius: 2px;
-	margin: 2rem 0;
+	margin: rem 0;
 	padding: 0;
 	overflow-x: scroll;
 }
 
 pre {
 	margin: 0;
-	padding: 1.5rem 1.5rem;
+	padding: 1rem 1rem;
 	overflow: auto;
 }
 
@@ -94,11 +94,11 @@ code {
 }
 
 figure.highlight {
-	margin: 1rem 0 2rem 0;
+	margin: 0.625rem 0 1.25rem 0;
 }
 
 div.highlighter-rouge {
-	margin: 1rem 0 2rem 0;
+	margin: 0.625rem 0 1.25rem 0;
 	border-radius: 2px;
 	overflow: hidden;
 }
@@ -107,6 +107,6 @@ code.highlighter-rouge {
 	background: #EEE;
 	border: 1px solid #DDD;
 	border-radius: 2px;
-	padding: 0.2rem;
-	margin: -0.2rem 0 0 0;
+	padding: 0.125rem;
+	margin: -0.125rem 0 0 0;
 }

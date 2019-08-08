@@ -14,8 +14,8 @@
 
 .Nav-list__section {
 	border-bottom: 1px solid darken($color-blue-light, 10%);
-	margin-bottom: 2.4rem;
-	padding-bottom: 1.4rem;
+	margin-bottom: 1.5rem;
+	padding-bottom: 0.875rem;
 
 	&:last-child {
 		border-bottom: none;
@@ -25,9 +25,9 @@
 
 .Nav-list__link {
 	display: block;
-	font-size: 1.3rem;
+	font-size: 0.8rem;
 	line-height: 1;
-	padding: 1rem 3rem 1rem 0;
+	padding: 0.625rem 1.875rem 0.625rem 0;
 	position: relative;
 
 	&.is-active {
@@ -36,14 +36,14 @@
 
 		&:before {
 			background: $color-blue-vivid;
-			border-radius: 0.2rem;
+			border-radius: 2px;
 			content: '';
 			display: block;
-			left: -1.5rem;
+			left: -1rem;
 			height: 90%;
 			position: absolute;
 			top: 5%;
-			width: 0.4rem;
+			width: 0.25rem;
 		}
 	}
 }
