@@ -7,7 +7,7 @@ order: 142
 ## About
 Armory Spinnaker now supports a new feature called "Policy Engine".  This policy engine is backed by [Open Policy Agent](https://www.openpolicyagent.org/) and uses the input style documents to perform validation of pipelines during creation and updates.
 
-The Policy Engine integration is deisgned to allow enterprises more complete control of their software delivery process by providing them with the hooks necessary to perform more extensive verification of their pipelines and processes in spinnaker.
+The Policy Engine integration is designed to allow enterprises more complete control of their software delivery process by providing them with the hooks necessary to perform more extensive verification of their pipelines and processes in spinnaker.
 
 *Note: The policy engine integration will require some understanding of OPA's rego syntax and of the OPA server itself.  Armory Spinnaker tries not to be opinionated on the environment of the user and so this integration may require additional testing and verification.*
 
