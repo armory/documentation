@@ -502,3 +502,27 @@ pipelines:
 {% endraw %}```
 
 *Note: HCL format can have some quirks.  Though the spec allows you to specify arrays and objects in various ways, that may not always serialize to json correctly once dinghy submits the pipeline to the spinnaker api. The above form is recommended when specifying arrays of objects.*
+
+## Conditionals
+
+Dinghy supports all of the usual Go template conditionals. In addition to that, Dinghy also provides the git webhoook content in the template allowing you to use the raw push data in the template itself.  An example of conditional support:
+
+```{% raw %}
+{
+        "application": "my fancy application (author: {{ .RawData.pusher.name }})",
+        "pipelines": [
+            "stages": [
+                {{ $mods := makeSlice "mod1" "mod2" }}
+                {{ range $mods }}
+                    {{ module . }}
+                {{ end }}
+            ]    
+            {{ module "deep.pipeline.module" 
+                "artifact" "artifact11"
+                "artifact2" "artifact22"
+            }}
+        ]
+    }
+{% endraw %}```
+
+*Note: the structure of the webhook data passed to Dinghy's template engine depends on the git service that is sending the webhook. This example uses a Github web hook.*
