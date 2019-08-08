@@ -15,7 +15,7 @@ The Policy Engine integration is designed to allow enterprises more complete con
 
 ## Configuration
 
-To enable the use of Armory's Policy Engine, the following configuration must be added to halyhard in `~/.hal/default/profiles/front50-local.yml`:
+To enable the use of Armory's Policy Engine, the following configuration must be added to Halyard in `~/.hal/default/profiles/front50-local.yml`:
 
 ```yaml
 armory:
