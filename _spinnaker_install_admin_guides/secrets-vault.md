@@ -130,9 +130,8 @@ encrypted:vault!e:secret!p:spinnaker/kubernetes!k:config
 ```
 
 ---
-**NOTE**
+**NOTE:** The `p` param is used (but `n` is still supported) starting in Armory Halyard version 1.6.4 and Armory Spinnaker version 2.15.0. Previous versions use the now deprecated `n` param for the path. 
 
-The `p` param is used (but `n` is still supported) starting in Armory Halyard version 1.6.4 and Armory Spinnaker version 2.15.0. Previous versions use the now deprecated `n` param for the path. 
 ---
 
 ### Binary files
