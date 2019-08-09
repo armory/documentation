@@ -492,8 +492,8 @@ pipelines:
           "type" = "wait"
           "waitTime" = 5
         },
-        { 
-            {{ module "some.stage.module" "something" }} 
+        {
+            {{ module "some.stage.module" "something" }}
         }
       ]
       "triggers" = []
@@ -507,6 +507,15 @@ pipelines:
 
 Dinghy supports all of the usual Go template conditionals. In addition to that, Dinghy also provides the git webhoook content in the template allowing you to use the raw push data in the template itself.  An example of conditional support:
 
+The top level of the data passed in is always `.RawData`.  From there, you can use the JSON fields as they appear in the payload.  For example, GitHub's payload looks like this:
+```{
+  "pusher": {
+     "name": "Octocat"
+  }
+}```
+
+In the template, the access path for that variable is: `.RawData.pusher.name`.
+
 ```{% raw %}
 {
         "application": "my fancy application (author: {{ .RawData.pusher.name }})",
@@ -517,7 +526,7 @@ Dinghy supports all of the usual Go template conditionals. In addition to that, 
                     {{ module . }}
                 {{ end }}
             ]    
-            {{ module "deep.pipeline.module" 
+            {{ module "deep.pipeline.module"
                 "artifact" "artifact11"
                 "artifact2" "artifact22"
             }}
@@ -525,4 +534,4 @@ Dinghy supports all of the usual Go template conditionals. In addition to that, 
     }
 {% endraw %}```
 
-*Note: the structure of the webhook data passed to Dinghy's template engine depends on the git service that is sending the webhook. This example uses a Github web hook.*
+*Note: The structure of the webhook data passed to Dinghy's template engine depends on the Git service that sends the webhook. This example uses a GitHub webhook.*
