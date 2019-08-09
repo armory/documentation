@@ -508,13 +508,17 @@ pipelines:
 Dinghy supports all of the usual Go template conditionals. In addition to that, Dinghy also provides the git webhoook content in the template allowing you to use the raw push data in the template itself.  An example of conditional support:
 
 The top level of the data passed in is always `.RawData`.  From there, you can use the JSON fields as they appear in the payload.  For example, GitHub's payload looks like this:
-```{
+
+```json
+{
   "pusher": {
      "name": "Octocat"
   }
-}```
+}
+```
 
 In the template, the access path for that variable is: `.RawData.pusher.name`.
+
 
 ```{% raw %}
 {
