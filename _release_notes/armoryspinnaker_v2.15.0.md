@@ -21,7 +21,10 @@ As such, `Armory Spinnaker 2.15.x` tracks `OSS Release 1.15.x`.
 This decision has no effect on previous release names. 
 
 ## Known Issues
-There are currently no known issues with this release.
+
+* `Clouddriver` caching of `Docker Registry` tags is slow in this release. Registries containing a large number of tags **(> 1000)** will result in `docker triggers` not properly triggering until caching is complete -- which might take 10 minutes or more.
+
+*Note*: A fix for this issue will appear in `Armory Spinnaker 2.15.1`
 
 ###  Spinnaker Community Contributions
 [Spinnaker 1.15.1 Release Notes](https://www.spinnaker.io/community/releases/versions/1-15-1-changelog)  
