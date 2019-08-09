@@ -3,7 +3,7 @@ layout: post
 title: Spinnaker Secrets
 order: 150
 ---
-Managing Spinnaker secrets separately from its configuration is a necessary step to enabling Spinnaker through an SCM like git. This document describes how to store secrets in s3 and these secrets are used in Spinnaker and Halyard.
+Storing Spinnaker configs in a git repository is a great solution for maintaining versions of your configurations, but storing secrets in plain text is a bad security practice. As of `halyard-armory:1.4.1`, Spinnaker supports separating your secrets from your configs through end-to-end secrets management. Simply replace secrets in the Halconfig and service profiles with the syntax described here, and Spinnaker will decrypt them as needed. 
 
 {:toc}
 

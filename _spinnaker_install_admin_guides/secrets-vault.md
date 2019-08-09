@@ -112,24 +112,24 @@ vault kv put secret/spinnaker/saml base64keystore=@saml.b64
 
 ## Referencing secrets
 
-Now that secrets are safely stored in Vault, you'll reference them in config files with the general syntax below. The format for referencing string values and files is the same, with the exception of the additional `b:true` parameter for a base64 encoded file.
+Now that secrets are safely stored in Vault, you'll reference them in config files with the general syntax below. The format for referencing string values and files is the same, with the exception of the additional `b:true` parameter for a base64 encoded file. The specific parameters, e.g. `e:<engine>`, `k:<key>`, etc, can be in any order. Only `b:true` is optional.
 
 ```
-encrypted:vault!e:<secret engine>!n:<namespace>!k:<key>!b:<is base64 encoded?>
-```
-
-> Note: The specific parameters, e.g. `e:<engine>`, `k:<key>`, etc, can be in any order. Only `b:true` is optional.
+encrypted:vault!e:<secret engine>!p:<path to secret>!k:<key>!b:<is base64 encoded?>
+``` 
 
 
 For example, to reference the GitHub password:
 ```
-encrypted:vault!e:secret!n:spinnaker/github!k:password
+encrypted:vault!e:secret!p:spinnaker/github!k:password
 ```
 
 And the same for referencing a file:
 ```
-encrypted:vault!e:secret!n:spinnaker/kubernetes!k:config
+encrypted:vault!e:secret!p:spinnaker/kubernetes!k:config
 ```
+
+> Note: the `p` param is used (but `n` is still supported) starting in Armory Halyard version 1.6.4 and Armory Spinnaker version 2.15.0. Previous versions use the now deprecated `n` param for the path. 
 
 ### Binary files
 
