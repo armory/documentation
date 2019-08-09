@@ -24,7 +24,7 @@ github_username:  jekyll
 
 # Build settings
 markdown: kramdown
-gems:
+plugins:
   - jekyll-feed
   - jekyll-assets
   - jekyll-redirect-from
@@ -40,10 +40,12 @@ exclude:
   - Jenkinsfile
   - README.md
   - vendor/
+  - react/
 keep_files: [images]
 assets:
   sources:
     - _assets/css
+    - _assets/build
   compress:
     css: true
   autoprefixer:

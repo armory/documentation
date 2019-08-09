@@ -1,0 +1,245 @@
+.Form__group {
+  display: block;
+
+  + .Form__group {
+    margin-top: 1rem;
+  }
+
+  label {
+    color: #666;
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  input[type='text'],
+  input[type='email'],
+  textarea,
+  select {
+    background: #f6f6f5;
+    border: none;
+    border-radius: 2px;
+    display: block;
+    font-size: 1rem;
+    font-weight: 300;
+    padding: 0.75rem;
+    width: 100% !important;
+  }
+}
+
+.Form__group--inline {
+  display: inline-block;
+
+  .Button {
+    height: 42px;
+    line-height: 42px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+.Form__group--inline + .Form__group--inline {
+  margin-left: 1rem;
+}
+
+@media screen and (max-width: 776px) {
+  .Form__group--inline {
+    display: block;
+
+    .Button {
+      text-align: center;
+      width: 100%;
+    }
+  }
+
+  .Form__group--inline + .Form__group--inline {
+    margin-left: 0;
+  }
+}
+
+input[type='checkbox'] {
+  margin-right: 0.5rem;
+}
+
+input.Form-control {
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  height: 46px;
+  min-width: 18rem;
+  padding: 0rem 1rem;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: #aaa;
+}
+::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #aaa;
+}
+:-ms-input-placeholder {
+  /* IE 10+ */
+  color: #aaa;
+}
+:-moz-placeholder {
+  /* Firefox 18- */
+  color: #aaa;
+}
+
+.flex-grow {
+  flex: 1 1 auto;
+}
+
+// #mktoForm_1154 {
+//   display: flex;
+
+//   #mktoFormRow,
+//   .mktoButtonRow {
+//   }
+
+//   .mktoField {
+//     display: block;
+//     height: 100%;
+//   }
+
+//   .mktoForm .mktoLabel {
+//     float: none !important;
+//     padding: 0 !important;
+//   }
+// }
+
+/*
+// Self defined React classes
+*/
+
+.MarketoForm {
+  width: 100%;
+}
+
+.MarketoForm .Card {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+}
+
+.MarketoForm__title {
+  text-align: center;
+  font-size: 1.75rem;
+  line-height: 1.6;
+  padding: 0.25rem;
+}
+
+.MarketoForm--inline {
+  form {
+    display: flex;
+  }
+
+  .mktoButtonRow {
+    margin-left: 1rem;
+  }
+}
+
+/*
+// Targeting native Marketo classes
+*/
+
+// .mktoInvalid {
+//   box-shadow: 0 0 6px red;
+// }
+
+.mktoOffset,
+.mktoGutter.mktoHasWidth {
+  display: none;
+}
+
+form.mktoForm .mktoButtonRow .mktoButtonWrap {
+  display: block;
+}
+
+.mktoForm .mktoFormRow {
+  display: block;
+}
+
+.mktoButtonRow {
+  button {
+    @extend .Button;
+    display: block;
+    height: 48px;
+    line-height: 1;
+    padding-top: 0;
+    padding-bottom: 0;
+    white-space: nowrap;
+    width: 100%;
+  }
+}
+
+.mktoError {
+  background: #dc3545;
+  border-radius: 2px;
+  bottom: auto !important;
+  color: #fff !important;
+  padding: 0.5rem;
+  position: absolute;
+  left: 0;
+  font-size: 0.8rem;
+  line-height: 1.7;
+  top: 105%;
+  z-index: 5;
+}
+
+.mktoErrorArrowWrap {
+  background: #dc3545;
+  border-radius: 2px;
+  position: absolute;
+  height: 16px;
+  left: 1rem;
+  top: -6px;
+  transform: rotate(45deg);
+  width: 16px;
+}
+
+.mktoErrorDetail {
+  display: block;
+  font-size: 10px;
+  opacity: 0.5;
+}
+
+.mktoFieldWrap {
+  @extend .Form__group;
+  position: relative;
+}
+
+.mktoFormRow {
+  @extend .flex-grow;
+
+  @media screen and (min-width: 996px) {
+    display: inline-block;
+  }
+}
+
+.mktoFormRow + .mktoFormRow {
+  margin-top: 1rem;
+}
+
+.mktoLabel {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+select.mktoField {
+  height: 52px;
+}

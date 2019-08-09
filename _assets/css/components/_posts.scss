@@ -1,5 +1,5 @@
 .Post {
-	padding: 3.2rem 0 4.8rem;
+	padding: 2rem 0 3rem;
 }
 
 .Post__title {
@@ -9,33 +9,33 @@
 
 .Post__content {
 	color: $color-text;
-	font-size: 1.4rem;
+	font-size: 0.875rem;
 	line-height: 1.75;
 
 	h1, h2, h3, h4, h5, h6 {
 		color: $color-text-dark;
-		margin: 2.4rem 0 0 0;
+		margin: 1.5rem 0 0 0;
 	}
 
 	h2 {
 		border-top: 2px solid #EDF3F5;
-		margin-top: 3rem;
-		padding-top: 3rem;
+		margin-top: 1.875rem;
+		padding-top: 1.875rem;
 	}
 
 	p {
-		margin: 0.8rem 0 1.2rem 0;
+		margin: 0.5rem 0 0.75rem 0;
 	}
 
 	ul, ol {
-		margin: 1.2rem 0 2.4rem 0;
+		margin: 0.75rem 0 1.5em 0;
 	}
 
 	ul li,
 	ol li {
 		ul, 
 		ol {
-			margin: 0.4rem 0 1.8rem 0;
+			margin: 0.25rem 0 1.125rem 0;
 		}
 	}
 
@@ -46,7 +46,7 @@
 	}
 
 	li {
-		margin: 0 0 0.4rem 0;
+		margin: 0 0 0.25rem 0;
 	}
 
 	h1 {
@@ -58,7 +58,7 @@
 	}
 
 	img {
-		margin-bottom: 1.6rem;
+		margin-bottom: 1rem;
 	}
 
 	a {
@@ -78,7 +78,7 @@
 		background: $color-blue-light;
 		border-collapse: collapse;
 		border-radius: 2px;
-		margin: 2rem 0;
+		margin: 1.25rem 0;
 		overflow: hidden;
 		width: 100%;
 
@@ -86,11 +86,11 @@
 		th {
 			background: $color-blue-dark;
 			color: #FFF;
-			padding: 0.8rem 1rem;
+			padding: 0.5rem 0.625rem;
 		}
 
 		td {
-			padding: 0.5rem 1rem;
+			padding: 0.312rem 0.625rem;
 		}
 	}
 
@@ -104,7 +104,7 @@
 		border-radius: 2px;
 		margin-left: 0;
 		margin-right: 0;
-		padding: 1rem 2rem;
+		padding: 0.625rem 1.25rem;
 		font-style: italic;
 	}
 }
