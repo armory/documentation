@@ -92,10 +92,12 @@ Blocks of rules must be in a denial statement and the package must be `opa.pipel
 In the following sample OPA policy, the first policy enforces that the pipeline must have a manual judgement stage at some phase.  The second policy ensures that stages that are of type "deploy" have notifications enabled.
 
 ```
+# manual-judgment-and-notifications.rego
 package opa.pipelines
 
 deny["must have a manual judgement stage"] {
   stage_types = [d | d = input.pipeline.stages[_].type; d == "manualJudgment"]
+  count(input.pipeline.stages[_]) > 0
   count(stage_types) == 0
 }
 
@@ -106,3 +108,17 @@ deny["deploy stages must have notifications"] {
 }
 
 ```
+
+### Adding OPA Policies
+
+Create the file, and then submit it to the OPA endpoint with a PUT:
+
+```bash
+curl -X PUT \
+  -H 'content-type:text/plain' \
+  -v \
+  --data-binary @manual-judgment-and-notifications.rego \
+  http://opa.spinnaker:8181/v1/policies/policy-01
+```
+
+Note: you must use the `--data-binary` flag, not the `-d` flag.
