@@ -109,7 +109,7 @@ deny["deploy stages must have notifications"] {
 
 ```
 
-The policy can be added to OPA with this API request (replace the endpoint with your OPA endpoint):
+This policy can be added to OPA with this API request (replace the endpoint with your OPA endpoint):
 
 ```bash
 curl -X PUT \
