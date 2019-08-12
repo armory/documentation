@@ -22,7 +22,9 @@ To get an overview of Pipelines as code, check out the [user guide](/spinnaker/u
 ## Enabling Pipelines as code
 In order to configure "Pipelines as code", it has to be enabled. Enable by running the following command:
 
-`hal armory dinghy enable`
+```bash
+hal armory dinghy enable
+```
 
 ## Steps to follow to configure Pipelines as code:
 
