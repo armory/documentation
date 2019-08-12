@@ -40,7 +40,7 @@ hal armory dinghy enable
 hal armory dinghy edit \
   --template-org "armory-io" \
   --template-repo "dinghy-templates" \
-  --github-token
+  --github-token "your_token/password"
 
   # For Github enterprise, you may customize the endpoint:
   --github-endpoint "https://your-endpoint-here.com/api/v3"
@@ -54,7 +54,7 @@ Set up webhooks at the organization level for Push events. You can do this by go
 hal armory dinghy edit \
   --template-org "armory-io" \
   --template-repo "dinghy-templates" \
-  --stash-token \
+  --stash-token "your_token/password" \
   --stash-username "stash_user" \
   --stash-endpoint "https://your-endpoint-here.com"
 ```
