@@ -16,10 +16,11 @@ If you deploy a configuration or a change that takes down Spinnaker it'll be imp
 
 1.  Find the ASGs of Armory Spinnaker that were deployed.  Typically it should be `armoryspinnaker-ha-polling-v${VER}` where `${VER}` is something like `023`.  You should see 2 ASGS, one that is active instead and the older version should be disabled. ![armory spinnaker ASGs](/images/Image 2017-02-02 at 11.57.41 AM.png)
 
-1. Edit the older ASG and remove any suspended processes that are listed ![remove suspended process](/images/[25db0756e39ea3537131a8220e10f18d]_Image%25202017-02-02%2520at%252012.00.50%2520PM.png)
+1. Edit the older ASG and remove any suspended processes that are listed
+ ![remove suspended process](/images/admin-user-guide-1.png)
 
 1.  Increase the number of instances for the `armoryspinnaker-ha-polling` ASG to just 1 and set the other ASG `armoryspinnaker-ha`, the non-polling ASG back to atleast 2.
-![ASG upping desired capacity count](/images/[28125238555a966ddf3b571e617e8cba]_Image%202017-02-02%20at%2012.11.20%20PM.png)
+![ASG upping desired capacity count](/images/admin-user-guide-2.png)
 
 1.  Reduce the latest ASGs down to 0 so that they're no longer behind the ELB
 
@@ -66,7 +67,7 @@ docker logs -f clouddriver
 This should stream all the `clouddriver` logs to your terminal.  You'll want to look for any obvious exceptions or stack-traces to share with the Armory Support team.
 
 #### How can I flush the Redis cache?
-**NOTE: When using Docker or Jenkins triggers, Redis's `FLUSHALL` could leave you vulnerable to extraneous pipeline runs, which could affect production piplines.** 
+**NOTE: When using Docker or Jenkins triggers, Redis's `FLUSHALL` could leave you vulnerable to extraneous pipeline runs, which could affect production piplines.**
 
 <br/>
 1.  SSH into an active Armory Spinnaker node

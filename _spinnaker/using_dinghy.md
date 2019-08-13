@@ -16,7 +16,10 @@ The Armory Spinnaker installation provides a service called "Dinghy" which will 
 
 ## How it works in a nutshell
 
-GitHub (or BitBucket) webhooks are sent off when either the Templates or the Module definitions are modified. The Dinghy service looks for and fetches all dependent modules and parses the template and updates the pipelines in Spinnaker. The pipelines get automatically updated whenever a module that is used by a pipeline is updated in VCS. This is done by maintaining a dependency graph.  Dinghy will look for `dinghyfile`s in all directories not just the root path.  It currently only applies to changes found in the master branch.
+GitHub (or BitBucket) webhooks are sent off when either the Templates or the Module definitions are modified. The Dinghy service looks for and fetches all dependent modules and parses the template and updates the pipelines in Spinnaker. The pipelines get automatically updated whenever a module that is used by a pipeline is updated in VCS. This is done by maintaining a dependency graph.  Dinghy will look for `dinghyfile`s in all directories not just the root path.  Unless otherwise configured, Dinghy will process changes found in the master branch. For more information on how to configure branches, see [Custom branch configuration](http://docs.armory.io/spinnaker/install_dinghy/#custom-branch-configuration)
+
+For a deeper look at how Pipelines-as-Code works in your SDLC, take a look at
+[https://kb.armory.io/concepts/Pipelines-as-Code-Workflow/](https://kb.armory.io/concepts/Pipelines-as-Code-Workflow/)
 
 ## Primitives
 
@@ -401,20 +404,20 @@ Note that top-level variables are overwritten by variables in the call to module
 ### Nested variables
 Another neat little trick with variables is support for nested variables. Consider the following variable usage in a module:
 ```{% raw %}
-"name": {{ var "name" ?: "some-name" }}
+"name": "{{ var "name" ?: "some-name" }}"
 {% endraw %}```
 Here, if the variable `"name"` was passed in, or is a top-level variable in the `dinghyfile`, then use that value, or else _default to_ `some-name`.
 
-With nested variables, instead of using a hardcoded default value, the default can from another variable. eg:
+With nested variables, instead of using a hardcoded default value, the default can come from another variable. eg:
 
 ```{% raw %}
-"name": {{ var "name" ?: "@different_var" }}
+"name": "{{ var "name" ?: "@different_var" }}"
 {% endraw %}```
 Here, if the variable `"name"` was not passed into the module call and is not a top-level variable in the `dinghyfile`, its value will come from a variable called `"different_var"` that is either a top-level variable or another variable passed in when the module is called. Note the `@` syntax for the nested variable. The `@` symbol is only used where the variable is used, not when it is passed in.
 le
 
 ### Create a dinghyfile from an existing pipeline
-If you have already created a pipeline in the Spinnaker UI, you can create a dinghyfile with some simple steps. 
+If you have already created a pipeline in the Spinnaker UI, you can create a dinghyfile with some simple steps.
 
 1. You need to go to the spinnaker UI and click on the `Configure` option of the pipeline you want.
 2. Click on the `Pipeline Actions` dropdown and select 'Edit as JSON'
@@ -432,3 +435,107 @@ If you have already created a pipeline in the Spinnaker UI, you can create a din
 Save this file as `dinghyfile` in the root of your project and push it to your repository.
 
 You may want to follow the [deleting stale pipelines](http://localhost:4000/spinnaker/using_dinghy/#deleting-stale-pipelines).
+
+# Alternate Template Formats
+
+When using an alternate template format all of your modules must also be in that same format.
+
+## YAML Template Format
+
+YAML formatting works just like the JSON formatting does.  However, all of your templates will need to be YAML if you've configured dinghy to use YAML as its template fomat.
+
+Example:
+```{% raw %}
+---
+application: "My awesome application"
+# You can do inline comments now
+globals:
+  waitTime: 42
+  retries: 5
+pipelines:
+- application: "My awesome application"
+  name: "My cool pipeline"
+  appConfig: {}
+  keepWaitingPipelines: false
+  limitConcurrent: true
+  stages:
+  - name: Wait For It...
+    refId: '1'
+    requisiteStageRefIds: []
+    type: wait
+    waitTime: 4
+  {{ module "some.stage.module" "something" }}
+  triggers: []
+{% endraw %}```
+
+*Note: YAML has strict spacing requirements.  Your modules must indent properly for the template to be rendered correctly.*
+
+## HCL Template Format
+
+```{% raw %}
+"application" = "Some App"
+"globals" = {
+    "waitTime" = 42
+}
+"pipelines" = [
+  {
+    "appConfig" = {}
+      "application" = "Some App"
+      "keepWaitingPipelines" = false
+      "limitConcurrent" = true
+      "name" = "Foo"
+      "stages" = [
+        {
+          "name" = "Wait For It..!"
+          "refId" = "1"
+          "requisiteStageRefIds" = []
+          "type" = "wait"
+          "waitTime" = 5
+        },
+        {
+            {{ module "some.stage.module" "something" }}
+        }
+      ]
+      "triggers" = []
+  }
+]
+{% endraw %}```
+
+*Note: HCL format can have some quirks.  Though the spec allows you to specify arrays and objects in various ways, that may not always serialize to json correctly once dinghy submits the pipeline to the spinnaker api. The above form is recommended when specifying arrays of objects.*
+
+## Conditionals
+
+Dinghy supports all of the usual Go template conditionals. In addition to that, Dinghy also provides the git webhoook content in the template allowing you to use the raw push data in the template itself.  An example of conditional support:
+
+The top level of the data passed in is always `.RawData`.  From there, you can use the JSON fields as they appear in the payload.  For example, GitHub's payload looks like this:
+
+```json
+{
+  "pusher": {
+     "name": "Octocat"
+  }
+}
+```
+
+In the template, the access path for that variable is: `.RawData.pusher.name`.
+
+
+```{% raw %}
+{
+        "application": "my fancy application (author: {{ .RawData.pusher.name }})",
+        "pipelines": [
+            "stages": [
+                {{ $mods := makeSlice "mod1" "mod2" }}
+                {{ range $mods }}
+                    {{ module . }}
+                {{ end }}
+            ]    
+            {{ module "deep.pipeline.module"
+                "artifact" "artifact11"
+                "artifact2" "artifact22"
+            }}
+        ]
+    }
+{% endraw %}```
+
+*Note: The structure of the webhook data passed to Dinghy's template engine depends on the Git service that sends the webhook. This example uses a GitHub webhook.*

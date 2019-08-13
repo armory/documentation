@@ -2,6 +2,7 @@
 layout: post
 title: Installation
 order: 20
+# This has been redirected to spinnaker/install
 ---
 {% include components/legacy_documentation.html %}
 

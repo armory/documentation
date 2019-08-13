@@ -2,7 +2,7 @@
 layout: post
 title: Barometer
 order: 70
-published: True
+published: False
 ---
 {% include components/legacy_documentation.html %}
 

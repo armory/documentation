@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Configuring AWS Subnets
-order: 24
+order: 34
 redirect_from:
   - /install_guide/subnets/
   - /install-guide/subnets/

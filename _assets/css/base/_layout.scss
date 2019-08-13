@@ -2,6 +2,7 @@
 	position: relative;
 }
 
+
 .Wrapper--main {
 	&:before {
 		background: $color-blue-light;
@@ -18,15 +19,15 @@
 .Wrapper__inner {
 	display: flex;
 	margin: 0 auto;
-	max-width: 100rem;
+	max-width: 62.5rem;
 	position: relative;
 }
 
 .Main {
 	background: #FFF;
-	flex: 1 1 66.66%;
+	flex: 1 1 71.00%;
 	overflow: hidden;
-	padding: 0 3rem;
+	padding: 0 1.875rem;
 
 	img {
 		max-width: 100%;

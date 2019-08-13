@@ -1,14 +1,14 @@
 html {
 	font-family: 'Open Sans', 'Helvetica', 'Helventica Neue', 'Arial', sans-serif;
-	font-size: 10px;
+	// font-size: 10px;
 	text-rendering: optimizeLegibility;
 }
 
 body {
-	font-size: 1.6rem;
+	font-size: 1rem;
 	font-weight: 400;
 	margin: 0;
-	padding: 2rem;
+	padding: 1.25rem;
 }
 
 .github-corner svg {
@@ -21,23 +21,23 @@ body {
 // Adjust base font size on wide and ultra wide monitors
 // to scale up web page accordingly.
 
-@media screen and (min-width: 1440px) {
-	html {
-		font-size: 12px;
-	}
-}
+// @media screen and (min-width: 1440px) {
+// 	html {
+// 		font-size: 12px;
+// 	}
+// }
 
-@media screen and (min-width: 1980px) {
-	html {
-		font-size: 14px;
-	}
-}
+// @media screen and (min-width: 1980px) {
+// 	html {
+// 		font-size: 14px;
+// 	}
+// }
 
-@media screen and (min-width: 2970px) {
-	html {
-		font-size: 16px;
-	}
-}
+// @media screen and (min-width: 2970px) {
+// 	html {
+// 		font-size: 16px;
+// 	}
+// }
 
 div.deprecation-warning {
   min-height: 70px;

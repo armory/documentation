@@ -1,7 +1,7 @@
 .Header {
 	background: $color-blue-light;
 	flex: 1 1 33.33%;
-	padding: 4rem 0 0 3rem;
+	padding: 2.5rem 0 0 1.875rem;
 
 	a {
 		color: $color-text-dark;
@@ -15,7 +15,7 @@
 .Header__logo,
 .Header__logo--mobile {
 	display: block;
-	margin-bottom: 3.2rem;
+	margin-bottom: 2rem;
 }
 
 .Header__logo--mobile {
@@ -34,9 +34,9 @@
 	&:after {
 		content: '›';
 		display: block;
-		font-size: 1.6rem;
+		font-size: 1rem;
 		position: absolute;
-		right: 1.5rem;
+		right: 1rem;
 		top: -3px;
 		transform: rotate(90deg);
 	}
@@ -64,15 +64,15 @@
 
 @media screen and (max-width: 1100px) {
 	.Header {
-		padding-left: 3rem;
+		padding-left: 1.875rem;
 	}
 }
 
 @media screen and (max-width: 900px) {
 	.Header {
 		flex: 0 0 100%;
-		margin: 0 -2rem;
-		padding: 2rem 0 2rem 2rem;
+		margin: 0 -1.25rem;
+		padding: 1.25rem 0 1.25rem 1.25rem;
 		order: 2;
 	}
 

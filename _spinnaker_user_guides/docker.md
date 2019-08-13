@@ -32,7 +32,7 @@ expression here to limit triggering to tag pattern names (for example,
 
 {% include components/regex_vs_wildcard.md %}
 
-![Add Trigger](/images/Screen%2520Recording%25202019-01-09%2520at%252010.05%2520AM.gif)
+![Add Trigger](/images/docker-user-guide-1.gif)
 
 ## Referencing the New Image
 
@@ -62,12 +62,10 @@ JSON as an example of the fields that will be filled in.
   },
 ```
 
-You can reference the Docker tag that triggered the pipeline with the 
-expression `${trigger['tag']}`, which may be all you need, as in this 
+You can reference the Docker tag that triggered the pipeline with the
+expression `${trigger['tag']}`, which may be all you need, as in this
 image spec line from a Kubernetes manifest:
 
 ```
 - image: "docker.io/armory/demoapp:${trigger['tag']}"
 ```
-
-

@@ -10,7 +10,7 @@ order: 50
 
 ## Configure Kayenta
 
-The open source Spinnaker documentation has a good overview of how to 
+The open source Spinnaker documentation has a good overview of how to
 configure Kayenta via Halyard at
 [https://www.spinnaker.io/setup/canary/](https://www.spinnaker.io/setup/canary/)
 
@@ -98,7 +98,7 @@ metrics or groups of metrics (see "Scoring" below).
 When you add a metric, the UI will be slightly different depending on what
 Metric Store you selected earlier.  The DataDog dialog looks like:
 
-![DataDog Metric Dialog](/images/Image 2018-04-18 at 1.11.59 PM.png)
+![Datadog Metric Dialog](/images/datadog_metric_dialog.png)
 
 The Stackdriver dialog looks like:
 
@@ -115,17 +115,16 @@ usage, etc, where a significant improvement is not a failure), or, conversely,
 select "decrease" for the opposite (useful for metrics that measure things
 where bigger numbers are always better).
 
-#### DataDog Metrics
+#### DataDog Metrics Aggregator
 
-For DataDog, the metric is simply the aggregation function you wish to use
-(avg, min, max, sum), a colon, and the name of the metric.  You can use the
-[DataDog Metrics Explorer](https://app.datadoghq.com/metric/explorer) to find
-these names:
-
-![DataDog Metrics Explorer](/images/Image 2018-04-18 at 1.20.25 PM.png)
-
-For example, if you wanted to measure the average amount of CPU used, you could
-enter `avg:system.cpu.user`.
+For DataDog, you need to select an aggregation function, either
+"Average", "Sum", "Max" or "Min".  Kayenta will request DataDog apply
+this function across all matching services when doing its query.  Which
+function you use depends on what you're measuring, and how you've set up
+your canary instances -- if you have several instances running your
+canary, you may want to 'average' the CPU use across them, but perhaps
+you want to check for the "max" response time, or "sum" the amount of
+disk being used.
 
 #### Stackdriver Metrics
 
@@ -298,7 +297,7 @@ The next two stages (`Deploy Baseline` and `Deploy Canary`) are both `Deploy
 (Manifest)` stages; in this example we're using text manifests for clarity.
 
 Our baseline manifest is named with a `-baseline` suffix to help identify its
-metrics from regular production metrics.  We use a Spinnaker expression to 
+metrics from regular production metrics.  We use a Spinnaker expression to
 substitute in the current production image hash we found in the previous
 stage, and set an environment variable on these pods to help them differentiate
 their data from other production pods:
@@ -388,7 +387,7 @@ chance to clean up the baseline and canary deployments.  So we choose to
 When the analysis stage ends, we want to do few things, all at the same time.
 We want to clean up the baseline and canary stages, regardless of the outcome,
 so we don't have a bad canary or and old baseline serving requests.  We also
-want to deploy the new code (if it passed the canary analysis) to our 
+want to deploy the new code (if it passed the canary analysis) to our
 production deployment.
 
 ### Clean Up
@@ -438,7 +437,7 @@ the status of our Canary Analysis stage:
 
 ### Final Grade
 
-Finally, when all of that cleanup and promotion is done, we want to end on 
+Finally, when all of that cleanup and promotion is done, we want to end on
 either a total success or a failure.  For this, we'll use a `Check
 Preconditions` to also look back and check to see if the canary was successful
 or not.  We add a precondition and select `Expression` and enter in the same
@@ -462,6 +461,3 @@ on the subject, the following resources might be helpful:
 
 * [Automating Canary Analysis on Google Kubernetes Engine with Spinnaker](https://cloud.google.com/solutions/automated-canary-analysis-kubernetes-engine-spinnaker)
 * [Automated Canary Analysis Using Spinnaker](https://ordina-jworks.github.io/cloud/2018/06/01/Automated-Canary-Analysis-using-Spinnaker.html)
-
-
-

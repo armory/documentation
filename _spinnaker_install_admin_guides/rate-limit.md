@@ -64,7 +64,14 @@ serviceLimits:
       rateLimit: 10.0   # default max req/second
 ```
 
-And finally, you can have more fine-grained control for particular AWS endpoints that might have a different rate limits. This list was generated from the [AmazonClientProvider.java@4179f7](https://github.com/spinnaker/clouddriver/blob/4179f7fd8a5cd2cb64f238bd61b042bdca6193dd/clouddriver-aws/src/main/groovy/com/netflix/spinnaker/clouddriver/aws/security/AmazonClientProvider.java) on 02/22/2019 by filtering for `proxyHandlerBuilder.getProxyHandler(*.class` classes.
+And finally, you can have more fine-grained control for particular AWS endpoints that might have a different rate limits. This list was generated from the [AmazonClientProvider.java@4179f7f](https://github.com/spinnaker/clouddriver/blob/4179f7fd8a5cd2cb644179f7f/clouddriver-aws/src/main/groovy/com/netflix/spinnaker/clouddriver/aws/security/AmazonClientProvider.java) on 02/22/2019 by filtering for `proxyHandlerBuilder.getProxyHandler(*.class` classes.
+
+We've found that this formula works pretty well:
+```
+max_req_second = num_of_x_resources / clouddriver_30s_poll_interval
+```
+
+For example, if we have 90 load balancers, clouddriver polling every 30 seconds, then we'll end up with a rate limit of 3 reqs/second for `AmazonElasticLoadBalancing`.
 
 ```yml
 serviceLimits:

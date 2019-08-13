@@ -31,11 +31,9 @@ with common patterns or partial matches.
 
 {% include components/regex_vs_wildcard.md %}
 
-![Configure Github Trigger](/images/Screen%2520Recording%25202019-01-09%2520at%252004.10%2520PM.gif)
+![Configure Github Trigger](/images/github-user-guide-1.gif)
 
 ## Using Artifacts from Github
 
 > Before you start, you'll need to [configure Github as an artifact source](/spinnaker-install-admin-guides/github/#configuring-github-as-an-artifact-source)
 > You won't see the Github artifact type until this is configured.
-
-
