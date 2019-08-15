@@ -33,12 +33,12 @@ Note: if you want to secure each endpoint with SSL, change it to `443` and conti
 ```bash
 export NAMESPACE=spinnaker
 kubectl -n ${NAMESPACE} expose service spin-gate --type LoadBalancer \
-  --port 80/443 \
+  --port 80,443 \
   --target-port 8084 \
   --name spin-gate-public
 
 kubectl -n ${NAMESPACE} expose service spin-deck --type LoadBalancer \
-  --port 80/443 \
+  --port 80,443 \
   --target-port 9000 \
   --name spin-deck-public
 ```
