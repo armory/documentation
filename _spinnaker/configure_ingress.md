@@ -31,12 +31,12 @@ Note: if you want to secure each endpoint with SSL, change it to `443` and conti
 ```bash
 export NAMESPACE=spinnaker
 kubectl -n ${NAMESPACE} expose service spin-gate --type LoadBalancer \
-  --port 80/443 \
+  --port 80,443 \
   --target-port 8084 \
   --name spin-gate-public
 
 kubectl -n ${NAMESPACE} expose service spin-deck --type LoadBalancer \
-  --port 80/443 \
+  --port 80,443 \
   --target-port 9000 \
   --name spin-deck-public
 ```
@@ -67,9 +67,9 @@ hal deploy apply
 
 ### Secure with SSL on EKS
 
-Note: If you created the services with port 8084 and 9000, you will need to edit them to make SSL work. To do so run 
+Note: If you created the services with port 8084 and 9000, you will need to edit them to make SSL work. To do so run
 `kubectl -n spinnaker edit service spin-gate-public`
-and 
+and
 `kubectl -n spinnaker edit service spin-deck-public`
 and change the public port to 443
 
@@ -120,7 +120,7 @@ In this option the goal is to use AWS ALB's of type `internal` for exposing Spin
 
 ### Step 1: Create Kubernetes NodePort services
 
-A `NodePort` Kubernetes service opens the same port (automatically chosen) on all EKS worker nodes, and forwards requests to internal pods. In this case we'll be creating two services: one for Deck (Spinnaker's UI) and one for Gate (Spinnaker's API). 
+A `NodePort` Kubernetes service opens the same port (automatically chosen) on all EKS worker nodes, and forwards requests to internal pods. In this case we'll be creating two services: one for Deck (Spinnaker's UI) and one for Gate (Spinnaker's API).
 Replace the namespace by the one where spinnaker is installed:
 
 ```bash
@@ -160,7 +160,7 @@ Make sure to select `internal` scheme, and if you have a SSL certificate availab
 ![image](/assets/images/configure_ingress_alb_1.png)
 
 Select the VPC and subnets where EKS worker nodes live:
- 
+
 ![image](/assets/images/configure_ingress_alb_2.png)
 
 If you selected `HTTPS` for the protocol, you can configure here the ACM certificate:
