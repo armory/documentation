@@ -92,15 +92,17 @@ repoConfig:
 ### Other Options
 #### Fiat
 
-If you have Fiat enabled, add the following option `--fiat-user "your-service-account"`. The service account has to be in a group that has read/write access to the pipelines you will be updating. If you have app specific permissions configured in your spinnaker application, make sure the service account is added. If you need to create a new service account, here are the [instructions](https://www.spinnaker.io/setup/security/authorization/service-accounts/#creating-service-accounts)
+If Fiat is enabled, add the following option: `--fiat-user "your-service-account"`. Note that the service account has to be in a group that has read/write access to the pipelines you will be updating. 
+
+If you have app specific permissions configured in Spinnaker, make sure you add the service account. For information on how to create a service account, click [here](https://www.spinnaker.io/setup/security/authorization/service-accounts/#creating-service-accounts).
 
 #### Custom Filename
 
-If you want to change the name of the file that describes pipelines, add the following option `--dinghyfile-name "your-name-here"`
+If you want to change the name of the file that describes pipelines, add the following option: `--dinghyfile-name "your-name-here"`.
 
 #### Disabling Locks
 
-If you want to disable lock pipelines in the UI before overwriting changes, add `--autolock-pipelines false`
+If you want to disable lock pipelines in the UI before overwriting changes, add the following option: `--autolock-pipelines false`. 
 
 #### Slack Notifications
 
