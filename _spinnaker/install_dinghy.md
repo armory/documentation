@@ -90,13 +90,27 @@ repoConfig:
 *Note: in the future armory will add this configuration to halyard cli.
 
 ### Other Options
-* If you have Fiat enabled, add the following option `--fiat-user "your-service-account"`. The service account has to be in a group that has read/write access to the pipelines you will be updating. If you have app specific permissions configured in your spinnaker application, make sure the service account is added. If you need to create a new service account, here are the [instructions](https://www.spinnaker.io/setup/security/authorization/service-accounts/#creating-service-accounts)
+#### Fiat
 
-* If you want to change the name of the file that describes pipelines, add the following option `--dinghyfile-name "your-name-here"`
+If you have Fiat enabled, add the following option `--fiat-user "your-service-account"`. The service account has to be in a group that has read/write access to the pipelines you will be updating. If you have app specific permissions configured in your spinnaker application, make sure the service account is added. If you need to create a new service account, here are the [instructions](https://www.spinnaker.io/setup/security/authorization/service-accounts/#creating-service-accounts)
 
-* If you want to disable lock pipelines in the UI before overwriting changes, add `--autolock-pipelines false`
+#### Custom Filename
 
-For a complete listing of options check out [hal armory](/spinnaker/armory_halyard/#hal-armory-dinghy-edit)
+If you want to change the name of the file that describes pipelines, add the following option `--dinghyfile-name "your-name-here"`
+
+#### Disabling Locks
+
+If you want to disable lock pipelines in the UI before overwriting changes, add `--autolock-pipelines false`
+
+#### Slack Notifications
+
+You can configure Dinghy to send pipeline update results to Slack:
+
+```bash
+$ hal armory dinghy slack enable --channel my-channel
+```
+
+For a complete listing of options check out the [Armory Halyard](/spinnaker/armory_halyard/#hal-armory-dinghy-edit) documentation.
 
 ### Other Template Formats
 
