@@ -9,6 +9,10 @@ redirect_from:
   - /spinnaker-install-admin-guides/install_on_eks/
 ---
 
+<script src="https://hypothes.is/embed.js" async></script>
+
+
+
 This guide describes how to install Spinnaker in EKS.  It will create / use the following Amazon Web Services resources:
 
 * An Amazon AWS (Amazon Web Services) EKS (Elastic Container Services for Kubernetes)  cluster (you can use an existing one if you already have one)
