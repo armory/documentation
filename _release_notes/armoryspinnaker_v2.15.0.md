@@ -25,7 +25,6 @@ This decision has no effect on previous release names.
 * `Clouddriver` caching of `Docker Registry` tags is slow in this release. Registries containing a large number of tags **(> 1000)** will result in `docker triggers` not properly triggering until caching is complete -- which might take 10 minutes or more.
 * The `clouddriver-ro` pod fails to start when using Vault secrets with HA Clouddriver enabled.
 
-*Note*: Fixes for these issues will appear in `Armory Spinnaker 2.15.1`
 
 ##  Spinnaker Community Contributions
 [Spinnaker 1.15.1 Release Notes](https://www.spinnaker.io/community/releases/versions/1-15-1-changelog)  
