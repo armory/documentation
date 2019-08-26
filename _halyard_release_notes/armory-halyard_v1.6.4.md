@@ -19,7 +19,9 @@ This release:
 
 ## Known Issues
 
-- None
+Halyard fails to generate the Secrets config block for some service profiles.
+
+Please upgrade to `Armory Halyard 1.6.5`.
 
 ## Halyard Armory Enterprise Spinnaker
  - fix(logging): add logback to all clouddriver HA profiles (#246) 
