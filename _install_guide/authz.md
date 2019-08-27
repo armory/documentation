@@ -123,7 +123,7 @@ auth:
 
 ## OKTA
 
-OKTA has its own [separate guide](/spinnaker-install-admin-guides/okta/) due to its lengthy configuration
+OKTA has its own [separate guide](_spinnaker_install_admin_guides/okta/) due to its lengthy configuration
 
 ## Application Access
 
