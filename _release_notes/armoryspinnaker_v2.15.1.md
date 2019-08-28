@@ -111,7 +111,16 @@ No Changes
 #### Armory Rosco  - d7a038b...7b4de48
 No Changes
 
+### Armory Open Core
 
+#### Dinghy (Open Core) 1214a73...d62dc4a
+ - fix(network): catch only 404. if there's some other kind of error, don't continue (#66)
+ - fix(configurablebranches): fix branch name comparison (#65)
+ - chore(config): refactor config handling (#51)
+ - fix(parse): If templateOrg not configured, error. (#64)
+ - fix(errs): bubble up module errors to caller (#63)
+ - fix(errs): err -> debug for benign cache lookup issues (#62)
+ - feat(pushData): surface push into dinghy template (#61)
 
 ###  Spinnaker Community Contributions
 
