@@ -70,6 +70,119 @@ spec:
 
 ```
 
+If you want to create OPA policies via configmap, you can use this manifest, which will create an `opa` namespace and set up permissions so that OPA can read configmaps:
+
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: opa
+---
+# Grant OPA/kube-mgmt read-only access to resources. This lets kube-mgmt
+# replicate resources into OPA so they can be used in policies.
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: opa-viewer
+roleRef:
+  kind: ClusterRole
+  name: view
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+- kind: Group
+  name: system:serviceaccounts:opa
+  apiGroup: rbac.authorization.k8s.io
+---
+# Define role for OPA/kube-mgmt to update configmaps with policy status.
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: opa
+  name: configmap-modifier
+rules:
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["update", "patch"]
+---
+# Grant OPA/kube-mgmt role defined above.
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: opa
+  name: opa-configmap-modifier
+roleRef:
+  kind: Role
+  name: configmap-modifier
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+- kind: Group
+  name: system:serviceaccounts:opa
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: opa
+  namespace: opa
+spec:
+  selector:
+    app: opa
+  ports:
+  - protocol: TCP
+    port: 8181
+    targetPort: 8181
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: opa
+  namespace: opa
+  name: opa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: opa
+  template:
+    metadata:
+      labels:
+        app: opa
+      name: opa
+    spec:
+      containers:
+        # WARNING: OPA is NOT running with an authorization policy configured. This
+        # means that clients can read and write policies in OPA. If you are
+        # deploying OPA in an insecure environment, be sure to configure
+        # authentication and authorization on the daemon. See the Security page for
+        # details: https://www.openpolicyagent.org/docs/security.html.
+        - name: opa
+          image: openpolicyagent/opa:0.13.1
+          args:
+            - "run"
+            - "--server"
+            - "--addr=http://0.0.0.0:8181"
+          readinessProbe:
+            httpGet:
+              path: /health
+              scheme: HTTP
+              port: 8181
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              scheme: HTTP
+              port: 8181
+            initialDelaySeconds: 3
+            periodSeconds: 5
+        - name: kube-mgmt
+          image: openpolicyagent/kube-mgmt:0.8
+          args:
+            - "--replicate-cluster=v1/namespaces"
+            - "--replicate=extensions/v1beta1/ingresses"
+```
+
 ### OPA Specifics
 
 Armory Spinnaker's integration uses [OPA's data api](https://www.openpolicyagent.org/docs/latest/rest-api/#data-api) to check pipeline configurations against OPA policy. 
@@ -96,9 +209,9 @@ In the following sample OPA policy, the first policy enforces that the pipeline 
 package opa.pipelines
 
 deny["must have a manual judgement stage"] {
-  stage_types = [d | d = input.pipeline.stages[_].type; d == "manualJudgment"]
+  manual_judgment_stages = [d | d = input.pipeline.stages[_].type; d == "manualJudgment"]
   count(input.pipeline.stages[_]) > 0
-  count(stage_types) == 0
+  count(manual_judgment_stages) == 0
 }
 
 deny["deploy stages must have notifications"] {
@@ -106,7 +219,6 @@ deny["deploy stages must have notifications"] {
   stage = deploy_stages[_]
   not stage["notifications"]
 }
-
 ```
 
 This policy can be added to OPA with this API request (replace the endpoint with your OPA endpoint):
@@ -120,3 +232,9 @@ curl -X PUT \
 ```
 
 Note: you must use the `--data-binary` flag, not the `-d` flag.
+
+If you have configured OPA to look for configmap policies, you can alternately create the configmap with this:
+
+```bash
+kubectl create configmap ingress-whitelist --from-file=ingress-whitelist.rego
+```
