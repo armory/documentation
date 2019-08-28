@@ -183,7 +183,10 @@ For each account you want to deploy to, perform the following:
        "Version": "2012-10-17",
        "Statement": [
            {
-               "Action": "iam:PassRole",
+               "Action": [
+                 "iam:ListServerCertificates",
+                 "iam:PassRole"
+               ],
                "Resource": [
                    "*"
                ],
@@ -194,7 +197,7 @@ For each account you want to deploy to, perform the following:
    ```
 
 1. Click "Review Policy"
-1. Call it "PassRole", and click "Create Policy"
+1. Call it "PassRole-and-Certificates", and click "Create Policy"
 1. Copy the Role ARN and save it.  It should look something like this: `arn:aws:iam::123456789012:role/DevSpinnakerManagedRole`.  **This will be used in the section "Instance Role Part 3", and in the Halyard section, "Instance Role Part 6"**
 
 You will end up with a Role ARN for each Managed / Target account.  The Role names do not have to be the same (although it is a bit cleaner if they are).  For example, you may end up with roles that look like this:
