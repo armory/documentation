@@ -28,6 +28,14 @@ armory:
 
 *Note: there must be a trailing /v1 on the url. This extension is only compatible with OPA's v1 api.*
 
+If you are using an in-cluster OPA instance (such as one set up with the instructions below), Spinnaker can access OPA via the Kubernetes service DNS name (replace `opa.opa` with `opa.<namespace>` where `<namespace>` is the namespace where OPA is installed:
+
+```yaml
+armory:
+  opa:
+    enabled: true
+    url: http://opa.opa:8181/v1
+```
 
 ### OPA Deployment
 Users of Armory Spinnaker can use an in-cluster OPA server, one they've already deployed or if you have an existing Kubernetes cluster and Armory Spinnaker deployment and wish to use that to host OPA, the following yaml may be used to deploy the OPA server:
