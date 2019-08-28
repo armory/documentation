@@ -15,7 +15,7 @@ The Policy Engine integration is designed to allow enterprises more complete con
 
 ## Configuration
 
-**The Policy Engine integration has a 'fail closed' behavior; if you have the policy engine enabled but no policies created, Spinnaker will refuse to create/update any pipelines.**
+**The Policy Engine integration has a 'fail closed' behavior: if you have the policy engine enabled but no policies created, Spinnaker will refuse to create/update any pipelines.**
 
 To enable the use of Armory's Policy Engine, the following configuration must be added to Halyard in `~/.hal/default/profiles/front50-local.yml`:
 
