@@ -74,12 +74,9 @@ artifactSources:
 
 ### Armory
 #### Dinghy&trade; - 9ccc528...cd9d1cc
- - fix(tests): update tests after refactor work (#185)
  - fix(yaml): Change how we sub modules in preprocess (#184)
 
 #### Terraformer&trade; - 8361728...c0605a2
- - chore(readme): remove warning message (#87)
- - chore(yaml): update go-yaml-tools (#89)
  - feat(build): Add git, aws (#88)
  - feat(terraformer): Add 0.12.5 and 0.12.6 to terraform (#86)
 
