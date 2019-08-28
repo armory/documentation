@@ -15,6 +15,8 @@ The Policy Engine integration is designed to allow enterprises more complete con
 
 ## Configuration
 
+**The Policy Engine integration has a 'fail closed' behavior; if you have the policy engine enabled but no policies created, Spinnaker will refuse to create/update any pipelines.**
+
 To enable the use of Armory's Policy Engine, the following configuration must be added to Halyard in `~/.hal/default/profiles/front50-local.yml`:
 
 ```yaml
@@ -23,7 +25,9 @@ armory:
     enabled: true
     url: http://opa-server.domain.tld:8181/v1
 ```
+
 *Note: there must be a trailing /v1 on the url. This extension is only compatible with OPA's v1 api.*
+
 
 ### OPA Deployment
 Users of Armory Spinnaker can use an in-cluster OPA server, one they've already deployed or if you have an existing Kubernetes cluster and Armory Spinnaker deployment and wish to use that to host OPA, the following yaml may be used to deploy the OPA server:
@@ -73,13 +77,15 @@ spec:
 If you want to create OPA policies via configmap, you can use this manifest, which will create an `opa` namespace and set up permissions so that OPA can read configmaps:
 
 ```yaml
+---
 apiVersion: v1
 kind: Namespace
 metadata:
   name: opa
 ---
-# Grant OPA/kube-mgmt read-only access to resources. This lets kube-mgmt
-# replicate resources into OPA so they can be used in policies.
+# Grant service accounts in the 'opa' namespace read-only access to resources.
+# This lets OPA/kube-mgmt replicate resources into OPA so they can be used in policies.
+# The subject name should be `system:serviceaccounts:<namespace>` where `<namespace>` is the namespace where OPA will be installed
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -93,7 +99,8 @@ subjects:
   name: system:serviceaccounts:opa
   apiGroup: rbac.authorization.k8s.io
 ---
-# Define role for OPA/kube-mgmt to update configmaps with policy status.
+# Define role in the `opa` namespace for OPA/kube-mgmt to update configmaps with policy status.
+# The namespace for this should be the namespace where policy configmaps will be created
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -104,7 +111,9 @@ rules:
   resources: ["configmaps"]
   verbs: ["update", "patch"]
 ---
-# Grant OPA/kube-mgmt role defined above.
+# Bind the above role to all service accounts in the `opa` namespace
+# The namespace for this should be the namespace where policy configmaps will be created
+# The subject name should be `system:serviceaccounts:<namespace>` where `<namespace>` is the namespace where OPA will be installed
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -119,6 +128,7 @@ subjects:
   name: system:serviceaccounts:opa
   apiGroup: rbac.authorization.k8s.io
 ---
+# Create a static DNS endpoint for Spinnaker to reach OPA
 apiVersion: v1
 kind: Service
 metadata:
@@ -177,10 +187,10 @@ spec:
             initialDelaySeconds: 3
             periodSeconds: 5
         - name: kube-mgmt
-          image: openpolicyagent/kube-mgmt:0.8
+          image: openpolicyagent/kube-mgmt:0.9
           args:
-            - "--replicate-cluster=v1/namespaces"
-            - "--replicate=extensions/v1beta1/ingresses"
+          # Change this to the namespace where you want OPA to look for policies
+            - "--policies=opa"
 ```
 
 ### OPA Specifics
@@ -189,7 +199,7 @@ Armory Spinnaker's integration uses [OPA's data api](https://www.openpolicyagent
 
 In general, the only requirement for Armory Spinnaker Policy Engine in Rego syntax is the following:
 
-```
+```rego
 package opa.pipelines
 
 deny["some text"] {
@@ -204,21 +214,33 @@ Blocks of rules must be in a denial statement and the package must be `opa.pipel
 
 In the following sample OPA policy, the first policy enforces that the pipeline must have a manual judgement stage at some phase (if the pipeline has at least one stage).  The second policy ensures that stages that are of type "deploy" have notifications enabled.
 
-```
+```rego
 # manual-judgment-and-notifications.rego
 package opa.pipelines
 
-deny["must have a manual judgement stage"] {
+deny["Every pipeline must have a Manual Judgment stage"] {
   manual_judgment_stages = [d | d = input.pipeline.stages[_].type; d == "manualJudgment"]
   count(input.pipeline.stages[_]) > 0
   count(manual_judgment_stages) == 0
 }
 
-deny["deploy stages must have notifications"] {
+deny["Every deploy stage must have have notifications enabled"] {
   deploy_stages = [s | s = input.pipeline.stages[_]; s.type == "deploy" ]
   stage = deploy_stages[_]
   not stage["notifications"]
 }
+```
+
+You can disable a `deny` policy by adding a false statement to the policy body.  For example:
+
+```rego
+package opa.pipelines
+
+deny["Every pipeline must have a Manual Judgment stage"] {
+  manual_judgment_stages = [d | d = input.pipeline.stages[_].type; d == "manualJudgment"]
+  count(input.pipeline.stages[_]) > 0
+  count(manual_judgment_stages) == 0
+  0 == 1
 ```
 
 This policy can be added to OPA with this API request (replace the endpoint with your OPA endpoint):
@@ -236,5 +258,5 @@ Note: you must use the `--data-binary` flag, not the `-d` flag.
 If you have configured OPA to look for configmap policies, you can alternately create the configmap with this:
 
 ```bash
-kubectl create configmap ingress-whitelist --from-file=ingress-whitelist.rego
+kubectl create configmap manual-judgment-and-notifications --from-file=manual-judgment-and-notifications.rego
 ```
