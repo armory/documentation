@@ -144,8 +144,8 @@ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-ad
    # If you're not already in the directory
    cd ~/gke-spinnaker
    # If you're on Linux instead of OSX, use this URL instead:
-   # https://github.com/armory/spinnaker-tools/releases/download/0.0.5/spinnaker-tools-linux
-   curl -L https://github.com/armory/spinnaker-tools/releases/download/0.0.5/spinnaker-tools-darwin -o spinnaker-tools
+   # https://github.com/armory/spinnaker-tools/releases/download/0.0.6/spinnaker-tools-linux
+   curl -L https://github.com/armory/spinnaker-tools/releases/download/0.0.6/spinnaker-tools-darwin -o spinnaker-tools
    chmod +x spinnaker-tools
    ```
 
@@ -165,7 +165,7 @@ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-ad
      --context ${CONTEXT} \
      --output ${DEST_KUBECONFIG} \
      --namespace ${SPINNAKER_NAMESPACE} \
-     --serviceAccountName ${SPINNAKER_SERVICE_ACCOUNT_NAME}
+     --service-account-name ${SPINNAKER_SERVICE_ACCOUNT_NAME}
    ```
 
 You should be left with a file called `kubeconfig-spinnaker-system-sa` (or something similar, if you're using a different namespace for spinnaker)

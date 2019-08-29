@@ -1,19 +1,22 @@
 ---
 layout: post
-title: Installing Spinnaker in EKS
+title: Installing Spinnaker in AWS
 order: 22
 published: true
 redirect_from:
   - /spinnaker_install_admin_guides/install_on_eks/
   - /spinnaker_install_admin_guides/install-on-eks/
   - /spinnaker-install-admin-guides/install_on_eks/
+  - /spinnaker-install-admin-guides/install-on-aws/
+  - /spinnaker_install_admin_guides/install_on_aws/
+  - /spinnaker_install_admin_guides/install-on-aws/
 ---
 
-This guide describes how to install Spinnaker in EKS.  It will create / use the following Amazon Web Services resources:
+This guide describes how to install Spinnaker in AWS or in an on-prem Kubernetes cluster with access to S3.  It will create / use the following Amazon Web Services resources:
 
-* An Amazon AWS (Amazon Web Services) EKS (Elastic Container Services for Kubernetes)  cluster (you can use an existing one if you already have one)
-* An Amazon S3 (Simple Storage Service) bucket (you can use an existing one if you already have one)
-* An NGINX Ingress controller in your EKS cluster
+* A Kubernetes cluster running on Amazon Web Services (AWS). EKS is a good way to get a Kubernetes cluster up on AWS - see the AWS documentation for this.
+* An Amazon S3 (Simple Storage Service) bucket. You can use an existing one or create a new one.
+* An NGINX Ingress controller in your EKS cluster.
 
 This document currently does not fully cover the following (see [Next Steps](#next-steps) for some links to achieve these)
 
@@ -32,11 +35,11 @@ Note: This document is focused on Armory Spinnaker, but can be adapted to instal
 
 This document assumes the following:
 
-* You have an EKS cluster up and running, with the following:
-  * Ability to access the Kubernetes API (either your user/role created the EKS cluster, or your user/role has been added to the `aws-auth` configmap in the EKS cluster (see official [AWS documentation](https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html) for more details).
-  * At least 2x EKS worker nodes, each with at least 2 vCPUs and 4 GiB of memory.  This is the bare minimum to install and run Spinnaker (you can get away with less but may run into issues, and if you're deploying more intermittent test workloads you will likely need more).
+* You have a Kubernetes cluster up and running, with the following:
+  * You can access the Kubernetes API. If using EKS, either your user/role created the EKS cluster or your user/role has been added to the `aws-auth` configmap in the EKS cluster. See the [AWS documentation](https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html) for more details.
+  * At least 2x worker nodes, each with at least 2 vCPUs and 4 GiB of memory.  This is the bare minimum to install and run Spinnaker. If you're deploying more intermittent test workloads you will likely need more).
 * You have access to an S3 bucket or access to create an S3 bucket
-* You have access to an IAM role or user with access to the S3 bucket or access to create an IAM role or user with access to the S3 bucket.
+* You have access to an IAM role or user with access to the S3 bucket or can create an IAM role or user with access to the S3 bucket.
 
 This document is written with the following workflow in mind:
 
@@ -62,7 +65,7 @@ On the `workstation machine`:
   * EKS clusters (or, alternatley, have a EKS cluster already built)
   * S3 buckets (or, alternately, have an S3 bucket already built)
 * You have the `kubectl` (Kubernetes CLI tool) installed and are able to use it to interact with your EKS cluster
-* You have a persistent working directory in which to work in.  One option here is `~/eks-spinnaker`
+* You have a persistent working directory in which to work in.  One option here is `~/aws-spinnaker`
 * You will create AWS resources, such as service accounts, that will be permanently associated with your Spinnaker cluster
 
 ## Installation Summary
@@ -82,28 +85,42 @@ In order to install Spinnaker, this document covers the following things:
   * Install Spinnaker
   * Expose Spinnaker
 
-## Connect to the EKS cluster
+## Connect to the Kubernetes cluster
 
-This assumes you have already configured the `aws` CLI with credentials and a default region / availability zone (see installation directions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) and configuration directions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html))
+Spinnaker needs a credential to talk to Kubernetes, so you must create a service account in your Kubernetes cluster.
 
-1. Create the local working directory on your workstation.  For the purposes of this document, we will be using `~/eks-spinnaker`, but this can be any persistent directory on any Linux or OSX machine.
+### Connecting to an EKS cluster
+
+If you're using an EKS cluster, you must be able to connect to the EKS cluster.  This assumes you have already configured the `aws` CLI with credentials and a default region / availability zone (see installation directions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) and configuration directions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html))
+
+1. Create the local working directory on your workstation.  For the purposes of this document, we will be using `~/aws-spinnaker`, but this can be any persistent directory on any Linux or OSX machine.
 
    ```bash
-   mkdir ~/eks-spinnaker
-   cd ~/eks-spinnaker
+   mkdir ~/aws-spinnaker
+   cd ~/aws-spinnaker
    ```
 
 1. If you have access to the role that created the EKS cluster, you can create a kubeconfig with access to your Kubernetes cluster with this command:
 
    ```bash
-   aws eks update-kubeconfig --name <EKS_CLUSTER_NAME> --kubeconfig kubeconfig-eks
+   aws eks update-kubeconfig --name <EKS_CLUSTER_NAME> --kubeconfig kubeconfig-aws
    ```
 
 1. From here, you can validate access to the cluster with this command:
 
    ```bash
-   kubectl --kubeconfig kubeconfig-eks get namespaces
+   kubectl --kubeconfig kubeconfig-aws get namespaces
    ```
+
+### Connecting to other Kubernetes cluster
+
+If you've stood up Kubernetes on AWS with KOPS or another Kubernetes tool, ensure that you can communicate with your Kubernetes cluster with kubectl.
+
+Then, copy your kubeconfig file (this is typically located in `~/.kube/config) to your working directory:
+
+```bash
+cp ~/.kube/config ~/aws-spinnaker/kubeconfig-aws
+```
 
 ## Create a `kubeconfig` file for Halyard/Spinnaker
 
@@ -125,10 +142,10 @@ Halyard uses this Kubeconfig file to create the Kubernetes deployment objects th
 
    ```bash
    # If you're not already in the directory
-   cd ~/eks-spinnaker
+   cd ~/aws-spinnaker
    # If you're on Linux instead of OSX, use this URL instead:
-   # https://github.com/armory/spinnaker-tools/releases/download/0.0.5/spinnaker-tools-linux
-   curl -L https://github.com/armory/spinnaker-tools/releases/download/0.0.5/spinnaker-tools-darwin -o spinnaker-tools
+   # https://github.com/armory/spinnaker-tools/releases/download/0.0.6/spinnaker-tools-linux
+   curl -L https://github.com/armory/spinnaker-tools/releases/download/0.0.6/spinnaker-tools-darwin -o spinnaker-tools
    chmod +x spinnaker-tools
    ```
 
@@ -136,7 +153,7 @@ Halyard uses this Kubeconfig file to create the Kubernetes deployment objects th
 
    ```bash
    # The 'aws eks update-kubeconfig' command from above will create/update this file
-   SOURCE_KUBECONFIG=kubeconfig-eks
+   SOURCE_KUBECONFIG=kubeconfig-aws
    # Get the name of the context created by the aws tool)
    CONTEXT=$(kubectl --kubeconfig ${SOURCE_KUBECONFIG} config current-context)
    DEST_KUBECONFIG=kubeconfig-spinnaker-system-sa
@@ -148,7 +165,7 @@ Halyard uses this Kubeconfig file to create the Kubernetes deployment objects th
      --context ${CONTEXT} \
      --output ${DEST_KUBECONFIG} \
      --namespace ${SPINNAKER_NAMESPACE} \
-     --serviceAccountName ${SPINNAKER_SERVICE_ACCOUNT_NAME}
+     --service-account-name ${SPINNAKER_SERVICE_ACCOUNT_NAME}
    ```
 
 You should be left with a file called `kubeconfig-spinnaker-system-sa` (or something similar, if you're using a different namespace for spinnaker)
@@ -259,7 +276,7 @@ On the `Halyard machine`, choose a local working directory for Halyard.  In it, 
 ```bash
 # Feel free to use some other directory for this; make sure it is a persistent directory.
 # Also, make sure this directory doesn't live on an NFS mount, as that can cause issues
-WORKING_DIRECTORY=~/eks-spinnaker/
+WORKING_DIRECTORY=~/aws-spinnaker/
 mkdir -p ${WORKING_DIRECTORY}/.hal
 mkdir -p ${WORKING_DIRECTORY}/.secret
 mkdir -p ${WORKING_DIRECTORY}/resources
@@ -479,14 +496,14 @@ From the `workstation machine` (where `kubectl` is installed):
 Install the NGINX ingress controller components:
 
 ```bash
-kubectl --kubeconfig kubeconfig-eks apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
+kubectl --kubeconfig kubeconfig-aws apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
 ```
 
 Install the NGINX ingress controller AWS-specific service:
 
 ```bash
-kubectl --kubeconfig kubeconfig-eks apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/aws/service-l4.yaml
-kubectl --kubeconfig kubeconfig-eks apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/aws/patch-configmap-l4.yaml
+kubectl --kubeconfig kubeconfig-aws apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/aws/service-l4.yaml
+kubectl --kubeconfig kubeconfig-aws apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/aws/patch-configmap-l4.yaml
 ```
 
 ## Set up the Ingress for `spin-deck` and `spin-gate`
