@@ -14,7 +14,7 @@ redirect_from:
 
 This guide describes how to install Spinnaker in AWS or in an on-prem Kubernetes cluster with access to S3.  It will create / use the following Amazon Web Services resources:
 
-* A Kubernetes cluster running on Amazon Amazon Web Services (AWS). EKS is a good way to get a Kubernetes cluster up on AWS - see the AWS documentation for this.
+* A Kubernetes cluster running on Amazon Web Services (AWS). EKS is a good way to get a Kubernetes cluster up on AWS - see the AWS documentation for this.
 * An Amazon S3 (Simple Storage Service) bucket. You can use an existing one or create a new one.
 * An NGINX Ingress controller in your EKS cluster.
 
