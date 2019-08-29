@@ -12,11 +12,11 @@ redirect_from:
   - /spinnaker_install_admin_guides/install-on-aws/
 ---
 
-This guide describes how to install Spinnaker in AWS, or in an on-prem Kubernetes with access to S3.  It will create / use the following Amazon Web Services resources:
+This guide describes how to install Spinnaker in AWS or in an on-prem Kubernetes cluster with access to S3.  It will create / use the following Amazon Web Services resources:
 
-* A Kubernetes cluster running on Amazon Amazon Web Services (AWS) (EKS is a good way to get a Kubernetes cluster up on AWS - see the AWS documentation for this).
-* An Amazon S3 (Simple Storage Service) bucket (you can use an existing one if you already have one)
-* An NGINX Ingress controller in your EKS cluster
+* A Kubernetes cluster running on Amazon Amazon Web Services (AWS). EKS is a good way to get a Kubernetes cluster up on AWS - see the AWS documentation for this.
+* An Amazon S3 (Simple Storage Service) bucket. You can use an existing one or create a new one.
+* An NGINX Ingress controller in your EKS cluster.
 
 This document currently does not fully cover the following (see [Next Steps](#next-steps) for some links to achieve these)
 
@@ -35,11 +35,11 @@ Note: This document is focused on Armory Spinnaker, but can be adapted to instal
 
 This document assumes the following:
 
-* You have an Kubernetes cluster up and running, with the following:
-  * Ability to access the Kubernetes API (If using EKS, either your user/role created the EKS cluster, or your user/role has been added to the `aws-auth` configmap in the EKS cluster (see official [AWS documentation](https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html) for more details).
-  * At least 2x worker nodes, each with at least 2 vCPUs and 4 GiB of memory.  This is the bare minimum to install and run Spinnaker (you can get away with less but may run into issues, and if you're deploying more intermittent test workloads you will likely need more).
+* You have a Kubernetes cluster up and running, with the following:
+  * You can access the Kubernetes API. If using EKS, either your user/role created the EKS cluster or your user/role has been added to the `aws-auth` configmap in the EKS cluster. See the [AWS documentation](https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html) for more details.
+  * At least 2x worker nodes, each with at least 2 vCPUs and 4 GiB of memory.  This is the bare minimum to install and run Spinnaker. If you're deploying more intermittent test workloads you will likely need more).
 * You have access to an S3 bucket or access to create an S3 bucket
-* You have access to an IAM role or user with access to the S3 bucket or access to create an IAM role or user with access to the S3 bucket.
+* You have access to an IAM role or user with access to the S3 bucket or can create an IAM role or user with access to the S3 bucket.
 
 This document is written with the following workflow in mind:
 
@@ -87,11 +87,11 @@ In order to install Spinnaker, this document covers the following things:
 
 ## Connect to the Kubernetes cluster
 
-Spinnaker needs a credential to talk to Kubernetes, so you must first be able to interact with your Kubernetes cluster in order to create a service account in your Kubernetes cluster.
+Spinnaker needs a credential to talk to Kubernetes, so you must create a service account in your Kubernetes cluster.
 
 ### Connecting to an EKS cluster
 
-If you're using an EKS cluster, you must first be able to connect to the EKS cluster.  This assumes you have already configured the `aws` CLI with credentials and a default region / availability zone (see installation directions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) and configuration directions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html))
+If you're using an EKS cluster, you must be able to connect to the EKS cluster.  This assumes you have already configured the `aws` CLI with credentials and a default region / availability zone (see installation directions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) and configuration directions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html))
 
 1. Create the local working directory on your workstation.  For the purposes of this document, we will be using `~/aws-spinnaker`, but this can be any persistent directory on any Linux or OSX machine.
 
@@ -114,7 +114,7 @@ If you're using an EKS cluster, you must first be able to connect to the EKS clu
 
 ### Connecting to other Kubernetes cluster
 
-If you've stood up Kubernetes on AWS with KOPS or some other Kubernetes tool, you should ensure you can communicate with your Kubernetes cluster with kubectl.
+If you've stood up Kubernetes on AWS with KOPS or another Kubernetes tool, ensure that you can communicate with your Kubernetes cluster with kubectl.
 
 Then, copy your kubeconfig file (this is typically located in `~/.kube/config) to your working directory:
 
