@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Configuring an ECR as a registry
+title: "AWS: Configuring AWS ECR as a registry"
 order: 52
 redirect_from:
   - /admin-guides/ecr-registry/

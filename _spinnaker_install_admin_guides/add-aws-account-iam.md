@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Deploying to AWS from Spinnaker (using IAM instance roles)
+title: "AWS: Deploying to AWS from Spinnaker (using IAM instance roles)"
 order: 33
 # Change this to true when ready to publish
 published: true
@@ -74,18 +74,6 @@ Here's an example situation:
   * **PowerUserAccess**
   * The `iam:PassRole` permission for roles that will be assigned to EC2 instances that are being deployed
   * A trust relationship with the IAM Instance Role attached to the EC2 instances where Spinnaker is running (to allow Spinnaker to assume the Managed Account Role)
-
-### Baking
-
-Spinnaker is able to use Packer to bake AMIs in AWS.  If you're using IAM Instance Roles, you need to provide credentials to Spinnaker to use to Bake by adding additional policies to the EC2 instances where Spinnaker is running.  The AWS account that you're baking in must also be configured as a Managing Account, and that Managing Account (Role) must be configured as the primary AWS account within Spinnaker.
-
-These policies must have all permissions necessary to bake (for example, PowerUserAccess and associated PassRoles)
-
-Spinnaker will always bake with the EC2 instance role (unless you specify explicit baking creds).  If you need to deploy to other accounts, update your Packer template to support sharing the baked image with other accounts.  For example, add this to your `builder` configuration in your packer template (and add the custom packer template following the instructions in [the Spinnaker Packer documentation](https://docs.armory.io/spinnaker-install-admin-guides/packer/)):
-
-```json
-    "ami_users": ["222222222222","333333333333"]
-```
 
 ### Configuration
 

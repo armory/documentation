@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Deploying to AWS from Spinnaker (using IAM credentials)
+title: "AWS: Deploying to AWS from Spinnaker (using IAM credentials)"
 order: 33
 # Change this to true when ready to publish
 published: true
@@ -335,13 +335,13 @@ For each of the Managed (Target) accounts you want to deploy to, perform the fol
    * `AWS_ACCOUNT_NAME` should be a unique name which is used in the Spinnaker UI and API  to identify the deployment target.  For example, `aws-dev-1` or `aws-dev-2`
    * `ACCOUNT_ID` should be the account ID for the Managed Role (Target Role) you are  assuming.  For example, if the role ARN is `arn:aws:iam::123456789012:role/ DevSpinnakerManagedRole`, then ACCOUNT_ID would be `123456789012`
    * `ROLE_NAME` should be the full role name within the account, including the type of  object (`role`).  For example, if the role ARN is `arn:aws:iam::123456789012:role/ DevSpinnakerManagedRole`, then ROLE_NAME would be `role/DevSpinnakerManagedRole`
- 
+
    ```bash
    # Enter the account name you want Spinnaker to use to identify the deployment target,  the account ID, and the role name.
    export AWS_ACCOUNT_NAME=aws-dev-1
    export ACCOUNT_ID=123456789012
    export ROLE_NAME=role/DevSpinnakerManagedRole
- 
+
    hal config provider aws account add ${AWS_ACCOUNT_NAME} \
        --account-id ${ACCOUNT_ID} \
        --assume-role ${ROLE_NAME}
