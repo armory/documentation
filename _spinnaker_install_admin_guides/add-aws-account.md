@@ -74,20 +74,6 @@ Here's an example situation:
   * The `iam:PassRole` permission for roles that will be assigned to EC2 instances that are being deployed
   * A trust relationship with the Managing Account User (to allow the Managing Account User to assume the Managed Account Role)
 
-### Baking
-
-Spinnaker is able to use Packer to bake AMIs in AWS.  If you're not using IAM Instance Roles, you need to provide credentials to Spinnaker to use to Bake.  The AWS account that you're baking in must also be configured as a Managing Account, and that Managing Account (Role) must be configured as the primary AWS account within Spinnaker.
-
-This User must have all permissions necessary to bake (for example, PowerUserAccess and associated PassRoles)
-
-This User may be, but does not have to be, the same as the Managing Account User.
-
-Spinnaker will always bake with this user.  If you need to deploy to other accounts, update your Packer template to support sharing the baked image with other accounts.  For example, add this to your `builder` configuration in your packer template (and add the custom packer template following the instructions in [the Spinnaker Packer documentation](https://docs.armory.io/spinnaker-install-admin-guides/packer/)):
-
-```json
-    "ami_users": ["222222222222","333333333333"]
-```
-
 ### Configuration
 
 Here's a sample halconfig `aws` YAML block that supports the above:
