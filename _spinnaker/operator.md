@@ -121,7 +121,7 @@ NAMESPACE                                READY         STATUS       RESTARTS    
 spinnaker-operator-7cd659654b-4vktl      2/2           Running      0             6s
 ```    
 
-## Installing Spinnaker Using Operator
+# Installing Spinnaker Using Operator
 
 After you install Operator, you can use configMaps to install Spinnaker:
 
