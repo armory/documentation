@@ -197,7 +197,7 @@ Operator allows you to use `kubectl` to manager you Spinnaker deployment.
 
 **Listing Spinnaker Instances**
 ```
-$ kubectl get spinnakerservice` `--``all-namespaces
+$ kubectl get spinnakerservice -- all-namespaces
 ```
 The short name `spinsvc` is also available.
 
