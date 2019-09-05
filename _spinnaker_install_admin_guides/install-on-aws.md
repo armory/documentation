@@ -449,7 +449,7 @@ And then you can select the version with this:
 
 ```bash
 # Replace with version of choice:
-export VERSION=2.3.4
+export VERSION=$(hal version latest -q)
 hal config version edit --version $VERSION
 ```
 
