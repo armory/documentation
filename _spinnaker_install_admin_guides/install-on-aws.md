@@ -585,9 +585,9 @@ hal deploy apply
 Once the ingress is up (this may take some time), you can get the IP address for the ingress:
 
 ```bash
-$ kubectl describe -n spinnaker ingress spinnaker-nginx-ingress
+$ kubectl describe -n spinnaker-system ingress spinnaker-nginx-ingress
 Name:             spinnaker-nginx-ingress
-Namespace:        spinnaker
+Namespace:        spinnaker-system
 Address:          35.233.216.189
 Default backend:  default-http-backend:80 (10.36.2.7:8080)
 Rules:
