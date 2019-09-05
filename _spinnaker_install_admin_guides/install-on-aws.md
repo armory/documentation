@@ -514,7 +514,7 @@ Identify the URLs you will use to expose Spinnaker's UI and API.
 # Replace with actual values
 SPIN_DECK_ENDPOINT=spinnaker.some-url.com
 SPIN_GATE_ENDPOINT=api.some-url.com
-NAMESPACE=spinnaker
+NAMESPACE=spinnaker-system
 ```
 
 Create a Kubernetes Ingress manifest to expose spin-deck and spin-gate (change your hosts and namespace accordingly):
