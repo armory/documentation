@@ -2,7 +2,7 @@
 layout: post
 title: Sumo Logic Dashboard Integration
 order: 200
-published: False
+published: true
 ---
 
 
@@ -54,6 +54,7 @@ rest:
 Run `hal deploy apply` and wait for the services to restart.  Check SumoLogic console for ingestion of data.
 
 ## Install the Spinnaker App and View the Dashboards
+Go to Sumo Logic App Catalog and search for "Spinnaker" by Armory
 
 ### Dashboard filters  
 The Spinnaker Pipelines dashboard has a set of filters that you can apply to the entire dashboard, as shown in the following example. Click the funnel icon in the top dashboard menu bar to display a scrollable list of filters that are applied across the entire dashboard. 
