@@ -19,6 +19,7 @@ The Spinnaker Sumo Logic App uses echo logs that output event information from S
 ```json
 {"details":{"source":"gate","type":"gate:session","created":"1567639483521","organization":null,"project":null,"application":null,"_content_id":null,"attributes":null,"requestHeaders":{}},"content":{"headers":{"x-request-id":"50cc1dcafa77a7fcf85612678cca01a6","sec-fetch-mode":"cors","referer":"https://spinnaker.se.armory.io/","sec-fetch-site":"same-site","x-forwarded-proto":"https","accept-language":"en-...
 ```
+*Note:* Sumo Logic truncates messages greater than 64kb in length, and may therefore drop some event messages. Message lengths often depend on the size of your pipeline (i.e. number of stages).
 
 ### Query sample
 
