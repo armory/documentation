@@ -47,13 +47,13 @@ staging/
 history/
 ```
 
-You can manage multiple Spinnaker installation from a single repository.
+You can manage multiple Spinnaker installations from a single repository.
 
 ## Step 3: Create helper scripts to run Halyard and deploy Spinnaker
 
 Halyard needs to be run as a Docker container for portability across machines.
 
-Here is a sample script to be put in the repo's root to run Halyard as a container, exec into it and run any halyard commands. This example assumes AWS credentials present in user's home and `AWS_PROFILE` environment variable used to select the right profile from those credentials, but you can mount any authentication files or environment variables needed to run Halyard commands.
+Here is a sample script to be put in the repo's root. It runs Halyard as a container, execs into it, and issues halyard commands. This example assumes AWS credentials present at `~/.aws` and `AWS_PROFILE` environment variable used to select the right profile from those credentials, but you can mount any authentication files or environment variables needed to run your Halyard commands.
 
 *run-halyard.sh*
 ```
@@ -86,7 +86,7 @@ sleep 3
 docker stop armory-halyard
 ```
 
-This other script is used for your CI tool to automatically deploy Spinnaker changes after a commit is pushed to the repo. It's basically the same as the previous one but it only executes `hal deploy apply`. Take into account that this script would run in your CI environment, so you need to provide there any authentication credentials needed by your environment.
+This other script is used for your CI tool to automatically deploy Spinnaker changes after a commit is pushed to the repo. It's basically the same as the previous one but it only executes `hal deploy apply`. You need to account for this script being run in your CI environment; provide any authentication credentials needed by your environment.
 
 *apply-configs.sh*
 ```
