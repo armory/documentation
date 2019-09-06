@@ -92,3 +92,7 @@ Use this dashboard to:
 * Understand how pipelines are getting triggered
 
 ![SpinnakerPipelinesDashboard](/assets/images/sumologic-dashboard-useractivity.png)
+
+# Limitations
+
+* Log messages greater than 64kb get truncated by the Sumo Logic collector.  This means that there are potential events that will get dropped and not displayed in the dashboards.  Long pipelines composed of many stages, or triggered by other pipelines can contribute to the length of the message.
