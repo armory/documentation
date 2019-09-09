@@ -77,7 +77,7 @@ Use this dashboard to:
 ### Spinnaker Pipelines Dashboard
 This is a dashboard that contains pipeline execution history and metrics, including most common errors.
 Use this dashboard to:
-* See pipeline execution history and compare the last 14 days to  previous 14 days
+* See pipeline execution history and compare the last 14 days to the 14 days that preceded them
 * Understand which pipelines are executing and how often
 * See which stages/tasks are failing most often
 * Uncover the most common errors in your pipelines
@@ -96,4 +96,4 @@ Use this dashboard to:
 
 # Limitations
 
-* Log messages greater than 64kb get truncated by the Sumo Logic collector.  This means that there are potential events that will get dropped and not displayed in the dashboards.  Long pipelines composed of many stages, or triggered by other pipelines can contribute to the length of the message.
+* Log messages greater than 64kb get truncated by the Sumo Logic collector.  This means that there are potential events that will get dropped and not displayed in the dashboards.  Long pipelines composed of many stages or triggered by other pipelines can make messages longer.
