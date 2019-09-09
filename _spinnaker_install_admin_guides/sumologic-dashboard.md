@@ -9,7 +9,9 @@ published: true
 
 The integration of Spinnaker and Sumo Logic provides customers with the ability to monitor the health and productivity of their end-to-end software delivery process through live dashboards. Customers will gain at-a-glance visibility and longitudinal trends in usage and pipeline deployments across all dev, staging, and production environments.
 
-{{:toc}}
+{:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 ## Log Types
 The Spinnaker Sumo Logic App uses echo logs that output event information from Spinnaker to Sumo Logic. Events include the following:
@@ -36,13 +38,14 @@ _sourceCategory="dev/sales-demo-cluster/echo" and _collector="Spinnaker Instance
 
 ## Collect Logs for Spinnaker
 
-### Collection process overview
+### Collection Process Overview
 Note: This assumes you have already installed Spinnaker and have access to the halyard configuration files  to make changes to Spinnaker.
 
-### Collection Step 1. Retrieve SumoLogic URL for HTTP logs
+**Collection Step 1: Retrieve SumoLogic URL for HTTP logs**
+
 Configure an HTTP Source. And get a copy of the endpoint URL from your SumoLogic console.
 
-### Collection step 2. Modify Spinnaker echo-local.yml to export logs to SumoLogic
+**Collection Step 2: Modify Spinnaker echo-local.yml to export logs to SumoLogic**
 
 Add (and create if necessary) to `.hal/default/echo-local.yml` the following:
 ```yaml
@@ -52,7 +55,8 @@ rest:
     - wrap: false
       url: [insert your custom HTTP endpoint] #e.g. https://endpoint1.collection.us1.sumologic.com/...
 ```
-### Collection step 3. Run `hal deploy apply`
+**Collection Step 3: Run `hal deploy apply`**
+
 Run `hal deploy apply` and wait for the services to restart.  Check SumoLogic console for ingestion of data.
 
 ## Install the Spinnaker App and View the Dashboards
