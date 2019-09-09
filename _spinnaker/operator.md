@@ -42,8 +42,11 @@ For both Basic and Cluster modes, you must download and apply the SpinnakerServi
 
 1. Clone the spinnaker-operator repository:
 ```
-$ git clone https://github.com/armory/spinnaker-operator
+$ git clone https://github.com/armory-io/spinnaker-operator
 ```
+
+**Note**: To install OSS Spinnaker, use https://github.com/armory/spinnaker-operator instead.
+
 2. Go to the spinnaker-operator directory:
 ```
 $ cd spinnaker-operator
@@ -73,7 +76,7 @@ $ kubectl -n <op_namespace> get pods
 
 The command returns output similar to the following if the pod for the Operator is running:
 
-```    
+```
 NAMESPACE                             READY         STATUS       RESTARTS      AGE
 spinnaker-operator-7cd659654b-4vktl   2/2           Running      0             6s
 ```
@@ -116,10 +119,10 @@ $ kubectl -n <op_namespace> get pods
 ```
 The command returns output similar to the following if the pod for the Operator is running:
 
-```   
+```
 NAMESPACE                                READY         STATUS       RESTARTS      AGE
 spinnaker-operator-7cd659654b-4vktl      2/2           Running      0             6s
-```    
+```
 
 # Installing Spinnaker Using Operator
 
