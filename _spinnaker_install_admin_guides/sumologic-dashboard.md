@@ -5,10 +5,11 @@ order: 200
 published: true
 ---
 
+*This application has been developed and is supported by Armory Inc. In case of technical questions, please [contact Armory](https://armory.io/contact) for support.*
 
 The integration of Spinnaker and Sumo Logic provides customers with the ability to monitor the health and productivity of their end-to-end software delivery process through live dashboards. Customers will gain at-a-glance visibility and longitudinal trends in usage and pipeline deployments across all dev, staging, and production environments.
 
-{:toc}
+{{:toc}}
 
 ## Log Types
 The Spinnaker Sumo Logic App uses echo logs that output event information from Spinnaker to Sumo Logic. Events include the following:
@@ -39,7 +40,7 @@ _sourceCategory="dev/sales-demo-cluster/echo" and _collector="Spinnaker Instance
 Note: This assumes you have already installed Spinnaker and have access to the halyard configuration files  to make changes to Spinnaker.
 
 ### Collection Step 1. Retrieve SumoLogic URL for HTTP logs
-Configure an HTTP Collector. And get a copy of the endpoint URL from your SumoLogic console.
+Configure an HTTP Source. And get a copy of the endpoint URL from your SumoLogic console.
 
 ### Collection step 2. Modify Spinnaker echo-local.yml to export logs to SumoLogic
 
