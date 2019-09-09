@@ -17,7 +17,7 @@ This guide describes how to install Spinnaker in AWS or in an on-prem Kubernetes
 
 * A Kubernetes cluster running on Amazon Web Services (AWS). EKS is a good way to get a Kubernetes cluster up on AWS - see the AWS documentation for this.
 * An Amazon S3 (Simple Storage Service) bucket. You can use an existing one or create a new one.
-* An NGINX Ingress controller in your EKS cluster.
+* An NGINX Ingress controller in your AWS cluster.
 
 This document currently does not fully cover the following (see [Next Steps](#next-steps) for some links to achieve these)
 
@@ -62,10 +62,10 @@ On the `Halyard machine`:
 
 On the `workstation machine`:
 
-* You can use the `aws` CLI tool to interact with the AWS API:
-  * EKS clusters (or, alternatley, have a EKS cluster already built)
+* If using EKS, you can use the `aws` CLI tool to interact with the AWS API, and configure / communicate with the following:
+  * EKS clusters (or, alternately, have a EKS cluster already built)
   * S3 buckets (or, alternately, have an S3 bucket already built)
-* You have the `kubectl` (Kubernetes CLI tool) installed and are able to use it to interact with your EKS cluster
+* You have the `kubectl` (Kubernetes CLI tool) installed and are able to use it to interact with your Kubernetes cluster
 * You have a persistent working directory in which to work in.  One option here is `~/aws-spinnaker`
 * You will create AWS resources, such as service accounts, that will be permanently associated with your Spinnaker cluster
 
@@ -113,7 +113,7 @@ If you're using an EKS cluster, you must be able to connect to the EKS cluster. 
    kubectl --kubeconfig kubeconfig-aws get namespaces
    ```
 
-### Connecting to other Kubernetes cluster
+### Connecting to other Kubernetes clusters
 
 If you've stood up Kubernetes on AWS with KOPS or another Kubernetes tool, ensure that you can communicate with your Kubernetes cluster with kubectl.
 
@@ -125,7 +125,7 @@ cp ~/.kube/config ~/aws-spinnaker/kubeconfig-aws
 
 ## Create a `kubeconfig` file for Halyard/Spinnaker
 
-Spinnaker will be installed in its own namespace in your AWS/EKS cluster.
+Spinnaker will be installed in its own namespace in your EKS or AWS-hosted Kubernetes cluster.
 For the purposes of this document, we will be installing Spinnaker in the `spinnaker-system` namespace; you're welcome to use a different namespace for this.
 
 We're going to create the following:
@@ -234,13 +234,13 @@ Then, add an inline policy to your IAM user:
 1. Give your inline policy some name.  For example `s3-spinnaker-jq6cqvmpro`
 1. Click "Create Policy"
 
-### Create an IAM policy attached to the EKS nodes, using an inline policy
+### Create an IAM policy attached to the Kubernetes nodes, using an inline policy
 
-Alternately, you can attach an IAM policy to the role attached to your EKS nodes.
+Alternately, you can attach an IAM policy to the role attached to your Kubernetes nodes.
 
 1. Log into the AWS Console (Web UI)
 1. Navigate to EC2 (Click on "Services" at the top, and then on "EC2" under "Compute")
-1. Click on one of your EKS nodes
+1. Click on one of your Kubernetes nodes
 1. In the bottom section, look for "IAM role" and click on the role
 1. Click on "Add inline policy" (on the right)
 1. Click on the "JSON" tab
@@ -450,7 +450,7 @@ And then you can select the version with this:
 
 ```bash
 # Replace with version of choice:
-export VERSION=2.3.4
+export VERSION=$(hal version latest -q)
 hal config version edit --version $VERSION
 ```
 
@@ -488,7 +488,7 @@ In order to expose Spinnaker to end users, you have perform the following action
 * Expose the spin-gate (API) Kubernetes service on some URL endpoint
 * Update Spinnaker (via Halyard) to be aware of the new endpoints
 
-We're going to install the NGINX ingress controller on EKS (this uses the Layer 4 ELB, as indicated in the NGINX ingress controller [documentation](https://github.com/kubernetes/ingress-nginx/blob/master/docs/deploy/index.md#aws) - you can use other NGINX ingress controller configurations such as the Layer 7 load balancer per your organization's ingress policy.)
+We're going to install the NGINX ingress controller on AWS (this uses the Layer 4 ELB, as indicated in the NGINX ingress controller [documentation](https://github.com/kubernetes/ingress-nginx/blob/master/docs/deploy/index.md#aws) - you can use other NGINX ingress controller configurations such as the Layer 7 load balancer per your organization's ingress policy.)
 
 (Both of these are configurable with Spinnaker, but the NGINX ingress controller is also generally much more configurable)
 
@@ -515,7 +515,7 @@ Identify the URLs you will use to expose Spinnaker's UI and API.
 # Replace with actual values
 SPIN_DECK_ENDPOINT=spinnaker.some-url.com
 SPIN_GATE_ENDPOINT=api.some-url.com
-NAMESPACE=spinnaker
+NAMESPACE=spinnaker-system
 ```
 
 Create a Kubernetes Ingress manifest to expose spin-deck and spin-gate (change your hosts and namespace accordingly):
@@ -586,9 +586,9 @@ hal deploy apply
 Once the ingress is up (this may take some time), you can get the IP address for the ingress:
 
 ```bash
-$ kubectl describe -n spinnaker ingress spinnaker-nginx-ingress
+$ kubectl describe -n spinnaker-system ingress spinnaker-nginx-ingress
 Name:             spinnaker-nginx-ingress
-Namespace:        spinnaker
+Namespace:        spinnaker-system
 Address:          35.233.216.189
 Default backend:  default-http-backend:80 (10.36.2.7:8080)
 Rules:
