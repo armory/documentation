@@ -101,7 +101,7 @@ ENVIRONMENT=$1
 # Delete dangling halyards
 EXISTING=`docker ps -q -a -f name="halyard"`
 if [ "x$EXISTING" != "x" ]
-then 
+then
     docker stop $EXISTING && sleep 5
     EXISTING=`docker ps -q -a -f name="halyard"`
     if [ "x$EXISTING" != "x" ]
