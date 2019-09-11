@@ -145,7 +145,9 @@ The example uses Operator in basic mode with the example configMap to deploy Spi
 - No connected accounts
 - Persistent storage
 
-If you want to change the attributes of the example deployment, modify `/deploy/spinnaker/examples/basic/spin-config.yaml`. For example, if you change the value of the `version` field to `1.16.0`, the example configMap installs version 1.16.0.
+If you want to change the attributes of the example deployment, modify `/deploy/spinnaker/examples/basic/spin-config.yaml`. For example, if you change the value of the `version` field to `1.16.0`, the example configMap installs version 1.16.0. 
+
+Detailed description of the configMap can be found [here](../operator-config).
 
 # Upgrading Spinnaker Using Operator
 
