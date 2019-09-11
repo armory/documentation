@@ -18,14 +18,14 @@ You can [try our Demo Environment](https://spinnaker.demo.armory.io) before inst
 
 Make sure you have a kubernetes cluster with a minimum of **15 GB** of memory and **8 CPU's** total _available_ to be used by Spinnaker. At least a single node should have 4 GB and 1 CPU available.
 
-## Installing Armory Halyard
+## Install Armory Halyard
 
-You can install Armory's version of Halyard directly on Mac OSX, or use Docker
+You can install Armory's version of Halyard directly on macOS, or use Docker
 to run Halyard and its command line.
 
 See also [Armory Halyard configuration](/spinnaker-install-admin-guides/configure-halyard/).
 
-### On Mac OSX
+### Install Armory Halyard for macOS
 
 #### Before You Start
 
@@ -35,7 +35,7 @@ Our installer currently expects to use your `kubectl` to find your current
 configuration (usually stored in `~/.kube/config`).  Ensure that the config
 file kubectl defaults to is the one you want to use.
 
-#### Installation
+#### Installing Armory Halyard for macOS
 
 You can download the installer and run it with this command:
 
@@ -59,7 +59,7 @@ SUBCOMMANDS
 ```
 From there, you can issue all your [halyard commands](https://www.spinnaker.io/reference/halyard/).
 
-### Using Docker
+### Install Armory Halyard in Docker
 
 #### Before You Start
 
@@ -77,7 +77,7 @@ Our installer currently expects to find your kubeconfig named `config` in
 the `.kube` directory you map below.  If you've named your config something
 else, you'll need to rename or symlink the file accordingly.
 
-#### Installation
+#### Installing Armory Halyard in Docker
 
 You can start Armory Halyard in a Docker container with the following command:
 
@@ -123,7 +123,7 @@ proxy to interact with.
 
 Options for [hal armory init](https://docs.armory.io/spinnaker/armory_halyard/#hal-armory-init).
 
-### Notes on Docker
+#### Notes on Docker
 
 You will not be able to access the proxy in the Docker container from your
 machine directly, so you'll need to install kubectl natively on your system
@@ -138,3 +138,9 @@ kubectl -n ${SPINNAKER_NAMESPACE} port-forward services/spin-gate 8084:8084 &
 You should then be able to connect to http://localhost:9000/ with your
 browser and use your newly installed Spinnaker.
 
+# More Information
+
+The following pages provide more detailed information for installing Armory Spinnaker in different environments:
+
+* [Install Armory Spinnaker on AWS](/spinnaker-install-admin-guides/install-on-aws/)
+* [Install Armory Spinnaker on GKE](/spinnaker-install-admin-guides/install-on-gke/)
