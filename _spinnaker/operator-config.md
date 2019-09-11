@@ -13,6 +13,7 @@ This document describes available fields in the SpinnakerService CRD used by Spi
 # SpinnakerService CRD
 The following example shows the general structure of a manifest file for SpinnakerService:
 
+```yaml
     apiVersion: spinnaker.io/v1alpha1
     kind: SpinnakerService
     metadata:
@@ -32,6 +33,7 @@ The following example shows the general structure of a manifest file for Spinnak
               type: [kubernetes service type]
               annotations:
                 [map of key:value pairs]
+```
 
 **spec.spinnakerConfig**: Reference to a ConfigMap or Secret that contains Spinnaker configuration files coming from Halyard. Only `configMap` is currently supported. This configuration is described [below](#spinnakerconfig).
 
@@ -48,6 +50,7 @@ The following example shows the general structure of a manifest file for Spinnak
 
 **Minimal valid SpinnakerService**
 
+```yaml
     apiVersion: spinnaker.io/v1alpha1
     kind: SpinnakerService
     metadata:
@@ -56,9 +59,11 @@ The following example shows the general structure of a manifest file for Spinnak
       spinnakerConfig:
         configMap:
           name: spinconfig-v001
+```
 
 **Exposing Spinnaker with LoadBalancer services**
 
+```yaml
     apiVersion: spinnaker.io/v1alpha1
     kind: SpinnakerService
     metadata:
@@ -75,11 +80,13 @@ The following example shows the general structure of a manifest file for Spinnak
             "service.beta.kubernetes.io/aws-load-balancer-backend-protocol": "http"
             "service.beta.kubernetes.io/aws-load-balancer-ssl-ports": "80,443"
             "service.beta.kubernetes.io/aws-load-balancer-ssl-cert": "arn:aws:acm:us-west-2:xxxxxxxxxxxx:certificate/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
 
 Above manifest file will generate these two services:
 
 *spin-deck*
 
+```yaml
     apiVersion: v1
     kind: Service
     metadata:
@@ -103,9 +110,11 @@ Above manifest file will generate these two services:
         cluster: spin-deck
       sessionAffinity: None
       type: LoadBalancer
+```
 
 *spin-gate*
 
+```yaml
     apiVersion: v1
     kind: Service
     metadata:
@@ -129,9 +138,11 @@ Above manifest file will generate these two services:
         cluster: spin-gate
       sessionAffinity: None
       type: LoadBalancer
+```
 
 **Exposing Spinnaker, different service types for Deck (UI) and Gate (API)**
 
+```yaml
     apiVersion: spinnaker.io/v1alpha1
     kind: SpinnakerService
     metadata:
@@ -151,11 +162,13 @@ Above manifest file will generate these two services:
           overrides:
             gate:
               type: NodePort
+```
 
 Above manifest file will generate these two services:
 
 *spin-deck*
 
+```yaml
     apiVersion: v1
     kind: Service
     metadata:
@@ -179,9 +192,11 @@ Above manifest file will generate these two services:
         cluster: spin-deck
       sessionAffinity: None
       type: LoadBalancer
+```
 
 *spin-gate*
 
+```yaml
     apiVersion: v1
     kind: Service
     metadata:
@@ -205,9 +220,11 @@ Above manifest file will generate these two services:
         cluster: spin-gate
       sessionAffinity: None
       type: NodePort
+```
 
 **Exposing Spinnaker, different annotations for Deck (UI) and Gate (API)**
 
+```yaml
     apiVersion: spinnaker.io/v1alpha1
     kind: SpinnakerService
     metadata:
@@ -228,11 +245,13 @@ Above manifest file will generate these two services:
             gate:
               annotations:
                 "service.beta.kubernetes.io/aws-load-balancer-internal": "true"
+```
 
 Above manifest file will generate these two services:
 
 *spin-deck*
 
+```yaml
     apiVersion: v1
     kind: Service
     metadata:
@@ -256,9 +275,11 @@ Above manifest file will generate these two services:
         cluster: spin-deck
       sessionAffinity: None
       type: LoadBalancer
+```
 
 *spin-gate*
 
+```yaml
     apiVersion: v1
     kind: Service
     metadata:
@@ -283,11 +304,13 @@ Above manifest file will generate these two services:
         cluster: spin-gate
       sessionAffinity: None
       type: Loadbalancer
+```
 
 # SpinnakerConfig
 This is an example configMap that is referenced by SpinnakerService.
 Note that the *metadata.name* field in this example should match *spec.spinnakerConfig.configMap.name* on SpinnakerService manifest.
 
+```yaml
     apiVersion: v1
     kind: ConfigMap
     metadata:
@@ -311,6 +334,7 @@ Note that the *metadata.name* field in this example should match *spec.spinnaker
           },
           ...
         }
+```
         
 - `config`: the deployment configuration in the same format as in Halyard. For instance, given the following `~/.hal/config`:
     currentDeployment: default
