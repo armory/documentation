@@ -4,7 +4,7 @@ title: Spinnaker Operator Reference
 order: 12
 ---
 
-This document describes available fields in the SpinnakerService CRD used by Spinnaker Operator, as well as a description of the ConfigMap where Spinnaker stores its configuration.
+This document describes available fields in the SpinnakerService CRD used by Spinnaker Operator as well as a description of the ConfigMap where Spinnaker stores its configuration.
 
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
@@ -140,7 +140,7 @@ Above manifest file will generate these two services:
       type: LoadBalancer
 ```
 
-**Exposing Spinnaker, different service types for Deck (UI) and Gate (API)**
+**Exposing Spinnaker with different service types for Deck (UI) and Gate (API)**
 
 ```yaml
     apiVersion: spinnaker.io/v1alpha1
@@ -307,7 +307,7 @@ Above manifest file will generate these two services:
 ```
 
 # SpinnakerConfig
-This is an example configMap that is referenced by SpinnakerService.
+This is an example ConfigMap that is referenced by SpinnakerService.
 Note that the *metadata.name* field in this example should match *spec.spinnakerConfig.configMap.name* on SpinnakerService manifest.
 
 ```yaml
