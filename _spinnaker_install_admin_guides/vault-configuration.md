@@ -93,6 +93,9 @@ $ export K8S_HOST=<your_API_server_endpoint>
 
 The Kubernetes Vault Auth Secrets Engine does not currently support token renewal. As such the `spinnaker` role created below provides a `TTL` of `two months`.
 
+**Note** by default Vault has a max_ttl parameter set to `768h0m0s` that's 32 days, if you want to set the `TTL` to a higher value, you need to modify this parameter.
+
+
 **Important:** Spinnaker must be redeployed sometime during the defined `TTL` window -- we recommend this be done by updating to a new version of Spinnaker and running `hal deploy apply`.
 
 ---
