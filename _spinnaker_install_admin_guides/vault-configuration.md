@@ -102,7 +102,7 @@ The Kubernetes Vault Auth Secrets Engine does not currently support token renewa
 
 
 ```
-# Enable the Kubernetes auth method at the default path ("auth/kubernetes")
+# Enable the Kubernetes auth method at the default path ("kubernetes")
 $ vault auth enable kubernetes
 
 # Tell Vault how to communicate with the Kubernetes cluster
