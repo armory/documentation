@@ -1,10 +1,10 @@
 ---
 layout: post
 title: v1.7.0 Armory Halyard (OSS 1.23)
-order: -201908261114156
+order: -201909131114156
 ---
 
-# 08/26/2019 Release Notes
+# 09/13/2019 Release Notes
 {:.no_toc}
 
 ## Full Version
@@ -18,10 +18,7 @@ This release adds support for configuring plugins for Orca as well as a large nu
 - This release has no known issues
 
 ## Halyard Armory Enterprise Spinnaker
- - fix(secrets): fix secrets config block in service yamls (#252)
- - feat(artifactory): Move to artifactory for plugins and updated gradle work (#248)
- - chore(terraformer): Remove 'alpha' flag (#250)
- - fix(logging): add logback to all clouddriver HA profiles (#246)
+No Changes
  
 ##  Halyard Community Contributions
  - fix(eks): Halyard doesn't work with new EKS kube config (#1382)
