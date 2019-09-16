@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Use SQL with Orca
+title: Orca with RDBMS
 order: 48
 redirect_from:
   - /spinnaker_install_admin_guides/orca-sql/
@@ -54,7 +54,7 @@ Once you've provisioned your RDBMS and ensured connectivity from Spinnaker, you'
 CREATE SCHEMA `orca` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-Then we'll grant authorization to the `orca_service` and `orca-migration` users:
+Then we'll grant authorization to the `orca_service` and `orca_migrate` users:
 
 ```sql
 
