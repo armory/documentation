@@ -119,10 +119,15 @@ encrypted:vault!e:<secret engine>!p:<path to secret>!k:<key>!b:<is base64 encode
 ``` 
 
 
-For example, to reference the GitHub password:
+For example, to reference the GitHub password from above:
 ```
 encrypted:vault!e:secret!p:spinnaker/github!k:password
 ```
+
+---
+**NOTE:** That we created the secrets using the path `secret/spinnaker/github` but we reference it as `spinnaker/github`
+
+---
 
 And the same for referencing a file:
 ```
