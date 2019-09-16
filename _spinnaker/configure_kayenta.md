@@ -14,32 +14,6 @@ The open source Spinnaker documentation has a good overview of how to
 configure Kayenta via Halyard at
 [https://www.spinnaker.io/setup/canary/](https://www.spinnaker.io/setup/canary/)
 
-### Configuring New Relic
-
-> *NOTE:*  Armory Spinnaker 2.1.0 has deprecated our New Relic support, in
-> preparation for the inclusion of OSS Spinnaker's version.  This documentation
-> will be updated to reflect the OSS configuration when it is available in
-> Armory Spinnaker.
-
-If you are configuring New Relic for your metrics store, you won't be able to
-use Halyard directly to enable it (yet).  Instead, add the following (fill in
-your own `apiKey` and `accountId` data from your New Relic Insights API data;
-you can also change the `name` field to your preference)) as
-`kayenta-local.yml` in your `profiles` directory (in `.hal/default/profiles`):
-
-```
-kayenta:
-  newrelic:
-    enabled: true
-    accounts:
-      - name: NewRelic
-        apiKey: "AbCdEf12345689...""
-        accountId: "1234567"
-        supportedTypes:
-          - METRICS_STORE
-        endpoint.baseUrl:  https://insights-api.newrelic.com
-```
-
 ## Enable Canarying in Application
 
 Before you can use Canary stages in your application's pipelines, you'll need
@@ -130,15 +104,6 @@ disk being used.
 
 Please refer to the [Spinnaker Kayenta documentation](https://www.spinnaker.io/guides/user/canary/config/#create-metric-groups-and-add-metrics) for information
 on configuring Stackdriver metrics.
-
-#### New Relic Metrics (Armory exclusive)
-
-For New Relic, the [NRQL query language](https://docs.newrelic.com/docs/insights/nrql-new-relic-query-language/nrql-reference) is ultimately used to query the
-data; we compose the query in pieces.  In the metric, you'll need to enter the
-desired metric (and any aggregation, average, max, etc) plus the table to use.
-For example, to retrieve the average duration of a web request, you'd enter
-`average(duration) FROM Transaction`.  Only one metric can be retrieved in
-each metric definition.
 
 ### Filter Templates
 
@@ -238,7 +203,6 @@ you're using, and how you've set up your pipeline prior to this stage.
 
 For more information on configuring these scopes, please refer to the
 [Spinnaker Kayenta Documentation](https://www.spinnaker.io/guides/user/canary/config/).
-(Note:  New Relic is an Armory exclusive feature, see below for details)
 
 #### DataDog
 
@@ -263,16 +227,6 @@ separated by commas, such as `autoscaling_group:myapp-v001,region:us-west-2`.
 
 The [Spinnaker documentation](https://www.spinnaker.io/guides/user/canary/config/#create-metric-groups-and-add-metrics) is the best source for configuring
 Stackdriver metrics.
-
-#### New Relic (Armory exclusive)
-
-New Relic only uses the Baseline and Canary fields; the Location fields are not
-used and can be safely left blank.  The expected values here are the "WHERE"
-clause from the NRQL query you would use to find the metrics.  For example,
-if you're supplying a 'version' field back to New Relic (filled in from an
-environment variable in the manifest, for example), your field might look
-something like `version='canary'`.  Note you can use [pipeline expressions](https://www.spinnaker.io/guides/user/pipeline/expressions/)
-within the quotes, to change out the value being sought.
 
 ## Automated Canary Deployment
 
