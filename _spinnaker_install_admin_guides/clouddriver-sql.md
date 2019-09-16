@@ -9,16 +9,16 @@ redirect_from:
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-Since version 2.5.x (OSS 1.14.x), Clouddriver can store its data (task, infrastructure, ...) in a MySQL compatible database. Similarly as Orca, the main advantage of doing so is a gain in performance and the removal of Redis as a single point of failure.
-
+Since version 2.5.x (OSS 1.14.x), Clouddriver can store its data (task, infrastructure, etc) in a MySQL compatible database. Similar to Orca, the main advantage of doing this is to improve performance and remove Redis as a single point of failure.
 
 ## Base Configuration
 
 You can find a complete description of the options in the [open source documentation](https://www.spinnaker.io/setup/productionize/persistence/clouddriver-sql/). SQL is not currently supported in Halyard's main configuration but can be setup in `<HALYARD>/<DEPLOYMENT>/profiles/clouddriver-local.yml`.
 
 ## Database Setup
+You can skip this step if you create the database during provisioning - for instance with Terraform.
 
-Once you've provisioned your RDBMS and ensured connectivity from Spinnaker, you'll need to create the database. You can skip this step if you create the database during provisioning - for instance with Terraform:
+Once you've provisioned your RDBMS and ensured connectivity with Spinnaker, you need to create the database:
 
 ```sql
 CREATE SCHEMA `clouddriver` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -43,8 +43,11 @@ The above configuration grants authorization from any host. You can restrict it 
 
 ## Deployment
 
-### Simple deployment
-If you are not worried about downtime or if Spinnaker is not currently executing any pipeline, you can just apply the configuration in `<HALYARD>/<DEPLOYMENT>/profiles/clouddriver-local.yml`:
+You have two options for deploying Clouddriver with MySQL: a simpler deployment, which involves downtime, or a three-step method that avoids downtime. Pick the method that best fits your requirements.
+
+### Simple Deployment
+
+If you are not worried about downtime or if Spinnaker is not currently executing any pipelines, you can run a simply deployment by applying the configuration in `<HALYARD>/<DEPLOYMENT>/profiles/clouddriver-local.yml`:
 
 ```yaml
 sql:
@@ -92,16 +95,23 @@ redis:
 ```
 
 
-### No downtime deployment
-To avoid downtime, we'll proceed in three steps:
+### No Downtime Deployment
 
-#### Step 1: Warm up the cache
-We'll start a Clouddriver - not accessible from other services - to validate the installation and warm up the cache.
+To avoid downtime for your deployment, use the following three steps:
 
-You can do it by hand or use the [following script](https://gist.github.com/ncknt/983bb800451f00b39401852fefde69bf). Make sure tables are properly created and start being populated by these instances of Clouddriver.
+#### Step 1:  Warm up the cache
+{:.no_toc}
 
-#### Step 2- Use MySQL to back new tasks
-After waiting a few minutes (from 2 to 10 minutes depending on how many accounts are connected), we'll update Spinnaker to use MySQL but still know of tasks statuses in Redis. We're deploying Spinnaker with the following configuration in `clouddriver-local.yml`:
+The first step is to start a Clouddriver that is not accessible from other services to validate the installation and warm up the cache.
+
+You can do it manually or by using the [following script](https://gist.github.com/ncknt/983bb800451f00b39401852fefde69bf). Make sure tables are properly created and being populated by these instances of Clouddriver.
+
+#### Step 2:  Use MySQL to back new tasks
+{:.no_toc}
+
+After waiting a few minutes (from 2 to 10 minutes depending on how many accounts are connected), we'll update Spinnaker to use MySQL but remain aware of task statuses in Redis.
+
+We're deploying Spinnaker with the following configuration in `clouddriver-local.yml`:
 
 ```yaml
 sql:
@@ -150,10 +160,12 @@ dualTaskRepository:
   previousClass: com.netflix.spinnaker.clouddriver.data.task.jedis.RedisTaskRepository
 ```
 
-Note: At this point you can stop the pods you created in step 1. If you used the script above, just delete the `spin-clouddriver-sql` deployment.
+Note: At this point, you can stop the pods you created in step 1. If you used the script above, just delete the `spin-clouddriver-sql` deployment.
 
-#### Step 3- Remove Redis
-After waiting a few minutes so Redis tasks are no longer relevant, we'll finish by removing Redis entirely:
+#### Step 3:  Remove Redis
+{:.no_toc}
+
+After waiting a few minutes so that Redis tasks are no longer relevant, we finish by removing Redis entirely:
 
 ```yaml
 sql:
