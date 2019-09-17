@@ -15,11 +15,11 @@ order: -201909131114156
 This release adds support for configuring plugins for Orca as well as a large number of other fixes and improvements. 
 
 ## Known Issues
-- This release has no known issues
+- This release has a bug which prevents `kubeconfig` files from being read from relative paths.  Release `1.7.1` will address this issue and should be released soon.
 
 ## Halyard Armory Enterprise Spinnaker
 No Changes
- 
+
 ##  Halyard Community Contributions
  - fix(eks): Halyard doesn't work with new EKS kube config (#1382)
  - chore(dependencies): Autobump korkVersion (#1421)
