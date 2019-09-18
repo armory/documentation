@@ -2,6 +2,8 @@
 layout: post
 title: Exposing Spinnaker
 order: 30
+redirect_from:
+  - /spinnaker/configure_ingress/
 ---
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
@@ -67,9 +69,9 @@ hal deploy apply
 
 ### Secure with SSL on EKS
 
-Note: If you created the services with port 8084 and 9000, you will need to edit them to make SSL work. To do so run 
+Note: If you created the services with port 8084 and 9000, you will need to edit them to make SSL work. To do so run
 `kubectl -n spinnaker edit service spin-gate-public`
-and 
+and
 `kubectl -n spinnaker edit service spin-deck-public`
 and change the public port to 443
 
@@ -120,7 +122,7 @@ In this option the goal is to use AWS ALB's of type `internal` for exposing Spin
 
 ### Step 1: Create Kubernetes NodePort services
 
-A `NodePort` Kubernetes service opens the same port (automatically chosen) on all EKS worker nodes, and forwards requests to internal pods. In this case we'll be creating two services: one for Deck (Spinnaker's UI) and one for Gate (Spinnaker's API). 
+A `NodePort` Kubernetes service opens the same port (automatically chosen) on all EKS worker nodes, and forwards requests to internal pods. In this case we'll be creating two services: one for Deck (Spinnaker's UI) and one for Gate (Spinnaker's API).
 Replace the namespace by the one where spinnaker is installed:
 
 ```bash
@@ -160,7 +162,7 @@ Make sure to select `internal` scheme, and if you have a SSL certificate availab
 ![image](/assets/images/configure_ingress_alb_1.png)
 
 Select the VPC and subnets where EKS worker nodes live:
- 
+
 ![image](/assets/images/configure_ingress_alb_2.png)
 
 If you selected `HTTPS` for the protocol, you can configure here the ACM certificate:
@@ -249,3 +251,26 @@ After doing that you can visit http://demo.armory.io:9000/ to view spinnaker.
 ### Secure with SSL on GKE
 To enable SSL and configure your certificates you can follow this guide:
 [https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-multi-ssl](https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-multi-ssl)
+
+## HTTP/HTTPS Redirects
+
+You must enable HTTP/HTTPS redirects when your Spinnaker deployment fits the following description:
+* TLS encryption for Deck (UI) and Gate (API) for Spinnaker
+* A load balancer (service, ingress, etc.) in front of your Deck/Gate that terminates TLS and forwards communications to the Spinnaker microservices.
+
+To enable redirects, complete the following steps:
+
+1. Add the following entry to your `.hal/<deployment-name>/profiles/gate-local.yml`:
+
+    ```yaml
+    server:
+      tomcat:
+        protocolHeader: X-Forwarded-Proto
+        remoteIpHeader: X-Forwarded-For
+        internalProxies: .*
+        httpsServerPort: X-Forwarded-Port
+    ```
+2. Run the following command: `hal deploy apply`.
+3. Clear your cache.
+
+For an alternative solution, see the following Knowledge Base article: [Troubleshooting http/https redirects with authentication](https://kb.armory.io/troubleshooting/https-redirects/).
