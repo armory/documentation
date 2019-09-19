@@ -74,7 +74,7 @@ The above configuration grants authorization from any host. You can restrict it 
 ## Keeping existing execution history
 
 The above configuration will point Orca to your database. However it won't migrate your existing execution history to your new database.
-You have the option to run a dual repository with the following:
+You have the option to run a dual repository with the following in `profiles/orca-local.yml`:
 
 ```yaml
 executionHistory:
