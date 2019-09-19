@@ -140,12 +140,12 @@ You can find a sample configMap in the `deploy/spinnaker/examples` directory of 
 kubectl -n <spin_namespace> apply -f deploy/spinnaker/examples/basic
 ```
 
-The example uses Operator in basic mode with the example configMap to deploy Spinnaker 1.15.1 with the following attributes:
+The example uses Operator in basic mode with the example configMap to deploy Spinnaker 2.15.3 with the following attributes:
 
 - No connected accounts
 - Persistent storage
 
-If you want to change the attributes of the example deployment, modify `/deploy/spinnaker/examples/basic/spin-config.yaml`. For example, if you change the value of the `version` field to `1.16.0`, the example configMap installs version 1.16.0. 
+If you want to change the attributes of the example deployment, modify `/deploy/spinnaker/examples/basic/spin-config.yaml`. For example, if you change the value of the `version` field to `2.16.0`, the example configMap installs version 2.16.0.
 
 Detailed description of the configMap can be found [here](../operator-config).
 
@@ -183,7 +183,7 @@ To upgrade an existing Spinnaker deployment using the Operator, perform the foll
 
     ```
     NAME         VERSION
-    spinnaker    1.15.0
+    spinnaker    2.15.3
     ```
 
     `VERSION` should reflect the target version for your upgrade.
