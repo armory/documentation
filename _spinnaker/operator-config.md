@@ -28,6 +28,7 @@ The following example shows the general structure of a manifest file for Spinnak
           type: [kubernetes service type]
           annotations:
             [map of key:value pairs]
+          publicPort: [integer]
           overrides:
             [service name]:
               type: [kubernetes service type]
@@ -40,10 +41,13 @@ The following example shows the general structure of a manifest file for Spinnak
 **spec.expose**: This section contains configuration for exposing Spinnaker. 
 
 
-- `spec.expose.type`: How Spinnaker will be exposed. Only `service` is currently supported for using Kubernetes services.
+- `spec.expose.type`: How Spinnaker will be exposed. The only supported `service` is currently a Kubernetes services.
 - `spec.expose.service.type`: Should match a valid kubernetes service type (i.e. `LoadBalancer`, `NodePort`, `ClusterIP`.
 - `spec.expose.service.annotations`: Map containing any annotation to be added to Gate (API) and Deck (UI) services.
-- `spec.expose.service.overrides`: Map with key: Spinnaker service name (`gate` or `deck`), and value: structure for overriding the service type and specifying extra annotations. By default, all services will receive the same annotations. You can override annotations for a Deck (UI) or Gate (API) services.
+- `spec.expose.service.publicPort`: Integer allowing you to change the listening port.
+- `spec.expose.service.overrides`: Allows overriding the service type and specifying extra annotations. By default, all services will receive the same `type`, `annotations`, `, so you can use this to override annotations. This a map containing:
+  - **key**(`gate`, `deck`, `gate-x509`) of the Spinnaker service name.
+  - **value**: the structure supports the same keys `spec.expose` contains.
 
 
 ## Examples

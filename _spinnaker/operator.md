@@ -45,7 +45,7 @@ For both Basic and Cluster modes, you must download and apply the SpinnakerServi
 $ git clone https://github.com/armory-io/spinnaker-operator
 ```
 
-**Note**: To install OSS Spinnaker, use https://github.com/armory/spinnaker-operator instead.
+  **Note**: To install OSS Spinnaker, use [https://github.com/armory/spinnaker-operator](https://github.com/armory/spinnaker-operator) instead.
 
 2. Go to the spinnaker-operator directory:
 ```
@@ -129,7 +129,7 @@ spinnaker-operator-7cd659654b-4vktl      2/2           Running      0           
 After you install Operator, you can use configMaps to install Spinnaker:
 
 ```
-kubectl -n <spin_namespace> apply -f /path/to/configMap/
+kubectl -n <spin_namespace> apply -f /path/to/configMaps/
 ```
 
 `<spin_namespace>` is the `namespace` where you want to deploy Spinnaker.
@@ -148,6 +148,7 @@ The example uses Operator in basic mode with the example configMap to deploy Spi
 If you want to change the attributes of the example deployment, modify `/deploy/spinnaker/examples/basic/spin-config.yaml`. For example, if you change the value of the `version` field to `2.16.0`, the example configMap installs version 2.16.0.
 
 Detailed description of the configMap can be found [here](../operator-config).
+
 
 # Upgrading Spinnaker Using Operator
 
