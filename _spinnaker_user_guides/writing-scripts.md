@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Automating Spinnaker
-order: 100
+order: 101
 redirect_from:
   - /user-guides/writing-scripts/
   - /user-guides/writing_scripts/
