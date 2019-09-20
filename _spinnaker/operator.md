@@ -126,19 +126,15 @@ spinnaker-operator-7cd659654b-4vktl      2/2           Running      0           
 
 # Installing Spinnaker Using Operator
 
-After you install Operator, you can use configMaps to install Spinnaker:
+After you install Operator, you can create a `configMap` and `SpinnakerService` to install Spinnaker.
 
-```
-kubectl -n <spin_namespace> apply -f /path/to/configMaps/
-```
-
-`<spin_namespace>` is the `namespace` where you want to deploy Spinnaker.
-
-You can find a sample configMap in the `deploy/spinnaker/examples` directory of the cloned Git repository. To perform a basic install with Operator and the example configMap, run the following command:
+You can find a sample configMap in the `deploy/spinnaker/examples` directory of the cloned Git repository. Change the parameters you need (especially the `persistentStorage` section). To perform a basic install with Operator and the example configMap, run the following command:
 
 ```
 kubectl -n <spin_namespace> apply -f deploy/spinnaker/examples/basic
 ```
+
+`<spin_namespace>` is the `namespace` where you want to deploy Spinnaker.
 
 The example uses Operator in basic mode with the example configMap to deploy Spinnaker 2.15.3 with the following attributes:
 
