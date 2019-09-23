@@ -20,6 +20,8 @@ To learn more about Kustomize and how to define a `kustomization.yaml` file, see
 
 In the context of Spinnaker, Kustomize lets you generate a custom manifest, which can be deployed in a downstream `Deploy (Manifest)` stage. This manifest is tailored to your requirements and built on existing configurations.
 
+Spinnaker uses the latest non-kubectl version of Kustomize. 
+
 ## Enabling Kustomize in 2.16 (Beta)
 
 Kustomize can be enabled by a feature flag in 2.16.
