@@ -60,6 +60,23 @@ Note: If you're using Bitbucket Server, update the endpoint to include the api e
 
 You'll need to setup webhooks for each project that has the dinghyfile or module separately. Make the webhook POST to: `https://spinnaker.your-company.com:8084/webhooks/git/stash`. If you're using stash `<v3.11.6`, you'll need to install the following [webhook plugin](https://marketplace.atlassian.com/plugins/com.atlassian.stash.plugin.stash-web-post-receive-hooks-plugin/server/overview) to be able to setup webhooks.
 
+### GitLab Example
+
+```bash
+hal armory dinghy edit \
+  --template-org "armory-io" \
+  --template-repo "dinghy-templates" \
+  --gitlab-token "your_token/password"
+  --gitlab-endpoint "https://your-endpoint-here.com"
+```
+
+Point your webhooks (Under "Settings -> Integrations"  on your project page)
+to `https://<your-gate-url>/webhooks/git/gitlab`.  Make sure the server your
+GitLab install is running on can connect to your Gate URL (and adjust any
+firewall settings and the like that you may need).  Spinnaker will also need
+to be able to reach back out to your GitLab installation; ensure that
+connectivity works as well.
+
 ### Custom branch configuration
 *Note: this feature requires armory spinnaker 2.5.6 or above.* 
 
