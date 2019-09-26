@@ -324,10 +324,10 @@ Note that the *metadata.name* field in this example should match *spec.spinnaker
       profiles: |
         gate:
           default.apiPort: 8085
-      serviceSettings: |
+      service-settings: |
         gate:
           artifactId: xxxxx
-      files__profiles__rosco__packer__aws-custom.json: |
+      profiles__rosco__packer__aws-custom.json: |
         {
           "variables": {
             "docker_source_image": "null",
@@ -357,9 +357,9 @@ The `config` key would contain:
       gate:
           default.apiPort: 8085
           
-- `serviceSettings`: the content of the service settings file (`~/.hal/<deployment>/service-settings/`) by service name, e.g.:
-    serviceSettings: |
+- `service-settings`: the content of the service settings file (`~/.hal/<deployment>/service-settings/`) by service name, e.g.:
+    service-settings: |
       gate:
         artifactId: xxxxx
         
-- `files__<relative path to other file>`: Other supporting files with a path relative to the main deployment. The file path is encoded with `__` as a path separator. This includes other profile files such as a custom packer template in `files__profiles__rosco__packer__aws-custom.json`.
+- `<relative path to other file>`: Other supporting files with a path relative to the main deployment. The file path is encoded with `__` as a path separator. This includes other profile files such as a custom packer template in `profiles__rosco__packer__aws-custom.json`.
