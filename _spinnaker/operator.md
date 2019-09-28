@@ -212,3 +212,47 @@ $ kubectl -n <namespace> describe spinnakerservice spinnaker
 ```
 $ kubectl -n <namespace> delete spinnakerservice spinnaker
 ```
+
+# Custom Halyard Configuration
+
+To override Halyard's configuration, create a `configMap` with the configuration changes you need:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: halyard-custom-config
+data:
+  halyard-local.yml: |
+    spinnaker:
+      config:
+        input:
+          bucket: mybucket
+```
+
+You can then mount it in the operator deployment and make it available to Halyard container:
+
+```yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: spinnaker-operator
+  ...
+spec:
+  template:
+    spec:
+      containers:
+      - image: armory/armory-operator:latest
+        ...
+      - image: armory/halyard-armory:operator-latest
+        ...
+        volumeMounts:
+        - mountPath: /opt/spinnaker/config/halyard-local.yml
+          name: halconfig-volume
+          subPath: halyard-local.yml
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: halyard-custom-config
+        name: halconfig-volume
+```
