@@ -102,9 +102,15 @@ You can specify logging levels based on the package that you're trying to debug 
 ```
 logging:
   level:
+    # turn on request logging
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
+
+    # turn on logging for the service
     com.netflix.spinnaker.gate: DEBUG
     com.netflix.spinnaker.clouddriver: WARN
-    root: DEBUG   # if you want all the debug logs, it's a lot...
+
+    # if you want all the debug logs, be warned, there's a lot here
+    root: DEBUG
 ```
 
 #### Accessing a service's `/resolvedEnv` endpoint
