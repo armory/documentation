@@ -38,7 +38,7 @@ versions:
 
 #### Enable Custom Bucket From Halyard
 
-To enable a custom storage in Halyard, pass `/opt/spinnaker/config/halyard-local.yml` to Halyard with the following content:
+To enable custom storage in Halyard, create `/opt/spinnaker/config/halyard-local.yml` with the following content and restart Halyard:
 
 ```yaml
 spinnaker:
