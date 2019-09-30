@@ -5,7 +5,7 @@ order: 108
 ---
 
 <div class="deprecation-warning">
-    This is an early alpha feature that is under active development and will likely change
+    Note that Plugins are currently in [Early Release](https://kb.armory.io/releases/early-release-beta-GA/). The feature is working and installable, but some functionality is likely to be missing and a number of known and unknown issues are likely to surface. It is released to a limited set of technology partners.
 </div>
 
 # Create The Backend For Stage Plugins
