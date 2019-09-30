@@ -4,7 +4,7 @@ title: Plugin Creators Guide
 order: 108
 ---
 
-Note that Plugins are currently in [Early Release](https://kb.armory.io/releases/early-release-beta-GA/). The feature is working and installable, but some functionality is likely to be missing and a number of known and unknown issues are likely to surface. It is released to a limited set of technology partners.
+Note that Plugins are currently in [Early Release](https://kb.armory.io/releases/early-release-beta-GA/). The feature is working and installable, but some functionality is likely to be missing and a number of known and unknown issues are likely to surface.
 
 # Create The Backend For Stage Plugins
 ## Example Plugin
