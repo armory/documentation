@@ -70,7 +70,7 @@ class RandomWaitInput {
 ```
 
 **SimpleStage Context**
-Context is used within the stage itself. In this example, the maxWaitTime can be added here.
+Context is used within the stage itself. In this example, the maxWaitTime will be added here.
 ```
 @Data
 class Context {
