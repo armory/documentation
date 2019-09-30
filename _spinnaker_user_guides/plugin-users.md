@@ -5,7 +5,7 @@ order: 108
 ---
 
 <div class="deprecation-warning">
-    This is an early alpha feature that is under active development and will likely change
+        Note that Plugins are currently in [Early Release](https://kb.armory.io/releases/early-release-beta-GA/). The feature is working and installable, but some functionality is likely to be missing and a number of known and unknown issues are likely to surface. It is released to a limited set of technology partners.
 </div>
 
 This guide is for adding plugins to Spinnaker. This assumes that Spinnaker is already setup and configured. Currently this is only support in 1.16 version of Spinnaker or later. This also requires version 1.23.0 of Halyard or later.
