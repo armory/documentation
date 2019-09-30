@@ -4,6 +4,10 @@ title: Plugin Creators Guide
 order: 108
 ---
 
+<div class="deprecation-warning">
+    This is an early alpha feature that is under active development and will likely change
+</div>
+
 # Create The Backend For Stage Plugins
 ## Example Plugin
 

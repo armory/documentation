@@ -4,6 +4,10 @@ title: Plugin Users Guide
 order: 108
 ---
 
+<div class="deprecation-warning">
+    This is an early alpha feature that is under active development and will likely change
+</div>
+
 This guide is for adding plugins to Spinnaker. This assumes that Spinnaker is already setup and configured. Currently this is only support in 1.16 version of Spinnaker or later. This also requires version 1.23.0 of Halyard or later.
 
 Note that adding a plugin to Spinnaker requires redeploying Spinnaker with Halyard.
