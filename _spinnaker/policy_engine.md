@@ -239,7 +239,7 @@ deny["Every deploy stage must have have notifications enabled"] {
 }
 ```
 
-You can disable a `deny` policy by adding a false statement to the policy body.  For example:
+You can disable a `deny` policy by adding a false statement to the policy body.  For example, you can add `0 == 1` as a false statement:
 
 ```rego
 package opa.pipelines
@@ -249,6 +249,7 @@ deny["Every pipeline must have a Manual Judgment stage"] {
   count(input.pipeline.stages[_]) > 0
   count(manual_judgment_stages) == 0
   0 == 1
+}
 ```
 
 This policy can be added to OPA with this API request (replace the endpoint with your OPA endpoint):
