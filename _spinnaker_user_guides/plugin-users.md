@@ -39,7 +39,7 @@ This will enable plugins to be loaded if the individual plugin(s) are enabled.
 
 To add a plugin to Spinnaker, the plugin manifest location needs to be known. Adding the plugin is as easy as:
 ```
-hal plugins add plugin-name --enabled\
+hal plugins add plugin-name --enabled \
      --manifest-location="https://path/to/plugin/manifest.yml"`
 ```
 
