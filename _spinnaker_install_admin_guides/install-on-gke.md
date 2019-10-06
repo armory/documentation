@@ -97,14 +97,14 @@ This creates a minimal GKE cluster in your default region and zone.  Follow the 
 1. Run this command to configure `kubectl` to use the cluster you've created:
 
    ```bash
-   export KUBECONFIG=kubeconfig=gke
+   export KUBECONFIG=kubeconfig-gke
    gcloud container clusters get-credentials spinnaker-cluster
    ```
 
 1. Alternately, if you're using a pre-existing GKE cluster:
 
    ```bash
-   export KUBECONFIG=kubeconfig=gke
+   export KUBECONFIG=kubeconfig-gke
    gcloud container clusters get-credentials <your-cluster-name>
    ```
 
@@ -427,7 +427,7 @@ Identify the URLs you will use to expose Spinnaker's UI and API.
 # Replace with actual values
 SPIN_DECK_ENDPOINT=spinnaker.some-url.com
 SPIN_GATE_ENDPOINT=api.some-url.com
-NAMESPACE=spinnaker
+NAMESPACE=spinnaker-system
 ```
 
 Create a Kubernetes Ingress manifest to expose spin-deck and spin-gate (change your hosts and namespace accordingly):
