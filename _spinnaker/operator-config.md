@@ -14,7 +14,7 @@ This document describes available fields in the SpinnakerService CRD used by Spi
 The following example shows the general structure of a manifest file for SpinnakerService:
 
 ```yaml
-    apiVersion: spinnaker.io/v1alpha1
+    apiVersion: spinnaker.armory.io/v1alpha1
     kind: SpinnakerService
     metadata:
       name: [spinnaker service name]
@@ -38,7 +38,7 @@ The following example shows the general structure of a manifest file for Spinnak
 
 **spec.spinnakerConfig**: Reference to a ConfigMap or Secret that contains Spinnaker configuration files coming from Halyard. Only `configMap` is currently supported. This configuration is described [below](#spinnakerconfig).
 
-**spec.expose**: This section contains configuration for exposing Spinnaker. 
+**spec.expose**: This section contains configuration for exposing Spinnaker.
 
 
 - `spec.expose.type`: How Spinnaker will be exposed. The only supported `service` is currently a Kubernetes services.
@@ -52,7 +52,7 @@ The following example shows the general structure of a manifest file for Spinnak
 **Minimal valid SpinnakerService**
 
 ```yaml
-    apiVersion: spinnaker.io/v1alpha1
+    apiVersion: spinnaker.armory.io/v1alpha1
     kind: SpinnakerService
     metadata:
       name: spinnaker
@@ -65,7 +65,7 @@ The following example shows the general structure of a manifest file for Spinnak
 **Exposing Spinnaker with LoadBalancer services**
 
 ```yaml
-    apiVersion: spinnaker.io/v1alpha1
+    apiVersion: spinnaker.armory.io/v1alpha1
     kind: SpinnakerService
     metadata:
       name: spinnaker
@@ -144,7 +144,7 @@ Above manifest file will generate these two services:
 **Exposing Spinnaker with different service types for Deck (UI) and Gate (API)**
 
 ```yaml
-    apiVersion: spinnaker.io/v1alpha1
+    apiVersion: spinnaker.armory.io/v1alpha1
     kind: SpinnakerService
     metadata:
       name: spinnaker
@@ -226,7 +226,7 @@ Above manifest file will generate these two services:
 **Exposing Spinnaker, different annotations for Deck (UI) and Gate (API)**
 
 ```yaml
-    apiVersion: spinnaker.io/v1alpha1
+    apiVersion: spinnaker.armory.io/v1alpha1
     kind: SpinnakerService
     metadata:
       name: spinnaker
@@ -321,12 +321,19 @@ Note that the *metadata.name* field in this example should match *spec.spinnaker
         name: default
         version: 1.15.2
         ...
+        provider:
+          kubernetes:
+          - name: prod1
+            kubeconfigFile: prod1-k8s.yml
+            ...
       profiles: |
         gate:
           default.apiPort: 8085
       service-settings: |
         gate:
           artifactId: xxxxx
+      prod1-k8s.yml: |
+        <content of the kubeconfig file>
       profiles__rosco__packer__aws-custom.json: |
         {
           "variables": {
@@ -336,30 +343,30 @@ Note that the *metadata.name* field in this example should match *spec.spinnaker
           ...
         }
 ```
-        
+
 - `config`: the deployment configuration in the same format as in Halyard. For instance, given the following `~/.hal/config`:
     currentDeployment: default
     deploymentConfigurations:
     - name: default
-      version: 1.15.2
+      version: 2.15.2
       providers:
       ...
 
 The `config` key would contain:
 
     name: default
-    version: 1.15.2
+    version: 2.15.2
     providers:
     ...
-    
+
 - `profiles`: the content of the local profile files (`~/.hal/<deployment>/profiles/`) by service name, e.g.:
     profiles: |
       gate:
           default.apiPort: 8085
-          
+
 - `service-settings`: the content of the service settings file (`~/.hal/<deployment>/service-settings/`) by service name, e.g.:
     service-settings: |
       gate:
         artifactId: xxxxx
-        
+
 - `<relative path to other file>`: Other supporting files with a path relative to the main deployment. The file path is encoded with `__` as a path separator. This includes other profile files such as a custom packer template in `profiles__rosco__packer__aws-custom.json`.
