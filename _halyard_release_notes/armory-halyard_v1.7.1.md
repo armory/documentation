@@ -13,8 +13,6 @@ order: -201909171114156
 ## Highlights
 This release fixes an issue which prevented `halyard` from reading local `kubeconfig` files.
 
-*Note: This fix has not yet made its way to OSS `halyard`.
-
 ## Known Issues
 No known issues
 
