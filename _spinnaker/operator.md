@@ -38,25 +38,22 @@ Operator does not currently support the following:
 
 ## Before You Start
 
-For both Basic and Cluster modes, you must download and apply the SpinnakerService CRD:
+Download CRDs and example manifests from the [latest stable release](https://github.com/armory-io/spinnaker-operator/releases).
 
-1. Clone the spinnaker-operator repository:
 ```bash
-$ git clone https://github.com/armory-io/spinnaker-operator
+$ mkdir -p spinnaker-operator && cd spinnaker-operator
+$ VERSION=v0.1.0 && curl -L https://github.com/armory-io/spinnaker-operator/releases/download/$VERSION/manifests.tgz | tar -xvf -
 ```
 
-  **Note**: To install OSS Spinnaker, use [https://github.com/armory/spinnaker-operator](https://github.com/armory/spinnaker-operator) instead.
+For both Basic and Cluster modes, you must download and apply the SpinnakerService CRD.
+Note that you must have admin rights to install the CRD.
 
-2. Go to the spinnaker-operator directory:
-```bash
-$ cd spinnaker-operator
-```
-3. Apply the SpinnakerService CRD:
 ```bash
 $ kubectl apply -f deploy/crds/spinnaker_v1alpha1_spinnakerservice_crd.yaml
 ```
 
-    Note that you must have admin rights to install the CRD. Alternatively, you can create a service account for Operator.
+  **Note**: To install OSS Spinnaker, use [https://github.com/armory/spinnaker-operator](https://github.com/armory/spinnaker-operator) instead.
+
 
 ## Installing Operator in Basic Mode
 The sample files discussed in this procedure can be found in the Git repository you cloned.
