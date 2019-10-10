@@ -37,7 +37,7 @@ Note: **BUCKET_NAME** should be one of the following:
 hal shutdown
 ```
 
-#### Set and deploy OSS Version with Halyard
+#### Set and deploy Version with Halyard
 
 ```
 hal config version edit --version ${DESIRED_VERSION}
