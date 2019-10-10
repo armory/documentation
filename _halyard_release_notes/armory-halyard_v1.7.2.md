@@ -11,7 +11,7 @@ order: -201910091114156
 1.7.2-rc17 (OSS 1.23.0-e625604-stable2 build 17)
 
 ## Highlights
-This release adds support for `Armory Halyard` to pull and deploy from `GCS`.
+This release adds support for `Armory Halyard` to access [Bill of Materials](https://www.spinnaker.io/reference/halyard/#bill-of-materials) stored in `GCS`.
 
 The following configuration is required.
 
@@ -19,7 +19,7 @@ The following configuration is required.
 
 Edit `/opt/spinnaker/config/halyard-local.yml` to have the following set:
 
-    spinnaker.config.input.gcs: enabled
+    spinnaker.config.input.gcs.enabled: true
 
 #### Optionally set bucket name
 
@@ -27,9 +27,10 @@ Edit `/opt/spinnaker/config/halyard-local.yml` to set the following:
 
     spinnaker.config.input.bucket: BUCKET_NAME
 
-**BUCKET_NAME** should be set as one of the following:
+Note: **BUCKET_NAME** should be one of the following:
 * `halconfig` if you desire to deploy OSS Spinnaker releases
 * some other name if you desire to deploy releases from a different GCS bucket (such as when managing Spinnaker in an airgapped environment)
+
 
 #### Stop Halyard
 ```
