@@ -57,11 +57,7 @@
     @extend .Header--medium;
   }
 
-  h3 {
-    @extend .Header--small;
-  }
-
-  h4, h5, h6 {
+  h3, h4, h5, h6 {
     @extend .Header--tiny;
   }
 
