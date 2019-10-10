@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "Kubernetes: Creating Service Account and Kubeconfigs"
+title: "Kubernetes: Creating Service Accounts and Kubeconfigs"
 order: 29
 # Change this to true
-published: false
+published: true
 redirect_from:
   - /spinnaker_install_admin_guides/manual_service_account/
   - /spinnaker_install_admin_guides/manual-service-account/
