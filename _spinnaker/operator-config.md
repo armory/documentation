@@ -404,4 +404,6 @@ The content of the service settings file (`~/.hal/<deployment>/service-settings/
 ## Other Custom Files
 Other supporting files with a path relative to the main deployment. The file path is encoded with `__` as a path separator. 
 
-This includes other profile files such as a custom packer template in `profiles__rosco__packer__aws-custom.json`, and packer scripts `profiles__rosco__packer__my-script.sh`.
+This includes other profile files such as a custom packer template and scripts, e.g.
+- `profiles__rosco__packer__aws-custom.json`
+- `profiles__rosco__packer__my-script.sh`
