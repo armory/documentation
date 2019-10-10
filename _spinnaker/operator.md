@@ -60,14 +60,14 @@ The sample files discussed in this procedure can be found in the Git repository 
 
 To install Operator in basic mode, run:
 
-```
+```bash
 $ kubectl apply -n <op_namespace> -f deploy/operator/basic
 ```
 
 `op_namespace` is the namespace where you want the operator to live.
 
 After installation, you can verify that the Operator is running with the following command:
-```
+```bash
 $ kubectl -n <op_namespace> get pods
 ```
 
@@ -85,7 +85,7 @@ To install Operator for cluster mode, perform the following steps:
 
 1. Add the namespace you want to deploy to `deploy/operator/cluster/role_binding.yml`. For example, the following entry deploys Spinnaker to a namespace called `my-app`:
 
-    ```
+    ```yaml
     kind: ClusterRoleBinding
     apiVersion: rbac.authorization.k8s.io/v1
     metadata:
@@ -103,7 +103,7 @@ To install Operator for cluster mode, perform the following steps:
 2. Save the changes to `role_binding.yml`.
 3. Run the following command:
 
-    ```
+    ```bash
     $ kubectl apply -n <op_namespace> -f deploy/operator/cluster
     ```
 
@@ -111,7 +111,7 @@ To install Operator for cluster mode, perform the following steps:
 
 After installation, you can verify that the Operator is running with the following command:
 
-```
+```bash
 $ kubectl -n <op_namespace> get pods
 ```
 The command returns output similar to the following if the pod for the Operator is running:
@@ -127,8 +127,8 @@ After you install Operator, you can create a `configMap` and `SpinnakerService` 
 
 You can find a sample configMap in the `deploy/spinnaker/examples` directory of the cloned Git repository. Change the parameters you need (especially the `persistentStorage` section). To perform a basic install with Operator and the example configMap, run the following command:
 
-```
-kubectl -n <spin_namespace> apply -f deploy/spinnaker/examples/basic
+```bash
+$ kubectl -n <spin_namespace> apply -f deploy/spinnaker/examples/basic
 ```
 
 `<spin_namespace>` is the `namespace` where you want to deploy Spinnaker.
@@ -150,26 +150,26 @@ To upgrade an existing Spinnaker deployment using the Operator, perform the foll
 1. Change the `version` field in your `spin-config.yaml` file to the target version for the upgrade.
 2. Apply the updated configMap:
 
-    ```
+    ```bash
     $ kubectl <spin_namespace> apply -f /path/to/your/spin-config.yaml
     ```
 
     For example, to apply an updated configMap for the example `spin-config.yaml` file, run the following command:
 
-    ```
+    ```bash
     $ kubectl <spin_namespace> apply -f /deploy/spinnaker/examples/basic/spin-config.yaml
     ```
 
     Replace `<spin_namespace>` with the namespace of the existing Spinnaker deployment occupies.
 
     You can view the upgraded services starting up with the following command:
-    ```
+    ```bash
     $ kubectl -n <spin_namespace> describe spinsvc spinnaker
     ```
 
 3. Verify the upgraded version of Spinnaker:
 
-    ```
+    ```bash
     $ kubectl -n <spin_namespace> get spinsvc
     ```
 
@@ -183,7 +183,7 @@ To upgrade an existing Spinnaker deployment using the Operator, perform the foll
     `VERSION` should reflect the target version for your upgrade.
 
     Once the upgrade is complete, you can view information related to your Spinnaker deployment with the following command:
-    ```
+    ```bash
     $ kubectl -n <namespace> get svc
     ```
 
@@ -195,18 +195,18 @@ To upgrade an existing Spinnaker deployment using the Operator, perform the foll
 Operator allows you to use `kubectl` to manager you Spinnaker deployment.
 
 **Listing Spinnaker Instances**
-```
+```bash
 $ kubectl get spinnakerservice -- all-namespaces
 ```
 The short name `spinsvc` is also available.
 
 **Describing Spinnaker Instances**
-```
+```bash
 $ kubectl -n <namespace> describe spinnakerservice spinnaker
 ```
 
 **Deleting Spinnaker Instances**
-```
+```bash
 $ kubectl -n <namespace> delete spinnakerservice spinnaker
 ```
 
