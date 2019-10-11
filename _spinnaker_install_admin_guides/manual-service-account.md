@@ -12,21 +12,21 @@ redirect_from:
 
 When connecting Spinnaker to Kubernetes, Spinnaker needs the following:
 
-* A service account in the relevant Kubernetes cluster (or namespace in a cluster).  *In Kubernetes, a service account exists in a given namespace, but may have access to other namespaces or to the whole cluster*
+* A service account in the relevant Kubernetes cluster (or namespace in a cluster).  *In Kubernetes, a service account exists in a given namespace but may have access to other namespaces or to the whole cluster*
 * Permissions for the service account to create/read/update/delete objects in the relevant Kubernetes cluster (or namespace)
-* A kubeconfig that has access to the service account, via a token or some other authentication method.
+* A kubeconfig that has access to the service account through a token or some other authentication method.
 
-The [spinnaker-tools binary](https://github.com/armory/spinnaker-tools) was built to create all of the above objects, but if you want to run these manually or need to know what is going on, you can follow these steps to create these objects manually.
+The [spinnaker-tools binary](https://github.com/armory/spinnaker-tools) was built to create all of the above objects. If you want to create these manually or need to know what is going on, use the following steps to create these objects .
 
-**This document primarily uses `kubectl`, and assumes you have access to permissisons that can create and/or update these resources in your Kubernetes cluster:
+**This document primarily uses `kubectl` and assumes you have access to permissions that can create and/or update these resources in your Kubernetes cluster:
 
 * Kubernetes Service Account(s)
 * Kubernetes Roles and Rolebindings
-* (Optionally) Kubernetes ClusterRoles and Rolebindings
+* (Optionally) Kubernetes ClusterRoles and Rolebindings**
 
-## Create the service account
+## Create the Service Account
 
-You can use this manifest to create a service account (replace `NAMESPACE` with the namespace you want to use, and optionally rename the service account)
+You can use the following manifest to create a service account. Replace `NAMESPACE` with the namespace you want to use and, optionally, rename the service account.
 
 ```yml
 # spinnaker-service-account.yml
@@ -43,9 +43,9 @@ Then create the object:
 kubectl apply -f spinnaker-service-account.yml
 ```
 
-## Grant cluster admin permissions
+## Grant Cluster Admin Permissions
 
-If you want to grant the service account access to all namespaces in your cluster
+Do this only if you want to grant the service account access to all namespaces in your cluster.
 
 Note:
 
@@ -69,28 +69,28 @@ subjects:
   namespace: NAMESPACE
 ```
 
-Then create the binding:
+Then, create the binding:
 
 ```bash
 kubectl apply -f spinnaker-service-account.yml
 ```
 
-## Grant namespace-specific permissions
+## Grant Namespace Specific Permissions
 
-If you only want the service account to be able to access specific namespaces, then you can create a role (with a set of permissions) and rolebinding (attaching the role to the service account).  You can repeat this multiple times.  You will probably also have explicitly to do this for the namespace where the service account is, as it is not implicit.
+If you only want the service account to be able to access specific namespaces, then you can create a role with a set of permissions and rolebinding to attach the role to the service account.  You can do this multiple times.  Additionally, you will  also have explicitly  do this for the namespace where the service account is, as it is not implicit.
 
 Notes:
 
 * A Kubernetes `Role` exists in a given namespace and grants access to items in that namespace
 * A Kubernetes `RoleBinding` exists in a given namespace and attaches a role in that namespace to some principal (in this case, a service account).  The principal (service account) may be in another namespace.
-* So if you have a service account in namespace `source`, and you want to grant access to namespace `target`, then you would do the following:
+* If you have a service account in namespace `source` and want to grant access to namespace `target`, then do the following:
   * Create the service account in namespace `source`
   * Create a Role in namespace `target`
   * Create a RoleBinding in namespace `target`, with the following properties:
     * RoleRef pointing to the Role (that is in the same namespace `target`)
     * Subject pointing to the service account and namespace where the service account lives (in namespace `source`)
 
-Feel free to change the names of resources to match your environment, as long as the namespaces are correct the the subject name and namespace match the name and namespace of your service account.
+Feel free to change the names of resources to match your environment. As long as the namespaces are correct, and the subject name and namespace match the name and namespace of your service account.
 
 ```yml
 # spinnaker-role-and-rolebinding-target.yml
@@ -120,13 +120,13 @@ subjects:
   name: spinnaker-service-account # Should match service account name, above
 ```
 
-Then create the object:
+Then, create the object:
 
 ```bash
 kubectl apply -f spinnaker-role-and-rolebinding-target.yml
 ```
 
-## Get the service account, token, and generate the kubeconfig
+## Get the Service Account and Token. Generate the Kubeconfig
 
 Run these commands (or commands like these) to get the token for your service account and create a kubeconfig with access to the service account.
 
