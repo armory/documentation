@@ -154,7 +154,6 @@ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-ad
    ```bash
    # The 'gcloud container clusters get-credentials' command from above will create/update this file
    SOURCE_KUBECONFIG=kubeconfig-gke
-   # Get the name of the context created by the aws tool)
    CONTEXT=$(kubectl --kubeconfig ${SOURCE_KUBECONFIG} config current-context)
    DEST_KUBECONFIG=kubeconfig-spinnaker-system-sa
    SPINNAKER_NAMESPACE=spinnaker-system
