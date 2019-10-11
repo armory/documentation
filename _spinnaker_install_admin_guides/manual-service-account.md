@@ -18,11 +18,11 @@ When connecting Spinnaker to Kubernetes, Spinnaker needs the following:
 
 The [spinnaker-tools binary](https://github.com/armory/spinnaker-tools) was built to create all of the above objects. If you want to create these manually or need to know what is going on, use the following steps to create these objects .
 
-**This document primarily uses `kubectl` and assumes you have access to permissions that can create and/or update these resources in your Kubernetes cluster:
+**This document primarily uses `kubectl` and assumes you have access to permissions that can create and/or update these resources in your Kubernetes cluster:**
 
-* Kubernetes Service Account(s)
-* Kubernetes Roles and Rolebindings
-* (Optionally) Kubernetes ClusterRoles and Rolebindings**
+- **Kubernetes Service Account(s)**
+- **Kubernetes Roles and Rolebindings**
+- **(Optionally) Kubernetes ClusterRoles and Rolebindings**
 
 ## Create the Service Account
 
