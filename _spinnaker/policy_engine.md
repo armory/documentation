@@ -18,13 +18,7 @@ Keep the following guidelines in mind when using the Policy Engine:
 
 ## Enabling the Policy Engine
 
-<<<<<<< HEAD
-## Configuration
-
-To enable the use of Armory's Policy Engine, the following configuration must be added to Halyard in `~/.hal/default/profiles/front50-local.yml`:
-=======
 To enable Armory's Policy Engine, add the following configuration to Halyard in `~/.hal/default/profiles/front50-local.yml`:
->>>>>>> 22c9ad6... docs(policy): WIP refactor the policy engine docs for GA
 
 ```yaml
 armory:
@@ -34,10 +28,6 @@ armory:
 ```
 *Note: there must be a trailing /v1 on the url. This extension is only compatible with OPA's v1 api.*
 
-<<<<<<< HEAD
-### OPA Deployment
-Users of Armory Spinnaker can use an in-cluster OPA server, one they've already deployed or if you have an existing Kubernetes cluster and Armory Spinnaker deployment and wish to use that to host OPA, the following yaml may be used to deploy the OPA server:
-=======
 If you are using an in-cluster OPA instance (such as one set up with the instructions below), Spinnaker can access OPA via the Kubernetes service DNS name (replace `opa.opa` with `opa.<namespace>` where `<namespace>` is the namespace where OPA is installed:
 
 ```yaml
@@ -48,7 +38,6 @@ armory:
 ```
 
 After you update `front50-local.yml`, you must deploy your changes:
->>>>>>> 22c9ad6... docs(policy): WIP refactor the policy engine docs for GA
 
 ```bash
 hal config deploy
@@ -104,9 +93,6 @@ The Policy Engine supports the following OPA server deployments:
     
 ## Creating OPA Policies with a ConfigMap
 
-<<<<<<< HEAD
-### OPA Specifics
-=======
 If you want to create OPA policies via ConfigMap, you can use the below manifest. This example creates a namespace called `opa` and sets up permissions so that OPA can read ConfigMaps.
 
 ```yaml
@@ -227,7 +213,6 @@ spec:
 ```
 
 ## OPA Specifics
->>>>>>> 22c9ad6... docs(policy): WIP refactor the policy engine docs for GA
 
 The Policy Engine uses [OPA's Data API](https://www.openpolicyagent.org/docs/latest/rest-api/#data-api) to check pipeline configurations against OPA policies that you set. 
 
@@ -249,15 +234,12 @@ At a high level, adding policies to OPA is a two-step process:
 
 ### Sample OPA Policy
 
-<<<<<<< HEAD
-=======
 **Step 1. Create Policies**
 
 The following OPA policy enforces two requirements: 
 * The first policy requires every pipeline with more than one stage to have a manual judgement stage at some phase 
 * The second policy requires any stages that are a "deploy" type to have notifications enabled.
 
->>>>>>> 22c9ad6... docs(policy): WIP refactor the policy engine docs for GA
 ```
 # manual-judgment-and-notifications.rego
 package opa.pipelines
@@ -273,22 +255,6 @@ deny["deploy stages must have notifications"] {
   stage = deploy_stages[_]
   not stage["notifications"]
 }
-<<<<<<< HEAD
-
-```
-
-This policy can be added to OPA with this API request (replace the endpoint with your OPA endpoint):
-
-```bash
-curl -X PUT \
-  -H 'content-type:text/plain' \
-  -v \
-  --data-binary @manual-judgment-and-notifications.rego \
-  http://opa.spinnaker:8181/v1/policies/policy-01
-```
-
-Note: you must use the `--data-binary` flag, not the `-d` flag.
-=======
 ```
 Add the two policies to a file named `manual-judgment-and-notifications.rego`
 
@@ -332,4 +298,3 @@ deny["Every pipeline must have a Manual Judgment stage"] {
   0 == 1
 }
 ```
->>>>>>> 22c9ad6... docs(policy): WIP refactor the policy engine docs for GA
