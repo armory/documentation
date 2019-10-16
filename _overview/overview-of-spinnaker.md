@@ -13,7 +13,7 @@ permalink: '/'
 
 Spinnaker is an open source, multi-cloud Continuous Delivery and Deployment platform that provides a single pane of glass with visibility across your deployment for deployment status, infrastructure, security and compliance, and metrics. It uses pipelines, flexible and customizable series of deployment stages, to fit a variety of cloud deployment needs.
 
-Spinnaker can deploy to and manage clusters across Amazon Web Services (AWS), Kubernetes, and Google Cloud Platform (GCP) with full feature compatibility for those cloud providers. Additionally, Spinnaker can deploy to Cloud Foundry, and full integration with Microsoft Azure is currently underway.
+Spinnaker can deploy to and manage clusters across Amazon Web Services (AWS), Kubernetes, and Google Cloud Platform (GCP). More functionality is being added all the time. For example, work is being done to improve integrations with all cloud providers, including Cloud Foundry and Microsoft Azure.
 
 Spinnaker is an open source multi-cloud Continuous Delivery and Deployment tool started by Netflix for fast and stable deployments.
 
@@ -43,24 +43,21 @@ Spinnaker enables safer and faster deployments by facilitating the following:
 Shipping changes more frequently allows developers to gather real user feedback sooner, enabling them to iterate and build based on actual input from customers. Additionally, Spinnaker abstracts away much of the cloud configuration details, giving developers more time to focus on meaningful tasks instead of infrastructure details.
 
 
-## What Armory Spinnaker Does
-
 ## What a Typical Workflow Looks Like
 
-
-A typical work flow with Armory Spinnaker starts with baking a Linux-based machine image. This image along with your launch configurations define an immutable infrastructure that you can use to deploy to your cloud provider with Spinnaker. After the deployment, run your tests, which can be integrated with Spinnaker and automatically triggered. Based on your deployment strategy and any criteria you set, go live with the build.
+A typical work flow with Spinnaker starts with baking a Linux-based machine image. This image along with your launch configurations define an immutable infrastructure that you can use to deploy to your cloud provider with Spinnaker. After the deployment, run your tests, which can be integrated with Spinnaker and automatically triggered. Based on your deployment strategy and any criteria you set, go live with the build.
 
 ## What Armory Spinnaker Is
 
 Armory Spinnaker is an enterprise-grade distribution of Spinnaker that forms the core of Armory's Platform. It is preconfigured and runs in your Kubernetes cluster. The platform is an extension of open source Spinnaker and includes all those benefits as well as the following:
-- Pipeline as Code (Dinghy) allows you to store Spinnaker pipelines in Github and manage them like you would manage code, including version control, templatization, and modularization. Combine all these to rapidly and repeatably scale pipelines in your Spinnaker deployment.
+- Pipeline as Code (Dinghy) allows you to store Spinnaker pipelines in Github and manage them like you would manage code, including version control, templatization, and modularization. Spinnaker pipelines are flexible and customizable series of deployment stages. Combine all these to rapidly and repeatably scale pipelines in your Spinnaker deployment.
 - Armory Halyard Installer to help you configure, deploy, and update Spinnaker
 - Certified Pipelines give you the ability to automate and enforce policies, such as load testing and security scanning.
 - Policy Engine to help you with compliance requirements.
 - SLA Dashboards help quantify an application's general health.
 - Integrations with many of your existing tools, such as Terraform. For a full list, see [Integrations](https://www.armory.io/armory-integrations/.)
 
-## Need More help?
+## Need More Help?
 
 If you have questions, comments or suggestions about this documentation *(especially if anything is unclear)*, just chat with us by clicking on the icon on the bottom right of each page.  Our entire team monitors these chats and we'll respond as quickly as we can.
 
