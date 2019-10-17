@@ -12,7 +12,7 @@ order: 130
 This guide should include:
 
 * `hal armory` commands to enable and configure "Pipelines as code" feature
-* Setting up GitHub or Bitbucket/Stash webhooks to work with the "Pipelines as code" feature
+* Setting up GitHub, GitLab, or Bitbucket/Stash webhooks to work with the "Pipelines as code" feature
 
 ## Overview
 To get an overview of Pipelines as code, check out the [user guide](/spinnaker/using_dinghy)
@@ -28,7 +28,7 @@ hal armory dinghy enable
 
 * Create a personal access token (in either [GitHub](https://github.com/settings/tokens) or Bitbucket/Stash) that has read access to all repos where `dinghyfile`s and `module`s reside.
 
-* Get your Github or Bitbucket/Stash "org" where the app repos and templates reside. For example if your repo is `armory-io/dinghy-templates`, your `template-org` would be `armory-io`.
+* Get your Github, GitLab or Bitbucket/Stash "org" where the app repos and templates reside. For example if your repo is `armory-io/dinghy-templates`, your `template-org` would be `armory-io`.
 
 * Get the name of the repo containing modules. . For example if your repo is `armory-io/dinghy-templates`, your `template-repo` would be `dinghy-templates`.
 
@@ -61,6 +61,12 @@ Note: If you're using Bitbucket Server, update the endpoint to include the api e
 You'll need to setup webhooks for each project that has the dinghyfile or module separately. Make the webhook POST to: `https://spinnaker.your-company.com:8084/webhooks/git/stash`. If you're using stash `<v3.11.6`, you'll need to install the following [webhook plugin](https://marketplace.atlassian.com/plugins/com.atlassian.stash.plugin.stash-web-post-receive-hooks-plugin/server/overview) to be able to setup webhooks.
 
 ### GitLab Example
+
+**Requirements**
+
+GitLab with Pipelines as Code requires Halyard 1.7.2 or later.
+
+**Example**
 
 ```bash
 hal armory dinghy edit \
