@@ -117,7 +117,7 @@ The following solutions assume the that you can use `kubectl` to access the clus
 
 You can run Halyard as a `Deployment` within the cluster that runs Spinnaker if the following conditions are true:
 
-* You cannot run Halyard directly on your machine. This might be because the local machine cannot run Docker or is not running OSX.
+* You cannot run Halyard directly on your machine. This might be because the local machine cannot run Docker.
 * You have `kubectl` access to the cluster you are deploying to
 
 The `halyard-deployment.yml`manifest file can be found here: https://gist.github.com/imosquera/e6b42a187bd921dbb8a61e523cf568d8
