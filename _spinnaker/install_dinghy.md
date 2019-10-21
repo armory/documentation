@@ -127,7 +127,7 @@ If you want to disable lock pipelines in the UI before overwriting changes, add 
 
 #### Slack Notifications
 
-You can configure Dinghy to send pipeline update results to Slack:
+If you have configured Spinnaker to send Slack notifications for pipeline events (documentation [here](/spinnaker-install-admin-guides/slack-notifications)), you can configure Dinghy to send pipeline update results to Slack:
 
 ```bash
 $ hal armory dinghy slack enable --channel my-channel
