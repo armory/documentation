@@ -35,8 +35,8 @@ Then we'll grant authorization to the `clouddriver_service` and `clouddriver_mig
 
   GRANT
     SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX, ALTER, LOCK TABLES, EXECUTE, SHOW VIEW
-  ON `orca`.*
-  TO `clouddriver_migrate'@'%';
+  ON `clouddriver`.*
+  TO `clouddriver_migrate`@'%';
 ```
 
 The above configuration grants authorization from any host. You can restrict it to the cluster in which Spinnaker runs by replacing the `%` with the IP address of Clouddriver pods from MySQL.
