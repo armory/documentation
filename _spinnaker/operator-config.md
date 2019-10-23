@@ -42,7 +42,7 @@ spec:
 **spec.expose**: This section contains configuration for exposing Spinnaker.
 
 
-- `spec.expose.type`: How Spinnaker will be exposed. Currently only `service` is supported, which will use Kubernetes services to expose Spinnaker.
+- `spec.expose.type`: How Spinnaker will be exposed. Currently, only `service` is supported, which will use Kubernetes services to expose Spinnaker.
 - `spec.expose.service.type`: Should match a valid Kubernetes service type (i.e. `LoadBalancer`, `NodePort`, `ClusterIP`).
 - `spec.expose.service.annotations`: Map containing any annotation to be added to Gate (API) and Deck (UI) services.
 - `spec.expose.service.publicPort`: Integer allowing you to change the listening port.
@@ -64,7 +64,7 @@ spec:
       name: spinconfig-v001
 ```
 
-### Exposing Spinnaker with public LoadBalancer services on EKS
+### Exposing Spinnaker with Public LoadBalancer Services on EKS
 
 ```yaml
 apiVersion: spinnaker.armory.io/v1alpha1
