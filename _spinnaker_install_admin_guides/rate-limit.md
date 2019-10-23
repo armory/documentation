@@ -34,7 +34,7 @@ There are several things you can do to help reduce the effects of throttling:
 
 ## Fine Grained Rate Limits
 
-Spinnaker queries your cloud provider (AWS, GCP, Azure, Kubernetes, etc) frequently to understand the state of your existing infrastructure and current deployments.  However, by doing so you might run into rate limits imposed by the cloud provider. To help avoid this Spinnaker provides controls to limit the number of requests it generates. The unit used for these controls is "requests per second" (a double float value). Global defaults are `10.0`.
+Spinnaker queries your Cloud Provider (AWS, GCP, Azure, Kubernetes, etc) frequently to understand the state of your existing infrastructure and current deployments.  However, by doing so you might run into rate limits imposed by the Cloud Provider. To help avoid this Spinnaker provides controls to limit the number of requests it generates. The unit used for these controls is "requests per second" (a double float value). Global defaults are `10.0`.
 
 Below is an example configuration for global rate limits for all services that you would place in `~/.hal/<deployment-name>/profiles/clouddriver-local.yml`:
 
@@ -44,7 +44,7 @@ serviceLimits:
     rateLimit: 10.0   # default max req/second
 ```
 
-If you have multiple cloud providers, you can limit each one differently:
+If you have multiple Cloud Providers, you can limit each one differently:
 
 ```yml
 serviceLimits:
@@ -135,33 +135,7 @@ serviceLimits:
         rateLimit: 10.0   # default max req/second
 ```
 
-Using these rate limits will help you avoid hitting the rate limits and potentially make Spinnaker more responsive as the cloud provider clients won't have to implement back-off strategy to continue to query the infrastructure. 
-
-<!--
-  Armory's halyard does not currently provide any defaults
-  You will need to set your own defaults, as it differs for each installation
-
-### Default Service Limits
-
-The Armory Spinnaker distribution comes with the following default service limits:
-
-```yml
-serviceLimits:
-  cloudProviderOverrides:
-    aws:
-      rateLimit: 10.0   # default max req/second
-
-  implementationLimits:
-    AmazonAutoScaling:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AmazonElasticLoadBalancing:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-```
-
-If you require a higher rate limit on these APIs then you will need to overwrite them directly. Overwriting the global service default is not sufficient.
--->
+Setting rate limits for Spinnaker can help you avoid hitting the rate limits of your Cloud Provider. In addition, properly tuned rate limits offer a potential side-benefit of making Spinnaker more responsive by minimizing the frequency in which Cloud Provider clients find themselves in a back-off strategy for querying the infrastructure. 
 
 ## Request Retry
 
