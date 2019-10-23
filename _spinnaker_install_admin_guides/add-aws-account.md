@@ -13,6 +13,7 @@ redirect_from:
 Once you have (OSS or Armory) Spinnaker up and running in Kubernetes, you'll want to start adding deployment targets.
 
 Note: This document assumes the following conditions are true:
+
 * Spinnaker was installed with Halyard.
 * You have access to your current halconfig (and a way to operate `hal` against it).
 * You have a way to create AWS permissions, users, and roles.
