@@ -17,7 +17,7 @@ Spinnaker Operator is a Kubernetes operator for Spinnaker that makes it easier t
 Operator has two distinct modes you can install and use:
 
 - **Basic**: Operator in basic mode installs Spinnaker into a single namespace without `ValidatingAdmissionWebhook` for doing preflight checks.
-- **Cluster**: Operator in cluster mode installs Spinnaker across multiple namespaces with with `ValidatingAdmissionWebhook` for doing preflight checks. This mode requires a `ClusterRole`.
+- **Cluster**: Operator in cluster mode installs Spinnaker across multiple namespaces with `ValidatingAdmissionWebhook` for doing preflight checks. This mode requires a `ClusterRole`.
 
 # Operator Requirements
 
@@ -36,7 +36,7 @@ Operator does not currently support the following:
 
 # Install Operator
 
-## Before You Start
+## Download operator release files
 
 Download CRDs and example manifests from the [latest stable release](https://github.com/armory-io/spinnaker-operator/releases).
 
@@ -56,8 +56,6 @@ $ kubectl apply -f deploy/crds/spinnaker_v1alpha1_spinnakerservice_crd.yaml
 
 
 ## Installing Operator in Basic Mode
-The sample files discussed in this procedure can be found in the Git repository you cloned.
-
 To install Operator in basic mode, run:
 
 ```bash
@@ -79,11 +77,9 @@ spinnaker-operator-7cd659654b-4vktl   2/2           Running      0             6
 ```
 
 ## Installing Operator in Cluster Mode
-The sample files discussed in this procedure can be found in the Git repository you cloned.
-
 To install Operator for cluster mode, perform the following steps:
 
-1. Add the namespace you want to deploy to `deploy/operator/cluster/role_binding.yml`. For example, the following entry deploys Spinnaker to a namespace called `my-app`:
+1. Add the namespace you want to deploy to `deploy/operator/cluster/role_binding.yaml`. For example, the following entry deploys Spinnaker to a namespace called `my-app`:
 
     ```yaml
     kind: ClusterRoleBinding
@@ -100,7 +96,7 @@ To install Operator for cluster mode, perform the following steps:
 ​​      apiGroup: rbac.authorization.k8s.io
     ```
 
-2. Save the changes to `role_binding.yml`.
+2. Save the changes to `role_binding.yaml`.
 3. Run the following command:
 
     ```bash
@@ -123,9 +119,9 @@ spinnaker-operator-7cd659654b-4vktl      2/2           Running      0           
 
 # Installing Spinnaker Using Operator
 
-After you install Operator, you can create a `configMap` and `SpinnakerService` to install Spinnaker.
+After you install Operator, you can create a `ConfigMap` and `SpinnakerService` to install Spinnaker.
 
-You can find a sample configMap in the `deploy/spinnaker/examples` directory of the cloned Git repository. Change the parameters you need (especially the `persistentStorage` section). To perform a basic install with Operator and the example configMap, run the following command:
+You can find a sample ConfigMap in the `deploy/spinnaker/examples/basic` directory of the downloaded release. Change the parameters you need (especially the `persistentStorage` section). To perform a basic install with Operator and the example ConfigMap, run the following command:
 
 ```bash
 $ kubectl -n <spin_namespace> apply -f deploy/spinnaker/examples/basic
@@ -133,14 +129,14 @@ $ kubectl -n <spin_namespace> apply -f deploy/spinnaker/examples/basic
 
 `<spin_namespace>` is the `namespace` where you want to deploy Spinnaker.
 
-The example uses Operator in basic mode with the example configMap to deploy Spinnaker 2.15.3 with the following attributes:
+The example uses Operator in basic mode with the example ConfigMap to deploy Spinnaker 2.15.3 with the following attributes:
 
 - No connected accounts
 - Persistent storage
 
-If you want to change the attributes of the example deployment, modify `/deploy/spinnaker/examples/basic/spin-config.yaml`. For example, if you change the value of the `version` field to `2.16.0`, the example configMap installs version 2.16.0.
+If you want to change the attributes of the example deployment, modify `deploy/spinnaker/examples/basic/spin-config.yaml`. For example, if you change the value of the `version` field to `2.16.0`, the example ConfigMap installs version 2.16.0.
 
-Detailed description of the configMap can be found [here](../operator-config).
+Detailed description of the ConfigMap can be found [here](../operator-config).
 
 
 # Upgrading Spinnaker Using Operator
@@ -148,16 +144,16 @@ Detailed description of the configMap can be found [here](../operator-config).
 To upgrade an existing Spinnaker deployment using the Operator, perform the following steps:
 
 1. Change the `version` field in your `spin-config.yaml` file to the target version for the upgrade.
-2. Apply the updated configMap:
+2. Apply the updated ConfigMap:
 
     ```bash
     $ kubectl <spin_namespace> apply -f /path/to/your/spin-config.yaml
     ```
 
-    For example, to apply an updated configMap for the example `spin-config.yaml` file, run the following command:
+    For example, to apply an updated ConfigMap for the example `spin-config.yaml` file, run the following command:
 
     ```bash
-    $ kubectl <spin_namespace> apply -f /deploy/spinnaker/examples/basic/spin-config.yaml
+    $ kubectl <spin_namespace> apply -f deploy/spinnaker/examples/basic/spin-config.yaml
     ```
 
     Replace `<spin_namespace>` with the namespace of the existing Spinnaker deployment occupies.
@@ -184,10 +180,10 @@ To upgrade an existing Spinnaker deployment using the Operator, perform the foll
 
     Once the upgrade is complete, you can view information related to your Spinnaker deployment with the following command:
     ```bash
-    $ kubectl -n <namespace> get svc
+    $ kubectl -n <spin_namespace> get svc
     ```
 
-    The command returns information about the running Spinnaker services, including the URL for Deck (`spin-deck`).
+    The command returns information about the running Spinnaker services.
 
 
 # Managing Spinnaker Using Operator
@@ -196,7 +192,7 @@ Operator allows you to use `kubectl` to manager you Spinnaker deployment.
 
 **Listing Spinnaker Instances**
 ```bash
-$ kubectl get spinnakerservice -- all-namespaces
+$ kubectl get spinnakerservice --all-namespaces
 ```
 The short name `spinsvc` is also available.
 
@@ -212,7 +208,7 @@ $ kubectl -n <namespace> delete spinnakerservice spinnaker
 
 # Custom Halyard Configuration
 
-To override Halyard's configuration, create a `configMap` with the configuration changes you need:
+To override Halyard's configuration, create a `ConfigMap` with the configuration changes you need:
 
 ```yaml
 apiVersion: v1
@@ -239,9 +235,9 @@ spec:
   template:
     spec:
       containers:
-      - image: armory/armory-operator:latest
+      - name: spinnaker-operator
         ...
-      - image: armory/halyard-armory:operator-latest
+      - name: halyard
         ...
         volumeMounts:
         - mountPath: /opt/spinnaker/config/halyard-local.yml
