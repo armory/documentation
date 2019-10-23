@@ -10,7 +10,9 @@ redirect_from:
   - /spinnaker-install-admin-guides/add_kubernetes_account/
 ---
 
-Once you have (OSS or Armory) Spinnaker up and running in Kubernetes, you'll want to start adding deployment targets.  *(This document assumes Spinnaker was installed with halyard, that you have access to your current halconfig (and a way to operate `hal` against it), and that you have a kubeconfig and `kubectl` with permissions to create the relevant Kubernetes entities (`service account`, `role`, and `rolebinding`)*
+Once you have (OSS or Armory) Spinnaker up and running in Kubernetes, you'll want to start adding deployment targets.
+
+*This document assumes Spinnaker was installed with halyard, that you have access to your current halconfig (and a way to operate `hal` against it), and that you have a kubeconfig and `kubectl` with permissions to create the relevant Kubernetes entities (`service account`, `role`, and `rolebinding`)*
 
 _This document only covers the Kubernetes V2 provider_
 
@@ -21,7 +23,7 @@ _This document only covers the Kubernetes V2 provider_
 
 This document will guide you through the following:
 
-* Creating the namespace that the Service Account will live in (if it does not yet exist)
+* Creating the namespace in which the Service Account will live (if it does not yet exist)
 * Creating the service account in the Service Account namespace
 * If granting cluster admin (`cluster-admin`), a clusterrolebinding attaching the `cluster-admin` ClusterRole to the service account
 * If granting namespace-specific access, the following:
@@ -53,7 +55,7 @@ At a high level, Spinnaker operates in the following way when deploying to Kuber
 * If the kubeconfig is properly referenced and available from Halyard, halyard will take care of the following for you:
   * Creating a Kubernetes secret (with a dynamically-generated name) containing your kubeconfig in the namespace where Spinnaker lives
   * Dynamically generating a `clouddriver.yml` file (placed locally in `.hal/default/staging/clouddriver.yml` that properly references the kubeconfig from where it is mounted within the Clouddriver container
-  * Creating/Updating the Kubernetes Deployment (`spin-clouddriver`) which runs Clouddriver so that it is aware of the secret and it is mounted properly in the Clouddriver pod (it will be placed in `/home/spinnaker/.hal/default/staging/dependences/<some-filename>`)
+  * Creating/Updating the Kubernetes Deployment (`spin-clouddriver`) which runs Clouddriver so that it is aware of the secret and properly mounts it in the Clouddriver pod (it will be placed in `/home/spinnaker/.hal/default/staging/dependencies/<some-filename>`)
   * Creating a secret containing `clouddriver.yml` (and optionally, `clouddriver-local.yml`) and including it in the spin-clouddriver deployment
 
 So here are some takeaways and guiding principles that result from the above:
@@ -180,7 +182,7 @@ KUBECONFIG_DIRECTORY=~/.secret/
 cp ${KUBECONFIG_FILE} ${KUBECONFIG_DIRECTORY}
 export KUBECONFIG_FULL=$(realpath ${KUBECONFIG_DIRECTORY}${KUBECONFIG_FILE})
 
-# Enable the kubernetes provider - this is probably already be enabled, if Spinnaker is installed in Kubernetes
+# Enable the kubernetes provider - this is probably already enabled, if Spinnaker is installed in Kubernetes
 hal config provider kubernetes enable
 # Enable artifacts; not strictly neccessary for Kubernetes but will be useful in general
 hal config features edit --artifacts true
