@@ -33,7 +33,7 @@ Note: This process is easier in Halyard `v1.10` and later. In these later versio
 ### Add a Sidecar for Token Refresh
 
 In your `~/.hal/config`, update the `deploymentEnvironment.sidecars` section:
-```
+```yaml
   deploymentEnvironment:
     sidecars:
       spin-clouddriver:
@@ -45,12 +45,12 @@ In your `~/.hal/config`, update the `deploymentEnvironment.sidecars` section:
           mountPath: /opt/config/ecr-token-refresh
 ```
 
-### Define ECR registry
+### Define an ECR registry
 
 
 
 Create `~/.hal/<deployment>/profiles/clouddriver-local.yml`:
-```
+```yaml
 dockerRegistry:
   enabled: true
   accounts:
@@ -60,9 +60,9 @@ dockerRegistry:
     passwordFile: /etc/passwords/my-ecr-registry.pass
 ```
 
-Create a `config.yaml`
+Create a `config.yaml` to be used as a configmap
 
-```
+```yaml
 interval: 30m # defines refresh interval
 registries: # list of registries to refresh
   - registryId: "<aws-account-id>"
@@ -74,16 +74,16 @@ Note: You can configure multiple registries here by adding another registry to b
 
 
 Apply it to the cluster with:
-```
+```bash
 kubectl -n <namespace> create configmap token-refresh-config --from-file <config.yaml location>
 ```
 
 ### Update your Spinnaker installation
-```
+```bash
 hal deploy apply --service-names clouddriver
 ```
 
 
-Now you can add ECR as a docker registry in the configuration stage
+Success! Now you will be able to use ECR as a docker registry in the configuration stage.
 
 ![](/images/Image 2018-12-18 at 2.02.02 PM.png)
