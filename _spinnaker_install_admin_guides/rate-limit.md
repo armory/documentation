@@ -34,7 +34,7 @@ There are several things you can do to help reduce the effects of throttling:
 
 ## Fine Grained Rate Limits
 
-Spinnaker queries your cloud provider (AWS, GCP, Azure, Kubernetes, etc) frequently to understand the state of your existing infrastructure and current deployments.  However, by doing so you might run into rate limits imposed by the cloud provider. To help avoid this Spinnaker provides controls to limit the number of requests it generates. The unit used for these controls is "requests per second" (a double float value). Global defaults are `10.0`.
+Spinnaker queries your cloud provider (AWS, GCP, Azure, Kubernetes, etc) frequently to understand the state of your existing infrastructure and current deployments.  However, by doing so you might run into rate limits imposed by the cloud provider. To help avoid this Spinnaker provides controls to limit the number of requests it generates. The unit used for these controls is "requests per second" (a double float value). Global defaults are `10.0` max requests per second.
 
 Below is an example configuration for global rate limits for all services that you would place in `~/.hal/<deployment-name>/profiles/clouddriver-local.yml`:
 
@@ -64,19 +64,26 @@ serviceLimits:
       rateLimit: 10.0   # default max req/second
 ```
 
-And finally, you can have more fine-grained control for particular AWS endpoints that might have a different rate limits. This list was generated from the [AmazonClientProvider.java@4179f7f](https://github.com/spinnaker/clouddriver/blob/4179f7fd8a5cd2cb644179f7f/clouddriver-aws/src/main/groovy/com/netflix/spinnaker/clouddriver/aws/security/AmazonClientProvider.java) on 02/22/2019 by filtering for `proxyHandlerBuilder.getProxyHandler(*.class` classes.
+And finally, you can have more fine-grained control for particular AWS endpoints that might have a different rate limits. 
 
 We've found that this formula works pretty well:
 ```
 max_req_second = num_of_x_resources / clouddriver_30s_poll_interval
 ```
 
-For example, if we have 90 load balancers, clouddriver polling every 30 seconds, then we'll end up with a rate limit of 3 reqs/second for `AmazonElasticLoadBalancing`.
+For example, if we have 90 load balancers and clouddriver polls every 30 seconds, then we'll end up with a rate limit of 3 reqs/second for `AmazonElasticLoadBalancing`.
 
+Here's the list of rate limits you can adjust created from [AmazonClientProvider.java@v5.36.0](https://github.com/spinnaker/clouddriver/blob/v5.36.0/clouddriver-aws/src/main/groovy/com/netflix/spinnaker/clouddriver/aws/security/AmazonClientProvider.java) on 05/14/2019 by using the regex `\w+\.class`:
 ```yml
 serviceLimits:
   implementationLimits:
     AWSApplicationAutoScaling:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AWSApplicationAutoScalingClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AWSLambda:
       defaults:
         rateLimit: 10.0   # default max req/second
     AWSLambda:
@@ -85,19 +92,88 @@ serviceLimits:
     AWSLambdaAsync:
       defaults:
         rateLimit: 10.0   # default max req/second
+    AWSLambdaAsync:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AWSLambdaAsyncClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AWSLambdaAsyncClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AWSLambdaClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AWSLambdaClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
     AWSSecretsManager:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AWSSecretsManagerClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AWSServiceDiscovery:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AWSServiceDiscoveryClientBuilder:
       defaults:
         rateLimit: 10.0   # default max req/second
     AWSShield:
       defaults:
         rateLimit: 10.0   # default max req/second
+    AWSShield:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AWSShieldClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AWSShieldClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
     AmazonAutoScaling:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonAutoScaling:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonAutoScalingClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonAutoScalingClientBuilder:
       defaults:
         rateLimit: 10.0   # default max req/second
     AmazonCloudFormation:
       defaults:
         rateLimit: 10.0   # default max req/second
+    AmazonCloudFormationClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
     AmazonCloudWatch:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonCloudWatch:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonCloudWatchClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonCloudWatchClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonEC2ClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonEC2ClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonEC2ClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonEC2:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonEC2:
       defaults:
         rateLimit: 10.0   # default max req/second
     AmazonEC2:
@@ -106,19 +182,76 @@ serviceLimits:
     AmazonECR:
       defaults:
         rateLimit: 10.0   # default max req/second
+    AmazonECRClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
     AmazonECS:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonECSClientBuilder:
       defaults:
         rateLimit: 10.0   # default max req/second
     AmazonElasticLoadBalancing:
       defaults:
         rateLimit: 10.0   # default max req/second
+    AmazonElasticLoadBalancing:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonElasticLoadBalancing:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonElasticLoadBalancing:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonElasticLoadBalancingClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonElasticLoadBalancingClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonElasticLoadBalancingClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonElasticLoadBalancingClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
     AmazonIdentityManagement:
       defaults:
         rateLimit: 10.0   # default max req/second
     AmazonIdentityManagement:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonIdentityManagement:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonIdentityManagement:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonIdentityManagementClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonIdentityManagementClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonIdentityManagementClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonIdentityManagementClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonRoute53ClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonRoute53ClientBuilder:
       defaults:
         rateLimit: 10.0   # default max req/second
     AmazonRoute53:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonRoute53:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonS3ClientBuilder:
       defaults:
         rateLimit: 10.0   # default max req/second
     AmazonS3:
@@ -127,41 +260,38 @@ serviceLimits:
     AmazonSNS:
       defaults:
         rateLimit: 10.0   # default max req/second
+    AmazonSNS:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonSNSClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonSNSClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
     AmazonSQS:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonSQSClientBuilder:
       defaults:
         rateLimit: 10.0   # default max req/second
     AmazonSimpleWorkflow:
       defaults:
         rateLimit: 10.0   # default max req/second
-```
-
-Using these rate limits will help you avoid hitting the rate limits and potentially make Spinnaker more responsive as the cloud provider clients won't have to implement back-off strategy to continue to query the infrastructure. 
-
-<!--
-  Armory's halyard does not currently provide any defaults
-  You will need to set your own defaults, as it differs for each installation
-
-### Default Service Limits
-
-The Armory Spinnaker distribution comes with the following default service limits:
-
-```yml
-serviceLimits:
-  cloudProviderOverrides:
-    aws:
-      rateLimit: 10.0   # default max req/second
-
-  implementationLimits:
-    AmazonAutoScaling:
+    AmazonSimpleWorkflow:
       defaults:
         rateLimit: 10.0   # default max req/second
-    AmazonElasticLoadBalancing:
+    AmazonSimpleWorkflowClientBuilder:
+      defaults:
+        rateLimit: 10.0   # default max req/second
+    AmazonSimpleWorkflowClientBuilder:
       defaults:
         rateLimit: 10.0   # default max req/second
 ```
 
-If you require a higher rate limit on these APIs then you will need to overwrite them directly. Overwriting the global service default is not sufficient.
--->
+Using these settings will help you avoid hitting the AWS rate limits and potentially make Spinnaker more responsive as the cloud provider clients won't have to implement back-off strategy to continue to query the infrastructure. 
+
+
 
 ## Request Retry
 
@@ -172,30 +302,28 @@ aws:
   client:
     maxErrorRetry: 3 # default
 ```
-This is the number of retries before failing the request. It is on an exponential backoff maxing out at 20 seconds.
+This is the number of retries before failing the request. It's used with an exponential backoff, maxing out at 20 seconds.
 
 
 
 # Fiat hitting rate limits
-If Fiat is configured to poll Github or Google, you may end up seeing rate limits when Fiat does it's polling for user groups. Some symptoms you'll see is:
+If Fiat is configured to poll Github or Google and you may end up seeing rate limits when Fiat does it's polling for user groups. Some symptoms that you might see are:
 - You can't log into spinnaker anymore
 - Your Fiat logs contain lines similar to:
+  ```
+  GithubTeamsUserRolesProvider : [] HTTP 403 Forbidden. Rate limit info: X-RateLimit-Limit
+  GoogleDirectoryUserRolesProvider : [] Failed to fetch groups for user x: Rate Limit Exceeded
+  ```
 
-```
-GithubTeamsUserRolesProvider : [] HTTP 403 Forbidden. Rate limit info: X-RateLimit-Limit
-GoogleDirectoryUserRolesProvider : [] Failed to fetch groups for user x: Rate Limit Exceeded
-```
-
-You'll need to adjust poll cycle time and/or timeouts ([defaults here](https://github.com/spinnaker/fiat/blob/master/fiat-roles/src/main/java/com/netflix/spinnaker/fiat/config/CatsSchedulerConfig.java#L54-L58)) in `~/.hal/<deployment-name>/profiles/fiat-local.yml`:
+You'll need to adjust poll cycle time and/or timeouts in `~/.hal/<deployment-name>/profiles/fiat-local.yml`, see ([FiatServerConfigurationProperties.java for more details](https://github.com/spinnaker/fiat/blob/v1.7.0/fiat-web/src/main/java/com/netflix/spinnaker/fiat/config/FiatServerConfigurationProperties.java)).:
 ```yml
 fiat:
   writeMode:
     # Poll cycle interval, "check if a user belongs to a group every X ms"
-    # syncDelayMs:   # the default 600000 (10 mins) is usually fine
+    syncDelayMs:  600000 # the default 600000 (10 mins) is usually fine
 
-    # The amount of time to wait for a poll job to complete,
-    # the more users there are, the longer the job takes.
-    syncDelayTimeoutMs: 30000 # (default is 30 seconds)
+    # How much time to between retries of dependent resource providers if they are down.
+    retryIntervalMs: 10000
 ```
 
 
