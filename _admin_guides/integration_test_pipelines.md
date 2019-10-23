@@ -18,7 +18,7 @@ Using Spinnaker's orchestration engine, we can quickly create pipelines that exe
 
 ![integration test pipeline](/images/Image 2018-04-05 at 9.25.12 PM.png)
 
-For each stage in the pipeline we're just calling other pipelines that contain the real functionality. This essentially makes the master pipeline your "test suite runner" and reports failures.
+For each stage in the pipeline, we're calling other pipelines that contain the real functionality. This essentially makes the master pipeline your "test suite runner" and reports failures.
 
 ![](/images/Image 2018-04-06 at 11.32.51 AM.png)
 
@@ -30,12 +30,12 @@ The tests should run on a [pre-prod or staging environment](https://docs.armory.
 # Types of Test Pipelines
 These pipelines will be based on your usage of Spinnaker and should be similar to your production pipelines.  You won't need to deploy into your production accounts to validate Spinnaker functionality but you should deploy into multiple accounts from your pre-prod/dev environments. Below are some of the potential pipeline/stages you can consider.
 
-* **Bake and Deploy** - In this pipeline you'll want to test your Rosco and Packer template configuration to make sure bakes happen properly as well as feed the resulting AMI to a deploy stage. The application yoo choose to deploy should be a simple application.  We use our [Hello Deploy application](https://github.com/armory-io/armory-hello-deploy) which has deb/rpm packaging as well as a docker image for your containerized deployments.
+* **Bake and Deploy** - In this pipeline, you'll want to test your Rosco and Packer template configuration to make sure bakes happen properly as well as feed the resulting AMI to a deploy stage. The application yoo choose to deploy should be a simple application.  We use our [Hello Deploy application](https://github.com/armory-io/armory-hello-deploy) which has deb/rpm packaging as well as a docker image for your containerized deployments.
 >Note: If you're using multiple regions make sure to test this functionality as it may expose networking issues and invalid templates.
 
 ![](/images/Image 2018-04-06 at 11.49.13 AM.png)
 
-* **Cluster/Server Group Operations** - For each cloud provider, you will want to ensure Spinnaker's core functionality is fully functional (lol) and valided with your accounts. We can utilize these stages, where are comprised of sub-tasks where are used elsewhere in Spinnaker. Some examples include:
+* **Cluster/Server Group Operations** - For each cloud provider, you will want to ensure Spinnaker's core functionality is fully functional and valided with your accounts. We can utilize these stages, which are comprised of sub-tasks that are used elsewhere in Spinnaker. Some examples include:
 - Enable/disable Cluster/Server Group
 - Destroy Cluster/Server Group
 - Scale Down Cluster
