@@ -10,7 +10,9 @@ redirect_from:
   - /spinnaker-install-admin-guides/add_aws_account/
 ---
 
-Once you have (OSS or Armory) Spinnaker up and running in Kubernetes, you'll want to start adding deployment targets.  *(This document assumes Spinnaker was installed with halyard, that you have access to your current halconfig (and a way to operate `hal` against it), and that you have a way to create AWS permissions, users, and roles*
+Once you have (OSS or Armory) Spinnaker up and running in Kubernetes, you'll want to start adding deployment targets.
+
+*Note: This document assumes Spinnaker was installed with halyard, that you have access to your current halconfig (and a way to operate `hal` against it), and that you have a way to create AWS permissions, users, and roles.*
 
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
@@ -22,13 +24,13 @@ This document will guide you through the following:
 * Understanding AWS deployment from Spinnaker
 
 * Configuring Spinnaker to use AWS IAM Instance Roles (if Spinnaker is running on AWS, either via AWS EKS or installed directly on EC2 instances)
-  * Creating a Managed Account IAM Role in each your target AWS Accounts
+  * Creating a Managed Account IAM Role in each of your target AWS Accounts
   * Creating the default BaseIamRole for use when deploying EC2 instances
   * Creating a Managing Account IAM Policy in your primary AWS Account
   * Adding the Managing Account IAM Policy to the existing IAM Instance Role on the AWS nodes
   * Configuring the Managed Accounts IAM Roles to trust the IAM Instance Role from the AWS nodes
   * Adding the Managed Accounts to Spinnaker via Halyard
-  * Adding/Enabling the AWS Cloudprovider to Spinnaker
+  * Adding/Enabling the AWS Cloud Provider to Spinnaker
 
 ## Background: Understanding AWS Deployment from Spinnaker
 
@@ -43,7 +45,7 @@ Spinnaker is able to deploy EC2 instances (via ASGs).
   * Run ECS Containers
   * Run AWS Lambda Actions (alpha/beta as of the time of this document)
   * Create AWS CloudFormation Stacks (alpha/beta as of the time of this document)
-* Clouddriver is configured with direct access to a **"Managing Account"** Policy (_it may be helpful to think of this as the **Master** or **Source** Policy_), which is accomplished on one of two ways:
+* Clouddriver is configured with direct access to a **"Managing Account"** Policy (_it may be helpful to think of this as the **Master** or **Source** Policy_), which is accomplished in one of two ways:
   * If Spinnaker is running in AWS (either in AWS EKS, or with Kubernetes nodes running in AWS EC2), the Managing Account Policy can be made available to Spinnaker by adding it to the AWS nodes (EC2 instances) where the Spinnaker Clouddriver pod(s) are running.
     * _(You can also use Kube2IAM or similar capabilities, but this is not covered in this document)_
   * An IAM User with access to the Managing Account Policy can be passed directly to Spinnaker via an Access Key and Secret Access Key, configured via Halyard
@@ -141,13 +143,13 @@ This document assumes the following:
 * If you want to add the IAM Role to Spinnaker via an Access Key/Secret Access Key, you have permissions to create an IAM User
 * If you want to add the IAM Role to Spinnaker via IAM instance profiles/policies, you have permissions to modify the IAM instance
 
-_All configuration with AWS in this document will be handled via the browser-based AWS Console.  All configurations could **alternately** be configured via the `aws` CLI, but this is not currently covered in this document._
+_All configuration with AWS in this document will be handled via the browser-based AWS Console.  All configurations could **alternatively** be configured via the `aws` CLI, but this is not currently covered in this document._
 
 Also - we will be granting AWS Power User Access to each of the Managed Account Roles.  You could optionally grant fewer permisisons, but those more limited permissions are not covered in this document.
 
-## Configuring Spinnaker to access AWS using an IAM User (with an Acess Key and Secret Access Key)
+## Configuring Spinnaker to access AWS using an IAM User (with an Acess Key ID and Secret Access Key)
 
-If you are not running Spinnaker on AWS, or if you don't want to use AWS IAM roles (or don't have the ability to modify the roles attached to your Kubernetes instances), you can create an AWS IAM user and provide its credentials to Clouddriver to allow Clouddriver to interact with the various AWS APIs across multiple AWS Accounts.
+If you are not running Spinnaker on AWS, or if you do not want to use AWS IAM roles (or don't have the ability to modify the roles attached to your Kubernetes instances), you can create an AWS IAM user and provide its credentials to Clouddriver to allow Clouddriver to interact with the various AWS APIs across multiple AWS Accounts.
 
 ### IAM User Part 1: Creating a Managed Account IAM Role in each your target AWS Accounts
 
@@ -155,7 +157,7 @@ In each account that you want Spinnaker to deploy to, you should create an IAM r
 
 For each account you want to deploy to, perform the following:
 
-1. Log into the browser-based AWS Console
+1. Log in to the browser-based AWS Console
 1. Navigate to the IAM page (click on "Services" at the top, then on "IAM" under "Security, Identity, & Compliance")
 1. Click on "Roles" on the left hand side
 1. Click on "Create role"
@@ -177,8 +179,8 @@ For each account you want to deploy to, perform the following:
        "Statement": [
            {
                "Action": [
-                 "iam:ListServerCertificates",
-                 "iam:PassRole"
+                   "iam:ListServerCertificates",
+                   "iam:PassRole"
                ],
                "Resource": [
                    "*"
@@ -220,7 +222,7 @@ In the account that Spinnaker lives in (i.e., the AWS account that owns the EKS 
 1. Navigate to the IAM page (click on "Services" at the top, then on "IAM" under "Security, Identity, & Compliance")
 1. Click on "Policies" on the left hand side
 1. Click on "Create Policy"
-1. Click on the "JSON" tab, and paste in this:
+1. Click on the "JSON" tab, and paste in the following:
 
    ```json
    {
@@ -312,18 +314,19 @@ For each account you want to deploy to, perform the following:
 
 ### IAM User Part 6: Adding the Managing Account User and Managed Accounts to Spinnaker via Halyard
 
-The Clouddriver pod(s) should be now able to assume each of the Managed Roles (Target Roles) in each of your Deployment Target accounts.  We need to configure Spinnaker to be aware of the accounts and roles its allowed to consume.  This is done via Halyard.
+The Clouddriver pod(s) should be now able to assume each of the Managed Roles (Target Roles) in each of your Deployment Target accounts.  We need to configure Spinnaker to be aware of the accounts and roles it is allowed to consume.  This is done via Halyard.
 
 For each of the Managed (Target) accounts you want to deploy to, perform the following from your Halyard instance:
 
 1. Run this command, **updating fields as follows**:
 
    * `AWS_ACCOUNT_NAME` should be a unique name which is used in the Spinnaker UI and API  to identify the deployment target.  For example, `aws-dev-1` or `aws-dev-2`
-   * `ACCOUNT_ID` should be the account ID for the Managed Role (Target Role) you are  assuming.  For example, if the role ARN is `arn:aws:iam::123456789012:role/ DevSpinnakerManagedRole`, then ACCOUNT_ID would be `123456789012`
-   * `ROLE_NAME` should be the full role name within the account, including the type of  object (`role`).  For example, if the role ARN is `arn:aws:iam::123456789012:role/ DevSpinnakerManagedRole`, then ROLE_NAME would be `role/DevSpinnakerManagedRole`
+   * `ACCOUNT_ID` should be the account ID for the Managed Role (Target Role) you are  assuming.  For example, if the role ARN is `arn:aws:iam::123456789012:role/DevSpinnakerManagedRole`, then ACCOUNT_ID would be `123456789012`
+   * `ROLE_NAME` should be the full role name within the account, including the type of  object (`role`).  For example, if the role ARN is `arn:aws:iam::123456789012:role/DevSpinnakerManagedRole`, then ROLE_NAME would be `role/DevSpinnakerManagedRole`
 
    ```bash
-   # Enter the account name you want Spinnaker to use to identify the deployment target,  the account ID, and the role name.
+   # Enter the account name you want Spinnaker to use to identify the deployment target, 
+   # as well as the account ID, and the role name.
    export AWS_ACCOUNT_NAME=aws-dev-1
    export ACCOUNT_ID=123456789012
    export ROLE_NAME=role/DevSpinnakerManagedRole
