@@ -12,7 +12,11 @@ redirect_from:
 
 Once you have (OSS or Armory) Spinnaker up and running in Kubernetes, you'll want to start adding deployment targets.
 
-*This document assumes Spinnaker was installed with halyard, that you have access to your current halconfig (and a way to operate `hal` against it), and that you have a kubeconfig and `kubectl` with permissions to create the relevant Kubernetes entities (`service account`, `role`, and `rolebinding`)*
+This document assumes the following conditions are true:
+
+* Spinnaker was installed with Halyard
+* You have access to your current halconfig (and a way to operate `hal` against it
+* You have a kubeconfig and `kubectl` with permissions to create the relevant Kubernetes entities (`service account`, `role`, and `rolebinding`)
 
 _This document only covers the Kubernetes V2 provider_
 
