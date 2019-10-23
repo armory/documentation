@@ -33,7 +33,7 @@ Note: This will become easier to do in 1.10, you will be able to use the `--pass
 ### Add a Sidecar for Token Refresh
 
 In your `~/.hal/config`, update the `deploymentEnvironment.sidecars` section:
-```
+```yaml
   deploymentEnvironment:
     sidecars:
       spin-clouddriver:
@@ -50,7 +50,7 @@ In your `~/.hal/config`, update the `deploymentEnvironment.sidecars` section:
 
 
 Create `~/.hal/<deployment>/profiles/clouddriver-local.yml`:
-```
+```yaml
 dockerRegistry:
   enabled: true
   accounts:
@@ -62,7 +62,7 @@ dockerRegistry:
 
 Create a `config.yaml`
 
-```
+```yaml
 interval: 30m # defines refresh interval
 registries: # list of registries to refresh
   - registryId: "<aws-account-id>"
@@ -74,12 +74,12 @@ Note: You can configure multiple registries here by adding another registry to b
 
 
 Apply it to the cluster with:
-```
+```bash
 kubectl -n <namespace> create configmap token-refresh-config --from-file <config.yaml location>
 ```
 
 ### Update your Spinnaker installation
-```
+```bash
 hal deploy apply --service-names clouddriver
 ```
 
