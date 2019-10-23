@@ -26,7 +26,7 @@ Since we'll be storing halyard configuration under source control, you need firs
 
 Create a new repository under source control with the following structure, copying your current Spinnaker configuration files:
 
-```
+```bash
 README.md
 <spin-installation-1>/
   hal/
@@ -42,7 +42,7 @@ README.md
 There are some files that you can safely ignore from source control, because they are auto generated when running some `hal` commands.
 
 *.gitignore*
-```
+```bash
 staging/
 history/
 ```
@@ -56,7 +56,7 @@ Halyard needs to be run as a Docker container for portability across machines.
 Here is a sample script to be put in the repo's root. It runs Halyard as a container, execs into it, and issues halyard commands. This example assumes AWS credentials present at `~/.aws` and `AWS_PROFILE` environment variable used to select the right profile from those credentials, but you can mount any authentication files or environment variables needed to run your Halyard commands.
 
 *run-halyard.sh*
-```
+```bash
 #/bin/bash
 
 set -ex
@@ -89,7 +89,7 @@ docker stop armory-halyard
 This other script is used for your CI tool to automatically deploy Spinnaker changes after a commit is pushed to the repo. It's basically the same as the previous one but it only executes `hal deploy apply`. You need to account for this script being run in your CI environment; provide any authentication credentials needed by your environment.
 
 *apply-configs.sh*
-```
+```bash
 #/bin/bash
 
 set -ex
@@ -135,7 +135,7 @@ docker stop armory-halyard
 Finally, this is a sample Jenkins pipeline that executes the above script.
 
 *Jenkinsfile*
-```
+```groovy
 pipeline {
   agent any
   environment {
@@ -157,7 +157,7 @@ pipeline {
 
 Putting it all together, you'll end up with the following repo structure:
 
-```
+```bash
 README.md
 run-halyard.sh
 apply-configs.sh
