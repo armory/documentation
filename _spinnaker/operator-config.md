@@ -42,11 +42,11 @@ spec:
 **spec.expose**: This section contains configuration for exposing Spinnaker.
 
 
-- `spec.expose.type`: How Spinnaker will be exposed. The only supported `service` is currently a Kubernetes services.
-- `spec.expose.service.type`: Should match a valid kubernetes service type (i.e. `LoadBalancer`, `NodePort`, `ClusterIP`.
+- `spec.expose.type`: How Spinnaker will be exposed. Currently, only `service` is supported, which will use Kubernetes services to expose Spinnaker.
+- `spec.expose.service.type`: Should match a valid Kubernetes service type (i.e. `LoadBalancer`, `NodePort`, `ClusterIP`).
 - `spec.expose.service.annotations`: Map containing any annotation to be added to Gate (API) and Deck (UI) services.
 - `spec.expose.service.publicPort`: Integer allowing you to change the listening port.
-- `spec.expose.service.overrides`: Allows overriding all the keys of `spec.expose` for each of the following services: `gate`, `deck`, `gate-x509`.
+- `spec.expose.service.overrides`: Allows overriding all the keys of `spec.expose.service` for each of the following services: `gate`, `deck`, `gate-x509`.
 
 
 ## Examples
@@ -64,7 +64,7 @@ spec:
       name: spinconfig-v001
 ```
 
-### Exposing Spinnaker with LoadBalancer services
+### Exposing Spinnaker with Public LoadBalancer Services on EKS
 
 ```yaml
 apiVersion: spinnaker.armory.io/v1alpha1
@@ -79,6 +79,7 @@ spec:
     type: service
     service:
       type: LoadBalancer
+      publicPort: 443
       annotations:
         "service.beta.kubernetes.io/aws-load-balancer-backend-protocol": "http"
         "service.beta.kubernetes.io/aws-load-balancer-ssl-ports": "80,443"
@@ -105,7 +106,7 @@ spec:
   ports:
   - name: deck-tcp
     nodePort: xxxxx
-    port: 9000
+    port: 443
     protocol: TCP
     targetPort: 9000
   selector:
@@ -133,7 +134,7 @@ spec:
   ports:
   - name: gate-tcp
     nodePort: xxxxx
-    port: 8084
+    port: 443
     protocol: TCP
     targetPort: 8084
   selector:
@@ -188,7 +189,7 @@ spec:
   ports:
   - name: deck-tcp
     nodePort: xxxxx
-    port: 9000
+    port: 80
     protocol: TCP
     targetPort: 9000
   selector:
@@ -216,7 +217,7 @@ spec:
   ports:
   - name: gate-tcp
     nodePort: xxxxx
-    port: 8084
+    port: 80
     protocol: TCP
     targetPort: 8084
   selector:
@@ -272,7 +273,7 @@ spec:
   ports:
   - name: deck-tcp
     nodePort: xxxxx
-    port: 9000
+    port: 80
     protocol: TCP
     targetPort: 9000
   selector:
@@ -301,7 +302,7 @@ spec:
   ports:
   - name: gate-tcp
     nodePort: xxxxx
-    port: 8084
+    port: 80
     protocol: TCP
     targetPort: 8084
   selector:
@@ -324,7 +325,7 @@ metadata:
 data:
   config: |
     name: default
-    version: 1.15.2
+    version: 2.15.3
     ...
     provider:
       kubernetes:
