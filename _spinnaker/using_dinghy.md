@@ -468,6 +468,11 @@ If you have already created a pipeline in the Spinnaker UI, you can create a din
    ]
 }
 ```
+4. Add the following parameters to each pipeline within the root of its json
+```
+"application": "the exact same spinnaker application name from above"
+"name": "the name of the pipeline you wish to create"
+```
 
 Save this file as `dinghyfile` in the root of your project and push it to your repository.
 
