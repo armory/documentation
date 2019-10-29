@@ -14,13 +14,14 @@ We created a Judge (StaticBaselineJudge-v1.0) that allows us to set a static bas
 
 On the Canary Configuration page when creating a new Config, you will have the option for selectin the StaticBaselineJudge-v1.0 or regular NetflixACAJudge-v1.0.
 
-![image](/images/Image 2019-10-29 at 11.35.11 AM.png)
+![image](/images/static_baseline_dropdown_judges_options.png)
 
 Select the Static Judge
 
+
 To input the metric value we need to edit the config as Json
 
-![image](/images/Image 2019-10-29 at 11.39.07 AM.png)
+![image](/images/static_baseline_metric_json_edit_button.png)
 
 And in there, set the property 
 
@@ -32,7 +33,7 @@ And in there, set the property
 
 ```
 
-![image](/images/Image 2019-10-29 at 11.40.08 AM.png)
+![image](/images/static_baseline_metric_json_edit.png)
 
 You need to do this for each metric you want to compare against a Static Baseline.
 By default, if this property is not set then the judge is going to perfom the same analysis that the NetflixACAJudge-v1.0 does.
@@ -104,4 +105,4 @@ As an example of this, this Canary Config has two metrics defined, one is settin
 
 When running the above Canary Config on a Canary Stage we can see that the value "300" gets used as the Baseline parameter on our Analysis
 
-![image](/images/Image 2019-10-29 at 11.45.56 AM.png)
+![image](/images/static_baseline_canary_result.png)
