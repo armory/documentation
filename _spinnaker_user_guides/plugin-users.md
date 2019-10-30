@@ -73,7 +73,7 @@ To modify an existing plugin, use the `hal plugins edit` [command](https://www.s
 For example, to disable a plugin, run the following command:
 
 ```
-hal plugins edit <plugin-name> --disable 
+hal plugins edit <plugin-name> --enabled false
 ```
 
 ## Deleting Plugins

@@ -110,10 +110,10 @@ The stage itself needs to implement the [SimpleStage](https://github.com/spinnak
 
 `execute` makes up the majority of the stage. `execute` takes in a `SimpleStageInput`, which then takes in (as a generic) the class that was created earlier for stage input. `execute`  returns a `SimpleStageOutput` that has our `Output` and `Context` classes. `SimpleStageOutput` also needs to know the status of the stage. This is where the [SimpleStageStatus](https://github.com/spinnaker/orca/blob/ab89a0d7f847205ccd62e70f8a714040a8621ee7/orca-api/src/main/java/com/netflix/spinnaker/orca/api/SimpleStageStatus.java) comes into play. Stages can be in the following states:
 
-1. Terminal → the stage failed
-2. Running → the stage is still executing
-3. Succeeded → the stage has successfully completed
-4. Not Started → the stage has not started yet
+* Terminal → the stage failed
+* Running → the stage is still executing
+* Succeeded → the stage has successfully completed
+* Not Started → the stage has not started yet
 
 **Putting It All Together**
 
@@ -218,14 +218,13 @@ Stages are made up of JSON that contains all the information that gets passed to
 
 The `registerStage` method is what makes the stage available for use. These are the required fields for registering a stage:
 
-1. key → a unique name of the stage
-2. label → is what is used inside the UI to display, saying what the name of the stage is
-3. description → a short description of what the stage will do
-4. component → if using React to create a stage, this is where you would put the component to render
+* key → a unique name of the stage
+* label → is what is used inside the UI to display, saying what the name of the stage is
+* description → a short description of what the stage will do
+* component → if using React to create a stage, this is where you would put the component to render
 
 Optional Fields:
-
-1. cloudProvider → if the stage can only be ran in one of the cloud providers, that can be selected here
+* cloudProvider → if the stage can only be ran in one of the cloud providers, that can be selected here
 
 # Writing the Plugin Manifest
 
