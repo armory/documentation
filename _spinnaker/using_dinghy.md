@@ -474,6 +474,60 @@ If you have already created a pipeline in the Spinnaker UI, you can create a din
 "name": "the name of the pipeline you wish to create"
 ```
 
+  For example, if your pipeline called "Wait Pipeline" has a JSON definition that looks like this:
+  
+  ```
+  {
+    "isNew": true,
+    "keepWaitingPipelines": false,
+    "lastModifiedBy": "justin.r.lee@gmail.com",
+    "limitConcurrent": true,
+    "stages": [
+      {
+        "isNew": true,
+        "name": "Wait",
+        "refId": "1",
+        "requisiteStageRefIds": [],
+        "type": "wait",
+        "waitTime": 30
+      }
+    ],
+    "triggers": [],
+    "updateTs": "1572455128000"
+  }
+  ```
+  
+  Then a Dinghyfile managing this pipeline in the "helloworld" application would look like this:
+  
+  ```
+  {
+    "application": "yourspinnakerapplicationname",
+    "pipelines": [
+      {
+        "application": "helloworld",
+        "name": "Wait Pipeline",
+        "isNew": true,
+        "keepWaitingPipelines": false,
+        "lastModifiedBy": "justin.r.lee@gmail.com",
+        "limitConcurrent": true,
+        "stages": [
+          {
+            "isNew": true,
+            "name": "Wait",
+            "refId": "1",
+            "requisiteStageRefIds": [],
+            "type": "wait",
+            "waitTime": 30
+          }
+        ],
+        "triggers": [],
+        "updateTs": "1572455128000"
+      }
+     ]
+  }
+  ```
+  
+
 Save this file as `dinghyfile` in the root of your project and push it to your repository.
 
 You may want to follow the [deleting stale pipelines](http://localhost:4000/spinnaker/using_dinghy/#deleting-stale-pipelines).
