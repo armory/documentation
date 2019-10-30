@@ -331,4 +331,5 @@ fiat:
 # FAQ
 
 *Q:* Why doesn't Spinnaker use AWS Config to update its state?
+
 *A:* AWS Config does not support all resource types. The two most rate limited APIs are Auto Scaling and Classic Elastic Load Balancing, [neither are supported](http://docs.aws.amazon.com/config/latest/developerguide/resource-config-reference.html) by AWS Config. Additionally, there is a non-trivial delay from the time a resource is created and the time a notification is created by AWS Config.
