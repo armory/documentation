@@ -25,7 +25,7 @@ This document will guide you through the following:
   * Creating a Managed Account IAM Role in each your target AWS Accounts
   * Creating the default BaseIamRole for use when deploying EC2 instances
   * Creating a Managing Account IAM Policy in your primary AWS Account
-  * Creating a Managing Account IAM User with access to the Managing Account Policy
+  * Adding the Managing Account IAM Policy to the IAM Instance Profile on your Spinnaker AWS Nodes
   * Configuring the Managed Accounts to trust the Managing Account IAM User
   * Adding the Managing Account User and Managed Accounts to Spinnaker via Halyard
   * Adding/Enabling the AWS Cloudprovider to Spinnaker
@@ -246,7 +246,7 @@ In the account that Spinnaker lives in (i.e., the AWS account that owns the EKS 
 
 1. Update the `sts:AssumeRole` block with the list of Managed Roles you created in **Instance Role Part 1**.
 1. Click on "Review Policy"
-1. Create a name for your policy, such as "DevSpinnakerManagingPolicy".  Optionally, add a descriptive description.  Copy the name of the policy.  **This will be used in the next section, "Instance Role Part 4"**
+1. Create a name for your policy, such as "SpinnakerManagingPolicy".  *This policy will be attached to your Spinnaker instance, so give it a name describing your Spinnaker instance.*  Optionally, add a descriptive description.  Copy the name of the policy.  **This will be used in the next section, "Instance Role Part 4"**
 1. On the list policies, click your newly-created Policy.
 
 _(This policy could also be attached inline directly to the IAM Instance Role, rather than creating a standalone policy)_
@@ -262,6 +262,25 @@ _(This policy could also be attached inline directly to the IAM Instance Role, r
 1. Search for the Policy that you created, and select it.
 1. Click "Attach Policy"
 1. Back on the screen for the Role, copy the node role ARN.  It should look something like this: `arn:aws:iam::123456789010:role/node-role`.  **This will be used in the next section, "Instance Role Part 5"**
+
+Note: If your instances do not have an IAM instance profile and role attached to them, you can follow these steps to create and attach one:
+
+1. Log into the AWS account where Spinnaker lives, into the browser-based AWS Console
+1. Navigate to the IAM page (click on "Services" at the top, then on "IAM" under "Security, Identity, & Compliance"
+1. Click on "Roles"
+1. Click on "Create role"
+1. Select "EC2" for the service that will use the role, and click "Next: Permissions"
+1. In the policy filter, enter the name of the managing policy you created in step 3.  Click "Next: Tags"
+1. Add any relevant tags.  Click "Next: Review"
+1. Give the role a name, such as "Spinnaker". *This role will be attached to your Spinnaker instance, so give it a name describing your Spinnaker instance.*  Optionally, add a descriptive description.  Copy the name of the role.
+1. Navigate to the EC2 page (click on "Services" at the top, then on "EC2" under "Compute")
+1. Click on "Running Instances"
+1. Find one of the nodes which is part of your EKS or other Kubernetes cluster, and select it.
+1. Click "Actions" at the top, then select "Instance Settings" and then "Attach/Replace IAM Role"
+1. In the "IAM role" dropdown, select the IAM role that you just created
+1. Click "Apply"
+1. Repeaat the last four steps for each of the other instances in your EKS or Kubernetes cluster.
+
 
 ### Instance Role Part 5: Configuring the Managed Accounts IAM Roles to trust the IAM Instance Role from the AWS nodes
 
