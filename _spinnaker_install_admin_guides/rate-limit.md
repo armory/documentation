@@ -34,7 +34,7 @@ There are several things you can do to help reduce the effects of throttling:
 
 ## Fine Grained Rate Limits
 
-Spinnaker queries your cloud provider (AWS, GCP, Azure, Kubernetes, etc) frequently to understand the state of your existing infrastructure and current deployments.  However, by doing so you might run into rate limits imposed by the cloud provider. To help avoid this Spinnaker provides controls to limit the number of requests it generates. The unit used for these controls is "requests per second" (a double float value). Global defaults are `10.0` max requests per second.
+Spinnaker queries your cloud provider (AWS, GCP, Azure, Kubernetes, etc) frequently to understand the state of your existing infrastructure and current deployments.  However, this might cause issues due to rate limits imposed by the cloud provider. To help avoid this Spinnaker, provides controls to limit the number of requests it generates. The unit used to control the querying is "requests per second" (a double float value). Global defaults are `10.0` max requests per second.
 
 Below is an example configuration for global rate limits for all services that you would place in `~/.hal/<deployment-name>/profiles/clouddriver-local.yml`:
 
@@ -289,9 +289,7 @@ serviceLimits:
         rateLimit: 10.0   # default max req/second
 ```
 
-Using these settings will help you avoid hitting the AWS rate limits and potentially make Spinnaker more responsive as the cloud provider clients won't have to implement back-off strategy to continue to query the infrastructure. 
-
-
+Using these settings will help you avoid hitting the AWS rate limits. They can also help Spinnaker be more responsive since the cloud provider clients will not implement their back-off strategy to continue to query the infrastructure. 
 
 ## Request Retry
 
@@ -302,20 +300,24 @@ aws:
   client:
     maxErrorRetry: 3 # default
 ```
-This is the number of retries before failing the request. It's used with an exponential backoff, maxing out at 20 seconds.
+This is the number of retries before the request fails. It's used with an exponential backoff, maxing out at 20 seconds.
 
 
 
 # Fiat hitting rate limits
-If Fiat is configured to poll Github or Google and you may end up seeing rate limits when Fiat does it's polling for user groups. Some symptoms that you might see are:
+
+If Fiat is configured to poll Github or Google, you may end up seeing rate limits when Fiat does its polling for user groups. Some symptoms that you might see are:
+
 - You can't log into spinnaker anymore
 - Your Fiat logs contain lines similar to:
+
   ```
   GithubTeamsUserRolesProvider : [] HTTP 403 Forbidden. Rate limit info: X-RateLimit-Limit
   GoogleDirectoryUserRolesProvider : [] Failed to fetch groups for user x: Rate Limit Exceeded
   ```
 
-You'll need to adjust poll cycle time and/or timeouts in `~/.hal/<deployment-name>/profiles/fiat-local.yml`, see ([FiatServerConfigurationProperties.java for more details](https://github.com/spinnaker/fiat/blob/v1.7.0/fiat-web/src/main/java/com/netflix/spinnaker/fiat/config/FiatServerConfigurationProperties.java)).:
+To address this issue, adjust poll cycle time and/or timeouts in `~/.hal/<deployment-name>/profiles/fiat-local.yml`, see ([FiatServerConfigurationProperties.java for more details](https://github.com/spinnaker/fiat/blob/v1.7.0/fiat-web/src/main/java/com/netflix/spinnaker/fiat/config/FiatServerConfigurationProperties.java)).:
+
 ```yml
 fiat:
   writeMode:
@@ -325,7 +327,6 @@ fiat:
     # How much time to between retries of dependent resource providers if they are down.
     retryIntervalMs: 10000
 ```
-
 
 # FAQ
 
