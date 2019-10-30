@@ -469,7 +469,7 @@ If you have already created a pipeline in the Spinnaker UI, you can create a din
        ]
     }
     ```
-4. Add the following parameters to each pipeline within the root of its JSON:
+4. Add the following parameters to each pipeline in the collection within the root of its JSON:
 
     ```
     "application": "YourSpinnakerApplicationName"
