@@ -454,61 +454,36 @@ Here, if the variable `"name"` was not passed into the module call and is not a 
 le
 
 ### Create a Dinghyfile from an Existing Pipeline
-If you have already created a pipeline in the Spinnaker UI, you can create a dinghyfile with some simple steps.
 
-1. You need to go to the spinnaker UI and click on the `Configure` option of the pipeline you want.
+If you have already created a pipeline in the Spinnaker UI, you can create a dinghy file with some simple steps.
+
+1. You need to go to the Spinnaker UI and click on the `Configure` option of the pipeline you want.
 2. Click on the `Pipeline Actions` dropdown and select 'Edit as JSON'
-3. Copy/Paste this data into a new file, you will need to wrap this JSON with the following
+3. Copy/paste this data into a new file, you will need to wrap this JSON with the following
 
- ```
-{
-  "application": "yourspinnakerapplicationname",
-  "pipelines": [
-     The JSON obtained from the UI
-   ]
-}
-```
-4. Add the following parameters to each pipeline within the root of its json
-```
-"application": "the exact same spinnaker application name from above"
-"name": "the name of the pipeline you wish to create"
-```
+    ```
+    {
+      "application": "YourSpinnakerApplicationName",
+      "pipelines": [
+         The JSON obtained from the UI
+       ]
+    }
+    ```
+4. Add the following parameters to each pipeline within the root of its JSON:
 
-  For example, if your pipeline called "Wait Pipeline" has a JSON definition that looks like this:
+    ```
+    "application": "YourSpinnakerApplicationName"
+    "name": "<the name of the pipeline you wish to create>"
+    ```
+    Note that the value you set for `"application"` must be the same as the value in step 3.
+
+    For example, if your pipeline called "Wait Pipeline" has a JSON definition that looks like this:
   
-  ```
-  {
-    "isNew": true,
-    "keepWaitingPipelines": false,
-    "lastModifiedBy": "justin.r.lee@gmail.com",
-    "limitConcurrent": true,
-    "stages": [
+    ```
       {
-        "isNew": true,
-        "name": "Wait",
-        "refId": "1",
-        "requisiteStageRefIds": [],
-        "type": "wait",
-        "waitTime": 30
-      }
-    ],
-    "triggers": [],
-    "updateTs": "1572455128000"
-  }
-  ```
-  
-  Then a Dinghyfile managing this pipeline in the "helloworld" application would look like this:
-  
-  ```
-  {
-    "application": "yourspinnakerapplicationname",
-    "pipelines": [
-      {
-        "application": "helloworld",
-        "name": "Wait Pipeline",
         "isNew": true,
         "keepWaitingPipelines": false,
-        "lastModifiedBy": "justin.r.lee@gmail.com",
+        "lastModifiedBy": "justin@acompany.com",
         "limitConcurrent": true,
         "stages": [
           {
@@ -523,14 +498,42 @@ If you have already created a pipeline in the Spinnaker UI, you can create a din
         "triggers": [],
         "updateTs": "1572455128000"
       }
-     ]
-  }
-  ```
   
+    ```
 
-Save this file as `dinghyfile` in the root of your project and push it to your repository.
+    Then a Dinghy file managing this pipeline in the "helloworld" application looks like this:
+  
+    ```
+      {
+        "application": "helloworld",
+        "pipelines": [
+          {
+            "application": "helloworld",
+            "name": "Wait Pipeline",
+            "isNew": true,
+            "keepWaitingPipelines": false,
+            "lastModifiedBy": "justin@acompany.com",
+            "limitConcurrent": true,
+            "stages": [
+              {
+                "isNew": true,
+                "name": "Wait",
+                "refId": "1",
+                "requisiteStageRefIds": [],
+                "type": "wait",
+                "waitTime": 30
+              }
+            ],
+            "triggers": [],
+            "updateTs": "1572455128000"
+          }
+         ]
+      }
+    ```
 
-You may want to follow the [deleting stale pipelines](http://localhost:4000/spinnaker/using_dinghy/#deleting-stale-pipelines).
+    Save this file as `dinghyfile` in the root of your project and push it to your repository.
+
+    You may want to follow the [deleting stale pipelines](http://localhost:4000/spinnaker/using_dinghy/#deleting-stale-pipelines).
 
 # Alternate Template Formats
 
