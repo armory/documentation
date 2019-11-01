@@ -34,7 +34,8 @@ There are several things you can do to help reduce the effects of throttling:
 
 ## Fine Grained Rate Limits
 
-Spinnaker queries your cloud provider (AWS, GCP, Azure, Kubernetes, etc) frequently to understand the state of your existing infrastructure and current deployments.  However, this might cause issues due to rate limits imposed by the cloud provider. To help avoid this Spinnaker, provides controls to limit the number of requests it generates. The unit used to control the querying is "requests per second" (a double float value). Global defaults are `10.0` max requests per second.
+Spinnaker queries your Cloud Provider (AWS, GCP, Azure, Kubernetes, etc) frequently to understand the state of your existing infrastructure and current deployments.  However, this might cause you to run into rate limits imposed by the Cloud Provider. To help avoid this Spinnaker provides controls to limit the number of requests it generates. The unit used for these controls is "requests per second" (a double float value). Global defaults are `10.0` max requests per second.
+
 
 Below is an example configuration for global rate limits for all services that you would place in `~/.hal/<deployment-name>/profiles/clouddriver-local.yml`:
 
@@ -44,7 +45,7 @@ serviceLimits:
     rateLimit: 10.0   # default max req/second
 ```
 
-If you have multiple cloud providers, you can limit each one differently:
+If you have multiple Cloud Providers, you can limit each one differently:
 
 ```yml
 serviceLimits:
