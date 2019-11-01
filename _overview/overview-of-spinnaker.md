@@ -19,7 +19,7 @@ Spinnaker not only enables businesses to move to the cloud but makes it easier f
 
 ## Safety and Speed
 
-Today’s world revolves around software and services working reliably and continuously -- the internet is accessible 24 hours a day, and users expect 100% uptime. The cost of business services experiencing downtime, planned or unplanned, is only growing. Businesses need to be able to deploy software in a safe way. 
+Today’s world revolves around software and services working reliably and continuously -- the internet is accessible 24 hours a day, and users expect 100% uptime. The cost of business services experiencing downtime, planned or unplanned, is only growing. Businesses need to be able to deploy software in a safe way.
 
 In the past, releases were large monoliths, and ensuring uptime (or deployment safety) meant a long wait between each release, including maybe even extended code freezes. A company that wanted to maintain a stable environment could become averse to pushing out new features, leading to a slowdown in innovation. This tradeoff is getting more and more difficult to justify. To thrive, businesses need a way to deploy software with velocity.
 
@@ -31,7 +31,7 @@ Spinnaker solves these problems by enabling safer and faster deployments with th
 - **Blue/Green**:  An easy way to think about this is that it is similar to active-active high availability. You have two instances of your deployment running concurrently, the production build and a new one. Once you feel confident that the newer build is stable, traffic is shifted all at once from the old deployment to the new one. A configurable number of server groups are maintained, which allows for easy rollback in case of issues.
 - **Rolling Blue/Green**:  Similar to Blue/Green, but traffic is gradually shifted from the older deployment to the new one.
 - **Highlander**:  Similar to Blue/Green, except the old deployment is destroyed once traffic is shifted.
-- **Canary**: This consists of three instances: the current production instance, a baseline instance (a smaller clone of production), and a canary intance with the new deployment. The production instance handles most of the load while the baseline and canary each receive a smaller amount. After a predetermined amount of time, performance of the baseline and canary are compared. Whether the a deployment becomes the new production build depends on canary analysis that can be automated or manual.
+- **Canary**: This consists of three instances: the current production instance, a baseline instance (a smaller clone of production), and a canary instance with the new deployment. The production instance handles most of the load while the baseline and canary each receive a smaller amount. After a predetermined amount of time, performance of the baseline and canary are compared. Whether the a deployment becomes the new production build depends on canary analysis that can be automated or manual.
 
 **Automated canary analysis** through Kayenta, a canary analysis tool that is integrated with Spinnaker. Without manual intervention, Kayenta can determine if a canary deployment should be pushed to production.
 
