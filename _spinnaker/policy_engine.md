@@ -3,13 +3,12 @@ layout: post
 title: Policy Engine
 order: 142
 ---
-<script src="https://hypothes.is/embed.js" async></script>
 
 ## Overview
-The Armory Policy Engine is designed to allow enterprises more complete control of their software delivery process by providing them with the hooks necessary to perform more extensive verification of their pipelines and processes in spinnaker. This policy engine is backed by [Open Policy Agent](https://www.openpolicyagent.org/) and uses the input style documents to perform validation of pipelines during creation and updates.
+The Armory Policy Engine is designed to allow enterprises more complete control of their software delivery process by providing them with the hooks necessary to perform more extensive verification of their pipelines and processes in Spinnaker. This policy engine is backed by [Open Policy Agent](https://www.openpolicyagent.org/) and uses the input style documents to perform validation of pipelines during creation and updates.
 
 ## Requirements 
-The Policy Engine has been tested against OPA versions 0.12.x and 0.13.x
+The Policy Engine has been tested with OPA versions 0.12.x and 0.13.x
 
 ## Before You Start
 Keep the following guidelines in mind when using the Policy Engine: 
@@ -38,7 +37,7 @@ armory:
     url: http://opa.opa:8181/v1
 ```
 
-After you update `front50-local.yml`, you must deploy your changes:
+After you update `front50-local.yml`, you must apply and deploy your changes:
 
 ```bash
 hal config deploy
