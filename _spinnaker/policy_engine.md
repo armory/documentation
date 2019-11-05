@@ -49,6 +49,7 @@ The Policy Engine supports the following OPA server deployments:
 * An existing OPA cluster 
 * An OPA server deployed in an existing Kubernetes cluster with an Armory Spinnaker deployment. If you want to use this method, use the following YAML example to deploy the OPA server:
 
+This ConfigMap example creates an OPA deployment in the same namespace as your Spinnaker deployment: 
     ```yaml
     apiVersion: apps/v1
     kind: Deployment
@@ -75,7 +76,10 @@ The Policy Engine supports the following OPA server deployments:
             args:
               - "run"
               - "-s"
-    ---
+```
+
+This ConfigMap exposes the OPA API: 
+```
     apiVersion: v1
     kind: Service
     metadata:
@@ -266,7 +270,7 @@ After you create a policy, you can add it to OPA with an API request or with a C
 
 Replace the endpoint with your OPA endpoint:
 
-    ```bash
+    ```
     curl -X PUT \
     -H 'content-type:text/plain' \
     -v \
@@ -280,7 +284,7 @@ Note that you must use the `--data-binary` flag, not the `-d` flag.
 
 If you have configured OPA to look for a ConfigMap, you can create the ConfigMap for `manual-judgement-and-notifications.rego` with this command:
 
-  ```bash
+  ```
     kubectl create configmap manual-judgment-and-notifications --from-file=manual-judgment-and-notifications.rego
   ```
     
