@@ -208,7 +208,7 @@ $ kubectl -n <namespace> delete spinnakerservice spinnaker
 
 # Custom Halyard Configuration
 
-To override Halyard's configuration, create a `ConfigMap` with the configuration changes you need:
+To override Halyard's configuration, create a `ConfigMap` with the configuration changes you need. For example, if using [secrets management with Vault](https://docs.armory.io/spinnaker-install-admin-guides/secrets-vault/), Halyard will need your Vault configuration:
 
 ```yaml
 apiVersion: v1
@@ -217,13 +217,16 @@ metadata:
   name: halyard-custom-config
 data:
   halyard-local.yml: |
-    spinnaker:
-      config:
-        input:
-          bucket: mybucket
+    secrets:
+      vault:
+        enabled: true
+        url: <URL of vault server>
+        path: <cluster path>
+        role: <k8s role>
+        authMethod: KUBERNETES
 ```
 
-You can then mount it in the operator deployment and make it available to Halyard container:
+You can then mount it in the operator deployment and make it available to the Halyard container:
 
 ```yaml
 apiVersion: extensions/v1beta1

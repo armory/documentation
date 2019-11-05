@@ -49,6 +49,7 @@ sudo update-halyard --version 1.5.1
 
 Halyard will need access to the Vault server in order to decrypt secrets for validation and deployment. While the Spinnaker services are configured through `~/.hal/config`, the Halyard daemon has its own configuration file found at `/opt/spinnaker/config/halyard.yml`. The contents of your file may look different than this example, but just make sure to add the secrets block somewhere at the root level.
 
+### Halyard Locally or in Docker
 If you're running Halyard locally, you can use Token auth method. Set your `VAULT_TOKEN` environment variable and add the secrets block to `halyard.yml` like so:
 
 ```
@@ -66,6 +67,13 @@ secrets:
     url: <Vault server URL>
     authMethod: TOKEN
 ```
+Then restart the daemon (you'll only need to do this the first time):
+```
+hal shutdown
+```
+Your next hal command will automatically bring the daemon back up if you're running Halyard locally. If it's running within a docker container, you'll need to mount the volume containing the updated `halyard.yml` and restart the container.
+
+### Halyard in Kubernetes
 Or if you're running Halyard in Kubernetes, you can have Halyard use Kubernetes auth:
 ```
 halyard:
@@ -84,12 +92,10 @@ secrets:
     role: <k8s role>
     path: <k8s cluster path>
 ```
-Then restart the daemon (you'll only need to do this the first time):
-```
-hal shutdown
-```
-Your next hal command will automatically bring the daemon back up if you're running Halyard locally. If it's running within a docker container, you'll need to mount the volume containing the updated `halyard.yml` and restart the container. And if Halyard is in Kubernetes, you'll need to restart the pod. 
+You'll need to restart the pod so that Halyard restarts with your new config. 
 
+### Halyard with the Spinnaker Operator
+Or if using the Spinnaker Operator, you'll need to set up a custom Halyard configuration per [this section](https://docs.armory.io/spinnaker/operator/#custom-halyard-configuration). Once you've mounted your `ConfigMap` to the `spinnaker-operator` deployment, it will restart the Halyard container with your Vault config.
 
 ## Storing secrets
 To store a file, simply prepend the file path with `@`. It will accept relative paths but cannot resolve `~`: 
