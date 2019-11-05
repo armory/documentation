@@ -67,11 +67,11 @@ secrets:
     url: <Vault server URL>
     authMethod: TOKEN
 ```
-Then restart the daemon (you'll only need to do this the first time):
+Then, restart the daemon if this is the first time you are configuring the Token auth method:
 ```
 hal shutdown
 ```
-Your next hal command will automatically bring the daemon back up if you're running Halyard locally. If it's running within a docker container, you'll need to mount the volume containing the updated `halyard.yml` and restart the container.
+Your next hal command automatically starts the daemon if you're running Halyard locally. If it's running within a Docker container, mount the volume containing the updated `halyard.yml` and restart the container.
 
 ### Halyard in Kubernetes
 Or if you're running Halyard in Kubernetes, you can have Halyard use Kubernetes auth:
@@ -92,13 +92,13 @@ secrets:
     role: <k8s role>
     path: <k8s cluster path>
 ```
-You'll need to restart the pod so that Halyard restarts with your new config. 
+Restart the pod so that Halyard restarts with your new config. 
 
 ### Halyard with the Spinnaker Operator
-Or if using the Spinnaker Operator, you'll need to set up a custom Halyard configuration per [this section](https://docs.armory.io/spinnaker/operator/#custom-halyard-configuration). Once you've mounted your `ConfigMap` to the `spinnaker-operator` deployment, it will restart the Halyard container with your Vault config.
+If you are using the Spinnaker Operator, set up a custom Halyard configuration per [this section](https://docs.armory.io/spinnaker/operator/#custom-halyard-configuration). Once you've mounted your `ConfigMap` to the `spinnaker-operator` deployment, it will restart the Halyard container with your Vault config.
 
 ## Storing secrets
-To store a file, simply prepend the file path with `@`. It will accept relative paths but cannot resolve `~`: 
+To store a file, simply prepend the file path with `@`. It accepts relative paths but cannot resolve `~`: 
 
 ```
 vault kv put secret/spinnaker/kubernetes config=@path/to/kube/config
@@ -156,4 +156,3 @@ encrypted:vault!e:secret!n:spinnaker/saml!k:base64keystore!b:true
 ## Supported Versions
 
 Vault secrets are supported end-to-end in Armory Spinnaker 2.4.0 and with partial service support in 2.3.7.
-
