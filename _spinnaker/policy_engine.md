@@ -53,7 +53,7 @@ The Policy Engine supports the following OPA server deployments:
 * An existing OPA cluster 
 * An OPA server deployed in an existing Kubernetes cluster with an Armory Spinnaker deployment. If you want to use this method, use the following YAML example to deploy the OPA server:
 
-This ConfigMap example creates an OPA deployment in the same namespace as your Spinnaker deployment: 
+This example manifest creates an OPA deployment in the same namespace as your Spinnaker deployment:  
     ```yaml
     apiVersion: apps/v1
     kind: Deployment
@@ -82,7 +82,7 @@ This ConfigMap example creates an OPA deployment in the same namespace as your S
               - "-s"
 ```
 
-This ConfigMap exposes the OPA API: 
+This Service exposes the OPA API:
 ```
     apiVersion: v1
     kind: Service
