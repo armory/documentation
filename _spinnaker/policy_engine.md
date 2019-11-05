@@ -40,7 +40,7 @@ armory:
 After you update `front50-local.yml`, you must apply and deploy your changes:
 
 ```bash
-hal config deploy
+hal deploy apply
 ```
 
 ## OPA Server Deployment
