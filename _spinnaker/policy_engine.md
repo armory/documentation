@@ -7,6 +7,10 @@ order: 142
 ## Overview
 The Armory Policy Engine is designed to allow enterprises more complete control of their software delivery process by providing them with the hooks necessary to perform more extensive verification of their pipelines and processes in Spinnaker. This policy engine is backed by [Open Policy Agent](https://www.openpolicyagent.org/) and uses the input style documents to perform validation of pipelines during creation and updates.
 
+{:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
+
 ## Requirements 
 The Policy Engine has been tested with OPA versions 0.12.x and 0.13.x
 
@@ -40,7 +44,7 @@ armory:
 After you update `front50-local.yml`, you must apply and deploy your changes:
 
 ```bash
-hal config deploy
+hal deploy apply
 ```
 
 ## OPA Server Deployment
@@ -49,6 +53,7 @@ The Policy Engine supports the following OPA server deployments:
 * An existing OPA cluster 
 * An OPA server deployed in an existing Kubernetes cluster with an Armory Spinnaker deployment. If you want to use this method, use the following YAML example to deploy the OPA server:
 
+This example manifest creates an OPA deployment in the same namespace as your Spinnaker deployment:  
     ```yaml
     apiVersion: apps/v1
     kind: Deployment
@@ -75,7 +80,10 @@ The Policy Engine supports the following OPA server deployments:
             args:
               - "run"
               - "-s"
-    ---
+```
+
+This Service exposes the OPA API:
+```
     apiVersion: v1
     kind: Service
     metadata:
@@ -266,7 +274,7 @@ After you create a policy, you can add it to OPA with an API request or with a C
 
 Replace the endpoint with your OPA endpoint:
 
-    ```bash
+    ```
     curl -X PUT \
     -H 'content-type:text/plain' \
     -v \
@@ -280,7 +288,7 @@ Note that you must use the `--data-binary` flag, not the `-d` flag.
 
 If you have configured OPA to look for a ConfigMap, you can create the ConfigMap for `manual-judgement-and-notifications.rego` with this command:
 
-  ```bash
+  ```
     kubectl create configmap manual-judgment-and-notifications --from-file=manual-judgment-and-notifications.rego
   ```
     
