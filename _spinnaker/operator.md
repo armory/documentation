@@ -28,12 +28,6 @@ Before you start, ensure the following requirements are met:
 - You have `ValidatingAdmissionWebhook` enabled in the kube-apiserver. Alternatively, you can pass the `--without-admission-controller` parameter to the to the `deployment.yaml` file that deploys the operator.
 - You have admin rights to install the Custom Resource Definition (CRD) for Operator.
 
-# Limitations
-
-Operator does not currently support the following:
-
-- Spinnaker configurations stored in secret.
-
 # Install Operator
 
 ## Download operator release files
