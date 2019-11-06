@@ -162,7 +162,7 @@ kubectl apply -f halyard.yml
 
 Once the pod is deployed - you can interact with it by running:
 ```
-kubectl -n halyard exec -ti halyard bash
+kubectl -n halyard exec -ti halyard-xxxxx bash  # make sure you get the exact pod name
 ```
 
 ## Installing Armory Spinnaker
