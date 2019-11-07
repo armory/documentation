@@ -16,7 +16,7 @@ The Policy Engine has been tested with OPA versions 0.12.x and 0.13.x
 
 ## Before You Start
 Keep the following guidelines in mind when using the Policy Engine: 
-* The Policy Engine uses 'fail closed' behavior. That means that if you have the policy engine enabled but no policies created, Spinnaker refuses to create or update any pipeline. 
+* The Policy Engine uses **fail closed** behavior. That means that if you have the policy engine enabled but no policies created, Spinnaker refuses to create or update any pipeline. 
 * Using the Policy Engine requires understanding OPA's [rego syntax](https://www.openpolicyagent.org/docs/latest/policy-language/) and how to deploy an OPA server.
 
 ## Enabling the Policy Engine
@@ -271,27 +271,29 @@ Add the two policies to a file named `manual-judgment-and-notifications.rego`
 
 After you create a policy, you can add it to OPA with an API request or with a ConfigMap. The following examples use  a `.rego` file named `manual-judgement-and-notifications.rego`. 
 
+**ConfigMap Example** 
+
+Armory recommends using ConfigMaps to add OPA policies instead of the API for OPA deployments in Kubernetes.
+
+If you have configured OPA to look for a ConfigMap, you can create the ConfigMap for `manual-judgement-and-notifications.rego` with this command:
+
+```
+kubectl create configmap manual-judgment-and-notifications --from-file=manual-judgment-and-notifications.rego
+```
+
 **API Example** 
 
 Replace the endpoint with your OPA endpoint:
 
-    ```
-    curl -X PUT \
-    -H 'content-type:text/plain' \
-    -v \
-    --data-binary @manual-judgment-and-notifications.rego \
-    http://opa.spinnaker:8181/v1/policies/policy-01
-    ```
+```
+curl -X PUT \
+-H 'content-type:text/plain' \
+-v \
+--data-binary @manual-judgment-and-notifications.rego \
+http://opa.spinnaker:8181/v1/policies/policy-01
+```
 
 Note that you must use the `--data-binary` flag, not the `-d` flag.
-
-**ConfigMap Example** 
-
-If you have configured OPA to look for a ConfigMap, you can create the ConfigMap for `manual-judgement-and-notifications.rego` with this command:
-
-  ```
-    kubectl create configmap manual-judgment-and-notifications --from-file=manual-judgment-and-notifications.rego
-  ```
     
 ### Disabling an OPA policy
 
