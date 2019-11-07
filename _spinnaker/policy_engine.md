@@ -5,7 +5,7 @@ order: 142
 ---
 
 ## Overview
-The Armory Policy Engine is designed to allow enterprises more complete control of their software delivery process by providing them with the hooks necessary to perform more extensive verification of their pipelines and processes in Spinnaker. This policy engine is backed by [Open Policy Agent](https://www.openpolicyagent.org/) and uses the input style documents to perform validation of pipelines during creation and updates.
+The Armory Policy Engine is designed to allow enterprises more complete control of their software delivery process by providing them with the hooks necessary to perform more extensive verification of their pipelines and processes in Spinnaker. This policy engine is backed by [Open Policy Agent](https://www.openpolicyagent.org/) and uses input style documents to perform validation of pipelines during creation and updates.
 
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
@@ -27,21 +27,21 @@ To enable Armory's Policy Engine, add the following configuration to Halyard in 
 armory:
   opa:
     enabled: true
-    url: http://opa-server.domain.tld:8181/v1
+    url: <OPA Server URL>:<port>/v1
 ```
 
 *Note: There must be a trailing /v1 on the URL. This extension is only compatible with OPA's v1 API.*
 
-If you are using an in-cluster OPA instance (such as one set up with the instructions below), Spinnaker can access OPA via the Kubernetes service DNS name (replace `opa.opa` with `opa.<namespace>` where `<namespace>` is the namespace where OPA is installed:
+If you are using an in-cluster OPA instance (such as one set up with the instructions below), Spinnaker can access OPA via the Kubernetes service DNS name. The following example configures Spinnaker to connect with an OPA server at http://opa.opaserver:8181:
 
 ```yaml
 armory:
   opa:
     enabled: true
-    url: http://opa.opa:8181/v1
+    url: http://opa.opaserver:8181/v1
 ```
 
-After you update `front50-local.yml`, you must apply and deploy your changes:
+After you update `front50-local.yml`, deploy your changes:
 
 ```bash
 hal deploy apply
@@ -53,6 +53,8 @@ The Policy Engine supports the following OPA server deployments:
 * An existing OPA cluster 
 * An OPA server deployed in an existing Kubernetes cluster with an Armory Spinnaker deployment. If you want to use this method, use the following YAML example to deploy the OPA server:
 
+For more information about how to deploy an OPA server, see the OPA documentation.
+
 This example manifest creates an OPA deployment in the same namespace as your Spinnaker deployment and exposes the OPA API:  
 
 ```yaml
@@ -60,7 +62,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: opa-deployment
-  namespace: <<your-spinnaker-namespace>>
+  namespace: <your-spinnaker-namespace>
   labels:
     app: opa
 spec:
@@ -86,7 +88,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: opa
-  namespace: <<your-spinnaker-namespace>>
+  namespace: <your-spinnaker-namespace>
 spec:
   selector:
     app: opa
@@ -97,14 +99,18 @@ spec:
 
 ```
 
-Replace `<<your-spinnaker-namespace` with your Spinnaker namespace and save the file. Then, deploy the manifest:
+Replace `<your-spinnaker-namespace>` with your Spinnaker namespace and save the file. Then, deploy the manifest:
 ```
 kubectl create -f <deployment yaml file name>.yaml
 ```
     
-## Creating OPA Policies with a ConfigMap
+## Using ConfigMaps for OPA Policies
 
-If you want to create OPA policies via ConfigMap, you can use the below manifest. This example creates a namespace called `opa` and sets up permissions so that OPA can read ConfigMaps.
+If you want to use ConfigMaps for OPA policies, you can use the below manifest as a starting point. This example manifest deploys an OPA server and applies the configuration for things like rolebinding and a static DNS. 
+
+When using the below example, keep the following guidelines in mind:
+* The manifest does not configure any authorization requirements for the OPA server it deploys. This means that anyone can add a policy.
+* Make sure you replace `<namespace>` with the appropriate namespace.
 
 ```yaml
 ---
@@ -119,14 +125,14 @@ metadata:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: opa-viewer
+  name: opa-viewer-spinnaker
 roleRef:
   kind: ClusterRole
   name: view
   apiGroup: rbac.authorization.k8s.io
 subjects:
 - kind: Group
-  name: system:serviceaccounts:opa
+  name: system:serviceaccounts:<namespace>
   apiGroup: rbac.authorization.k8s.io
 ---
 # Define role in the `opa` namespace for OPA/kube-mgmt to update configmaps with policy status.
@@ -134,7 +140,7 @@ subjects:
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  namespace: opa
+  namespace: <namespace>
   name: configmap-modifier
 rules:
 - apiGroups: [""]
@@ -147,7 +153,7 @@ rules:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  namespace: opa
+  namespace: <namespace>
   name: opa-configmap-modifier
 roleRef:
   kind: Role
@@ -155,30 +161,16 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 subjects:
 - kind: Group
-  name: system:serviceaccounts:opa
+  name: system:serviceaccounts:<namespace>
   apiGroup: rbac.authorization.k8s.io
 ---
-# Create a static DNS endpoint for Spinnaker to reach OPA
-apiVersion: v1
-kind: Service
-metadata:
-  name: opa
-  namespace: opa
-spec:
-  selector:
-    app: opa
-  ports:
-  - protocol: TCP
-    port: 8181
-    targetPort: 8181
----
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: opa-deployment
+  namespace: <namespace>
   labels:
     app: opa
-  namespace: opa
-  name: opa
 spec:
   replicas: 1
   selector:
@@ -188,14 +180,13 @@ spec:
     metadata:
       labels:
         app: opa
-      name: opa
     spec:
       containers:
-        # WARNING: OPA is NOT running with an authorization policy configured. This
-        # means that clients can read and write policies in OPA. If you are
-        # deploying OPA in an insecure environment, be sure to configure
-        # authentication and authorization on the daemon. See the Security page for
-        # details: https://www.openpolicyagent.org/docs/security.html.
+      # WARNING: OPA is NOT running with an authorization policy configured. This
+      # means that clients can read and write policies in OPA. If you are
+      # deploying OPA in an insecure environment, be sure to configure
+      # authentication and authorization on the daemon. See the Security page for
+      # details: https://www.openpolicyagent.org/docs/security.html.
         - name: opa
           image: openpolicyagent/opa:0.13.1
           args:
@@ -220,7 +211,21 @@ spec:
           image: openpolicyagent/kube-mgmt:0.9
           args:
           # Change this to the namespace where you want OPA to look for policies
-            - "--policies=opa"
+            - "--policies=<namespace>"
+---
+# Create a static DNS endpoint for Spinnaker to reach OPA
+apiVersion: v1
+kind: Service
+metadata:
+  name: opa
+  namespace: <namespace>
+spec:
+  selector:
+    app: opa
+  ports:
+  - protocol: TCP
+    port: 8181
+    targetPort: 8181
 ```
 
 ## OPA Specifics
@@ -241,7 +246,7 @@ Blocks of rules must be in a denial statement and the package must be `opa.pipel
 
 At a high level, adding policies to OPA is a two-step process:
 1. Create the policies and save them to a `.rego` file.
-2. Add the policies to the OPA server with an API request or a ConfigMap
+2. Add the policies to the OPA server with a ConfigMap or API request.
 
 ### Sample OPA Policy
 
@@ -253,7 +258,7 @@ The following OPA policy enforces two requirements:
 
 ```
 # manual-judgment-and-notifications.rego
-  package opa.pipelines
+package opa.pipelines
 
 deny["Every pipeline must have a Manual Judgment stage"] {
   manual_judgment_stages = [d | d = input.pipeline.stages[_].type; d == "manualJudgment"]
@@ -311,3 +316,10 @@ deny["Every pipeline must have a Manual Judgment stage"] {
   0 == 1
 }
 ```
+
+## Troubleshooting
+**I encountered the following error when trying to save my pipeline:**
+```
+There was an error saving your pipeline: org.json.JSONException: JSONObject["result"] not found.
+```
+This error occurs because you do not have any policies configured. The Policy Engine operates on a fail closed model.
