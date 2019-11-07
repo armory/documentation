@@ -53,52 +53,54 @@ The Policy Engine supports the following OPA server deployments:
 * An existing OPA cluster 
 * An OPA server deployed in an existing Kubernetes cluster with an Armory Spinnaker deployment. If you want to use this method, use the following YAML example to deploy the OPA server:
 
-    This example manifest creates an OPA deployment in the same namespace as your Spinnaker deployment:  
+This example manifest creates an OPA deployment in the same namespace as your Spinnaker deployment and exposes the OPA API:  
 
-    ```yaml
-    apiVersion: apps/v1
-    kind: Deployment
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opa-deployment
+  namespace: <<your-spinnaker-namespace>>
+  labels:
+    app: opa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: opa
+  template:
     metadata:
-      name: opa-deployment
-      namespace: <<your-spinnaker-namespace>>
       labels:
         app: opa
     spec:
-      replicas: 1
-      selector:
-        matchLabels:
-          app: opa
-      template:
-        metadata:
-          labels:
-            app: opa
-        spec:
-          containers:
-          - name: opa
-            image: openpolicyagent/opa
-            ports:
-            - containerPort: 8181
-            args:
-              - "run"
-              - "-s"
-    ```
+      containers:
+      - name: opa
+        image: openpolicyagent/opa
+        ports:
+        - containerPort: 8181
+        args:
+          - "run"
+          - "-s"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: opa
+  namespace: <<your-spinnaker-namespace>>
+spec:
+  selector:
+    app: opa
+  ports:
+  - protocol: TCP
+    port: 8181
+    targetPort: 8181
 
-    This Service exposes the OPA API:
+```
 
-    ```yaml
-    apiVersion: v1
-    kind: Service
-    metadata:
-      name: opa
-      namespace: <<your-spinnaker-namespace>>
-    spec:
-      selector:
-        app: opa
-      ports:
-      - protocol: TCP
-        port: 8181
-        targetPort: 8181
-    ```
+Replace `<<your-spinnaker-namespace` with your Spinnaker namespace and save the file. Then, deploy the manifest:
+```
+kubectl create -f <deployment yaml file name>.yaml
+```
     
 ## Creating OPA Policies with a ConfigMap
 
@@ -251,7 +253,7 @@ The following OPA policy enforces two requirements:
 
 ```
 # manual-judgment-and-notifications.rego
-package opa.pipelines
+  package opa.pipelines
 
 deny["Every pipeline must have a Manual Judgment stage"] {
   manual_judgment_stages = [d | d = input.pipeline.stages[_].type; d == "manualJudgment"]
