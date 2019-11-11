@@ -249,7 +249,7 @@ spec:
 
 # Uninstalling operator
 
-If for some reason the operator needs to be uninstalled/deleted, there are still two ways in which Spinnaker itself can be prevented from being deleted, explained in the following sections.
+Uninstalling the operator involves deleting its deployment and `SpinnakerService` CRD. When you delete the CRD any Spinnaker installation created by the operator will also be deleted, because the CRD is set as owner of the Spinnaker resources and they will be garbage collected. There are two ways in which you can remove this ownership relationship, so that Spinnaker is not deleted when deleting the operator, explained in the following sections.
 
 ### Replacing the operator with Halyard
 
