@@ -19,7 +19,7 @@ You can [try our Demo Environment](https://spinnaker.demo.armory.io) before inst
 
 Armory Spinnaker can now be installed in Kubernetes. Please [answer these questions about your Kubernetes installation](https://go.armory.io/kubernetes-questions) so we can help you install Armory.
 
-Armory has a "free forever" Teams plan. [Learn more here](https://www.armory.io/pricing).
+[Learn more here](https://www.armory.io/pricing).
 
 ## Installing Armory Spinnaker In EC2 on AWS
 
