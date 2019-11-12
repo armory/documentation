@@ -17,7 +17,7 @@ You can [try our Demo Environment](https://spinnaker.demo.armory.io) before inst
 
 ## Installing Armory Spinnaker In Kubernetes
 
-Armory Spinnaker can now be installed in Kubernetes. Please [answer these questions about your Kubernetes installation](https://go.armory.io/kubernetes-questions) so we can help you install Armory.
+Armory Spinnaker can now be installed in Kubernetes. Please [answer these questions about your environment](go.armory.io/needs-analysis) so we can help you install Armory.
 
 [Learn more here](https://www.armory.io/pricing).
 
