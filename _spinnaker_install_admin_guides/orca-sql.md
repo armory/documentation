@@ -54,7 +54,7 @@ Once you've provisioned your RDBMS and ensured connectivity from Spinnaker, you'
 CREATE SCHEMA `orca` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-Then we'll grant authorization to the `orca_service` and `orca_migrate` users:
+Grant authorization to the `orca_service` and `orca_migrate` users:
 
 ```sql
 
@@ -82,6 +82,11 @@ executionHistory:
     enabled: true
     primaryClass: com.netflix.spinnaker.orca.sql.pipeline.persistence.SqlExecutionRepository
     previousClass: com.netflix.spinnaker.orca.pipeline.persistence.jedis.RedisExecutionRepository
+
+  sql:
+    enabled: true
+  redis:
+    enabled: true
 ```
 
 Remove these settings once all the intesting execution history is only in your database.
