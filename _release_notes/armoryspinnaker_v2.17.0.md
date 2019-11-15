@@ -27,6 +27,9 @@ Terraformer now supports Prometheus metrics. The scraping interval of these metr
 
 Terraformer jobs are now persisted to the data store before being submitted to the queue. This new behavior allows Terraformer to be horizontally scaled.
 
+#### Deck Plugin Support - Alpha
+Deck is now able to consume Plugins, enabling UI creation for custom stages.
+
 ###  Spinnaker Community Contributions
 
 #### Git Repo Artifact Support
