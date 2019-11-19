@@ -47,7 +47,7 @@ Configure an HTTP Source. And get a copy of the endpoint URL from your SumoLogic
 
 **Collection Step 2: Modify Spinnaker echo-local.yml to export logs to SumoLogic**
 
-Add (and create if necessary) to `.hal/default/echo-local.yml` the following:
+Add (and create if necessary) to `.hal/default/profiles/echo-local.yml` the following:
 ```yaml
 rest:
   enabled: true
