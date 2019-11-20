@@ -118,7 +118,7 @@ identify the artifact account.
 hal config artifact bitbucket enable
 
 # This will prompt for the password
-hal config artifact bitbucker account add bitbucket-for-terraform \
+hal config artifact bitbucket account add bitbucket-for-terraform \
   --username <USERNAME> \
   --password
 ```
