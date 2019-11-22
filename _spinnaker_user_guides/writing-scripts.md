@@ -23,10 +23,10 @@ This guide includes:
 People often ask how they can write scripts and use Spinnaker programmatically. Spinnaker is a collection of subservices that all expose a RESTful API. You can see a list (with descriptions) of all of the endpoints by navigating to:
 
 ```
-http(s)://<your-gate-url>:8084/swagger-ui.html
+http(s)://<your-gate-url>/swagger-ui.html
 ```
 
-Notice that this uses port `8084`.
+Note: you may need to append your url with the gate port, `:8084`.
 
 You should see a screen that looks like:
 
