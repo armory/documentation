@@ -15,7 +15,7 @@ hidden: false
 
 
 ## Known Issues
-There are currently no known issues with this release.
+This release has a problem where Kayenta does not start properly. This issue is fixed with Armory Spinnaker `2.17.1`
 
 ## Highlighted Updates
 ### Armory
