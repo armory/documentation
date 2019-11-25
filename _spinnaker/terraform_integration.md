@@ -144,13 +144,8 @@ hal armory terraform edit \
 
 Terraformer currently ships with the following versions of the Terraform binary:
 
-* 0.11.10
-* 0.11.11
-* 0.11.12
-* 0.11.13
-* 0.11.14
-* 0.12.0
-* 0.12.1
+* 0.11.10 through 0.11.14
+* 0.12.0 through 0.12.10
 
 *Note: Terraform binaries are verified by checksum and with hashicorp's GPG key before being installed into our release.*
 
