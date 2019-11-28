@@ -533,7 +533,7 @@ If you have already created a pipeline in the Spinnaker UI, you can create a din
 
     Save this file as `dinghyfile` in the root of your project and push it to your repository.
 
-    You may want to follow the [deleting stale pipelines](http://localhost:4000/spinnaker/using_dinghy/#deleting-stale-pipelines).
+    You may want to follow the [deleting stale pipelines](https://docs.armory.io/spinnaker/using_dinghy/#deleting-stale-pipelines).
 
 # Alternate Template Formats
 
