@@ -52,7 +52,7 @@ how your pipeline should be triggered. In our example we have specified a
 manifest (stored in our Github repo) as our artifact and set our pipeline to 
 trigger automatically when changes to our manifest are detected.
 
-![Artifact and Trigger](/images/Image%25202018-10-23%2520at%25202.18.14%2520PM.png)
+![Artifact and Trigger](https://raw.githubusercontent.com/armory/documentation/master/images/Image%2525202018-10-23%252520at%2525202.18.14%252520PM.png)
 
 Next, click `Add stage`. Provide your new stage a descriptive name -- we have
 chosen `Deploy to Staging` as ours. In order to deply our artifact, we choose 
