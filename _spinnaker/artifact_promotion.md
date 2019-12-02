@@ -52,14 +52,14 @@ how your pipeline should be triggered. In our example we have specified a
 manifest (stored in our Github repo) as our artifact and set our pipeline to 
 trigger automatically when changes to our manifest are detected.
 
-![Artifact and Trigger](/images/Image%25202018-10-23%2520at%25202.18.14%2520PM.png)
+![Artifact and Trigger](/images/artifacts_and_triggers.png)
 
 Next, click `Add stage`. Provide your new stage a descriptive name -- we have
 chosen `Deploy to Staging` as ours. In order to deply our artifact, we choose 
 `Deploy (Manifest)` as our *Stage Type* and specify `Artifact` as our *Manifest
 Source*. Finally, we select our arfifact from the `Expected Artifact` dropdown.
 
-![Deploy (Manifest)](/images/Image%25202018-10-23%2520at%25202.26.14%2520PM.png)
+![Deploy (Manifest)](/images/artifacts_deploy_manifest.png)
 
 Save your changes.
 
@@ -75,7 +75,7 @@ Add an automated trigger to the pipeline where the type is `Pipeline`. Select
 the `Deploy to Staging` pipeline from the `Pipeline` dropdown. Check both
 `successful` and `Trigger Enabled` from the remaining options.
 
-![Automated Triggers](/images/Image%25202018-10-23%2520at%25202.30.55%2520PM.png)
+![Automated Triggers](/images/artifacts_automated_triggers.png)
 
 Now click, `Add stage` and select `Manual Judgement` as the *Stage Type*. In
 *Execution Options* select `halt the entire pipeline` for *If stage fails*. 
@@ -127,7 +127,3 @@ promotion of artifacts through a series of environments:
 * [Spinnaker Codelab: Kubernetes Source To Prod (Manifest Based)](https://www.spinnaker.io/guides/tutorials/codelabs/kubernetes-v2-source-to-prod/) -- Steps 6 and 7 are of particular interest.
 
 * [Deploying Helm Charts with Armory Spinnaker](https://kb.armory.io/kubernetes/using-spinnaker-and-helm/) -- Example of artifact promotion through environments managed by a single pipeline (*Beginning at 6:00*). 
-
-
-
-
