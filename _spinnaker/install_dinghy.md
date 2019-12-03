@@ -42,6 +42,8 @@ hal armory dinghy edit \
 
   # For Github enterprise, you may customize the endpoint:
   --github-endpoint "https://your-endpoint-here.com/api/v3"
+  
+hal deploy apply
 ```
 
 Set up webhooks at the organization level for Push events. You can do this by going to: https://github.com/organizations/your_org_here/settings/hooks. Set the `Payload URL` to: `https://<your-gate-url>/webhooks/git/github` and a content type of `application/json`.  If your gate endpoint is protected by a firewall, you’ll need to configure your firewall to allow inbound webhooks from Github's IP addresses. You can find their IPs here: [](https://api.github.com/meta), you can read [Github's docs here](https://help.github.com/articles/about-github-s-ip-addresses/).
@@ -54,7 +56,9 @@ hal armory dinghy edit \
   --template-repo "dinghy-templates" \
   --stash-token "your_token/password" \
   --stash-username "stash_user" \
-  --stash-endpoint "https://your-endpoint-here.com"
+  --stash-endpoint "https://your-endpoint-here.com"  
+
+hal deploy apply
 ```
 Note: If you're using Bitbucket Server, update the endpoint to include the api e.g. `--stash-endpoint https://your-endpoint-here.com/rest/api/1.0`
 
@@ -73,7 +77,9 @@ hal armory dinghy edit \
   --template-org "armory-io" \
   --template-repo "dinghy-templates" \
   --gitlab-token "your_token/password"
-  --gitlab-endpoint "https://your-endpoint-here.com"
+  --gitlab-endpoint "https://your-endpoint-here.com"  
+
+hal deploy apply
 ```
 
 Point your webhooks (Under "Settings -> Integrations"  on your project page)
