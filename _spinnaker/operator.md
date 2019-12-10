@@ -6,6 +6,9 @@ order: 11
 
 Note that Spinnaker Operator is currently in [Early Release](https://kb.armory.io/releases/early-release-beta-GA/). The feature is working and installable but is not meant for production use.
 
+**Incompatible Change**: In 0.2.x+, the CRD no longer references a `configMap` but contains the whole configuration. 
+It allows users to use `kustomize` to layer their Spinnaker changes and makes validation easier.
+
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
