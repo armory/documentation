@@ -144,7 +144,7 @@ spinnaker-operator-7cd659654b-4vktl      2/2           Running      0           
 
 After you install the CRDs and Operator, you can create a `ConfigMap` and `SpinnakerService` to install Spinnaker.
 
-You can find a sample ConfigMap in the `deploy/spinnaker/examples/basic` directory of the downloaded release. Change the parameters you need (especially the `persistentStorage` section). To install a basic version ofSpinnaker with Operator and the example ConfigMap, run the following command:
+You can find a sample ConfigMap in the `deploy/spinnaker/examples/basic` directory of the downloaded release. Change the parameters you need (especially the `persistentStorage` section). To install a basic version of Spinnaker with Operator and the example ConfigMap, run the following command:
 
 ```bash
 $ kubectl create ns <spin_namespace>
@@ -297,9 +297,10 @@ deploymentConfigurations:
 ```
 2. For each entry in `spec.spinnakerConfig.profiles`, copy it to its own file inside a `profiles` folder with a `<entry-name>-local.yml` name.
 3. For each entry in `spec.spinnakerConfig.service-settings`, copy it to its own file inside a `service-settings` folder with a `<entry-name>.yml` name.
-4. For each entry in `spec.spinnakerConfig.files`, copy it to its own file inside a directory structure following the name of the entry with double underscores (__) replaced by a path separator. Example: an entry named `profiles__rosco__packer__example-packer-config.json` would produce the file `profiles/rosco/packer/example-packer-config.json`.
+4. For each entry in `spec.spinnakerConfig.files`, copy it to its own file inside a directory structure following the name of the entry with double underscores (__) replaced by a path separator. For example, an entry named `profiles__rosco__packer__example-packer-config.json` results inthe file `profiles/rosco/packer/example-packer-config.json`.
 
 When finished, you have the following directory tree:
+
 ```
 config
 default/
