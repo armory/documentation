@@ -188,7 +188,7 @@ Use the following configurations:
 
 - `spec.expose.type`: How Spinnaker gets exposed. Currently, only `service` is supported, which uses Kubernetes services to expose Spinnaker.
 - `spec.expose.service`: Service configuration
-- `spec.expose.service.type`: Should match a valid Kubernetes service type (i.e. `LoadBalancer`, `NodePort`, or `ClusterIP`). **Note that only `LoadBalancer` is supported currently.
+- `spec.expose.service.type`: Should match a valid Kubernetes service type (i.e. `LoadBalancer`, `NodePort`, or `ClusterIP`). **Note that only `LoadBalancer` is supported currently.**
 - `spec.expose.service.annotations`: Map containing annotations to be added to Gate (API) and Deck (UI) services.
 - `spec.expose.service.overrides`: Map with key for overriding the service type and specifying extra annotations: Spinnaker service name (Gate or Deck) and value. By default, all services receive the same annotations. You can override annotations for a Deck (UI) or Gate (API) services.
 
