@@ -310,7 +310,7 @@ default/
 
 After that, move these files to your Halyard home directory and deploy Spinnaker with the `hal deploy apply` command.
 
-Finally,delete Operator and their CRDs from the Kubernetes cluster.
+Finally, delete Operator and their CRDs from the Kubernetes cluster.
 
 ```bash
 $ kubectl delete -n <namespace> -f deploy/operator/<installation type>
