@@ -11,6 +11,8 @@ redirect_from:
 
 Since version 2.5.x (OSS 1.14.x), Clouddriver can store its data (task, infrastructure, etc) in a MySQL compatible database. Similar to Orca, the main advantage of doing this is to improve performance and remove Redis as a single point of failure.
 
+Armory recommends MySQL 5.7. For AWS, you can use Aurora.
+
 ## Base Configuration
 
 You can find a complete description of the options in the [open source documentation](https://www.spinnaker.io/setup/productionize/persistence/clouddriver-sql/). SQL is not currently supported in Halyard's main configuration but can be setup in `<HALYARD>/<DEPLOYMENT>/profiles/clouddriver-local.yml`.
