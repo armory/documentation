@@ -9,9 +9,9 @@ redirect_from:
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-By default, Orca (the task orchestration service) uses Redis as its backing store. You can now configure Orca to use a relational database to store its pipeline execution.
-The main advantage of doing so is a gain in performance and the removal of Redis as a single point of failure.
+By default, Orca (the task orchestration service) uses Redis as its backing store. You can now configure Orca to use a relational database to store its pipeline execution. The main advantage of doing so is a gain in performance and the removal of Redis as a single point of failure.
 
+Armory recommends MySQL 5.7. For AWS, you can use Aurora.
 
 ## Base Configuration
 
