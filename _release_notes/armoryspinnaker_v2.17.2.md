@@ -124,7 +124,7 @@ No Changes
 ###  Spinnaker Community Contributions
 See Spinnaker's release notes that are included in this release:
 
-[Spinnaker 1.17.4](https://www.spinnaker.io/community/releases/versions/1-17-4-changelog#individual-service-changes)
+[Spinnaker 1.17.5](https://www.spinnaker.io/community/releases/versions/1-17-5-changelog#individual-service-changes)
 
 #### Clouddriver  - e192026...22f8150
  - fix(cfn): do not add roleARN if empty or null (#4206) (#4220)
