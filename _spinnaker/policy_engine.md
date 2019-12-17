@@ -5,16 +5,18 @@ order: 142
 ---
 
 ## Overview
-The Armory Policy Engine is designed to allow enterprises more complete control of their software delivery process by providing them with the hooks necessary to perform more extensive verification of their pipelines and processes in Spinnaker. This policy engine is backed by [Open Policy Agent](https://www.openpolicyagent.org/) and uses input style documents to perform validation of pipelines during creation and updates.
+The Armory Policy Engine is designed to allow enterprises more complete control of their software delivery process by providing them with the hooks necessary to perform more extensive verification of their pipelines and processes in Spinnaker. This policy engine is backed by [Open Policy Agent](https://www.openpolicyagent.org/)(OPA) and uses input style documents to perform validation of pipelines during creation and updates.
 
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
 ## Requirements 
-The Policy Engine has been tested with OPA versions 0.12.x and 0.13.x.
 
-Armory recommends running Halyard 1.7.2+ and Spinnaker 2.16+ to use the Policy Engine.
+Armory recommends the following versions for the Policy Engine:
+* OPA versions 0.12.x or 0.13.x
+* Halyard 1.7.2 or later
+* Spinnaker 2.16 or later
 
 ## Before You Start
 Keep the following guidelines in mind when using the Policy Engine: 
