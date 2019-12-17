@@ -27,6 +27,8 @@ This release includes the following:
 
 
 ###  Spinnaker Community Contributions
+* Kubernetes provider: fixes NullPointerException on NetworkPolicies with ingresses with null ports
+* SQL support: fixes table names with long type names
 <br>
 
 ### Bill of Materials
