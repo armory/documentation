@@ -16,7 +16,7 @@ The Armory Policy Engine is designed to allow enterprises more complete control 
 Armory recommends the following versions for the Policy Engine:
 * OPA versions 0.12.x or 0.13.x
 * Halyard 1.7.2 or later
-* Spinnaker 2.16 or later
+* Spinnaker 2.16.0 or later
 
 ## Before You Start
 Keep the following guidelines in mind when using the Policy Engine: 
