@@ -38,7 +38,7 @@ Operator has two distinct modes you can install and use:
 
 Before you start, ensure the following requirements are met:
 
-- Your Kubernetes cluster is version 1.13 or later.
+- Your Kubernetes cluster runs version 1.13 or later.
 - You have admission controllers enabled in Kubernetes (`-enable-admission-plugins`).
 - You have `ValidatingAdmissionWebhook` enabled in the kube-apiserver. Alternatively, you can pass the `--disable-admission-controller` parameter to the to the `deployment.yaml` file that deploys the operator.
 - You have admin rights to install the Custom Resource Definition (CRD) for Operator.
@@ -286,7 +286,7 @@ spec:
 
 Uninstalling the operator involves deleting its deployment and `SpinnakerService` CRD. When you delete the CRD, any Spinnaker installation created by Operator will also be deleted. This occurs because the CRD is set as the owner of the Spinnaker resources, so they get garbage collected. 
 
-There are two ways in which you can remove this ownership relationship. so that Spinnaker is not deleted when deleting the operator: [replace Operator with Halyard](#replacing-operator-with-halyard) or [remove Operator ownership of Spinnaker resources](#removing-operator-ownership-from-spinnaker-resources).
+There are two ways in which you can remove this ownership relationship. so that Spinnaker is not deleted when deleting the operator: [replacing Operator with Halyard](#replacing-operator-with-halyard) or [removing Operator ownership of Spinnaker resources](#removing-operator-ownership-from-spinnaker-resources).
 
 ### Replacing Operator with Halyard
 

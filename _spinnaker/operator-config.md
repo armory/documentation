@@ -32,21 +32,21 @@ spec:
 
     # spec.spinnakerConfig.profiles - This section contains the YAML of each service's profile
     profiles:
-      clouddriver: {} # is the contents of ~/.hal/default/profiles/clouddriver.yml
+      clouddriver: {} # Contents of ~/.hal/default/profiles/clouddriver.yml
       # deck has a special key "settings-local.js" for the contents of settings-local.js
       deck:
         # settings-local.js - contents of ~/.hal/default/profiles/settings-local.js
         # Use the | YAML symbol to indicate a block-style multiline string
         settings-local.js: |
           window.spinnakerSettings.feature.kustomizeEnabled = true;
-      echo: {}    # is the contents of ~/.hal/default/profiles/echo.yml
-      fiat: {}    # is the contents of ~/.hal/default/profiles/fiat.yml
-      front50: {} # is the contents of ~/.hal/default/profiles/front50.yml
-      gate: {}    # is the contents of ~/.hal/default/profiles/gate.yml
-      igor: {}    # is the contents of ~/.hal/default/profiles/igor.yml
-      kayenta: {} # is the contents of ~/.hal/default/profiles/kayenta.yml
-      orca: {}    # is the contents of ~/.hal/default/profiles/orca.yml
-      rosco: {}   # is the contents of ~/.hal/default/profiles/rosco.yml
+      echo: {}    # Contents of ~/.hal/default/profiles/echo.yml
+      fiat: {}    # Contents of ~/.hal/default/profiles/fiat.yml
+      front50: {} # Contents of ~/.hal/default/profiles/front50.yml
+      gate: {}    # Contents of ~/.hal/default/profiles/gate.yml
+      igor: {}    # Contents of ~/.hal/default/profiles/igor.yml
+      kayenta: {} # Contents of ~/.hal/default/profiles/kayenta.yml
+      orca: {}    # Contents of ~/.hal/default/profiles/orca.yml
+      rosco: {}   # Contents of ~/.hal/default/profiles/rosco.yml
 
     # spec.spinnakerConfig.service-settings - This section contains the YAML of the service's service-setting
     # see https://www.spinnaker.io/reference/halyard/custom/#tweakable-service-settings for available settings
@@ -63,13 +63,13 @@ spec:
       rosco: {}
 
     # spec.spinnakerConfig.files - This section allows you to include any other raw string files not handle above.
-    # The KEY is the filepath and filename of where it should be placed
-    #   - Files here will be placed into ~/.hal/default/ on halyard
-    #   - __ is used in place of / for the path separator
-    # The VALUE is the contents of the file.
-    #   - Use the | YAML symbol to indicate a block-style multiline string
-    #   - We currently only support string files
-    #   - NOTE: Kubernetes has a manifest size limitation of 1MB
+    # The KEY is the filepath and filename of where it should be placed.
+    #   - Files here will be placed into ~/.hal/default/ on halyard.
+    #   - __ (double underscore) is used in place of / for the path separator.
+    # The VALUE Contents of the file.
+    #   - Use the | YAML symbol to indicate a block-style multiline string.
+    #   - We currently only support string files.
+    #   - NOTE: Kubernetes has a manifest size limitation of 1MB.
     files: {}
   #      profiles__rosco__packer__example-packer-config.json: |
   #        {
@@ -80,22 +80,22 @@ spec:
   #        echo "hello world!"
 
 
-  # spec.expose - This section defines how Spinnaker should be publicly exposed
+  # spec.expose - This section defines how Spinnaker should be publicly exposed.
   expose:
-    type: service  # Kubernetes LoadBalancer type (service/ingress), note: only "service" is supported for now
+    type: service  # Kubernetes LoadBalancer type (service/ingress). Note that only "service" is supported for now.
     service:
       type: LoadBalancer
 
-      # annotations to be set on Kubernetes LoadBalancer type
-      # they will only apply to spin-gate, spin-gate-x509, or spin-deck
+      # Annotations to be set on Kubernetes LoadBalancer type.
+      # They only apply to spin-gate, spin-gate-x509, or spin-deck.
       annotations:
         service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
-        # uncomment the line below to provide an AWS SSL certificate to terminate SSL at the LoadBalancer
+        # Uncomment the line below to provide an AWS SSL certificate to terminate SSL at the LoadBalancer.
         #service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-west-2:9999999:certificate/abc-123-abc
 
-      # provide an override to the exposing KubernetesService
+      # Provide an override to the exposing KubernetesService.
       overrides: {}
-      # Provided below is the example config for the Gate-X509 configuration
+      # The following example is an example config for the Gate-X509 configuration.
 #        deck:
 #          annotations:
 #            service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-west-2:9999999:certificate/abc-123-abc
@@ -146,7 +146,7 @@ The equivalent of that `hal` config is the following `spec.spinnakerConfig`:
 spec:
   spinnakerConfig:
     config:
-      version: 1.15.1
+      version: 1.17.1
       persistentStorage:
         persistentStoreType: s3
         s3:
@@ -156,7 +156,7 @@ spec:
 
 ### .spec.spinnakerConfig.profiles
 
-Configuration options for each service profile. This is the equivalent of `~/.hal/default/profiles/<service>-local.yml`. For example the following `profile` is for Gate:
+Configuration for each service profile. This is the equivalent of `~/.hal/default/profiles/<service>-local.yml`. For example the following `profile` is for Gate:
 
 ```yaml
 spec:
@@ -182,7 +182,7 @@ spec:
 ```
 
 ### spec.expose 
-Optional. Configurations for exposing Spinnaker. If you omit it, no load balancer gets created. If you remove it, the load balancer gets deleted.
+Optional. Controls how Spinnaker gets exposed. If you omit it, no load balancer gets created. If this section gets removed, the Load Balancer does not get deleted.
 
 Use the following configurations:
 
