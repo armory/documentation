@@ -35,12 +35,9 @@ you should see a checkbox to enable Canarying:
 Make sure it's checked and saved.
 
 If you don't see this option in your application config, make sure you've
-[configured Kayenta](/admin-guides/kayenta).
+[configured Kayenta](https://www.spinnaker.io/guides/user/canary/).
 
-## Additional Documentation
-
-Kayenta is an open source feature of Spinnaker and has its own documentation at
-[https://www.spinnaker.io/guides/user/canary/](https://www.spinnaker.io/guides/user/canary/)
+You can also find more information about Kayenta on [Automated Canary Deployments](/spinnaker/configure_kayenta)
 
 In this document, we will quickly run through the process to simply get you
 going.
