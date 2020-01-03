@@ -14,7 +14,7 @@ This page describes the fields in `SpinnakerService` CRD and example manifests:
 The following example shows the general structure of `SpinnakerService`. A skeleton copy of it also exists in `/deploy/spinnaker/complete/spinnakerservice.yml` if you want to edit it.
 
 ```yaml
-apiVersion: spinnaker.io/v1alpha2
+apiVersion: spinnaker.armory.io/v1alpha2
 kind: SpinnakerService
 metadata:
   name: spinnaker
@@ -23,7 +23,7 @@ spec:
   spinnakerConfig:
     # spec.spinnakerConfig.config - This section contains the contents of a deployment found in a halconfig .deploymentConfigurations[0]
     config:
-      version: 1.17.1   # the version of Spinnaker to be deployed
+      version: 2.17.1   # the Armory Spinnaker version to be deployed
       persistentStorage:
         persistentStoreType: s3
         s3:
@@ -120,11 +120,11 @@ Name of your Spinnaker service. Use this name to view, edit, or delete Spinnaker
 $ kubectl get spinsvc prod
 ```
 
-Note that you can use spinsvc for brevity. You can also use `spinnakerservices.spinnaker.io`.
+Note that you can use spinsvc for brevity. You can also use `spinnakerservices.spinnaker.armory.io`.
 
 ### .spec.spinnakerConfig
 
-Reference to a ConfigMap or Secret that contains Spinnaker configuration files coming from Halyard. Only `configMap` is currently supported. This configuration is described [below](#spinnakerconfig).
+Contains the same information as the `deploymentConfigurations` entry in a Halyard configuration.
 
 For example, given the following `~/./hal/config` file: 
 
@@ -132,7 +132,7 @@ For example, given the following `~/./hal/config` file:
 currentDeployment: default
 deploymentConfigurations:
 - name: default
-  version: 1.17.1
+  version: 2.17.1
   persistentStorage:
     persistentStoreType: s3
     s3:
@@ -140,13 +140,13 @@ deploymentConfigurations:
       rootFolder: front50
 ```
 
-The equivalent of that `hal` config is the following `spec.spinnakerConfig`:
+The equivalent of that Halyard configuration is the following `spec.spinnakerConfig`:
 
 ```yaml
 spec:
   spinnakerConfig:
     config:
-      version: 1.17.1
+      version: 2.17.1
       persistentStorage:
         persistentStoreType: s3
         s3:
@@ -222,7 +222,7 @@ spec:
 Support for `SpinnakerAccount` CRD
 
 - `spec.accounts.enabled`: Boolean. Defaults to false. If true, the `SpinnakerService` uses all `SpinnakerAccount` objects enabled.
-- `spec.accountsdynamic` (experimental): Boolean. Defaults to false. If true, `SpinnakerAccount` objects are availbe to Spinnaker as the account is applied (without redeploying any service).
+- `spec.accounts.dynamic` (experimental): Boolean. Defaults to false. If true, `SpinnakerAccount` objects are available to Spinnaker as the account is applied (without redeploying any service).
 
 # Example Manifests for Exposing Spinnaker
 The following example manifests deploy Spinnaker with different configurations:
@@ -242,7 +242,7 @@ The following example manifests deploy Spinnaker with different configurations:
 ## Load balancer Services
 
 ```yaml
-apiVersion: spinnaker.io/v1alpha2
+apiVersion: spinnaker.armory.io/v1alpha2
 kind: SpinnakerService
 metadata:
   name: spinnaker
@@ -319,7 +319,7 @@ spec:
 ## Different Service Types for Deck (UI) and Gate (API)
 
 ```yaml
-apiVersion: spinnaker.io/v1alpha2
+apiVersion: spinnaker.armory.io/v1alpha2
 kind: SpinnakerService
 metadata:
   name: spinnaker
@@ -398,7 +398,7 @@ spec:
 ## Different Annotations for Deck (UI) and Gate (API)
 
 ```yaml
-apiVersion: spinnaker.io/v1alpha2
+apiVersion: spinnaker.armory.io/v1alpha2
 kind: SpinnakerService
 metadata:
   name: spinnaker

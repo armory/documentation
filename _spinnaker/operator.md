@@ -22,6 +22,34 @@ Operator has two distinct modes you can install and use:
 - **Basic**: Operator in basic mode installs Spinnaker into a single namespace without `ValidatingAdmissionWebhook` for doing preflight checks.
 - **Cluster**: Operator in cluster mode installs Spinnaker across namespaces with `ValidatingAdmissionWebhook` for doing preflight checks. This mode requires a `ClusterRole`.
 
+If you want to get started quickly, the process to install Operator and Spinnaker involves running the following commands: 
+
+```
+# For a stable release (https://github.com/armory/spinnaker-operator/releases)
+$ mkdir -p spinnaker-operator && cd spinnaker-operator
+$ RELEASE=v0.2.0 bash -c 'curl -L https://github.com/armory/spinnaker-operator/releases/download/${RELEASE}/manifests.tgz | tar -xz'
+ 
+# For the latest development work (master) 
+$ git clone https://github.com/armory/spinnaker-operator.git && cd spinnaker-operator
+
+# Install or update CRDs cluster wide
+$ kubectl apply -f deploy/crds/
+
+# Install Operator in namespace spinnaker-operator. If you want a different namespace, see the below documentaiton.
+$ kubectl create ns spinnaker-operator
+$ kubectl -n spinnaker-operator apply -f deploy/operator/cluster
+
+# Install Spinnaker in the "spinnaker" namespace
+$ kubectl create ns spinnaker
+$ kubectl -n spinnaker apply -f deploy/spinnaker/basic
+
+# Watch the install progress and check out the pods being created too!
+$ kubectl -n spinnaker get spinsvc spinnaker -w
+
+```
+
+The rest of this page describes how to modify some of the default configurations within Operator to suit your needs.
+
 # Benefits of Operator
 
 - Stop using Halyard commands: just `kubectl apply` your Spinnaker configuration. This includes support for local files.
@@ -47,18 +75,18 @@ Before you start, ensure the following requirements are met:
 
 Operator introduces a new CRD for Spinnaker accounts. `SpinnakerAccount` is defined in an object - separate from the main Spinnaker config - so its creation and maintenance can easily be automated.
 
-To read more about this CRD, see [SpinnakerAccount](https://github.com/armory/spinnaker-operator/blob/master/doc/spinnaker-accounts.md)
+To read more about this CRD, see [SpinnakerAccount](https://github.com/armory/spinnaker-operator/blob/master/doc/spinnaker-accounts.md).
 
 # Install Operator
 
-## Download the Operator
+## Download the Operator Manifests
 
 Download CRDs and example manifests from the [latest stable release](https://github.com/armory-io/spinnaker-operator/releases).
 
 ```bash
 # For a stable release (https://github.com/armory/spinnaker-operator/releases)
 $ mkdir -p spinnaker-operator && cd spinnaker-operator
-$ RELEASE=v0.2.0 bash -c 'curl -L https://github.com/armory/spinnaker-operator/releases/download/${RELEASE}/manifests.tgz | tar -xz'
+$ RELEASE=v0.2.0 bash -c 'curl -L https://github.com/armory.io/spinnaker-operator/releases/download/${RELEASE}/manifests.tgz | tar -xz'
 ```
 
 For both Basic and Cluster modes, you must download and apply the SpinnakerService CRD.
@@ -145,16 +173,13 @@ spinnaker-operator-7cd659654b-4vktl      2/2           Running      0           
 
 # Installing Spinnaker Using Operator
 
-After you install the CRDs and Operator, you can create a `ConfigMap` and `SpinnakerService` to install Spinnaker.
-
-You can find a sample ConfigMap in the `deploy/spinnaker/examples/basic` directory of the downloaded release. Change the parameters you need (especially the `persistentStorage` section). To install a basic version of Spinnaker with Operator and the example ConfigMap, run the following command:
+Once you install the CRDs and Operator, check out the examples in `deploy/spinnaker/`. To use the examples, change the parameters you need (especially the `persistentStorage` section). To install a basic version of Spinnaker with Operator and the example ConfigMap, run the following command:
 
 ```bash
-$ kubectl create ns <spin_namespace>
-$ kubectl -n <spin_namespace> apply -f deploy/spinnaker/basic/spinnakerservice.yml 
+$ kubectl create ns <spinnaker-namespace>
+$ kubectl -n <spinnaker-namespace> apply -f deploy/spinnaker/basic/spinnakerservice.yml 
 ```
-
-`<spin_namespace>` is the `namespace` where you want to deploy Spinnaker.
+In the examples, the `spinnaker-namespace` parameter refers to the namespace where you want to install Spinnaker. It is likely different from Operator's namespace.
 
 The example uses Operator in basic mode with the example ConfigMap to deploy Spinnaker 2.15.3 with the following attributes:
 
@@ -170,10 +195,10 @@ Operator supports Kustomize, a templating engine for Kubernetes. Using Kustomize
 2. Run the following commands:
     
     ```bash
-    $ kubectl create ns <spin_namespace>
+    $ kubectl create ns <spinnaker-namespace>
     $ kubectl build deploy/spinnaker/kustomize | kubectl -n <spinnaker-namespace> apply -f -
     ```
-    `<spin_namespace>` is the `namespace` where you want to deploy Spinnaker.
+    `<sspinnaker-namespace>` is the `namespace` where you want to deploy Spinnaker.
 
 # Upgrading Spinnaker Using Operator
 
@@ -183,19 +208,19 @@ To upgrade an existing Spinnaker deployment using the Operator, perform the foll
 2. Apply the updated ConfigMap:
 
     ```bash
-    $ kubectl <spin_namespace> apply -f /deploy/spinnaker/basic/spinnakerservice.yml 
+    $ kubectl <spinnaker-namespace> apply -f /deploy/spinnaker/basic/spinnakerservice.yml 
     ```
-    Replace `<spin_namespace>` with the namespace for the existing Spinnaker deployment.
+    Replace `<spinnaker-namespace>` with the namespace for the existing Spinnaker deployment.
 
     You can view the upgraded services starting up with the following command:
     ```bash
-    $ kubectl -n <spin_namespace> describe spinsvc spinnaker
+    $ kubectl -n <spinnaker-namespace> describe spinsvc spinnaker
     ```
 
 3. Verify the upgraded version of Spinnaker:
 
     ```bash
-    $ kubectl -n <spin_namespace> get spinsvc
+    $ kubectl -n <spinnaker-namespace> get spinsvc
     ```
 
     The command returns information similar to the following:
@@ -209,7 +234,7 @@ To upgrade an existing Spinnaker deployment using the Operator, perform the foll
 
     Once the upgrade is complete, you can view information related to your Spinnaker deployment with the following command:
     ```bash
-    $ kubectl -n <spin_namespace> get svc
+    $ kubectl -n <spinnaker-namespace> get svc
     ```
 
     The command returns information about the running Spinnaker services.
