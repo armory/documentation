@@ -65,7 +65,7 @@ serviceLimits:
       rateLimit: 10.0   # default max req/second
 ```
 
-And finally, you can have more fine-grained control for particular AWS endpoints that might have a different rate limits. 
+And finally, you can have more fine-grained control for particular AWS endpoints that might have a different rate limits.
 
 We've found that this formula works pretty well:
 ```
@@ -87,22 +87,10 @@ serviceLimits:
     AWSLambda:
       defaults:
         rateLimit: 10.0   # default max req/second
-    AWSLambda:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AWSLambdaAsync:
-      defaults:
-        rateLimit: 10.0   # default max req/second
     AWSLambdaAsync:
       defaults:
         rateLimit: 10.0   # default max req/second
     AWSLambdaAsyncClientBuilder:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AWSLambdaAsyncClientBuilder:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AWSLambdaClientBuilder:
       defaults:
         rateLimit: 10.0   # default max req/second
     AWSLambdaClientBuilder:
@@ -123,22 +111,10 @@ serviceLimits:
     AWSShield:
       defaults:
         rateLimit: 10.0   # default max req/second
-    AWSShield:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AWSShieldClientBuilder:
-      defaults:
-        rateLimit: 10.0   # default max req/second
     AWSShieldClientBuilder:
       defaults:
         rateLimit: 10.0   # default max req/second
     AmazonAutoScaling:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AmazonAutoScaling:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AmazonAutoScalingClientBuilder:
       defaults:
         rateLimit: 10.0   # default max req/second
     AmazonAutoScalingClientBuilder:
@@ -153,31 +129,13 @@ serviceLimits:
     AmazonCloudWatch:
       defaults:
         rateLimit: 10.0   # default max req/second
-    AmazonCloudWatch:
-      defaults:
-        rateLimit: 10.0   # default max req/second
     AmazonCloudWatchClientBuilder:
       defaults:
         rateLimit: 10.0   # default max req/second
-    AmazonCloudWatchClientBuilder:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AmazonEC2ClientBuilder:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AmazonEC2ClientBuilder:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AmazonEC2ClientBuilder:
-      defaults:
-        rateLimit: 10.0   # default max req/second
     AmazonEC2:
       defaults:
         rateLimit: 10.0   # default max req/second
-    AmazonEC2:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AmazonEC2:
+    AmazonEC2ClientBuilder:
       defaults:
         rateLimit: 10.0   # default max req/second
     AmazonECR:
@@ -195,76 +153,28 @@ serviceLimits:
     AmazonElasticLoadBalancing:
       defaults:
         rateLimit: 10.0   # default max req/second
-    AmazonElasticLoadBalancing:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AmazonElasticLoadBalancing:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AmazonElasticLoadBalancing:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AmazonElasticLoadBalancingClientBuilder:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AmazonElasticLoadBalancingClientBuilder:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AmazonElasticLoadBalancingClientBuilder:
-      defaults:
-        rateLimit: 10.0   # default max req/second
     AmazonElasticLoadBalancingClientBuilder:
       defaults:
         rateLimit: 10.0   # default max req/second
     AmazonIdentityManagement:
       defaults:
         rateLimit: 10.0   # default max req/second
-    AmazonIdentityManagement:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AmazonIdentityManagement:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AmazonIdentityManagement:
-      defaults:
-        rateLimit: 10.0   # default max req/second
     AmazonIdentityManagementClientBuilder:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AmazonIdentityManagementClientBuilder:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AmazonIdentityManagementClientBuilder:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AmazonIdentityManagementClientBuilder:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AmazonRoute53ClientBuilder:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AmazonRoute53ClientBuilder:
       defaults:
         rateLimit: 10.0   # default max req/second
     AmazonRoute53:
       defaults:
         rateLimit: 10.0   # default max req/second
-    AmazonRoute53:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AmazonS3ClientBuilder:
+    AmazonRoute53ClientBuilder:
       defaults:
         rateLimit: 10.0   # default max req/second
     AmazonS3:
       defaults:
         rateLimit: 10.0   # default max req/second
-    AmazonSNS:
+    AmazonS3ClientBuilder:
       defaults:
         rateLimit: 10.0   # default max req/second
     AmazonSNS:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AmazonSNSClientBuilder:
       defaults:
         rateLimit: 10.0   # default max req/second
     AmazonSNSClientBuilder:
@@ -279,18 +189,12 @@ serviceLimits:
     AmazonSimpleWorkflow:
       defaults:
         rateLimit: 10.0   # default max req/second
-    AmazonSimpleWorkflow:
-      defaults:
-        rateLimit: 10.0   # default max req/second
-    AmazonSimpleWorkflowClientBuilder:
-      defaults:
-        rateLimit: 10.0   # default max req/second
     AmazonSimpleWorkflowClientBuilder:
       defaults:
         rateLimit: 10.0   # default max req/second
 ```
 
-Using these settings will help you avoid hitting the AWS rate limits. They can also help Spinnaker be more responsive since the cloud provider clients will not implement their back-off strategy to continue to query the infrastructure. 
+Using these settings will help you avoid hitting the AWS rate limits. They can also help Spinnaker be more responsive since the cloud provider clients will not implement their back-off strategy to continue to query the infrastructure.
 
 ## Request Retry
 
