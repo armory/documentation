@@ -36,7 +36,7 @@ dependencyManagement {
     }
 }
 
-group = 'com.netflix.spinnaker.plugin.armory' // make sure this is your package path!
+group = 'com.netflix.spinnaker.plugin.armory' // Make sure this is your package path!
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
@@ -170,9 +170,9 @@ export default [
       nodeResolve(),
       commonjs(),
       typescript(),
-      // map imports from shared libraries (react, etc) to global variables exposed by spinnaker
+      // Map imports from shared libraries (React, etc) to global variables exposed by Spinnaker.
       externalGlobals(spinnakerSharedLibraries()),
-      // import from .css, .less, and inject into the document <head></head>
+      // Import from .css, .less, and inject into the document <head></head>.
       postCss(),
     ],
     output: [{ dir: 'dist', format: 'es', }]
@@ -194,10 +194,11 @@ function spinnakerSharedLibraries() {
 }
 ```
 
-`spinnakerSharedLibraries` is used to pull depenedencies from Spinnaker. To see the list of depenedcies Spinnaker exposes to plugin creators, please take a look [shared libraries](https://github.com/spinnaker/deck/blob/master/app/scripts/modules/core/src/plugins/sharedLibraries.ts#L32). `libraries` is the list of libraries needed from Spinnaker to make the plugin work correctly. This list must contain libraries from the shared libraries section in Spinnaker.
+`spinnakerSharedLibraries` is used to pull depenedencies from Spinnaker. To see the list of depenedcies Spinnaker exposes to plugin creators, please take a look at [shared libraries](https://github.com/spinnaker/deck/blob/master/app/scripts/modules/core/src/plugins/sharedLibraries.ts#L32). `libraries` is the list of libraries needed from Spinnaker to make a plugin work correctly. This list must contain libraries from the shared libraries section in Spinnaker.
 
 ### Dependencies
-As mentioned above, Spinnaker exposes depenedncies for plugins to use. But the depenedencies still need to be defined in the `package.json`. For this example plugin, the dependcies needed are:
+As mentioned above, Spinnaker exposes depenedncies for plugins to use. But the depenedencies need to be defined in the `package.json`. For this example plugin, the dependcies needed are:
+
 ```
 "@spinnaker/core": "0.0.432",
 "react": "^16.12.0",
@@ -253,7 +254,7 @@ export { plugin };
 `IStageConfigProps` are the properties passed to all Spinnaker Stages. For a complete list of what is available for `IStageConfigProps`, please check [IStageConfigProps.ts](https://github.com/spinnaker/deck/blob/master/app/scripts/modules/core/src/pipeline/config/stages/common/IStageConfigProps.ts). The method `updateStageField` is what is used to add the `maxWaitTime` to the stage. This method takes a JSON object.
 
 ### RandomWaitStage
-This method returns [JSX](https://reactjs.org/docs/introducing-jsx.html) that will be displayed to plugin user.
+This method returns [JSX](https://reactjs.org/docs/introducing-jsx.html) that gets displayed to the plugin user.
 
 ### How Spinnaker Loads The Plugin
 Each plugin has to `export` an object named `plugin`. Currently only Stages can be added to this object. When Spinnaker starts up it will look at `plugin.stages` and add each stage that is defined to the stage registry.
