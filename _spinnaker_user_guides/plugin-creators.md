@@ -36,7 +36,7 @@ dependencyManagement {
     }
 }
 
-group = 'com.netflix.spinnaker.plugin.armory' // make sure this is your package path!
+group = 'com.netflix.spinnaker.plugin.armory' // Make sure this is your package path!
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
@@ -153,78 +153,111 @@ public class RandomWait<RandomWaitInput> {
 
 ## Setting Up Your Project
 
-React is the suggested framework to use for plugin frontend code. When setting up webpack or rollup, make sure that React is added to the resulting transpiled ouput. That way, as the plugin developer, you can manage your own dependencies. The only dependency that is needed from Spinnaker is `@spinnaker/plugins`. 
+### Rollup Configuration
+Here is an example of a `rollup.config.js` to build your plugin:
+
+```
+import nodeResolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
+import typescript from 'rollup-plugin-typescript';
+import postCss from 'rollup-plugin-postcss';
+import externalGlobals from 'rollup-plugin-external-globals';
+
+export default [
+  {
+    input: 'src/index.tsx',
+    plugins: [
+      nodeResolve(),
+      commonjs(),
+      typescript(),
+      // Map imports from shared libraries (React, etc) to global variables exposed by Spinnaker.
+      externalGlobals(spinnakerSharedLibraries()),
+      // Import from .css, .less, and inject into the document <head></head>.
+      postCss(),
+    ],
+    output: [{ dir: 'dist', format: 'es', }]
+  }
+];
+
+function spinnakerSharedLibraries() {
+  const libraries = ['react', 'react-dom', '@spinnaker/core'];
+
+  function getGlobalVariable(libraryName) {
+    const prefix = 'spinnaker.plugins.sharedLibraries';
+    const sanitizedLibraryName = libraryName.replace(/[^a-zA-Z0-9_]/g, '_');
+    return `${prefix}.${sanitizedLibraryName}`;
+  }
+
+  return libraries.reduce((globalsMap, libraryName) => {
+    return { ...globalsMap, [ libraryName ]: getGlobalVariable(libraryName) }
+  }, {});
+}
+```
+
+`spinnakerSharedLibraries` pulls dependencies from Spinnaker. The libraries constant is a list of libraries that make the plugin work correctly. Items in this list must be from the [shared libraries](https://github.com/spinnaker/deck/blob/master/app/scripts/modules/core/src/plugins/sharedLibraries.ts#L32) exposed to plugin creators.
+
+### Dependencies
+As mentioned above, Spinnaker exposes libraries for plugins to use. Define dependencies in package.json. For this example plugin, the dependencies are:
+
+```
+"@spinnaker/core": "0.0.432",
+"react": "^16.12.0",
+"react-dom": "^16.12.0"
+```
 
 ## Writing The Frontend
 
 ```
 import * as React from 'react';
-// IPluginInitialize is function interface
-// that takes in the IStageRegistry interface.
-// The IStageRegistry is used to register the stage.
-import { IPluginInitialize, IStageRegistry } from '@spinnaker/plugins';
+import { IStageTypeConfig, IStageConfigProps } from '@spinnaker/core';
 
-// Our stage component
-class RandomWaitStage extends React.Component {
-  setMaxWaitTime = (event: React.SyntheticEvent) => {
-    let target = event.target as HTMLInputElement;
-    // @ts-ignore
-    this.props.updateStageField({'maxWaitTime': target.value});
-  }
+const customStage: IStageTypeConfig = {
+  label: 'Random Wait',
+  description: 'Stage that waits a random amount of time up to the max inputted',
+  key: 'randomWait',
+  component: RandomWaitStage,
+};
 
-  render() {
-    return (
-      <div>
-        <label>
-            Max Time To Wait
-            <input onChange={this.setMaxWaitTime} id="maxWaitTime" />
-        </label>
-      </div>
-    );
-  }
+function setMaxWaitTime(event: React.SyntheticEvent, props: IStageConfigProps) {
+  let target = event.target as HTMLInputElement;
+  props.updateStageField({'maxWaitTime': target.value});
 }
 
-// This function implements the IPluginInitialize interface
-// This is where the stage gets registered.
-function initialize(registry: IStageRegistry): void {
-  registry.pipeline.registerStage({
-    label: 'Random Wait',
-    description: 'Stage that waits a random amount of time up to the max inputted',
-    key: 'randomWait',
-    component: RandomWaitStage,
-  });
-};
+// Our stage component
+function RandomWaitStage(props: IStageConfigProps) {
+  return (
+    <div>
+      <label>
+          Max Time To Wait
+          <input value={props.stage.maxWaitTime} onChange={(e) => setMaxWaitTime(e, props)} id="maxWaitTime" />
+      </label>
+    </div>
+  );
+}
 
-// Make the initialize function be the interface
-let init: IPluginInitialize = initialize;
 const plugin = {
-  initialize: init,
+  name: 'randomWait',
+  stages: [customStage],
 };
 
-// Call spinnaker settings to actually load the stage
-// plugin for us
-window.spinnakerSettings.onPluginLoaded(plugin);
+export { plugin };
 ```
 
-**Render Method**
+### IStageTypeConfig
+Define Spinnaker Stages with IStageTypeConfig. Required [options:](https://github.com/spinnaker/deck/blob/abac63ce5c88b809fcf5ed1509136fe96489a051/app/scripts/modules/core/src/domain/IStageTypeConfig.ts)
+1. label -> The name of the Stage
+2. description -> Long form that describes what the Stage actually does
+3. key -> A unique name for the Stage
+4. component -> The rendered React component
 
-Anything can go in the render method. What is in the render method is shown to plugin users when configuring their Spinnaker pipeline. In this example, the user can input the maximum number of seconds to wait before continuing to execute the pipeline.
+### IStageConfigProps
+`IStageConfigProps` defines properties passed to all Spinnaker Stages. See [IStageConfigProps.ts](https://github.com/spinnaker/deck/blob/master/app/scripts/modules/core/src/pipeline/config/stages/common/IStageConfigProps.ts) for a complete list of properties. Pass a JSON object to the `updateStageField` method to add the `maxWaitTime` to the Stage.
 
-**Set Methods**
+### RandomWaitStage
+This method returns [JSX](https://reactjs.org/docs/introducing-jsx.html) that gets displayed to the plugin user.
 
-Stages are made up of JSON that contains all the information that gets passed to the backend. To update the stage JSON with the data the user enters, use `this.props.updateStageField` method, which takes in a valid JSON object of what to update. In this example, we update the `maxWaitTime` field with the value that the user enters.
-
-**Register Stage**
-
-The `registerStage` method is what makes the stage available for use. These are the required fields for registering a stage:
-
-* key → a unique name of the stage
-* label → is what is used inside the UI to display, saying what the name of the stage is
-* description → a short description of what the stage will do
-* component → if using React to create a stage, this is where you would put the component to render
-
-Optional Fields:
-* cloudProvider → if the stage can only be ran in one of the cloud providers, that can be selected here
+### How Spinnaker Loads The Plugin
+Each plugin must export an object named `plugin`. You can only add Stages to this object. At startup, Spinnaker looks at `plugin.stages` and adds each defined Stage to the Stage Registry.
 
 # Writing the Plugin Manifest
 
