@@ -79,6 +79,9 @@ auth.permissions.source.application.prefix:
 This will apply the READ restriction only on app `fooapp`, and the CREATE restriction on all apps starting with bar. If multiple prefixes match a given app, they are resolved using the resolution strategy provided in `auth.permissions.source.application.prefix.resolutionStrategy`, which could either be `AGGREGATE`, meaning the permissions will be aggregated from all matching prefixes, or `MOST_SPECIFIC`, meaning that only the permissions from the most-specific prefix will be applied.
 
 #### Restrict application creation permissions:
+
+**Note**: When configuring permissions, you must explicitly configure permissions for each user role. The default for a user role is no permissions, which means it cannot perform any actions.
+
 Before this version, there was no way to control who can create an application. In 1.17, users can restrict application creation by setting `fiat.restrictApplicationCreation` to `true`, and then providing `CREATE` permissions using a permission source (see above). Note that `CREATE` permissions provided by the front50 source of applications will be ignored. So currently, the way to provide `CREATE` permissions is using the prefix source explained above.
 
 
