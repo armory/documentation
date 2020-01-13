@@ -10,21 +10,21 @@ order: 99
 
 # Armory Account Management API
 
-The Armory Account Management API is an API that allows you to manage accounts through an API instead of manually editing configuration files. This API works by adding a write layer to backends supported by Spring Cloud Config natively, such as Git (or Github, for our purposes). Accounts added using the API get converted into the correct configuration form for the backend and stored. The service *using* the configuration backend will be able to read and refresh configurations from this source. In the case of [Clouddriver](https://blog.armory.io/deep-dive-into-clouddriver/), changes made with the API are automatically picked up without requiring a restart or redeploy.
+The Armory Account Management API allows you to manage accounts through an API instead of manually editing configuration files. This API works by adding a write layer to backends supported by Spring Cloud Config natively, such as Git (or GitHub, for our purposes). Accounts added using the API get converted into the correct configuration form for the backend and stored. The service *using* the configuration backend will be able to read and refresh configurations from this source. In the case of [Clouddriver](https://blog.armory.io/deep-dive-into-clouddriver/), changes made with the API are automatically picked up without requiring a restart or redeploy.
 
 The Account Management API is currently in [Early Release](https://kb.armory.io/releases/early-release-beta-GA/). The feature is working and installable, but some functionality is likely to be missing and a number of known and unknown issues are likely to surface.
 
 
 ## Requirements
-- A Github (or Github Enterprise) repo must be used as the source
+- Source repo stored in GitHub or GitHub Enterprise
   
-## Known Issues with Github Backend
+## Known Issues and Limitations with GitHub Backend
 
-- The Account Management API currently only supports managing accounts for 1 installation of Spinnaker. This is because the backend only supports managing one set of accounts stored in a single file.
-- Race condition may occur when submitting concurrent requests.
+- The API backend stores accounts in a single file, so you can only use the Account Management API to manage accounts for one installation of Spinnaker.
+- Submitting concurrent requests may cause a race condition.
 
 
-## Best Practices with Github Backend
+## Best Practices with GitHub Backend
 
 When using the Account Management API, Armory recommends the following best practice:
 
@@ -174,13 +174,3 @@ To delete an account with the API, call the `DELETE` route on a particular accou
 
     # curl -X DELETE http://mgmt-api-url/api/v1/accounts/added-by-api
 
-
-## Future Work
-
-Have functionality you want added to the Account Mangement API? [Contact us](https://www.armory.io/contact/) and to share your feedback and ideas.
-
-Some functionality we are considering or working on include the following: 
-
-- Support for more storage backends.
-- Resolving race conditions when using non-database backends.
-- Ability to manage accounts for multiple Spinnaker installations
