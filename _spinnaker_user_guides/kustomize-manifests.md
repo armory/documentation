@@ -91,10 +91,10 @@ Add a **git/repo** Expected Artifact in the _Configuration_ section:
 - **URL** (Required): The location of the Git repository.
 - **Branch** (Optional): The branch of the repository you want to use. _Defaults to  `master`._ 
 - **Subpath** (Optional): By clicking `Checkout subpath`, you can optionally pass in a relative subpath within the repository. This provides the option to checkout only a portion of the repository, thereby reducing the size of the generated artifact.
-​
+
+​![](/images/kustomize-expected-artifact.png)
+
 > **Note:** In order to execute the pipeline mannualy, it is necesary to check the *Use Default Artifact* and also fill the fields (same information above).
-​
-![](/images/kustomize-expected-artifact.png)
 ​
 
 ### Step 2 - Add a Bake (Manifest) Stage
