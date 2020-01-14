@@ -23,7 +23,7 @@ This release includes the following:
 
 - A fix for x509 proxy filter on api port security stack
 - Migration of most services from using `open-jdk8` as their base image to `alpine:3.11`
-- UI work for Terraformer stage, including a modal to display logs from a terraform job
+- UI work for the Terraform Integration stage, including a modal to display logs from a terraform job
 
 ###  Spinnaker Community Contributions
 
