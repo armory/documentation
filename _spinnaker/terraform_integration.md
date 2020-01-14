@@ -165,7 +165,14 @@ terraform:
 
 Terraform's primary source of feedback are it's logs. While there is no native UI for Terraform in Armory Spinnaker (yet!) we'll need a different way to expose these logs to users in the UI. To do this, we'll configure Gate with a proxy configuration. This proxy will allow us to configure stages with a direct link to the output for Terraform `plan` or `apply`.
 
-First, we'll add the configuration to `~/.hal/default/profiles/gate-local.yml`
+Before you start, ensure that the `~/.hal/default/profiles/` directory exists and contains `gate-local.yml`. If the directory and file do not exist, run the following commands:
+
+```bash
+sudo mkdir ~/.hal/default/profiles/
+vi ~/.hal/default/profiles/gate-local.yml
+```
+
+To start, we'll add the configuration to `~/.hal/default/profiles/gate-local.yml`
 
 ```yaml
 proxies:
