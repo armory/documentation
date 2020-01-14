@@ -24,10 +24,6 @@ Check out the [GitHub project](https://github.com/armory/minnaker) for more info
 
 # Installing Armory Spinnaker for Medium to Large Enterprise Deployments
 
-## Try Armory's Demo Environment
-
-You can [try our Demo Environment](https://spinnaker.demo.armory.io) before installing Armory.
-
 ## Prerequisites
 
 Make sure you have a kubernetes cluster with a minimum of **15 GB** of memory and **8 CPU's** total _available_ to be used by Spinnaker. At least a single node should have 4 GB and 1 CPU available.
