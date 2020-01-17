@@ -1,3 +1,13 @@
+---
+layout: post
+title: AWS QuickStart Step 3
+order: 2
+---
+
+{:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
+
 # Armory Spinnaker AWS Quickstart - Step 3 
 ## Deploy to EC2 and EKS
 
