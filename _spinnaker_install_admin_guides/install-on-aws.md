@@ -32,7 +32,7 @@ Note: This document is focused on Armory Spinnaker, but can be adapted to instal
 
 - This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it. {:toc}
 
-# Prerequities / Environments
+# Assumptions / Prerequisites / Environments
 
 This document assumes the following:
 
@@ -69,7 +69,7 @@ Note: If you are not using the Halyard Docker container, but sure to install `ku
 
 On the `workstation machine`:
 
-- If using EKS, you can use the `aws` CLI tool to interact with the AWS API, and configure / communicate with the following:
+- If using EKS, you can use the `aws` CLI tool to interact with the AWS API and configure/communicate with the following:
 
   - EKS clusters (or, alternately, have a EKS cluster already built)
   - S3 buckets (or, alternately, have an S3 bucket already built)
@@ -154,37 +154,37 @@ Halyard uses this Kubeconfig file to create the Kubernetes deployment objects th
 
 1. Obtain the `spinnaker-tools` CLI tool. Go to <https://github.com/armory/spinnaker-tools/releases>, and download the latest release for your operating system (OSX and Linux available). You can also use curl:
 
-  ```bash
-  # If you're not already in the directory
-  cd ~/aws-spinnaker
-  # If you're on Linux instead of OSX, use this URL instead:
-  # https://github.com/armory/spinnaker-tools/releases/download/0.0.6/spinnaker-tools-linux
-  curl -L https://github.com/armory/spinnaker-tools/releases/download/0.0.6/spinnaker-tools-darwin -o spinnaker-tools
-  chmod +x spinnaker-tools
-  ```
+	```bash
+	# If you're not already in the directory
+	cd ~/aws-spinnaker
+	# If you're on Linux instead of OSX, use this URL instead:
+	# https://github.com/armory/spinnaker-tools/releases/download/0.0.6/spinnaker-tools-linux
+	curl -L https://github.com/armory/spinnaker-tools/releases/download/0.0.6/spinnaker-tools-darwin -o spinnaker-tools
+	chmod +x spinnaker-tools
+	```
 
 2. Run the tool. Feel free to substitute other values for the parameters:
 
-  ```bash
-  # The 'aws eks update-kubeconfig' command from above will create/update this file
-  SOURCE_KUBECONFIG=kubeconfig-aws
-  # Get the name of the context created by the aws tool)
-  CONTEXT=$(kubectl --kubeconfig ${SOURCE_KUBECONFIG} config current-context)
-  DEST_KUBECONFIG=kubeconfig-spinnaker-system-sa
-  SPINNAKER_NAMESPACE=spinnaker-system
-  SPINNAKER_SERVICE_ACCOUNT_NAME=spinnaker-service-account
+	```bash
+	# The 'aws eks update-kubeconfig' command from above will create/update this file
+	SOURCE_KUBECONFIG=kubeconfig-aws
+	# Get the name of the context created by the aws tool)
+	CONTEXT=$(kubectl --kubeconfig ${SOURCE_KUBECONFIG} config current-context)
+	DEST_KUBECONFIG=kubeconfig-spinnaker-system-sa
+	SPINNAKER_NAMESPACE=spinnaker-system
+	SPINNAKER_SERVICE_ACCOUNT_NAME=spinnaker-service-account
 
-  ./spinnaker-tools create-service-account \
-  --kubeconfig ${SOURCE_KUBECONFIG} \
-  --context ${CONTEXT} \
-  --output ${DEST_KUBECONFIG} \
-  --namespace ${SPINNAKER_NAMESPACE} \
-  --service-account-name ${SPINNAKER_SERVICE_ACCOUNT_NAME}
-  ```
+	./spinnaker-tools create-service-account \
+	--kubeconfig ${SOURCE_KUBECONFIG} \
+	--context ${CONTEXT} \
+	--output ${DEST_KUBECONFIG} \
+	--namespace ${SPINNAKER_NAMESPACE} \
+	--service-account-name ${SPINNAKER_SERVICE_ACCOUNT_NAME}
+	```
 
 You should be left with a file called `kubeconfig-spinnaker-system-sa` (or something similar, if you're using a different namespace for spinnaker)
 
-# Create the S3 Bucket and creds
+# Create the S3 Bucket and Credentials
 
 If you do not yet have an S3 bucket, create the S3 bucket:
 
@@ -231,21 +231,21 @@ Then, add an inline policy to your IAM user:
 3. Click on the "JSON" tab
 4. Add this text (replace `s3-spinnaker-jq6cqvmpro` with the name of your bucket)
 
-  ```json
-  {
-  "Version": "2012-10-17",
-  "Statement": [
-   {
-       "Effect": "Allow",
-       "Action": "s3:*",
-       "Resource": [
-           "arn:aws:s3:::spinnaker-jq6cqvmpro",
-           "arn:aws:s3:::spinnaker-jq6cqvmpro/*"
-       ]
-   }
-  ]
-  }
-  ```
+	```json
+	{
+	"Version": "2012-10-17",
+	"Statement": [
+	{
+	"Effect": "Allow",
+	"Action": "s3:*",
+	"Resource": [
+	   "arn:aws:s3:::spinnaker-jq6cqvmpro",
+	   "arn:aws:s3:::spinnaker-jq6cqvmpro/*"
+	]
+	}
+	]
+	}
+	```
 
 5. Click on "Review Policy"
 
@@ -265,21 +265,21 @@ Alternately, you can attach an IAM policy to the role attached to your Kubernete
 6. Click on the "JSON" tab
 7. Add this text (replace `s3-spinnaker-jq6cqvmpro` with the name of your bucket)
 
-  ```json
-  {
-  "Version": "2012-10-17",
-  "Statement": [
-   {
-       "Effect": "Allow",
-       "Action": "s3:*",
-       "Resource": [
-           "arn:aws:s3:::spinnaker-jq6cqvmpro",
-           "arn:aws:s3:::spinnaker-jq6cqvmpro/*"
-       ]
-   }
-  ]
-  }
-  ```
+	```json
+	{
+	"Version": "2012-10-17",
+	"Statement": [
+	{
+	"Effect": "Allow",
+	"Action": "s3:*",
+	"Resource": [
+	   "arn:aws:s3:::spinnaker-jq6cqvmpro",
+	   "arn:aws:s3:::spinnaker-jq6cqvmpro/*"
+	]
+	}
+	]
+	}
+	```
 
 8. Click on "Review Policy"
 
@@ -287,9 +287,9 @@ Alternately, you can attach an IAM policy to the role attached to your Kubernete
 
 10. Click "Create Policy"
 
-# Stage files on the `Halyard machine`
+# Stage files on the Halyard machine
 
-On the `Halyard machine`, choose a local working directory for Halyard. In it, we will create two folders:
+On the Halyard machine, choose a local working directory for Halyard. In it, we will create two folders:
 
 - `WORKING_DIRECTORY/.hal`
 - `WORKING_DIRECTORY/.secret`
@@ -549,7 +549,7 @@ tee spin-ingress.yaml <<-'EOF'
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: spin-ingress
+  name: spinnaker-nginx-ingress
   namespace: NAMESPACE
   labels:
     app: spin
