@@ -504,7 +504,14 @@ Then, you can access Spinnaker at <http://localhost:9000>
 
 (If you are doing this on a remote machine, this will not work because your browser attempts to access localhost on your local workstation rather than on the remote machine where the port is forwarded)
 
-# Install the NGINX ingress controller
+__Note:__ Even if the `hal deploy apply` command returns successfully, the 
+installation may not be complete yet. This is especially the case with 
+distributed Kubernetes installs. If you see errors such as `Connection refused`,
+the containers may not be available yet. You can either wait 
+or check the status of all of the containers using the command for your cloud provider 
+(such as `kubectl get pods --namespace spinnaker`).
+
+## Install the NGINX ingress controller
 
 In order to expose Spinnaker to end users, you have perform the following actions:
 

@@ -77,6 +77,7 @@ If you don't have an IAM user with the desired permissions, you can create one b
            }
        ]
    }
+   ```
 
 1. Click on "Review Policy"
 1. Call it "PassRole" and then click "Create Policy"
@@ -132,6 +133,7 @@ If you don't configure Rosco with explicit AWS credentials to use, Packer will d
            }
        ]
    }
+   ```
 
 1. Click on "Review Policy"
 1. Call it "PassRole" and then click "Create Policy"
