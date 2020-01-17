@@ -13,7 +13,7 @@ redirect_from:
   - /spinnaker_install_admin_guides/install-on-aws/
 ---
 
-This guide describes how to install Spinnaker in AWS or in an on-prem Kubernetes cluster with access to S3\. It will create / use the following Amazon Web Services resources:
+This guide describes how to install Spinnaker in AWS or in an on-prem Kubernetes cluster with access to S3. It will create and use the following Amazon Web Services resources:
 
 - A Kubernetes cluster running on Amazon Web Services (AWS). EKS is a good way to get a Kubernetes cluster up on AWS - see the AWS documentation for this.
 - An Amazon S3 (Simple Storage Service) bucket. You can use an existing one or create a new one.
@@ -504,11 +504,11 @@ Then, you can access Spinnaker at <http://localhost:9000>
 
 (If you are doing this on a remote machine, this will not work because your browser attempts to access localhost on your local workstation rather than on the remote machine where the port is forwarded)
 
-__Note:__ Even if the `hal deploy apply` command returns successfully, the 
-installation may not be complete yet. This is especially the case with 
+__Note:__ Even if the `hal deploy apply` command returns successfully, the
+installation may not be complete yet. This is especially the case with
 distributed Kubernetes installs. If you see errors such as `Connection refused`,
-the containers may not be available yet. You can either wait 
-or check the status of all of the containers using the command for your cloud provider 
+the containers may not be available yet. You can either wait
+or check the status of all of the containers using the command for your cloud provider
 (such as `kubectl get pods --namespace spinnaker`).
 
 ## Install the NGINX ingress controller
