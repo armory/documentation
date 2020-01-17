@@ -1,3 +1,13 @@
+---
+layout: post
+title: AWS QuickStart Step 1
+order: 2
+---
+
+{:.no_toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
+
 **Prerequisite** - Get your AWS Account number avaiable in a text editor, SSH into Minnaker Instance with AWS keys.
 
 Need assistance setting this up? -  For a guided tutorial the **Video Walkthrough** at the bottom of this document.
