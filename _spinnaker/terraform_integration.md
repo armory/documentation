@@ -4,7 +4,7 @@ title: Terraform Integration
 order: 141
 ---
 
-The following tutorial will walk you through how to setup our Terraform integration and execute Terraform code stored in a Github repo as part of a Spinnaker pipeline. We'll assume that you're using Terraform to create and manage infrastructure on AWS.
+The following tutorial walks you through how to setup our Terraform integration and execute Terraform code stored in a GitHub repo as part of a Spinnaker pipeline. We'll assume that you're using Terraform to create and manage infrastructure on AWS.
 
 Note that the Terraform integration is in beta while we work on improving the user experience.
 
@@ -14,85 +14,80 @@ Note that the Terraform integration is in beta while we work on improving the us
 
 ## How to submit feedback
 {:.no_toc}
-If you decide to enable this feauture and have any feedback you'd like to submit, please let us know at [go.armory.io/ideas](go.armory.io/ideas)! We're constantly iterating on customer feedback to ensure that the features we build make your life easier!
+If you decide to enable this feauture and have feedback you'd like to submit, please let us know at [go.armory.io/ideas](go.armory.io/ideas)! We're constantly iterating on customer feedback to ensure that the features we build make your life easier!
 
 ## Prerequisites
 
-1. An Armory Spinnaker installation (version 2.3.x or above) running on Kubernetes and installed via Armory Halyard. ([instructions](/spinnaker/install)). If you haven't updated Armory Halyard in a while, you'll need to do so to get access to these new features.
-1. Credentials (in the form of basic auth) to your Terraform git repository.  This can take one of several forms:
-    1. If your Terraform repo is in Github, you can use a Personal Acccess Token (potentially associated with a service account) as the 'token'.  See [this documentation](https://blog.github.com/2013-05-16-personal-api-tokens/) for details on how to generate this token in Github.
-    1. If your Terraform repo is in BitBucket, you can use a username/password that has access to your BitBucket repo
-1. If you want to use Terraform Input Variable File `tfvar` capability, a separate enabled artifact provider (such as the Github, BitBucket, or HTTP artifact provider) that is able to pull your `tfvar` file(s).
+* An Armory Spinnaker installation (version 2.3.x or above) running on Kubernetes and installed via Armory Halyard. ([instructions](/spinnaker/install)). If you haven't updated Armory Halyard in a while, you'll need to do so to get access to these new features.
+* Credentials (in the form of basic auth) to your Terraform Git repository.  This can take one of several forms:
+    * If your Terraform repo is in GitHub, use a Personal Acccess Token (potentially associated with a service account) as the 'token'.  Generate this token in your GitHub settings.
+    * If your Terraform repo is in BitBucket, use a username/password that has access to your BitBucket repo.
+* To use Terraform Input Variable Files (`tfvar`), you must have a separate artifact provider (such as the GitHub, BitBucket, or HTTP artifact provider) that can pull your `tfvar` file(s). Additionally, the credentials for must be configured in both places: the Terraform Integration and the artifact provider.
 
 ## Overview
 
-The Terraformer integration interacts with your source repository as follows:
+Armory Spinnaker's Terraform Integration interacts with a source repository you specify to deploy infrastructure.
 
-1. It will use the generic `git/repo` using basic auth creds provided directly to Terraformer (this can be a Github token or a BitBucket username/password combination) to pull a full directory from your Git repository
-1. Optionally, it will use a traditional Spinnaker artifact provider (Github, BitBucket, HTTP) to pull in a `tfvars`-formatted variable file.  This document covers Github and BitBucket.
-1. These credentials must be configured in both places (directly with Terraformer, and also with the artifact provider)
+At a high level, the Terraform Integration performs the following actions during a Terraform Integration stage:
 
-## Installation
+1. Authenticates to your repo using basic authentication credentials you provide. This can be a GitHub token or a BitBucket username/password combination. 
+2. Pulls a full directory from your Git repository.
+3. (Optionally) uses a traditional Spinnaker artifact provider (Github, BitBucket, or HTTP) to pull in a `tfvars`-formatted variable file.    
 
-This document covers the configuration of Terraformer and an artifact provider to support either Github or BitBucket
+## Enable Terraform Integration
 
-### Configuring Terraformer to integrate with Github
+The examples on this page describe the configuration for the Terraform Integration and an artifact provider to support either GitHub or BitBucket.
 
-#### Generating a Github Personal Access Token
+You can enable the Terraform Integration via Armory Halyard.
 
-You can enable the Terraform integration via Armory Halyard. Before you do, be
-sure you have a Github personal access token. This will enable the Terraform
-integration to interact with entire Github repositories.  This Github access
-token must be configured in two places: once for Terraformer to be able to pull
-a directory of Terraform Templates from Github, and once to be able to pull the
-`tfvar` file (which uses Spinnaker's Github artifact provider).
+### Configure the Terraform Integration with GitHub
 
-If you don't already have a Github personal access token, you can create one:
+#### 1. Generating a Github Personal Access Token (PAT)
 
-1. Log into Github (potentially using a Service Account)
-1. Click on your user icon in the top right, then on "Settings"
-1. Click on "Developer Settings"
-1. Click on to "Personal access tokens"
-1. Click on "Generate new token"
-1. Give your token a distinct name, and select the `repo` scope
-1. Click "Generate token"
-1. Save the token
+Before you start, you need a GitHub Personal Access Token (PAT). The Terraform
+Integration authenticates itself using the PAT to interact with your GitHub repositories. You must create and configure a PAT so that the Terraform Integration can pull
+a directory of Terraform Templates from GitHub. Additionally, `tfvar` files through Spinnaker's GitHub artifact provider require a PAT.
 
-Additionally, if SSO is enabled for your Github organization, you *must* enable
-SSO on the token.  On the "Personal access tokens" page, click "Enable SSO" for
-your token and "Authorize" it for the organization which hosts the repo where
-your Terraform template(s) and Terraform `tfvar` files will live.
+If you don't already have a PAT,  create one:
 
-#### Enabling and configuring the Github Artifact Provider
+1. Log into GitHub. You can use your personal account or a service account.
+2. Go to **Settings** > **Developer Settings**.
+3. Go to **Personal access tokens**.
+4. Generate a new token. 
+    * Give your token a distinct name and select the **repo** scope.
+5. Save the token somewhere secure.
+6. If your GitHub organization uses Single Sign-On (SSO), enable
+SSO for the token.  
+    * On the **Personal access tokens** page, click **Enable SSO** for your token and authorize it for the organization that hosts the repos for your Terraform template(s) and Terraform `tfvar` files.
+
+#### 2. Enabling and configuring for the GitHub Artifact Provider
+
+If you already have a GitHub artifact account configured in Spinnaker,
+skip this section.
 
 Spinnaker can use the Github Artifact Provider to download any referenced `tfvar`
-files, so it must be configured with the Github token to pull these files.
+files.
 
-If you already have a Github artifact account configured in Spinnaker, you can
-skip this step.
+**Note**: The following examples use `github-for-terraform` as a unique identifier for the artifact account. Replace it with your own identifier.
 
-Feel free to replace `github-for-terraform` with any unique identifier to identify
-the artifact account.
+1. Enable GitHub as an artifact provider:
+    ```bash
+    hal config artifact github enable
+    ```
+2. Add the GitHub account:
+    ```bash
+    hal config artifact github account add github-for-terraform --token
+    ```
+3. Provide the PAT.
 
-Note that if you have a github token, you don't need to provide a user name for it.
+#### 3. Enabling and configuring the Terraform Integration
 
-```bash
-hal config artifact github enable
+The Terraform Integration needs access to the GitHub token to download GitHub directories that hose your Terraform templates.
 
-# This will prompt for the token
-hal config artifact github account add github-for-terraform --token
-```
-
-#### Enabling and configuring the Terraform integration with a Github token
-
-
-
-The Terraformer module also needs access to the Github token to download full
-Github directories hosting your Terraform templates. A user name is not needed when a Github token is available.
-
-```bash
-# The --alpha option is only required for Halyard versions earlier than 1.6.5.
-hal armory terraform enable --alpha
+1. Enable the Terraform Integration
+    ```bash
+    # The --alpha option is only required for Halyard versions earlier than 1.6.5.
+  hal armory terraform enable --alpha
 
 # This will prompt for the token
 hal armory terraform edit \
@@ -103,7 +98,7 @@ hal armory terraform edit \
 
 ### Configuring Terraformer to integrate with BitBucket
 
-#### Enabling and configuring the BitBucket Artifact Provider
+#### 1. Enabling and configuring the BitBucket Artifact Provider
 
 Spinnaker uses the BitBucket Artifact Provider to download any referenced `tfvar`
 files, so it must be configured with the Github token to pull these files.
