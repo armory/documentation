@@ -93,8 +93,8 @@ In order to install Spinnaker, this document covers the following things:
 
 - Running the `hal` client interactively in the same Docker container, to:
 
-  - Build out the halconfig YAML file (`.hal/config)
-  - Configure Spinnaker/Halyard to use the kubeconfig to install Spinnaker
+  - Build out the halconfig YAML file (`.hal/config`)
+  - Configure Spinnaker/Halyard to use `kubeconfig` to install Spinnaker
   - Configure Spinnaker with the IAM credentials and bucket information
   - Turn on other recommended settings (artifacts and http artifact provider)
   - Install Spinnaker
@@ -110,32 +110,32 @@ If you're using an EKS cluster, you must be able to connect to the EKS cluster. 
 
 1. Create the local working directory on your workstation. For the purposes of this document, we will be using `~/aws-spinnaker`, but this can be any persistent directory on any Linux or OSX machine.
 
-  ```bash
-  mkdir ~/aws-spinnaker
-  cd ~/aws-spinnaker
-  ```
+	```bash
+	mkdir ~/aws-spinnaker
+	cd ~/aws-spinnaker
+	```
 
 2. If you have access to the role that created the EKS cluster, you can create a kubeconfig with access to your Kubernetes cluster with this command:
 
-  ```bash
-  aws eks update-kubeconfig --name <EKS_CLUSTER_NAME> --kubeconfig kubeconfig-aws
-  ```
+	```bash
+	aws eks update-kubeconfig --name <EKS_CLUSTER_NAME> --kubeconfig kubeconfig-aws
+	```
 
 3. From here, you can validate access to the cluster with this command:
 
-  ```bash
-  kubectl --kubeconfig kubeconfig-aws get namespaces
-  ```
+	```bash
+	kubectl --kubeconfig kubeconfig-aws get namespaces
+	```
 
 ## Connecting to other Kubernetes clusters
 
 If you've stood up Kubernetes on AWS with KOPS or another Kubernetes tool, ensure that you can communicate with your Kubernetes cluster with kubectl.
 
-Then, copy your kubeconfig file (this is typically located in `~/.kube/config) to your working directory:
+Then, copy your `kubeconfig` file (this is typically located in `~/.kube/config`) to your working directory:
 
-```bash
-cp ~/.kube/config ~/aws-spinnaker/kubeconfig-aws
-```
+	```bash
+	cp ~/.kube/config ~/aws-spinnaker/kubeconfig-aws
+	```
 
 # Create a `kubeconfig` file for Halyard/Spinnaker
 
@@ -650,17 +650,17 @@ Configuration of TLS certificates for ingresses is often very organization-speci
 - Configure the ingress(es) so that NGINX (or your ingress) terminates TLS using the certificate(s)
 - Update Spinnaker to be aware of the new TLS endpoints (note `https` instead of `http`)
 
-  ```bash
-  SPIN_DECK_ENDPOINT=spinnaker.some-url.com
-  SPIN_GATE_ENDPOINT=api.some-url.com
-  SPIN_DECK_URL=https://${SPIN_DECK_ENDPOINT}
-  SPIN_GATE_URL=https://${SPIN_GATE_ENDPOINT}
+	```bash
+	SPIN_DECK_ENDPOINT=spinnaker.some-url.com
+	SPIN_GATE_ENDPOINT=api.some-url.com
+	SPIN_DECK_URL=https://${SPIN_DECK_ENDPOINT}
+	SPIN_GATE_URL=https://${SPIN_GATE_ENDPOINT}
 
-  hal config security ui edit --override-base-url ${SPIN_DECK_URL}
-  hal config security api edit --override-base-url ${SPIN_GATE_URL}
+	hal config security ui edit --override-base-url ${SPIN_DECK_URL}
+	hal config security api edit --override-base-url ${SPIN_GATE_URL}
 
-  hal deploy apply
-  ```
+	hal deploy apply
+	```
 
 # Next Steps
 
