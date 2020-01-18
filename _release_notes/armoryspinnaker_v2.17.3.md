@@ -15,7 +15,10 @@ hidden: false
 
 
 ## Known Issues
-There are currently no known issues with this release.
+
+The correct `aws-sdk` version is not always used in this release and -- depending on your configuration -- may prevent `Clouddriver` and other services from starting.
+
+This has been fixed in `Armory Spinnaker 2.17.4`.
 
 ## Highlighted Updates
 ### Armory
@@ -124,7 +127,9 @@ No Changes
 #### Armory Rosco  - f8aa480...5ac82a7
  - chore(releases): use alpine containers instead of open-jdk (#27)
 
-
+### Armory Open Core
+#### Dinghy (Open Core) - e977717
+No Changes
 
 ###  Spinnaker Community Contributions
 See Spinnaker's release notes that are included in this release:
