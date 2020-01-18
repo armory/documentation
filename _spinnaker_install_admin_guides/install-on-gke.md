@@ -9,11 +9,11 @@ redirect_from:
   - /spinnaker-install-admin-guides/install_on_gke/
 ---
 
-This guide describes how to install Spinnaker in GKE.  It will create / use the following Google Cloud resources:
+This guide describes how to install Spinnaker in Googke Kubernetes Engine (GKE).  It will create / use the following Google Cloud resources:
 
 * A GKE (Google Kubernetes Engine) cluster (you can use an existing one if you already have one)
 * A GCS (Google Cloud Storage) bucket (you can use an existing one if you already have one)
-* An NGINX Ingress controller in your GKE cluster. This step is only needed if your cluster doesn't already have an ingress installed. Furthermore, the instructions provided below only work on Kubernetes version 1.14 and older. 
+* An NGINX Ingress controller in your GKE cluster. This step is only needed if your cluster doesn't already have an ingress installed. Note that the examples on this page for NGINX only work on Kubernetes version 1.14 or later. 
 
 This document currently does not fully cover the following (see [Next Steps](#next-steps) for some links to achieve these)
 
@@ -409,7 +409,7 @@ We're going to install the NGINX ingress controller on GKE because of these two 
 * It only exposes NodePort services
 * It only exposes services that respond with an `HTTP 200` to a `GET` on `/` (or have a `readinessProbe` configured)
 
-If you already have an NGINX ingress controller installed on your cluster, you may skip this step.
+If you already have an NGINX ingress controller installed on your cluster, skip this step.
 
 (Both of these are configurable with Spinnaker, but the NGINX ingress controller is also generally much more configurable)
 
@@ -421,7 +421,7 @@ Install the NGINX ingress controller components:
 kubectl --kubeconfig kubeconfig-gke apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
 ```
 
-If you are using a Kubernetes version previous to 1.14, you need to change kubernetes.io/os to beta.kubernetes.io/os at line 217 of mandatory.yaml. See https://kubernetes.github.io/ingress-nginx/deploy/ for more details.
+If you are using a Kubernetes version earlier than 1.14, you need to change kubernetes.io/os to beta.kubernetes.io/os at line 217 of `mandatory.yaml`. See the [NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/) documentation for more details.
 
 Install the NGINX ingress controller GKE-specific service:
 
