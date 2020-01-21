@@ -166,4 +166,5 @@ hal deploy apply --wait-for-completion
 You have configured the Spinnaker AWS Provider and Kubernetes Account for EKS.  You can now deploy to EC2, ECS, Fargate, and EKS.  Lets build some pipelines in [AWS QuickStart Step 3](/spinnaker/Armory-Spinnaker-Quickstart-3).
 
 # AWS QuickStart Step 2 Video
+Click the image to see the video.
 [![alt text](/images/Armory-AWS-Step-1.png)](https://youtu.be/XBdc0z-xdS0 "AWS QuickStart Step 2")

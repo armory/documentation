@@ -143,12 +143,13 @@ spec:
 
 You completed the Armory Spinnaker QuickStart exercise!  You can now deploy to AWS using Spinnaker.  What's Next?
 
-- Connect your Spinnaker instance to your repositories / artifacts (Github, Sonatype, Artifactory, DockerHub, ECR, GCR, etc)
-- Build in a automated trigger from your CI systems (Jenkins, Bamboo, CircleCI, TravisCI, Nexus, Git, Generic Webhook, etc)
-- Integrate with 3rd party systems (OKTA, Sumo Logic, Splunk, Datadog, Newrelic, Slack, etc)
-- Integrate with DevSecOps tools (Xray, ChaosMonkey, Artifiactory, etc)
+- Connect your Spinnaker instance to your repositories / artifacts (Github, Sonatype, Artifactory, DockerHub, ECR, GCR, etc).
+- Build in a automated trigger from your CI systems (Jenkins, Bamboo, CircleCI, TravisCI, Nexus, Git, Generic Webhook, etc).
+- Integrate with 3rd party systems (OKTA, Sumo Logic, Splunk, Datadog, Newrelic, Slack, etc).
+- Integrate with DevSecOps tools (Xray, ChaosMonkey, Artifiactory, etc).
 
 To get expert help in any of the areas above you can contact Armory.io at https://go.armory.io/needs-analysis
 
 # AWS QuickStart Step 3 Video
+Click the image to see the video.
 [![alt text](/images/Armory-AWS-Step-3.png)](https://youtu.be/Yi-2AZ5n_kA "AWS QuickStart Step 3 - Final Step")
