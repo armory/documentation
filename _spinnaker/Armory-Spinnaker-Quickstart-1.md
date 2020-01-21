@@ -1,7 +1,7 @@
 ---
 layout: post
 title: AWS QuickStart Step 1
-order: 3
+order: 2
 ---
 
 The AWS QuickStart walks you through configuring your Spinnaker instance hosted on AWS to deploy to AWS.
@@ -166,5 +166,8 @@ You have completed the 1st step in setting up the Spinnaker AWS Provider.  For S
 
 # AWS QuickStart Step 1 Video
 
-Click Image to See Video
-[![alt text](/images/Armory-AWS-Step-1.png)](https://youtu.be/rHd0xyC7__c "AWS QuickStart Step 1")
+<!-- blank line -->
+<figure class="video_container">
+ <iframe width="560" height="315" src="https://www.youtube.com/embed/rHd0xyC7__c" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</figure>
+<!-- blank line -->

@@ -12,7 +12,7 @@ Need help setting this up? - For a guided tutorial, see the **Video Walkthrough*
 
 ## Prerequisites
 Before you start, ensure that have completed the following requirements:
-* Finish [AWS QuickStart Step 1](/spinnaker/Armory-Spinnaker-Quickstart-2).
+* Finish [AWS QuickStart Step 1](/spinnaker/Armory-Spinnaker-Quickstart-1).
 * Have access to the Kubernetes cluster you would like to deploy to, and you need cluster admin permissions on that Kubernetes cluster.
 * Have `kubectl` installed on your local workstation have the context set to the EKS cluster you want to deploy to.
 
@@ -166,5 +166,8 @@ hal deploy apply --wait-for-completion
 You have configured the Spinnaker AWS Provider and Kubernetes Account for EKS.  You can now deploy to EC2, ECS, Fargate, and EKS.  Lets build some pipelines in [AWS QuickStart Step 3](/spinnaker/Armory-Spinnaker-Quickstart-3).
 
 # AWS QuickStart Step 2 Video
-Click the image to see the video.
-[![alt text](/images/Armory-AWS-Step-1.png)](https://youtu.be/XBdc0z-xdS0 "AWS QuickStart Step 2")
+<!-- blank line -->
+<figure class="video_container">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/XBdc0z-xdS0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</figure>
+<!-- blank line -->
