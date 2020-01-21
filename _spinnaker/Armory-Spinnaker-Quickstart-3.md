@@ -134,4 +134,4 @@ You have completed the Armory Spinnaker QuickStart exercise!  You can now deploy
 
 To get expert help in any of the areas above you can contact Armory.io at https://go.armory.io/needs-analysis
 
-[![alt text](/images/Armory-AWS-Step-3.png)](https://youtu.be/epKXV2FIm6Y "AWS QuickStart Step 3 - Final Step")
+[![alt text](/images/Armory-AWS-Step-3.png)](https://youtu.be/Yi-2AZ5n_kA "AWS QuickStart Step 3 - Final Step")
