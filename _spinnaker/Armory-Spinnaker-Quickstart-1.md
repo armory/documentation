@@ -15,7 +15,7 @@ Need assistance setting this up? -  For a guided tutorial the **Video Walkthroug
 # Armory Spinnaker AWS Quickstart - Step 1 
 # Prep AWS by creating Roles, Permissions, and Trust
 
-![No CREATE Permission](/AWS-Roles-Spinnaker.png)
+![No CREATE Permission](/imnages/AWS-Roles-Spinnaker.png)
 
 ### In this step we will configure 2 AWS Roles for Spinnaker to deploy to your AWS environment
 
@@ -153,6 +153,6 @@ Output should look like this:
 ubuntu@:~$
 ```
 ### Congratulations! 
-You have completed the 1nd step in setting up the Spinnaker AWS Provider.  For Step-2 Please go Here.
+You have completed the 1st step in setting up the Spinnaker AWS Provider.  For Step-2 Please go Here.
 
-[![alt text](/images/Armory-AWS-Step-1.png)](https://youtu.be/epKXV2FIm6Y "title")
+[![alt text](/images/Armory-AWS-Step-1.png)](https://youtu.be/epKXV2FIm6Y "AWS QuickStart Step1")
