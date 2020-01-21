@@ -155,4 +155,4 @@ ubuntu@:~$
 ### Congratulations! 
 You have completed the 1st step in setting up the Spinnaker AWS Provider.  For Step-2 Please go Here.
 
-[![alt text](/images/Armory-AWS-Step-1.png)](https://youtu.be/epKXV2FIm6Y "AWS QuickStart Step1")
+[![alt text](/images/Armory-AWS-Step-1.png)](https://youtu.be/rHd0xyC7__c "AWS QuickStart Step1")
