@@ -7,6 +7,7 @@ order: 2
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
+Need assistance setting this up? - For a guided tutorial the Video Walkthrough at the bottom of this document.
 
 # Armory Spinnaker AWS Quickstart - Step 2 
 # Configure Spinnaker AWS Provider
