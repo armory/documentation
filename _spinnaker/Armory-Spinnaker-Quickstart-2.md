@@ -64,7 +64,7 @@ https://docs.armory.io/spinnaker-install-admin-guides/aws-subnets/
 Key                 Value
 immutable_metadata  {"purpose":"example-purpose"}
 ```
- Example: immutable_metadata {"purpose":"**us-west-2-dev-subnet**"}
+ **Example:** immutable_metadata {"purpose":"**us-west-2-dev-subnet**"}
 
 ***Note*** Do not change "purpose", and YOUR subnet identifier should replace "example-purpose".  This will show up in Spinnaker UI as dropdown options. 
 
