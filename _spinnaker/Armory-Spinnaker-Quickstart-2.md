@@ -11,7 +11,7 @@ order: 2
 # Armory Spinnaker AWS Quickstart - Step 2 
 # Configure Spinnaker AWS Provider
 
-![No CREATE Permission](/AWS-Deploy-Spinnaker.png)
+![No CREATE Permission](/images/AWS-Deploy-Spinnaker.png)
 
 ### Adding AWS Role to Spinnaker through Halyard configuration.  Note AWS account name is within Spinnaker and will appear in UI ###
 
@@ -69,7 +69,7 @@ immutable_metadata  {"purpose":"example-purpose"}
 
 # NEXT: Connect Spinnaker to Amazon EKS cluster
 
-![No CREATE Permission](/Spinnaker-to-EKS.png)
+![No CREATE Permission](/images/Spinnaker-to-EKS.png)
 
 ## Prerequisities for Creating Service Account
 
