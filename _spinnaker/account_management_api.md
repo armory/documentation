@@ -10,21 +10,21 @@ order: 99
 
 # Armory Account Management API
 
-The Armory Account Management API is an API that allows you to manage accounts through an API instead of manually editing configuration files. This API works by adding a write layer to backends supported by Spring Cloud Config natively, such as Git (or Github, for our purposes). Accounts added using the API get converted into the correct configuration form for the backend and stored. The service *using* the configuration backend will be able to read and refresh configurations from this source. In the case of [Clouddriver](https://blog.armory.io/deep-dive-into-clouddriver/), changes made with the API are automatically picked up without requiring a restart or redeploy.
+The Armory Account Management API allows you to manage accounts through an API instead of manually editing configuration files. This API works by adding a write layer to backends supported by Spring Cloud Config natively, such as Git (or GitHub, for our purposes). Accounts added using the API get converted into the correct configuration form for the backend and stored. The service *using* the configuration backend will be able to read and refresh configurations from this source. In the case of [Clouddriver](https://blog.armory.io/deep-dive-into-clouddriver/), changes made with the API are automatically picked up without requiring a restart or redeploy.
 
 The Account Management API is currently in [Early Release](https://kb.armory.io/releases/early-release-beta-GA/). The feature is working and installable, but some functionality is likely to be missing and a number of known and unknown issues are likely to surface.
 
 
 ## Requirements
-- A Github (or Github Enterprise) repo must be used as the source
+- Source repo stored in GitHub or GitHub Enterprise
   
-## Known Issues with Github Backend
+## Known Issues and Limitations with GitHub Backend
 
-- The Account Management API currently only supports managing accounts for 1 installation of Spinnaker. This is because the backend only supports managing one set of accounts stored in a single file.
-- Race condition may occur when submitting concurrent requests.
+- The API backend stores accounts in a single file, so you can only use the Account Management API to manage accounts for one installation of Spinnaker.
+- Submitting concurrent requests may cause a race condition.
 
 
-## Best Practices with Github Backend
+## Best Practices with GitHub Backend
 
 When using the Account Management API, Armory recommends the following best practice:
 
@@ -35,6 +35,8 @@ When using the Account Management API, Armory recommends the following best prac
 
 Use Kubernetes Manifests to install the Management API. This can be deployed by Spinnaker using a `Deploy (Manifest)` stage. You can also store it in source control and use it as an artifact.
 
+For more information aout how to deploy a manifest, see [Deploy Kubernetes Manifests](https://www.spinnaker.io/guides/user/kubernetes-v2/deploy-manifest/).
+
 
     apiVersion: v1
     data:
@@ -43,9 +45,9 @@ Use Kubernetes Manifests to install the Management API. This can be deployed by 
           github:
             owner: {owner}
             repo: {repo}
-            password: {redacted}
+            password: <password>
             file: clouddriver-remote.yml
-            baseUrl: {baseUrl for Github Enterprise, if appropriate}
+            baseUrl: {baseUrl for GitHub Enterprise if appropriate}
     kind: ConfigMap
     metadata:
       name: acct-mgmt-api-config
@@ -98,7 +100,7 @@ Use Kubernetes Manifests to install the Management API. This can be deployed by 
 
 ## Configuration
 
-Configuring the Account Management API similar to other Spinnaker services. For Github integration, add the config (shown above). This enables the Github integration and uses the supplied credentials when making changes.
+Configuring the Account Management API similar to other Spinnaker services. For GitHub integration, add the config (shown above). This enables the GitHub integration and uses the supplied credentials when making changes.
 
 *There is a sample configuration in the manifests above.*
 
@@ -108,10 +110,10 @@ Configuring the Account Management API similar to other Spinnaker services. For 
       github:
         owner: armory-io
         repo: spinnaker-remote-config
-        password: {redacted}
+        password: <password>
         file: clouddriver-remote.yml
 
-When using the Github integration, you need to configure Clouddriver to use Github as well. Note, the `remote` profile corresponds to the `clouddriver-remote` file that the API manages. To enable remote configuration, add the snippet below to `~/.hal/{DEPLOYMENT_NAME}/profiles/spinnakerconfig.yml`.
+When using the GitHub integration, you need to configure Clouddriver to use GitHub as well. Note, the `remote` profile corresponds to the `clouddriver-remote` file that the API manages. To enable remote configuration, add the snippet below to `~/.hal/{DEPLOYMENT_NAME}/profiles/spinnakerconfig.yml`.
 
     spring:
       profiles:
@@ -121,16 +123,14 @@ When using the Github integration, you need to configure Clouddriver to use Gith
           server:
             git:
               uri: https://github.com/armory-io/spinnaker-remote-config 
-              password: {redacted}
+              password: <password>
               username: doogie
 
-More details on configuring Spinnaker for remote configuration can be found [here.](https://www.spinnaker.io/setup/configuration/)
+For more information about configuring Spinnaker for remote configuration, see [External Account Configuration](https://www.spinnaker.io/setup/configuration/).
 
 ## Usage
 
-The Account Management API works by hooking into the same backends as Spring’s Cloud Config - the core of Dynamic Accounts within Spinnaker. For example, if you are using Github as a backend for storing your account configuration, you can use the same backend with the Account Management API. Changes are reflected into Clouddriver as the Management API makes changes to the backing data.
-
-*Note -* *today,* *only Github is supported as a Management API backend.*
+The Account Management API works by hooking into the same backends as Spring’s Cloud Config - the core of Dynamic Accounts within Spinnaker. For example, if you are using GitHub as a backend for storing your account configuration, you can use the same backend with the Account Management API. When the Management API changes the backing data, it replicates the change to Clouddriver.
 
 Once configured, you can interact with the Account Management API using your favorite API clients. 
 
@@ -174,13 +174,3 @@ To delete an account with the API, call the `DELETE` route on a particular accou
 
     # curl -X DELETE http://mgmt-api-url/api/v1/accounts/added-by-api
 
-
-## Future Work
-
-Have functionality you want added to the Account Mangement API? [Contact us](https://www.armory.io/contact/) and to share your feedback and ideas.
-
-Some functionality we are considering or working on include the following: 
-
-- Support for more storage backends.
-- Resolving race conditions when using non-database backends.
-- Ability to manage accounts for multiple Spinnaker installations

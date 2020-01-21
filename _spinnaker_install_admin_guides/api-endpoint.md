@@ -31,13 +31,13 @@ This document details the following:
 ### Spinnaker Endpoints
 
 At the end of this process, you will end up with three endpoints for Spinnaker:
-* A UI endpoint on the Deck microservice.  You can terminate TLS on the load balancer (Ingress other load balancer), and end up with a flow that looks like this:
+* A UI endpoint on the Deck microservice.  You can terminate TLS on the load balancer (Ingress or other load balancer), and end up with a flow that looks like this:
   ```bash
-  [Browser] ---HTTPS--> [Load Balancer with TLS Termination] ---HTTPS--> [Deck:9000]
+  [Browser] ---HTTPS--> [Load Balancer with TLS Termination] ---HTTP--> [Deck:9000]
   ```
-* An API endpoint on the Gate microservice for browser clients.  You can terminate TLS on the load balancer (Ingress other load balancer).  Authentication will be handled by your primary authentication provider (LDAP, SAML, OAuth2.0, etc.).  You may end up with a flow that looks like this:
+* An API endpoint on the Gate microservice for browser clients.  You can terminate TLS on the load balancer (Ingress or other load balancer).  Authentication will be handled by your primary authentication provider (LDAP, SAML, OAuth2.0, etc.).  You may end up with a flow that looks like this:
   ```bash
-  [Browser] ---HTTPS--> [Load Balancer with TLS Termination] ---HTTPS--> [Gate:8084]
+  [Browser] ---HTTPS--> [Load Balancer with TLS Termination] ---HTTP--> [Gate:8084]
   ```
 * An API endpoint on the Gate microservice for automation clients.  Clients must present an x509 client certificate in order to use this endpoint, so you *cannot* terminate TLS on a load balancer in front of Gate.  The data flow may look something like this:
   ```bash
@@ -52,18 +52,18 @@ At the end of this process, you will end up with three endpoints for Spinnaker:
 
 Before moving on, you should decide the following:
 * For the CA used to validate client certificates, are you using an organization CA or creating a self-signed CA?
-* For the Gate and Deck certificate, are you using using certificates signed by an organization CA, certificates signed by a self-signed CA, or self-signed certificates?
-* In order to access the API endpoint, the API endpoint (which is an extra port on the existing Gate service) must be directly exposed.  Clients must be able to provide their certificates to Gate; there should no TLS termination in front of it.  This means you must do one of the following:
+* For the Gate and Deck certificate, are you using certificates signed by an organization CA, certificates signed by a self-signed CA, or self-signed certificates?
+* In order to access the API endpoint, the API endpoint (which is an extra port on the existing Gate service) must be directly exposed.  Clients must be able to provide their certificates to Gate; there should be no TLS termination in front of it.  This means you must do one of the following:
   * Set up a Layer 4 (TCP) load balancer in front of this endpoint
   * Set up a Layer 7 (HTTPS) load balancer that supports TLS passthrough.
 
-This document borrows heavily from the Open Source Spinnaker document on SSL, found here: [Setup / Security / Authentication / SSL](https://www.spinnaker.io/setup/security/authentication/ssl/).
+This document borrows heavily from the Open Source Spinnaker document on SSL, found here: [Setup / Security / SSL](https://www.spinnaker.io/setup/security/ssl/).
 
 ## Obtaining / Creating a Self-Signed CA Certificate
 
-If your organization has a CA that you can use to sign client certificates, then you must obtain a copy of the CA certificate (note: this is generally the public-facing certificate, and should not be generally sensitive piece of information).  You must get this in a PEM-formatted file, or convert it to a PEM-formatted file.
+If your organization has a CA that you can use to sign client certificates, then you must obtain a copy of the CA certificate (note: this is generally the public-facing certificate, and therefore not sensitive information).  You must get this in a PEM-formatted file, or convert it to a PEM-formatted file.
 
-Alternately, you can create a self-signed CA certificate to use to sign client certificates, and configure Gate to trust certificates signed by this CA certificate.
+Alternatively, you can create a self-signed CA certificate to use to sign client certificates, and configure Gate to trust certificates signed by this CA certificate.
 
 ### Obtaining the Organization Certificate
 
@@ -82,7 +82,7 @@ certificate. These instructions create a self-signed CA and key. You might want 
 use an external CA, to minimize browser configuration, but it's not necessary
 (and can be expensive).
 
-Use the steps below to create a certificate authority. (If you're using an
+Use the steps below to create a Certificate Authority. (If you're using an
 external CA, skip to the next section.)
 
 It will produce the following items:
@@ -120,7 +120,7 @@ encrypt `ca.key`.
 
 ## Obtain or Generate a Server Certificate for the Deck (UI) Service
 
-_This step is actually technically optional, but it requires setting up separate exposure mechanisms for Deck and Gate if this step is skipped.  For simplicity' sake, we recommend completing this step_
+_This step is technically optional, but it requires setting up separate exposure mechanisms for Deck and Gate if this step is skipped.  For simplicity' sake, we recommend completing this step_
 
 You will need a server certificate and private key.  If you have a load balancer in front of Deck that is terminating TLS, the certificate on Deck generally won't matter aside from the fact that you must have one.  There are two main options here:
 
@@ -189,7 +189,7 @@ Deck's eventual fully-qualified domain name (FQDN) as the Common Name (CN).
 
 ## Obtain or Generate a Server Certificate for the Gate (API) Service
 
-You will need a server certificate and private key.  This server certificate will be used for both Gate endpoints - one for the authenticated API used by browser clients, one for the certificate-authenticated (X509) API used by automated clients.
+You will need a server certificate and private key.  This server certificate will be used for both Gate endpoints - one for the authenticated API endpoint used by browser clients, one for the certificate-authenticated (X509) API endpoint used by automated clients.
 
 There are two main options here:
 
@@ -200,9 +200,9 @@ There are two main options here:
 
 If your organization has a CA certificate, you should request a server certificate for use with Gate.  
 
-Because the X509 API is exposed directly to your automation endpoints, it may be helpful to request a certificate with a CN that matches a DNS name that resolves to your load balancer.  For example, if you can point `api.spinnaker.domain.com` at your load balancer, you may want to request a certificate taht has `api.spinnaker.domain.com` as its CN.
+Because the X509 API is exposed directly to your automation endpoints, it may be helpful to request a certificate with a CN that matches a DNS name that resolves to your load balancer.  For example, if you can point `api.spinnaker.domain.com` at your load balancer, you may want to request a certificate that has `api.spinnaker.domain.com` as its CN.
 
-Alternately you can configure your clients to skip server certificate validation (this is usually the `-k` flag for `curl`).
+Alternatively you can configure your clients to skip server certificate validation (this is usually the `-k` flag for `curl`).
 
 This should result in the following files:
 
@@ -228,10 +228,10 @@ If you want to generate your own certificates (for example, from the self-signed
      4096
    ```
 
-1. Generate a certificate signing request (CSR) for Deck. Ideally, specify 
+1. Generate a certificate signing request (CSR) for Gate. Ideally, specify 
 Gate's eventual fully-qualified domain name (FQDN) as the Common Name (CN).  
 
-   This will prompt for the pass phrase for `deck.key`.
+   This will prompt for the pass phrase for `gate.key`.
 
    ```bash
    # This should be the passphrase used to encrypt the Gate private key
@@ -244,7 +244,7 @@ Gate's eventual fully-qualified domain name (FQDN) as the Common Name (CN).
      -passin pass:${GATE_KEY_PASSWORD}
    ```
 
-1. Use the CA to sign the server's request and create the Deck server certificate
+1. Use the CA to sign the server's request and create the Gate server certificate
 (in `pem` format). If using an external CA, they will do this for you.  
 
    This will prompt for the pass phrase used to encrypt `ca.key`.
@@ -371,7 +371,7 @@ which is importable into a Java Keystore (JKS).
 
 ## Back Up Your Spinnaker Configuration
 
-Before making any chances to Halyard, it is recommended to back up your current configuration.  You can back up your Halyard configuration with this:
+Before making any changes with Halyard, it is recommended to back up your current configuration.  You can back up your Halyard configuration with this:
 
 ```bash
 hal backup create
@@ -483,7 +483,7 @@ hal config security api edit --override-base-url https://${GATE_FQDN}
 
 ## Apply SSL Changes and Test Changes
 
-Before actually enabling the API endpoint, we should apply the changes that we've made so far and make sure everything continues to work.
+Before enabling the API endpoint, we should apply the changes that we've made so far and make sure everything continues to work.
 
 1. Apply your Halyard changes:
 
@@ -530,7 +530,7 @@ Gate will now have a second API port set up listening on port 8085, which will e
 
 ## Update Load Balancers and URLs
 
-You must expose port 8085 on your Gate containers externally, and you should **not** terminate TLS in front of them.  Depending on how your Kubernetes cluster lives, you may be able to use a `LoadBalancer` or `NodePort` Service.  Alternately, if your Ingress Controller is configured to support TLS pass-through, you can use that.
+You must expose port 8085 on your Gate containers externally, and you should **not** terminate TLS in front of them.  Depending on how your Kubernetes cluster lives, you may be able to use a `LoadBalancer` or `NodePort` Service.  Alternatively, if your Ingress Controller is configured to support TLS pass-through, you can use that.
 
 We detail two of these options here.
 

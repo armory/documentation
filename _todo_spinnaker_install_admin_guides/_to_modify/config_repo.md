@@ -125,7 +125,7 @@ service armory-spinnaker restart
 
 ## Using the Configurator
 The Configurator will make edits to one of Armory Spinnaker's machines, then uploads the files to s3.
-Configurations are locked to a server group at runtime, so you must redeploy it to see changes. This allows you to rollback to an existing OK Armory Spinnaker. See [**Tips during configuration**]({% link _install_guide/gettings_started.md %}#tips-during-configuration) for best practices on configurations.
+Configurations are locked to a server group at runtime, so you must redeploy it to see changes. This allows you to rollback to an existing OK Armory Spinnaker.
 
 ### For big config changes (ex: initial setup) or fast dev cycle time:
 - Scale down to 1 polling ArmorySpinnaker

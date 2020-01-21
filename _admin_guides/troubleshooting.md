@@ -34,12 +34,12 @@ You'll need to SSH into a box running Armory Spinnaker.  You can find an active 
 ![selecting a node](/images/Screen Recording 2017-09-14 at 04.18 PM.gif)
 
 Once you have SSH'ed into a box you'll need to find which sub-service is unhealthy:
-```
+```sh
 curl localhost:5000/healthcheck
 ```
 
 This should return a response similar to:
-```
+```json
 {
    "healthy":true,
    "systems":{
@@ -60,7 +60,7 @@ This should return a response similar to:
 
 In the example above `clouddriver` is `false` so it's likely unhealthy.  To check for exceptions or errors tail the logs:
 
-```
+```sh
 docker logs -f clouddriver
 ```
 
@@ -74,7 +74,7 @@ This should stream all the `clouddriver` logs to your terminal.  You'll want to 
 1.  Install redis server which comes with the cli tool. `apt-get install redis-tools`
 1.  Flush all content.  This will remove old executions.
 
-```
+```sh
 . /opt/spinnaker/env/resolved.env redis-cli -h ${REDIS_HOST} FLUSHALL
 ```
 
@@ -99,12 +99,18 @@ You can then grab the ID from the url:
 
 You can specify logging levels based on the package that you're trying to debug or reduce messaging by adding the following to `/opt/spinnaker/config/spinnaker-local.yml`
 
-```
+```yaml
 logging:
   level:
+    # turn on request logging
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
+
+    # turn on logging for the service
     com.netflix.spinnaker.gate: DEBUG
     com.netflix.spinnaker.clouddriver: WARN
-    root: DEBUG   # if you want all the debug logs, it's a lot...
+
+    # if you want all the debug logs, be warned, there's a lot here
+    root: DEBUG
 ```
 
 #### Accessing a service's `/resolvedEnv` endpoint
@@ -112,7 +118,7 @@ Spinnaker uses Spring underneath the covers.  Spring has a sophisticated propert
 
 >Note:  Disabling security will leave secrets exposed through the `resolvedEnv` endpoint and should only be used for debugging purposes
 
-```
+```yaml
 security:
   basic:
     enabled: false

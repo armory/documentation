@@ -16,6 +16,7 @@ Kayenta uses real-time data sources to validate that a canary is good or bad. To
 * DataDog
 * Stackdriver (Google)
 * Prometheus
+* New Relic
 
 This guide includes:
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
@@ -31,12 +32,9 @@ you should see a checkbox to enable Canarying:
 Make sure it's checked and saved.
 
 If you don't see this option in your application config, make sure you've
-[configured Kayenta](/admin-guides/kayenta).
+[configured Kayenta](https://www.spinnaker.io/guides/user/canary/).
 
-## Additional Documentation
-
-Kayenta is an open source feature of Spinnaker and has its own documentation at
-[https://www.spinnaker.io/guides/user/canary/](https://www.spinnaker.io/guides/user/canary/)
+You can also find more information about Kayenta on [Automated Canary Deployments](/spinnaker/configure_kayenta)
 
 In this document, we will quickly run through the process to simply get you
 going.
@@ -99,6 +97,9 @@ The Stackdriver dialog looks like:
 
 ![Stackdriver Metric Dialog](/images/Image 2018-04-18 at 1.12.46 PM.png)
 
+The New Relic dialog looks like:
+![New Relic Metric Dialog](/images/NewRelicMetricsDialog.png)
+
 In all cases, the Name is free-form and used to label the results and graphs.
 
 By default the "Fail on" selection of "either" means the comparison of canary
@@ -128,13 +129,8 @@ Please refer to the [Spinnaker Kayenta documentation](https://www.spinnaker.io/g
 on configuring Stackdriver metrics.
 
 ### New Relic Metrics
-
-For New Relic, the [NRQL query language](https://docs.newrelic.com/docs/insights/nrql-new-relic-query-language/nrql-reference) is ultimately used to query the
-data; we compose the query in pieces.  In the metric, you'll need to enter the
-desired metric (and any aggregation, average, max, etc) plus the table to use.
-For example, to retrieve the average duration of a web request, you'd enter
-`average(duration) FROM Transaction`.  Only one metric can be retrieved in 
-each metric definition.
+Use a NRQL Select statement (without the WHERE clause) to specify the metric to measure.
+You can use [New Relic Insights](https://newrelic.com/products/insights) to find the available events and metrics.  Please refer to the [NRQL documentation](https://docs.newrelic.com/docs/query-data/nrql-new-relic-query-language/getting-started/nrql-syntax-components-functions) for more information.
 
 ## Filter Templates
 
@@ -166,7 +162,7 @@ Marginal level, the canary will stop and record a failed stage immediately.
 If the canary runs to completion, and all the intervals scored above "Pass",
 the stage will be considered a success.  If *any* interval fell into the
 grey area between Marginal and Pass, the stage will end with a failure,
-although it will not have been pre-emptively cancelled.  This is intented to
+although it will not have been pre-emptively cancelled.  This is intended to
 allow someone to look at the marginal responses and make their own evaluation
 of whether or not the pipeline should continue.
 
@@ -243,6 +239,9 @@ such as `autoscaling_group:myapp-v001,region:us-west-2`.
 For DataDog, the two Location fields are unused and can be safely left
 blank.  For Stackdriver (and other metrics sources) they are required fields.
 
+For NewRelic, use the "Add Field" button in the "Extended Params" section to specify the `_location_key` and `_scope_key` for your application, both of which are appended to the NRQL query as 'WHERE' clauses and will differ between the canary and baseline. When using the Kubernetes V2 provider, its recommended to install the [New Relic Kubernetes Metadata Injection](https://github.com/newrelic/k8s-metadata-injection) service to provider Kubernetes specific attributes on Transactions to make it easier to differentiate between the canary and baseline. 
+![Extended Params for New Relic](/images/NewRelicExtendedParams.png)
+
 For more information on configuring these scopes, please refer to the
 [Spinnaker Kayenta Documentation](https://www.spinnaker.io/guides/user/canary/stage/#define-the-canary-stage).
 
@@ -289,10 +288,6 @@ example), the steps are:
 
    (For Datadog, we want to prepend `autoscaling_group:` to
    this so we get the correct Datadog tag.)
-
-   (For New Relic, you'll create a WHERE clause for the NRQL query to select
-   by.  If your code is adding a custom attribute to your data, which we do
-   recommend, you'll want to add the clause here, like `version='${...}'`)
 
    The canary server group can be retrieved with the SpEL:
 

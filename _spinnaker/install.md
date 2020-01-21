@@ -4,15 +4,25 @@ title: Installation
 order: 10
 redirect_from:
   - /install_guide/install/
+  - /install-guide/gettings_started/
 ---
-# Installing Armory Spinnaker
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-## Try Armory's Demo Environment
+# Installing Armory Spinnaker for Small Teams and POCs 
+## Introducing Armory Minnaker
+Armory Minnaker is an easy to use installation script that leverages the power of **Kubernetes** with the simplicity of a _Virtual Machine_.  The Kubernetes environmnent that will get installed on your behalf is based on [Rancher's K3s](https://k3s.io/).  You do not need to know how to setup Kubernetes as we have done all of the hard parts for you allowing you to get up and running with Spinnaker in under 10 minutes.  Check out [our video](https://youtu.be/jg8vJEzcuAA) on running Spinnaker across all of the public clouds including VMWare Fusion locally.  This deployment makes it easy to get up and running today and let's you scale your deployment into a medium to large deployment down the road.
 
-You can [try our Demo Environment](https://spinnaker.demo.armory.io) before installing Armory.
+## Prerequisites 
+
+Your VM should have 4 vCPUs, 16G of memory and 30G of HDD space.
+
+## Getting Started
+
+Check out the [GitHub project](https://github.com/armory/minnaker) for more information.
+
+# Installing Armory Spinnaker for Medium to Large Enterprise Deployments
 
 ## Prerequisites
 
@@ -102,6 +112,67 @@ docker exec -it armory-halyard bash
 ```
 
 From there, you can issue all your [halyard commands](https://www.spinnaker.io/reference/halyard/).
+
+### Install Armory Halyard in Kubernetes
+You can start Armory Halyard in a pod with the following manifest:
+```
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: halconfig-pvc
+  labels:
+    app: halyard
+  namespace: halyard
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: halyard
+  namespace: halyard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: halyard
+  strategy:    
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: halyard
+    spec:
+      containers:
+      - name: halyard
+        image: index.docker.io/armory/halyard-armory:1.7.2
+        volumeMounts:
+        - name: halconfig
+          mountPath: /home/spinnaker/.hal
+      securityContext:
+        fsGroup: 65533
+      volumes:
+      - name: halconfig
+        persistentVolumeClaim:
+          claimName: halconfig-pvc
+```
+
+Copy and paste the manifest into a file named halyard.yml, then deploy the above manifest (halyard.yml) into Kubernetes with the following command:
+```
+kubectl apply -f halyard.yml
+```
+> Note: This installs Halyard into the namespace 'halyard'
+
+Once the pod is deployed - you can interact with it by running:
+```
+kubectl -n halyard exec -ti halyard-xxxxx bash  # make sure you get the exact pod name
+```
 
 ## Installing Armory Spinnaker
 

@@ -57,7 +57,7 @@ _Note_: Strategy will be covered in a separate guide.
 
 ![](/images/Image 2017-03-24 at 3.50.27 PM.png)
 
-_Note_: The Property File is an important topic that will be [covered in a separate guide](http://localhost:4000/user-guides/working-with-jenkins/#property-file).
+_Note_: The Property File is an important topic that will be [covered in a separate guide](https://docs.armory.io/spinnaker-user-guides/working-with-jenkins/#property-file).
 
 #### Step 7: Before you test your pipeline, you may want to consider enabling or disabling the trigger via the checklist at the bottom.
 

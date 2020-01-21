@@ -23,10 +23,13 @@ This decision has no effect on previous release names.
 ## Known Issues
 
 * `Clouddriver` caching of `Docker Registry` tags is slow in this release. Registries containing a large number of tags **(> 1000)** will result in `docker triggers` not properly triggering until caching is complete -- which might take 10 minutes or more.
+* The `clouddriver-ro` pod fails to start when using Vault secrets with HA Clouddriver enabled.
 
-*Note*: A fix for this issue will appear in `Armory Spinnaker 2.15.1`
+> Note: Updating to OSS 1.15.x created an issue with the secrets config in Clouddriver and Echo. Armory Halyard 1.6.5 fixes this issue. Please update your Halyard to 1.6.5 or later:
+`sudo update-halyard --version 1.6.5`
 
-###  Spinnaker Community Contributions
+
+##  Spinnaker Community Contributions
 [Spinnaker 1.15.1 Release Notes](https://www.spinnaker.io/community/releases/versions/1-15-1-changelog)  
 
 <br>

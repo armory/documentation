@@ -9,11 +9,11 @@ redirect_from:
   - /spinnaker-install-admin-guides/install_on_gke/
 ---
 
-This guide describes how to install Spinnaker in GKE.  It will create / use the following Google Cloud resources:
+This guide describes how to install Spinnaker in Googke Kubernetes Engine (GKE).  It will create / use the following Google Cloud resources:
 
 * A GKE (Google Kubernetes Engine) cluster (you can use an existing one if you already have one)
 * A GCS (Google Cloud Storage) bucket (you can use an existing one if you already have one)
-* An NGINX Ingress controller in your GKE cluster
+* An NGINX Ingress controller in your GKE cluster. This step is only needed if your cluster doesn't already have an ingress installed. Note that the examples on this page for NGINX only work on Kubernetes version 1.14 or later. 
 
 This document currently does not fully cover the following (see [Next Steps](#next-steps) for some links to achieve these)
 
@@ -97,14 +97,14 @@ This creates a minimal GKE cluster in your default region and zone.  Follow the 
 1. Run this command to configure `kubectl` to use the cluster you've created:
 
    ```bash
-   export KUBECONFIG=kubeconfig=gke
+   export KUBECONFIG=kubeconfig-gke
    gcloud container clusters get-credentials spinnaker-cluster
    ```
 
 1. Alternately, if you're using a pre-existing GKE cluster:
 
    ```bash
-   export KUBECONFIG=kubeconfig=gke
+   export KUBECONFIG=kubeconfig-gke
    gcloud container clusters get-credentials <your-cluster-name>
    ```
 
@@ -144,8 +144,8 @@ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-ad
    # If you're not already in the directory
    cd ~/gke-spinnaker
    # If you're on Linux instead of OSX, use this URL instead:
-   # https://github.com/armory/spinnaker-tools/releases/download/0.0.5/spinnaker-tools-linux
-   curl -L https://github.com/armory/spinnaker-tools/releases/download/0.0.5/spinnaker-tools-darwin -o spinnaker-tools
+   # https://github.com/armory/spinnaker-tools/releases/download/0.0.6/spinnaker-tools-linux
+   curl -L https://github.com/armory/spinnaker-tools/releases/download/0.0.6/spinnaker-tools-darwin -o spinnaker-tools
    chmod +x spinnaker-tools
    ```
 
@@ -154,7 +154,6 @@ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-ad
    ```bash
    # The 'gcloud container clusters get-credentials' command from above will create/update this file
    SOURCE_KUBECONFIG=kubeconfig-gke
-   # Get the name of the context created by the aws tool)
    CONTEXT=$(kubectl --kubeconfig ${SOURCE_KUBECONFIG} config current-context)
    DEST_KUBECONFIG=kubeconfig-spinnaker-system-sa
    SPINNAKER_NAMESPACE=spinnaker-system
@@ -165,7 +164,7 @@ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-ad
      --context ${CONTEXT} \
      --output ${DEST_KUBECONFIG} \
      --namespace ${SPINNAKER_NAMESPACE} \
-     --serviceAccountName ${SPINNAKER_SERVICE_ACCOUNT_NAME}
+     --service-account-name ${SPINNAKER_SERVICE_ACCOUNT_NAME}
    ```
 
 You should be left with a file called `kubeconfig-spinnaker-system-sa` (or something similar, if you're using a different namespace for spinnaker)
@@ -390,6 +389,13 @@ Then, you can access Spinnaker at http://localhost:9000
 
 (If you are doing this on a remote machine, this will not work because your browser attempts to access localhost on your local workstation rather than on the remote machine where the port is forwarded)
 
+__Note:__ Even if the `hal deploy apply` command returns successfully, the 
+installation may not be complete yet. This is especially the case with 
+distributed Kubernetes installs. If you see errors such as `Connection refused`,
+the containers may not be available yet. You can either wait 
+or check the status of all of the containers using the command for your cloud provider 
+(such as `kubectl get pods --namespace spinnaker`).
+
 ## Install the NGINX ingress controller
 
 In order to expose Spinnaker to end users, you have perform the following actions:
@@ -403,6 +409,8 @@ We're going to install the NGINX ingress controller on GKE because of these two 
 * It only exposes NodePort services
 * It only exposes services that respond with an `HTTP 200` to a `GET` on `/` (or have a `readinessProbe` configured)
 
+If you already have an NGINX ingress controller installed on your cluster, skip this step.
+
 (Both of these are configurable with Spinnaker, but the NGINX ingress controller is also generally much more configurable)
 
 From the `workstation machine` (where `kubectl` is installed):
@@ -412,6 +420,8 @@ Install the NGINX ingress controller components:
 ```bash
 kubectl --kubeconfig kubeconfig-gke apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
 ```
+
+If you are using a Kubernetes version earlier than 1.14, you need to change kubernetes.io/os to beta.kubernetes.io/os at line 217 of `mandatory.yaml`. See the [NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/) documentation for more details.
 
 Install the NGINX ingress controller GKE-specific service:
 
@@ -427,7 +437,7 @@ Identify the URLs you will use to expose Spinnaker's UI and API.
 # Replace with actual values
 SPIN_DECK_ENDPOINT=spinnaker.some-url.com
 SPIN_GATE_ENDPOINT=api.some-url.com
-NAMESPACE=spinnaker
+NAMESPACE=spinnaker-system
 ```
 
 Create a Kubernetes Ingress manifest to expose spin-deck and spin-gate (change your hosts and namespace accordingly):
@@ -498,7 +508,7 @@ hal deploy apply
 Once the ingress is up (this may take some time), you can get the IP address for the ingress:
 
 ```bash
-$ kubectl describe -n spinnaker ingress spinnaker-nginx-ingress
+$ kubectl describe -n spinnaker-system ingress spin-ingress
 Name:             spinnaker-nginx-ingress
 Namespace:        spinnaker
 Address:          35.233.216.189

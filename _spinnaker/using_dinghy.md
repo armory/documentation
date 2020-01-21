@@ -4,7 +4,7 @@ title: Using Pipelines as Code
 order: 131
 ---
 
-Armory's Pipelines As Code feature provides a way to specify pipeline definitions in source code repos (like GitHub & BitBucket).
+Armory's Pipelines As Code ("Dinghy") feature provides a way to specify pipeline definitions in source code repos (like GitHub & BitBucket).
 
 The Armory Spinnaker installation provides a service called "Dinghy" which will keep the pipeline in Spinnaker in sync with what is defined in the GitHub repo. Also, users will be able to make a pipeline by composing other pipelines, stages, or tasks and templating certain values.
 
@@ -14,12 +14,49 @@ The Armory Spinnaker installation provides a service called "Dinghy" which will 
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-## How it works in a nutshell
+## How It Works in a Nutshell
 
 GitHub (or BitBucket) webhooks are sent off when either the Templates or the Module definitions are modified. The Dinghy service looks for and fetches all dependent modules and parses the template and updates the pipelines in Spinnaker. The pipelines get automatically updated whenever a module that is used by a pipeline is updated in VCS. This is done by maintaining a dependency graph.  Dinghy will look for `dinghyfile`s in all directories not just the root path.  Unless otherwise configured, Dinghy will process changes found in the master branch. For more information on how to configure branches, see [Custom branch configuration](http://docs.armory.io/spinnaker/install_dinghy/#custom-branch-configuration)
 
 For a deeper look at how Pipelines-as-Code works in your SDLC, take a look at
 [https://kb.armory.io/concepts/Pipelines-as-Code-Workflow/](https://kb.armory.io/concepts/Pipelines-as-Code-Workflow/)
+
+## Basic Format
+
+A Dinghyfile is a JSON (or HCL or YAML, [see
+below](#alternate-template-formats)) dictionary that wraps a
+few top-level elements to instruct Dinghy where to create/update the
+pipelines that are being defined.  This outer layer identifies the
+application that the pipelines should live in &mdash; Dinghy will create
+the application if it doesn't already exist, and you can also provide
+settings for the application within this file as well.  Finally, the
+`pipelines` key is an array of pipeline definitions that will be
+created/updated in that application.  Here's an example Dinghyfile that has
+no pipelines, but would create an application named `mynewapp`, along with
+a few options.  Note that only the "application" and "pipelines" keys are
+required; everything else is optional.:
+
+```
+{
+  "application": "mynewapp",
+  "pipelines": [],
+  "spec": {
+    "permissions": {
+      "READ": [ "myproductteam", "mysalesteam" ],
+      "EXECUTE": [ "mydevteam" ],
+      "WRITE": [ "mydevopsteam" ]
+    }
+  }
+}
+```
+
+#### Application Permissions
+
+You can define in the "spec" block the permissions to set on the
+application.  One note of caution here, if you set the WRITE permissions to
+a group that the Dinghy service is NOT part of, Dinghy will not be able to
+update anything within that application (pipelines won't get created or
+updated).
 
 ## Primitives
 
@@ -66,7 +103,7 @@ You can compose stage/task templates to make a full definition. e.g., a Pipeline
 }
 ```
 
-## Template variables and substitution
+## Template Variables and Substitution
 
 Pipeline definitions can include Modules defined in another GitHub Repo. e.g.:
 ```{% raw %}
@@ -87,7 +124,7 @@ Pipeline definitions can include Modules defined in another GitHub Repo. e.g.:
 }
 {% endraw %}```
 
-The `{% raw %}{{ module "wait.stage.module" }}{% endraw %}` takes the wait.stage.module file inside the dinghy-templates repo, and includes it in the current template.
+The `{% raw %}{{ module "wait.stage.module" }}{% endraw %}` takes the wait.stage.module file inside the dinghy-templates repo, and includes it in the current template. Note that modules are simply text inserted into the JSON they are referenced by; if you wanted to add another stage after the module in the example above, you would need to add the comma after the substitution so the resulting JSON was correct.
 
 We can also pass variables to our modules like so:
 
@@ -216,7 +253,7 @@ The file `deploy.stage.module` would look like this:
 }
 {% endraw %}```
 
-## Multiple level inheritance:
+## Multiple Level Inheritance
 
 In the below example, we show a pipeline that is created with multiple levels of module inheritance. The application's dinghyfile looks like this:
 
@@ -263,7 +300,7 @@ Note how the `requisiteStageRefIds` is overwritten while calling the module so t
 
 ![](/images/Screen_Shot_2018-03-26_at_5_06_25_PM.png)
 
-## Deleting stale pipelines
+## Deleting Stale Pipelines
 
 If you want any pipelines in the spinnaker application that are not part of the `dinghyfile` to be deleted automatically when the `dinghyfile` is updated, then you can set `deleteStalePipelines` to `true` in the JSON like so:
 
@@ -276,7 +313,7 @@ If you want any pipelines in the spinnaker application that are not part of the 
 }
 {% endraw %}```
 
-## Triggering other pipelines from within a stage
+## Triggering Other Pipelines With a Stage
 
 The spinnaker `pipeline` stage allows you to trigger other pipelines. However, typically you need the UUID of the pipeline to be triggered. To make it easier to write dinghy templates, we have a `pipelineID` function which can be used in dinghyfiles to trigger pipelines. Consider the below example (`pipeline.stage.module`):
 
@@ -296,7 +333,7 @@ The spinnaker `pipeline` stage allows you to trigger other pipelines. However, t
 In the above example, we are triggering a pipeline by the name `default-pipeline` under `default-app` spinnaker application. The app name and the pipeline name can be overwritten when calling this module. At any higher level, simply pass in `"triggerApp"` and `"triggerPipeline"` like so: `{% raw %}{{ module "pipeline.stage.module" "triggerApp" "pipelineidtest" "triggerPipeline" "testpipelinename" }}{% endraw %}`
 
 
-## Advanced features:
+## Advanced Features
 
 ### Monorepo
 Dinghy supports multiple spinnaker applications under the same git repo. eg:
@@ -320,7 +357,7 @@ monorepo/
 
 Notice both `app1` and `app2` are under the same repo, each app has its own `dinghyfile` and its own spinnaker application that can be referenced in the `dinghyfile`.
 
-### Template validation
+### Template Validation
 If, while rendering a `dinghyfile`, a malformed JSON file is encountered, the logs should indicate the line number and the column number of the error. The `arm cli` can be used to validate `dinghyfile`s and `module`s locally without having to put them in source control.
 
 ### Newlines
@@ -359,7 +396,7 @@ For ease of readablilty, you can split a single call to `module` across multiple
 }
 {% endraw %}```
 
-### Top-level variables in dinghyfiles
+### Top-level Variables
 When passing in variables to modules, you have the option of defining variables at the top-level `dinghyfile` like so:
 ```{% raw %}
 {
@@ -401,7 +438,7 @@ Note that top-level variables are overwritten by variables in the call to module
 }
 {% endraw %}```
 
-### Nested variables
+### Nested Variables
 Another neat little trick with variables is support for nested variables. Consider the following variable usage in a module:
 ```{% raw %}
 "name": "{{ var "name" ?: "some-name" }}"
@@ -416,25 +453,87 @@ With nested variables, instead of using a hardcoded default value, the default c
 Here, if the variable `"name"` was not passed into the module call and is not a top-level variable in the `dinghyfile`, its value will come from a variable called `"different_var"` that is either a top-level variable or another variable passed in when the module is called. Note the `@` syntax for the nested variable. The `@` symbol is only used where the variable is used, not when it is passed in.
 le
 
-### Create a dinghyfile from an existing pipeline
-If you have already created a pipeline in the Spinnaker UI, you can create a dinghyfile with some simple steps.
+### Create a Dinghyfile from an Existing Pipeline
 
-1. You need to go to the spinnaker UI and click on the `Configure` option of the pipeline you want.
+If you have already created a pipeline in the Spinnaker UI, you can create a dinghy file with some simple steps.
+
+1. You need to go to the Spinnaker UI and click on the `Configure` option of the pipeline you want.
 2. Click on the `Pipeline Actions` dropdown and select 'Edit as JSON'
-3. Copy/Paste this data into a new file, you will need to wrap this JSON with the following
+3. Copy/paste this data into a new file, you will need to wrap this JSON with the following
 
- ```
-{
-  "application": "yourspinnakerapplicationname",
-  "pipelines": [
-     The JSON obtained from the UI
-   ]
-}
-```
+    ```
+    {
+      "application": "YourSpinnakerApplicationName",
+      "pipelines": [
+         The JSON obtained from the UI
+       ]
+    }
+    ```
+4. Add the following parameters to each pipeline in the collection within the root of its JSON:
 
-Save this file as `dinghyfile` in the root of your project and push it to your repository.
+    ```
+    "application": "YourSpinnakerApplicationName"
+    "name": "<the name of the pipeline you wish to create>"
+    ```
+    Note that the value you set for `"application"` must be the same as the value in step 3.
 
-You may want to follow the [deleting stale pipelines](http://localhost:4000/spinnaker/using_dinghy/#deleting-stale-pipelines).
+    For example, if your pipeline called "Wait Pipeline" has a JSON definition that looks like this:
+  
+    ```
+      {
+        "isNew": true,
+        "keepWaitingPipelines": false,
+        "lastModifiedBy": "justin@acompany.com",
+        "limitConcurrent": true,
+        "stages": [
+          {
+            "isNew": true,
+            "name": "Wait",
+            "refId": "1",
+            "requisiteStageRefIds": [],
+            "type": "wait",
+            "waitTime": 30
+          }
+        ],
+        "triggers": [],
+        "updateTs": "1572455128000"
+      }
+  
+    ```
+
+    Then a Dinghy file managing this pipeline in the "helloworld" application looks like this:
+  
+    ```
+      {
+        "application": "helloworld",
+        "pipelines": [
+          {
+            "application": "helloworld",
+            "name": "Wait Pipeline",
+            "isNew": true,
+            "keepWaitingPipelines": false,
+            "lastModifiedBy": "justin@acompany.com",
+            "limitConcurrent": true,
+            "stages": [
+              {
+                "isNew": true,
+                "name": "Wait",
+                "refId": "1",
+                "requisiteStageRefIds": [],
+                "type": "wait",
+                "waitTime": 30
+              }
+            ],
+            "triggers": [],
+            "updateTs": "1572455128000"
+          }
+         ]
+      }
+    ```
+
+    Save this file as `dinghyfile` in the root of your project and push it to your repository.
+
+    You may want to follow the [deleting stale pipelines](https://docs.armory.io/spinnaker/using_dinghy/#deleting-stale-pipelines).
 
 # Alternate Template Formats
 

@@ -171,6 +171,8 @@ hal armory dinghy edit [parameters]
  * `--fiat-user`: Fiat user to use for Dinghy operations.
  * `--github-endpoint`: (*Default*: `https://api.github.com`) Github API endpoint. Useful if you're using Github Enterprise.
  * `--github-token`: (*Sensitive data* - user will be prompted on standard input) GitHub token.
+ * `--gitlab-endpoint`: GitLab endpoint.
+ * `--gitlab-token`: (*Sensitive data* - user will be prompted on standard input) GitLab token.
  * `--no-validate`: (*Default*: `false`) Skip validation.
  * `--stash-endpoint`: Stash API endpoint.
  * `--stash-token`: (*Sensitive data* - user will be prompted on standard input) Stash token.

@@ -4,14 +4,16 @@ title: Terraform Integration
 order: 141
 ---
 
-The following tutorial will walk you through how to setup the alpha version of our Terraform integration and execute Terraform code stored in a Github repo as part of a Spinnaker pipeline. We'll assume that you're using Terraform to create and manage infrastructure on AWS.
+The following tutorial will walk you through how to setup our Terraform integration and execute Terraform code stored in a Github repo as part of a Spinnaker pipeline. We'll assume that you're using Terraform to create and manage infrastructure on AWS.
+
+Note that the Terraform integration is in beta while we work on improving the user experience.
 
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
 ## How to submit feedback
-{:.no_toc} 
+{:.no_toc}
 If you decide to enable this feauture and have any feedback you'd like to submit, please let us know at [go.armory.io/ideas](go.armory.io/ideas)! We're constantly iterating on customer feedback to ensure that the features we build make your life easier!
 
 ## Prerequisites
@@ -83,10 +85,13 @@ hal config artifact github account add github-for-terraform --token
 
 #### Enabling and configuring the Terraform integration with a Github token
 
+
+
 The Terraformer module also needs access to the Github token to download full
 Github directories hosting your Terraform templates. A user name is not needed when a Github token is available.
 
 ```bash
+# The --alpha option is only required for Halyard versions earlier than 1.6.5.
 hal armory terraform enable --alpha
 
 # This will prompt for the token
@@ -113,7 +118,7 @@ identify the artifact account.
 hal config artifact bitbucket enable
 
 # This will prompt for the password
-hal config artifact bitbucker account add bitbucket-for-terraform \
+hal config artifact bitbucket account add bitbucket-for-terraform \
   --username <USERNAME> \
   --password
 ```
@@ -124,6 +129,7 @@ The Terraformer module also needs access to the Github token to download full
 Github directories hosting your Terraform templates
 
 ```bash
+# The --alpha option is only required for Halyard versions earlier than 1.6.5.
 hal armory terraform enable --alpha
 
 # This will prompt for the token, which is your BitBucket password
@@ -138,13 +144,8 @@ hal armory terraform edit \
 
 Terraformer currently ships with the following versions of the Terraform binary:
 
-* 0.11.10
-* 0.11.11
-* 0.11.12
-* 0.11.13
-* 0.11.14
-* 0.12.0
-* 0.12.1
+* 0.11.10 through 0.11.14
+* 0.12.0 through 0.12.10
 
 *Note: Terraform binaries are verified by checksum and with hashicorp's GPG key before being installed into our release.*
 
@@ -164,7 +165,14 @@ terraform:
 
 Terraform's primary source of feedback are it's logs. While there is no native UI for Terraform in Armory Spinnaker (yet!) we'll need a different way to expose these logs to users in the UI. To do this, we'll configure Gate with a proxy configuration. This proxy will allow us to configure stages with a direct link to the output for Terraform `plan` or `apply`.
 
-First, we'll add the configuration to `~/.hal/default/profiles/gate-local.yml`
+Before you start, ensure that the `~/.hal/default/profiles/` directory exists and contains `gate-local.yml`. If the directory and file do not exist, run the following commands:
+
+```bash
+sudo mkdir ~/.hal/default/profiles/
+vi ~/.hal/default/profiles/gate-local.yml
+```
+
+To start, we'll add the configuration to `~/.hal/default/profiles/gate-local.yml`
 
 ```yaml
 proxies:
@@ -266,13 +274,13 @@ Regular Github:
 
 ```
 https://api.github.com/repos/{org}/{repo}/contents/{file path}
-``` 
+```
 
 Github Enterprise:
 
 ```
 https://{host}/api/v3/repos/{org}/{repo}/contents/{file path}
-``` 
+```
 
 #### Terraform Versions
 

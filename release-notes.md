@@ -49,11 +49,15 @@ We use [semantic versioning](https://semver.org/) for tagging, e.g. `12.3.4`.
 
 | Armory Release | OSS Release Branch |
 | -------------- | -----------        |
-| 1.14.x         | 1.8.x              |
-| 2.0.x          | 1.9.x              |
 | 2.1.x          | 1.10.x             |
 | 2.2.x          | 1.11.x             |
 | 2.3.x          | 1.12.x             |
+| 2.4.x          | 1.13.x             |
+| 2.5.x          | 1.14.x             |
+| 2.15.x         | 1.15.x             |
+| 2.16.x         | 1.16.x             |
+| 2.17.x         | 1.17.x             |
+
 
 ### RC Releases
 ```yml

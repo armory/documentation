@@ -5,16 +5,14 @@ order: 130
 ---
 
 {:.no_toc}
-
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
-
 {:toc}
 
 # What To Expect
 This guide should include:
 
 * `hal armory` commands to enable and configure "Pipelines as code" feature
-* Setting up GitHub or Bitbucket/Stash webhooks to work with the "Pipelines as code" feature
+* Setting up GitHub, GitLab, or Bitbucket/Stash webhooks to work with the "Pipelines as code" feature
 
 ## Overview
 To get an overview of Pipelines as code, check out the [user guide](/spinnaker/using_dinghy)
@@ -30,7 +28,7 @@ hal armory dinghy enable
 
 * Create a personal access token (in either [GitHub](https://github.com/settings/tokens) or Bitbucket/Stash) that has read access to all repos where `dinghyfile`s and `module`s reside.
 
-* Get your Github or Bitbucket/Stash "org" where the app repos and templates reside. For example if your repo is `armory-io/dinghy-templates`, your `template-org` would be `armory-io`.
+* Get your Github, GitLab or Bitbucket/Stash "org" where the app repos and templates reside. For example if your repo is `armory-io/dinghy-templates`, your `template-org` would be `armory-io`.
 
 * Get the name of the repo containing modules. . For example if your repo is `armory-io/dinghy-templates`, your `template-repo` would be `dinghy-templates`.
 
@@ -44,6 +42,8 @@ hal armory dinghy edit \
 
   # For Github enterprise, you may customize the endpoint:
   --github-endpoint "https://your-endpoint-here.com/api/v3"
+  
+hal deploy apply
 ```
 
 Set up webhooks at the organization level for Push events. You can do this by going to: https://github.com/organizations/your_org_here/settings/hooks. Set the `Payload URL` to: `https://<your-gate-url>/webhooks/git/github` and a content type of `application/json`.  If your gate endpoint is protected by a firewall, you’ll need to configure your firewall to allow inbound webhooks from Github's IP addresses. You can find their IPs here: [](https://api.github.com/meta), you can read [Github's docs here](https://help.github.com/articles/about-github-s-ip-addresses/).
@@ -56,11 +56,38 @@ hal armory dinghy edit \
   --template-repo "dinghy-templates" \
   --stash-token "your_token/password" \
   --stash-username "stash_user" \
-  --stash-endpoint "https://your-endpoint-here.com"
+  --stash-endpoint "https://your-endpoint-here.com"  
+
+hal deploy apply
 ```
 Note: If you're using Bitbucket Server, update the endpoint to include the api e.g. `--stash-endpoint https://your-endpoint-here.com/rest/api/1.0`
 
 You'll need to setup webhooks for each project that has the dinghyfile or module separately. Make the webhook POST to: `https://spinnaker.your-company.com:8084/webhooks/git/stash`. If you're using stash `<v3.11.6`, you'll need to install the following [webhook plugin](https://marketplace.atlassian.com/plugins/com.atlassian.stash.plugin.stash-web-post-receive-hooks-plugin/server/overview) to be able to setup webhooks.
+
+### GitLab Example
+
+**Requirements**
+
+GitLab with Pipelines as Code requires Halyard 1.7.2 or later.
+
+**Example**
+
+```bash
+hal armory dinghy edit \
+  --template-org "armory-io" \
+  --template-repo "dinghy-templates" \
+  --gitlab-token "your_token/password"
+  --gitlab-endpoint "https://your-endpoint-here.com"  
+
+hal deploy apply
+```
+
+Point your webhooks (Under "Settings -> Integrations"  on your project page)
+to `https://<your-gate-url>/webhooks/git/gitlab`.  Make sure the server your
+GitLab install is running on can connect to your Gate URL (and adjust any
+firewall settings and the like that you may need).  Spinnaker will also need
+to be able to reach back out to your GitLab installation; ensure that
+connectivity works as well.
 
 ### Custom branch configuration
 *Note: this feature requires armory spinnaker 2.5.6 or above.* 
@@ -90,13 +117,29 @@ repoConfig:
 *Note: in the future armory will add this configuration to halyard cli.
 
 ### Other Options
-* If you have Fiat enabled, add the following option `--fiat-user "your-service-account"`. The service account has to be in a group that has read/write access to the pipelines you will be updating. If you have app specific permissions configured in your spinnaker application, make sure the service account is added. If you need to create a new service account, here are the [instructions](https://www.spinnaker.io/setup/security/authorization/service-accounts/#creating-service-accounts)
+#### Fiat
 
-* If you want to change the name of the file that describes pipelines, add the following option `--dinghyfile-name "your-name-here"`
+If Fiat is enabled, add the following option: `--fiat-user "your-service-account"`. Note that the service account has to be in a group that has read/write access to the pipelines you will be updating. 
 
-* If you want to disable lock pipelines in the UI before overwriting changes, add `--autolock-pipelines false`
+If you have app specific permissions configured in Spinnaker, make sure you add the service account. For information on how to create a service account, click [here](https://www.spinnaker.io/setup/security/authorization/service-accounts/#creating-service-accounts).
 
-For a complete listing of options check out [hal armory](/spinnaker/armory_halyard/#hal-armory-dinghy-edit)
+#### Custom Filename
+
+If you want to change the name of the file that describes pipelines, add the following option: `--dinghyfile-name "your-name-here"`.
+
+#### Disabling Locks
+
+If you want to disable lock pipelines in the UI before overwriting changes, add the following option: `--autolock-pipelines false`. 
+
+#### Slack Notifications
+
+If you have configured Spinnaker to send Slack notifications for pipeline events (documentation [here](/spinnaker-install-admin-guides/slack-notifications)), you can configure Dinghy to send pipeline update results to Slack:
+
+```bash
+$ hal armory dinghy slack enable --channel my-channel
+```
+
+For a complete listing of options check out the [Armory Halyard](/spinnaker/armory_halyard/#hal-armory-dinghy-edit) documentation.
 
 ### Other Template Formats
 

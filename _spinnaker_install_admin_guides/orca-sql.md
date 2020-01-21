@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Use SQL with Orca
+title: Orca with RDBMS
 order: 48
 redirect_from:
   - /spinnaker_install_admin_guides/orca-sql/
@@ -9,9 +9,9 @@ redirect_from:
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-By default, Orca (the task orchestration service) uses Redis as its backing store. You can now configure Orca to use a relational database to store its pipeline execution.
-The main advantage of doing so is a gain in performance and the removal of Redis as a single point of failure.
+By default, Orca (the task orchestration service) uses Redis as its backing store. You can now configure Orca to use a relational database to store its pipeline execution. The main advantage of doing so is a gain in performance and the removal of Redis as a single point of failure.
 
+Armory recommends MySQL 5.7. For AWS, you can use Aurora.
 
 ## Base Configuration
 
@@ -54,7 +54,7 @@ Once you've provisioned your RDBMS and ensured connectivity from Spinnaker, you'
 CREATE SCHEMA `orca` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-Then we'll grant authorization to the `orca_service` and `orca-migration` users:
+Grant authorization to the `orca_service` and `orca_migrate` users:
 
 ```sql
 
@@ -74,7 +74,7 @@ The above configuration grants authorization from any host. You can restrict it 
 ## Keeping existing execution history
 
 The above configuration will point Orca to your database. However it won't migrate your existing execution history to your new database.
-You have the option to run a dual repository with the following:
+You have the option to run a dual repository with the following in `profiles/orca-local.yml`:
 
 ```yaml
 executionHistory:
@@ -82,6 +82,11 @@ executionHistory:
     enabled: true
     primaryClass: com.netflix.spinnaker.orca.sql.pipeline.persistence.SqlExecutionRepository
     previousClass: com.netflix.spinnaker.orca.pipeline.persistence.jedis.RedisExecutionRepository
+
+  sql:
+    enabled: true
+  redis:
+    enabled: true
 ```
 
 Remove these settings once all the intesting execution history is only in your database.

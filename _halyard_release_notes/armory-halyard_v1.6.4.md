@@ -4,7 +4,7 @@ title: v1.6.4 Armory Halyard (OSS 1.20)
 order: -201908091114156
 ---
 
-# 07/16/2019 Release Notes
+# 08/09/2019 Release Notes
 {:.no_toc}
 
 ## Full Version
@@ -19,7 +19,9 @@ This release:
 
 ## Known Issues
 
-- None
+Halyard fails to generate the Secrets config block for some service profiles.
+
+Please upgrade to `Armory Halyard 1.6.5`.
 
 ## Halyard Armory Enterprise Spinnaker
  - fix(logging): add logback to all clouddriver HA profiles (#246) 

@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Configuring AWS Subnets
-order: 34
+title: "AWS: Configuring AWS Networking"
+order: 35
 redirect_from:
   - /install_guide/subnets/
   - /install-guide/subnets/
@@ -10,7 +10,6 @@ redirect_from:
   - /spinnaker-install-admin-guides/aws_subnets/
 ---
 
-# VPCs & Subnets
 {:.no_toc}
 
 Subnets determine where and how you can deploy AWS resources such as EC2 machines, ELBs and Security Groups.  Configuring your Subnets correctly the first time means you won't have to update your pipelines later with changes.
@@ -19,6 +18,7 @@ Subnets determine where and how you can deploy AWS resources such as EC2 machine
 {:toc}
 
 ## Configuring Subnets
+
 Spinnaker groups subnets into a single subnet name across multiple availability zones.  This makes it simpler for end-users of Spinnaker to choose a group of subnets within a VPC that have a given purpose such as `ec2-subnets`, `elb-subnets` or `public-subnets`.  This allows Spinnaker to place the machines within that group and ensure equal redundancy across zones. Below is a logical representation of how Spinnaker groups multiple subnets together.  If you want to **make a subnet accessible to Spinnaker** you'll have to add a tag and value to the subnet with the following: `immutable_metadata={"purpose":"example-purpose"}`
 
 ![subnet tags in AWS console](/images/Image 2017-10-05 at 3.53.35 PM.png)
@@ -26,14 +26,18 @@ Spinnaker groups subnets into a single subnet name across multiple availability 
 Conceptually, this is how Spinnaker groups subnets logically.
 ![subnets groups](/images/Image 2017-04-18 at 4.07.10 PM.png)
 
-
 ## Verifying Subnet Configuration
+
 Once you configured the purpose of your subnets you can use the Spinnaker API to double check that settings have been noticed. It will take between 30 seconds and 2 minutes for the changes to be picked up. After that time period you can run:
+
+```bash
+curl http://<YOUR_GATE_ENDPOINT>/subnets/aws
 ```
-$ curl http://localhost:8084/subnets/aws
-```
+
 You can expect to receive a response similar to:
-```[
+
+```json
+[
   {
     "account": "default-aws-account",
     "availabilityZone": "us-west-1b",
@@ -50,6 +54,7 @@ You can expect to receive a response similar to:
   }
 ]
 ```
+
 If the `purpose` field is non-null then things are configured correctly.
 
 ## I Don't See My Subnets or VPCs
