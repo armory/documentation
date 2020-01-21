@@ -21,7 +21,7 @@ cat /etc/spinnaker/.hal/.secret/spinnaker_password
 
 1. Create Application called **QuickStart** by clicking "**Applications**" tab > "**Action**" (top right) > "**Create New App**" with the following Settings
 
-![No CREATE Permission](/New-App.png)
+![No CREATE Permission](/images/New-App.png)
   
 2. Go into Application **QuickStart** and create first pipeline to deploy and EC2 instance
 3. Click **Add Stage +** and search for a **Bake** stage to bake AMI
@@ -34,11 +34,11 @@ cat /etc/spinnaker/.hal/.secret/spinnaker_password
 
 ### EC2 Pipeline and deployment
 
-![No CREATE Permission](/Deploy-to-EC2.png)
+![No CREATE Permission](/images/Deploy-to-EC2.png)
 
 ### Note - Don't mind the red dot in the Bake Stage.  It's informational suggesting a CI Trigger should be configured for a Bake Stage to ensure you are deploying the latest code and artifacts
 
-![No CREATE Permission](/AutoScale-Group.png)
+![No CREATE Permission](/images/AutoScale-Group.png)
 
 ### EKS deployment 
 
@@ -48,7 +48,7 @@ cat /etc/spinnaker/.hal/.secret/spinnaker_password
 kubectl create ns quickstart
 ```
 
-![No CREATE Permission](/Deploy-Service-EKS.png)
+![No CREATE Permission](/images/Deploy-Service-EKS.png)
 
 1. Navigate to the pipeline page within your **QuickStart** application
 2. Click **Create** button in top right corner
@@ -117,9 +117,9 @@ spec:
 - Also, See the Ingress Service that was created to allow public access to your new deployment.
 - Copy and paste FQDN provided by AWS to test nginx landing page
 
-![No CREATE Permission](/kubectl-validate.png)
+![No CREATE Permission](/images/kubectl-validate.png)
 
-![No CREATE Permission](/Deployment-Validation.png)
+![No CREATE Permission](/images/Deployment-Validation.png)
 
 # Congratulations!
 
