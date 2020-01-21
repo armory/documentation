@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Installation
-order: 10
+order: 1
 redirect_from:
   - /install_guide/install/
   - /install-guide/gettings_started/
@@ -20,7 +20,7 @@ Your VM should have 4 vCPUs, 16G of memory and 30G of HDD space.
 
 ## Getting Started
 
-Check out the [GitHub project](https://github.com/armory/minnaker) for more information.
+Check out the [GitHub project](https://github.com/armory/minnaker) for more information. After you install Minnaker, use the [AWS Quick Start](/spinnaker/Armory-Spinnaker-Quickstart-1) to learn how to configure Spinnaker to deploy to AWS.
 
 # Installing Armory Spinnaker for Medium to Large Enterprise Deployments
 
