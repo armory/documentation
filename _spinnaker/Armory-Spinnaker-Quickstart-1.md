@@ -52,7 +52,7 @@ Need help setting this up? -  For a guided tutorial, watch the **Video Walkthrou
 
 6. Bind **"PowerUserAccess"** to "Spinnaker-Managing-Role".
 
-7. **"BaseIAM-PassRole"** (Create as inline policy on **"Spinnaker-Managing-Role"**).
+7. **"BaseIAM-PassRole"** (Create as inline policy on **"Spinnaker-Managing-Role"**). You must replace [YOUR_AWS_ACCOUNT_ID] with your actual AWS account id.
 
     ```json
 {
@@ -81,7 +81,7 @@ Need help setting this up? -  For a guided tutorial, watch the **Video Walkthrou
 
 8. Spinnaker-Managed-Role -> Trust relationship
 
-    Now, "Spinnaker-Managed-Role" must have Trust relationship with "Spinnaker-Managing-Role"
+    Now, "Spinnaker-Managed-Role" must have Trust relationship with "Spinnaker-Managing-Role". You must replace [YOUR_AWS_ACCOUNT_ID] with your actual AWS account id.
 
     ```json
 {
