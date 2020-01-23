@@ -132,8 +132,9 @@ spec:
 
 1. In EKS run the following commands to see nginx pods being created:  `kubectl get pods -n quickstart`.
 2. In Deck, the Spinnaker UI, navigate to the **Applications** page and see the deployment and containers there.
-    * Also, you can see the Ingress Service that was created to allow public access to your new deployment.
-3. Copy and paste the FQDN provided by AWS to test the NGINX landing page.
+    * Under **Load Balancers**, click on Apps to view the status of your service. 
+    * In the Status section on the right of the page, locate the Ingress address that was created to allow public access to your new deployment.
+3. Copy and paste the FQDN from the load balancer status section into a web browser to test the NGINX landing page.
 
 ![No CREATE Permission](/images/kubectl-validate.png)
 
