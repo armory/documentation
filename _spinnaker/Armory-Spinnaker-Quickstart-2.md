@@ -150,8 +150,7 @@ hal config provider kubernetes account add kubeconfig-sa-eks \
   --only-spinnaker-managed true
 ```
 
-Note two things:
-* Replace `us-west-2-dev` with something that identifies your Kubernetes cluster.
+Note:
 * Update the `--kubeconfig-file` path with the correct filename.  Note that the path will be `/home/spinnaker/...` **not** `/etc/spinnaker/...`. This is because this command runs inside the Halyard container, which has local volumes mounted into it.
 
 ## Apply your changes
