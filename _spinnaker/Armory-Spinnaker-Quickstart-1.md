@@ -31,77 +31,77 @@ Need help setting this up? -  For a guided tutorial, watch the **Video Walkthrou
 4. **"PassRole-and-Certificate"** (inline policy for Spinnaker-Managed-Role):
 
     ```json
-    {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Action": [
-                  "iam:ListServerCertificates",
-                  "iam:PassRole"
-                ],
-                "Resource": [
-                    "*"
-                ],
-                "Effect": "Allow"
-            }
-        ]
-    }
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "iam:ListServerCertificates",
+                "iam:PassRole"
+            ],
+            "Resource": [
+                "*"
+            ],
+            "Effect": "Allow"
+        }
+    ]
+}
     ```
 
 5. Create - **"Spinnaker-Managing-Role"**.
 
 6. Bind **"PowerUserAccess"** to "Spinnaker-Managing-Role".
 
-7. **"BaseIAM-PassRole"** (Create as inline policy on **"Spinnaker-Managing-Role"**).
+7. **"BaseIAM-PassRole"** (Create as inline policy on **"Spinnaker-Managing-Role"**). You must replace [YOUR_AWS_ACCOUNT_ID] with your actual AWS account id.
 
     ```json
-    {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Effect": "Allow",
-                "Action": [
-                    "ec2:DescribeAvailabilityZones",
-                    "ec2:DescribeRegions"
-                ],
-                "Resource": [
-                    "*"
-                ]
-            },
-            {
-                "Action": "sts:AssumeRole",
-                "Resource": [
-                    "arn:aws:iam::[YOUR_AWS_ACCOUNT_ID]:role/DevSpinnakerManagedRole"
-                ],
-                "Effect": "Allow"
-            }
-        ]
-    }
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeAvailabilityZones",
+                "ec2:DescribeRegions"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Action": "sts:AssumeRole",
+            "Resource": [
+                "arn:aws:iam::[YOUR_AWS_ACCOUNT_ID]:role/DevSpinnakerManagedRole"
+            ],
+            "Effect": "Allow"
+        }
+    ]
+}
     ```
 
 8. Spinnaker-Managed-Role -> Trust relationship
 
-    Now, "Spinnaker-Managed-Role" must have Trust relationship with "Spinnaker-Managing-Role"
+    Now, "Spinnaker-Managed-Role" must have Trust relationship with "Spinnaker-Managing-Role". You must replace [YOUR_AWS_ACCOUNT_ID] with your actual AWS account id.
 
     ```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
     {
-      "Version": "2012-10-17",
-      "Statement": [
-        {
-          "Effect": "Allow",
-          "Principal": {
-            "AWS": "arn:aws:iam::[YOUR_AWS_ACCOUNT_ID]:role/Spinnaker-Managing-Role",
-            "Service": [
-              "ecs.amazonaws.com",
-              "application-autoscaling.amazonaws.com",
-              "ecs-tasks.amazonaws.com",
-              "ec2.amazonaws.com"
-            ]
-          },
-          "Action": "sts:AssumeRole"
-        }
-      ]
+        "Effect": "Allow",
+        "Principal": {
+        "AWS": "arn:aws:iam::[YOUR_AWS_ACCOUNT_ID]:role/Spinnaker-Managing-Role",
+        "Service": [
+            "ecs.amazonaws.com",
+            "application-autoscaling.amazonaws.com",
+            "ecs-tasks.amazonaws.com",
+            "ec2.amazonaws.com"
+        ]
+        },
+        "Action": "sts:AssumeRole"
     }
+    ]
+}
     ```
 
 ### Bind Spinnaker-Managing-Role to Minnaker Instance in AWS Console
