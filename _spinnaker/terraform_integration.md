@@ -18,7 +18,6 @@ If you decide to enable this feauture and have feedback you'd like to submit, pl
 
 ## Prerequisites
 
-* An Armory Spinnaker installation (version 2.3.x or above) running on Kubernetes and installed via Armory Halyard. ([instructions](/spinnaker/install)). If you haven't updated Armory Halyard in a while, you'll need to do so to get access to these new features.
 * Credentials (in the form of basic auth) to your Terraform Git repository.  This can take one of several forms:
     * If your Terraform repo is in GitHub, use a Personal Acccess Token (potentially associated with a service account) as the 'token'.  Generate this token in your GitHub settings.
     * If your Terraform repo is in BitBucket, use a username/password that has access to your BitBucket repo.
@@ -37,16 +36,14 @@ At a high level, the Terraform Integration performs the following actions during
 ## Enable Terraform Integration
 
 The examples on this page describe the configuration for the Terraform Integration and an artifact provider to support either GitHub or BitBucket.
-
-You can enable the Terraform Integration via Armory Halyard.
-
+   
 ### Configure the Terraform Integration with GitHub
 
 #### 1. Generating a Github Personal Access Token (PAT)
 
 Before you start, you need a GitHub Personal Access Token (PAT). The Terraform
 Integration authenticates itself using the PAT to interact with your GitHub repositories. You must create and configure a PAT so that the Terraform Integration can pull
-a directory of Terraform Templates from GitHub. Additionally, `tfvar` files through Spinnaker's GitHub artifact provider require a PAT.
+a directory of Terraform Templates from GitHub. Additionally, the Spinnaker GitHub artifact provider require a PAT for `tfvar` files.
 
 If you don't already have a PAT,  create one:
 
@@ -62,11 +59,11 @@ SSO for the token.
 
 #### 2. Enabling and configuring for the GitHub Artifact Provider
 
+Spinnaker uses the Github Artifact Provider to download any referenced `tfvar`
+files.
+
 If you already have a GitHub artifact account configured in Spinnaker,
 skip this section.
-
-Spinnaker can use the Github Artifact Provider to download any referenced `tfvar`
-files.
 
 **Note**: The following examples use `github-for-terraform` as a unique identifier for the artifact account. Replace it with your own identifier.
 
@@ -87,21 +84,21 @@ The Terraform Integration needs access to the GitHub token to download GitHub di
 1. Enable the Terraform Integration
     ```bash
     # The --alpha option is only required for Halyard versions earlier than 1.6.5.
-  hal armory terraform enable --alpha
-
-# This will prompt for the token
-hal armory terraform edit \
-  --alpha \
-  --git-enabled \
-  --git-access-token
-```
+    hal armory terraform enable --alpha
+    
+    # This will prompt for the token
+    hal armory terraform edit \
+    --alpha \
+    --git-enabled \
+    --git-access-token
+    ```
 
 ### Configuring Terraformer to integrate with BitBucket
 
 #### 1. Enabling and configuring the BitBucket Artifact Provider
 
 Spinnaker uses the BitBucket Artifact Provider to download any referenced `tfvar`
-files, so it must be configured with the Github token to pull these files.
+files, so it must be configured with the BitBucket token to pull these files.
 
 If you already have a BitBucket artifact account configured in Spinnaker, you
 can skip this step.
@@ -120,7 +117,7 @@ hal config artifact bitbucket account add bitbucket-for-terraform \
 
 #### Enabling and configuring the Terraform integration with a BitBucket token
 
-The Terraformer module also needs access to the Github token to download full
+The Terraform Integration also needs access to the BitBucket token to download full
 Github directories hosting your Terraform templates
 
 ```bash
@@ -137,38 +134,42 @@ hal armory terraform edit \
 
 ### Selecting the Terraform version
 
-Terraformer currently ships with the following versions of the Terraform binary:
+Terraformer ships with the following versions of the Terraform binary:
 
 * 0.11.10 through 0.11.14
 * 0.12.0 through 0.12.10
 
-*Note: Terraform binaries are verified by checksum and with hashicorp's GPG key before being installed into our release.*
+**Note**: Terraform binaries are verified by checksum and with Hashicorp's GPG key before being installed into our release.
 
 In order to use Terraform, you must indicate to the Terraformer microservice
-the path to the binary within the microservice to use.  This should be done by
-creating the file `.hal/default/profiles/terraformer-local.yml` (replace
-`0.11.11` with the version that you want):
+the path to the binary within the microservice to use:
 
-```yml
-terraform:
-  executablePath: /terraform/versions/0.11.11/terraform
-```
+1. Create a file named `terraformer-local.yml` in the following directory: `.hal/default/profiles`.
+2. Add the following YAML to the file:
 
-*Note: If you specify a terraform version in your stage configuration this value is ignored.*
+    ```yml
+    terraform:
+      executablePath: /terraform/versions/<version>/terraform
+    ```
+Replace <version> with one of the Terraform versions that Armory Spinnaker ships with.
+
+**Note**: If you specify a Terraform version in a stage configuration, the value in `terraformer-local.yml` is ignored.
 
 ### Configuring Gate proxy to access Terraform logs
 
-Terraform's primary source of feedback are it's logs. While there is no native UI for Terraform in Armory Spinnaker (yet!) we'll need a different way to expose these logs to users in the UI. To do this, we'll configure Gate with a proxy configuration. This proxy will allow us to configure stages with a direct link to the output for Terraform `plan` or `apply`.
+Terraform's primary source of feedback are it's logs. While there is no native UI for Terraform in Armory Spinnaker, you can display Terraform logs to users in Deck. To do this, configure Gate with a proxy configuration. The proxy allows us to configure stages with a direct link to the output for Terraform `plan` or `apply`.
 
-First, we'll add the configuration to `~/.hal/default/profiles/gate-local.yml`
+Perform the following steps:
 
-```yaml
-proxies:
-  - id: terraform
-    uri: http://spin-terraformer:7088
-    methods:
-      - GET
-```
+1. Add the following configuration to `~/.hal/default/profiles/gate-local.yml`
+
+    ```yaml
+    proxies:
+      - id: terraform
+        uri: http://spin-terraformer:7088
+        methods:
+          - GET
+    ```
 
 ### Apply Changes
 
