@@ -590,3 +590,93 @@ provider "aws" {
   profile = "dev"
 }
 ```
+## SSH Keys in the Terraform Integration
+
+### Background
+
+If your Terraform scripts rely on modules stored in a private remote repository, you need to add your `SSH` key to the Terraform Integration container in order for the repo to be cloned.  This workflow requires modifications to the Terrform Integration `deployment` running in Kubernetes. 
+
+The workflow below assumes you are using `SSH` in order to clone a remote repository.  A similar workflow exists for relying on `HTTP/HTTPS`.
+<br>
+
+__Note:__ We are in the design stage of work that reduces the overhead involved in retrieving remote modules. If you have a use case or need that relates to this topic, send us a message in Slack or visit [go.armory.io/ideas](go.armory.io/ideas). 
+
+### Prerequisites
+
+  * The SSH Key should already be created and added as a Deploy Key to the Git repository.
+
+### Create the Secret
+
+On your local workstation, create a directory and place the SSH Key and any other required authentication information inside:
+
+1. Create the directory:
+
+      ```bash
+      mkdir ssh
+      ```
+
+2. Copy the SSH Key:
+
+      ```bash
+      cp $SSH_KEY_FILE ssh/id_rsa
+      ```
+4. Create a config file for `SSH` to ignore the known_hosts checks:
+
+      ```bash
+      echo "StrictHostKeyChecking no" > ssh/config
+      ```
+
+5. Create the secret using `kubectl`:
+
+    ```bash
+    kubectl create secret generic spin-terraformer-sshkey -n spinnaker-system --from-file=id_rsa=ssh/id_rsa --from-file=config=ssh/config
+    ```
+
+In this example, we create a secret with the SSH key and a config to ignore `known hosts` file issues. 
+
+### Update the Manifest
+
+Next, update the Kubernetes manifest:  
+
+1. Update the secret and an empty directory volume
+that will contain the copy of the secret with the correct UID and permissions:
+
+    ```yaml
+    # spin-terraformer deployment
+    volumes:
+    - name: spin-terraformer-sshkey
+      secret:
+        defaultMode: 420
+        secretName: spin-terraformer-sshkey
+    - name: ssh-key-tmp
+      emptyDir:
+        sizeLimit: "128k"
+    ```
+
+2. Define an init container that copies the secret contents to the empty directory and sets the permissions and ownership.  The Spinnaker user uses `user id` `1000`:
+
+    ```yaml
+    # spin-terraformer deployment
+    
+    # This correctly sets the permissions and ownership of the ssh key
+    initContainers:
+    - name: set-key-ownership
+      image: alpine:3.6
+      command: ["sh", "-c", "cp /key-secret/* /key-spin/ && chown -R 1000:1000 /key-spin/* && chmod 600 /key-spin/*"]
+      volumeMounts:
+      - mountPath: /key-spin
+        name: ssh-key-tmp
+      - mountPath: /key-secret
+        name: spin-terraformer-sshkey
+    ```
+
+3. Mount the directory into the Terraform Integration container at the `/home/spinnaker/.ssh` location:
+
+    ```yaml
+    # spin-terraformer deployment
+    volumeMounts:
+    - mountPath: /home/spinnaker/.ssh
+      name: ssh-key-tmp
+    ```
+
+The Terraform Integration now has access to clone private remote Git repositories via SSH after you make these changes and the Terraform Integration redeploys. 
