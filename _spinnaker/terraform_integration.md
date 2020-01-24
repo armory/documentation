@@ -630,7 +630,7 @@ On local workstation, create a directory and place the SSH Key and any other req
 5. Create the secret using `kubectl`:
 
     ```bash
-    kubectl create secret generic spin-terraformer-sshkey -n spinnaker-system --from-file=id_rsa=ssh/id_rsa --from-file=config=ssh/config --from-file=account.json=ssh/account.json
+    kubectl create secret generic spin-terraformer-sshkey -n spinnaker-system --from-file=id_rsa=ssh/id_rsa --from-file=config=ssh/config
     ```
 
 In this example, we create a secret with the SSH key and a config to ignore `known hosts` file issues. 
@@ -659,7 +659,7 @@ that will contain the copy of the secret with the correct uid and permissions:
     ```yaml
     # spin-terraformer deployment
     
-    # This correctly sets the ownership of the ssh keys
+    # This correctly sets the permissions and ownership of the ssh key
     initContainers:
     - name: set-key-ownership
       image: alpine:3.6
