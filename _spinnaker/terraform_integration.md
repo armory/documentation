@@ -142,7 +142,7 @@ hal armory terraform edit \
 Armory ships the following versions of the Terraform binary as part of the Terraform Integration:
 
 * 0.11.10 through 0.11.14
-* 0.12.0 through 0.12.10
+* 0.12.0 through 0.12.18
 
 **Note**: Terraform binaries are verified by checksum and with Hashicorp's GPG key before being installed into our release.
 
@@ -288,7 +288,7 @@ https://{host}/api/v3/repos/{org}/{repo}/contents/{file path}
 
 #### Specifying the Terraform version in a stage
 
-This is optional and requires Armory Spinnaker 2.4.2 or later.. The Terraform Integration supports selecting a version of Terraform during a stage. You can configure the version of Terraform to run with the following example:
+This is optional and requires Armory Spinnaker 2.4.2 or later. The Terraform Integration supports selecting a version of Terraform during a stage. You can configure the version of Terraform to run with the following example:
 
 
 ```
