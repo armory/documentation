@@ -3,8 +3,7 @@ layout: post
 title: Spinnaker Operator Reference
 order: 12
 ---
-
-This document describes available fields in the SpinnakerService CRD used by Spinnaker Operator as well as a description of the ConfigMap where Spinnaker stores its configuration.
+This page describes the fields in `SpinnakerService` CRD and example manifests:
 
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
@@ -12,81 +11,253 @@ This document describes available fields in the SpinnakerService CRD used by Spi
 
 
 # SpinnakerService CRD
-The following example shows the general structure of a manifest file for SpinnakerService:
+The following example shows the general structure of `SpinnakerService`. A skeleton copy of it also exists in `/deploy/spinnaker/complete/spinnakerservice.yml` if you want to edit it.
 
 ```yaml
-apiVersion: spinnaker.armory.io/v1alpha1
+apiVersion: spinnaker.armory.io/v1alpha2
 kind: SpinnakerService
 metadata:
-  name: [spinnaker service name]
+  name: spinnaker
 spec:
+  # spec.spinnakerConfig - This section is how to specify configuration spinnaker
   spinnakerConfig:
-    configMap:
-      name: [configmap name]
+    # spec.spinnakerConfig.config - This section contains the contents of a deployment found in a halconfig .deploymentConfigurations[0]
+    config:
+      version: 2.17.1   # the Armory Spinnaker version to be deployed
+      persistentStorage:
+        persistentStoreType: s3
+        s3:
+          bucket: mybucket
+          rootFolder: front50 # Change me
+
+    # spec.spinnakerConfig.profiles - This section contains the YAML of each service's profile
+    profiles:
+      clouddriver: {} # Contents of ~/.hal/default/profiles/clouddriver.yml
+      # deck has a special key "settings-local.js" for the contents of settings-local.js
+      deck:
+        # settings-local.js - contents of ~/.hal/default/profiles/settings-local.js
+        # Use the | YAML symbol to indicate a block-style multiline string
+        settings-local.js: |
+          window.spinnakerSettings.feature.kustomizeEnabled = true;
+      echo: {}    # Contents of ~/.hal/default/profiles/echo.yml
+      fiat: {}    # Contents of ~/.hal/default/profiles/fiat.yml
+      front50: {} # Contents of ~/.hal/default/profiles/front50.yml
+      gate: {}    # Contents of ~/.hal/default/profiles/gate.yml
+      igor: {}    # Contents of ~/.hal/default/profiles/igor.yml
+      kayenta: {} # Contents of ~/.hal/default/profiles/kayenta.yml
+      orca: {}    # Contents of ~/.hal/default/profiles/orca.yml
+      rosco: {}   # Contents of ~/.hal/default/profiles/rosco.yml
+
+    # spec.spinnakerConfig.service-settings - This section contains the YAML of the service's service-setting
+    # see https://www.spinnaker.io/reference/halyard/custom/#tweakable-service-settings for available settings
+    service-settings:
+      clouddriver: {}
+      deck: {}
+      echo: {}
+      fiat: {}
+      front50: {}
+      gate: {}
+      igor: {}
+      kayenta: {}
+      orca: {}
+      rosco: {}
+
+    # spec.spinnakerConfig.files - This section allows you to include any other raw string files not handle above.
+    # The KEY is the filepath and filename of where it should be placed.
+    #   - Files here will be placed into ~/.hal/default/ on halyard.
+    #   - __ (double underscore) is used in place of / for the path separator.
+    # The VALUE Contents of the file.
+    #   - Use the | YAML symbol to indicate a block-style multiline string.
+    #   - We currently only support string files.
+    #   - NOTE: Kubernetes has a manifest size limitation of 1MB.
+    files: {}
+  #      profiles__rosco__packer__example-packer-config.json: |
+  #        {
+  #          "packerSetting": "someValue"
+  #        }
+  #      profiles__rosco__packer__my_custom_script.sh: |
+  #        #!/bin/bash -e
+  #        echo "hello world!"
+
+
+  # spec.expose - This section defines how Spinnaker should be publicly exposed.
   expose:
-    type: service
+    type: service  # Kubernetes LoadBalancer type (service/ingress). Note that only "service" is supported for now.
     service:
-      type: [kubernetes service type]
+      type: LoadBalancer
+
+      # Annotations to be set on Kubernetes LoadBalancer type.
+      # They only apply to spin-gate, spin-gate-x509, or spin-deck.
       annotations:
-        [map of key:value pairs]
-      publicPort: [integer]
-      overrides:
-        [service name]:
-          type: [kubernetes service type]
-          annotations:
-            [map of key:value pairs]
+        service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+        # Uncomment the line below to provide an AWS SSL certificate to terminate SSL at the LoadBalancer.
+        #service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-west-2:9999999:certificate/abc-123-abc
+
+      # Provide an override to the exposing KubernetesService.
+      overrides: {}
+      # The following example is an example config for the Gate-X509 configuration.
+#        deck:
+#          annotations:
+#            service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-west-2:9999999:certificate/abc-123-abc
+#            service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+#        gate:
+#          annotations:
+#            service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-west-2:9999999:certificate/abc-123-abc
+#            service.beta.kubernetes.io/aws-load-balancer-backend-protocol: https  # X509 requires https from LoadBalancer -> Gate
+#       gate-x509:
+#         annotations:
+#           service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
+#           service.beta.kubernetes.io/aws-load-balancer-ssl-cert: null
+#         publicPort: 443
+
+  validation:
+```
+### metadata.name
+
+Name of your Spinnaker service. Use this name to view, edit, or delete Spinnaker. The following example uses the name `prod`:
+
+```bash
+$ kubectl get spinsvc prod
 ```
 
-**spec.spinnakerConfig**: Reference to a ConfigMap or Secret that contains Spinnaker configuration files coming from Halyard. Only `configMap` is currently supported. This configuration is described [below](#spinnakerconfig).
+Note that you can use spinsvc for brevity. You can also use `spinnakerservices.spinnaker.armory.io`.
 
-**spec.expose**: This section contains configuration for exposing Spinnaker.
+### .spec.spinnakerConfig
 
+Contains the same information as the `deploymentConfigurations` entry in a Halyard configuration.
 
-- `spec.expose.type`: How Spinnaker will be exposed. Currently, only `service` is supported, which will use Kubernetes services to expose Spinnaker.
-- `spec.expose.service.type`: Should match a valid Kubernetes service type (i.e. `LoadBalancer`, `NodePort`, `ClusterIP`).
-- `spec.expose.service.annotations`: Map containing any annotation to be added to Gate (API) and Deck (UI) services.
-- `spec.expose.service.publicPort`: Integer allowing you to change the listening port.
-- `spec.expose.service.overrides`: Allows overriding all the keys of `spec.expose.service` for each of the following services: `gate`, `deck`, `gate-x509`.
-
-
-## Examples
-
-### Minimal valid SpinnakerService
+For example, given the following `~/./hal/config` file: 
 
 ```yaml
-apiVersion: spinnaker.armory.io/v1alpha1
+currentDeployment: default
+deploymentConfigurations:
+- name: default
+  version: 2.17.1
+  persistentStorage:
+    persistentStoreType: s3
+    s3:
+      bucket: mybucket
+      rootFolder: front50
+```
+
+The equivalent of that Halyard configuration is the following `spec.spinnakerConfig`:
+
+```yaml
+spec:
+  spinnakerConfig:
+    config:
+      version: 2.17.1
+      persistentStorage:
+        persistentStoreType: s3
+        s3:
+          bucket: mybucket
+          rootFolder: front50
+```
+
+### .spec.spinnakerConfig.profiles
+
+Configuration for each service profile. This is the equivalent of `~/.hal/default/profiles/<service>-local.yml`. For example the following `profile` is for Gate:
+
+```yaml
+spec:
+  spinnakerConfig:
+    config:
+    ...
+    profiles:
+      gate:
+        default:
+          apiPort: 8085
+```
+Note that for Deck, the profile is a string under the key `settings-local.js`:
+
+```yaml
+spec:
+  spinnakerConfig:
+    config:
+    ...
+    profiles:
+      deck:
+        settings-local.js: |
+          window.spinnakerSettings.feature.artifactsRewrite = true;
+```
+
+### spec.expose 
+Optional. Controls how Spinnaker gets exposed. If you omit it, no load balancer gets created. If this section gets removed, the Load Balancer does not get deleted.
+
+Use the following configurations:
+
+- `spec.expose.type`: How Spinnaker gets exposed. Currently, only `service` is supported, which uses Kubernetes services to expose Spinnaker.
+- `spec.expose.service`: Service configuration
+- `spec.expose.service.type`: Should match a valid Kubernetes service type (i.e. `LoadBalancer`, `NodePort`, or `ClusterIP`). **Note that only `LoadBalancer` is supported currently.**
+- `spec.expose.service.annotations`: Map containing annotations to be added to Gate (API) and Deck (UI) services.
+- `spec.expose.service.overrides`: Map with key for overriding the service type and specifying extra annotations: Spinnaker service name (Gate or Deck) and value. By default, all services receive the same annotations. You can override annotations for a Deck (UI) or Gate (API) services.
+
+### spec.validation
+
+Validation options that apply to all validations that Operator performs:
+
+- `spec.validation.failOnError`: Boolean. Defaults to true. If false, the validation runs and the results are logged, but the service is always considered valid.
+- `spec.validation.failFast`: Boolean. Defaults to false. If true, validation stops at the first error.
+- `spec.validation.frequencySeconds`: Optional. Integer. Define a grace period before a validation runs again. For example, if you specify a value of `120` and edit the `SpinnakerService` without changing an account within a 120 second window, the validation on that account does not run again.
+
+Additionally, the following settings are specific to providers, CI tools, metric stores, persistent storage, or notification systems:
+- `spec.validation.providers`
+- `spec.validation.ci`
+- `spec.validation.metricStores`
+- `spec.validation.persistentStorage`
+- `spec.validation.notifications`
+
+Supported settings are `enabled` (set to false to turn off validations), `failOnError`, and `frequencySeconds`.
+
+The following example disables all Kubernetes account validations:
+```yaml
+spec:
+  validation:
+    providers:
+      kubernetes:
+        enabled: false
+```
+### spec.accounts
+
+Support for `SpinnakerAccount` CRD
+
+- `spec.accounts.enabled`: Boolean. Defaults to false. If true, the `SpinnakerService` uses all `SpinnakerAccount` objects enabled.
+- `spec.accounts.dynamic` (experimental): Boolean. Defaults to false. If true, `SpinnakerAccount` objects are available to Spinnaker as the account is applied (without redeploying any service).
+
+# Example Manifests for Exposing Spinnaker
+The following example manifests deploy Spinnaker with different configurations:
+- [SpinnakerService CRD](#spinnakerservice-crd)
+    - [metadata.name](#metadataname)
+    - [.spec.spinnakerConfig](#specspinnakerconfig)
+    - [.spec.spinnakerConfig.profiles](#specspinnakerconfigprofiles)
+    - [spec.expose](#specexpose)
+    - [spec.validation](#specvalidation)
+    - [spec.accounts](#specaccounts)
+- [Example Manifests for Exposing Spinnaker](#example-manifests-for-exposing-spinnaker)
+  - [Load balancer Services](#load-balancer-services)
+  - [Different Service Types for Deck (UI) and Gate (API)](#different-service-types-for-deck-ui-and-gate-api)
+  - [Different Annotations for Deck (UI) and Gate (API)](#different-annotations-for-deck-ui-and-gate-api)
+  - [X509](#x509)
+
+## Load balancer Services
+
+```yaml
+apiVersion: spinnaker.armory.io/v1alpha2
 kind: SpinnakerService
 metadata:
   name: spinnaker
 spec:
-  spinnakerConfig:
-    configMap:
-      name: spinconfig-v001
-```
-
-### Exposing Spinnaker with Public LoadBalancer Services on EKS
-
-```yaml
-apiVersion: spinnaker.armory.io/v1alpha1
-kind: SpinnakerService
-metadata:
-  name: spinnaker
-spec:
-  spinnakerConfig:
-    configMap:
-      name: spinconfig-v001
   expose:
     type: service
     service:
       type: LoadBalancer
-      publicPort: 443
       annotations:
         "service.beta.kubernetes.io/aws-load-balancer-backend-protocol": "http"
         "service.beta.kubernetes.io/aws-load-balancer-ssl-ports": "80,443"
         "service.beta.kubernetes.io/aws-load-balancer-ssl-cert": "arn:aws:acm:us-west-2:xxxxxxxxxxxx:certificate/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 ```
 
-Above manifest file will generate these two services:
+The preceding manifest generates these two services:
 
 *spin-deck*
 
@@ -104,14 +275,14 @@ metadata:
   name: spin-deck
 spec:
   ports:
-  - name: deck-tcp
-    nodePort: xxxxx
-    port: 443
-    protocol: TCP
-    targetPort: 9000
+ - name: deck-tcp
+   nodePort: xxxxx
+   port: 9000
+   protocol: TCP
+   targetPort: 9000
   selector:
-    app: spin
-    cluster: spin-deck
+   app: spin
+   cluster: spin-deck
   sessionAffinity: None
   type: LoadBalancer
 ```
@@ -127,14 +298,14 @@ metadata:
     service.beta.kubernetes.io/aws-load-balancer-ssl-ports: 80,443
     service.beta.kubernetes.io/aws-load-balancer-ssl-cert": arn:aws:acm:us-west-2:xxxxxxxxxxxx:certificate/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   labels:
-    app: spin
-    cluster: spin-gate
+     app: spin
+     cluster: spin-gate
   name: spin-gate
 spec:
   ports:
   - name: gate-tcp
     nodePort: xxxxx
-    port: 443
+    port: 8084
     protocol: TCP
     targetPort: 8084
   selector:
@@ -145,17 +316,14 @@ spec:
 ```
 
 
-### Exposing Spinnaker with different service types for Deck (UI) and Gate (API)
+## Different Service Types for Deck (UI) and Gate (API)
 
 ```yaml
-apiVersion: spinnaker.armory.io/v1alpha1
+apiVersion: spinnaker.armory.io/v1alpha2
 kind: SpinnakerService
 metadata:
   name: spinnaker
 spec:
-  spinnakerConfig:
-    configMap:
-      name: spinconfig-v001
   expose:
     type: service
     service:
@@ -169,7 +337,7 @@ spec:
           type: NodePort
 ```
 
-Above manifest file will generate these two services:
+The preceding manifest generates these two services:
 
 *spin-deck*
 
@@ -185,11 +353,11 @@ metadata:
     app: spin
     cluster: spin-deck
   name: spin-deck
-spec:
+  spec:
   ports:
   - name: deck-tcp
     nodePort: xxxxx
-    port: 80
+    port: 9000
     protocol: TCP
     targetPort: 9000
   selector:
@@ -217,7 +385,7 @@ spec:
   ports:
   - name: gate-tcp
     nodePort: xxxxx
-    port: 80
+    port: 8084
     protocol: TCP
     targetPort: 8084
   selector:
@@ -227,18 +395,14 @@ spec:
   type: NodePort
 ```
 
-
-**Exposing Spinnaker, different annotations for Deck (UI) and Gate (API)**
+## Different Annotations for Deck (UI) and Gate (API)
 
 ```yaml
-apiVersion: spinnaker.armory.io/v1alpha1
+apiVersion: spinnaker.armory.io/v1alpha2
 kind: SpinnakerService
 metadata:
   name: spinnaker
 spec:
-  spinnakerConfig:
-    configMap:
-      name: spinconfig-v001
   expose:
     type: service
     service:
@@ -273,12 +437,12 @@ spec:
   ports:
   - name: deck-tcp
     nodePort: xxxxx
-    port: 80
-    protocol: TCP
-    targetPort: 9000
+     port: 9000
+     protocol: TCP
+     targetPort: 9000
   selector:
-    app: spin
-    cluster: spin-deck
+     app: spin
+     cluster: spin-deck
   sessionAffinity: None
   type: LoadBalancer
 ```
@@ -300,9 +464,9 @@ metadata:
   name: spin-gate
 spec:
   ports:
-  - name: gate-tcp
+ - name: gate-tcp
     nodePort: xxxxx
-    port: 80
+    port: 8084
     protocol: TCP
     targetPort: 8084
   selector:
@@ -311,100 +475,36 @@ spec:
   sessionAffinity: None
   type: Loadbalancer
 ```
-
-
-# SpinnakerConfig
-This is an example ConfigMap that is referenced by SpinnakerService.
-Note that the *metadata.name* field in this example should match *spec.spinnakerConfig.configMap.name* on SpinnakerService manifest.
+## X509
 
 ```yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: spinconfig-v001
-data:
-  config: |
-    name: default
-    version: 2.15.3
-    ...
-    provider:
-      kubernetes:
-      - name: prod1
-        kubeconfigFile: prod1-k8s.yml
-        ...
-  profiles: |
-    gate:
-      default.apiPort: 8085
-  profiles__settings-local.js: |
-    window.spinnakerSettings.feature.kustomizeEnabled = true;
+spec:
+  config:
+    profiles:
+      gate:
+        default:
+          apiPort: 8085  
+  expose:
+    type: service
+    service:
+      type: LoadBalancer
 
-  service-settings: |
-    gate:
-      artifactId: xxxxx
+      annotations:
+        service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
 
-  # file referenced in the section `config.providers.kuberentes[0].kubeconfigFile`
-  prod1-k8s.yml: |
-    <content of the kubeconfig file>
-
-  # other custom files
-  profiles__rosco__packer__aws-custom.json: |
-    {
-      "variables": {
-        "docker_source_image": "null",
-        "docker_target_image": null,
-      },
-      ...
-    }
+      overrides:
+      # Provided below is the example config for the Gate-X509 configuration
+        deck:
+          annotations:
+            service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-west-2:9999999:certificate/abc-123-abc
+            service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+        gate:
+          annotations:
+            service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-west-2:9999999:certificate/abc-123-abc
+            service.beta.kubernetes.io/aws-load-balancer-backend-protocol: https  # X509 requires https from LoadBalancer -> Gate
+       gate-x509:
+         annotations:
+           service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
+           service.beta.kubernetes.io/aws-load-balancer-ssl-cert: null
+         publicPort: 443
 ```
-
-## `data.config` Section
-The deployment configuration in the same format as in Halyard. For instance, given the following `~/.hal/config`:
-
-```yaml
-currentDeployment: default
-deploymentConfigurations:
-- name: default
-  version: 2.15.2
-  providers:
-    # ...
-```
-
-The `config` key would be the contents of `deploymentConfigurations[0]`:
-```yaml
-name: default
-version: 2.15.2
-providers:
-  # ...
-```
-
-## `data.profiles` Section
-The content of the local profile files (`~/.hal/<deployment>/profiles/`) by service name, e.g.:
-```yaml
-  profiles: |
-    gate:
-      default.apiPort: 8085
-    front50:
-      # ...
-```
-
-## `data.profiles__settings-local.js` Section
-This contains the local deck profile, i.e. `settings-local.js` (`~/.hal/<deployment>/profiles/settings-local.js`) e.g.:
-  ```yaml
-  profiles__settings-local.js: |
-    // window.spinnakerSettings.feature. ...
-  ```
-
-## `data.service-settings` Section
-The content of the service settings file (`~/.hal/<deployment>/service-settings/`) by service name, e.g.:
-```yaml
-  service-settings: |
-    gate:
-      artifactId: xxxxx
-```
-
-## Other Custom Files
-Other supporting files with a path relative to the main deployment. The file path is encoded with `__` as a path separator. 
-
-This includes other profile files such as a custom packer template and scripts, e.g.
-- `profiles__rosco__packer__aws-custom.json`
-- `profiles__rosco__packer__my-script.sh`

@@ -5,14 +5,18 @@ order: 142
 ---
 
 ## Overview
-The Armory Policy Engine is designed to allow enterprises more complete control of their software delivery process by providing them with the hooks necessary to perform more extensive verification of their pipelines and processes in Spinnaker. This policy engine is backed by [Open Policy Agent](https://www.openpolicyagent.org/) and uses input style documents to perform validation of pipelines during creation and updates.
+The Armory Policy Engine is designed to allow enterprises more complete control of their software delivery process by providing them with the hooks necessary to perform more extensive verification of their pipelines and processes in Spinnaker. This policy engine is backed by [Open Policy Agent](https://www.openpolicyagent.org/)(OPA) and uses input style documents to perform validation of pipelines during creation and updates.
 
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
 ## Requirements 
-The Policy Engine has been tested with OPA versions 0.12.x and 0.13.x
+
+Armory recommends the following versions for the Policy Engine:
+* OPA versions 0.12.x or 0.13.x
+* Halyard 1.7.2 or later
+* Spinnaker 2.16.0 or later
 
 ## Before You Start
 Keep the following guidelines in mind when using the Policy Engine: 
@@ -252,12 +256,12 @@ At a high level, adding policies to OPA is a two-step process:
 
 **Step 1. Create Policies**
 
-The following OPA policy enforces two requirements: 
-* The first policy requires every pipeline with more than one stage to have a manual judgement stage at some phase 
-* The second policy requires any stages that are a "deploy" type to have notifications enabled.
+The following OPA policy enforces one requirement on all pipelines: 
+* Any pipeline with more than one stage must have a manual judgement stage.
+
 
 ```
-# manual-judgment-and-notifications.rego
+# manual-judgment.rego
 package opa.pipelines
 
 deny["Every pipeline must have a Manual Judgment stage"] {
@@ -266,26 +270,21 @@ deny["Every pipeline must have a Manual Judgment stage"] {
   count(manual_judgment_stages) == 0
 }
 
-deny["Every deploy stage must have have notifications enabled"] {
-  deploy_stages = [s | s = input.pipeline.stages[_]; s.type == "deploy" ]
-  stage = deploy_stages[_]
-  not stage["notifications"]
-}
 ```
-Add the two policies to a file named `manual-judgment-and-notifications.rego`
+Add the the policy to a file named `manual-judgment.rego`
 
 **Step 2. Add Policies to OPA**
 
-After you create a policy, you can add it to OPA with an API request or with a ConfigMap. The following examples use  a `.rego` file named `manual-judgement-and-notifications.rego`. 
+After you create a policy, you can add it to OPA with an API request or with a ConfigMap. The following examples use  a `.rego` file named `manual-judgement.rego`. 
 
 **ConfigMap Example** 
 
 Armory recommends using ConfigMaps to add OPA policies instead of the API for OPA deployments in Kubernetes.
 
-If you have configured OPA to look for a ConfigMap, you can create the ConfigMap for `manual-judgement-and-notifications.rego` with this command:
+If you have configured OPA to look for a ConfigMap, you can create the ConfigMap for `manual-judgement.rego` with this command:
 
 ```
-kubectl create configmap manual-judgment-and-notifications --from-file=manual-judgment-and-notifications.rego
+kubectl create configmap manual-judgment --from-file=manual-judgment.rego
 ```
 
 **API Example** 
@@ -296,7 +295,7 @@ Replace the endpoint with your OPA endpoint:
 curl -X PUT \
 -H 'content-type:text/plain' \
 -v \
---data-binary @manual-judgment-and-notifications.rego \
+--data-binary @manual-judgment.rego \
 http://opa.spinnaker:8181/v1/policies/policy-01
 ```
 
