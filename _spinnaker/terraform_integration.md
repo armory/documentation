@@ -9,7 +9,15 @@ Note that the Terraform integration is in beta while we work on improving the us
 {:.no_toc}
 ## Overview
 
-Use Armory Spinnaker's Terraform Integration to integrate your infrastructure-as-code with Terraform workflow into your Spinnaker instance. Manage your application infrastructure as part of a Spinnaker pipeline. The following tutorials walk you through how to setup Armory's Terraform integration and execute Terraform code stored in a Git repo as part of a Spinnaker pipeline. The examples on this page describe a workflow for using Terraform to create and manage infrastructure on AWS. 
+Use Armory Spinnaker's Terraform Integration to integrate your infrastructure-as-code with Terraform workflow into your Spinnaker instance. Manage your application infrastructure as part of a Spinnaker pipeline. The Terraform Integration interacts with a source repository you specify to deploy infrastructure.
+
+At a high level, a Terraform Integration stage performs the following actions when it runs:
+
+1. Authenticates to your repo using basic authentication credentials you provide. This can be a GitHub token or a BitBucket username/password combination. 
+2. Pulls a full directory from your Git repository.
+3. (Optionally) uses a traditional Spinnaker artifact provider (Github, BitBucket, or HTTP) to pull in a `tfvars`-formatted variable file.   
+
+The following tutorials walk you through how to setup Armory's Terraform integration and execute Terraform code stored in a Git repo as part of a Spinnaker pipeline. The examples on this page describe a workflow for using Terraform to create and manage infrastructure on AWS. 
 
 {:.no_toc}
 ### Under the hood
@@ -30,16 +38,6 @@ If you decide to enable this feauture and have feedback you'd like to submit, pl
     * If your Terraform repo is in GitHub, use a Personal Acccess Token (potentially associated with a service account) as the 'token'.  Generate this token in your GitHub settings.
     * If your Terraform repo is in BitBucket, use a username/password that has access to your BitBucket repo.
 * To use Terraform Input Variable Files (`tfvar`), you must have a separate artifact provider (such as the GitHub, BitBucket, or HTTP artifact provider) that can pull your `tfvar` file(s). Additionally, the credentials for must be configured in both places: the Terraform Integration and the artifact provider.
-
-## Overview
-
-Armory Spinnaker's Terraform Integration interacts with a source repository you specify to deploy infrastructure.
-
-At a high level, the Terraform Integration performs the following actions during a Terraform Integration stage:
-
-1. Authenticates to your repo using basic authentication credentials you provide. This can be a GitHub token or a BitBucket username/password combination. 
-2. Pulls a full directory from your Git repository.
-3. (Optionally) uses a traditional Spinnaker artifact provider (Github, BitBucket, or HTTP) to pull in a `tfvars`-formatted variable file.    
 
 ## Enable Terraform Integration
 
@@ -144,7 +142,7 @@ hal armory terraform edit \
 Armory ships the following versions of the Terraform binary as part of the Terraform Integration:
 
 * 0.11.10 through 0.11.14
-* 0.12.0 through 0.12.10
+* 0.12.0 through 0.12.18
 
 **Note**: Terraform binaries are verified by checksum and with Hashicorp's GPG key before being installed into our release.
 
@@ -290,7 +288,7 @@ https://{host}/api/v3/repos/{org}/{repo}/contents/{file path}
 
 #### Specifying the Terraform version in a stage
 
-This is optional and requires Armory Spinnaker 2.4.2 or later.. The Terraform Integration supports selecting a version of Terraform during a stage. You can configure the version of Terraform to run with the following example:
+This is optional and requires Armory Spinnaker 2.4.2 or later. The Terraform Integration supports selecting a version of Terraform during a stage. You can configure the version of Terraform to run with the following example:
 
 
 ```
