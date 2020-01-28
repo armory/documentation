@@ -9,11 +9,9 @@ Note that the Terraform integration is in beta while we work on improving the us
 {:.no_toc}
 ## Overview
 
-Use Armory Spinnaker's Terraform Integration to integrate your infrastructure-as-code with Terraform workflow into your Spinnaker instance. Manage your application infrastructure as part of a Spinnaker pipeline. 
+Use Armory Spinnaker's Terraform Integration to integrate your infrastructure-as-code with Terraform workflow into your Spinnaker instance. Manage your application infrastructure as part of a Spinnaker pipeline. The Terraform Integration interacts with a source repository you specify to deploy infrastructure.
 
-Armory Spinnaker's Terraform Integration interacts with a source repository you specify to deploy infrastructure.
-
-At a high level, the Terraform Integration performs the following actions during a Terraform Integration stage:
+At a high level, a Terraform Integration stage performs the following actions when it runs:
 
 1. Authenticates to your repo using basic authentication credentials you provide. This can be a GitHub token or a BitBucket username/password combination. 
 2. Pulls a full directory from your Git repository.
