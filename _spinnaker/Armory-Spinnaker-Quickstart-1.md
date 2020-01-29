@@ -130,7 +130,7 @@ Need help setting this up? -  For a guided tutorial, watch the **Video Walkthrou
     The command returns output similar to the following output:
     
     ```bash
-        ubuntu:~$ **aws sts get-caller-identity**
+        ubuntu:~$ aws sts get-caller-identity
     {
         "UserId": "AROA3SQXSP.............7893f355",
         "Account": "[YOUR_AWS_ACCOUNT_ID]",
