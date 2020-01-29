@@ -12,7 +12,7 @@ The AWS QuickStart walks you through configuring your Spinnaker instance hosted 
 
 ## Prerequisites
 Before you start, ensure that you complete the following requirements:
-* Have your AWS Account number avaiable in a text editor* 
+* Have your AWS Account number available in a text editor* 
 * Have Minnaker installed on AWS. For more information about Minnaker, see [Minnaker](https://github.com/armory/minnaker).
 * SSH into your Minnaker Instance with AWS keys
 
@@ -106,7 +106,7 @@ Need help setting this up? -  For a guided tutorial, watch the **Video Walkthrou
 
 ### Bind Spinnaker-Managing-Role to Minnaker Instance in AWS Console
 
-1. Locate your Minnaker EC2 instance in AWS Console and click **Action** > **Instance Settings** > **Attach Replace IAM Role**.  
+1. Locate your Minnaker EC2 instance in the AWS Console and click **Action** > **Instance Settings** > **Attach Replace IAM Role**.  
 
 2. From the dropdown menu, find **Spinnaker-Managing-Role** and click **Apply**  to bind the Role to the Minnaker Instance.
 
@@ -114,7 +114,7 @@ Need help setting this up? -  For a guided tutorial, watch the **Video Walkthrou
 
 ### Verify Roles are configured correctly 
 
-1. Download aws cli: 
+1. Download the aws-cli: 
 
     ```bash
     sudo snap install aws-cli --classic \
