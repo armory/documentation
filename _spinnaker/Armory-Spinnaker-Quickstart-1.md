@@ -22,13 +22,13 @@ Need help setting this up? -  For a guided tutorial, watch the **Video Walkthrou
 
 ![No CREATE Permission](/images/AWS-Roles-Spinnaker.png)
 
-### In this step, we configure 2 AWS Roles for Spinnaker to deploy to your AWS environment
+### In this step, we configure 2 AWS Roles to enable Spinnaker to deploy to your AWS environment
 
-1. Create - **"Spinnaker-Managed-Role"** in AWS Console.
+1. Create - **"Spinnaker-Managed-Role"** in AWS Console -> IAM -> Roles.
 
-3. Bind **"PowerUserAccess"** to "Spinnaker-Managed-Role" in **Permissions**.
+3. Bind **"PowerUserAccess"** to **"Spinnaker-Managed-Role"** in **Permissions**.
 
-4. **"PassRole-and-Certificate"** (inline policy for Spinnaker-Managed-Role):
+4. **"PassRole-and-Certificate"** (inline policy for **Spinnaker-Managed-Role**):
 
     ```json
 {
@@ -50,7 +50,7 @@ Need help setting this up? -  For a guided tutorial, watch the **Video Walkthrou
 
 5. Create - **"Spinnaker-Managing-Role"**.
 
-6. Bind **"PowerUserAccess"** to "Spinnaker-Managing-Role".
+6. Bind **"PowerUserAccess"** to **"Spinnaker-Managing-Role"**.
 
 7. **"BaseIAM-PassRole"** (Create as inline policy on **"Spinnaker-Managing-Role"**). You must replace [YOUR_AWS_ACCOUNT_ID] with your actual AWS account id.
 
@@ -71,7 +71,7 @@ Need help setting this up? -  For a guided tutorial, watch the **Video Walkthrou
         {
             "Action": "sts:AssumeRole",
             "Resource": [
-                "arn:aws:iam::[YOUR_AWS_ACCOUNT_ID]:role/DevSpinnakerManagedRole"
+                "arn:aws:iam::[YOUR_AWS_ACCOUNT_ID]:role/Spinnaker-Managed-Role"
             ],
             "Effect": "Allow"
         }
@@ -79,9 +79,9 @@ Need help setting this up? -  For a guided tutorial, watch the **Video Walkthrou
 }
     ```
 
-8. Spinnaker-Managed-Role -> Trust relationship
+8. **Spinnaker-Managed-Role** -> **Trust relationship**
 
-    Now, "Spinnaker-Managed-Role" must have Trust relationship with "Spinnaker-Managing-Role". You must replace [YOUR_AWS_ACCOUNT_ID] with your actual AWS account id.
+    Now, **"Spinnaker-Managed-Role"** must have Trust relationship with **"Spinnaker-Managing-Role"**. You must replace [YOUR_AWS_ACCOUNT_ID] with your actual AWS account id.
 
     ```json
 {
@@ -104,11 +104,11 @@ Need help setting this up? -  For a guided tutorial, watch the **Video Walkthrou
 }
     ```
 
-### Bind Spinnaker-Managing-Role to Minnaker Instance in AWS Console
+### Bind "Spinnaker-Managing-Role" to Minnaker Instance in AWS Console
 
 1. Locate your Minnaker EC2 instance in the AWS Console and click **Action** > **Instance Settings** > **Attach Replace IAM Role**.  
 
-2. From the dropdown menu, find **Spinnaker-Managing-Role** and click **Apply**  to bind the Role to the Minnaker Instance.
+2. From the dropdown menu, find **"Spinnaker-Managing-Role"** and click **Apply**  to bind the Role to the Minnaker Instance.
 
 ## Login to your Minnaker EC2 Instance with SSH (Outside of Halyard Container)
 
@@ -117,11 +117,10 @@ Need help setting this up? -  For a guided tutorial, watch the **Video Walkthrou
 1. Download the aws-cli: 
 
     ```bash
-    sudo snap install aws-cli --classic \
-    aws-cli 1.16.266 from Amazon Web Services (aws✓) installed
+    sudo snap install aws-cli --classic
     ```
 
-2. Verify Spinnaker Managing Role:
+2. Verify **"Spinnaker-Managing-Role"**:
 
     ```bash
     aws sts get-caller-identity 
@@ -130,7 +129,7 @@ Need help setting this up? -  For a guided tutorial, watch the **Video Walkthrou
     The command returns output similar to the following output:
     
     ```bash
-        ubuntu:~$ **aws sts get-caller-identity**
+        ubuntu:~$ aws sts get-caller-identity
     {
         "UserId": "AROA3SQXSP.............7893f355",
         "Account": "[YOUR_AWS_ACCOUNT_ID]",
