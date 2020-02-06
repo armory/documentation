@@ -44,7 +44,7 @@ The Account name is arbitrary and should be a name that is an identifiable.  The
 
 2. Add the AWS provider account to Spinnaker:
 
-    ```code
+    ```bash
     hal config provider aws account add ${AWS_ACCOUNT_NAME} \
         --account-id ${ACCOUNT_ID} \
         --assume-role ${ROLE_NAME} \
