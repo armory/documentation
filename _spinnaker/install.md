@@ -150,7 +150,7 @@ spec:
     spec:
       containers:
       - name: halyard
-        image: index.docker.io/armory/halyard-armory:1.8.1
+        image: index.docker.io/armory/halyard-armory:{{ site.data.versions.halyard-armory-version }}
         volumeMounts:
         - name: halconfig
           mountPath: /home/spinnaker/
