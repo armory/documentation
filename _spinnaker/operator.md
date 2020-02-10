@@ -4,10 +4,7 @@ title: Spinnaker Operator
 order: 11
 ---
 
-Note that Spinnaker Operator is currently in [Early Release](https://kb.armory.io/releases/early-release-beta-GA/). The feature is working and installable but is not meant for production use.
-
-**Incompatible Change**: In 0.2.x+, the CRD no longer references a `configMap` but contains the whole configuration. 
-It allows users to use `kustomize` to layer their Spinnaker changes and makes validation easier.
+Note that Spinnaker Operator is currently in [Beta](https://kb.armory.io/releases/early-release-beta-GA/). The feature is working and installable but is not meant for production use.
 
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
@@ -25,13 +22,10 @@ Operator has two distinct modes you can install and use:
 If you want to get started quickly, the process to install Operator and Spinnaker involves running the following commands: 
 
 ```
-# For a stable release (https://github.com/armory/spinnaker-operator/releases)
+# Pick a release from https://github.com/armory-io/spinnaker-operator/releases (or clone the repo https://github.com/armory-io/armory-operator and use the master branch for the latest development work)
 $ mkdir -p spinnaker-operator && cd spinnaker-operator
-$ RELEASE=v0.2.0 bash -c 'curl -L https://github.com/armory/spinnaker-operator/releases/download/${RELEASE}/manifests.tgz | tar -xz'
+$ RELEASE=v0.3.0 bash -c 'curl -L https://github.com/armory-io/spinnaker-operator/releases/download/${RELEASE}/manifests.tgz | tar -xz'
  
-# For the latest development work (master) 
-$ git clone https://github.com/armory/spinnaker-operator.git && cd spinnaker-operator
-
 # Install or update CRDs cluster wide
 $ kubectl apply -f deploy/crds/
 
@@ -57,7 +51,7 @@ The rest of this page describes how to modify some of the default configurations
 - Deploy any version of Spinnaker. Operator is not tied to a particular version of Spinnaker. 
 - Keep secrets separate from your config. Store your config in `git` and have an easy Gitops workflow.
 - Validate your configuration before applying it (with webhook validation). 
-- Store Spinnaker secrets in Kubernetes secrets.
+- Store Spinnaker secrets in [Kubernetes secrets](https://github.com/armory/spinnaker-operator/blob/release-0.3.x/doc/managing-spinnaker.md#secrets-in-kubernetes-secrets).
 - Patch versions, accounts or any setting with `kustomize`. 
 - Monitor the health of Spinnaker via `kubectl`.
 - Define Kubernetes accounts in `SpinnakerAccount` objects and store kubeconfig inline, in Kubernetes secrets, in s3, or GCS **(Experimental)**.
@@ -84,9 +78,9 @@ To read more about this CRD, see [SpinnakerAccount](https://github.com/armory/sp
 Download CRDs and example manifests from the [latest stable release](https://github.com/armory-io/spinnaker-operator/releases).
 
 ```bash
-# For a stable release (https://github.com/armory/spinnaker-operator/releases)
+# For a stable release (https://github.com/armory-io/spinnaker-operator/releases)
 $ mkdir -p spinnaker-operator && cd spinnaker-operator
-$ RELEASE=v0.2.0 bash -c 'curl -L https://github.com/armory.io/spinnaker-operator/releases/download/${RELEASE}/manifests.tgz | tar -xz'
+$ RELEASE=v0.3.0 bash -c 'curl -L https://github.com/armory-io/spinnaker-operator/releases/download/${RELEASE}/manifests.tgz | tar -xz'
 ```
 
 For both Basic and Cluster modes, you must download and apply the SpinnakerService CRD.
@@ -173,19 +167,17 @@ spinnaker-operator-7cd659654b-4vktl      2/2           Running      0           
 
 # Installing Spinnaker Using Operator
 
-Once you install the CRDs and Operator, check out the examples in `deploy/spinnaker/`. To use the examples, change the parameters you need (especially the `persistentStorage` section). To install a basic version of Spinnaker with Operator and the example ConfigMap, run the following command:
+Once you install the CRDs and Operator, check out the examples in `deploy/spinnaker/`. To use the examples, change the parameters you need (especially the `persistentStorage` section). To install a basic version of Spinnaker with Operator, run the following command:
 
 ```bash
 $ kubectl create ns <spinnaker-namespace>
-$ kubectl -n <spinnaker-namespace> apply -f deploy/spinnaker/basic/spinnakerservice.yml 
+$ kubectl -n <spinnaker-namespace> apply -f deploy/spinnaker/basic/SpinnakerService.yml
 ```
 In the examples, the `spinnaker-namespace` parameter refers to the namespace where you want to install Spinnaker. It is likely different from Operator's namespace.
 
-The example uses Operator in basic mode with the example ConfigMap to deploy Spinnaker 2.15.3 with the following attributes:
+**Important**: You must edit `deploy/spinnaker/basic/SpinnakerService.yml` to point to persistent storage, such as an S3 bucket. Other attributes can also be changed. For example, if you change the value of the `version` field to `2.16.0`, Operator installs version 2.16.0.
 
-**Important**: You must edit `deploy/spinnaker/basic/spinnakerservice.yml` to point to persistent storage, such as an S3 bucket. Other attributes can also be changed. For example, if you change the value of the `version` field to `2.16.0`, Operator installs version 2.16.0.
-
-A detailed description of the ConfigMap can be found [here](../operator-config).
+A detailed description of the SpinnakerService CRD can be found [here](../operator-config).
 
 # Install Spinnaker with Operator and Kustomize
 
@@ -198,17 +190,17 @@ Operator supports Kustomize, a templating engine for Kubernetes. Using Kustomize
     $ kubectl create ns <spinnaker-namespace>
     $ kubectl build deploy/spinnaker/kustomize | kubectl -n <spinnaker-namespace> apply -f -
     ```
-    `<sspinnaker-namespace>` is the `namespace` where you want to deploy Spinnaker.
+    `<spinnaker-namespace>` is the `namespace` where you want to deploy Spinnaker.
 
 # Upgrading Spinnaker Using Operator
 
 To upgrade an existing Spinnaker deployment using the Operator, perform the following steps:
 
-1. Change the `version` field in `/deploy/spinnaker/basic/spinnakerservice.yml`  file to the target version for the upgrade.
-2. Apply the updated ConfigMap:
+1. Change the `version` field in `/deploy/spinnaker/basic/SpinnakerService.yml`  file to the target version for the upgrade.
+2. Apply the updated manifest:
 
     ```bash
-    $ kubectl <spinnaker-namespace> apply -f /deploy/spinnaker/basic/spinnakerservice.yml 
+    $ kubectl <spinnaker-namespace> apply -f /deploy/spinnaker/basic/SpinnakerService.yml 
     ```
     Replace `<spinnaker-namespace>` with the namespace for the existing Spinnaker deployment.
 

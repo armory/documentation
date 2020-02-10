@@ -11,7 +11,7 @@ This page describes the fields in `SpinnakerService` CRD and example manifests:
 
 
 # SpinnakerService CRD
-The following example shows the general structure of `SpinnakerService`. A skeleton copy of it also exists in `/deploy/spinnaker/complete/spinnakerservice.yml` if you want to edit it.
+The following example shows the general structure of `SpinnakerService`.
 
 ```yaml
 apiVersion: spinnaker.armory.io/v1alpha2
@@ -188,11 +188,13 @@ Use the following configurations:
 
 - `spec.expose.type`: How Spinnaker gets exposed. Currently, only `service` is supported, which uses Kubernetes services to expose Spinnaker.
 - `spec.expose.service`: Service configuration
-- `spec.expose.service.type`: Should match a valid Kubernetes service type (i.e. `LoadBalancer`, `NodePort`, or `ClusterIP`). **Note that only `LoadBalancer` is supported currently.**
+- `spec.expose.service.type`: Should match a valid Kubernetes service type (i.e. `LoadBalancer`, `NodePort`, or `ClusterIP`).
 - `spec.expose.service.annotations`: Map containing annotations to be added to Gate (API) and Deck (UI) services.
 - `spec.expose.service.overrides`: Map with key for overriding the service type and specifying extra annotations: Spinnaker service name (Gate or Deck) and value. By default, all services receive the same annotations. You can override annotations for a Deck (UI) or Gate (API) services.
 
 ### spec.validation
+
+**Currently these configurations are experimental. By default the Operator always validates Kubernetes accounts when applying a SpinnakerService manifest.** 
 
 Validation options that apply to all validations that Operator performs:
 
@@ -219,7 +221,7 @@ spec:
 ```
 ### spec.accounts
 
-Support for `SpinnakerAccount` CRD
+Support for `SpinnakerAccount` CRD (**Experimental**):
 
 - `spec.accounts.enabled`: Boolean. Defaults to false. If true, the `SpinnakerService` uses all `SpinnakerAccount` objects enabled.
 - `spec.accounts.dynamic` (experimental): Boolean. Defaults to false. If true, `SpinnakerAccount` objects are available to Spinnaker as the account is applied (without redeploying any service).
