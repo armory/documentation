@@ -181,6 +181,54 @@ spec:
           window.spinnakerSettings.feature.artifactsRewrite = true;
 ```
 
+### .spec.spinnakerConfig.service-settings
+
+Settings for each service. This is the equivalent of `~/.hal/default/service-settings/<service>.yml`. For example the following settings are for Clouddriver:
+
+```yaml
+spec:
+  spinnakerConfig:
+    config:
+    ...
+    service-settings:
+      clouddriver:
+        kubernetes:
+          serviceAccountName: spin-sa
+```
+
+### .spec.spinnakerConfig.files
+
+Contents of any local files that should be added to the services. For example to reference the contents of a kubeconfig file:
+
+```yaml
+spec:
+  spinnakerConfig:
+    config:
+      providers:
+        kubernetes:
+          enabled: true
+          accounts:
+          - name: cluster-1
+            kubeconfigFile: cluster1-kubeconfig
+            ...
+    files:
+      cluster1-kubeconfig: |
+        <FILE CONTENTS HERE>
+```
+
+A double underscore (`__`) in the file name is translated to a path separator (`/`). For example to add custom packer templates:
+
+```yaml
+    files: {}
+      profiles__rosco__packer__example-packer-config.json: |
+        {
+          "packerSetting": "someValue"
+        }
+      profiles__rosco__packer__my_custom_script.sh: |
+        #!/bin/bash -e
+        echo "hello world!"
+```
+
 ### spec.expose 
 Optional. Controls how Spinnaker gets exposed. If you omit it, no load balancer gets created. If this section gets removed, the Load Balancer does not get deleted.
 
