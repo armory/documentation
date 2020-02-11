@@ -153,7 +153,7 @@ spec:
         image: index.docker.io/armory/halyard-armory:{{ site.data.versions.halyard-armory-version }}
         volumeMounts:
         - name: halconfig
-          mountPath: /home/spinnaker/
+          mountPath: /home/spinnaker/.hal
       securityContext:
         fsGroup: 65533
       volumes:
