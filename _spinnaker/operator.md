@@ -150,7 +150,7 @@ To install Operator for cluster mode, perform the following steps:
     `<op_namespace>` is the namespace where you want the operator to live. By default, this namespace is `spinnaker-operator`, so you would run the following command:
 
     ```bash 
-    $ kubectl apply -n spinnaker-operator` -f deploy/operator/cluster
+    $ kubectl apply -n spinnaker-operator -f deploy/operator/cluster
     ```
 
 After installation, you can verify that the Operator is running with the following command:
@@ -200,7 +200,7 @@ To upgrade an existing Spinnaker deployment using the Operator, perform the foll
 2. Apply the updated manifest:
 
     ```bash
-    $ kubectl <spinnaker-namespace> apply -f /deploy/spinnaker/basic/SpinnakerService.yml 
+    $ kubectl -n <spinnaker-namespace> apply -f deploy/spinnaker/basic/SpinnakerService.yml 
     ```
     Replace `<spinnaker-namespace>` with the namespace for the existing Spinnaker deployment.
 
