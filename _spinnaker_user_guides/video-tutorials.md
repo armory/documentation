@@ -44,7 +44,7 @@ Concepts / Naming Conventions<br/>
 {% include components/youtubePlayer.html id="L8bJUFhcqGs" %}
 
 
-## Various Pipline Stages
+## Various Pipeline Stages
 
  - Bake Stage
  - Deploy Stage
