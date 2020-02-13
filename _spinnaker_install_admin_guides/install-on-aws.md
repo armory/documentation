@@ -28,9 +28,6 @@ This document currently does not fully cover the following (see [Next Steps](#ne
 
 Note: This document is focused on Armory Spinnaker, but can be adapted to install Open Source Spinnaker by using a different Halyard container and a corresponding different Spinnaker version
 
-{:.no_toc}
-
-- This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it. {:toc}
 
 # Assumptions / Prerequisites / Environments
 
