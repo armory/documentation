@@ -80,7 +80,7 @@ In order to install Spinnaker, this document covers the following things:
 
 ## Create the AKS cluster
 
-This assumes you have already configured the `az` SDK with a project, zone, and region (see directions [here](https://cloud.Azure.com/kubernetes-engine/docs/how-to/creating-a-cluster)
+This assumes you have already installed the `az` CLI on your workstation and are familiar with its use.
 
 This creates a minimal AKS cluster.  Follow the official AKS instructions to set up a different type of AKS cluster.
 
