@@ -52,7 +52,7 @@ On the `Halyard machine`:
 On the `workstation machine`:
 
 * You can use `gcloud` to create Google resources:
-  * GKE clusters (or, alternatley, have a GKE cluster already built)
+  * GKE clusters (or, alternately, have a GKE cluster already built)
   * GCS buckets (or, alternately, have a GCS bucket already built)
 * You have the `kubectl` (Kubernetes CLI tool) installed and are able to use it to interact with your GKE cluster, if you're using a prebuilt GKE cluster
 * You have a persistent working directory in which to work in.  One option here is `~/gke-spinnaker`
