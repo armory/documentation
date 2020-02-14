@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Installing Spinnaker in GKE
+title: Installing Spinnaker in AKS
 order: 26
 published: false
 redirect_from:
@@ -9,13 +9,13 @@ redirect_from:
   - /spinnaker-install-admin-guides/install_on_aks/
 ---
 
-# THIS IS A PLACEHOLDER
+# THIS IS A WORK IN PROGRESS
 
-This guide describes how to install Spinnaker in GKE.  It will create / use the following Google Cloud resources:
+This guide describes how to install Spinnaker in Azure Kubernetes Service (AKS).  It will create / use the following Azure resources:
 
-* A GKE (Google Kubernetes Engine) cluster (you can use an existing one if you already have one)
-* A GCS (Google Cloud Storage) bucket (you can use an existing one if you already have one)
-* An NGINX Ingress controller in your GKE cluster
+* An AKS (Azure Kubernetes Service) cluster (you can use an existing one if you already have one)
+* An AZS (Azure Storage) bucket (you can use an existing one if you already have one)
+* An NGINX Ingress controller in your AKS cluster. This step is only needed if your cluster doesn't already have an ingress installed. Note that the examples on this page for NGINX only work on Kubernetes version 1.14 or later. 
 
 This document currently does not fully cover the following (see [Next Steps](#next-steps) for some links to achieve these)
 
@@ -34,7 +34,9 @@ Note: This document is focused on Armory Spinnaker, but can be adapted to instal
 
 This document is written with the following workflow in mind:
 
-* You have a machine (referred to as the `workstation machine` in this document) configured to use the `gcloud` CLI tool and a recent version of `kubectl` tool
+* You have login credentials to Azure that allow you to create resources
+* You have an Azure subscription defined where you will install Spinnaker
+* You have a machine (referred to as the `workstation machine` in this document) configured to use the `az` Azure CLI tool and a recent version of `kubectl` tool
 * You have a machine (referred to as the `Halyard machine` in this document) with the Docker daemon installed, and can run Docker containers on it
 * You can transfer files created on the `workstation machine` to the `Halyard machine` (to a directory mounted on a running Docker container)
 * These two machines can be the same machine
@@ -49,48 +51,83 @@ On the `Halyard machine`:
   * `.secret` directory (mounted to `/home/spinnaker/.secret`) stores all external secret keys and files used by Halyard
   * `resources` directory (mounted to `/home/spinnaker/resources`) stores all Kubernetes manifests and other resources that help create Kubernetes resources
 * You will create `kubeconfig` files that will be added to the `.secret` directory
-* You will create a Google IAM service account key that will be added to the `.secret` directory
+* You will create a Azure IAM service account key that will be added to the `.secret` directory
 
 On the `workstation machine`:
 
-* You can use `gcloud` to create Google resources:
-  * GKE clusters (or, alternatley, have a GKE cluster already built)
-  * GCS buckets (or, alternately, have a GCS bucket already built)
-* You have the `kubectl` (Kubernetes CLI tool) installed and are able to use it to interact with your GKE cluster, if you're using a prebuilt GKE cluster
-* You have a persistent working directory in which to work in.  One option here is `~/gke-spinnaker`
-* You will create GKE resources, such as service accounts, that will be permanently associated with your Spinnaker cluster
+* You can use `az` to create Azure resources:
+  * AKS clusters (or, alternately, have an AKS cluster already built)
+  * AZS buckets (or, alternately, have an AZS bucket already built)
+* You have the `kubectl` (Kubernetes CLI tool) installed and are able to use it to interact with your AKS cluster, if you're using a prebuilt AKS cluster
+* You have a persistent working directory in which to work in.  One option here is `~/aks-spinnaker`
+* You will create AKS resources, such as service accounts, that will be permanently associated with your Spinnaker cluster
 
-## Create the GKE cluster
+## Installation Summary
 
-This assumes you have already configured the `gcloud` SDK with a project, zone, and region (see directions [here](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-cluster)
+In order to install Spinnaker, this document covers the following things:
 
-This creates a minimal GKE cluster in your default region and zone.  Follow the official GKE instructions to set up a different type of GKE cluster.
+* Generating a `kubeconfig` file, which is a Kubernetes credential file that Halyard and Spinnaker will use to communicate with the Kubernetes cluster where Spinnaker will be installed
+* Creating an AZS bucket for Spinnaker to store persistent configuration in
+* Running the Halyard daemon in a Docker container
+  * Persistent configuration directories from the workstation/host will be mounted into the container
+* Running the `hal` client interactively in the same Docker container, to:
+  * Build out the halconfig YAML file (`.hal/config)
+  * Configure Spinnaker/Halyard to use the kubeconfig to install Spinnaker
+  * Configure Spinnaker with the IAM credentials and bucket information
+  * Turn on other recommended settings (artifacts and http artifact provider)
+  * Install Spinnaker
+  * Expose Spinnaker
 
-1. Create the local working directory on your workstation.  For the purposes of this document, we will be using `~/gke-spinnaker`, but this can be any persistent directory on any Linux or OSX machine.
+## Create the AKS cluster
+
+This assumes you have already configured the `az` SDK with a project, zone, and region (see directions [here](https://cloud.Azure.com/kubernetes-engine/docs/how-to/creating-a-cluster)
+
+This creates a minimal AKS cluster.  Follow the official AKS instructions to set up a different type of AKS cluster.
+
+1. Create the local working directory on your workstation.  For the purposes of this document, we will be using `~/aks-spinnaker`, but this can be any persistent directory on any Linux or OSX machine.
 
    ```bash
-   mkdir ~/gke-spinnaker
-   cd ~/gke-spinnaker
+   mkdir ~/aks-spinnaker
+   cd ~/aks-spinnaker
    ```
 
-1. Run this command to create the GKE cluster (from the `workstation machine`):
+1. Run this command to setup the `az` CLI (from the `workstation machine`):
 
    ```bash
-   gcloud container clusters create spinnaker-cluster
+   az login
+   az account list
+   az account set --subscription <your-subscription-id>
+   ```
+
+1. Determine which Azure locations (like westus) are available for your account.
+   ```bash
+   az account list-locations --query "[].name"
+   ```
+
+1. Create a resource group for your AKS cluster in a location available for your account.
+   ```bash
+   RESOURCE_GROUP="Spinnaker"
+   az group create --name ${RESOURCE_GROUP}  --location <location>
+   ```
+
+1. Run this command to create the aks cluster (from the `workstation machine`):
+
+   ```bash
+   az aks create --resource-group ${RESOURCE_GROUP} --name spinnaker-cluster --node-count 2 --enable-addons monitoring --generate-ssh-keys
    ```
 
 1. Run this command to configure `kubectl` to use the cluster you've created:
 
    ```bash
-   export KUBECONFIG=kubeconfig=gke
-   gcloud container clusters get-credentials spinnaker-cluster
+   export KUBECONFIG=kubeconfig-aks
+   az aks get-credentials --resource-group ${RESOURCE_GROUP} --name spinnaker-cluster --file ${KUBECONFIG}
    ```
 
-1. Alternately, if you're using a pre-existing GKE cluster:
+1. Alternately, if you're using a pre-existing aks cluster:
 
    ```bash
-   export KUBECONFIG=kubeconfig=gke
-   gcloud container clusters get-credentials <your-cluster-name>
+   export KUBECONFIG=kubeconfig-aks
+   az aks get-credentials --resource-group <your-resource-group> --name <your-cluster-name> --file ${KUBECONFIG}
    ```
 
    (Feel free to use a different region and zones)
@@ -98,12 +135,12 @@ This creates a minimal GKE cluster in your default region and zone.  Follow the 
 1. From here, you can validate access to the cluster with this command:
 
    ```bash
-   kubectl --kubeconfig kubeconfig-gke get namespaces
+   kubectl --kubeconfig kubeconfig-aks get nodes
    ```
 
 ## Create a `kubeconfig` file for Halyard/Spinnaker
 
-Spinnaker will be installed in its own namespace in your GKE cluster.
+Spinnaker will be installed in its own namespace in your aks cluster.
 For the purposes of this document, we will be installing Spinnaker in the `spinnaker-system` namespace; you're welcome to use a different namespace for this.
 
 We're going to create the following:
@@ -117,19 +154,14 @@ Halyard uses this Kubeconfig file to create the Kubernetes deployment objects th
 
 This document uses the Armory `spinnaker-tools` Go CLI (available on [Github](https://github.com/armory/spinnaker-tools)) to create many of these resources.  There are separate instructions to perform these steps manually.
 
-By default, Google IAM users do not have all necessary permissions on GKE clusters.  You can grant them with this:
-
-```bash
-kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user $(gcloud config get-value account)
-```
-
 1. Obtain the `spinnaker-tools` CLI tool.  Go to https://github.com/armory/spinnaker-tools/releases, and download the latest release for your operating system (OSX and Linux available).  You can also use curl:
 
    ```bash
    # If you're not already in the directory
-   cd ~/eks-spinnaker
-   # Replace this with the correct version and link for your workstation
-   curl -L https://github.com/armory/spinnaker-tools/releases/download/0.0.3/spinnaker-tools-darwin -o spinnaker-tools
+   cd ~/aks-spinnaker
+   # If you're on Linux instead of OSX, use this URL instead:
+   # https://github.com/armory/spinnaker-tools/releases/download/0.0.6/spinnaker-tools-linux
+   curl -L https://github.com/armory/spinnaker-tools/releases/download/0.0.6/spinnaker-tools-darwin -o spinnaker-tools
    chmod +x spinnaker-tools
    ```
 
@@ -137,8 +169,7 @@ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-ad
 
    ```bash
    # The 'gcloud container clusters get-credentials' command from above will create/update this file
-   SOURCE_KUBECONFIG=kubeconfig-gke
-   # Get the name of the context created by the aws tool)
+   SOURCE_KUBECONFIG=kubeconfig-aks
    CONTEXT=$(kubectl --kubeconfig ${SOURCE_KUBECONFIG} config current-context)
    DEST_KUBECONFIG=kubeconfig-spinnaker-system-sa
    SPINNAKER_NAMESPACE=spinnaker-system
@@ -149,38 +180,27 @@ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-ad
      --context ${CONTEXT} \
      --output ${DEST_KUBECONFIG} \
      --namespace ${SPINNAKER_NAMESPACE} \
-     --serviceAccountName ${SPINNAKER_SERVICE_ACCOUNT_NAME}
+     --service-account-name ${SPINNAKER_SERVICE_ACCOUNT_NAME}
    ```
 
 You should be left with a file called `kubeconfig-spinnaker-system-sa` (or something similar, if you're using a different namespace for spinnaker)
 
-## Create a GCS service account for Spinnaker
+## Create an AZS source for Spinnaker
 
-Spinnaker uses a GCS bucket to store persistent configuration (such as pipeline definitions).  This section will create a Google IAM service account as well as a Google credential file for use by Halyard and Spinnaker.
+Spinnaker uses an AZS bucket to store persistent configuration (such as pipeline definitions).  This section will create a storage resoruce group and a storage account. 
 
-By default, this account will have the `roles/storage.admin` IAM role; if you have an existing GCS bucket to use, you can specify a different set of permissions.
+1. Create a resource group for your storage account in a location available for your account.
+   ```bash
+   STORAGE_RESOURCE_GROUP="SpinnakerStorage"
+   az group create --name ${STORAGE_RESOURCE_GROUP}  --location <location>
+   ```
 
-```bash
-export SERVICE_ACCOUNT_NAME=spinnaker-gcs-account-trial
-export SERVICE_ACCOUNT_FILE=spinnaker-gcs-account.json
-export PROJECT=$(gcloud info --format='value(config.project)')
-
-gcloud --project ${PROJECT} iam service-accounts create \
-    ${SERVICE_ACCOUNT_NAME} \
-    --display-name ${SERVICE_ACCOUNT_NAME}
-
-SA_EMAIL=$(gcloud --project ${PROJECT} iam service-accounts list \
-    --filter="displayName:${SERVICE_ACCOUNT_NAME}" \
-    --format='value(email)')
-
-gcloud --project ${PROJECT} projects add-iam-policy-binding ${PROJECT} \
-    --role roles/storage.admin --member serviceAccount:${SA_EMAIL}
-
-mkdir -p $(dirname ${SERVICE_ACCOUNT_FILE})
-
-gcloud --project ${PROJECT} iam service-accounts keys create ${SERVICE_ACCOUNT_FILE} \
-    --iam-account ${SA_EMAIL}
-```
+1. Create a storage account using a globally unique name.
+   ```bash
+   STORAGE_ACCOUNT_NAME=<unique-storage-account-name>
+   az storage account create --resource-group ${STORAGE_RESOURCE_GROUP} --sku STANDARD_LRS --name ${STORAGE_ACCOUNT_NAME}
+   STORAGE_ACCOUNT_KEY=$(az storage account keys list --resource-group ${STORAGE_RESOURCE_GROUP} --account-name ${STORAGE_ACCOUNT_NAME} --query "[0].value" | tr -d '"')
+   ```
 
 ## Stage files on the `Halyard machine`
 
@@ -193,22 +213,20 @@ On the `Halyard machine`, choose a local working directory for Halyard.  In it, 
 ```bash
 # Feel free to use some other directory for this; make sure it is a persistent directory.
 # Also, make sure this directory doesn't live on an NFS mount, as that can cause issues
-WORKING_DIRECTORY=~/gke-spinnaker/
+WORKING_DIRECTORY=~/aks-spinnaker/
 mkdir -p ${WORKING_DIRECTORY}/.hal
 mkdir -p ${WORKING_DIRECTORY}/.secret
 mkdir -p ${WORKING_DIRECTORY}/resources
 ```
 
-You should have two files:
+You should have one file:
 
-* A kubeconfig file (`kubeconfig-spinnaker-system-sa`) with the credentials for a service account in your GKE cluster
-* A JSON key file (`spinnaker-gcs-account.json`) with credentials for a Google IAM service account with Google storage permissions
+* A kubeconfig file (`kubeconfig-spinnaker-system-sa`) with the credentials for a service account in your aks cluster
 
-Copy both into `.secret` so it is available to your Halyard docker container:
+Copy the file into `.secret` so it is available to your Halyard docker container:
 
 ```bash
 cp kubeconfig-spinnaker-system-sa ${WORKING_DIRECTORY}/.secret
-cp spinnaker-gcs-account.json ${WORKING_DIRECTORY}/.secret
 ```
 
 ## Start the Halyard container
@@ -290,36 +308,35 @@ hal config deploy edit \
 
 Within Spinnaker, 'artifacts' are consumable references to items that live outside of Spinnaker (for example, a file in a git repository or a file in an S3 bucket are two examples of artifacts).  This feature must be explicitly turned on.
 
-Enable the "Artifacts" feature:
+Enable the "Artifacts" feature and the "http" artifact artifact provider:
 
 ```bash
 # Enable artifacts
 hal config features edit --artifacts true
+hal config artifact http enable
 ```
 
-(In order to add specific types of artifacts, there are further configuration items that must be completed.  For now, it is sufficient to just turn on the artifacts feature).
+(In order to add specific types of artifacts, there are further configuration
+items that must be completed.  For now, it is sufficient to just turn on the
+artifacts feature with the http artifact provider.  This will allow Spinnaker
+to retrieve files via unauthenticated http.)
 
-## Configure Spinnaker to use your GCS bucket
+## Configure Spinnaker to use your AZS bucket
 
-Use the Halyard `hal` command line tool to configure Halyard to configure Spinnaker to use your GCS bucket
-
-**You MUST update the PROJECT field with your GCP project name**
+Use the Halyard `hal` command line tool to configure Halyard to configure Spinnaker to use your AZS bucket
 
 *If you're using a pre-existing bucket, you can update ROOT_FOLDER with a different path within your folder.*
 
 ```bash
 ####### Inside container
-PROJECT=GOOGLE_CLOUD_PROJECT_NAME
-BUCKET_LOCATION=us
-SERVICE_ACCOUNT_FILE=~/.secret/spinnaker-gcs-account.json
 ROOT_FOLDER=front-50
 
-hal config storage gcs edit --project ${PROJECT} \
-    --bucket-location ${BUCKET_LOCATION} \
-    --root-folder ${ROOT_FOLDER} \
-    --json-path ${SERVICE_ACCOUNT_FILE}
+hal config storage azs edit \
+    --storage-account-name ${STORAGE_ACCOUNT_NAME} \
+    --storage-account-key ${STORAGE_ACCOUNT_KEY} \
+    --root-folder ${ROOT_FOLDER}
 
-hal config storage edit --type gcs
+hal config storage edit --type azs
 ```
 
 ## Choose the Spinnaker version
@@ -370,6 +387,13 @@ Then, you can access Spinnaker at http://localhost:9000
 
 (If you are doing this on a remote machine, this will not work because your browser attempts to access localhost on your local workstation rather than on the remote machine where the port is forwarded)
 
+__Note:__ Even if the `hal deploy apply` command returns successfully, the 
+installation may not be complete yet. This is especially the case with 
+distributed Kubernetes installs. If you see errors such as `Connection refused`,
+the containers may not be available yet. You can either wait 
+or check the status of all of the containers using the command for your cloud provider 
+(such as `kubectl get pods --namespace spinnaker`).
+
 ## Install the NGINX ingress controller
 
 In order to expose Spinnaker to end users, you have perform the following actions:
@@ -378,10 +402,12 @@ In order to expose Spinnaker to end users, you have perform the following action
 * Expose the spin-gate (API) Kubernetes service on some URL endpoint
 * Update Spinnaker (via Halyard) to be aware of the new endpoints
 
-We're going to install the NGINX ingress controller on GKE because of these two limitations of the built-in GKE Ingress controller:
+We're going to install the NGINX ingress controller on aks because of these two limitations of the built-in aks Ingress controller:
 
 * It only exposes NodePort services
 * It only exposes services that respond with an `HTTP 200` to a `GET` on `/` (or have a `readinessProbe` configured)
+
+If you already have an NGINX ingress controller installed on your cluster, skip this step.
 
 (Both of these are configurable with Spinnaker, but the NGINX ingress controller is also generally much more configurable)
 
@@ -390,10 +416,12 @@ From the `workstation machine` (where `kubectl` is installed):
 Install the NGINX ingress controller components:
 
 ```bash
-kubectl --kubeconfig kubeconfig-gke apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
+kubectl --kubeconfig kubeconfig-aks apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
 ```
 
-Install the NGINX ingress controller GKE-specific service:
+If you are using a Kubernetes version earlier than 1.14, you need to change kubernetes.io/os to beta.kubernetes.io/os at line 217 of `mandatory.yaml`. See the [NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/) documentation for more details.
+
+Install the NGINX ingress controller aks-specific service:
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml
@@ -407,7 +435,7 @@ Identify the URLs you will use to expose Spinnaker's UI and API.
 # Replace with actual values
 SPIN_DECK_ENDPOINT=spinnaker.some-url.com
 SPIN_GATE_ENDPOINT=api.some-url.com
-NAMESPACE=spinnaker
+NAMESPACE=spinnaker-system
 ```
 
 Create a Kubernetes Ingress manifest to expose spin-deck and spin-gate (change your hosts and namespace accordingly):
@@ -478,7 +506,7 @@ hal deploy apply
 Once the ingress is up (this may take some time), you can get the IP address for the ingress:
 
 ```bash
-$ kubectl describe -n spinnaker ingress spinnaker-nginx-ingress
+$ kubectl describe -n spinnaker-system ingress spin-ingress
 Name:             spinnaker-nginx-ingress
 Namespace:        spinnaker
 Address:          35.233.216.189
@@ -530,5 +558,6 @@ Now that you have Spinnaker up and running, here are some of the next things you
 * Configuration of certificates to secure your cluster (see [this section](#configuring-tls-certificates) for notes on this)
 * Configuration of Authentication/Authorization (see the [Open Source Spinnaker documentation](https://www.spinnaker.io/setup/security/))
 * Add Kubernetes accounts to deploy applications to (see [this KB article](https://kb.armory.io/installation/spinnaker-add-kubernetes/))
+* Add Azure accounts to deploy applications to
 * Add GCP accounts to deploy applications to (see the [Open Source Spinnaker documentation](https://www.spinnaker.io/setup/install/providers/gce/))
 * Add AWS accounts to deploy applications to (see the [Open Source Spinnaker documentation](https://www.spinnaker.io/setup/install/providers/aws/))
