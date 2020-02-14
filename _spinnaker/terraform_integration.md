@@ -202,7 +202,7 @@ After you configure your Git repository and Gate proxy access, perform the follo
 
 ## Configuring a Terraform stage
 
-**Note**: If you used the Terraform integraiton by editing the JSON representation of the stage, stages are automatically converted
+**Note**: If you used the Terraform integraiton by editing the JSON representation of the stage, stages are automatically converted to the UI. For a tour of the UI, see the [Terraform Integration UI video](https://www.youtube.com/watch?v=Xsjql3g-wtU).
 
 The Terraform Integration exposes a new stage in Spinnaker called **Terraform**. To use the stage, perform the following steps:
 
