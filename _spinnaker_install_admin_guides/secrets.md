@@ -20,7 +20,7 @@ We can now store secrets (tokens, passwords, sensitive files) separately from th
 
 ### Secret Format
 
-When referencing string secrets (passwords, tokens) in configs, we use the following general format:
+When referencing string secrets (passwords, tokens) in configs, use the following general format:
 
 ```
 encrypted:<secret engine>!<key1>:<value1>!<key2>:<value2>!...

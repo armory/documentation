@@ -22,23 +22,23 @@ github:
   token: <TOKEN>
 ```
 
-Note: *You could choose to store the password under different keys than `github.password` and `github.token`. You’d just need to change how to reference the secret further down.*
+**Note**: You can store the password under different keys than `github.password` and `github.token`. To do so, change how you reference the secret.
 
 
 ## Referencing secrets
-Now that secrets are safely stored in the bucket, you reference them from your config files with the following format:
+Now that secrets are securely stored in the bucket, you reference them in your config files with the following format:
 
 ```
 encrypted:gcs!b:<bucket>!f:<path to file>!k:<optional yaml key>
 ```
 
 
-For example, to reference `github.password` from the file above, we'll use:
+For example, to reference `github.password` from the file above, use:
 ```
 encrypted:gcs!b:mybucket!f:spinnaker-secrets.yml!k:github.password
 ```
 
-And to reference the content of our kubeconfig file:
+To reference the content of our kubeconfig file:
 ```
 encrypted:gcs!f:mykubeconfig!b:mybucket
 ```

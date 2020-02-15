@@ -13,54 +13,59 @@ This guide includes helpful commands to get started with self-signed certificate
 
 ## Prerequisites
 
-You will need a recent version of OpenSSL.
+You need a recent version of OpenSSL.
 
 
-## Generate self-signed certificate authority
+## Generating self-signed certificate authority
 
-Let's generate a key for our certificate authority. Replace `TRUSTSTORE_PASS` with your own CA password.
+Generate a key for our certificate authority:
 
-```bash
+```
 openssl genrsa -aes256 -passout pass:TRUSTSTORE_PASS -out ca.key 2048 
 ```
 
-Keep `ca.key` secure and do not distribute it. We'll now generate the certificate of the CA. Replace the values of the `subj` parameter with your own. Only the `CN` part is required and doesn't need to match any real domain.
+Replace `TRUSTSTORE_PASS` with your own CA password.
 
-```bash
+**Important:** Keep `ca.key` secure and do not distribute it. 
+
+Next, generate the certificate of the CA:
+
+```
 openssl req -x509 -new -nodes -key ca.key -sha256 -days 3650 -out ca.pem -passin pass:TRUSTSTORE_PASS -subj /C=US/ST=California/O=Acme Corp/OU=Devops/CN=mydomain.com"
 ```
 
-## Generate a PKCS12 truststore (Java)
+Replace the values of the `subj` parameter with your own. Only the `CN` part is required and doesn't need to match a real domain.
 
-Let's import `ca.pem` from the first step into a Java truststore:
+## Generating a PKCS12 truststore (Java)
 
-```bash
+Import the `ca.pem` file you generated into a Java truststore:
+
+```
 keytool -importcert -storetype PKCS12 -keystore services/ca.p12 -storepass TRUSTSTORE_PASS -alias ca -file ca.pem -noprompt
 ```
 
-## Generate a keystore for a Java server
+## Generating a keystore for a Java server
 
-It is important that the `CN` attribute matches the hostname of the service. It will generally be `spin-[service].[namespace]` or just `spin-[service]` (e.g. `spin-clouddriver.spinnaker`).
+The `CN` attribute must match the hostname of the service. It will generally be `spin-[service].[namespace]` or `spin-[service]`, for example `spin-clouddriver.spinnaker`.
 
+Generate the keystore with the following commands:
 
-
-```bash
+```
 openssl genrsa -aes256 -passout pass:KEY_PASSWORD -out svc.key 2048
 openssl req -new -key svc.key -out svc.csr -subj /C=US/CN=spin-svc.spinnaker -passin pass:KEY_PASSWORD
 openssl x509 -req -in svc.csr -CA ca.pem -CAkey ca.key -CAcreateserial -out svc.crt -days 3649 -sha256 -passin pass:TRUSTSTORE_PASS
 openssl pkcs12 -export -out svc.p12 -inkey svc.key -in svc.crt -passout pass:KEY_PASSWORD -passin pass:KEY_PASSWORD
 ```
 
-
 ### Alternate names
 
-If you want the Spinnaker service to support alternate names, replace the last command with:
+If you want the Spinnaker service to support alternate names, replace the `openssl pkcs12` command in the previous section with:
 
 ```bash
 openssl x509 -req -sha256 -in svc.csr -CA ca.pem -CAkey ca.key -CAcreateserial -out svc.crt -days 3650 -extfile svc-cert.ext -passin pass:TRUSTSTORE_PASS
 ```
 
-With a `svc-cert.ext` file containing (example for Clouddriver):
+The `svc-cert.ext` referenced in the command should contain the following (example for Clouddriver):
 ```
 authorityKeyIdentifier=keyid,issuer
 basicConstraints=CA:FALSE
@@ -72,13 +77,12 @@ DNS.1 = spin-clouddriver.spinnaker
 DNS.2 = spin-clouddriver
 ```
 
+**Note**: If you are setting up mTLS, you can use the same command (or the same file) for client-side certificates.
 
-Note that if setting up mTLS you can use the same command (or the same file) for client side certificates.
 
+## Generating keys and certificates (Golang)
 
-## Generate keys and certificates (Golang)
-
-```bash
+```
 openssl genrsa -aes256 -passout pass:KEY_PASSWORD -out svc.key 2048
 openssl req -new -key svc.key -out svc.csr -subj /C=US/CN=spin-svc.spinnaker -passin pass:KEY_PASSWORD
 openssl x509 -req -in svc.csr -CA ca.pem -CAkey ca.key -CAcreateserial -out svc.crt -days 3650 -sha256 -passin pass:TRUSTSTORE_PASS
@@ -87,12 +91,12 @@ openssl x509 -req -in svc.csr -CA ca.pem -CAkey ca.key -CAcreateserial -out svc.
 
 ## Putting it together (TLS)
 
-The following script generates in the `services` directory:
-- self-signed CA (`ca.pem`) and its PKCS12 truststore (`ca.p12`)
-- keystore files for each Java service (`clouddriver.p12`, ...)
+The following script generates these files in the `services` directory:
+- Self-signed CA (`ca.pem`) and its PKCS12 truststore (`ca.p12`)
+- Keystore files for each Java service (`clouddriver.p12`, ...)
 - Certificate and key files for each Golang services (`terraformer.crt` and `terraformer.key`, ...)
 
-```bash
+```
 #!/bin/bash -e
 
 CA_PASSWORD="password"

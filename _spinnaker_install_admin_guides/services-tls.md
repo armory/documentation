@@ -16,6 +16,8 @@ This guide includes:
 
 Spinnaker services communicate with each other and can exchange potentially sensitive data. Enabling TLS between services ensures that this data is encrypted and that a service will only communicate with another service that has a valid certificate.
 
+Switching from plain HTTP to HTTPS will cause some short disruption to the services as they become healthy at different times.
+
 
 ## Introduction
 
@@ -23,24 +25,30 @@ When a client attempts to communicate with a server over SSL:
 - the server must present a certificate to the user.
 - the client must validate that certificate by checking it against its known valid certificate authorities (CA).
 
-To properly set up TLS between services we'll therefore need to provide each service with:
+To properly set up TLS between services, we need to provide each service with:
 1. a certificate signed by a CA
 2. the CA certificate to verify these certificates
 
-Note that distributing a CA public key is only needed if you sign certificates with a CA that is not bundled in most systems. **In this document, we will assume that you are using a self-signed CA.**
+Note that distributing a CA public key is only needed if you sign certificates with a CA that is not bundled in most systems. **In this document, we assume that you are using a self-signed CA.**
 
-Java services can present #1 as a keystore and #2 as a trust store in PKCS12 (preferred) or JKS format. Golang services need a X509 certificate (PEM format) and a private key for #1 as well as the X509 certificate of the CA for #2.
+**Java**
+
+Java services can present #1 as a keystore and #2 as a trust store in PKCS12 (preferred) or JKS format. 
+
+**Golang**
+
+Golang services need a X509 certificate (PEM format) and a private key for #1 as well as the X509 certificate of the CA for #2.
 
 
 ## What You Need
 
-We can break down services between Java and Golang services that have slightly different setup.
+The following table lists the Armory Spinnaker services, their type (Java or Golang), and which certificates they need:
 
 | Service | Type | Server | Client |
 |------|---|--|--|
 | Clouddriver | Java  | Yes | Yes |
 | Deck | N/A | - | - |
-| Dinghy | Golang | Yes | Yes |
+| Dinghy* | Golang | Yes | Yes |
 | Echo | Java | Yes | Yes |
 | Fiat | Java | Yes | Yes |
 | Front50 | Java | Yes | Yes |
@@ -49,20 +57,23 @@ We can break down services between Java and Golang services that have slightly d
 | Igor | Java | Yes | Yes |
 | Orca | Java | Yes | Yes |
 | Rosco | Java | Yes | Yes |
-| Terraformer | Golang | Yes | Yes |
+| Terraformer* | Golang | Yes | Yes |
 
-Note: Gate may be handled differently if you're already [terminating SSL at Gate](../dns-and-ssl). If not, make sure the load balancer and ingress you are using supports self-signed certificates.
+* Dinghy is the service for Pipelines as Code.
+* Terraformer is the service for the Terraform Integration.
 
-In the following sections, we'll assume that you have the following information available:
+**Note**: Gate may be handled differently if you already [terminating SSL at Gate](../dns-and-ssl). If not, make sure the load balancer and ingress you are using supports self-signed certificates.
+
+In the following sections, you need to have the following information available:
 
 - `ca.pem` (all Golang servers): the CA certificate in PEM format
-- `[service].crt` (each Golang server): the certificate and optionally the private key of the Golang server in PEM format
-- `[service].key` (each Golang server): the private key of the Golang server if not bundled with the certificate above
+- `[service].crt` (each Golang server): the certificate and (optionally) the private key of the Golang server in PEM format
+- `[service].key` (each Golang server): the private key of the Golang server if not bundled with the certificate you're using
 - `[GOSERVICE]_KEY_PASS` (each Golang server): the password to the private key of the server
 - `truststore.p12` (all Java clients): a PKCS12 truststore with CA certificate imported
-- `TRUSTSTORE_PASS` (all Java clients): the password to the truststore above
+- `TRUSTSTORE_PASS` (all Java clients): the password to the truststore you're using
 - `[service].p12` (each Java server): a PKCS12 keystore containing the certificate and private key of the server
-- `[SERVICE]_KEY_PASS` (each Java server): the password to the keystore above
+- `[SERVICE]_KEY_PASS` (each Java server): the password to the keystore you're using
 
 
 To learn how to generate these files, refer to [generating certificates](../generating-certificates/#putting-it-together-tls).
@@ -91,7 +102,7 @@ ok-http-client:
   trust-store-password: <TRUSTSTORE_PASS>
 ```
 
-Note: currently `ok-http-client.key-store` is required even though it is not used in a simple TLS setup.
+**Note:** Currently, `ok-http-client.key-store` is required even though it is not used in a simple TLS setup.
 
 ## Configuration (Golang services)
 
@@ -110,7 +121,7 @@ http:
 ## Changing Service Endpoints
 
 ### Halyard
-You can change each Java or Golang service endpoints by adding the following under `<hal directory>/<deployment>/service-settings/<service>.yml`:
+You can change each Java or Golang service endpoints by adding the following in `<hal directory>/<deployment>/service-settings/<service>.yml`:
 ```yaml
 scheme: https
 ```
@@ -137,11 +148,11 @@ spec:
         scheme: https
       gate:
         scheme: https
-      igor:
         scheme: https
       kayenta:
         scheme: https
       orca:
+      igor:
         scheme: https
       rosco:
         scheme: https
@@ -150,6 +161,8 @@ spec:
 ```
 
 ## Deployment
+
+After you finish modyfing the service YAML files, run `hal deploy apply` to apply your changes to your Spinnaker deployment.
 
 Switching from plain HTTP to HTTPS will cause some short disruption to the services as they become healthy at different times.
 
@@ -160,7 +173,7 @@ Switching from plain HTTP to HTTPS will cause some short disruption to the servi
 
 You can store secrets (and non secrets) in [supported secret stores](../secrets) as well as in Kubernetes secrets if using the [Spinnaker Operator](../../spinnaker/operator/). This is the simplest route.
 
-For instance, assuming all the information is stored in `mybucket` on s3 that all services have access to, `echo-local.yml` could look like:
+For instance, assuming all the information is stored in a bucket named `mybucket` on s3 that all services have access to, `echo-local.yml` might look like:
 
 ```yaml
 server:
@@ -180,9 +193,11 @@ ok-http-client:
   trust-store-password: encrypted:s3!b:mybucket!r:us-west-2!f:passwords.yml!k:truststorePassword
 ```
 
+Run `hal deploy apply` after you make your changes.
+
 ### Manually Providing Information
 
-An alternative if you cannot use one of the supported secret engine is to store the information in Kubernetes secrets and manually providing the information. Files are added via a `volumeMount` and passwords via an environment variable.
+An alternative if you cannot use one of the supported secret engine is to store the information in Kubernetes secrets and manually provide the information. Files are added through a `volumeMount` and passwords through an environment variable.
 
 For instance, assuming `mysecrets` Kubernetes Secret is available in the same namespace as Spinnaker with the following keys:
 
@@ -207,5 +222,7 @@ server:
     key-store: /var/mysecrets/echo.jks
 ```
 
-Note: there is currently no way to pass passwords stored in Kubernetes secrets as environment variables via Halyard. You can remove passwords from the keys you're using or use the Spinnaker Operator to reference Kubernetes secrets directly.
+Run `hal deploy apply` after you make your changes.
+
+**Note**: There is currently no way to pass passwords stored in Kubernetes secrets as environment variables using Halyard. You can remove passwords from the keys you're using or use the Spinnaker Operator to reference Kubernetes secrets directly.
 
