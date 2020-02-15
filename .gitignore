@@ -1,4 +1,5 @@
 node_modules
+.idea
 .asset-cache
 .DS_Store
 _site
