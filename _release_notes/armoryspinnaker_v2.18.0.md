@@ -44,11 +44,64 @@ executionRepository:
     previousName: redisExecutionRepository
 ```
 
-## Highlighted Updates
-### Armory
+# Highlighted Updates
+## Armory
 
-###  Spinnaker Community Contributions
-No changes to report. 
+##  Spinnaker Community Contributions
+
+This release includes fixes, features, and performance improvements across a wide feature set in Spinnaker. Here we share a summary of notable improvements, followed by the comprehensive changelog.
+
+### Fixes
+#### [Clouddriver](#clouddriver)
+* **kubernetes:**   On refresh, don't replace credentials that have not changed ([b6c2217c](https://github.com/spinnaker/clouddriver/commit/b6c2217cbed8d6b0d182e8a112c3041bf4f0f27f))
+#### [Igor](#igor)
+* **concourse:**   add support for concourse artifacts (#549) ([127328c3](https://github.com/spinnaker/igor/commit/127328c35d81776ef8b87a81fe7ab1c536453b91))
+
+
+### Support for deploying and managing Alibaba Cloud load balancers
+
+### Support for executing CloudFormation ChangeSet
+CloudFormation stage allows you to create a change set that allows users to review the changes on the AWS infrastructure before applying them. This new feature enables users to pause the pipeline execution until the user executes the change manually through Deck itself without having to go to AWS console. Users can also configure pre-defined behaviour when the created change set contains a "replacement" in CloudFormation jargon, which can protect users from data-loss and unrecoverable changes in the infrastructure.
+
+### Support for ECS services with multiple target groups
+The ECS provider now supports routing traffic from multiple load balancers to your ECS service.
+
+### Add initContainer logs to Kubernetes v2 provider container logs
+View your pod initContainer and container logs side by side from the Spinnaker UI.
+
+### Propagate gcloud failures from job executor to task for AppEngine deployments
+Errors emitted from gcloud while deploying to AppEngine will now be surfaced via the pipeline json and the pipeline UI.
+
+### Surface managed pipeline template versions and enable versioned actions
+The Managed Pipeline Templates V2 UI now displays all versions of a given template. Individual template versions can be viewed, deleted, or used to create a new templated pipeline.
+
+### Add SpEL preview to Evaluate Variables stage
+The new Evaluate Variables stage UI allows you to preview the value of your SpEL expressions against past executions.
+
+### Support Postgres as Front50 backend
+
+### Add plugin artifact repository
+Added plugin metadata repository to act as source of truth for installed plugins within a spinnaker installation.
+
+### Add ability to invoke existing GCB triggers
+The Google Cloud Build stage now provides first-class support for invoking Cloud Build [triggers](https://cloud.google.com/cloud-build/docs/running-builds/create-manage-triggers).
+
+### Add exponential backoff to Kayenta query retries
+There were already retries, but now there is also backoff.
+
+### Stats collection
+Spinnaker’s community stats are now available for users wishing to opt-in. When enabled, the telemetry module sends data about all completed pipelines to a centralized service. See more details in this [blog post](https://blog.spinnaker.io/spinnaker-1-18-release-introduces-spinnaker-community-stats-da140ad4c045).
+
+### Java 11 Migration
+The Java 11 JRE runs Front50 and Igor when deployed to a Kubernetes cluster using Halyard (or if you consume the official containers in some other way). If this causes problems, or your organization isn't ready to run Java 11 in production, you can specify `deploymentEnvironment.imageVariant: JAVA8` (or `UBUNTU_JAVA8`) in your Halyard config. Please notify sig-platform@spinnaker.io if you run into issues and decide to downgrade.
+
+**All users** need to switch to a Java 11 JRE by Spinnaker 1.21, which is scheduled to be released in early July. We encourage everyone to start testing Spinnaker under a Java 11 JRE now in preparation for the cutover. If you have any concerns about the migration timeline, please reach out to sig-platform@spinnaker.io.
+
+### Clouddriver cache cleanup agent
+Resources from deleted Spinnaker accounts will now be purged from the SQL cache automatically. Enable the cleanup agent by adding `sql.unknown-agent-cleanup-agent.enabled: true` to your `clouddriver-local.yml`.
+
+### Kubernetes V1 provider removal scheduled
+The Kubernetes V1 provider will be removed in release 1.21. Please check out the [RFC](https://github.com/spinnaker/governance/blob/master/rfc/eol_kubernetes_v1.md) for more details.
 
 <br>
 
@@ -105,26 +158,22 @@ No Changes
 
 #### Terraformer&trade; - b6cdbbf...266ac86
  - feat(profiles): Add /v1/profiles endpoint (#117)
- - feat(namedEnv): adds support for named environments in terraformer config (#114)
+ - feat(namedEnv): adds support for named profiles in terraformer config (#114)
  - feat(terraform): add versions 0.12.19 and 0.12.20 (#115)
 
 #### Armory Clouddriver  - 09a60e8...f969aaf
  - chore(release): bump versions for kork, armory-commons, oss service (#51)
- - release(2.18.0): Initial release
 
 #### Armory Deck  - d5d7828...5f306f6
- - fix: Fixed random type errors from upstream tweaking tsconfig and adding new non-optional properties on IDataSourceConfig (#570)
- - chore(build): version bumps for 2.18.x (#569)
+ - chore(release): bump versions for kork, armory-commons, oss service (#569)
  - feat(terraformer): display plan detailed result (#568)
 
 #### Armory Echo  - 787cde5...48991a0
  - fix(compile): Fix build due to different scope for rest config (#123)
- - chore(releaes): account for drift with 1.18.x (#122)
- - release(2_18): Initial release
+ - chore(release): bump versions for kork, armory-commons, oss service (#122)
 
 #### Armory Fiat  - cb77e1e...fa3a735
  - chore(release): bump versions for kork, armory-commons, oss service (#34)
- - release(2_18): Initial release
 
 #### Armory Front50  - 9c0b294...cca684d
  - chore(release): bump versions for kork, armory-commons, oss service (#31)
@@ -132,25 +181,28 @@ No Changes
 
 #### Armory Gate  - 250616f...42ccb4f
  - chore(release): bump versions for kork, armory-commons, oss service (#87)
- - chore(releaes): account for drift with 1.18.x (#86)
 
 #### Armory Igor  - 54d7797...7bd757d
- - fix igor (#41)
+ - chore(release): bump versions for kork, armory-commons, oss service (#41)
 
 #### Armory Kayenta  - 0085ac5...e7f465e
  - chore(release): bump versions for kork, armory-commons, oss service (#46)
 
 #### Armory Orca  - 25ef38f...67f03ef
- - fix(orca): Missing library (#66) â€¦Jaxb orca (#69)
- - fix(orca): Missing library (#66)
  - chore(release): bump versions for kork, armory-commons, oss service (#63)
 
 #### Armory Rosco  - 33810a8...7c38ed6
- - chore(releaes): account for drift with 1.18.x (#31)
+ - chore(release): bump versions for kork, armory-commons, oss service (#31)
+
+
+### Armory Open Core
+#### Dinghy (Open Core) - 60cb2f5
+No Changes
+
 
 ###  Spinnaker Community Contributions
 See Spinnaker's release notes that are included in this release:  
-[Spinnaker's 1.18.2](https://www.spinnaker.io/community/releases/versions/1-18-0-changelog#individual-service-changes)
+[Spinnaker's 1.18.2](https://www.spinnaker.io/community/releases/versions/1-18-2-changelog#individual-service-changes)
 
 #### Clouddriver  - 5f272cd...2f123de
  - fix(ecs): ECS handling of IAM Roles with a path (#4321) (#4322)
