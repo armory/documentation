@@ -15,10 +15,10 @@ At a high level, a Terraform Integration stage performs the following actions wh
 
 1. Authenticates to your repo using basic authentication credentials you provide. This can be a GitHub token or a BitBucket username/password combination. 
 2. Pulls a full directory from your Git repository.
-3. (Optionally) uses a traditional Spinnaker artifact provider (Github, BitBucket, or HTTP) to pull in a `tfvars`-formatted variable file.
+3. Optionally uses a Spinnaker artifact provider (Github, BitBucket, or HTTP) to pull in a `tfvars`-formatted variable file.
 4. Runs the Terraform action you select.   
 
-The following tutorials walk you through how to setup Armory's Terraform Integration and execute Terraform code stored in a Git repo as part of a Spinnaker pipeline. The examples on this page describe a workflow for using Armory Spinnaker and the Terraform Integration to create and manage infrastructure on AWS. 
+The following tutorials walk you through how to setup Armory's Terraform Integration and execute Terraform code stored in a Git repo as part of a Spinnaker pipeline. More specifically, this page describes a workflow for the Terraform Integration to create and manage infrastructure on AWS. 
 
 {:.no_toc}
 ### Under the hood
@@ -138,7 +138,7 @@ hal armory terraform edit \
   --git-access-token
 ```
 
-### Selecting the Terraform version
+### Specifying the Terraform version
 
 Armory ships the following versions of the Terraform binary as part of the Terraform Integration:
 
@@ -161,6 +161,29 @@ Replace <version> with one of the Terraform versions that Armory Spinnaker ships
 
 **Note**: If you specify a Terraform version in a stage configuration, the value in `terraformer-local.yml` is ignored.
 
+### Configuring a Profile
+
+Configure profiles that users can select when creating a stage. If a user selects a profile when they create a Terraform Integration stage, they can select a private remote Git repo as the source for any Terraform modules that run. 
+
+For example, if your Terraform scripts rely on modules stored in a private remote repository, you need to add your `SSH` key to a profile. Then, a user can select that profile when creating a Terraform Integration stage. 
+
+To add profiles that a user can select from, perform the following steps:
+
+1. Open `terraformer-local.yml` in the following directory: `.hal/default/profiles`.
+2. Add the information for the profile you want to add. The following example adds a profile named `pixel-git` for an SSH key used by a Git repo and stored in Vault:
+    
+    ```
+    profile:
+     - name: pixel-git
+       variables:
+        - kind: git-ssh
+          keyContents: encrypted:vault!e:<secret engine>!p:<path to secret>!k:<key>!b:<is base64 encoded?>
+    ```
+    When a user creates or edits a Terraform Integration stage in Deck, they can select the profile `pixel-git` from a dropdown.
+
+    You can add multiple profiles under the `profile` section.
+3. Save the file.
+
 ### Configuring Gate proxy to access Terraform logs
 
 Terraform's primary source of feedback are its logs. You can display Terraform logs to users in Deck. To do this, configure Gate with a proxy configuration. The proxy allows you to configure stages with a direct link to the output for Terraform `plan` or `apply`.
@@ -171,20 +194,19 @@ sudo mkdir ~/.hal/default/profiles/
 vi ~/.hal/default/profiles/gate-local.yml
 ```
 
-To start, we'll add the configuration to `~/.hal/default/profiles/gate-local.yml`
-
 Add the following configuration to `~/.hal/default/profiles/gate-local.yml`:
 
-    ```yaml
+```yaml
     proxies:
       - id: terraform
         uri: http://spin-terraformer:7088
         methods:
           - GET
-    ```
-We use this proxy in future steps!
+```
 
-### Complete the installation
+When a user runs a pipeline that contains a Terraform Integration stage, the logs appear on the **Pipelines** page of Deck as part of the **Execution Details**.
+
+### Completing the installation
 
 After you configure your Git repository and Gate proxy access, perform the following steps:
 
@@ -218,11 +240,12 @@ The Terraform Integration exposes a new stage in Spinnaker called **Terraform**.
         * **Apply**: Run `terraform apply`. Optionally, you can ignore state locking. Armory recommends you do not ignore state locking because it can lead to state corruption. Only use this setting if you understand the consequences. 
         * **Destroy**: Run `terraform destroy`. Optionally, you can ignore state locking. Armory recommends you do not ignore state locking because it can lead to state corruption. Only use this setting if you understand the consequences.
         * **Output**: Run `terraform output`. 
+      * **Profile**: Select a profile to use when executing Terraform. Variables and conditions provided to the selected profile get injected into the Terraform runtime for the lifetime of the execution. These profiles are defined in ``.hal/default/profiles/terraformer-local.yml`.
       * **Targets**: Scope execution to a certain subset of resources.
       * **Workspace**: [Terraform workspace](https://www.terraform.io/docs/state/workspaces.html) to use. The workspace gets created if it doesn't already exist.
     * **Main Terraform Artifact**
-      * **Expected Artifact**: Required for **Plan** stages. Select or define only one `git/repo` artifact. Currently, GitHub and BitBucket are supported. 
-        * **Account**: The account to use for your artifact. Currently, GitHub and BitBucket are supported.
+      * **Expected Artifact**: Required for **Plan** stages. Select or define only one `git/repo` artifact. Currently, GitHub and BitBucket artifacts are supported. 
+        * **Account**: The account to use for your artifact.
         * **URL**: If you use a GitHub artifact, make sure you supply the _API_ URL of the file, not the URL from the `Raw` GitHub page. Use the following examples as a reference for the API URL:
           
           Regular GitHub:
@@ -298,7 +321,7 @@ The Terraform Integration caches all the defined plugins by default and does not
 
 ## Viewing Terraform log output
 
-Terraform's primary interface for user feedback is logging. When executed on your workstation, the log output is streamed to `stdout`. The Terraform Integration captures that output and makes it available as part of the **Pipelines** page of Deck as part of the **Execution Details**. Exit codes in the log represent the following states:
+Terraform's primary interface for user feedback is logging. When executed on your workstation, the log output is streamed to `stdout`. The Terraform Integration captures the log output and makes it available on the **Pipelines** page of Deck as part of the **Execution Details**. Exit codes in the log represent the following states:
 
 ```
 0 = Succeeded with empty diff (no changes)
@@ -391,93 +414,3 @@ provider "aws" {
   profile = "dev"
 }
 ```
-## SSH Keys in the Terraform Integration
-
-### Background
-
-If your Terraform scripts rely on modules stored in a private remote repository, you need to add your `SSH` key to the Terraform Integration container in order for the repo to be cloned.  This workflow requires modifications to the Terrform Integration `deployment` running in Kubernetes. 
-
-The workflow below assumes you are using `SSH` in order to clone a remote repository.  A similar workflow exists for relying on `HTTP/HTTPS`.
-<br>
-
-__Note:__ We are in the design stage of work that reduces the overhead involved in retrieving remote modules. If you have a use case or need that relates to this topic, send us a message in Slack or visit [go.armory.io/ideas](go.armory.io/ideas). 
-
-### Prerequisites
-
-  * The SSH Key should already be created and added as a Deploy Key to the Git repository.
-
-### Create the Secret
-
-On your local workstation, create a directory and place the SSH Key and any other required authentication information inside:
-
-1. Create the directory:
-
-      ```bash
-      mkdir ssh
-      ```
-
-2. Copy the SSH Key:
-
-      ```bash
-      cp $SSH_KEY_FILE ssh/id_rsa
-      ```
-4. Create a config file for `SSH` to ignore the known_hosts checks:
-
-      ```bash
-      echo "StrictHostKeyChecking no" > ssh/config
-      ```
-
-5. Create the secret using `kubectl`:
-
-    ```bash
-    kubectl create secret generic spin-terraformer-sshkey -n spinnaker-system --from-file=id_rsa=ssh/id_rsa --from-file=config=ssh/config
-    ```
-
-In this example, we create a secret with the SSH key and a config to ignore `known hosts` file issues. 
-
-### Update the Manifest
-
-Next, update the Kubernetes manifest:  
-
-1. Update the secret and an empty directory volume
-that will contain the copy of the secret with the correct UID and permissions:
-
-    ```yaml
-    # spin-terraformer deployment
-    volumes:
-    - name: spin-terraformer-sshkey
-      secret:
-        defaultMode: 420
-        secretName: spin-terraformer-sshkey
-    - name: ssh-key-tmp
-      emptyDir:
-        sizeLimit: "128k"
-    ```
-
-2. Define an init container that copies the secret contents to the empty directory and sets the permissions and ownership.  The Spinnaker user uses `user id` `1000`:
-
-    ```yaml
-    # spin-terraformer deployment
-    
-    # This correctly sets the permissions and ownership of the ssh key
-    initContainers:
-    - name: set-key-ownership
-      image: alpine:3.6
-      command: ["sh", "-c", "cp /key-secret/* /key-spin/ && chown -R 1000:1000 /key-spin/* && chmod 600 /key-spin/*"]
-      volumeMounts:
-      - mountPath: /key-spin
-        name: ssh-key-tmp
-      - mountPath: /key-secret
-        name: spin-terraformer-sshkey
-    ```
-
-3. Mount the directory into the Terraform Integration container at the `/home/spinnaker/.ssh` location:
-
-    ```yaml
-    # spin-terraformer deployment
-    volumeMounts:
-    - mountPath: /home/spinnaker/.ssh
-      name: ssh-key-tmp
-    ```
-
-The Terraform Integration now has access to clone private remote Git repositories via SSH after you make these changes and the Terraform Integration redeploys.
