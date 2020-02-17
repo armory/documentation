@@ -147,8 +147,9 @@ Armory ships the following versions of the Terraform binary as part of the Terra
 
 **Note**: Terraform binaries are verified by checksum and with Hashicorp's GPG key before being installed into our release.
 
-To use Terraform, you must indicate to the Terraformer microservice
-the path to the binary within the microservice to use:
+To use the Terraform Integration, you must specify the path to the Terraform binary you want to use. This path also includes the Terraform version. This version is used for the **SYSTEM_DEFINED** version value when a user creates a Terraform Integration stage in Deck. This version is not used if the user selects a different supported version from the menu.
+
+Perform the following steps to specify a Terraform version:
 
 1. Create a file named `terraformer-local.yml` in the following directory: `.hal/default/profiles`.
 2. Add the following YAML to the file:
@@ -157,9 +158,7 @@ the path to the binary within the microservice to use:
     terraform:
       executablePath: /terraform/versions/<version>/terraform
     ```
-Replace <version> with one of the Terraform versions that Armory Spinnaker ships with.
-
-**Note**: If you specify a Terraform version in a stage configuration, the value in `terraformer-local.yml` is ignored.
+Replace <version> with one of the Terraform versions that Armory Spinnaker ships with. 
 
 ### Configuring a Profile
 
@@ -169,7 +168,8 @@ For example, if your Terraform scripts rely on modules stored in a private remot
 
 To add profiles that a user can select from, perform the following steps:
 
-1. Open `terraformer-local.yml` in the following directory: `.hal/default/profiles`.
+1. In the `.hal/default/profiles` directory, open `terraformer-local.yml`.
+   You created this file when you specified the Terraform version.
 2. Add the information for the profile you want to add. The following example adds a profile named `pixel-git` for an SSH key used by a Git repo and stored in Vault:
     
     ```
