@@ -328,10 +328,6 @@ Then you can set up an `Output` stage that exposes this in the pipeline executio
 ${#stage('My Output Stage')["context"]["status"]["outputs"]["bucket_arn"]["value"]}
 ```
 
-## Reference pipeline
-
-You can find a reference pipeline to build from [here](https://gist.github.com/ethanfrogers/5123a5336f7e6ae4fd5fcda76536199b) or [here](https://gist.github.com/justinrlee/3abe62e38f957ecd0ba3c417a6125555). It should help you get started! To use one of the references, create a pipeline in Deck and click **Pipeline Actions** > **Edit as JSON** and paste the pipeline JSON into the text box.
-
 ## Configuring Terraform for your cloud provider
 
 Since the Terraform Integration executes all Terraform commands against the `terraform` binary, all methods of configuring authentication are supported for your desired cloud provider. This section describes how to accomplish this for various cloud providers.
