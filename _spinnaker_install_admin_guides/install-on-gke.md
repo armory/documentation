@@ -9,7 +9,7 @@ redirect_from:
   - /spinnaker-install-admin-guides/install_on_gke/
 ---
 
-This guide describes how to install Spinnaker in Googke Kubernetes Engine (GKE).  It will create / use the following Google Cloud resources:
+This guide describes how to install Spinnaker in Google Kubernetes Engine (GKE).  It will create / use the following Google Cloud resources:
 
 * A GKE (Google Kubernetes Engine) cluster (you can use an existing one if you already have one)
 * A GCS (Google Cloud Storage) bucket (you can use an existing one if you already have one)
