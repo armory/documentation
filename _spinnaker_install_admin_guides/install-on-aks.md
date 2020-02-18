@@ -168,7 +168,6 @@ This document uses the Armory `spinnaker-tools` Go CLI (available on [Github](ht
 1. Run the tool.  Feel free to substitute other values for the parameters:
 
    ```bash
-   # The 'gcloud container clusters get-credentials' command from above will create/update this file
    SOURCE_KUBECONFIG=kubeconfig-aks
    CONTEXT=$(kubectl --kubeconfig ${SOURCE_KUBECONFIG} config current-context)
    DEST_KUBECONFIG=kubeconfig-spinnaker-system-sa
