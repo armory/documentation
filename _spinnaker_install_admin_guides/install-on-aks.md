@@ -160,8 +160,8 @@ This document uses the Armory `spinnaker-tools` Go CLI (available on [Github](ht
    # If you're not already in the directory
    cd ~/aks-spinnaker
    # If you're on Linux instead of OSX, use this URL instead:
-   # https://github.com/armory/spinnaker-tools/releases/download/0.0.6/spinnaker-tools-linux
-   curl -L https://github.com/armory/spinnaker-tools/releases/download/0.0.6/spinnaker-tools-darwin -o spinnaker-tools
+   # https://github.com/armory/spinnaker-tools/releases/download/0.0.7/spinnaker-tools-linux
+   curl -L https://github.com/armory/spinnaker-tools/releases/download/0.0.7/spinnaker-tools-darwin -o spinnaker-tools
    chmod +x spinnaker-tools
    ```
 
