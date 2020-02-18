@@ -149,6 +149,8 @@ Armory ships the following versions of the Terraform binary as part of the Terra
 
 To use the Terraform Integration, you must specify the path to the Terraform binary you want to use. This path also includes the Terraform version. This version is used for the **SYSTEM_DEFINED** version value when a user creates a Terraform Integration stage in Deck. This version is not used if the user selects a different supported version from the menu.
 
+![Terraform version to use](/images/terraform_version.png)
+
 Perform the following steps to specify a Terraform version:
 
 1. Create a file named `terraformer-local.yml` in the following directory: `.hal/default/profiles`.
@@ -224,7 +226,9 @@ After you configure your Git repository and Gate proxy access, perform the follo
 
 ## Configuring a Terraform stage
 
-**Note**: If you used the Terraform integraiton by editing the JSON representation of the stage, stages are automatically converted to the UI. For a tour of the UI, see the [Terraform Integration UI video](https://www.youtube.com/watch?v=Xsjql3g-wtU).
+**Note**: If you used the Terraform integration by editing the JSON representation of the stage, stages are automatically converted to the UI. For a tour of the UI, see the [Terraform Integration UI video](https://www.youtube.com/watch?v=Xsjql3g-wtU)
+
+![Terraform Stage in Deck](/images/terraform_stage_ui.png)
 
 The Terraform Integration exposes a new stage in Spinnaker called **Terraform**. To use the stage, perform the following steps:
 
@@ -232,7 +236,8 @@ The Terraform Integration exposes a new stage in Spinnaker called **Terraform**.
 2. Configure the pipeline and add a stage.
 3. For **Type**, select **Terraform**.
 4. Add a **Stage Name**.
-5. Configure the Terraform Integration stage:
+5. Configure the Terraform Integration stage.
+    The available fields may vary slightly depending on what you configure for the stage: 
     * **Basic Settings**
       * **Terraform Version**:  Terraform version to use. **SYSTEM_DEFINED** refers to the Terraform version set in `terraformer-local.yml`. All Terraform stages within a pipeline that modify state (apply, output, destroy) must use the same version.
       * **Action**: Terraform action to perform. You can select any of the following actions:
