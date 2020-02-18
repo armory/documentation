@@ -150,7 +150,7 @@ We're going to create the following:
 * A role and rolebinding in that namespace, granting permissions to the service account
 * A kubeconfig containing credentials for the service account
 
-Halyard uses this Kubeconfig file to create the Kubernetes deployment objects that create the microservices that compose Spinnaker.  This same Kubeconfig is passed to Spinnaker so that Spinnaker can see and manage its own resources.
+Halyard uses this kubeconfig file to create the Kubernetes deployment objects that create the microservices that compose Spinnaker.  This same kubeconfig is passed to Spinnaker so that Spinnaker can see and manage its own resources.
 
 This document uses the Armory `spinnaker-tools` Go CLI (available on [Github](https://github.com/armory/spinnaker-tools)) to create many of these resources.  There are separate instructions to perform these steps manually.
 
