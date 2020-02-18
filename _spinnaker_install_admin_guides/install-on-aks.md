@@ -203,15 +203,13 @@ Spinnaker uses an AZS bucket to store persistent configuration (such as pipeline
 
 ## Stage files on the `Halyard machine`
 
-On the `Halyard machine`, choose a local working directory for Halyard.  In it, we will create two folders:
+In the `aks-spinnaker` working directory, create the following folders:
 
-* `WORKING_DIRECTORY/.hal`
-* `WORKING_DIRECTORY/.secret`
-* `WORKING_DIRECTORY/resources`
+* `.hal`
+* `.secret`
+* `resources`
 
 ```bash
-# Feel free to use some other directory for this; make sure it is a persistent directory.
-# Also, make sure this directory doesn't live on an NFS mount, as that can cause issues
 WORKING_DIRECTORY=~/aks-spinnaker/
 mkdir -p ${WORKING_DIRECTORY}/.hal
 mkdir -p ${WORKING_DIRECTORY}/.secret
