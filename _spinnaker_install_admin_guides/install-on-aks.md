@@ -182,7 +182,7 @@ This document uses the Armory `spinnaker-tools` Go CLI (available on [Github](ht
      --service-account-name ${SPINNAKER_SERVICE_ACCOUNT_NAME}
    ```
 
-You should be left with a file called `kubeconfig-spinnaker-system-sa` (or something similar, if you're using a different namespace for spinnaker)
+This creates a file called `kubeconfig-spinnaker-system-sa` (or something similar, if you're using a different namespace for Spinnaker)
 
 ## Create an AZS source for Spinnaker
 
