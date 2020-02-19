@@ -372,7 +372,7 @@ Once this is complete, congratulations!  Spinnaker is installed.  Now we have to
 
 ## Connect to Spinnaker using `kubectl port-forward`
 
-If you have kubectl on a local machine with access to your Kubernetes cluster, you can test connecting to it with the following:
+Test connecting to Spinnaker from your workstation machine:
 
 ```bash
 NAMESPACE=spinnaker-system
@@ -384,7 +384,7 @@ kubectl -n ${NAMESPACE} port-forward ${GATE_POD} 8084 &
 
 Then, you can access Spinnaker at http://localhost:9000
 
-If you are doing this on a remote machine, this will not work because your browser attempts to access localhost on your local workstation rather than on the remote machine where the port is forwarded.
+Tyring to connect from a remote machine will not work because your browser attempts to access localhost on your local workstation rather than on the remote machine where the port is forwarded.
 
 __Note:__ Even if the `hal deploy apply` command returns successfully, the 
 installation may not be complete yet. This is especially the case with 
