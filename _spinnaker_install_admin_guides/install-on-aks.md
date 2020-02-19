@@ -200,7 +200,10 @@ Spinnaker uses an AZS bucket to store persistent configuration (such as pipeline
    az storage account create --resource-group ${STORAGE_RESOURCE_GROUP} --sku STANDARD_LRS --name ${STORAGE_ACCOUNT_NAME}
    STORAGE_ACCOUNT_KEY=$(az storage account keys list --resource-group ${STORAGE_RESOURCE_GROUP} --account-name ${STORAGE_ACCOUNT_NAME} --query "[0].value" | tr -d '"')
    ```
-
+    Keep the following Azure requirements in mind when defining `STORAGE_ACCOUNT_NAME`: 
+      * The name must be between 3 and 24 characters
+      * Only numbers and lowercase characters are valid
+    
 ## Stage files on the `Halyard machine`
 
 In the `aks-spinnaker` working directory, create the following folders:
