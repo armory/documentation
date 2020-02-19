@@ -106,11 +106,18 @@ http:
 
 This section is identical to [changing endpoints for TLS](../services-tls#changing-service-endpoints)
 
-## Changing Liveliness Probe
+## Changing Readiness Probe
 
-Spinnaker's liveliness check uses a 
+We need to change the readiness probe used by Kubernetes from an HTTP request to a TCP probe. This can be done by using the following to each service, under `<deploy>/service-settings/<service>.yml`:
+
+```
+kubernetes:
+  useTcpProbe: true
+```
+
+*Important*: Version 1.8.2 or later of Halyard Armory is required to support TCP probe.
 
 ## Deployment
 
-If your services are already using HTTPS, you can roll out mTLS without interruption by making the client certificate optional (`want`) in `server.ssl.client-auth` (Java) and `server.ssl.clientAuth`. Then once all the services are stable, rolling out a new configuration with that value set to `need`.
+If Spinnaker services are already using HTTPS, you can roll out mTLS without interruption by making the client certificate optional (`want`) in `server.ssl.client-auth` (Java) and `server.ssl.clientAuth`. Then once all the services are stable, rolling out a new configuration with that value set to `need`.
 
