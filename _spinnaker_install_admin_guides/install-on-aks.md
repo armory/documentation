@@ -333,6 +333,9 @@ hal config storage azs edit \
     
 # test connection to azs storage
 hal config storage azs
+
+# Set the storage source to AZS
+hal config storage edit --type azs
 ```
 
 ## Choose the Spinnaker version
