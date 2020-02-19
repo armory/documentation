@@ -313,7 +313,7 @@ hal config features edit --artifacts true
 hal config artifact http enable
 ```
 
-(In order to add specific types of artifacts, there are further configuration
+In order to add specific types of artifacts, there are further configuration
 items that must be completed.  For now, it is sufficient to just turn on the
 artifacts feature with the http artifact provider.  This will allow Spinnaker
 to retrieve files via unauthenticated http.
@@ -382,14 +382,14 @@ kubectl -n ${NAMESPACE} port-forward ${GATE_POD} 8084 &
 
 Then, you can access Spinnaker at http://localhost:9000
 
-(If you are doing this on a remote machine, this will not work because your browser attempts to access localhost on your local workstation rather than on the remote machine where the port is forwarded)
+If you are doing this on a remote machine, this will not work because your browser attempts to access localhost on your local workstation rather than on the remote machine where the port is forwarded.
 
 __Note:__ Even if the `hal deploy apply` command returns successfully, the 
 installation may not be complete yet. This is especially the case with 
 distributed Kubernetes installs. If you see errors such as `Connection refused`,
 the containers may not be available yet. You can either wait 
-or check the status of all of the containers using the command for your cloud provider 
-(such as `kubectl get pods --namespace spinnaker`).
+or check the status of all of the containers using the command for your cloud provider,  
+such as `kubectl get pods --namespace spinnaker`.
 
 ## Install the NGINX ingress controller
 
@@ -399,16 +399,16 @@ In order to expose Spinnaker to end users, you have perform the following action
 * Expose the spin-gate (API) Kubernetes service on some URL endpoint
 * Update Spinnaker (via Halyard) to be aware of the new endpoints
 
-We're going to install the NGINX ingress controller on aks because of these two limitations of the built-in aks Ingress controller:
+We're going to install the NGINX ingress controller on aks because of these limitations of the built-in aks Ingress controller:
 
 * It only exposes NodePort services
-* It only exposes services that respond with an `HTTP 200` to a `GET` on `/` (or have a `readinessProbe` configured)
+* It only exposes services that respond with an `HTTP 200` to a `GET` on `/` or have a `readinessProbe` configured
 
 If you already have an NGINX ingress controller installed on your cluster, skip this step.
 
-(Both of these are configurable with Spinnaker, but the NGINX ingress controller is also generally much more configurable)
+Both of these are configurable with Spinnaker, but the NGINX ingress controller is also generally much more configurable.
 
-From the `workstation machine` (where `kubectl` is installed):
+From the `workstation machine` where `kubectl` is installed:
 
 Install the NGINX ingress controller components:
 
@@ -430,8 +430,8 @@ Identify the URLs you will use to expose Spinnaker's UI and API.
 
 ```bash
 # Replace with actual values
-SPIN_DECK_ENDPOINT=spinnaker.some-url.com
-SPIN_GATE_ENDPOINT=api.some-url.com
+SPIN_DECK_ENDPOINT=<spinnaker.some-url.com>
+SPIN_GATE_ENDPOINT=<api.some-url.com>
 NAMESPACE=spinnaker-system
 ```
 
@@ -530,7 +530,7 @@ Set up DNS so that your two URLs point to the IP address for the ingress (in the
 
 ## Configuring TLS Certificates
 
-Configuration of TLS certificates for ingresses is often very organization-specific.  In general, you would want to do the following:
+Configuration of TLS certificates for ingresses is often very organization-specific.  In general, you want to do the following:
 
 * Add certificate(s) so that your ingress controller can use them
 * Configure the ingress(es) so that NGINX (or your ingress) terminates TLS using the certificate(s)
