@@ -164,26 +164,27 @@ Replace <version> with one of the Terraform versions that Armory Spinnaker ships
 
 ### Configuring a Profile
 
-Configure profiles that users can select when creating a stage. If a user selects a profile when they create a Terraform Integration stage, they can select a private remote Git repo as the source for any Terraform modules that run. 
+Configure profiles that users can select when creating a stage. A configured profile gives users the ability to reference certain kinds of external sources, such as a private remote repository, when creating pipelines.
 
-For example, if your Terraform scripts rely on modules stored in a private remote repository, you need to add your `SSH` key to a profile. Then, a user can select that profile when creating a Terraform Integration stage. 
+For example, if your Terraform scripts rely on modules stored in a private remote Git repository, add your `SSH` key to a profile. Then, a user can select that profile when creating a Terraform Integration stage. When the pipeline runs, the Terraform Integration automatically gains access to fetch what it needs from the private repo.
 
 To add profiles that a user can select from, perform the following steps:
 
 1. In the `.hal/default/profiles` directory, open `terraformer-local.yml`.
    You created this file when you specified the Terraform version.
-2. Add the information for the profile you want to add. The following example adds a profile named `pixel-git` for an SSH key used by a Git repo and stored in Vault:
+2. Add the values for the profile(s) you want to add under an `environments` section. The following example adds a profile named `pixel-git` for an SSH key secured in Vault and used to access a Git repo:
     
     ```
     profile:
-     - name: pixel-git
+     - name: pixel-git // Profile name displayed in Deck
        variables:
-        - kind: git-ssh
-          keyContents: encrypted:vault!e:<secret engine>!p:<path to secret>!k:<key>!b:<is base64 encoded?>
+        - kind: git-ssh 
+          keyContents: encrypted:vault!e:<secret engine>!p:<path to secret>!k:<key>!b:<is base64 encoded?> // Secret in Vault
     ```
     When a user creates or edits a Terraform Integration stage in Deck, they can select the profile `pixel-git` from a dropdown.
-
-    You can add multiple profiles under the `profile` section.
+    Keep the following in mind when adding profiles:
+      * You can add multiple profiles under the `profile` section.
+      * Do not commit plain text secrets to `terraformer-local.yml`. Instead, use a secret store: [Vault](/spinnaker-install-admin-guides/secrets-vault), an [encrypted S3 bucket](/spinnaker-install-admin-guides/secrets-s3), or an [encrypted GCS bucket](/spinnaker-install-admin-guides/secrets-gcs). 
 3. Save the file.
 
 ### Configuring Gate proxy to access Terraform logs
