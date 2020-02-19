@@ -320,20 +320,19 @@ to retrieve files via unauthenticated http.
 
 ## Configure Spinnaker to use your AZS bucket
 
-Use the Halyard `hal` command line tool to configure Halyard to configure Spinnaker to use your AZS bucket
-
-*If you're using a pre-existing bucket, you can update ROOT_FOLDER with a different path within your folder.*
+Use the Halyard `hal` command line tool to configure Halyard to configure Spinnaker to use your AZS bucket. 
+`storage-container-name` is optional and has a default value of "spinnaker". If you're using a pre-existing bucket, update `storage-container-name` with with the name of your folder.
 
 ```bash
-####### Inside container
-ROOT_FOLDER=front-50
+####### Inside the armory-halyard container
 
 hal config storage azs edit \
-    --storage-account-name ${STORAGE_ACCOUNT_NAME} \
-    --storage-account-key ${STORAGE_ACCOUNT_KEY} \
-    --root-folder ${ROOT_FOLDER}
-
-hal config storage edit --type azs
+    --storage-account-name <storage_account_name> \
+    --storage-account-key <storage_account_key> \
+    --storage-container-name <name>
+    
+# test connection to azs storage
+hal config storage azs
 ```
 
 ## Choose the Spinnaker version
