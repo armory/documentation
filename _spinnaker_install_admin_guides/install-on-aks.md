@@ -243,6 +243,8 @@ docker run --name armory-halyard -it --rm \
   armory/halyard-armory:<image_version>
 ```
 
+**Note**: For image version, you must enter a valid version number, such as 1.8.1. Do not use `latest`. 
+
 ## Enter the Halyard container
 
 From a separate terminal session on your `docker machine`, create a second bash/shell session on the Docker container:
