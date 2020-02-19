@@ -303,7 +303,7 @@ hal config deploy edit \
 
 ## Enable Artifacts
 
-Within Spinnaker, 'artifacts' are consumable references to items that live outside of Spinnaker (for example, a file in a git repository or a file in an S3 bucket are two examples of artifacts).  This feature must be explicitly turned on.
+Within Spinnaker, 'artifacts' are consumable references to items that live outside of Spinnaker. An artifact could be a file in a git repository or a file in an S3 bucket.  This feature must be explicitly turned on.
 
 Enable the "Artifacts" feature and the "http" artifact artifact provider:
 
@@ -316,7 +316,7 @@ hal config artifact http enable
 (In order to add specific types of artifacts, there are further configuration
 items that must be completed.  For now, it is sufficient to just turn on the
 artifacts feature with the http artifact provider.  This will allow Spinnaker
-to retrieve files via unauthenticated http.)
+to retrieve files via unauthenticated http.
 
 ## Configure Spinnaker to use your AZS bucket
 
