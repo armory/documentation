@@ -354,7 +354,7 @@ Get a list of available versions of spinnaker with this command:
 ```bash
 hal version list
 ```
-Note that Armory Spinnaker uses a major version numbering scheme that is one version higher than open source Spinnaker. For example, Armory Spinnaker  `2.x.x` correlates to Open Source Spinnaker `1.x.x`.
+Note that Armory Spinnaker uses a major version numbering scheme that is one version higher than Open Source Spinnaker. For example, Armory Spinnaker  `2.x.x` correlates to Open Source Spinnaker `1.x.x`.
 
 After you decide on a version, run the following commands to specify the version: 
 
@@ -374,7 +374,7 @@ Now that your `hal` config is configured, install Spinnaker with the following `
 hal deploy apply
 ```
 
-Once this is complete, congratulations!  Spinnaker is installed.  Now we have to access and expose it.
+Once this is complete, congratulations! Spinnaker is installed.  Now we have to access and expose it.
 
 ## Connect to Spinnaker using `kubectl port-forward`
 
@@ -388,7 +388,7 @@ kubectl -n ${NAMESPACE} port-forward ${DECK_POD} 9000 &
 kubectl -n ${NAMESPACE} port-forward ${GATE_POD} 8084 &
 ```
 
-Then, you can access Spinnaker at http://localhost:9000
+Then, you can access Spinnaker at `http://localhost:9000`.
 
 Trying to connect from a remote machine will not work because your browser attempts to access localhost on your local workstation rather than on the remote machine where the port is forwarded.
 
