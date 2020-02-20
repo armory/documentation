@@ -388,6 +388,10 @@ kubectl -n ${NAMESPACE} port-forward ${DECK_POD} 9000 &
 kubectl -n ${NAMESPACE} port-forward ${GATE_POD} 8084 &
 ```
 
+Then, you can access Spinnaker at http://localhost:9000
+
+Trying to connect from a remote machine will not work because your browser attempts to access localhost on your local workstation rather than on the remote machine where the port is forwarded.
+
 __Note:__ Even if the `hal deploy apply` command returns successfully, the 
 installation may not be complete yet. This is especially the case with 
 distributed Kubernetes installs. If you see errors such as `Connection refused`,
