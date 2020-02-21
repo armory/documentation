@@ -49,8 +49,8 @@ hal deploy apply
 **Configure GitHub webhooks**
 
 Set up webhooks at the organization level for Push events. You can do this by going to: https://github.com/organizations/your_org_here/settings/hooks:
-* Set the `Payload URL` to your Gate URL
-* Depending on whether you configured Gate to use its own DNS name or a path on the same DNS name as Deck, the URL follows one of the following formats: 
+1. Set `content-type` to `application/json`. 
+2. Set the `Payload URL` to your Gate URL. Depending on whether you configured Gate to use its own DNS name or a path on the same DNS name as Deck, the URL follows one of the following formats: 
 
   * `https://<your-gate-url>/webhooks/git/github` and a content type of `application/json`.
   * `https://<your-gate-url>/api/v1/webhooks/git/github`
