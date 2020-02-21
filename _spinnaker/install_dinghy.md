@@ -46,7 +46,16 @@ hal armory dinghy edit \
 hal deploy apply
 ```
 
-Set up webhooks at the organization level for Push events. You can do this by going to: https://github.com/organizations/your_org_here/settings/hooks. Set the `Payload URL` to: `https://<your-gate-url>/webhooks/git/github` and a content type of `application/json`.  If your gate endpoint is protected by a firewall, you’ll need to configure your firewall to allow inbound webhooks from Github's IP addresses. You can find their IPs here: [](https://api.github.com/meta), you can read [Github's docs here](https://help.github.com/articles/about-github-s-ip-addresses/).
+**Configure GitHub webhooks**
+
+Set up webhooks at the organization level for Push events. You can do this by going to: https://github.com/organizations/your_org_here/settings/hooks:
+* Set the `Payload URL` to your Gate URL
+* Depending on whether you configured Gate to use its own DNS name or a path on the same DNS name as Deck, the URL follows one of the following formats: 
+
+  * `https://<your-gate-url>/webhooks/git/github` and a content type of `application/json`.
+  * `https://<your-gate-url>/api/v1/webhooks/git/github`
+
+If your gate endpoint is protected by a firewall, you’ll need to configure your firewall to allow inbound webhooks from Github's IP addresses. You can find their IPs here: [](https://api.github.com/meta), you can read [Github's docs here](https://help.github.com/articles/about-github-s-ip-addresses/).
 
 ### Bitbucket / Stash Example
 
