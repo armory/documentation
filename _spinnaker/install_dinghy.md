@@ -52,8 +52,8 @@ Set up webhooks at the organization level for Push events. You can do this by go
 1. Set `content-type` to `application/json`. 
 2. Set the `Payload URL` to your Gate URL. Depending on whether you configured Gate to use its own DNS name or a path on the same DNS name as Deck, the URL follows one of the following formats: 
 
-  * `https://<your-gate-url>/webhooks/git/github`
-  * `https://<your-gate-url>/api/v1/webhooks/git/github`
+  * `https://<your-gate-url>/webhooks/git/github` (if you have a separate DNS name or port for Gate)
+  * `https://<your-spinnaker-url>/api/v1/webhooks/git/github` (if you're using a different path for Gate)
 
 If your gate endpoint is protected by a firewall, you’ll need to configure your firewall to allow inbound webhooks from Github's IP addresses. You can find their IPs here: [](https://api.github.com/meta), you can read [Github's docs here](https://help.github.com/articles/about-github-s-ip-addresses/).
 
