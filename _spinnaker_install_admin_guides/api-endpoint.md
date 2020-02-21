@@ -468,15 +468,18 @@ Look at your existing Halconfig (`cat .hal/config` or `hal config`), and look fo
 `security.apiSecurity.overrideBaseUrl`
 `security.uiSecurity.overrideBaseUrl`
 
-These may be configured something like this:
-* http://spinnaker.domain.com
-* http://gate.domain.com
+These may be configured to something like this:
 
-We will need to update these to use the https-equivalent URLs.  This can be achieved with these Halyard commands:
+* `https://spinnaker.domain.com` -- URL to access Deck
+* `https://spinnaker.domain.com/api/v1` -- URL to access Gate
+
+Although Spinnaker also supports using a different DNS name, Armory recommends that you use the same DNS but different paths for Deck and Gate. Tasks such as Cross-Origin Resource Sharing (CORS) between your Gate and Deck endpoints and securing Gate and Deck are much easier when both services use the same DNS name.
+
+We need to update these to use the https-equivalent URLs.  This can be achieved with these Halyard commands:
 
 ```bash
 SPINNAKER_FQDN=spinnaker.domain.com
-GATE_FQDN=gate.domain.com
+GATE_FQDN=spinnaker.domain.com/api/v1 
 hal config security ui edit --override-base-url https://${SPINNAKER_FQDN}
 hal config security api edit --override-base-url https://${GATE_FQDN}
 ```
