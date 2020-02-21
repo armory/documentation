@@ -30,7 +30,8 @@ See [Next Steps](#next-steps) for resources related to these topics.
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-## Prerequities
+
+## Prerequisites
 
 To follow the steps described in this guide, make sure the following prerequisites are met:
 
@@ -192,7 +193,7 @@ The commands create a file called `kubeconfig-spinnaker-system-sa` (or something
 
 ## Create an AZS source for Spinnaker
 
-Spinnaker uses an AZS bucket to store persistent configuration (such as pipeline definitions).  This section walks you through creating a storage resoruce group and a storage account. 
+Spinnaker uses an AZS bucket to store persistent configuration (such as pipeline definitions).  This section walks you through creating a storage resource group and a storage account. 
 
 1. Create a resource group for your storage account in a location available for your account:
    ```bash

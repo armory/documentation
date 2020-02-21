@@ -28,7 +28,7 @@ Note: This document is focused on Armory Spinnaker, but can be adapted to instal
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-## Prerequities / Environments
+## Prerequisites / Environments
 
 This document is written with the following workflow in mind:
 
