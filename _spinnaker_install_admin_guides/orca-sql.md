@@ -73,7 +73,7 @@ The above configuration grants authorization from any host. You can restrict it 
 
 ## Keeping existing execution history
 
-The above configuration will point Orca to your database. However it won't migrate your existing execution history to your new database.
+The above configuration will point Orca to your database. 
 You have the option to run a dual repository with the following in `profiles/orca-local.yml`:
 
 ```yaml
@@ -89,7 +89,20 @@ executionHistory:
     enabled: true
 ```
 
-Remove these settings once all the intesting execution history is only in your database.
+However it won't migrate your existing execution history to your new database. This will make your spinnaker instance run on both the SQL and redis backend, it will only write the new execution on SQL but will continue to read the data on redis.
+To migrate the data from Redis to SQL, you need to add the following
+
+```
+pollers:
+  orchestrationMigrator:
+    enabled: true
+    intervalMs: 1800000
+  pipelineMigrator:
+    enabled: true
+    intervalMs: 1800000  # After how much time the migration process is going to start
+```
+
+Once everything is migrated (you will see logs in the orca pod about the migration process) you can remove this settings.
 
 <!-- ## Support for Other Relational Databases
 <div class="alpha-warning">
