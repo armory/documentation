@@ -51,7 +51,7 @@ After you update `front50-local.yml`, deploy your changes:
 hal deploy apply
 ```
 
-## OPA Server Deployment
+## Deploying OPA
 
 The Policy Engine supports the following OPA server deployments: 
 * An existing OPA cluster 
@@ -232,7 +232,7 @@ spec:
     targetPort: 8181
 ```
 
-## OPA Specifics
+## Using OPA to validate pipeline configurations
 
 The Policy Engine uses [OPA's Data API](https://www.openpolicyagent.org/docs/latest/rest-api/#data-api) to check pipeline configurations against OPA policies that you set. 
 
@@ -315,6 +315,56 @@ deny["Every pipeline must have a Manual Judgment stage"] {
   0 == 1
 }
 ```
+
+## Using OPA to validate deployments
+
+While simple cases can be picked up by Policy Engine when validating a pipeline's configuration, there are still a number of cases that must be addressed at runtime. By nature, Spinnaker's pipelines can be dynamic, resolving things like SpEL and Artifacts just in time for them to be used which means there are external influences on a pipeline that are not known at save time. In order address this gap, we've added support for validating deployments before they even make it to your cloud provider. 
+
+As an example, let's use Policy Engine to prevent Kubernetes LoadBalancer Services being deployed with open SSH ports.
+
+### Writing a policy
+
+Deployment validation works by mapping an OPA policy package to a Spinnaker deployment task. For example, deploying a Kubernetes Service is done using the Deploy (Manifest) stage, so we'll write a policy that applies to that task. 
+
+```
+package spinnaker.deployment.tasks.deployManifest
+
+deny[msg] {
+    msg := "LoadBalancer Services must not have ports 22 open."
+    manifests := input.deploy.manifests
+    manifest := manifests[_]
+
+    manifest.kind == "Service"
+    manifest.spec.type == "LoadBalancer"
+
+    port := manifest.spec.ports[_]
+    port.port == 22
+}
+```
+
+The above policy is testing for a few things. First, we're looking for any manifest where the `kind` is `Service` and `type` is `LoadBalancer`. Any manifest that doesn't meet these criteria will not be evaluated by subsequent rules. Once we've narrowed the Services, we'll check all of their ports to ensure that port `22` isn't open. If we find one, the `deny` rule will true, the deployment will be halted and the `msg` will be presented to you in the UI.
+
+You'll notice a few things about this policy:
+
+1. The package name is explicit which means that this policy only applies to the `deployManifest` task. You can write policies for other tasks by replacing `deployManifest` with your task name. In general, the task name maps to a stage name.
+
+2. The policy is testing a set of manifests which `deployManifest` will deploy to Kubernets. This is part of the tasks configuration which is passed into the policy in it's entirety under `input.deploy`.
+
+3. We aren't limiting our policy to any particular Kubernetes account. If you'd like to only apply policies to, say, your Production account, use `input.deploy.account` to narrow down policies to specific accounts. This is useful when you want more or less restrictive policies across your infrastructure. 
+
+Once you've written your policy, you can push it into OPA via a ConfigMap or the API.
+
+
+### Validating a deployment
+
+Now that the policy has been uploaded to OPA, the policy will be enforced on any deployment to Kubernetes without any additional input from the end user. Error messages returned by the policy will be surfaced in the UI immediately following a halted deployment. 
+
+
+
+![](https://p-qKFvWn.b3.n0.cdn.getcloudapp.com/items/xQugvJ0P/Image+2020-02-24+at+9.30.07+AM.png?v=ee2706a62a0a5e1441d05625df045f95)
+
+
+
 
 ## Troubleshooting
 **I encountered the following error when trying to save my pipeline:**
