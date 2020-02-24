@@ -232,7 +232,7 @@ spec:
     targetPort: 8181
 ```
 
-## Using OPA to validate pipeline configurations
+## Using the Policy Engine to validate pipeline configurations
 
 The Policy Engine uses [OPA's Data API](https://www.openpolicyagent.org/docs/latest/rest-api/#data-api) to check pipeline configurations against OPA policies that you set. 
 
@@ -261,7 +261,7 @@ The following OPA policy enforces one requirement on all pipelines:
 
 
 ```
-# manual-judgment.rego
+# manual-judgment.rego. Notice the package. The opa.pipelines is used for policies that get checked when a pipeline is saved.
 package opa.pipelines
 
 deny["Every pipeline must have a Manual Judgment stage"] {
@@ -316,9 +316,9 @@ deny["Every pipeline must have a Manual Judgment stage"] {
 }
 ```
 
-## Using OPA to validate deployments
+## Using the Policy Engine to validate deployments
 
-While simple cases can be picked up by Policy Engine when validating a pipeline's configuration, there are still a number of cases that must be addressed at runtime. By nature, Spinnaker's pipelines can be dynamic, resolving things like SpEL and Artifacts just in time for them to be used which means there are external influences on a pipeline that are not known at save time. In order address this gap, we've added support for validating deployments before they even make it to your cloud provider. 
+While simple cases can be validated by the Policy Engine during a pipeline's configuration, there are a number of cases that can only be addressed at runtime. By nature, Spinnaker's pipelines can be dynamic, resolving things like SpEL and Artifacts just in time for them. This means there are external influences on a pipeline that are not known at save time. To solve for this issue, the Policy Engine can validate pipelines when they run to but before deployments make it to your cloud provider. 
 
 As an example, let's use Policy Engine to prevent Kubernetes LoadBalancer Services being deployed with open SSH ports.
 
@@ -327,10 +327,11 @@ As an example, let's use Policy Engine to prevent Kubernetes LoadBalancer Servic
 Deployment validation works by mapping an OPA policy package to a Spinnaker deployment task. For example, deploying a Kubernetes Service is done using the Deploy (Manifest) stage, so we'll write a policy that applies to that task. 
 
 ```
+# Notice the package. The package maps to the task you want to create a policy for.
 package spinnaker.deployment.tasks.deployManifest
 
 deny[msg] {
-    msg := "LoadBalancer Services must not have ports 22 open."
+    msg := "LoadBalancer Services must not have port 22 open."
     manifests := input.deploy.manifests
     manifest := manifests[_]
 
@@ -342,17 +343,19 @@ deny[msg] {
 }
 ```
 
-The above policy is testing for a few things. First, we're looking for any manifest where the `kind` is `Service` and `type` is `LoadBalancer`. Any manifest that doesn't meet these criteria will not be evaluated by subsequent rules. Once we've narrowed the Services, we'll check all of their ports to ensure that port `22` isn't open. If we find one, the `deny` rule will true, the deployment will be halted and the `msg` will be presented to you in the UI.
+Using the above policy, Policy Engine tests for a few things when a pipeline runs:
+* Any manifest where the `kind` is `Service` and `type` is `LoadBalancer`. Manifests that don't meet these criteria will not be evaluated by subsequent rules. Once we've narrowed the Services, we'll c
+* Check all of the ports to ensure that port `22` isn't open. If the Policy Engine finds port `22`, the `deny` rule evaluates to true. This results in the deployment failing and the `msg` is shown to the user.
 
 You'll notice a few things about this policy:
 
-1. The package name is explicit which means that this policy only applies to the `deployManifest` task. You can write policies for other tasks by replacing `deployManifest` with your task name. In general, the task name maps to a stage name.
+* The package name is explicit, which means that this policy only applies to the `deployManifest` task. You can write policies for other tasks by replacing `deployManifest` with your task name. Generally, the task name maps to a stage name.
 
-2. The policy is testing a set of manifests which `deployManifest` will deploy to Kubernets. This is part of the tasks configuration which is passed into the policy in it's entirety under `input.deploy`.
+* The policy tests a set of manifests which `deployManifest` will deploy to Kubernetes. This is part of the tasks configuration, which is passed into the policy in it's entirety under `input.deploy`.
 
-3. We aren't limiting our policy to any particular Kubernetes account. If you'd like to only apply policies to, say, your Production account, use `input.deploy.account` to narrow down policies to specific accounts. This is useful when you want more or less restrictive policies across your infrastructure. 
+* The policy isn't limited to any particular Kubernetes account. If you'd like to only apply policies to, say, your Production account, use `input.deploy.account` to narrow down policies to specific accounts. This is useful when you want more or less restrictive policies across your infrastructure. 
 
-Once you've written your policy, you can push it into OPA via a ConfigMap or the API.
+Once you've written your policy, you can push it to your OPA server via a ConfigMap or the API. Once it's pushed, the Policy Engine can begin enforcing the policy.
 
 
 ### Validating a deployment
