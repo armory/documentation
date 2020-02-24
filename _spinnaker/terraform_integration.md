@@ -89,12 +89,10 @@ The Terraform Integration needs access to the GitHub token to download GitHub di
 
 1. Enable the Terraform Integration
     ```
-    # The --alpha option is only required for Halyard versions earlier than 1.6.5.
-    hal armory terraform enable --alpha
+    hal armory terraform enable
     
     # This will prompt for the token
     hal armory terraform edit \
-    --alpha \
     --git-enabled \
     --git-access-token
     ```
@@ -126,12 +124,10 @@ The Terraform Integration also needs access to the BitBucket token to download f
 Github directories hosting your Terraform templates
 
 ```
-# The --alpha option is only required for Halyard versions earlier than 1.6.5.
-hal armory terraform enable --alpha
+hal armory terraform enable
 
 # This will prompt for the token, which is your BitBucket password
 hal armory terraform edit \
-  --alpha
   --git-enabled \
   --git-username <USERNAME> \
   --git-access-token
@@ -142,7 +138,7 @@ hal armory terraform edit \
 Armory ships the following versions of the Terraform binary as part of the Terraform Integration:
 
 * 0.11.10 through 0.11.14
-* 0.12.0 through 0.12.18
+* 0.12.0 through 0.12.20
 
 **Note**: Terraform binaries are verified by checksum and with Hashicorp's GPG key before being installed into our release.
 
@@ -158,7 +154,7 @@ the path to the binary within the microservice to use:
     ```
 Replace <version> with one of the Terraform versions that Armory Spinnaker ships with.
 
-**Note**: If you specify a Terraform version in a stage configuration, the value in `terraformer-local.yml` is ignored.
+**Note**: You can now specify a Terraform version in a stage configuration, if you do this the value in `terraformer-local.yml` is ignored.
 
 ### Configuring Gate proxy to access Terraform logs
 
@@ -172,16 +168,22 @@ vi ~/.hal/default/profiles/gate-local.yml
 
 To start, we'll add the configuration to `~/.hal/default/profiles/gate-local.yml`
 
-Add the following configuration to `~/.hal/default/profiles/gate-local.yml`:
-
-    ```yaml
+    ```yml
     proxies:
       - id: terraform
         uri: http://spin-terraformer:7088
         methods:
           - GET
     ```
+
 We use this proxy in future steps!
+
+This stage now has an UI, to enable this feature you need to add to your settings-local.js file
+
+```
+window.spinnakerSettings.feature.terraform = true;
+```
+
 
 ### Complete the installation
 
@@ -201,7 +203,25 @@ After you configure your Git repository and Gate proxy access, perform the follo
 
 ## Configuring a Terraform stage
 
-The Terraform Integration exposes a new stage in Spinnaker called `terraform`. To use the stage, edit the stage as JSON. Here is what the JSON representation of the stage looks like:
+The Terraform Integration exposes a new stage in Spinnaker called `terraform`. 
+
+
+If you have configured the Terraformer UI you can follow this instructions
+
+### Configuring a Terraform stage on the UI
+
+To configure the stage you need to setup an artifact of type gitrepo, set the path to your repository.
+And configure your variable file as another artifact.
+![](/images/terraformer-artifact-git-repo.png)
+
+Then on the terraformer stage use this artifact.
+![](/images/terraformer-ui-stage.png)
+
+
+
+### Configuring a Terraform stage as JSON
+
+To use the stage, edit the stage as JSON. Here is what the JSON representation of the stage looks like:
 
 ```
 {
@@ -493,7 +513,14 @@ By default, the Terraform Integration pulls the `master` branch.  If you want to
 
 ## Viewing Terraform log output
 
-Terraform's primary interface for user feedback is logging. When executed on your workstation, the log output is streamed to `stdout`. The Terraform Integration captures that output and makes it available via the API. These logs can be viewed by inserting the following spinnet into the Comments section of the `terraform` stage or the Instructions section of a Manual Judgement stage.
+Terraform's primary interface for user feedback is logging. When executed on your workstation, the log output is streamed to `stdout`. The Terraform Integration captures that output and makes it available via the API. 
+
+The logs can be viewed if you setup the UI in the pipeline execution view, if you click on the stage:
+
+![](/images/terraformer-ui-logs.png)
+
+
+If you don't have the UI configured these logs can be viewed by inserting the following spinnet into the Comments section of the `terraform` stage or the Instructions section of a Manual Judgement stage.
 
 To use the following example, make sure you do the following:
 * Change the reference to `your-gate-url` with the actual URL for Gate
