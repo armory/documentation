@@ -26,7 +26,22 @@ This guide presumes you've already installed and configured Vault; if you
 are using Vault and have not done so, check Vault's 
 [Getting Started](https://learn.hashicorp.com/vault/) guide.
 
-### Basic Outline
+## Protecting application secrets
+
+Armory recommends that you do not pass secrets through Spinnaker in plain text as this is not safe from a security standpoint. If your Spinnaker deployment gets breached and secrets were passed through it, intruders now have all applications secrets that were passed. 
+
+Instead, use a secret store and only pass the location of or references to the secret. The best practice for using application secrets is for the application to fetch the secret during application startup. For VMs, this is during the VM bootstrap or application startup process. For Kubernetes, you usually do this using an init-container, sidecar, or both.
+
+For Vault, refer to the following resources about injecting application secrets securely into Kubernetes pods:
+* HashiCorp - [Injecting Vault Secrets Into Kubernetes Pods via a Sidecar](https://www.hashicorp.com/blog/injecting-vault-secrets-into-kubernetes-pods-via-a-sidecar/)
+* Banzai Cloud - [Inject secrets directly into Pods from Vault revisited](https://banzaicloud.com/blog/inject-secrets-into-pods-vault-revisited/)
+* IT Next - [Dynamic Vault Secrets — Agent Sidecar on Kubernetes](https://itnext.io/dynamic-vault-secrets-agent-sidecar-on-kubernetes-cc0ce3e54a94)
+
+For more general information, see the following pages about AWS Secrets Manager and Vault:
+* GoDaddy Engineering blog about their use of [Kubernetes External Secrets](https://www.godaddy.com/engineering/2019/04/16/kubernetes-external-secrets/)
+* GoDaddy GitHub page about their open sourced implementation of [Kubernetes External Secrets](https://github.com/godaddy/kubernetes-external-secrets)
+
+## Basic Outline
 
 The basic plan here is to allow developers to write code that references
 "secrets" but which aren't checked into the codebase.  Often this will be
