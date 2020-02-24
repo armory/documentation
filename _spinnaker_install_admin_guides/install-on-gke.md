@@ -28,7 +28,7 @@ Note: This document is focused on Armory Spinnaker, but can be adapted to instal
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-## Prerequities / Environments
+## Prerequisites / Environments
 
 This document is written with the following workflow in mind:
 
@@ -52,7 +52,7 @@ On the `Halyard machine`:
 On the `workstation machine`:
 
 * You can use `gcloud` to create Google resources:
-  * GKE clusters (or, alternatley, have a GKE cluster already built)
+  * GKE clusters (or, alternately, have a GKE cluster already built)
   * GCS buckets (or, alternately, have a GCS bucket already built)
 * You have the `kubectl` (Kubernetes CLI tool) installed and are able to use it to interact with your GKE cluster, if you're using a prebuilt GKE cluster
 * You have a persistent working directory in which to work in.  One option here is `~/gke-spinnaker`

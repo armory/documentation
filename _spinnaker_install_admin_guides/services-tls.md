@@ -148,10 +148,10 @@ spec:
         scheme: https
       gate:
         scheme: https
-        scheme: https
       kayenta:
         scheme: https
       orca:
+        scheme: https
       igor:
         scheme: https
       rosco:
