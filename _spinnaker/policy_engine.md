@@ -248,7 +248,7 @@ deny["some text"] {
 
 Blocks of rules must be in a denial statement and the package must be `opa.pipelines`.
 
-At a high level, adding policies to OPA is a two-step process:
+At a high level, adding policies for the Policy Engine to use is a two-step process:
 1. Create the policies and save them to a `.rego` file.
 2. Add the policies to the OPA server with a ConfigMap or API request.
 
@@ -261,7 +261,7 @@ The following OPA policy enforces one requirement on all pipelines:
 
 
 ```
-# manual-judgment.rego. Notice the package. The opa.pipelines is used for policies that get checked when a pipeline is saved.
+# manual-judgment.rego. Notice the package. The opa.pipelines package is used for policies that get checked when a pipeline is saved.
 package opa.pipelines
 
 deny["Every pipeline must have a Manual Judgment stage"] {
