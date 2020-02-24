@@ -102,7 +102,7 @@ pollers:
     intervalMs: 1800000  # After how much time the migration process is going to start
 ```
 
-Once everything is migrated (you will see logs in the orca pod about the migration process) you can remove this settings.
+Once everything has been migrated (you will see logs in the orca pod about the migration process) you can remove these settings.
 
 <!-- ## Support for Other Relational Databases
 <div class="alpha-warning">
