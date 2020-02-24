@@ -175,11 +175,11 @@ To start, we'll add the configuration to `~/.hal/default/profiles/gate-local.yml
 Add the following configuration to `~/.hal/default/profiles/gate-local.yml`:
 
 ```
-    proxies:
-      - id: terraform
-        uri: http://spin-terraformer:7088
-        methods:
-          - GET
+proxies:
+  - id: terraform
+    uri: http://spin-terraformer:7088
+    methods:
+      - GET
 ```
 
 We use this proxy in future steps!
