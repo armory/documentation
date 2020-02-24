@@ -167,7 +167,6 @@ vi ~/.hal/default/profiles/gate-local.yml
 ```
 
 To start, we'll add the configuration to `~/.hal/default/profiles/gate-local.yml`
-
     ```yml
     proxies:
       - id: terraform
