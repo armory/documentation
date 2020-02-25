@@ -25,7 +25,12 @@ Keep the following guidelines in mind when using the Policy Engine:
 
 ## Enabling the Policy Engine
 
-To enable Armory's Policy Engine, add the following configuration to Halyard in `~/.hal/default/profiles/front50-local.yml`:
+Policy Engine is a collection of a features across multiple Spinnaker services. At a high level, it implements mechanisims to validate:
+
+* Pipeline configurations
+* In-flight deployments (also known as Runtime Validation)
+
+To enable Armory's Policy Engine, add the following configuration.
 
 ```yaml
 armory:
@@ -45,7 +50,16 @@ armory:
     url: http://opa.opaserver:8181/v1
 ```
 
-After you update `front50-local.yml`, deploy your changes:
+
+If you'd like to enable individual features, add the above configuation to the following files:
+
+| Feature                 | File                                          |
+|-------------------------|-----------------------------------------------|
+| Pipeline configurations | `.hal/default/profiles/front50-local.yml`     |
+| In-flight deployments   | `.hal/default/profiles/clouddriver-local.yml` |
+
+
+After you update your configuration, deploy your changes:
 
 ```bash
 hal deploy apply
@@ -344,7 +358,8 @@ deny[msg] {
 ```
 
 Using the above policy, Policy Engine tests for a few things when a pipeline runs:
-* Any manifest where the `kind` is `Service` and `type` is `LoadBalancer`. Manifests that don't meet these criteria will not be evaluated by subsequent rules. Once we've narrowed the Services, we'll c
+* Any manifest where the `kind` is `Service` and `type` is `LoadBalancer`. Manifests that don't meet these criteria will not be evaluated by subsequent rules.
+
 * Check all of the ports to ensure that port `22` isn't open. If the Policy Engine finds port `22`, the `deny` rule evaluates to true. This results in the deployment failing and the `msg` is shown to the user.
 
 You'll notice a few things about this policy:
