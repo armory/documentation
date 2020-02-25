@@ -25,10 +25,10 @@ Keep the following guidelines in mind when using the Policy Engine:
 
 ## Enabling the Policy Engine
 
-Policy Engine is a collection of a features across multiple Spinnaker services. At a high level, it implements mechanisims to validate:
+Policy Engine is a collection of features that span multiple Spinnaker services. Currently, it can be broken down into two categories:
 
-* Pipeline configurations
-* In-flight deployments (also known as Runtime Validation)
+1. Save time validation - Validate pipelines as they're created/modified.
+2. Runtime validation - Validate deployments as a pipeline is executing.
 
 To enable Armory's Policy Engine, add the following configuration.
 
@@ -55,8 +55,8 @@ If you'd like to enable individual features, add the above configuation to the f
 
 | Feature                 | File                                          |
 |-------------------------|-----------------------------------------------|
-| Pipeline configurations | `.hal/default/profiles/front50-local.yml`     |
-| In-flight deployments   | `.hal/default/profiles/clouddriver-local.yml` |
+| Savetime Validation     | `.hal/default/profiles/front50-local.yml`     |
+| Runtime Validation      | `.hal/default/profiles/clouddriver-local.yml` |
 
 
 After you update your configuration, deploy your changes:
