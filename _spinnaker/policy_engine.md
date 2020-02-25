@@ -379,7 +379,7 @@ Now that the policy has been uploaded to OPA, the policy will be enforced on any
 
 
 
-![](https://p-qKFvWn.b3.n0.cdn.getcloudapp.com/items/xQugvJ0P/Image+2020-02-24+at+9.30.07+AM.png?v=ee2706a62a0a5e1441d05625df045f95)
+![](/images/runtime-policy-validation.png)
 
 
 
