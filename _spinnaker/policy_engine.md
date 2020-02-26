@@ -21,7 +21,7 @@ Armory recommends the following versions for the Policy Engine:
 ## Before You Start
 Keep the following guidelines in mind when using the Policy Engine: 
 * The Policy Engine uses **fail closed** behavior. That means that if you have the policy engine enabled but no policies created, Spinnaker refuses to create or update any pipeline. 
-* Using the Policy Engine requires understanding OPA's [rego syntax](https://www.openpolicyagent.org/docs/latest/policy-language/) and how to deploy an OPA server.
+* Using the Policy Engine requires an understanding OPA's [rego syntax](https://www.openpolicyagent.org/docs/latest/policy-language/) and how to deploy an OPA server.
 
 ## Enabling the Policy Engine
 
