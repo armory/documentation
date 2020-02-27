@@ -150,6 +150,9 @@ If you have configured Spinnaker to send Slack notifications for pipeline events
 $ hal armory dinghy slack enable --channel my-channel
 ```
 
+![Slack Notifications](/images/dinghy-slack-notifications.png)
+
+
 For a complete listing of options check out the [Armory Halyard](/spinnaker/armory_halyard/#hal-armory-dinghy-edit) documentation.
 
 ### Other Template Formats
