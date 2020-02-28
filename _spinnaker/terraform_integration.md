@@ -225,7 +225,7 @@ After you configure your Git repository and Gate proxy access, perform the follo
 
 For a tour of the Terraform Integration Stage UI, see the [Terraform Integration UI video](https://www.youtube.com/watch?v=Xsjql3g-wtU).
 
-![Terraform Stage in Deck](/images/terraformer-ui-stage.png)
+![Terraform Stage in Deck](/images/terraform_stage_ui.png)
 
 The Terraform Integration exposes a new stage in Spinnaker called **Terraform**. This stage can perform Terraform actions such as `plan` and `destroy` as part of your Spinnaker pipeline. 
 
@@ -247,7 +247,8 @@ To use the stage, perform the following steps:
       * **Targets**: Scope execution to a certain subset of resources.
       * **Workspace**: [Terraform workspace](https://www.terraform.io/docs/state/workspaces.html) to use. The workspace gets created if it doesn't already exist.
     * **Main Terraform Artifact**
-      * **Expected Artifact**: Required. Select or define only one `git/repo` type artifact. 
+      * **Expected Artifact**: Required. Select or define only one `git/repo` type artifact, which is a **custom-artifact**.
+        ![Terraform git repo artifact](/images/terraform-git-repo.png) 
         * **Account**: The account to use for your artifact.
         * **URL**: If you use a GitHub artifact, make sure you supply the _API_ URL of the file, not the URL from the `Raw` GitHub page. Use the following examples as a reference for the API URL:
           
