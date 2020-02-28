@@ -113,7 +113,7 @@ All providers available in Dinghy are supported. Please refer to the list below 
 * `bitbucket-cloud`
 * `bitbucket-server`
 
-This configuration goes inside your profiles/dinghy-local.yml
+This configuration goes inside your `profiles/dinghy-local.yml` file: 
 
 ```yaml
 repoConfig:
