@@ -113,6 +113,8 @@ All providers available in Dinghy are supported. Please refer to the list below 
 * `bitbucket-cloud`
 * `bitbucket-server`
 
+This configuration goes inside your `profiles/dinghy-local.yml` file: 
+
 ```yaml
 repoConfig:
   - branch: some_branch
@@ -147,6 +149,9 @@ If you have configured Spinnaker to send Slack notifications for pipeline events
 ```bash
 $ hal armory dinghy slack enable --channel my-channel
 ```
+
+![Slack Notifications](/images/dinghy-slack-notifications.png)
+
 
 For a complete listing of options check out the [Armory Halyard](/spinnaker/armory_halyard/#hal-armory-dinghy-edit) documentation.
 
