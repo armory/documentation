@@ -157,43 +157,16 @@ Armory ships the following versions of the Terraform binary as part of the Terra
 
 **Note**: Terraform binaries are verified by checksum and with Hashicorp's GPG key before being installed into our release.
 
-When creating a Terraform Integration stage, you can either select a specific available version or select **SYSTEM_DEFINED**. 
-The **SYSTEM_DEFINED** variable is useful if you have standardized on a version of Terraform. Additionally, all Terraform stages within a Pipeline that affect state must use the same Terraform version.
+When creating a Terraform Integration stage, pipeline creators select a specific available version: 
 
 ![Terraform version to use](/images/terraform_version.png)
 
-To allow Pipeline creators to use the **SYSTEM_DEFINED** value for a Terraform Integration stage, specify the path to the Terraform version:
+Note that all Terraform stages within a Pipeline that affect state must use the same Terraform version.
 
-1. Create a file named `terraformer-local.yml` in the following directory: `.hal/default/profiles`.
-2. Add the following YAML to the file:
-
-    ```yml
-    terraform:
-      executablePath: /terraform/versions/<version>/terraform
-    ```
-Replace <version> with one of the Terraform versions that Armory Spinnaker ships with. 
 
 ### Configuring Gate proxy to access Terraform logs
 
-Terraform's primary source of feedback are its logs. You can display Terraform logs to users in Deck. To do this, configure Gate with a proxy configuration. The proxy allows you to configure stages with a direct link to the output for Terraform `plan` or `apply`.
-Before you start, ensure that the `~/.hal/default/profiles/` directory exists and contains `gate-local.yml`. If the directory and file do not exist, run the following commands:
-
-```
-sudo mkdir ~/.hal/default/profiles/
-vi ~/.hal/default/profiles/gate-local.yml
-```
-
-Add the following configuration to `~/.hal/default/profiles/gate-local.yml`:
-
-```yaml
-    proxies:
-      - id: terraform
-        uri: http://spin-terraformer:7088
-        methods:
-          - GET
-```
-
-When a user runs a pipeline that contains a Terraform Integration stage, the logs appear on the **Pipelines** page of Deck as part of the **Execution Details**.
+Terraform's primary source of feedback are its logs. When a user runs a pipeline that contains a Terraform Integration stage, the logs appear on the **Pipelines** page of Deck as part of the **Execution Details**.
 
 ### Enabling the Terraform Integration UI
 
@@ -238,7 +211,7 @@ To use the stage, perform the following steps:
 5. Configure the Terraform Integration stage.
     The available fields may vary slightly depending on what you configure for the stage: 
     * **Basic Settings**
-      * **Terraform Version**:  Terraform version to use. **SYSTEM_DEFINED** refers to the Terraform version set in `terraformer-local.yml`. All Terraform stages within a pipeline that modify state (apply, output, destroy) must use the same version.
+      * **Terraform Version**:  Terraform version to use. All Terraform stages within a pipeline that modify state (apply, output, destroy) must use the same version.
       * **Action**: Terraform action to perform. You can select any of the following actions:
         * **Plan**: The output of the plan command is saved to a base64-encoded Spinnaker artifact and is injected into context.  You can use this artifact with a webhook to send the plan data to an external system or to use it in an `apply` stage. Optionally, you can select **Plan for Destroy** to view what Terraform destroys if you run the Destroy action.
         * **Apply**: Run `terraform apply`. Optionally, you can ignore state locking. Armory recommends you do not ignore state locking because it can lead to state corruption. Only use this setting if you understand the consequences. 
