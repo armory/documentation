@@ -195,8 +195,8 @@ If you do not yet have an S3 bucket, create the S3 bucket:
 5. Click "Next"
 6. Select the following two checkboxes:
 
-  * Keep all versions of an object in the same bucket
-  * Automatically encrypt objects when they are stored in S3
+     * Keep all versions of an object in the same bucket
+     * Automatically encrypt objects when they are stored in S3
 
 7. Click "Next"
 
