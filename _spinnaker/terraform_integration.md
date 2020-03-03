@@ -164,7 +164,7 @@ When creating a Terraform Integration stage, pipeline creators select a specific
 Note that all Terraform stages within a Pipeline that affect state must use the same Terraform version.
 
 
-### Configuring Gate proxy to access Terraform logs
+### Log access
 
 Terraform's primary source of feedback are its logs. When a user runs a pipeline that contains a Terraform Integration stage, the logs appear on the **Pipelines** page of Deck as part of the **Execution Details**.
 
