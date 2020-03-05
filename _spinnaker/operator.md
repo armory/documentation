@@ -19,7 +19,7 @@ Operator has two distinct modes you can install and use:
 - **Basic**: Operator in basic mode installs Spinnaker into a single namespace without `ValidatingAdmissionWebhook` for doing preflight checks.
 - **Cluster**: Operator in cluster mode installs Spinnaker across namespaces with `ValidatingAdmissionWebhook` for doing preflight checks. This mode requires a `ClusterRole`.
 
-If you want to get started quickly, the process to install Operator and Spinnaker involves running the following commands: 
+If you want to get started quickly, install Operator and Spinnaker by running the following commands: 
 
 ```
 # Pick a release from https://github.com/armory-io/spinnaker-operator/releases (or clone the repo https://github.com/armory-io/armory-operator and use the master branch for the latest development work)
@@ -188,7 +188,7 @@ Operator supports Kustomize, a templating engine for Kubernetes. Using Kustomize
     
     ```bash
     $ kubectl create ns <spinnaker-namespace>
-    $ kubectl build deploy/spinnaker/kustomize | kubectl -n <spinnaker-namespace> apply -f -
+    $ kustomize build deploy/spinnaker/kustomize | kubectl -n <spinnaker-namespace> apply -f -
     ```
     `<spinnaker-namespace>` is the `namespace` where you want to deploy Spinnaker.
 
