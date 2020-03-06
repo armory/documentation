@@ -638,3 +638,15 @@ In the template, the access path for that variable is: `.RawData.pusher.name`.
 {% endraw %}```
 
 *Note: The structure of the webhook data passed to Dinghy's template engine depends on the Git service that sends the webhook. This example uses a GitHub webhook.*
+
+
+## Known Issue:
+
+If Dinghy crashes on start up and you encounter an error in Dinghy similar to:
+`time="2020-03-06T22:35:54Z" level=fatal msg="failed to load configuration: 1 error(s) decoding:\n\n* 'Logging.Level' expected type 'string', got unconvertible type 'map[string]interface {}'"`
+
+You have probably configured global logging levels with `spinnaker-local.yml`. The work around is to create a `.hal/default/profiles/dinghy-local.yml` with the following:
+```
+Logging:
+  Level: INFO
+```
