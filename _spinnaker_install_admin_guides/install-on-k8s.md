@@ -32,7 +32,7 @@ Note: This document is focused on Armory Spinnaker, but can be adapted to instal
 
 This document assumes the following:
 
-* We have a Kubernetes cluster up and running, with at least 4x CPUs and 8 GiB of memory.  (This is the bare minimum to install and run Spinnaker; depending on our Spinnaker workload, we may need more resources)
+* We have a Kubernetes cluster up and running, with at least 4x CPUs and 12 GiB of memory.  (This is the bare minimum to install and run Spinnaker; depending on our Spinnaker workload, we may need more resources)
 * We have `kubectl` installed and are able to access and create Kubernetes resources
 * We have access to an object storage bucket, or the ability to create an object storage bucket.  _For the initial version of this document, we cover Amazon S3 **only**._ 
 * We have access to an IAM role or user with access to the S3 bucket or can create an IAM role or user with access to the S3 bucket.
@@ -40,7 +40,7 @@ This document assumes the following:
 This document is written with the following workflow in mind:
 
 * We have access to the Kubernetes API, with `kubectl` configured and able to access the cluster, from our workstation
-* We will create a Kubernetes namespace to run Halyard (the Spinnaker installer) and Spinnaker in
+* We will create a Kubernetes namespace where we will run both Halyard (the Spinnaker installer) and Spinnaker
 * In our namespace, we will grant the `default` Kubernetes ServiceAccount the `cluster-admin` ClusterRole (which will give it full permissions within our namespace, but not on other namespaces; for details, see the [Kubernetes RBAC documentation](https://kubernetes.io/docs/reference/access-authn-authz/rbac/))
 * In our namespace, we will create a PVC (PersistentVolumeClaim), which will be used for persistent Spinnaker cluster configuration (the "halyard configuration" or "halconfig")
 * In our namespace, we will create a StatefulSet to run Halyard (the Spinnaker "installer").  The PVC will be mounted to this StatefulSet.
@@ -78,19 +78,19 @@ We must be able to connect to the Kubernetes cluster via `kubectl`.  Depending o
 
 ### Connecting to an AWS EKS cluster
 
-If we're using an AWS EKS cluster, we must be able to connect to the EKS cluster. This assumes we have already configured the `aws` CLI with credentials and a default region / availability zone (see installation directions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) and configuration directions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)).  You most likely want the V2 version of the AWS CLI.
+If we're using an AWS EKS cluster, we must be able to deploy resources to it. This assumes we have already configured the `aws` CLI with credentials and a default region / availability zone (see installation directions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) and configuration directions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)).  You most likely want the V2 version of the AWS CLI.
 
-1. If we have access to the role that created the EKS cluster, we can update our kubeconfig with access to our Kubernetes cluster with this command:
+If we have access to the role that created the EKS cluster, we can update our kubeconfig with access to our Kubernetes cluster with this command:
 
-   ```bash
-   aws eks update-kubeconfig --name <EKS_CLUSTER_NAME>
-   ```
+```bash
+aws eks update-kubeconfig --name <EKS_CLUSTER_NAME>
+```
 
-1. From here, we can validate access to the cluster with this command (should receive a number of namespaces)
+From here, we can validate access to the cluster with this command (should receive a number of namespaces)
 
-   ```bash
-   kubectl get namespaces
-   ```
+```bash
+kubectl get namespaces
+```
 
 ### Connecting to other Kubernetes clusters
 
@@ -99,123 +99,6 @@ If we've stood up Kubernetes on AWS with KOPS or another Kubernetes tool, ensure
 ```bash
 kubectl get namespaces
 ```
-
-## Front50 Object Store
-
-The Spinnaker microservice Front50 requires a backing store to store Spinnaker Application and Pipeline Definitions.  There are a number of options for this:
-
-* Amazon S3 Bucket
-* Google Cloud Storage (GCS) Bucket
-* Azure Storage Bucket
-* Minio
-* MySQL
-
-The current version of this document only covers S3.  GCS, AZS, Minio, and MySQL will be forthcoming
-
-### Using S3 for Front50
-
-#### Creating the S3 bucket
-
-If we do not yet have an S3 bucket, create an S3 bucket:
-
-1. Log into the AWS Console (web UI)
-2. Navigate to the S3 Console (Click on "Services" at the top, and then on "S3" under "Storage")
-3. Click on "Create Bucket"
-4. Specify a globally unique name for this bucket, in our AWS region of choice, following our organization's naming convention (if applicable). For this document, we will use, `spinnaker-abcxyz`.
-5. Click "Next"
-6. Select the following two checkboxes:
-
-     * Keep all versions of an object in the same bucket
-     * Automatically encrypt objects when they are stored in S3
-
-7. Click "Next"
-
-8. Do not add any additional permissions, unless specified by our organization. Click "Next"
-
-9. Click "Create bucket"
-
-Spinnaker (the `front50` service, specifically) will need access to our newly-created bucket. There are a number of ways to achieve this. This document describes two mechanisms to do this.
-
-By default, Spinnaker will store all Spinnaker information in a folder called `front50` in our bucket. We can optionally specify a different directory (for example, if we're using a pre-existing or shared S3 bucket).
-
-#### Create an IAM user, using an inline policy
-
-We can create an IAM user with credentials, and provide that to Spinnaker via Halyard
-
-1. Log into the AWS Console (Web UI)
-2. Navigate to the IAM Console (Click on "Services" at the top, and then on "IAM" under "Security, Identity, & Compliance")
-3. Click on "Users" on the left
-4. Click on "Add user"
-5. Give our user a distinct name, per our organization's naming conventions. For this document, we will use `s3-spinnaker-abcxyz`
-6. Click on "Programmatic access"
-7. We will not be adding a distinct policy to this user. Click on "Next: Tags". _We may receive a warning about how there are no policies attached to this user - this warning can be ignored._
-8. Optionally, add tags, then click on "Next: Review"
-9. Click "Create user"
-10. Save the Access Key ID and Secret Access Key - these will be used later, during Halyard configuration
-11. Click "Close"
-
-Then, add an inline policy to our IAM user:
-
-1. Click on our newly-created IAM user
-2. Click on "Add inline policy" (on the right)
-3. Click on the "JSON" tab
-4. Add this text (replace `s3-spinnaker-abcxyz` with the name of our bucket)
-
-   ```json
-   {
-     "Version": "2012-10-17",
-     "Statement": [
-       {
-         "Effect": "Allow",
-         "Action": "s3:*",
-         "Resource": [
-           "arn:aws:s3:::spinnaker-abcxyz",
-           "arn:aws:s3:::spinnaker-abcxyz/*"
-         ]
-       }
-     ]
-   }
-   ```
-
-5. Click on "Review Policy"
-
-6. Give our inline policy some name. For example `s3-spinnaker-abcxyz`
-
-7. Click "Create Policy"
-
-#### Create an IAM policy attached to the Kubernetes nodes, using an inline policy
-
-Alternately, we can attach an IAM policy to the role attached to our Kubernetes nodes.
-
-1. Log into the AWS Console (Web UI)
-2. Navigate to EC2 (Click on "Services" at the top, and then on "EC2" under "Compute")
-3. Click on one of our Kubernetes nodes
-4. In the bottom section, look for "IAM role" and click on the role
-5. Click on "Add inline policy" (on the right)
-6. Click on the "JSON" tab
-7. Add this text (replace `s3-spinnaker-abcxyz` with the name of our bucket)
-
-   ```json
-   {
-     "Version": "2012-10-17",
-     "Statement": [
-       {
-         "Effect": "Allow",
-         "Action": "s3:*",
-         "Resource": [
-           "arn:aws:s3:::spinnaker-abcxyz",
-           "arn:aws:s3:::spinnaker-abcxyz/*"
-         ]
-       }
-     ]
-   }
-   ```
-
-8. Click on "Review Policy"
-
-9. Give our inline policy some name. For example `s3-spinnaker-abcxyz`
-
-10. Click "Create Policy"
 
 ## Start the Halyard StatefulSet
 
@@ -349,15 +232,16 @@ hal config provider kubernetes account add spinnaker \
   --provider-version v2 \
   --only-spinnaker-managed true \
   --service-account true \
-  --namespaces spinnaker # Update the 'namespaces' field with our namespace, if relevant
+  --namespaces spinnaker 
+  # Update the 'namespaces' field with our namespace, if relevant
 ```
 
 Once an account has been created (with `account add`), you can _edit_ it by running the command with `edit` instead of `add`, with the same flags.  For example, if you need to support multiple namespaces, you could run this:
 
 ```bash
-
 hal config provider kubernetes account edit spinnaker \
-  --namespaces spinnaker,dev,stage,prod # Make sure to include all namespace you need to support
+  --namespaces spinnaker,dev,stage,prod 
+  # Make sure to include all namespace you need to support
 ```
 
 **Important: This will by default limit our Spinnaker to deploying to the `spinnaker` namespace. If we want to be able to deploy to other namespaces, either add a second cloud provider target or grant the `default` service account in our namespace permissions on additional namespaces and change the `--namespaces` flag.**
@@ -368,7 +252,8 @@ Use the Halyard `hal` command line tool to configure Halyard to install Spinnake
 hal config deploy edit \
   --type distributed \
   --account-name spinnaker \
-  --location spinnaker # Update the 'location' with our namespace, if relevant
+  --location spinnaker 
+  # Update the 'location' with our namespace, if relevant
 ```
 
 ## Enable and configure the 'Artifact' Feature
@@ -385,61 +270,182 @@ hal config artifact http enable
 
 (In order to add specific types of artifacts, there are further configuration items that must be completed. For now, it is sufficient to just turn on the artifacts feature with the http artifact provider. This will allow Spinnaker to retrieve files via unauthenticated http.)
 
-## Configure Spinnaker to use our object storage bucket
+## Configure Application and Pipeline Configuration Storage
 
-Front50 will use an object storage bucket to store Application and Pipeline configuration (it also supports MySQL, which will be added later).  For the current iteration of this document, we'll use S3.
+The Spinnaker microservice Front50 requires a backing store to store Spinnaker Application and Pipeline Definitions.  There are a number of options for this:
+
+* Amazon S3 Bucket
+* Google Cloud Storage (GCS) Bucket
+* Azure Storage Bucket
+* Minio
+* MySQL
+
+**You _must_ set up a backing store for Spinnaker to use for persistent Application and Pipeline Configuration**
+
+The current version of this document only covers S3.  GCS, AZS, Minio, and MySQL will be added in future iterations of the document.
 
 ### Using S3 for Front50
 
-Use the Halyard `hal` command line tool to configure Halyard to configure Spinnaker to use our S3 bucket
+Spinnaker (the <code>Front50</code> service, specifically) will need access to an S3 bucket. There are a number of ways to achieve this.
 
-#### S3 using an IAM User
+This section describes how to do the following:
+* Create an S3 bucket
+* (Option 1) Add an IAM Policy to an IAM Role, granting access to the S3 bucket
+* (Option 2) Create an IAM User with access to the S3 bucket
+* Configure Spinnaker to use the IAM User or Role to access the S3 bucket
 
-If we created an IAM user, Front50 will use that IAM user (using an AWS access key and secret access key) to access our S3 bucket.
+<details><summary><b>Click to expand</b></summary>
 
-```bash
-# Update these with the information from the bucket that we created
+<details><summary>Creating an S3 bucket</summary>
+
+<p>If we do not yet have an S3 bucket, create an S3 bucket.</p>
+
+<p>By default, Spinnaker will store all Spinnaker information in a folder called <code>front50</code> in our bucket. We can optionally specify a different directory (for example, if we're using a pre-existing or shared S3 bucket).</p>
+
+<ol>
+ <li>Log into the AWS Console (web UI)</li>
+ <li>Navigate to the S3 Console (Click on "Services" at the top, and then on "S3" under "Storage")</li>
+ <li>Click on "Create Bucket"</li>
+ <li>Specify a globally unique name for this bucket, in our AWS region of choice, following our organization's naming convention (if applicable). For this document, we will use, <code>spinnaker-abcxyz</code>.</li>
+ <li>Click "Next"</li>
+ <li>Select the following two checkboxes:
+    <ul>
+      <li>Keep all versions of an object in the same bucket</li>
+      <li>Automatically encrypt objects when they are stored in S3</li>
+    </ul>
+  </li>
+ <li>Click "Next"</li>
+ <li>Do not add any additional permissions, unless specified by our organization. Click "Next"</li>
+ <li>Click "Create bucket"</li>
+</ol>
+
+</details>
+
+<details><summary>(Option 1) S3 using the IAM Policy/Role</summary>
+
+<p>First, we will identify the role attached to our Kubernetes instance and attach an inline IAM policy to it, granting access to our S3 bucket.</p>
+
+<ol>
+ <li>Log into the AWS Console (Web UI)</li>
+ <li>Navigate to EC2 (Click on "Services" at the top, and then on "EC2" under "Compute")</li>
+ <li>Click on one of our Kubernetes nodes</li>
+ <li>In the bottom section, look for "IAM role" and click on the role</li>
+ <li>Click on "Add inline policy" (on the right)</li>
+ <li>Click on the "JSON" tab</li>
+ <li>Add this text (replace <code>spinnaker-abcxyz</code> with the name of our bucket)</li>
+
+<pre class="highlight"><code>{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::spinnaker-abcxyz",
+        "arn:aws:s3:::spinnaker-abcxyz/*"
+      ]
+    }
+  ]
+}
+</code></pre>
+
+ <li>Click on "Review Policy"</li>
+ <li>Give our inline policy some name. For example `s3-spinnaker-abcxyz`</li>
+ <li>Click "Create Policy"</li>
+</ol>
+
+</details>
+
+<details><summary>(Option 2) S3 using an IAM User</summary>
+
+<p>First, we will create the IAM user and grant it permissions on our bucket.</p>
+
+<ol>
+  <li>Log into the AWS Console (Web UI)</li>
+  <li>Navigate to the IAM Console (Click on "Services" at the top, and then on "IAM" under "Security, Identity, & Compliance")</li>
+  <li>Click on "Users" on the left</li>
+  <li>Click on "Add user"</li>
+  <li>Give our user a distinct name, per our organization's naming conventions. For this document, we will use <code>spinnaker-abcxyz</code></li>
+  <li>Click on "Programmatic access"</li>
+  <li>We will not be adding a distinct policy to this user. Click on "Next: Tags". <i>We may receive a warning about how there are no policies attached to this user - this warning can be ignored.</i></li>
+  <li>Optionally, add tags, then click on "Next: Review"</li>
+  <li>Click "Create user"</li>
+  <li>Save the Access Key ID and Secret Access Key - these will be used later, during Halyard configuration</li>
+  <li>Click "Close"</li>
+</ol>
+
+<p>Then, add an inline policy to our IAM user:</p>
+
+<ol>
+  <li> Click on our newly-created IAM user</li>
+  <li>Click on "Add inline policy" (on the right)</li>
+  <li>Click on the "JSON" tab</li>
+  <li>Add this text (replace <code>s3-spinnaker-abcxyz</code> with the name of our bucket)</li>
+
+<pre class="highlight"><code>{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::spinnaker-abcxyz",
+        "arn:aws:s3:::spinnaker-abcxyz/*"
+      ]
+    }
+  ]
+}
+</code></pre>
+
+  <li>Click on "Review Policy"</li>
+  <li>Give our inline policy some name. For example `s3-spinnaker-abcxyz`</li>
+  <li>Click "Create Policy"</li>
+</ol>
+
+</details>
+
+<details><summary>Configure Spinnaker to access S3 with the IAM Role or User</summary>
+
+<p>Spinnaker will need information about which bucket to access.  In addition, if using an IAM User to access to the bucket, Spinnaker will need credentials for the IAM User</p>
+
+<pre class="highlight"><code># Update these with the information from the bucket that we created
 export BUCKET_NAME=spinnaker-abcxyz
 export REGION=us-west-2
-export ACCESS_KEY_ID=<access-key>
 
 # This will prompt for the secret key
 hal config storage s3 edit \
-    --bucket ${BUCKET_NAME} \
-    --access-key-id ${ACCESS_KEY_ID} \
-    --secret-access-key \
-    --region ${REGION}
+  --bucket ${BUCKET_NAME} \
+  --region ${REGION}
 
 hal config storage edit --type s3
-```
+</code></pre>
 
-#### S3 using an IAM Instance Role
+If we are using an IAM User, then we need to additionally provide Spinnaker with the S3 credentials for our IAM User:
 
-If we attached an IAM policy with access to S3 to the Kubernetes nodes where Spinnaker is running (basically, if our Front50 container can access S3 without explicit credentials), we don't have to provide the credentials:
-
-```bash
-# Update these with the information from the bucket that we created
-export BUCKET_NAME=spinnaker-abcxyz
-export REGION=us-west-2
+<pre class="highlight"><code># Update this with the AWS Access Key ID
+export ACCESS_KEY_ID=AKIAWWWWXXXXYYYYZZZZ
 
 # This will prompt for the secret key
 hal config storage s3 edit \
-    --bucket ${BUCKET_NAME} \
-    --region ${REGION}
-
-hal config storage edit --type s3
-```
-
-#### If we want to use a specific folder in our S3 bucket
+  --access-key-id ${ACCESS_KEY_ID} \
+  --secret-access-key
+</code></pre>
 
 By default, Halyard will configure Spinnaker to use the folder `front50` in our S3 bucket. We can configure it to use a different folder with this command:
 
-```bash
-ROOT_FOLDER=not_front50
-hal config storage s3 edit --root-folder ${ROOT_FOLDER}
-```
+<pre class="highlight"><code># Replace with the root folder within our bucket to use
+ROOT_FOLDER=spinnaker_apps
+hal config storage s3 edit \
+  --root-folder ${ROOT_FOLDER}
+</code></pre>
+
+</details>
+
+</details>
 
 ## Set up Gate to listen on the `/api/v1` path
+
+The Spinnaker microservice "Gate" serves as the API for Spinnaker.  We want to configure it to listen on a specific path, rather than requiring different hosts or ports to differentiate it from the UI of Spinnaker.
 
 Create these two files (you may have to create several directories):
 
@@ -493,7 +499,7 @@ And then we can select the version with this:
 # Replace with version of choice:
 export VERSION=$(hal version latest -q)
 echo ${VERSION}
-hal config version edit --version $VERSION
+hal config version edit --version ${VERSION}
 ```
 
 ## Install Spinnaker
@@ -672,14 +678,14 @@ Configuration of TLS certificates for ingresses is often very environment-specif
 * Configure the ingress(es) so that NGINX (or our ingress) terminates TLS using the certificate(s)
 * Update Spinnaker to be aware of the new TLS endpoints (note `https` instead of `http`)
 
-  ```bash
-  SPINNAKER_ENDPOINT=https://spinnaker.domain.com
+```bash
+SPINNAKER_ENDPOINT=https://spinnaker.domain.com
 
-  hal config security ui edit --override-base-url ${SPINNAKER_ENDPOINT}
-  hal config security api edit --override-base-url ${SPINNAKER_ENDPOINT}/api/v1
+hal config security ui edit --override-base-url ${SPINNAKER_ENDPOINT}
+hal config security api edit --override-base-url ${SPINNAKER_ENDPOINT}/api/v1
 
-  hal deploy apply
-  ```
+hal deploy apply
+```
 
 ## Next Steps
 
