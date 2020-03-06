@@ -315,22 +315,22 @@ This section describes how to do the following:
 
 <p>By default, Spinnaker stores all Spinnaker information in a folder called <code>front50</code> in your bucket. Optionally, you can specify a different directory. You might want to do this if you're using an existing or shared S3 bucket..</p>
 
-<p>Perform the following steps:
+<p>Perform the following steps:</p>
 <ol>
  <li>Log into the AWS Console (web UI).</li>
- <li>Navigate to the S3 Console. Click on **Services** > **Storage** > **S3**.</li>
- <li>Click on **Create Bucket**.</li>
+ <li>Navigate to the S3 Console. Click on <b>Services</b> > <b>Storage</b> > <b>S3</b>.</li>
+ <li>Click on <b>Create Bucket</b>.</li>
  <li>Specify a globally unique name for this bucket in your AWS region of choice. If your organization has a standard naming convention, follow it. For its examples, this guide uses <code>spinnaker-abcxyz</code>.</li>
- <li>Click **Next**.</li>
+ <li>Click <b>Next</b>.</li>
  <li>Select the following two checkboxes:
     <ul>
       <li>Keep all versions of an object in the same bucket</li>
       <li>Automatically encrypt objects when they are stored in S3</li>
     </ul>
   </li>
- <li>Click **Next**.</li>
- <li>Do not add any additional permissions unless required by your organization. Click **Next**.</li>
- <li>Click **Create bucket**.</li>
+ <li>Click <b>Next</b>.</li>
+ <li>Do not add any additional permissions unless required by your organization. Click <b>Next</b>.</li>
+ <li>Click <b>Create bucket</b>.</li>
 </ol>
 
 </details>
@@ -341,12 +341,11 @@ This section describes how to do the following:
 
 <ol>
  <li>Log into the AWS Console (Web UI).</li>
- <li>Navigate to EC2. Click on **Services** > **Compute** > **EC2**.</li>
- <li>Click on one of our Kubernetes nodes</li>
- <li>In the bottom section, look for "IAM role" and click on the role</li>
- <li>Click on "Add inline policy" (on the right)</li>
- <li>Click on the "JSON" tab</li>
- <li>Add this text (replace <code>spinnaker-abcxyz</code> with the name of our bucket)</li>
+ <li>Navigate to EC2. Click on <b>Services</b> > <b>Compute</b> > <b>EC2</b>.</li>
+ <li>Click on one of your Kubernetes nodes.</li>
+ <li>In the bottom section, look for <b>IAM role</b> and click on the role.</li>
+ <li>Click on <b>Add inline policy</b>.</li>
+ <li>On the <b>JSON</b> tab, add the following snippet:</li>
 
 <pre class="highlight"><code>{
   "Version": "2012-10-17",
@@ -363,38 +362,36 @@ This section describes how to do the following:
 }
 </code></pre>
 
- <li>Click on "Review Policy"</li>
- <li>Give our inline policy some name. For example `s3-spinnaker-abcxyz`</li>
- <li>Click "Create Policy"</li>
+ <li>Click on <b>Review Policy</b>.</li>
+ <li>Give your inline policy a name, such as <code>s3-spinnaker-abcxyz</code>.</li>
+ <li>Click <b>Create Policy</b></li>
 </ol>
-
 </details>
 
 <details><summary>(Option 2) S3 using an IAM User</summary>
 
-<p>First, we will create the IAM user and grant it permissions on our bucket.</p>
+<p>First, create the IAM user and grant it permissions on your bucket:</p>
 
 <ol>
-  <li>Log into the AWS Console (Web UI)</li>
-  <li>Navigate to the IAM Console (Click on "Services" at the top, and then on "IAM" under "Security, Identity, & Compliance")</li>
-  <li>Click on "Users" on the left</li>
-  <li>Click on "Add user"</li>
-  <li>Give our user a distinct name, per our organization's naming conventions. For this document, we will use <code>spinnaker-abcxyz</code></li>
-  <li>Click on "Programmatic access"</li>
-  <li>We will not be adding a distinct policy to this user. Click on "Next: Tags". <i>We may receive a warning about how there are no policies attached to this user - this warning can be ignored.</i></li>
-  <li>Optionally, add tags, then click on "Next: Review"</li>
-  <li>Click "Create user"</li>
-  <li>Save the Access Key ID and Secret Access Key - these will be used later, during Halyard configuration</li>
-  <li>Click "Close"</li>
+  <li>Log into the AWS Console (Web UI).</li>
+  <li>Navigate to the IAM Console. Click on <b>Services</b> > <b>Security, Identity, & Compliance</b> > <b>IAM</b>.</li>
+  <li>Click on <b>Users</b> on the left.</li>
+  <li>Click on <b>Add user</b>.</li>
+  <li>Give your user a distinct name based on your organization's naming conventions. This guide uses <code>spinnaker-abcxyz</code>.</li>
+  <li>Click on <b>Programmatic access</b>.</li>
+  <li>For this guide, do not add a distinct policy to this user. Click on <b>Next: Tags</b>. <i>You may receive a warning about how there are no policies attached to this user. You can ignore this warning.</i></li>
+  <li>Optionally, add tags, then click on <b>Next: Review</b>.</li>
+  <li>Click <b>Create user</b>.</li>
+  <li>Save the Access Key ID and Secret Access Key. You need this information later during Halyard configuration.</li>
+  <li>Click <b>Close</b>.</li>
 </ol>
 
-<p>Then, add an inline policy to our IAM user:</p>
+<p>Then, add an inline policy to your IAM user:</p>
 
 <ol>
-  <li> Click on our newly-created IAM user</li>
-  <li>Click on "Add inline policy" (on the right)</li>
-  <li>Click on the "JSON" tab</li>
-  <li>Add this text (replace <code>s3-spinnaker-abcxyz</code> with the name of our bucket)</li>
+  <li>Click on our newly-created IAM user.</li>
+  <li>Click on <b>Add inline policy</b> (on the right).</li>
+  <li>On the <b>JSON</b> tab, add the following snippet:</li>
 
 <pre class="highlight"><code>{
   "Version": "2012-10-17",
@@ -410,19 +407,19 @@ This section describes how to do the following:
   ]
 }
 </code></pre>
-
-  <li>Click on "Review Policy"</li>
-  <li>Give our inline policy some name. For example `s3-spinnaker-abcxyz`</li>
-  <li>Click "Create Policy"</li>
+<p>Replace <code>s3-spinnaker-abcxyz</code> with the name of your bucket.</p>
+  <li>Click on <b>Review Policy</b></li>
+  <li>Give your inline policy a name, for example <code>s3-spinnaker-abcxyz</code>.</li>
+  <li>Click <b>Create Policy</b></li>
 </ol>
 
 </details>
 
 <details><summary>Configure Spinnaker to access S3 with the IAM Role or User</summary>
 
-<p>Spinnaker will need information about which bucket to access.  In addition, if using an IAM User to access to the bucket, Spinnaker will need credentials for the IAM User</p>
+<p>Spinnaker needs information about which bucket to access.  Additionally, if you are using an IAM User to access the the bucket, Spinnaker needs credentials for the IAM User.</p>
 
-<pre class="highlight"><code># Update these with the information from the bucket that we created
+<pre class="highlight"><code># Update these snippets with the information for your bucket
 export BUCKET_NAME=spinnaker-abcxyz
 export REGION=us-west-2
 
@@ -434,7 +431,7 @@ hal config storage s3 edit \
 hal config storage edit --type s3
 </code></pre>
 
-If we are using an IAM User, then we need to additionally provide Spinnaker with the S3 credentials for our IAM User:
+If you are using an IAM User, then provide Spinnaker with the S3 credentials for your IAM User:
 
 <pre class="highlight"><code># Update this with the AWS Access Key ID
 export ACCESS_KEY_ID=AKIAWWWWXXXXYYYYZZZZ
@@ -445,7 +442,7 @@ hal config storage s3 edit \
   --secret-access-key
 </code></pre>
 
-By default, Halyard will configure Spinnaker to use the folder `front50` in our S3 bucket. We can configure it to use a different folder with this command:
+By default, Halyard configures Spinnaker to use the folder `front50` in your S3 bucket. You can configure it to use a different folder with this command:
 
 <pre class="highlight"><code># Replace with the root folder within our bucket to use
 ROOT_FOLDER=spinnaker_apps
@@ -459,7 +456,7 @@ hal config storage s3 edit \
 
 ## Set up Gate to listen on the `/api/v1` path
 
-The Spinnaker microservice "Gate" serves as the API for Spinnaker.  We want to configure it to listen on a specific path, rather than requiring different hosts or ports to differentiate it from the UI of Spinnaker.
+The Spinnaker microservice "Gate" serves as the API gateway for Spinnaker.  Configure it to listen on a specific path rather than requiring different hosts or ports to differentiate it from the UI of Spinnaker.
 
 Create these two files (you may have to create several directories):
 
@@ -477,7 +474,7 @@ Create the file `/home/spinnaker/.hal/default/service-settings/gate.yml`:
 healthEndpoint: /api/v1/health
 ```
 
-We can copy/paste this to automatically create these two files:
+You can copy/paste this snippet to automatically create these two files:
 
 ```bash
 mkdir -p /home/spinnaker/.hal/default/{profiles,service-settings}
@@ -495,19 +492,19 @@ EOF
 
 ## Select the Spinnaker version to install
 
-Before Halyard will install Spinnaker, we should specify the version of Spinnaker we want to use.
+Before you use Halyard to install Spinnaker, specify the version of Spinnaker you want to use.
 
-We can get a list of available versions of spinnaker with this command:
+You can get a list of available versions of Spinnaker with this command:
 
 ```bash
 hal version list
 ```
 
-_If we are installing Armory Spinnaker, we will get a version that starts with `2.x.x`_
+* If you are installing Armory Spinnaker using Armory's Halyard, the command returns a version that starts with `2.x.x`
 
-_If we are installing OSS Spinnaker and using `gcr.io/spinnaker-marketplace/halyard:stable`, we will get a version that starts with `1.x.x`_
+* If you are installing OSS Spinnaker and using `gcr.io/spinnaker-marketplace/halyard:stable`, the command returns a version that starts with `1.x.x`
 
-And then we can select the version with this:
+Select the version with the following:
 
 ```bash
 # Replace with version of choice:
@@ -518,19 +515,19 @@ hal config version edit --version ${VERSION}
 
 ## Install Spinnaker
 
-Now that our halconfig is completely configured for the initial Spinnaker, we can tell Halyard to actually install Spinnaker:
+Now that our halconfig is configured, you can install Spinnaker:
 
 ```bash
 hal deploy apply --wait-for-completion
 ```
 
-Once this is complete, congratulations! Spinnaker is installed. Now we have to access and expose it.
+Once this is complete, congratulations! Spinnaker is installed. Keep going to learn how to access Spinnaker.
 
 ### Connect to Spinnaker using `kubectl port-forward`
 
-If we have kubectl on a local machine with access to our Kubernetes cluster, we can test the status of our Spinnaker instance by doing a port-forward:
+If you have `kubectl` on a local machine with access to your Kubernetes cluster, you can test the status of your Spinnaker instance by doing a port-forward.
 
-First, tell Spinnaker about its local endpoint for localhost:8084/api/v1:
+First, tell Spinnaker about its local endpoint for `localhost:8084/api/v1`:
 
 ```bash
 hal config security api edit --override-base-url http://localhost:8084/api/v1
@@ -538,7 +535,7 @@ hal config security api edit --override-base-url http://localhost:8084/api/v1
 hal deploy apply --wait-for-completion
 ```
 
-Wait for the pods to stand up.  Then set up two port forwards:
+Wait for the pods get in a running state. Then, set up two port forwards, one for Gate (the API gateway) and one for Deck (the Spinnaker UI):
 
 ```bash
 NAMESPACE=spinnaker
@@ -546,52 +543,51 @@ kubectl -n ${NAMESPACE} port-forward svc/spin-deck 9000 &
 kubectl -n ${NAMESPACE} port-forward svc/spin-gate 8084 &
 ```
 
-Then, we can access Spinnaker at <http://localhost:9000>
+Then, you can access Spinnaker at `http://localhost:9000`.
 
-(If we are doing this on a remote machine, this will not work because our browser attempts to access localhost on our local workstation rather than on the remote machine where the port is forwarded)
+If you are doing this on a remote machine, this does not work because your browser attempts to access `localhost` on your local workstation rather than on the remote machine where the port is forwarded.
 
 __Note:__ Even if the `hal deploy apply` command returns successfully, the
 installation may not be complete yet. This is especially the case with
-distributed Kubernetes installs. If we see errors such as `Connection refused`,
-the containers may not be available yet. We can either wait
+distributed Kubernetes installs. If you see errors such as `Connection refused`,
+the containers may not be available yet. Either wait
 or check the status of all of the containers using the command for our cloud provider
 (such as `kubectl get pods --namespace spinnaker`).
 
 ## Ingress
 
-There are a number of ways to expose Spinnaker, but basically there are these requirements:
+There several ways to expose Spinnaker, but there are a some basic requirements.
 
-* Given a domain name (or IP address) (such as spinnaker.domain.com or 55.55.55.55)
-* We should be able to reach the `spin-deck` service at the root of the domain (http://spinnaker.domain.com or http://55.55.55.55)
-* We should be able to reach the `spin-gate` service at the root of the domain (http://spinnaker.domain.com/api/v1 or http://55.55.55.55/api/v1)
-* We can use either http or https, as long as we use the same for both
-* We have to configure Spinnaker to be aware of its endpoints
+Given a domain name (or IP address) (such as spinnaker.domain.com or 55.55.55.55), you should be able to:
 
-This section details how to do so with the NGINX ingress controller.
+* Reach the `spin-deck` service at the root of the domain (`http://spinnaker.domain.com` or `http://55.55.55.55`)
+* Reach the `spin-gate` service at the root of the domain (`http://spinnaker.domain.com/api/v1` or `http://55.55.55.55/api/v1`)
+  
+You  can use either http or https, as long as you use the same for both. Additionally, you have to configure Spinnaker to be aware of its endpoints.
+
+The Install the NGINX ingress controller section details how to do that with the NGINX ingress controller.
 
 ### Install the NGINX ingress controller
 
-In order to expose Spinnaker to end users, we have perform the following actions:
+In order to expose Spinnaker to end users, perform the following actions:
 
-* Expose the spin-deck (UI) Kubernetes service on some URL endpoint
-* Expose the spin-gate (API) Kubernetes service on some URL endpoint
-* Update Spinnaker (via Halyard) to be aware of the new endpoints
+* Expose the spin-deck (UI) Kubernetes service on a URL endpoint
+* Expose the spin-gate (API) Kubernetes service on a URL endpoint
+* Update Spinnaker (using Halyard) to be aware of the new endpoints
 
-**If we already have an ingress controller, use that ingress controller instead.  We can check for the existence of the Nginx Ingress Controller by running `kubectl get ns` and looking for a namespace called `ingress-nginx`; if it exists, we likely already have an Nginx Ingress Controller running in our cluster**
+**If you already have an ingress controller, use that ingress controller instead.  You can check for the existence of the NGINX Ingress Controller by running `kubectl get ns` and looking for a namespace called `ingress-nginx`. If the namespace exists, you likely already have an NGINX Ingress Controller running in your cluster.**
 
-We're going to install the NGINX ingress controller on AWS (this uses the Layer 4 ELB, as indicated in the NGINX ingress controller [documentation](https://github.com/kubernetes/ingress-nginx/blob/master/docs/deploy/index.md#aws) - we can use other NGINX ingress controller configurations such as the Layer 7 load balancer per our organization's ingress policy.)
+The following instructions walk you through how to install the NGINX ingress controller on AWS. This uses the Layer 4 ELB, as indicated in the NGINX ingress controller [documentation](https://github.com/kubernetes/ingress-nginx/blob/master/docs/deploy/index.md#aws). You can use other NGINX ingress controller configurations, such as the Layer 7 load balancer, based on your organization's ingress policy.)
 
-(Both of these are configurable with Spinnaker, but the NGINX ingress controller is also generally much more configurable)
+(Both of these are configurable with Spinnaker, but the NGINX ingress controller is also generally much more configurable.)
 
-From the `workstation machine` (where `kubectl` is installed):
-
-Install the NGINX ingress controller components:
+From the `workstation machine` where `kubectl` is installed, install the NGINX ingress controller components:
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
 ```
 
-Install the NGINX ingress controller AWS-specific service:
+Then, install the NGINX ingress controller AWS-specific service:
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/aws/service-l4.yaml
@@ -606,33 +602,31 @@ Get the external IP for the NGINX ingress controller:
 kubectl get svc -n ingress-nginx
 ```
 
-We'll get a DNS name or IP address in the `EXTERNAL-IP` field.
+The command returns a DNS name or IP address in the `EXTERNAL-IP` field.
 
-If we stood up a new NGINX ingress controller, we can likely just use this value (IP address or DNS name) for our ingress.
+If you stood up a new NGINX ingress controller, you can likely use this value (IP address or DNS name) for your ingress.
 
-For example, if I get `abcd1234abcd1234abcd1234abcd1234-123456789.us-west-2.elb.amazonaws.com`, then I can do the following:
-* Use `abcd1234abcd1234abcd1234abcd1234-123456789.us-west-2.elb.amazonaws.com` for my SPINNAKER_ENDPOINT in the below steps
+For example, if the command returns `abcd1234abcd1234abcd1234abcd1234-123456789.us-west-2.elb.amazonaws.com`, then you can use `abcd1234abcd1234abcd1234abcd1234-123456789.us-west-2.elb.amazonaws.com` for the `SPINNAKER_ENDPOINT` in the following steps. If the command returns `55.55.55.55`, then use `55.55.55.55` for the `SPINNAKER_ENDPOINT`.
 
-For example, if I get `55.55.55.55`, then I can do the following:
-* Use `55.55.55.55` for my SPINNAKER_ENDPOINT in the below steps
+If you use an existing NGINX ingress controller or other services are likely to be using the same NGINX ingress controller, create a DNS entry that points at the NGINX ingress controller endpoint you are using for Spinnaker. You can create either a `CNAME Record` that points at the DNS name or an `A Record` that points at the IP address.
 
-If we are using an existing NGINX ingress controller, or other services are likely to be using the same NGINX ingress controller, we should create a DNS entry that points at our NGINX ingress controller endpoint. (either a `CNAME Record` that points at the DNS name, or an `A Record` that points at the IP address).
-
-For example, if I get `abcd1234abcd1234abcd1234abcd1234-123456789.us-west-2.elb.amazonaws.com`, then I can do the following:
+For the example `abcd1234abcd1234abcd1234abcd1234-123456789.us-west-2.elb.amazonaws.com` DNS name, do the following:
 * Create a CNAME pointing `spinnaker.domain.com` at `abcd1234abcd1234abcd1234abcd1234-123456789.us-west-2.elb.amazonaws.com`
-* Put `spinnaker.domain.com` in the `host` field in the below manifest (and uncomment it)
-* Use `spinnaker.domain.com` for my SPINNAKER_ENDPOINT in the below steps
-* (Alternately, for testing, create an `/etc/hosts` entry pointing spinnaker.domain.com at the IP address that `abcd1234abcd1234abcd1234abcd1234-123456789.us-west-2.elb.amazonaws.com` resolves to)
+* Put `spinnaker.domain.com` in the `host` field in the below manifest and uncomment it
+* Use `spinnaker.domain.com` for the `SPINNAKER_ENDPOINT` in the below steps
+* (Alternately, for testing, create an `/etc/hosts` entry pointing `spinnaker.domain.com` at the IP address that `abcd1234abcd1234abcd1234abcd1234-123456789.us-west-2.elb.amazonaws.com` resolves to)
 
-If I get `55.55.55.55`, then I can do the following:
-* Create an A Record pointing `spinnaker.domain.com` at `55.55.55.55`
-* Put `spinnaker.domain.com` in the `host` field in the below manifest (and uncomment it)
+For the `55.55.55.55` IP address example, do the following:
+* Create an `A Record` pointing to `spinnaker.domain.com` at `55.55.55.55`
+* Put `spinnaker.domain.com` in the `host` field in the below manifest and uncomment it
 * Use `spinnaker.domain.com` for my SPINNAKER_ENDPOINT in the below steps
 * (Alternately, for testing, create an `/etc/hosts` entry pointing `spinnaker.domain.com` at `55.55.55.55`)
 
-Create a Kubernetes Ingress manifest to expose spin-deck and spin-gate (change our hosts and namespace accordingly):
+Create a Kubernetes Ingress manifest to expose `spin-deck` and `spin-gate`.
 
-Call this file `spin-ingress.yml`
+Create a file called `spin-ingress.yml` with the following content.
+
+(Make sure the hosts and namespace match your actual host and namespace.)
 
 ```bash
 ---
@@ -662,7 +656,7 @@ spec:
         path: /api/v1
 ```
 
-Apply the Ingress
+Apply the ingress file you just created:
 
 ```bash
 kubectl -n spinnaker apply -f spin-ingress.yml
@@ -670,15 +664,13 @@ kubectl -n spinnaker apply -f spin-ingress.yml
 
 ### Configure Spinnaker to be aware of its endpoints
 
-Spinnaker must be aware of its endpoints to work properly.
-
-This should be done from inside the halyard container.  If you need to get back into the container, run this command:
+Spinnaker must be aware of its endpoints to work properly. This should be done from inside the halyard container.  If you need to get into the Halyard the container, run this command:
 
 ```
 kubectl -n spinnaker exec -it halyard-0 bash
 ```
 
-Then run this inside the container:
+Then, run the following command from inside the container:
 
 ```bash
 SPINNAKER_ENDPOINT=http://spinnaker.domain.com
@@ -690,12 +682,12 @@ hal config security api edit --override-base-url ${SPINNAKER_ENDPOINT}/api/v1
 hal deploy apply
 ```
 
-### Configuring TLS Certificates
+### Configuring TLS certificates
 
-Configuration of TLS certificates for ingresses is often very environment-specific. In general, we would want to do the following:
+Configuring TLS certificates for ingresses is often very environment-specific. In general, you want to do the following:
 
 * Add certificate(s) so that our ingress controller can use them
-* Configure the ingress(es) so that NGINX (or our ingress) terminates TLS using the certificate(s)
+* Configure the ingress(es) so that NGINX (or your ingress) terminates TLS using the certificate(s)
 * Update Spinnaker to be aware of the new TLS endpoints (note `https` instead of `http`)
 
 ```bash
@@ -709,7 +701,7 @@ hal deploy apply
 
 ## Next Steps
 
-Now that we have Spinnaker up and running, here are some of the next things we may want to do:
+Now that Spinnaker is running, here are potential next steps:
 
 * Configuration of certificates to secure our cluster (see [this section](#configuring-tls-certificates) for notes on this)
 * Configuration of Authentication/Authorization (see the [Open Source Spinnaker documentation](https://www.spinnaker.io/setup/security/))
