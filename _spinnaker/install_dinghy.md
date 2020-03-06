@@ -177,3 +177,14 @@ The `parserFormat` configuration only accepts the following values:
 * hcl
 
 *Note: in the future armory will add this configuration to halyard cli.
+
+## Known Issue:
+
+If Dinghy crashes on start up and you encounter an error in Dinghy similar to:
+`time="2020-03-06T22:35:54Z" level=fatal msg="failed to load configuration: 1 error(s) decoding:\n\n* 'Logging.Level' expected type 'string', got unconvertible type 'map[string]interface {}'"`
+
+You have probably configured global logging levels with `spinnaker-local.yml`. The work around is to create a `.hal/default/profiles/dinghy-local.yml` with the following:
+```
+Logging:
+  Level: INFO
+```
