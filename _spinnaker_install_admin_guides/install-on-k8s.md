@@ -516,10 +516,10 @@ Once this is complete, congratulations! Spinnaker is installed. Now we have to a
 
 If we have kubectl on a local machine with access to our Kubernetes cluster, we can test the status of our Spinnaker instance by doing a port-forward:
 
-First, tell Spinnaker about its local endpoint for localhost:9000/api/v1:
+First, tell Spinnaker about its local endpoint for localhost:8084/api/v1:
 
 ```bash
-hal config security api edit --override-base-url http://localhost:9000/api/v1
+hal config security api edit --override-base-url http://localhost:8084/api/v1
 
 hal deploy apply --wait-for-completion
 ```
@@ -600,7 +600,7 @@ For example, if I get `abcd1234abcd1234abcd1234abcd1234-123456789.us-west-2.elb.
 * Use `abcd1234abcd1234abcd1234abcd1234-123456789.us-west-2.elb.amazonaws.com` for my SPINNAKER_ENDPOINT in the below steps
 
 For example, if I get `55.55.55.55`, then I can do the following:
-* Use ``55.55.55.55` for my SPINNAKER_ENDPOINT in the below steps
+* Use `55.55.55.55` for my SPINNAKER_ENDPOINT in the below steps
 
 If we are using an existing NGINX ingress controller, or other services are likely to be using the same NGINX ingress controller, we should create a DNS entry that points at our NGINX ingress controller endpoint. (either a `CNAME Record` that points at the DNS name, or an `A Record` that points at the IP address).
 
@@ -658,7 +658,13 @@ kubectl -n spinnaker apply -f spin-ingress.yml
 
 Spinnaker must be aware of its endpoints to work properly.
 
-This should be done from the inside halyard container (`kubectl -n spinnaker exec -it halyard-0 bash` to get back in):
+This should be done from inside the halyard container.  If you need to get back into the container, run this command:
+
+```
+kubectl -n spinnaker exec -it halyard-0 bash
+```
+
+Then run this inside the container:
 
 ```bash
 SPINNAKER_ENDPOINT=http://spinnaker.domain.com
