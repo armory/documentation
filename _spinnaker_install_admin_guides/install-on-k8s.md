@@ -33,11 +33,8 @@ Note: This document is focused on Armory Spinnaker, but can be adapted to instal
 This document assumes the following:
 
 * We have a Kubernetes cluster up and running, with at least 4x CPUs and 8 GiB of memory.  (This is the bare minimum to install and run Spinnaker; depending on our Spinnaker workload, we may need more resources)
-
 * We have `kubectl` installed and are able to access and create Kubernetes resources
-
 * We have access to an object storage bucket, or the ability to create an object storage bucket.  _For the initial version of this document, we cover Amazon S3 **only**._ 
-
 * We have access to an IAM role or user with access to the S3 bucket or can create an IAM role or user with access to the S3 bucket.
 
 This document is written with the following workflow in mind:
@@ -68,9 +65,7 @@ In order to install Spinnaker, this document covers the following things:
 * Running Halyard (the Spinnaker installer) as a Kubernetes Pod in the namespace (using a StatefulSet)
 * Creating an S3 bucket for Spinnaker to store persistent configuration in
 * Creating an IAM user that Spinnaker will use to access the S3 bucket (or alternately, granting access to the bucket via IAM roles)
-
 * Running the `hal` client interactively in the Kubernetes Pod, to:
-
   * Build out the halconfig YAML file (`.hal/config`)
   * Configure Spinnaker with the IAM credentials and bucket information
   * Turn on other recommended settings (artifacts and http artifact provider)
@@ -124,20 +119,20 @@ The current version of this document only covers S3.  GCS, AZS, Minio, and MySQL
 If we do not yet have an S3 bucket, create an S3 bucket:
 
 1. Log into the AWS Console (web UI)
-1. Navigate to the S3 Console (Click on "Services" at the top, and then on "S3" under "Storage")
-1. Click on "Create Bucket"
-1. Specify a globally unique name for this bucket, in our AWS region of choice, following our organization's naming convention (if applicable). For this document, we will use, `spinnaker-abcxyz`.
-1. Click "Next"
-1. Select the following two checkboxes:
+2. Navigate to the S3 Console (Click on "Services" at the top, and then on "S3" under "Storage")
+3. Click on "Create Bucket"
+4. Specify a globally unique name for this bucket, in our AWS region of choice, following our organization's naming convention (if applicable). For this document, we will use, `spinnaker-abcxyz`.
+5. Click "Next"
+6. Select the following two checkboxes:
 
      * Keep all versions of an object in the same bucket
      * Automatically encrypt objects when they are stored in S3
 
-1. Click "Next"
+7. Click "Next"
 
-1. Do not add any additional permissions, unless specified by our organization. Click "Next"
+8. Do not add any additional permissions, unless specified by our organization. Click "Next"
 
-1. Click "Create bucket"
+9. Click "Create bucket"
 
 Spinnaker (the `front50` service, specifically) will need access to our newly-created bucket. There are a number of ways to achieve this. This document describes two mechanisms to do this.
 
@@ -596,7 +591,7 @@ For example, if I get `abcd1234abcd1234abcd1234abcd1234-123456789.us-west-2.elb.
 * (Alternately, for testing, create an `/etc/hosts` entry pointing spinnaker.domain.com at the IP address that `abcd1234abcd1234abcd1234abcd1234-123456789.us-west-2.elb.amazonaws.com` resolves to)
 
 If I get `55.55.55.55`, then I can do the following:
-* Create n A Record pointing `spinnaker.domain.com` at `55.55.55.55`
+* Create an A Record pointing `spinnaker.domain.com` at `55.55.55.55`
 * Put `spinnaker.domain.com` in the `host` field in the below manifest (and uncomment it)
 * Use `spinnaker.domain.com` for my SPINNAKER_ENDPOINT in the below steps
 * (Alternately, for testing, create an `/etc/hosts` entry pointing `spinnaker.domain.com` at `55.55.55.55`)
@@ -663,14 +658,14 @@ Configuration of TLS certificates for ingresses is often very environment-specif
 * Configure the ingress(es) so that NGINX (or our ingress) terminates TLS using the certificate(s)
 * Update Spinnaker to be aware of the new TLS endpoints (note `https` instead of `http`)
 
-	```bash
+  ```bash
   SPINNAKER_ENDPOINT=https://spinnaker.domain.com
 
   hal config security ui edit --override-base-url ${SPINNAKER_ENDPOINT}
   hal config security api edit --override-base-url ${SPINNAKER_ENDPOINT}/api/v1
 
 	hal deploy apply
-	```
+  ```
 
 # Next Steps
 
