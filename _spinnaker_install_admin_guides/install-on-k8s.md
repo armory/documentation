@@ -9,13 +9,7 @@ redirect_from:
   - /spinnaker-install-admin-guides/install_on_k8s/
 ---
 
-This guide describes how to install Spinnaker in Kubernetes.  It assumes that you have the following:
-
-* A Kubernetes cluster with storage set up so that PersistentVolumeClaims properly allocates PersistentVolumes
-* Access to an object storage bucket (Amazon S3, Google GCS, Azure Storage, or Minio are all options for this).  _For the initial version of this document, **only** Amazon S3 is covered._
-* A Kubernetes Ingress controller or permissions to install the NGINX Ingress Controller
-
-This document currently does not fully cover the following:
+This guide describes the initial installation of Spinnaker in Kubernetes.  By the end of this guide, you will have an instance of Spinnaker up and running on your Kubernets cluster.  The document currently does not fully cover the following:
 
 * TLS Encryption
 * Authentication/Authorization
@@ -34,10 +28,12 @@ Note: This document focuses on Armory Spinnaker but can be adapted to install Op
 
 This document assumes the following:
 
+* Your Kubernetes cluster has storage set up so that PersistentVolumeClaims properly allocate PersistentVolumes
 * Your Kubernetes cluster is up and running with at least 4 CPUs and 12 GB of memory.  This is the bare minimum to install and run Spinnaker; depending on our Spinnaker workload, you may need more resources.
 * You have `kubectl` installed and are able to access and create Kubernetes resources.
-* You have access to an object storage bucket or the ability to create an object storage bucket.  _For the initial version of this document, **only** Amazon S3 is used._ 
+* You have access to an existing object storage bucket or the ability to create an object storage bucket (Amazon S3, Google GCS, Azure Storage, or Minio are all options for this).  _For the initial version of this document, **only** Amazon S3 is used._ 
 * You have access to an IAM role or user with access to the S3 bucket. If neither of these exist, you need to create an IAM role or user with access to the S3 bucket.
+* Your cluster has either an existing Kubernetes Ingress controller or the permissions to install the NGINX Ingress Controller
 
 This document is written with the following workflow in mind:
 
@@ -426,7 +422,8 @@ export REGION=us-west-2
 # This will prompt for the secret key
 hal config storage s3 edit \
   --bucket ${BUCKET_NAME} \
-  --region ${REGION}
+  --region ${REGION} \
+  --no-validate
 
 hal config storage edit --type s3
 </code></pre>
@@ -624,13 +621,14 @@ For the `55.55.55.55` IP address example, do the following:
 
 Create a Kubernetes Ingress manifest to expose `spin-deck` and `spin-gate`.
 
-Create a file called `spin-ingress.yml` with the following content.
+Create a file called `spin-ingress.yml` with the following content.  If you are on Kubernetes 1.14 or above, you should replace `extensions/v1beta1` with `networking.k8s.io/v1`.
 
 (Make sure the hosts and namespace match your actual host and namespace.)
 
 ```bash
 ---
-apiVersion: networking.k8s.io/v1
+apiVersion: extensions/v1beta1
+# apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: spin-ingress
@@ -687,7 +685,7 @@ hal deploy apply
 Configuring TLS certificates for ingresses is often very environment-specific. In general, you want to do the following:
 
 * Add certificate(s) so that our ingress controller can use them
-* Configure the ingress(es) so that NGINX (or your ingress) terminates TLS using the certificate(s)
+* Configure the ingress(es) so that NGINX (or the load balancer in front of NGINX, or your alternative ingress controller) terminates TLS using the certificate(s)
 * Update Spinnaker to be aware of the new TLS endpoints (note `https` instead of `http`)
 
 ```bash
