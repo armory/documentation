@@ -31,11 +31,11 @@ changes through a mature lifecycle management API.
 
 With PaCRD you can:
 
-1. Maintain your Spinnaker Pipelines as code with the rest of your Kubernetes
+- Maintain your Spinnaker Pipelines as code with the rest of your Kubernetes
 manifests.
-1. Persist Pipeline and Application changes with confidence to your Spinnaker
+- Persist Pipeline and Application changes with confidence to your Spinnaker
 cluster.
-1. Leverage existing tools like Helm and Kustomize to template your pipelines
+- Leverage existing tools like Helm and Kustomize to template your pipelines
 across teams and projects.
 
 
@@ -48,7 +48,8 @@ To use PaCRD, make sure you meet the following requirements:
 
 - Have a working Kubernetes 1.11+ cluster
 - Have a working Spinnaker installation
-  - Although there is no minimum version required for this experiment, Armory recommends using the latest release
+  - Although there is no minimum version required for this experiment, Armory
+  recommends using the latest release
 - Have permissions to install CRDs, create RBAC roles, and create service
 accounts
 
@@ -58,7 +59,7 @@ This quick start assumes the following about your Kubernetes cluster:
 
 - Your Spinnaker cluster is installed into a namespace called `spinnaker`
 - Your Spinnaker services have `Service` objects of the form `spin-{service_name}`
-  - For example, `sprint-front50`
+  - For example, `spin-front50`
 
 Download the current `pacrd` manifest to your local machine:
 
@@ -68,13 +69,24 @@ curl -fsSL https://engineering.armory.io/manifests/pacrd-0.1.0.yaml > pacrd-0.1.
 
 Then, inspect the manifest to make sure it is compatible with your cluster.
 
+
 When you're ready, apply the `pacrd` manifest to your cluster:
 
 ```
 kubectl apply -f pacrd-0.1.0.yaml
 ```
 
-Alternatively, you can also download and install this feature in a single command if your organization's security policies allow for this. Armory recommends only using this method for non-production environments:
+If you would rather prefer to specify your own namespace then remove
+`namepsace` references and apply the manifest with the desired namespace:
+
+```
+sed -i '' '/namespace:/d' pacrd-0.1.0.yaml &&\
+  kubectl --namespace armory -f pacrd-0.1.0.yaml
+```
+
+Alternatively, you can also download and install this feature in a single
+command if your organization's security policies allow for this. Armory
+recommends only using this method for non-production environments:
 
 ```
 kubectl apply -f https://engineering.armory.io/manifests/pacrd-0.1.0.yaml
@@ -104,18 +116,6 @@ under the `pacrd.armory.spinnaker.io/v1alpha1` version moniker.
 Applications are a logical construct in Spinnaker that allow you to group
 resources under a single name. You can read more about [applications in the
 upstream docs][app-docs].
-
-### Current Limitations
-
-The following sections document limitations with various versions of the PaCRD
-controller for this resource.
-
-#### v0.1.x
-
-- Documentation for available Application spec fields must be
-found in the installation manifest for this controller. You can do so by
-grepping for `applications.pacrd.armory.spinnaker.io` in the installation
-manifest. Fields are documented under `spec.validation.openAPIV3Schema`.
 
 ### Creating applications
 
@@ -197,54 +197,17 @@ describing the resource and looking in the "Events section":
 kubectl describe app myapplicationname
 ```
 
-#### Caveats
-
-For users of version `v0.1.x`, deleting an application in Kubernetes triggers
-the following behavior:
-
-- Delete the application in Kubernetes.
-- Delete the application in Spinnaker.
-- Delete pipelines associated with the application _in Spinnaker only_.
-
-This is a known gap in the behavior of application deletion and will be fixed
-in a future release.
-
 ## Pipelines
 
 Pipelines allow you to encode the process that your team follows to take a
 service from commit to a desired environment (such as production). You can
 read more about [pipelines in the upstream Spinnaker documentation][pipe-docs].
 
-### Current Limitations
-
-The following sections document limitations with various versions of the PaCRD
-controller for this resource.
-
-#### v0.1.x
-
-- Pipeline stages must be defined with a `type` key for the stage name and a
-key of the same name where all stage options live. For example, for the
-"Bake Manifest" stage you would structure your definition like so:
-  
-```yaml
-# ...
-stages:
-  - type: BakeManifest
-    bakeManifest:
-      name: Bake the Bread
-      # ...
-# ...
-```
-
-- Documentation for available Pipeline spec fields must be
-found in the installation manifest for this controller. You can do so by
-grepping for `pipelines.pacrd.armory.spinnaker.io` in the installation
-manifest. Fields are documented under `spec.validation.openAPIV3Schema`.
-
 ### Creating pipelines
 
 Pipelines in Kubernetes can be defined with the same options you would define
-in the UI. The following example shows how you might define a trivial Pipeline:
+in the UI. The following example shows how you might define a simple pipeline
+that bakes a manifest and prompts for a manual judgment:
 
 ```yaml
 # file: pipeline.yaml
@@ -258,22 +221,22 @@ spec:
   stages:
     # Note: In `v0.1.x` you are required to specify _both_ `type: BakeManifest`
     #       as well as place options under a `bakeManifest` key. Consult the
-    #       "Current Limitations" section above for more information.
+    #       "Known Limitations" section below for more information.
     - type: BakeManifest
+      name: Bake Application
+      refId: "1"
       bakeManifest:
-        name: Bake Application
         evaluateOverrideExpressions: false
         outputName: myapplicationname
         templateRenderer: helm2
-        refId: "1"
     - type: ManualJudgment
+      name: Bake Successful?
+      refId: "2"
+      requisiteStageRefIds: [ "1" ]
       manualJudgment:
-        name: Bake Successful?
         comments: Was the bake successful?
         failPipeline: true
         instructions: Check to see if the helm template was baked correctly
-        refId: "2"
-        requisiteStageRefIds: [ "1" ]
 ```
 
 _Note: This example assumes that you've created a `myapplicationname` application
@@ -291,23 +254,29 @@ Once applied, you can check on the status of your pipeline by using either the
 `pipeline` for the resource kind:
 
 ```sh
-❯ kubectl get pipe myapplicationpipeline
+kubectl get pipe myapplicationpipeline
+
+# or ... kubectl get pipeline myapplicationpipeline
+```
+
+Which results in the following output:
+
+```
 NAME                    STATUS    LASTCONFIGURED   URL
 myapplicationpipeline   Updated   5s               http://spinnaker.company.com/#/applications/myapplicationname/executions/configure/f1eb82ce-5a8f-4b7a-9976-38e4aa022702
-
-# or...
-
-
-❯ kubectl get pipeline myapplicationpipeline
-NAME                    STATUS    LASTCONFIGURED   URL
-myapplicationpipeline   Updated   44s              http://spinnaker.company.com/#/applications/myapplicationname/executions/configure/f1eb82ce-5a8f-4b7a-9976-38e4aa022702
 ```
 
 A `describe` call can give you additional contextual information about the
 status of your pipeline:
 
 ```
-❯ kubectl describe pipeline myapplicationpipeline
+kubectl describe pipeline myapplicationpipeline
+```
+
+
+Which produces the following output:
+
+```
 Name:         myapplicationpipeline
 API Version:  pacrd.armory.spinnaker.io/v1alpha1
 Kind:         Pipeline
@@ -364,6 +333,48 @@ describing the resource and looking in the "Events section":
 ```
 kubectl describe pipeline myapplicationpipeline
 ```
+
+# Known Limitations
+
+The following sections document limitations with various versions of the PaCRD
+controller.
+
+## v0.1.x
+
+### Applications
+
+- Documentation for available Application spec fields must be
+found in the installation manifest for this controller. You can do so by
+grepping for `applications.pacrd.armory.spinnaker.io` in the installation
+manifest. Fields are documented under `spec.validation.openAPIV3Schema`.
+- For users of version `v0.1.x`, deleting an application in Kubernetes triggers
+the following behavior:
+
+    - Delete the application in Kubernetes.
+    - Delete the application in Spinnaker.
+    - Delete pipelines associated with the application _in Spinnaker only_.
+
+### Pipelines
+
+- Pipeline stages must be defined with a `type` key for the stage name and a
+key of the same name where all stage options live. For example, for the
+"Bake Manifest" stage you would structure your definition like so:
+  
+```yaml
+# ...
+stages:
+  - type: BakeManifest
+    bakeManifest:
+      name: Bake the Bread
+      # ...
+# ...
+```
+
+- Documentation for available Pipeline spec fields must be
+found in the installation manifest for this controller. You can do so by
+grepping for `pipelines.pacrd.armory.spinnaker.io` in the installation
+manifest. Fields are documented under `spec.validation.openAPIV3Schema`.
+
 
 [**Experimental**]: https://kb.armory.io/releases/early-release-beta-GA/
 [Kubernetes controller]: https://kubernetes.io/docs/concepts/architecture/controller/
