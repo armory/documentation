@@ -112,11 +112,7 @@ controller for this resource.
 
 #### v0.1.x
 
-<<<<<<< HEAD
-- Documentation for available Application spec fields must currently be
-=======
 - Documentation for available Application spec fields must be
->>>>>>> copyedits
 found in the installation manifest for this controller. You can do so by
 grepping for `applications.pacrd.armory.spinnaker.io` in the installation
 manifest. Fields are documented under `spec.validation.openAPIV3Schema`.
@@ -240,11 +236,7 @@ stages:
 # ...
 ```
 
-<<<<<<< HEAD
-- Documentation for available Pipeline spec fields must currently be
-=======
 - Documentation for available Pipeline spec fields must be
->>>>>>> copyedits
 found in the installation manifest for this controller. You can do so by
 grepping for `pipelines.pacrd.armory.spinnaker.io` in the installation
 manifest. Fields are documented under `spec.validation.openAPIV3Schema`.
