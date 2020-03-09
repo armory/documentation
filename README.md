@@ -35,7 +35,7 @@ directory name with an underscore (ex. `_spinnaker`, `_admin_guides`).
 
 * Add a top-level file named as your section directory, without the leading 
 underscore, but with `.md` as an extension -- copy one of the existing files
-(ex. `spinnaker.md`, `admin_guides.md`).  Updat the title, permalink, and
+(ex. `spinnaker.md`, `admin_guides.md`).  Update the title, permalink, and
 collection (the last should be set to the name of your section (ex.
 `spinnaker`, `admin_guides`)
 
