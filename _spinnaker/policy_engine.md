@@ -13,17 +13,18 @@ The Armory Policy Engine is designed to allow enterprises more complete control 
 
 ## Requirements 
 
-Armory recommends the following versions for the Policy Engine:
+Make sure you can meet the following version requirements for the Policy Engine:
 * OPA versions 0.12.x or 0.13.x
 * Halyard 1.7.2 or later
-* Spinnaker 2.16.0 or later
+* Armory Spinnaker 2.16.0 or later for Pipeline save time validation
+* Armory Spinnaker 2.19.0 or later for Pipeline runtime validation 
 
 ## Before You Start
 Using the Policy Engine requires an understanding of OPA's [rego syntax](https://www.openpolicyagent.org/docs/latest/policy-language/) and how to [deploy an OPA server](https://www.openpolicyagent.org/docs/latest/#running-opa).
 
 ## Enabling the Policy Engine
 
-Policy Engine is a collection of features that span multiple Spinnaker services. Currently, it can be broken down into two categories:
+Policy Engine is a collection of features that span multiple Spinnaker services. Policy Engine can perform two different types of validation:
 
 * **Save time validation** - Validate pipelines as they're created/modified. This type of validation operates on all pipelines using a fail closed model. This means that if you have the Policy Engine enabled but no policies configured, the Policy Engine prevents you from creating or updating any pipeline.
 * **Runtime validation** - Validate deployments as a pipeline is executing. This type of validation only operates on tasks that you have explicitly created policies for. Tasks with no policies are not validated.
@@ -66,57 +67,9 @@ Once Spinnaker finishes redeploying, Policy Engine can evaluate pipelines based 
 ## Deploying an OPA server for Policy Engine to use
 
 The Policy Engine supports the following OPA server deployments: 
-* An existing OPA cluster 
-* An OPA server deployed in an existing Kubernetes cluster with an Armory Spinnaker deployment. If you want to use this method, use the following YAML example to deploy the OPA server:
 
-This example manifest creates an OPA deployment in the same namespace as your Spinnaker deployment and exposes the OPA API:  
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: opa-deployment
-  namespace: <your-spinnaker-namespace>
-  labels:
-    app: opa
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: opa
-  template:
-    metadata:
-      labels:
-        app: opa
-    spec:
-      containers:
-      - name: opa
-        image: openpolicyagent/opa
-        ports:
-        - containerPort: 8181
-        args:
-          - "run"
-          - "-s"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: opa
-  namespace: <your-spinnaker-namespace>
-spec:
-  selector:
-    app: opa
-  ports:
-  - protocol: TCP
-    port: 8181
-    targetPort: 8181
-
-```
-
-Replace `<your-spinnaker-namespace>` with your Spinnaker namespace and save the file. Then, deploy the manifest:
-```
-kubectl create -f <deployment yaml file name>.yaml
-```
+* An OPA server deployed in the same Kubernetes cluster as an Armory Spinnaker deployment. The [Using ConfigMaps for OPA policies](#using-configmaps-for-opa-policies) section contains a configmap you can use.
+* An OPA cluster that is **not** in the same Kubernetes cluster as an Armory Spinnaker deployment . See the [OPA documentation](https://www.openpolicyagent.org/docs/latest/) for more information about installing an OPA cluster. 
     
 ## Using ConfigMaps for OPA Policies
 
@@ -202,7 +155,7 @@ spec:
       # authentication and authorization on the daemon. See the Security page for
       # details: https://www.openpolicyagent.org/docs/security.html.
         - name: opa
-          image: openpolicyagent/opa:0.13.1
+          image: openpolicyagent/opa:0.17.2
           args:
             - "run"
             - "--server"
