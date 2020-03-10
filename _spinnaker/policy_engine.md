@@ -5,7 +5,10 @@ order: 142
 ---
 
 ## Overview
-The Armory Policy Engine is designed to allow enterprises more complete control of their software delivery process by providing them with the hooks necessary to perform more extensive verification of their pipelines and processes in Spinnaker. This policy engine is backed by [Open Policy Agent](https://www.openpolicyagent.org/)(OPA) and uses input style documents to perform validation of pipelines during creation and updates.
+The Armory Policy Engine is designed to allow enterprises more complete control of their software delivery process by providing them with the hooks necessary to perform more extensive verification of their pipelines and processes in Spinnaker. This policy engine is backed by [Open Policy Agent](https://www.openpolicyagent.org/)(OPA) and uses input style documents to perform validation of pipelines during save time and runtime:
+
+* **Save time validation** - Validate pipelines as they're created/modified. This validation operates on all pipelines using a fail closed model. This means that if you have the Policy Engine enabled but no policies configured, the Policy Engine prevents you from creating or updating any pipeline.
+* **Runtime validation** - Validate deployments as a pipeline is executing. This validation only operates on tasks that you have explicitly created policies for. Tasks with no policies are not validated.
 
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
@@ -24,12 +27,7 @@ Using the Policy Engine requires an understanding of OPA's [rego syntax](https:/
 
 ## Enabling the Policy Engine
 
-Policy Engine is a collection of features that span multiple Spinnaker services. Policy Engine can perform two different types of validation:
-
-* **Save time validation** - Validate pipelines as they're created/modified. This type of validation operates on all pipelines using a fail closed model. This means that if you have the Policy Engine enabled but no policies configured, the Policy Engine prevents you from creating or updating any pipeline.
-* **Runtime validation** - Validate deployments as a pipeline is executing. This type of validation only operates on tasks that you have explicitly created policies for. Tasks with no policies are not validated.
-
-To enable these validations, add the following configuration to `.hal/default/profiles/spinnaker-local.yml`:
+To enable the Policy Engine validations, add the following configuration to `.hal/default/profiles/spinnaker-local.yml`:
 
 ```yaml
 armory:
@@ -40,7 +38,7 @@ armory:
 
 *Note: There must be a trailing `/v1` on the URL. The Policy Engine is only compatible with OPA's v1 API.*
 
-If you only want to perform a certain type of validations, you can add the configuration to any of the following files instead:
+If you only want to perform a certain type of validation, you can add the corresponding configuration to the following files instead:
 
 | Feature                 | File                                          |
 |-------------------------|-----------------------------------------------|
@@ -68,7 +66,7 @@ Once Spinnaker finishes redeploying, Policy Engine can evaluate pipelines based 
 
 The Policy Engine supports the following OPA server deployments: 
 
-* An OPA server deployed in the same Kubernetes cluster as an Armory Spinnaker deployment. The [Using ConfigMaps for OPA policies](#using-configmaps-for-opa-policies) section contains a configmap you can use.
+* An OPA server deployed in the same Kubernetes cluster as an Armory Spinnaker deployment. The [Using ConfigMaps for OPA policies](#using-configmaps-for-opa-policies) section contains a ConfigMap you can use.
 * An OPA cluster that is **not** in the same Kubernetes cluster as an Armory Spinnaker deployment . See the [OPA documentation](https://www.openpolicyagent.org/docs/latest/) for more information about installing an OPA cluster. 
     
 ## Using ConfigMaps for OPA Policies
@@ -332,8 +330,110 @@ deny["Every pipeline must have a Manual Judgment stage"] {
 
 
 ## Troubleshooting
-**I encountered the following error when trying to save my pipeline:**
+
+**Debugging runtime validation**
+
+You can make debugging issues with runtime validation for your pipelines easier by adjusting the logging level to `DEBUG`. Add the following snippet to `hal/default/profiles/spinnaker-local.yml`:
+
 ```
-There was an error saving your pipeline: org.json.JSONException: JSONObject["result"] not found.
+logging:
+  level:
+    com.netflix.spinnaker.clouddriver.kubernetes.OpaDeployDescriptionValidator: DEBUG
+    io.armory.spinnaker.front50.validator.validator.OpenPolicyAgentValidator: INFO
 ```
-This error occurs because you do not have any policies configured. The Policy Engine operates on a fail closed model.
+
+Once the logging level is set to `DEBUG`, you can start seeing information similar to the following in the logs:
+
+```
+2020-03-03 21:42:05.131 DEBUG 1 --- [.0-7002-exec-10] c.n.s.c.k.OpaDeployDescriptionValidator  : Passing {"input":{"deploy":{"credentials":"EKS-WEST","manifest":null,"manifests":[{"metadata":{"labels":{"app":"nginx"},"name":"policyapp","namespace":"dev"},"apiVersion":"apps/v1","kind":"Deployment","spec":{"replicas":1,"selector":{"matchLabels":{"app":"nginx"}},"template":{"metadata":{"labels":{"app":"nginx"}},"spec":{"containers":[{"image":"away168/nginx:latest","name":"nginx","ports":[{"containerPort":80}]}]}}}},{"metadata":{"name":"policyapp-service","namespace":"dev"},"apiVersion":"v1","kind":"Service","spec":{"ports":[{"port":80,"protocol":"TCP","targetPort":80}],"selector":{"app":"nginx"},"type":"LoadBalancer"}}],"moniker":{"app":"policyapp","cluster":null,"detail":null,"stack":null,"sequence":null},"requiredArtifacts":[],"optionalArtifacts":[],"versioned":null,"source":"text","manifestArtifact":null,"namespaceOverride":null,"enableTraffic":true,"services":null,"strategy":null,"events":[],"account":"EKS-WEST"}}} to OPA```
+
+From this information, you can extract the exact JSON being enforced. You can use it to help you understand how to build policies.
+
+Note: The following ConfigMap is missing some annotations that Spinnaker adds later.
+
+```
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    artifact.spinnaker.io/location: dev
+    artifact.spinnaker.io/name: policyapp
+    artifact.spinnaker.io/type: kubernetes/deployment
+    deployment.kubernetes.io/revision: '4'
+    kubectl.kubernetes.io/last-applied-configuration: >
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"artifact.spinnaker.io/location":"dev","artifact.spinnaker.io/name":"policyapp","artifact.spinnaker.io/type":"kubernetes/deployment","moniker.spinnaker.io/application":"policyapp","moniker.spinnaker.io/cluster":"deployment
+      policyapp"},"labels":{"app":"nginx","app.kubernetes.io/managed-by":"spinnaker","app.kubernetes.io/name":"policyapp"},"name":"policyapp","namespace":"dev"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"nginx"}},"template":{"metadata":{"annotations":{"artifact.spinnaker.io/location":"dev","artifact.spinnaker.io/name":"policyapp","artifact.spinnaker.io/type":"kubernetes/deployment","moniker.spinnaker.io/application":"policyapp","moniker.spinnaker.io/cluster":"deployment
+      policyapp"},"labels":{"app":"nginx","app.kubernetes.io/managed-by":"spinnaker","app.kubernetes.io/name":"policyapp"}},"spec":{"containers":[{"image":"away168/nginx:latest","name":"nginx","ports":[{"containerPort":80}]}]}}}}
+    moniker.spinnaker.io/application: policyapp
+    moniker.spinnaker.io/cluster: deployment policyapp
+  creationTimestamp: '2020-03-03T18:40:23Z'
+  generation: 4
+  labels:
+    app: nginx
+    app.kubernetes.io/managed-by: spinnaker
+    app.kubernetes.io/name: policyapp
+  name: policyapp
+  namespace: dev
+  resourceVersion: '947262'
+  selfLink: /apis/extensions/v1beta1/namespaces/dev/deployments/policyapp
+  uid: 711a1e92-5d7e-11ea-9dde-067e9dc02856
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: nginx
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        artifact.spinnaker.io/location: dev
+        artifact.spinnaker.io/name: policyapp
+        artifact.spinnaker.io/type: kubernetes/deployment
+        moniker.spinnaker.io/application: policyapp
+        moniker.spinnaker.io/cluster: deployment policyapp
+      labels:
+        app: nginx
+        app.kubernetes.io/managed-by: spinnaker
+        app.kubernetes.io/name: policyapp
+    spec:
+      containers:
+        - image: 'away168/nginx:latest'
+          imagePullPolicy: Always
+          name: nginx
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 1
+  conditions:
+    - lastTransitionTime: '2020-03-03T20:46:21Z'
+      lastUpdateTime: '2020-03-03T20:46:21Z'
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: 'True'
+      type: Available
+    - lastTransitionTime: '2020-03-03T20:42:46Z'
+      lastUpdateTime: '2020-03-03T21:26:43Z'
+      message: ReplicaSet "policyapp-597c756868" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: 'True'
+      type: Progressing
+  observedGeneration: 4
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1
+  ```
