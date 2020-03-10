@@ -150,7 +150,7 @@ You have the option when deploying a new server group to use either EC2 or ELB h
 
 ### Deploy AZs vs ELB AZs
 
-It is possible to set your ELB to work with certain AZs but then deploy your server group to another AZ. If you have your healthcheck set to ELB, then your instances will never become healthy. You can tell when this happens by hovering you mouse over the red triangle [described above](http://docs.armory.io/user-guides/deploying/#investigating-red-instances).
+It is possible to set your ELB to work with certain AZs but then deploy your server group to another AZ. If you have your healthcheck set to ELB, then your instances will never become healthy. You can tell when this happens by hovering you mouse over the red triangle [described above](https://docs.armory.io/user-guides/deploying/#investigating-red-instances).
 
 ### Unknown errors
 
@@ -245,7 +245,7 @@ If you want additional block devices or a larger root partition you'll need to
 add an a new list to the pipeline JSON.  Unfortunately at this time there is no
 UI to add block devices.
 
-1.  [Edit Your Pipelines JSON](http://docs.armory.io/spinnaker-user-guides/pipelines/#pipeline-json)
+1.  [Edit Your Pipelines JSON](https://docs.armory.io/spinnaker-user-guides/pipelines/#pipeline-json)
 2.  Find your deployment dictionary.  You'll need to add the object of pairs for each cluster definition.
 3.  Add your custom block devices for launch under the key `blockDevices`.
 
