@@ -24,25 +24,23 @@ __Interested in joining this experiment?
 # Overview
 
 PaCRD (a combination of "Pipelines as Code" and "Custom Resource Definition") is
-a [Kubernetes controller] that manages the lifecycle of Spinnaker Applications
-and Pipelines as objects within your cluster. It does so by extending Kubernetes
-to support Spinnaker Application and Pipeline objects that can be observed for
-changes through a mature lifecycle management API.
+a [Kubernetes controller] that manages the lifecycle of Spinnaker applications
+and pipelines as objects within your cluster. PaCRD extends Kubernetes
+functionality to support Spinnaker Application and Pipeline objects that can be
+observed for changes through a mature lifecycle management API.
 
 With PaCRD you can:
 
-- Maintain your Spinnaker Pipelines as code with the rest of your Kubernetes
+- Maintain your Spinnaker pipelines as code with the rest of your Kubernetes
 manifests.
 - Persist Pipeline and Application changes with confidence to your Spinnaker
 cluster.
 - Leverage existing tools like Helm and Kustomize to template your pipelines
 across teams and projects.
 
+To get started right away, check out the [Quick Start](#quick-start) section for installation instructions.
 
-To get started right away, check out the [Quick Start](#quick-start) section for installation
-instructions.
-
-## Pre-Requisites
+## Prerequisites
 
 To use PaCRD, make sure you meet the following requirements:
 
@@ -58,8 +56,7 @@ accounts
 This quick start assumes the following about your Kubernetes cluster:
 
 - Your Spinnaker cluster is installed into a namespace called `spinnaker`
-- Your Spinnaker services have `Service` objects of the form `spin-{service_name}`
-  - For example, `spin-front50`
+- Your Spinnaker services have `service` objects of the form `spin-{service_name}`; for example, `spin-front50`
 
 Download the current `pacrd` manifest to your local machine:
 
@@ -69,30 +66,29 @@ curl -fsSL https://engineering.armory.io/manifests/pacrd-0.1.0.yaml > pacrd-0.1.
 
 Then, inspect the manifest to make sure it is compatible with your cluster.
 
-
 When you're ready, apply the `pacrd` manifest to your cluster:
 
 ```
 kubectl apply -f pacrd-0.1.0.yaml
 ```
 
-If you would rather prefer to specify your own namespace then remove
-`namepsace` references and apply the manifest with the desired namespace:
+If you want to specify your own namespace, remove `namespace` references and
+apply the manifest with your desired namespace:
 
 ```
 sed -i '' '/namespace:/d' pacrd-0.1.0.yaml &&\
-  kubectl --namespace armory -f pacrd-0.1.0.yaml
+  kubectl --namespace <your-namespace> -f pacrd-0.1.0.yaml
 ```
 
-Alternatively, you can also download and install this feature in a single
-command if your organization's security policies allow for this. Armory
-recommends only using this method for non-production environments:
+Alternatively, you can download and install this feature in a single command
+if your organization's security policies allow for this. Armory recommends only
+using this method for non-production environments:
 
 ```
 kubectl apply -f https://engineering.armory.io/manifests/pacrd-0.1.0.yaml
 ```
 
-<!-- 
+<!--
 
 Since we're still experimental, and we don't allow a lot of configuration right
 now, I'm omitting this section of the docs. When we start to firm up the details
@@ -105,22 +101,23 @@ and include details about customizing an install.
 
 # Usage
 
-Once you have PaCRD installed and running in your cluster, you can begin to define
-your Applications and Pipelines and apply them to the cluster.
+Once you have PaCRD installed and running in your cluster, you can define your applications and pipelines. Then apply them to the cluster.
 
-While this product is in an [**Experimental**] state, Kind objects for PaCRD live
-under the `pacrd.armory.spinnaker.io/v1alpha1` version moniker.
+While this product is in an [**Experimental**] state, [kind] objects for PaCRD
+live under the `pacrd.armory.spinnaker.io/v1alpha1` version moniker.
 
 ## Applications
 
-Applications are a logical construct in Spinnaker that allow you to group
-resources under a single name. You can read more about [applications in the
-upstream docs][app-docs].
+In Spinnaker, an Application is a logical construct that allows you to group
+resources under a single name. You can read more about applications in the
+Spinnaker [docs][app-docs].
 
-### Creating applications
+### Creating an application
 
-Applications in Kubernetes can be defined with the same options you define
-in the UI. The following example shows how you might define a simple Application:
+In Kubernetes, define your application in an `application.yaml` file.  The configuration fields are the same as what you see when you [create an application] using the Spinnaker UI. The following example defines an application named "myapplicationname".
+
+*Note: Application names must adhere to both [Kubernetes][kube-name-doc]
+__and__ Spinnaker name standards.*
 
 ```yaml
 # file: application.yaml
@@ -133,19 +130,15 @@ spec:
   description: My Application is a catalogue of Widgets surfaced by an API.
 ```
 
-*Note: Application names must adhere to both [Kubernetes][kube-name-doc]
-__and__ Spinnaker name standards.*
-
-If you defined this in an `application.yaml` file, then you can create it in
-your cluster by running the following `kubectl` command:
+Create the application in your cluster by running:
 
 ```
 kubectl apply -f application.yaml
 ```
 
-Once applied, check on the status of your application by using either
-the `get` or `describe` commands. `kubectl` recognizes either `app` or
-`application` for the resource kind:
+Check on the status of your application by using either the `get` or `describe`
+commands. `kubectl` recognizes either `app` or `application` for the resource
+kind:
 
 ```sh
 kubectl get app myapplicationname
@@ -153,45 +146,44 @@ kubectl get app myapplicationname
 # or kubectl get application myapplicationname
 ```
 
-The command returns information similar to the following:
+The command returns information similar to the this:
 
 ```
 NAME                URL                                                             LASTCONFIGURED   STATUS
 myapplicationname   http://spinnaker.io/#/applications/myapplicationname/clusters   7m26s            Created
 ```
 
-### Updating applications
+### Updating an application
 
-Applications can be updated in one of two ways:
+You can update in one of two ways:
 
-1. Re-applying the application manifest in your repository
-    - `kubectl apply -f application.yaml`
-1. Editing the application manifest in-cluster
-    - `kubectl edit app myapplicationname`
+- Reapply the application manifest in your repository
+   -  `kubectl apply -f application.yaml`
+- Edit the application manifest in-cluster
+   - `kubectl edit app myapplicationname`
 
-In both cases, when an application gets updated in your Kubernetes cluster,
-you will see changes propagate into Spinnaker shortly. If an error occurs
-during the update, your application may show an `ErrorFailedUpdate` state. You
-can see the details of that failure by describing the resource and looking in
-the "Events" section:
+When you update your application in Kubernetes, the changes propagate into
+Spinnaker. If an error occurs during the update, your application may show an
+`ErrorFailedUpdate` state. You can see the details of that failure by describing
+the resource and looking in the "Events" section:
 
 ```
 kubectl describe app myapplicationname
 ```
 
-### Deleting applications
+### Deleting an application
 
-When an application is no longer necessary, you can delete it in one of two ways:
+You can delete an application in one of two ways:
 
-1. Re-applying the application manifest in your repository
-  - `kubectl delete -f application.yaml`
-1. Deleting the application directly
-  - `kubectl delete app myapplicationname`
+- Reapply the application manifest in your repository
+   - `kubectl delete -f application.yaml`
+- Delete the application directly
+   - `kubectl delete app myapplicationname`
 
-In either case the application, the application gets deleted shortly in Spinnaker as well. If
-an error occurs during deletion, then your application may show an
-`ErrorFailedDelete` state. You can see the details of that failure by
-describing the resource and looking in the "Events section":
+When you delete your application in Kubernetes, the deletion propagates into
+Spinnaker. If an error occurs during deletion, your application may show an
+`ErrorFailedDelete` state. You can see the details of that failure by describing
+the resource and looking in the "Events section":
 
 ```
 kubectl describe app myapplicationname
@@ -200,14 +192,16 @@ kubectl describe app myapplicationname
 ## Pipelines
 
 Pipelines allow you to encode the process that your team follows to take a
-service from commit to a desired environment (such as production). You can
-read more about [pipelines in the upstream Spinnaker documentation][pipe-docs].
+service from commit to a desired environment, such as production. You can
+read more about pipelines in the Spinnaker [docs][pipe-docs].
 
 ### Creating pipelines
 
-Pipelines in Kubernetes can be defined with the same options you would define
-in the UI. The following example shows how you might define a simple pipeline
-that bakes a manifest and prompts for a manual judgment:
+In Kubernetes, define your pipeline in a `pipeline.yaml` file. The configuration fields are the same as what you see when you [create a pipeline] using the Spinnaker UI. The following example defines a simple pipeline named "myapplicationpipeline", which bakes a manifest and prompts for a manual judgment.
+
+*Note: This example assumes that you've created the `myapplicationname`
+application from the [previous section](#applications). Create one before
+proceeding if you have not done so already.*
 
 ```yaml
 # file: pipeline.yaml
@@ -239,19 +233,15 @@ spec:
         instructions: Check to see if the helm template was baked correctly
 ```
 
-_Note: This example assumes that you've created a `myapplicationname` application
-from the [previous section](#applications). If you have not done so already, create one before proceeding._
-
-If you defined this in a `pipeline.yaml` file, then you can create it in your
-cluster by running the following `kubectl` command:
+Create your pipeline in your cluster:
 
 ```
 kubectl apply -f pipeline.yaml
 ```
 
-Once applied, you can check on the status of your pipeline by using either the
-`get` or `describe` commands. `kubectl` will recognize either `pipe` or
-`pipeline` for the resource kind:
+Check on the status of your pipeline by using either the `get` or `describe`
+commands. `kubectl` will recognize either `pipe` or `pipeline` for the resource
+kind:
 
 ```sh
 kubectl get pipe myapplicationpipeline
@@ -259,7 +249,7 @@ kubectl get pipe myapplicationpipeline
 # or ... kubectl get pipeline myapplicationpipeline
 ```
 
-Which results in the following output:
+The command returns information similar to the this:
 
 ```
 NAME                    STATUS    LASTCONFIGURED   URL
@@ -273,8 +263,7 @@ status of your pipeline:
 kubectl describe pipeline myapplicationpipeline
 ```
 
-
-Which produces the following output:
+The command returns information similar to the this::
 
 ```
 Name:         myapplicationpipeline
@@ -299,18 +288,17 @@ Events:
 
 ### Updating pipelines
 
-Pipelines can be updated in one of two ways:
+You can update a pipeline in one of two ways:
 
-1. Re-applying the pipeline manifest in your repository
-    - `kubectl apply -f pipeline.yaml`
-1. Editing the pipeline manifest in-cluster
-    - `kubectl edit pipeline myapplicationpipeline`
+- Reapply the pipeline manifest in your repository
+   - `kubectl apply -f pipeline.yaml`
+- Edit the pipeline manifest in-cluster
+   - `kubectl edit pipeline myapplicationpipeline`
 
-In both cases, when a pipeline is updated in your Kubernetes cluster,
-the changes propagate into Spinnaker shortly. If an error occurs
-during the update, your pipeline may show an `ErrorFailedUpdate` state. You
-can see the details of that failure by describing the resource and looking in
-the "Events" section:
+When you update your pipeline in Kubernetes, the changes propagate into
+Spinnaker. If an error occurs during the update, your pipeline may show an
+`ErrorFailedUpdate` state. You can see the details of that failure by describing
+the resource and looking in the "Events" section:
 
 ```
 kubectl describe pipeline myapplicationpipeline
@@ -318,26 +306,23 @@ kubectl describe pipeline myapplicationpipeline
 
 ### Deleting pipelines
 
-When a pipeline is no longer necessary, you can delete it in one of two ways:
+You can delete a pipeline in one of two ways:
 
-1. Deleting the pipeline manifest from your repository definition
-  - `kubectl delete -f pipeline.yaml`
-1. Deleting the pipeline directly
-  - `kubectl delete pipeline myapplicationpipeline`
+- Delete the pipeline manifest from your repository definition
+   - `kubectl delete -f pipeline.yaml`
+- Delete the pipeline directly
+   - `kubectl delete pipeline myapplicationpipeline`
 
-In either case, the pipeline gets deleted shortly in Spinnaker as well. If
-an error occurred during deletion, then your pipeline may show an
-`ErrorFailedDelete` state. You can see the details of that failure by
-describing the resource and looking in the "Events section":
+When you delete your pipeline in Kubernetes, the deletion propagates into
+Spinnaker. If an error occurred during deletion, then your pipeline may show an
+`ErrorFailedDelete` state. You can see the details of that failure by describing
+the resource and looking in the "Events section":
 
 ```
 kubectl describe pipeline myapplicationpipeline
 ```
 
 # Known Limitations
-
-The following sections document limitations with various versions of the PaCRD
-controller.
 
 ## v0.1.x
 
@@ -358,8 +343,8 @@ the following behavior:
 
 - Pipeline stages must be defined with a `type` key for the stage name and a
 key of the same name where all stage options live. For example, for the
-"Bake Manifest" stage you would structure your definition like so:
-  
+"Bake Manifest" stage you would structure your definition like this:
+
 ```yaml
 # ...
 stages:
@@ -378,6 +363,9 @@ manifest. Fields are documented under `spec.validation.openAPIV3Schema`.
 
 [**Experimental**]: https://kb.armory.io/releases/early-release-beta-GA/
 [Kubernetes controller]: https://kubernetes.io/docs/concepts/architecture/controller/
-[app-docs]: https://www.spinnaker.company.com/guides/user/applications/
+[app-docs]: https://www.spinnaker.io/guides/user/applications/#about-applications
 [kube-name-doc]: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/
-[pipe-docs]: https://www.spinnaker.company.com/concepts/pipelines/
+[pipe-docs]: https://www.spinnaker.io/concepts/pipelines/
+[kind]: https://github.com/kubernetes-sigs/kind
+[create an application]: https://www.spinnaker.io/guides/user/applications/create/#create-an-application
+[create a pipeline]: https://www.spinnaker.io/guides/user/pipeline/managing-pipelines/#create-a-pipeline
