@@ -61,9 +61,11 @@ curl -fsSL https://engineering.armory.io/manifests/pacrd-0.1.1.yaml > pacrd-0.1.
 
 Then, inspect the manifest to make sure it is compatible with your cluster.
 
-We'll create a few files in our current directory so we can customize our
-installation. Start by creating a `kustomization.yaml` file, which will contain
-our installation settings:
+Create a few files in the current directory to customize the
+installation. 
+
+Start by creating a `kustomization.yaml` file, which contains
+the installation settings:
 
 ```yaml
 # file: kustomization.yaml
@@ -74,9 +76,8 @@ patchesStrategicMerge:
 namespace: spinnaker  # Note: you should change this value if you are _not_ deploying into the `spinnaker` namespace.
 ```
 
-Then a `patch.yaml` file that contains your `pacrd` config. If you're not
-deploying into the `spinnaker` namespace you'll want to update the `front50`
-and `orca` keys:
+Next, create a `patch.yaml` file that contains your `pacrd` config. If you are not
+deploying into the `spinnaker` namespace, update the `front50` and `orca` keys:
 
 ```yaml
 # file: patch.yaml
@@ -94,7 +95,7 @@ data:
 
 ```
 
-When you're ready, apply the `pacrd` manifest to your cluster:
+When you are ready, apply the `pacrd` manifest to your cluster:
 
 ```sh
 # If using `kubectl` >= 1.14
