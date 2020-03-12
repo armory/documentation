@@ -53,39 +53,56 @@ accounts
 
 ## Quick Start
 
-This quick start assumes the following about your Kubernetes cluster:
-
-- Your Spinnaker cluster is installed into a namespace called `spinnaker`
-- Your Spinnaker services have `service` objects of the form `spin-{service_name}`; for example, `spin-front50`
-
 Download the current `pacrd` manifest to your local machine:
 
 ```
-curl -fsSL https://engineering.armory.io/manifests/pacrd-0.1.0.yaml > pacrd-0.1.0.yaml
+curl -fsSL https://engineering.armory.io/manifests/pacrd-0.1.1.yaml > pacrd-0.1.1.yaml
 ```
 
 Then, inspect the manifest to make sure it is compatible with your cluster.
 
-When you're ready, apply the `pacrd` manifest to your cluster:
+Create the following files in the directory where you downloaded the `pacrd` manifest to customize the
+installation: `kustomization.yaml` and `patch.yaml`.
+
+Start by creating a `kustomization.yaml` file, which contains
+the installation settings:
+
+```yaml
+# file: kustomization.yaml
+resources:
+  - pacrd-0.1.1.yaml
+patchesStrategicMerge:
+  - patch.yaml
+namespace: spinnaker  # Note: you should change this value if you are _not_ deploying into the `spinnaker` namespace.
+```
+
+Next, create a `patch.yaml` file that contains your `pacrd` config. If you are not
+deploying into the `spinnaker` namespace, update the `front50` and `orca` keys:
+
+```yaml
+# file: patch.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pacrd-config
+  namespace: spinnaker
+data:
+  pacrd.yaml: |
+    spinnakerServices:
+      # NOTE: change `spinnaker` to your namespace name here
+      front50: http://spin-front50.spinnaker:8080
+      orca: http://spin-orca.spinnaker:8083
 
 ```
-kubectl apply -f pacrd-0.1.0.yaml
-```
 
-If you want to specify your own namespace, remove `namespace` references and
-apply the manifest with your desired namespace:
+When you are ready, apply the `pacrd` manifest to your cluster:
 
-```
-sed -i '' '/namespace:/d' pacrd-0.1.0.yaml &&\
-  kubectl --namespace <your-namespace> -f pacrd-0.1.0.yaml
-```
+```sh
+# If using `kubectl` >= 1.14
+kubectl apply -k .
 
-Alternatively, you can download and install this feature in a single command
-if your organization's security policies allow for this. Armory recommends only
-using this method for non-production environments:
-
-```
-kubectl apply -f https://engineering.armory.io/manifests/pacrd-0.1.0.yaml
+# Otherwise, use `kustomize` and `kubectl` toegether
+kustomize build | kubectl apply -f -
 ```
 
 <!--
