@@ -11,6 +11,8 @@ order: 171
   Dinghy docs in time.
 !-->
 
+{% include components/experimental_feature.html %}
+
 PaCRD is considered [**Experimental**] software. This feature is working and
 installable but is missing functionality and subject to rapid change.
 
