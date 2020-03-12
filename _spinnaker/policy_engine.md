@@ -216,6 +216,8 @@ spec:
           args:
           # Change this to the namespace where you want OPA to look for policies
             - "--policies=<namespace>"
+          # Configure the OPA server to only check ConfigMaps with the relevant label
+            - "--require-policy-label=true" 
 ---
 # Create a static DNS endpoint for Spinnaker to reach OPA
 apiVersion: v1
