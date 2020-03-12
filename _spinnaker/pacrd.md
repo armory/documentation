@@ -61,8 +61,8 @@ curl -fsSL https://engineering.armory.io/manifests/pacrd-0.1.1.yaml > pacrd-0.1.
 
 Then, inspect the manifest to make sure it is compatible with your cluster.
 
-Create a few files in the current directory to customize the
-installation. 
+Create the following files in the directory where you downloaded the `pacrd` manifest to customize the
+installation: `kustomization.yaml` and `patch.yaml`.
 
 Start by creating a `kustomization.yaml` file, which contains
 the installation settings:
