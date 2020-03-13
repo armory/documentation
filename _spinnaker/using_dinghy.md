@@ -465,6 +465,8 @@ If you have already created a pipeline in the Spinnaker UI, you can create a din
     {
       "application": "YourSpinnakerApplicationName",
       "pipelines": [
+         "name": "the name of your pipeline",
+         "application": "YourSpinnakerApplicationName",
          The JSON obtained from the UI
        ]
     }
