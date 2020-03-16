@@ -12,15 +12,15 @@ The following guide describes how to configure your Spinnaker on AWS deployment 
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-## Assumptions and Prerequisites
+## Assumptions and prerequisites
 - The passive Spinnaker will have the same permissions as the active Spinnaker
 - The active Spinnaker is configured to use AWS Aurora and S3 for persistent storage
 - Your Secret engine/store has been configured for Disaster Recovery (DR)
 - All other services integrated with Spinnaker, such as your Continuous Integration (CI) system, is configured for DR
   
-## What’s a Passive Installation
+## What is a passive Spinnaker
 
-A passive installation of Spinnaker means that the deployment: 
+A passive Spinnaker means that the deployment: 
 
 - Is not reachable by its known endpoints while passive (external and internal)
 - Does not schedule pipelines
@@ -49,15 +49,15 @@ Note the following guidelines about Spinnaker storage and caching:
     - Rosco - Will lose bake logs
     - Igor - Will lose last executed Jenkins job cursor
 
-## Kubernetes Considerations
-Keep the following guidelines in mind when configuring Kubernetes:
+## Kubernetes guidelines 
+Keep the following guidelines in mind when configuring Kubernetes.
 
-### Control Plane Considerations
+### Control plane
 
 * The Kubernetes control plane should be configured to use multiple availability zones in order to handle availability zone failure. For EKS clusters they are available across availability zones by default.
     
 
-### Worker-level Considerations
+### Workers
 
 The following guidelines are meant for EKS workers:
 
@@ -66,7 +66,7 @@ The following guidelines are meant for EKS workers:
 * The autoscaling group has to have a proper termination policy. Use one or all of the following policies: OldestLaunchConfiguration, OldestLaunchTemplate, OldestInstance. This allows the underlying worker AMIs to be rotated more easily.
 * Ideally, Spinnaker pods for each service that do not have a replica of 1 should be spread out among the various workers. This means that [pod affinity/anti-affinity](https://blog.verygoodsecurity.com/posts/kubernetes-multi-az-deployments-using-pod-anti-affinity/) should be configured. With this configuration Spinnaker will be able to handle availability zone failures better. 
 
-## DNS Considerations
+## DNS considerations
 
 A good way to handle failover is to set up DNS entries as a CNAME for each Spinnaker installation. 
 
@@ -78,7 +78,7 @@ For example:
 
 In this setup, point your CNAME to `us-east` when a disaster event happens.
 
-**Note**: Armory does not recommend setting up DNS with a backup IP address when manual steps are required for failover. 
+| **Note**: Armory does not recommend setting up DNS with a backup IP address when manual steps are required for failover. |
 
 ## Setting up a Passive Spinnaker 
 
@@ -92,13 +92,13 @@ Make sure you set replicas for all Spinnaker services to 0.
 
 Once you're done configuring Halyard for the passive SPinnaker, run `hal deploy apply` to deploy.
 
-**Note**: Armory recommends performing a DR exercise run to make sure the passive Spinnaker is set up correctly. Ideally, the DR exercise should include both failing over to the DR region and failing back to the primary region. |
+| **Note**: Armory recommends performing a DR exercise run to make sure the passive Spinnaker is set up correctly. Ideally, the DR exercise should include both failing over to the DR region and failing back to the primary region. |
 
 ## Performing Disaster Recovery
 
 If the active Spinnaker is failing, the following actions need to be taken:
 
-### Activating the Passive Spinnaker
+### Activating the passive Spinnaker
 
 Perform the following tasks when you make the passive Spinnaker into the active Spinnaker:
 
@@ -122,7 +122,7 @@ Restoration time is dependent on the time it takes to restore the database, the 
 - Echo
 - Fiat 
   
-## Other Resources
+## Other resources
 - [Kubernetes Multi-AZ deployments Using Pod Anti-Affinity](https://blog.verygoodsecurity.com/posts/kubernetes-multi-az-deployments-using-pod-anti-affinity/) 
 - [Amazon Aurora Global Databases](https://aws.amazon.com/rds/aurora/global-database/)
 - [Failover for Aurora Global Databases](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html#aurora-global-database-failover)
