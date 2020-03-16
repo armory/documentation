@@ -30,13 +30,12 @@ A passive Spinnaker means that the deployment:
 
 | **NOTE**: It is important that the storage being used is replicated across regions since these contain all the application and pipeline definitions |
 
-Armory recommends using a relational database for Orca and Clouddriver. For Orca, a relational database helps maintain integrity. For Clouddriver, it reduces the time to recovery. Even though any MySQL database can be used, Armory recommends using AWS Aurora for the following reasons:
+Armory recommends using a relational database for Orca and Clouddriver. For Orca, a relational database helps maintain integrity. For Clouddriver, it reduces the time to recovery. Even though any MySQL version 5.7+ database can be used, Armory recommends using AWS Aurora for the following reasons:
 
 - More performant than RDS MySQL
 - Better high availability than RDS MySQL
 - Less downtime for patching and maintenance
 - Support for [cross-region replication](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Replication.CrossRegion.html)
-- Support for DB spanning across regions. See [Aurora Global Database](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html). 
 
 Note the following guidelines about Spinnaker storage and caching: 
 
@@ -124,7 +123,7 @@ Restoration time is dependent on the time it takes to restore the database, the 
   
 ## Other resources
 - [Kubernetes Multi-AZ deployments Using Pod Anti-Affinity](https://blog.verygoodsecurity.com/posts/kubernetes-multi-az-deployments-using-pod-anti-affinity/) 
-- [Amazon Aurora Global Databases](https://aws.amazon.com/rds/aurora/global-database/)
+- [Replicating Amazon Aurora MySQL DB Clusters Across AWS Regions](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Replication.CrossRegion.html)
 - [Failover for Aurora Global Databases](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html#aurora-global-database-failover)
 - [Amazon EKS](https://docs.aws.amazon.com/eks/index.html)
 - [Amazon ElastiCache for Redis](https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/index.html)
