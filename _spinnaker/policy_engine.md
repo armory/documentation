@@ -289,6 +289,13 @@ If you have configured OPA to look for a ConfigMap, you can create the ConfigMap
 kubectl create configmap manual-judgment --from-file=manual-judgment.rego
 ```
 
+After you create the ConfigMap, apply a label to it:
+```
+kubectl label configmap manual-judgment openpolicyagent.org/policy=rego
+```
+
+This label corresponds to the label we add in the [example ConfigMap](#using-configmaps-for-opa-policies). The label in the ConfigMap for creating an OPA server configures the OPA server and, by extension, the Policy Engine to only check ConfigMaps that have the corresponding label. This improves performance.
+
 **API Example** 
 
 Replace the endpoint with your OPA endpoint:
