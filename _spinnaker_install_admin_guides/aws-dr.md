@@ -98,7 +98,9 @@ Once you're done configuring Halyard for the passive SPinnaker, run `hal deploy 
 
 If the active Spinnaker is failing, the following actions need to be taken:
 
-**Activating the Passive Spinnaker**
+### Activating the Passive Spinnaker
+
+Perform the following tasks when you make the passive Spinnaker into the active Spinnaker:
 
 * Use the same version of Halyard to deploy the passive Spinnaker installation that was used to deploy the active Spinnaker.
 * AWS Aurora
@@ -110,9 +112,9 @@ If the active Spinnaker is failing, the following actions need to be taken:
 * Change the DNS CNAME if it is not already pointing to the passive Spinnaker installation.
 * If the Spinnaker that is not working is accessible, it should be deactivated
 
-**Restoration time**
+## Restoration time
 
-Restoration time is dependent on the time it takes to restore the database, the various Spinnaker services, and the time it takes to update DNS. The following services will also take some time to restore since Redis needs time to warm up the cache:
+Restoration time is dependent on the time it takes to restore the database, the Spinnaker services, and the time it takes to update DNS. The following services will also take some time to restore since Redis needs time to warm up the cache:
 
 - Clouddriver
 - Orca
