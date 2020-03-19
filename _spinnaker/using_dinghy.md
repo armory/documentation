@@ -4,9 +4,9 @@ title: Using Pipelines as Code
 order: 131
 ---
 
-Armory's Pipelines As Code ("Dinghy") feature provides a way to specify pipeline definitions in source code repos (like GitHub & BitBucket).
+Armory's Pipelines As Code ("Dinghy") feature provides a way to specify pipeline definitions in source code repos such as ke GitHub & BitBucket.
 
-The Armory Spinnaker installation provides a service called "Dinghy" which will keep the pipeline in Spinnaker in sync with what is defined in the GitHub repo. Also, users will be able to make a pipeline by composing other pipelines, stages, or tasks and templating certain values.
+The Armory Spinnaker installation provides a service called "Dinghy", which keeps the pipeline in Spinnaker in sync with what is defined in the GitHub repo. Also, users are able to make a pipeline by composing other pipelines, stages, or tasks and templating certain values.
 
 > NOTE: before you can use this feature, please ensure you have [configured it](http://docs.armory.io/spinnaker/install_dinghy/) correctly.
 
@@ -606,13 +606,13 @@ pipelines:
 
 ## Conditionals
 
-Dinghy supports all of the usual Go template conditionals. In addition to that, Dinghy also provides the git webhoook content in the template allowing you to use the raw push data in the template itself.
+Dinghy supports all of the usual Go template conditionals. In addition to that, Dinghy also provides the git webhoook content in the template, allowing you to use the raw push data in the template itself.
 
-### Looping over a map:
+### Iterating over a map:
 
-In certain situations, you may want to be able to loop over a list of items.  Dinghy supports the `makeSlice` function.  Here's an example of how to do this:
+In certain situations, you may want to iterate over a list of items.  Dinghy supports the `makeSlice` function.  Here's an example of how to do this:
 
-Given a stage that looks like this (file name `stage.minimal.wait.module`)
+Given a stage that looks like this (filename `stage.minimal.wait.module`)
 
 ```{% raw %}
 {
