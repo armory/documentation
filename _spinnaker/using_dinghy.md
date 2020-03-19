@@ -606,7 +606,77 @@ pipelines:
 
 ## Conditionals
 
-Dinghy supports all of the usual Go template conditionals. In addition to that, Dinghy also provides the git webhoook content in the template allowing you to use the raw push data in the template itself.  An example of conditional support:
+Dinghy supports all of the usual Go template conditionals. In addition to that, Dinghy also provides the git webhoook content in the template allowing you to use the raw push data in the template itself.
+
+### Looping over a map:
+
+In certain situations, you may want to be able to loop over a list of items.  Dinghy supports the `makeSlice` function.  Here's an example of how to do this:
+
+Given a stage that looks like this (file name `stage.minimal.wait.module`)
+
+```{% raw %}
+{
+  "name": "{{ var "waitname" ?: "Wait" }}",
+  "type": "wait"
+}
+{% endraw %}```
+
+Then a Dinghyfile that looks like this (note the commas in order for the loop to function properly):
+
+```{% raw %}
+{
+  "application": "example",
+  "pipelines": [
+    {
+      "name": "Loop Example",
+      "application": "example",
+      "stages": [
+        {{ $stages := makeSlice "First Wait" "Second Wait" }}
+        {{ range $stages }}
+          {{
+            module "stage.minimal.wait.module" 
+            "waitname" . 
+          }},
+        {{ end }}
+        {{
+          module "stage.minimal.wait.module" 
+          "waitname" "Final Wait"
+        }}
+      ]
+    }
+  ]
+}
+{% endraw %}```
+
+Will result in a pipeline that looks like this (after JSON formatting):
+
+```json
+{
+  "application": "example",
+  "pipelines": [
+    {
+      "name": "Loop Example",
+      "application": "example",
+      "stages": [
+        {
+          "name": "First Wait",
+          "type": "wait"
+        },
+        {
+          "name": "Second Wait",
+          "type": "wait"
+        },
+        {
+          "name": "Final Wait",
+          "type": "wait"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### RawData
 
 The top level of the data passed in is always `.RawData`.  From there, you can use the JSON fields as they appear in the payload.  For example, GitHub's payload looks like this:
 
