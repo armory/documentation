@@ -9,7 +9,7 @@ redirect_from:
   - /spinnaker-install-admin-guides/install_on_k8s/
 ---
 
-This guide describes the initial installation of Spinnaker in Kubernetes.  By the end of this guide, you will have an instance of Spinnaker up and running on your Kubernets cluster.  The document currently does not fully cover the following:
+This guide describes the initial installation of Spinnaker in Kubernetes, for which you need to choose between using two different installation methods: Spinnaker Operator or Halyard. By the end of this guide, you will have an instance of Spinnaker up and running on your Kubernets cluster.  The document currently does not fully cover the following:
 
 * TLS Encryption
 * Authentication/Authorization
@@ -18,34 +18,73 @@ This guide describes the initial installation of Spinnaker in Kubernetes.  By th
 
 See [Next Steps](#next-steps) for information related to these topics.
 
-Note: This document focuses on Armory Spinnaker but can be adapted to install Open Source Spinnaker by using a different Halyard container and a corresponding different Spinnaker version.
+Note: This document focuses on Armory Spinnaker but can be adapted to install Open Source Spinnaker by using Open Source Operator or a different Halyard container, and a corresponding different Spinnaker version.
 
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-## Assumptions / Prerequisites / Environments
+## Choosing an installation method
+
+There are two recommended ways of installing Spinnaker: using the [Spinnaker Operator](https://docs.armory.io/spinnaker/operator/) or using [Halyard](https://www.spinnaker.io/setup/install/halyard/).
+
+### Spinnaker Operator
+
+The Spinnaker Operator is the newest installation and configuration method for Spinnaker. Using the Operator you can entirely manage Spinnaker using only Kubernetes manifest files, and treat it like any other Kubernetes application running standard tools like `kubectl`, `helm`, `kustomize`, or you can even use a Spinnaker pipeline to rollout any configuration changes to itself. The Operator runs a few "hot" validations before accepting a manifest into the cluster, preventing some configuration problems to affect a running Spinnaker installation.
+
+*Prerequisites*
+
+* Your Kubernetes API Server is running version `1.13` or later.
+* You have admin rights to install the Custom Resource Definition (CRD) for Operator.
+* You can assign a `ClusterRole` to Operator, meaning that it can have access to all namespaces in the cluster. Operator can still run in an isolated namespace in [Basic](https://docs.armory.io/spinnaker/operator/#installing-operator-in-basic-mode) mode (not covered in this installation guide), but it will not be able to run admission validations.
+
+*General workflow*
+
+* Install Spinnaker Operator CRDs cluster wide.
+* Create a Kubernetes namespace for the Operator.
+* Install the Operator in that namespace, using a ServiceAccount with a ClusterRole to access other namespaces.
+* Create an S3 bucket for Spinnaker to store persistent configuration in.
+* Creat an IAM user that Spinnaker will use to access the S3 bucket (or alternately, granting access to the bucket via IAM roles).
+* Create a Kubernetes namespace for Spinnaker.
+* Install Spinnaker in that namespace.
+
+### Halyard
+
+Halyard is the former installation method for Spinnaker, it has been around the longest and is the first one supporting any new Spinnaker features. Operator uses a customized version of Halyard that is constantly being updated to incorporate changes from base Halyard.
+
+*Prerequisites*
+
+* Your Kubernetes cluster has storage set up so that PersistentVolumeClaims properly allocate PersistentVolumes.
+
+*General workflow*
+
+* Create a Kubernetes namespace where we will run both Halyard (the Spinnaker installer) and Spinnaker
+* In the namespace, grant the `default` Kubernetes ServiceAccount the `cluster-admin` ClusterRole (which will give it full permissions within our namespace, but not on other namespaces; for details, see the [Kubernetes RBAC documentation](https://kubernetes.io/docs/reference/access-authn-authz/rbac/))
+* In the namespace, create a PVC (PersistentVolumeClaim), which will be used for persistent Spinnaker cluster configuration (the "halyard configuration" or "halconfig")
+* In the namespace, create a StatefulSet to run Halyard (the Spinnaker "installer").  The PVC will be mounted to this StatefulSet.
+* Halyard will use the `default` Kubernetes ServiceAccount to create and modify resources running the cluster (the Kubernetes Secrets, Deployments, and Services that make up Spinnaker).
+* The Spinnaker microservice called "Clouddriver", which interacts with our various clouds (including Kubernetes), will also use the `default` ServiceAccount to interact with Kubernetes.
+* Run Halyard (the Spinnaker installer) as a Kubernetes Pod in the namespace (using a StatefulSet).
+* Create an S3 bucket for Spinnaker to store persistent configuration in.
+* Creat an IAM user that Spinnaker will use to access the S3 bucket (or alternately, granting access to the bucket via IAM roles).
+* Run the `hal` client interactively in the Kubernetes Pod, to:
+  * Build out the `hal` config YAML file (`.hal/config`)
+  * Configure Spinnaker with the IAM credentials and bucket information
+  * Turn on other recommended settings (artifacts and http artifact provider)
+  * Install Spinnaker
+  * Expose Spinnaker
+
+## Assumptions / Environments
 
 This document assumes the following:
 
-* Your Kubernetes cluster has storage set up so that PersistentVolumeClaims properly allocate PersistentVolumes
 * Your Kubernetes cluster is up and running with at least 4 CPUs and 12 GB of memory.  This is the bare minimum to install and run Spinnaker; depending on our Spinnaker workload, you may need more resources.
 * You have `kubectl` installed and are able to access and create Kubernetes resources.
 * You have access to an existing object storage bucket or the ability to create an object storage bucket (Amazon S3, Google GCS, Azure Storage, or Minio are all options for this).  _For the initial version of this document, **only** Amazon S3 is used._ 
 * You have access to an IAM role or user with access to the S3 bucket. If neither of these exist, you need to create an IAM role or user with access to the S3 bucket.
 * Your cluster has either an existing Kubernetes Ingress controller or the permissions to install the NGINX Ingress Controller
 
-This document is written with the following workflow in mind:
-
-* We have access to the Kubernetes API, with `kubectl` configured and able to access the cluster, from our workstation
-* We will create a Kubernetes namespace where we will run both Halyard (the Spinnaker installer) and Spinnaker
-* In our namespace, we will grant the `default` Kubernetes ServiceAccount the `cluster-admin` ClusterRole (which will give it full permissions within our namespace, but not on other namespaces; for details, see the [Kubernetes RBAC documentation](https://kubernetes.io/docs/reference/access-authn-authz/rbac/))
-* In our namespace, we will create a PVC (PersistentVolumeClaim), which will be used for persistent Spinnaker cluster configuration (the "halyard configuration" or "halconfig")
-* In our namespace, we will create a StatefulSet to run Halyard (the Spinnaker "installer").  The PVC will be mounted to this StatefulSet.
-* Halyard will use the `default` Kubernetes ServiceAccount to create and modify resources running the cluster (the Kubernetes Secrets, Deployments, and Services that make up Spinnaker)
-* The Spinnaker microservice called "Clouddriver", which interacts with our various clouds (including Kubernetes), will also use the `default` ServiceAccount to interact with Kubernetes
-
-In addition to the above, these instructions sets up the Spinnaker microservice called "Front50", which stores Spinnaker Application and Pipeline configuration to an object store, with the following permission:
+These instructions sets up the Spinnaker microservice called "Front50", which stores Spinnaker Application and Pipeline configuration to an object store, with the following permission:
 
 * Front50 has full access to an S3 bucket through either an IAM user (with an AWS access key and secret access key) or an IAM role (attached to your Kubernetes cluster).
 
@@ -53,232 +92,6 @@ At the end of this guide, you have a Spinnaker deployment that is:
 
 * Accessible from your browser
 * Able to deploy other Kubernetes resources to the namespace where it runs but not to any other namespace
-
-## Installation Summary
-
-This guide describes how to perform the following tasks to install Spinnaker:
-
-* Creating a Kubernetes namespace (for Spinnaker and Halyard).  This guide uses the namespace `spinnaker`, but you can use any namespace.
-* Granting the `default` ServiceAccount in the namespace access to the `cluster-admin` ClusterRole **in the namespace**.
-* Running Halyard (the Spinnaker installer) as a Kubernetes Pod in the namespace (using a StatefulSet).
-* Creating an S3 bucket for Spinnaker to store persistent configuration in.
-* Creating an IAM user that Spinnaker will use to access the S3 bucket (or alternately, granting access to the bucket via IAM roles).
-* Running the `hal` client interactively in the Kubernetes Pod, to:
-  * Build out the `hal` config YAML file (`.hal/config`)
-  * Configure Spinnaker with the IAM credentials and bucket information
-  * Turn on other recommended settings (artifacts and http artifact provider)
-  * Install Spinnaker
-  * Expose Spinnaker
-
-## Connect to the Kubernetes cluster
-
-You must be able to connect to the Kubernetes cluster with `kubectl`.  Depending on the type of your Kubernetes cluster, there are a number of ways of achieving this.
-
-### Connecting to an AWS EKS cluster
-
-If you use an AWS EKS cluster, you must be able to deploy resources to it. Before you start this section, make sure you have configured the `aws` CLI with credentials and a default region / availability zone. For more information, see the `aws` [installation directions](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) and [configuration directions](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)).  Armory recommends using the V2 version of the AWS CLI.
-
-If you have access to the role that created the EKS cluster, update your kubeconfig with access to the Kubernetes cluster using this command:
-
-```bash
-aws eks update-kubeconfig --name <EKS_CLUSTER_NAME>
-```
-
-From here, validate access to the cluster with this command: 
-
-```bash
-kubectl get namespaces
-```
-
-The command returns the namespaces in the EKS cluster.
-
-### Connecting to other Kubernetes clusters
-
-If you created a Kubernetes on AWS with KOPS or another Kubernetes tool, ensure that you can communicate with the Kubernetes cluster with `kubectl`:
-
-```bash
-kubectl get namespaces
-```
-
-The command returns the namespaces in the EKS cluster.
-
-## Start the Halyard StatefulSet
-
-Halyard is a Docker image used to install Spinnaker. It generates Kubernetes manifests for each of the Spinnaker services.  This guide explains how to run it in a Kubernetes cluster as a StatefulSet with one (1) Pod.
-
-First, create a namespace for Spinnaker to run in (this can be any namespace):
-
-```bash
-kubectl create ns spinnaker
-```
-
-Create a file called `halyard.yml` that contains the following:
-
-```yml
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: spinnaker
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-- 
-  kind: ServiceAccount
-  name: default
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: hal-pvc
-  labels:
-    app: halyard
-spec:
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 100Mi
----
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: halyard
-spec:
-  replicas: 1
-  serviceName: halyard
-  selector:
-    matchLabels:
-      app: halyard
-  template:
-    metadata:
-      labels:
-        app: halyard
-    spec:
-      containers:
-      - 
-        name: halyard
-        image: armory/halyard-armory:{{ site.data.versions.halyard-armory-version }}
-        volumeMounts:
-        - 
-          name: hal
-          mountPath: /home/spinnaker
-        env:
-        - 
-          name: HOME
-          value: "/home/spinnaker"
-      securityContext:
-        runAsUser: 1000
-        runAsGroup: 65535
-        fsGroup: 65535
-      volumes:
-      - 
-        name: hal
-        persistentVolumeClaim:
-          claimName: hal-pvc
-```
-
-This Kubernetes manifest has these three resources in it:
-
-* A Kubernetes Rolebinding that grants the `default` ServiecAccount access to the full namespace. This is used by both Halyard and Clouddriver.
-* A PersistentVolumeClaim used for persistent Halyard configuration.
-* A StatefulSet using the PVC which runs the Halyard Pod.
-
-Apply (create) the resources **in your namespace**: 
-
-```bash
-kubectl -n spinnaker apply -f halyard.yml
-```
-
-Change `spinnaker` to a different namespace if you're using a different namespace.
-
-Check the status of the pod and wait until all the pods are running:
-
-```bash
-kubectl -n spinnaker get pods
-```
-
-If you run into issues, such as the pods getting evicted, see the Kubernetes documentation for troubleshooting tips.
-
-## Enter the Halyard container
-
-The majority of tasks you need to perform need to be done the Halyard container.  Use the following command to enter the container:
-
-```bash
-kubectl -n spinnaker exec -it halyard-0 bash
-```
-
-Once inside the container, customize the environment with a minimal `.bashrc` like this:
-
-```bash
-tee -a /home/spinnaker/.bashrc <<-EOF
-export PS1="\h:\w \$ "
-alias ll='ls -alh'
-cd /home/spinnaker
-EOF
-
-source /home/spinnaker/.bashrc
-```
-
-## Configure Spinnaker to install in Kubernetes
-
-Inside the container, use the Halyard `hal` command line tool to enable the Kubernetes cloud provider:
-
-```bash
-hal config provider kubernetes enable
-```
-
-Next, configure a Kubernetes account called `spinnaker`:  
-
-```bash
-hal config provider kubernetes account add spinnaker \
-  --provider-version v2 \
-  --only-spinnaker-managed true \
-  --service-account true \
-  --namespaces spinnaker 
-  # Update the 'namespaces' field with your namespace if using a different namespace
-```
-This command uses the ServiceAccount associated with Halyard and Clouddriver, the `default` service account in this case.
-
-Once you create an account (with `account add`), you can _edit_ it by running the command with `edit` instead of `add`. Use the same flags.  
-
-For example, if you need to support multiple namespaces, you can run the following:
-
-```bash
-hal config provider kubernetes account edit spinnaker \
-  --namespaces spinnaker,dev,stage,prod 
-  # Make sure to include all namespace you need to support
-```
-
-**Important: These commands and parameters limit Spinnaker to deploying to the `spinnaker` namespace. If you want to deploy to other namespaces, either add a second cloud provider target or grant the `default` service account in your namespace permissions on additional namespaces and change the `--namespaces` flag.**
-
-Use the Halyard `hal` command line tool to configure Halyard to install Spinnaker in your Kubernetes cluster
-
-```bash
-hal config deploy edit \
-  --type distributed \
-  --account-name spinnaker \
-  --location spinnaker 
-  # Update the 'location' parameter with your namespace, if relevant
-```
-
-## Enable and configure the 'Artifact' Feature
-
-Within Spinnaker, 'artifacts' are consumable references to items that live outside of Spinnaker, such as a file in a git repository or a file in an S3 bucket. The Artifacts feature must be explicitly turned on.
-
-The following commands enable the "Artifacts" feature, the new Artifact UI, and the "http" artifact provider:
-
-```bash
-hal config features edit --artifacts true
-hal config features edit --artifacts-rewrite true
-hal config artifact http enable
-```
-
-Although enabling the new Artifacts UI is optional, Armory recommends using it for better user experience. 
-
-In order to add specific types of artifacts, additional configuration must be completed. For now though, it is sufficient to turn on the artifacts feature with the `http` artifact provider. This allows Spinnaker to retrieve files using unauthenticated http.
 
 ## Configure application and pipeline configuration storage
 
@@ -301,7 +114,6 @@ This section describes how to do the following:
 * Configure access to the bucket:
   * (Option 1) Add an IAM Policy to an IAM Role, granting access to the S3 bucket
   * (Option 2) Create an IAM User with access to the S3 bucket
-* Configure Spinnaker to use the IAM User or Role to access the S3 bucket
 
 <details><summary><b>Click to expand</b></summary>
 
@@ -411,9 +223,432 @@ This section describes how to do the following:
 
 </details>
 
-<details><summary>Configure Spinnaker to access S3 with the IAM Role or User</summary>
 
-<p>Spinnaker needs information about which bucket to access.  Additionally, if you are using an IAM User to access the the bucket, Spinnaker needs credentials for the IAM User.</p>
+</details>
+
+## Connect to the Kubernetes cluster
+
+You must be able to connect to the Kubernetes cluster with `kubectl`.  Depending on the type of your Kubernetes cluster, there are a number of ways of achieving this.
+
+### Connecting to an AWS EKS cluster
+
+If you use an AWS EKS cluster, you must be able to deploy resources to it. Before you start this section, make sure you have configured the `aws` CLI with credentials and a default region / availability zone. For more information, see the `aws` [installation directions](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) and [configuration directions](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)).  Armory recommends using the V2 version of the AWS CLI.
+
+If you have access to the role that created the EKS cluster, update your kubeconfig with access to the Kubernetes cluster using this command:
+
+```bash
+aws eks update-kubeconfig --name <EKS_CLUSTER_NAME>
+```
+
+From here, validate access to the cluster with this command: 
+
+```bash
+kubectl get namespaces
+```
+
+The command returns the namespaces in the EKS cluster.
+
+### Connecting to other Kubernetes clusters
+
+If you created a Kubernetes on AWS with KOPS or another Kubernetes tool, ensure that you can communicate with the Kubernetes cluster with `kubectl`:
+
+```bash
+kubectl get namespaces
+```
+
+The command returns the namespaces in the EKS cluster.
+
+## Install Spinnaker using the Operator
+
+### Install CRDs and Operator
+
+First download CRDs and manifests from the [latest stable release](https://github.com/armory-io/spinnaker-operator/releases).
+
+```bash
+$ export RELEASE=x.x.x
+$ bash -c 'curl -L https://github.com/armory-io/spinnaker-operator/releases/download/${RELEASE}/manifests.tgz | tar -xz'
+```
+
+Install Spinnaker CRDs:
+
+```bash
+$ kubectl apply -f deploy/crds/
+```
+
+Create a namespace for the operator. In this guide we'll be using `spinnaker-operator` but it can have any name, provided that you change the namespace name in the `role_binding.yaml` file.
+
+```bash
+kubectl create namespace spinnaker-operator
+```
+
+Install the operator manifests:
+
+```bash
+$ kubectl apply -n spinnaker-operator -f deploy/operator/cluster
+```
+
+After installation, you can verify that the Operator is running with the following command:
+
+```bash
+$ kubectl -n spinnaker-operator get pods
+```
+The command returns output similar to the following if the pod for the Operator is running:
+
+```
+NAMESPACE                                READY         STATUS       RESTARTS      AGE
+spinnaker-operator-7cd659654b-4vktl      2/2           Running      0             6s
+```
+
+### Install Spinnaker
+
+First create the namespace where Spinnaker will be installed. In this guide it will be called `spinnaker` but it can have any name:
+```bash
+kubectl create namespace spinnaker
+```
+
+Finally paste the following content to a file named `spinnakerservice.yml` to have a basic Spinnaker installation. It will create a Kubernetes `ServiceAccount` with permissions only to the namespace where Spinnaker is installed, and will create a base Spinnaker installation with one Kubernetes target account, that will enable Spinnaker to make deployments to the same namespace where it is installed.
+
+Note the values that you need to modify:
+
+- Spinnaker version: Use the version of Spinnaker that you want to deploy, which can be found [here](https://docs.armory.io/release-notes/#list-of-stable-armory-releases).
+- S3 bucket: Use the name of the S3 bucket created above.
+- S3 region: Region where the S3 bucket is located.
+- S3 accessKeyId: Optional, set when using IAM user credentials to authenticate to the S3 bucket.
+- S3 secretAccessKey: Optional, set when using IAM user credentials to authenticate to the S3 bucket.
+- Namespace: Change if you're installing Spinnaker to a namespace other than `spinnaker`.
+
+```yaml
+apiVersion: spinnaker.armory.io/v1alpha2
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    config:
+      version: 2.17.1  # Replace with desired version of Spinnaker to deploy
+      persistentStorage:
+        persistentStoreType: s3
+        s3:
+          bucket: spinnaker-abcxyz # Replace with the name of the S3 bucket created previously
+          region: us-west-2        # Replace with correct bucket's region
+          accessKeyId: XYZ         # (Optional, set only when using an IAM user to authenticate to the bucket instead of an IAM role)
+          secretAccessKey: XYZ     # (Optional, set only when using an IAM user to authenticate to the bucket instead of an IAM role)
+          rootFolder: front50
+      providers:
+        kubernetes:
+          accounts:
+          - name: spinnaker
+            cacheThreads: 1
+            cachingPolicies: []
+            configureImagePullSecrets: true
+            customResources: []
+            dockerRegistries: []
+            kinds: []
+            namespaces:
+            - spinnaker  # Name of the namespace where Spinnaker is installed
+            oAuthScopes: []
+            omitKinds: []
+            omitNamespaces: []
+            onlySpinnakerManaged: false
+            permissions: {}
+            providerVersion: V2
+            requiredGroupMembership: []
+            serviceAccount: true
+          enabled: true
+          primaryAccount: spinnaker
+    service-settings:
+      clouddriver:
+        kubernetes:
+          serviceAccountName: spin-sa
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  creationTimestamp: null
+  name: spin-role
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - services
+  - endpoints
+  - persistentvolumeclaims
+  - events
+  - configmaps
+  - secrets
+  - namespaces
+  verbs:
+  - '*'
+- apiGroups:
+  - batch
+  - extensions
+  resources:
+  - jobs
+  verbs:
+  - '*'
+- apiGroups:
+  - apps
+  - extensions
+  resources:
+  - deployments
+  - daemonsets
+  - replicasets
+  - statefulsets
+  verbs:
+  - '*'
+- apiGroups:
+  - monitoring.coreos.com
+  resources:
+  - servicemonitors
+  verbs:
+  - get
+  - create
+- apiGroups:
+  - apps
+  resourceNames:
+  - spinnaker-operator
+  resources:
+  - deployments/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - metrics.k8s.io
+  resources:
+  - pods
+  verbs:
+  - '*'
+- apiGroups:
+  - apps
+  resourceNames:
+  - spinnaker-operator
+  resources:
+  - deployments/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - spinnaker.io
+  resources:
+  - '*'
+  - spinnakeraccounts
+  verbs:
+  - '*'
+- apiGroups:
+  - spinnaker.armory.io
+  resources:
+  - '*'
+  - spinnakerservices
+  verbs:
+  - '*'
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: spin-sa
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: spin-role-binding
+subjects:
+- kind: ServiceAccount
+  name: spin-sa
+roleRef:
+  kind: Role
+  name: spin-role
+  apiGroup: rbac.authorization.k8s.io
+```
+
+Deploy the manifest with the following command:
+
+```bash
+kubectl -n spinnaker apply -f spinnakerservice.yml
+```
+
+## Install Spinnaker using Halyard
+
+### Start the Halyard StatefulSet
+
+Halyard is a Docker image used to install Spinnaker. It generates Kubernetes manifests for each of the Spinnaker services.  This guide explains how to run it in a Kubernetes cluster as a StatefulSet with one (1) Pod.
+
+First, create a namespace for Spinnaker to run in (this can be any namespace):
+
+```bash
+kubectl create ns spinnaker
+```
+
+Create a file called `halyard.yml` that contains the following:
+
+```yml
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: spinnaker
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- 
+  kind: ServiceAccount
+  name: default
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hal-pvc
+  labels:
+    app: halyard
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: halyard
+spec:
+  replicas: 1
+  serviceName: halyard
+  selector:
+    matchLabels:
+      app: halyard
+  template:
+    metadata:
+      labels:
+        app: halyard
+    spec:
+      containers:
+      - 
+        name: halyard
+        image: armory/halyard-armory:{{ site.data.versions.halyard-armory-version }}
+        volumeMounts:
+        - 
+          name: hal
+          mountPath: /home/spinnaker
+        env:
+        - 
+          name: HOME
+          value: "/home/spinnaker"
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 65535
+        fsGroup: 65535
+      volumes:
+      - 
+        name: hal
+        persistentVolumeClaim:
+          claimName: hal-pvc
+```
+
+This Kubernetes manifest has these three resources in it:
+
+* A Kubernetes Rolebinding that grants the `default` ServiecAccount access to the full namespace. This is used by both Halyard and Clouddriver.
+* A PersistentVolumeClaim used for persistent Halyard configuration.
+* A StatefulSet using the PVC which runs the Halyard Pod.
+
+Apply (create) the resources **in your namespace**: 
+
+```bash
+kubectl -n spinnaker apply -f halyard.yml
+```
+
+Change `spinnaker` to a different namespace if you're using a different namespace.
+
+Check the status of the pod and wait until all the pods are running:
+
+```bash
+kubectl -n spinnaker get pods
+```
+
+If you run into issues, such as the pods getting evicted, see the Kubernetes documentation for troubleshooting tips.
+
+### Enter the Halyard container
+
+The majority of tasks you need to perform need to be done the Halyard container.  Use the following command to enter the container:
+
+```bash
+kubectl -n spinnaker exec -it halyard-0 bash
+```
+
+Once inside the container, customize the environment with a minimal `.bashrc` like this:
+
+```bash
+tee -a /home/spinnaker/.bashrc <<-EOF
+export PS1="\h:\w \$ "
+alias ll='ls -alh'
+cd /home/spinnaker
+EOF
+
+source /home/spinnaker/.bashrc
+```
+
+### Configure Spinnaker to install in Kubernetes
+
+Inside the container, use the Halyard `hal` command line tool to enable the Kubernetes cloud provider:
+
+```bash
+hal config provider kubernetes enable
+```
+
+Next, configure a Kubernetes account called `spinnaker`:  
+
+```bash
+hal config provider kubernetes account add spinnaker \
+  --provider-version v2 \
+  --only-spinnaker-managed true \
+  --service-account true \
+  --namespaces spinnaker 
+  # Update the 'namespaces' field with your namespace if using a different namespace
+```
+This command uses the ServiceAccount associated with Halyard and Clouddriver, the `default` service account in this case.
+
+Once you create an account (with `account add`), you can _edit_ it by running the command with `edit` instead of `add`. Use the same flags.  
+
+For example, if you need to support multiple namespaces, you can run the following:
+
+```bash
+hal config provider kubernetes account edit spinnaker \
+  --namespaces spinnaker,dev,stage,prod 
+  # Make sure to include all namespace you need to support
+```
+
+**Important: These commands and parameters limit Spinnaker to deploying to the `spinnaker` namespace. If you want to deploy to other namespaces, either add a second cloud provider target or grant the `default` service account in your namespace permissions on additional namespaces and change the `--namespaces` flag.**
+
+Use the Halyard `hal` command line tool to configure Halyard to install Spinnaker in your Kubernetes cluster
+
+```bash
+hal config deploy edit \
+  --type distributed \
+  --account-name spinnaker \
+  --location spinnaker 
+  # Update the 'location' parameter with your namespace, if relevant
+```
+
+### Enable and configure the 'Artifact' Feature
+
+Within Spinnaker, 'artifacts' are consumable references to items that live outside of Spinnaker, such as a file in a git repository or a file in an S3 bucket. The Artifacts feature must be explicitly turned on.
+
+The following commands enable the "Artifacts" feature, the new Artifact UI, and the "http" artifact provider:
+
+```bash
+hal config features edit --artifacts true
+hal config features edit --artifacts-rewrite true
+hal config artifact http enable
+```
+
+Although enabling the new Artifacts UI is optional, Armory recommends using it for better user experience. 
+
+In order to add specific types of artifacts, additional configuration must be completed. For now though, it is sufficient to turn on the artifacts feature with the `http` artifact provider. This allows Spinnaker to retrieve files using unauthenticated http.
+
+
+### Configure Spinnaker to access S3 with the IAM Role or User
+
+Spinnaker needs information about which bucket to access.  Additionally, if you are using an IAM User to access the the bucket, Spinnaker needs credentials for the IAM User.
 
 <pre class="highlight"><code># Update these snippets with the information for your bucket
 export BUCKET_NAME=spinnaker-abcxyz
@@ -447,11 +682,7 @@ hal config storage s3 edit \
   --root-folder ${ROOT_FOLDER}
 </code></pre>
 
-</details>
-
-</details>
-
-## Set up Gate to listen on the `/api/v1` path
+### Set up Gate to listen on the `/api/v1` path
 
 The Spinnaker microservice "Gate" serves as the API gateway for Spinnaker.  Configure it to listen on a specific path rather than requiring different hosts or ports to differentiate it from the UI of Spinnaker.
 
@@ -487,7 +718,7 @@ healthEndpoint: /api/v1/health
 EOF
 ```
 
-## Select the Spinnaker version to install
+### Select the Spinnaker version to install
 
 Before you use Halyard to install Spinnaker, specify the version of Spinnaker you want to use.
 
@@ -510,7 +741,7 @@ echo ${VERSION}
 hal config version edit --version ${VERSION}
 ```
 
-## Install Spinnaker
+### Install Spinnaker
 
 Now that our halconfig is configured, you can install Spinnaker:
 
@@ -570,7 +801,7 @@ In order to expose Spinnaker to end users, perform the following actions:
 
 * Expose the spin-deck (UI) Kubernetes service on a URL endpoint
 * Expose the spin-gate (API) Kubernetes service on a URL endpoint
-* Update Spinnaker (using Halyard) to be aware of the new endpoints
+* Update Spinnaker to be aware of the new endpoints
 
 **If you already have an ingress controller, use that ingress controller instead.  You can check for the existence of the NGINX Ingress Controller by running `kubectl get ns` and looking for a namespace called `ingress-nginx`. If the namespace exists, you likely already have an NGINX Ingress Controller running in your cluster.**
 
@@ -662,23 +893,48 @@ kubectl -n spinnaker apply -f spin-ingress.yml
 
 ### Configure Spinnaker to be aware of its endpoints
 
-Spinnaker must be aware of its endpoints to work properly. This should be done from inside the halyard container.  If you need to get into the Halyard the container, run this command:
+Spinnaker must be aware of its endpoints to work properly, and configuration updates vary if you installed Spinnaker using the Operator or Halyard. 
 
-```
-kubectl -n spinnaker exec -it halyard-0 bash
-```
+* If using the Operator:
+    
+    Update `spinnakerservice.yml` adding the `security` section:
+    
+    ```yaml
+    spec:
+      spinnakerConfig:
+        config:
+          security:
+            apiSecurity:
+              overrideBaseUrl: http://spinnaker.domain.com/api/v1  # Replace this with the IP address or DNS that points to our nginx ingress instance
+            uiSecurity:
+              overrideBaseUrl: http://spinnaker.domain.com         # Replace this with the IP address or DNS that points to our nginx ingress instance
+    ```
+  
+    Apply the changes:
+    
+    ```bash
+    kubectl -n spinnaker apply -f spinnakerservice.yml 
+    ```
 
-Then, run the following command from inside the container:
+* If using Halyard:
 
-```bash
-SPINNAKER_ENDPOINT=http://spinnaker.domain.com
-# ^ Replace this with the IP address or DNS that points to our nginx ingress instance
+    Run this command to get into the Halyard container:
 
-hal config security ui edit --override-base-url ${SPINNAKER_ENDPOINT}
-hal config security api edit --override-base-url ${SPINNAKER_ENDPOINT}/api/v1
+    ```
+    kubectl -n spinnaker exec -it halyard-0 bash
+    ```
 
-hal deploy apply
-```
+    Then, run the following command from inside the container:
+
+    ```bash
+    SPINNAKER_ENDPOINT=http://spinnaker.domain.com
+    # ^ Replace this with the IP address or DNS that points to our nginx ingress instance
+
+    hal config security ui edit --override-base-url ${SPINNAKER_ENDPOINT}
+    hal config security api edit --override-base-url ${SPINNAKER_ENDPOINT}/api/v1
+
+    hal deploy apply
+    ```
 
 ### Configuring TLS certificates
 
@@ -686,16 +942,7 @@ Configuring TLS certificates for ingresses is often very environment-specific. I
 
 * Add certificate(s) so that our ingress controller can use them
 * Configure the ingress(es) so that NGINX (or the load balancer in front of NGINX, or your alternative ingress controller) terminates TLS using the certificate(s)
-* Update Spinnaker to be aware of the new TLS endpoints (note `https` instead of `http`)
-
-```bash
-SPINNAKER_ENDPOINT=https://spinnaker.domain.com
-
-hal config security ui edit --override-base-url ${SPINNAKER_ENDPOINT}
-hal config security api edit --override-base-url ${SPINNAKER_ENDPOINT}/api/v1
-
-hal deploy apply
-```
+* Update Spinnaker to be aware of the new TLS endpoints, by replacing `http` by `https` for the override base url's in the previous section.
 
 ## Next Steps
 
