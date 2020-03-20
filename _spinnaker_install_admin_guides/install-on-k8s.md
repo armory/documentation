@@ -334,6 +334,8 @@ spec:
           accessKeyId: XYZ         # (Optional, set only when using an IAM user to authenticate to the bucket instead of an IAM role)
           secretAccessKey: XYZ     # (Optional, set only when using an IAM user to authenticate to the bucket instead of an IAM role)
           rootFolder: front50
+      features:
+        artifacts: true
       providers:
         kubernetes:
           accounts:
