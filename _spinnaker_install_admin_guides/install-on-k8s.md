@@ -9,7 +9,7 @@ redirect_from:
   - /spinnaker-install-admin-guides/install_on_k8s/
 ---
 
-This guide describes the initial installation of Spinnaker in Kubernetes, for which you need to choose between using two different installation methods: Spinnaker Operator or Halyard. By the end of this guide, you will have an instance of Spinnaker up and running on your Kubernets cluster.  The document currently does not fully cover the following:
+This guide describes the initial installation of Spinnaker in Kubernetes, for which you need to choose between using two different installation methods: Spinnaker Operator or Halyard. By the end of this guide, you will have an instance of Spinnaker up and running on your Kubernetes cluster.  The document currently does not fully cover the following:
 
 * TLS Encryption
 * Authentication/Authorization
