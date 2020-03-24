@@ -148,7 +148,7 @@ hal armory terraform edit \
 
 ### Terraform version
 
-Armory ships several version of Terraform as part of the Terraform Integration feature. The Terraform binaries are verified by checksum and with Hashicorp's GPG key before being installed into our release.
+Armory ships several versions of Terraform as part of the Terraform Integration feature. The Terraform binaries are verified by checksum and with Hashicorp's GPG key before being installed into our release.
 
 When creating a Terraform Integration stage, pipeline creators select a specific available version from the list of available versions: 
 
