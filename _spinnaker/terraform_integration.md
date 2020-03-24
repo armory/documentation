@@ -156,6 +156,33 @@ When creating a Terraform Integration stage, pipeline creators select a specific
 
 Note that all Terraform stages within a Pipeline that affect state must use the same Terraform version.
 
+### Configuring a Profile
+
+Configure profiles that users can select when creating a Terraform Integration stage. A profile gives users the ability to reference certain kinds of external sources, such as a private remote repository, when creating pipelines.
+
+For example, if your Terraform scripts rely on modules stored in a private remote Git repository, add your `SSH` key to a profile. Then, a user can select that profile when creating a Terraform Integration stage. When a pipeline runs, the Terraform Integration automatically gains access to fetch what it needs from the private repo.
+
+To add profiles that a user can select from, perform the following steps:
+
+1. In the `.hal/default/profiles` directory, create or edit `terraformer-local.yml`.
+2. Add the values for the profile(s) you want to add under an `environments` section. The following example adds a profile named `pixel-git` for an SSH key secured in Vault and used to access a Git repo: 
+    
+    ```
+    # Profile name displayed in Deck
+    - name: pixel-git
+        variables:
+        - kind: git-ssh 
+          keyContents: encrypted:vault!e:<secret engine>!p:<path to secret>!k:<key>!b:<is base64 encoded?> 
+    ```
+    
+    When a user creates or edits a Terraform Integration stage in Deck, they can select the profile `pixel-git` from a dropdown.
+
+    Keep the following in mind when adding profiles:
+
+      * You can add multiple profiles under the `profile` section.
+      * Do not commit plain text secrets to `terraformer-local.yml`. Instead, use a secret store: [Vault](/spinnaker-install-admin-guides/secrets-vault), an [encrypted S3 bucket](/spinnaker-install-admin-guides/secrets-s3), or an [encrypted GCS bucket](/spinnaker-install-admin-guides/secrets-gcs). 
+3. Save the file. 
+
 ### Enabling the Terraform Integration UI
 
 If you previously used the Terraform Integration stage by editing the JSON representation of the stage, those stages are automatically converted to use the UI.
