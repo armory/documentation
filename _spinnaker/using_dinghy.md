@@ -4,9 +4,9 @@ title: Using Pipelines as Code
 order: 131
 ---
 
-Armory's Pipelines As Code ("Dinghy") feature provides a way to specify pipeline definitions in source code repos (like GitHub & BitBucket).
+Armory's Pipelines As Code ("Dinghy") feature provides a way to specify pipeline definitions in source code repos such as ke GitHub & BitBucket.
 
-The Armory Spinnaker installation provides a service called "Dinghy" which will keep the pipeline in Spinnaker in sync with what is defined in the GitHub repo. Also, users will be able to make a pipeline by composing other pipelines, stages, or tasks and templating certain values.
+The Armory Spinnaker installation provides a service called "Dinghy", which keeps the pipeline in Spinnaker in sync with what is defined in the GitHub repo. Also, users are able to make a pipeline by composing other pipelines, stages, or tasks and templating certain values.
 
 > NOTE: before you can use this feature, please ensure you have [configured it](http://docs.armory.io/spinnaker/install_dinghy/) correctly.
 
@@ -465,6 +465,8 @@ If you have already created a pipeline in the Spinnaker UI, you can create a din
     {
       "application": "YourSpinnakerApplicationName",
       "pipelines": [
+         "name": "the name of your pipeline",
+         "application": "YourSpinnakerApplicationName",
          The JSON obtained from the UI
        ]
     }
@@ -604,7 +606,77 @@ pipelines:
 
 ## Conditionals
 
-Dinghy supports all of the usual Go template conditionals. In addition to that, Dinghy also provides the git webhoook content in the template allowing you to use the raw push data in the template itself.  An example of conditional support:
+Dinghy supports all of the usual Go template conditionals. In addition to that, Dinghy also provides the git webhoook content in the template, allowing you to use the raw push data in the template itself.
+
+### Iterating over a map:
+
+In certain situations, you may want to iterate over a list of items.  Dinghy supports the `makeSlice` function.  Here's an example of how to do this:
+
+Given a stage that looks like this (filename `stage.minimal.wait.module`)
+
+```{% raw %}
+{
+  "name": "{{ var "waitname" ?: "Wait" }}",
+  "type": "wait"
+}
+{% endraw %}```
+
+Then a Dinghyfile that looks like this (note the commas in order for the loop to function properly):
+
+```{% raw %}
+{
+  "application": "example",
+  "pipelines": [
+    {
+      "name": "Loop Example",
+      "application": "example",
+      "stages": [
+        {{ $stages := makeSlice "First Wait" "Second Wait" }}
+        {{ range $stages }}
+          {{
+            module "stage.minimal.wait.module" 
+            "waitname" . 
+          }},
+        {{ end }}
+        {{
+          module "stage.minimal.wait.module" 
+          "waitname" "Final Wait"
+        }}
+      ]
+    }
+  ]
+}
+{% endraw %}```
+
+Will result in a pipeline that looks like this (after JSON formatting):
+
+```json
+{
+  "application": "example",
+  "pipelines": [
+    {
+      "name": "Loop Example",
+      "application": "example",
+      "stages": [
+        {
+          "name": "First Wait",
+          "type": "wait"
+        },
+        {
+          "name": "Second Wait",
+          "type": "wait"
+        },
+        {
+          "name": "Final Wait",
+          "type": "wait"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### RawData
 
 The top level of the data passed in is always `.RawData`.  From there, you can use the JSON fields as they appear in the payload.  For example, GitHub's payload looks like this:
 
@@ -638,3 +710,15 @@ In the template, the access path for that variable is: `.RawData.pusher.name`.
 {% endraw %}```
 
 *Note: The structure of the webhook data passed to Dinghy's template engine depends on the Git service that sends the webhook. This example uses a GitHub webhook.*
+
+
+## Known Issue:
+
+If Dinghy crashes on start up and you encounter an error in Dinghy similar to:
+`time="2020-03-06T22:35:54Z" level=fatal msg="failed to load configuration: 1 error(s) decoding:\n\n* 'Logging.Level' expected type 'string', got unconvertible type 'map[string]interface {}'"`
+
+You have probably configured global logging levels with `spinnaker-local.yml`. The work around is to create a `.hal/default/profiles/dinghy-local.yml` with the following:
+```
+Logging:
+  Level: INFO
+```

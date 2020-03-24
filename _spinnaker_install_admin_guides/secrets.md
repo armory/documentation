@@ -20,11 +20,19 @@ We can now store secrets (tokens, passwords, sensitive files) separately from th
 
 ### Secret Format
 
-When referencing secrets in configs, we use the following general format:
+When referencing string secrets (passwords, tokens) in configs, use the following general format:
 
 ```
 encrypted:<secret engine>!<key1>:<value1>!<key2>:<value2>!...
 ```
+
+When referencing files, the same parameters are used but with the `encryptedFile` prefix:
+
+```
+encryptedFile:<secret engine>!<key1>:<value1>!<key2>:<value2>!...
+```
+
+
 The keys and values making up the string vary with each secret engine. Refer to the specific documentation for each engine for more information.
 
 ### In Halyard
@@ -70,6 +78,7 @@ We can also provide secret references directly in `*-local.yml` profile files or
 
 ### Secret Engines Supported
 
-* [Encrypted S3 buckets](https://docs.armory.io/spinnaker-install-admin-guides/secrets-s3/) (Open Source Spinnaker)
-* [Hashicorp Vault](https://docs.armory.io/spinnaker-install-admin-guides/secrets-vault/) (Armory Spinnaker)
+* [Encrypted S3 buckets](../secrets-s3/) (Open Source Spinnaker)
+* [Google Storage (GCS)](../secrets-gcs/) (Open Source Spinnaker)
+* [Hashicorp Vault](../secrets-vault/) (Armory Spinnaker)
 * Is there a secret engine you'd like us to support? Submit a feature request [here](http://go.armory.io/support)!

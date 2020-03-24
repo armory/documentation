@@ -126,7 +126,7 @@ Note that you can use spinsvc for brevity. You can also use `spinnakerservices.s
 
 Contains the same information as the `deploymentConfigurations` entry in a Halyard configuration.
 
-For example, given the following `~/./hal/config` file: 
+For example, given the following `~/.hal/config` file: 
 
 ```yaml
 currentDeployment: default

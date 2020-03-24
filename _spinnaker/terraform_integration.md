@@ -9,20 +9,21 @@ Note that the Terraform integration is in beta while we work on improving the us
 {:.no_toc}
 ## Overview
 
-Use Armory Spinnaker's Terraform Integration to integrate your infrastructure-as-code with Terraform workflow into your Spinnaker instance. Manage your application infrastructure as part of a Spinnaker pipeline. The Terraform Integration interacts with a source repository you specify to deploy infrastructure.
+Use Armory Spinnaker's Terraform Integration to integrate your infrastructure-as-code Terraform workflow into your SDLC. Armory's Terraform Integration interacts with a source repository you specify to deploy your infrastructure as part of your Spinnaker pipeline.
 
 At a high level, a Terraform Integration stage performs the following actions when it runs:
 
 1. Authenticates to your repo using basic authentication credentials you provide. This can be a GitHub token or a BitBucket username/password combination. 
 2. Pulls a full directory from your Git repository.
-3. (Optionally) uses a traditional Spinnaker artifact provider (Github, BitBucket, or HTTP) to pull in a `tfvars`-formatted variable file.   
+3. Optionally uses a Spinnaker artifact provider (Github, BitBucket, or HTTP) to pull in a `tfvars`-formatted variable file.
+4. Runs the Terraform action you select.   
 
-The following tutorials walk you through how to setup Armory's Terraform integration and execute Terraform code stored in a Git repo as part of a Spinnaker pipeline. The examples on this page describe a workflow for using Terraform to create and manage infrastructure on AWS. 
+The following tutorials walk you through how to setup Armory's Terraform Integration and execute Terraform code stored in a Git repo as part of a Spinnaker pipeline. More specifically, this page describes a workflow for the Terraform Integration to create and manage infrastructure on AWS. 
 
 {:.no_toc}
 ### Under the hood
 
-At the core of the Terraform Integration is the Terraformer service. This service is reponsible for fetching your Terraform projects from source and executing various Terraform commands against them. When a `terraform` stage starts, Orca submits the task to Terraformer and monitors it until completion. Once a task is submitted, Terraformer fetches your target project, runs `terraform init` to initialize the project, and then runs your desired `action` (`plan` or `apply`). If the task is successful, the stage gets marked successful as well. If the task fails, the stage gets marked as a failure and halts the pipeline.
+At the core of the Terraform Integration is the Terraformer service. This service fetches your Terraform projects from source and executes various Terraform commands against them. When a `terraform` stage starts, Orca submits the task to Terraformer and monitors it until completion. Once a task is submitted, Terraformer fetches your target project, runs `terraform init` to initialize the project, and then runs your desired `action` (`plan` or `apply`). If the task is successful, the stage gets marked successful as well. If the task fails, the stage gets marked as a failure, and the pipeline stops.
 
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
@@ -30,20 +31,38 @@ At the core of the Terraform Integration is the Terraformer service. This servic
 
 ## How to submit feedback
 {:.no_toc}
-If you decide to enable this feauture and have feedback you'd like to submit, please let us know at [go.armory.io/ideas](go.armory.io/ideas)! We're constantly iterating on customer feedback to ensure that the features we build make your life easier!
+If you decide to enable this feature and have feedback you'd like to submit, please let us know at [go.armory.io/ideas](go.armory.io/ideas) or [feedback.armory.io](https://feedback.armory.io)! We're constantly iterating on customer feedback to ensure that the features we build make your life easier!
 
-## Prerequisites
+## Requirements
 
-* Credentials (in the form of basic auth) to your Terraform Git repository.  This can take one of several forms:
+* Credentials (in the form of basic auth) for your Terraform Git repository.  This can take one of two forms:
     * If your Terraform repo is in GitHub, use a Personal Acccess Token (potentially associated with a service account) as the 'token'.  Generate this token in your GitHub settings.
     * If your Terraform repo is in BitBucket, use a username/password that has access to your BitBucket repo.
-* To use Terraform Input Variable Files (`tfvar`), you must have a separate artifact provider (such as the GitHub, BitBucket, or HTTP artifact provider) that can pull your `tfvar` file(s). Additionally, the credentials for must be configured in both places: the Terraform Integration and the artifact provider.
+* To use Terraform Input Variable Files (`tfvar`), you must have a separate artifact provider (such as the GitHub, BitBucket, or HTTP artifact provider) that can pull your `tfvar` file(s). Additionally, the credentials must be configured in both places: the Terraform Integration and the artifact provider.
 
 ## Enable Terraform Integration
 
-The examples on this page describe the configuration for the Terraform Integration and an artifact provider to support either GitHub or BitBucket.
-   
+The examples on this page describe how to configure the Terraform Integration and an artifact provider to support either GitHub or BitBucket. Note that the Terraform Integration also requires a `git/repo` artifact account.
+
+### Configure the Git Repo artifact
+
+If you do not already have a `git/repo` artifact account configured, you must do so to use the Terraform Integration stage.
+
+Edit the `~/.hal/default/profiles/clouddriver-local.yml` file and add the following:
+
+```
+artifacts:
+  gitRepo:
+    enabled: true
+    accounts:
+    - name: gitrepo
+      token: 12344 #GitHub personal access token
+```
+For more information, see [Git Repo](https://www.spinnaker.io/reference/artifacts/types/git-repo/).
+
 ### Configure the Terraform Integration with GitHub
+
+These steps describe how to configure GitHub as an artifact provider for the Terraform Integration. For information about BitBucket, see [Configuring the Terraform Integration with BitBucket](#configuring-the-terraform-integration-with-bitbucket)
 
 #### 1. Generating a Github Personal Access Token (PAT)
 
@@ -51,17 +70,13 @@ Before you start, you need a GitHub Personal Access Token (PAT). The Terraform
 Integration authenticates itself using the PAT to interact with your GitHub repositories. You must create and configure a PAT so that the Terraform Integration can pull
 a directory of Terraform Templates from GitHub. Additionally, the Spinnaker GitHub artifact provider require a PAT for `tfvar` files.
 
-If you don't already have a PAT,  create one:
+For more information about how to generate a GitHub PAT, see [Creating a Personal Access Token for the Command Line](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line).
 
-1. Log into GitHub. You can use your personal account or a service account.
-2. Go to **Settings** > **Developer Settings**.
-3. Go to **Personal access tokens**.
-4. Generate a new token. 
-    * Give your token a distinct name and select the **repo** scope.
-5. Save the token somewhere secure.
-6. If your GitHub organization uses Single Sign-On (SSO), enable
-SSO for the token.  
-    * On the **Personal access tokens** page, click **Enable SSO** for your token and authorize it for the organization that hosts the repos for your Terraform template(s) and Terraform `tfvar` files.
+Make sure the PAT you create meets the following requirements:
+
+* The token uses a distinct name and has the **repo** scope.
+* If your GitHub organization uses Single Sign-On (SSO), enable
+the SSO option for the organizations that host the Terraform template(s) and Terraform `tfvar` files.  
 
 #### 2. Enabling and configuring for the GitHub Artifact Provider
 
@@ -89,12 +104,10 @@ The Terraform Integration needs access to the GitHub token to download GitHub di
 
 1. Enable the Terraform Integration
     ```
-    # The --alpha option is only required for Halyard versions earlier than 1.6.5.
-    hal armory terraform enable --alpha
+    hal armory terraform enable
     
     # This will prompt for the token
     hal armory terraform edit \
-    --alpha \
     --git-enabled \
     --git-access-token
     ```
@@ -120,72 +133,42 @@ hal config artifact bitbucket account add bitbucket-for-terraform \
   --password
 ```
 
-#### Enabling and configuring the Terraform integration with a BitBucket token
+#### 2. Enabling and configuring the Terraform integration with a BitBucket token
 
 The Terraform Integration also needs access to the BitBucket token to download full
 Github directories hosting your Terraform templates
 
 ```
-# The --alpha option is only required for Halyard versions earlier than 1.6.5.
-hal armory terraform enable --alpha
-
 # This will prompt for the token, which is your BitBucket password
 hal armory terraform edit \
-  --alpha
   --git-enabled \
   --git-username <USERNAME> \
   --git-access-token
 ```
 
-### Selecting the Terraform version
+### Terraform version
 
-Armory ships the following versions of the Terraform binary as part of the Terraform Integration:
+Armory ships several versions of Terraform as part of the Terraform Integration feature. The Terraform binaries are verified by checksum and with Hashicorp's GPG key before being installed into our release.
 
-* 0.11.10 through 0.11.14
-* 0.12.0 through 0.12.18
+When creating a Terraform Integration stage, pipeline creators select a specific available version from the list of available versions: 
 
-**Note**: Terraform binaries are verified by checksum and with Hashicorp's GPG key before being installed into our release.
+![Terraform version to use](/images/terraform_version.png)
 
-To use Terraform, you must indicate to the Terraformer microservice
-the path to the binary within the microservice to use:
+Note that all Terraform stages within a Pipeline that affect state must use the same Terraform version.
 
-1. Create a file named `terraformer-local.yml` in the following directory: `.hal/default/profiles`.
-2. Add the following YAML to the file:
+### Enabling the Terraform Integration UI
 
-    ```yml
-    terraform:
-      executablePath: /terraform/versions/<version>/terraform
-    ```
-Replace <version> with one of the Terraform versions that Armory Spinnaker ships with.
+If you previously used the Terraform Integration stage by editing the JSON representation of the stage, those stages are automatically converted to use the UI.
 
-**Note**: If you specify a Terraform version in a stage configuration, the value in `terraformer-local.yml` is ignored.
-
-### Configuring Gate proxy to access Terraform logs
-
-Terraform's primary source of feedback are its logs. You can display Terraform logs to users in Deck. To do this, configure Gate with a proxy configuration. The proxy allows you to configure stages with a direct link to the output for Terraform `plan` or `apply`.
-Before you start, ensure that the `~/.hal/default/profiles/` directory exists and contains `gate-local.yml`. If the directory and file do not exist, run the following commands:
+Depending on the version, you may need to manually enable the stage UI for Deck. To do so, edit the file `~/.hal/default/profiles/settings-local.js` and add the following line:
 
 ```
-sudo mkdir ~/.hal/default/profiles/
-vi ~/.hal/default/profiles/gate-local.yml
+window.spinnakerSettings.feature.terraform = true;
 ```
 
-To start, we'll add the configuration to `~/.hal/default/profiles/gate-local.yml`
+### Completing the installation
 
-Add the following configuration to `~/.hal/default/profiles/gate-local.yml`:
-
-    ```yaml
-    proxies:
-      - id: terraform
-        uri: http://spin-terraformer:7088
-        methods:
-          - GET
-    ```
-We use this proxy in future steps!
-
-### Complete the installation
-
-After you configure your Git repository and Gate proxy access, perform the following steps:
+After you finish your Terraform integration configuration, perform the following steps:
 
 1. Apply the changes: 
    
@@ -201,219 +184,58 @@ After you configure your Git repository and Gate proxy access, perform the follo
 
 ## Configuring a Terraform stage
 
-The Terraform Integration exposes a new stage in Spinnaker called `terraform`. To use the stage, edit the stage as JSON. Here is what the JSON representation of the stage looks like:
+For a tour of the Terraform Integration Stage UI, see the [Terraform Integration UI video](https://www.youtube.com/watch?v=Xsjql3g-wtU).
 
-```
-{
-  "action": "{terraform-command-to-execute}",
-  "artifacts": [
-    {
-      "reference": "{github-repo-where-your-code-lives}",
-      "type": "git/repo"
-    }
-  ],
-  "backendArtifact": {
-    "artifactAccount": "{github-artifact-account-name}",
-    "reference": "{github-api-endpoint-for-tfvar-file}",
-    "type": "github/file"
-  },
-  "overrides": {
-  },
-  "dir": "{target-terraform-directory}",
-  "type": "terraform"
-}
-```
+![Terraform Stage in Deck](/images/terraform_stage_ui.png)
 
-The following example shows the JSON representation of a stage that executes `terraform plan` against a Github repository stored at `https://github.com/myorg/my-terraform-repo`:
+When you create or edit a pipeline in Deck,  a stage called **Terraform** is available. This stage can perform Terraform actions such as `plan` and `destroy` as part of your Spinnaker pipeline. 
 
-```
-{
-  "action": "plan",
-  "artifacts": [
-    {
-      "reference": "https://github.com/myorg/my-terraform-repo",
-      "type": "git/repo"
-    },
-    {
-    "artifactAccount": "github-for-terraform",
-    "reference": "https://api.github.com/repos/myorg/my-terraform-repo/contents/terraform/environments/varfile.tfvars",
-    "type": "github/file"
-    }
-  ],
-  "backendArtifact": {
-    "artifactAccount": "github-for-terraform",
-    "reference": "https://api.github.com/repos/myorg/my-terraform-repo/contents/backend.tf",
-    "type": "github/file"
-  },
-  "overrides": {
-    "environment_name": "${parameters.environment_name}"
-  },
-  "dir": "/",
-  "type": "terraform"
-}
-```
+To use the stage, perform the following steps:
 
-In the mandatory `artifacts` field, you must have exactly one `git/repo` artifact.  You may, optionally, have additional artifacts; these are used as `-var-file` parameters.
-In the optional `backendArtifact` field, you may specify a backend configuration.
+1. In Deck, select the Application and pipeline you want to add the Terraform Integration stage to.
+2. Configure the pipeline and add a stage.
+3. For **Type**, select **Terraform**.
+4. Add a **Stage Name**.
+5. Configure the Terraform Integration stage.
+    The available fields may vary slightly depending on what you configure for the stage: 
+    * **Basic Settings**
+      * **Terraform Version**:  Terraform version to use. All Terraform stages within a pipeline that modify state (apply, output, destroy) must use the same version.
+      * **Action**: Terraform action to perform. You can select any of the following actions:
+        * **Plan**: The output of the plan command is saved to a base64-encoded Spinnaker artifact and is injected into context.  You can use this artifact with a webhook to send the plan data to an external system or to use it in an `apply` stage. Optionally, you can select **Plan for Destroy** to view what Terraform destroys if you run the Destroy action.
+        * **Apply**: Run `terraform apply`. Optionally, you can ignore state locking. Armory recommends you do not ignore state locking because it can lead to state corruption. Only use this setting if you understand the consequences. 
+        * **Destroy**: Run `terraform destroy`. Optionally, you can ignore state locking. Armory recommends you do not ignore state locking because it can lead to state corruption. Only use this setting if you understand the consequences.
+        * **Output**: Run `terraform output`. 
+      * **Targets**: Scope execution to a certain subset of resources.
+      * **Workspace**: [Terraform workspace](https://www.terraform.io/docs/state/workspaces.html) to use. The workspace gets created if it doesn't already exist.
+    * **Main Terraform Artifact**
+      * **Expected Artifact**: Required. Select or define only one `git/repo` type artifact, which is a **custom-artifact**.
+        ![Terraform git repo artifact](/images/terraform-git-repo.png) 
+        * **Account**: The account to use for your artifact.
+        * **URL**: If you use a GitHub artifact, make sure you supply the _API_ URL of the file, not the URL from the `Raw` GitHub page. Use the following examples as a reference for the API URL:
+          
+          Regular GitHub:
 
-This stage definition performs the following actions:
+          ```
+          https://api.github.com/repos/{org}/{repo}/contents/{file path}
+          ```
 
-* Performs a `git clone` on the provided `git/repo`, and operate in the provided `dir` (in this case, `/`) in the given repository.
-* Performs a `terraform init`.  If your stage has the optional `backendArtifact` field, Spinnaker downloads that artifact (using the corresponding Spinnaker artifact provider and artifactAccount) and use it using `-backend-config`.
-* Downloads all other (non-`git/repo`) artifacts referenced in the `artifact` array using their corresponding artifact providers and accounts.
-* Performs the specified action (in this case, `plan`) in the provided directory.  If downloaded other artifacts, they are appended to the command with `-var-file`.
+          Github Enterprise:
 
-Put simply, the example JSON performs these two commands:
+          ```
+          https://{host}/api/v3/repos/{org}/{repo}/contents/{file path}
+          ```
+        * **Checkout subpath**: Enable this option to specify a **Subpath** within a Git repo. Useful if you have a large repo and the Terraform files are located in a specific directory.
+        * **Branch**: The Git branch or commit to use. 
+    
+      * **Subdirectory**: Subdirectory within a repo where the `terraform` command runs. Use `./` if the command should run at the root level.
+    * **Variable Files**: Optional. Variable files that get appended to the Terraform command. Equivalent to running terraform apply with the `-var-file` option.
+      * If you want to use the output of a **Plan** stage for an **Apply** stage, select the **Plan** stage output as an **Expected Artifact**
+    * **Variable Overrides**: Optional. Key/value pairs used as variables in the Terraform command. Equivalent to running terraform apply with the `-var` option. You can use a GitHub or BitBucket 
+    * **Backend Artifact**: Optional. Configuration stored outside of the primary repo that gets used for authenticating to a state backend. For example, if you want to use an S3 artifact for your backend state, specify it in this section.
 
-* `terraform init -backend-config=backend.tf`
-* `terraform plan -var-file varfile.tfvars`
-
-For the `backendArtifact` and other artifacts, you can replace `github/file` with some other artifact type. For example, if you're using the BitBucket artifact provider, specify `bitbucket/file` and the corresponding artifact account.
-
-#### Github file artifacts url
-
-For artifacts of type `github/file` you must supply the _API_ url of the file, which is different from the url you get when you click `Raw` from Github page. Here's the syntax:
-
-Regular Github:
-
-```
-https://api.github.com/repos/{org}/{repo}/contents/{file path}
-```
-
-Github Enterprise:
-
-```
-https://{host}/api/v3/repos/{org}/{repo}/contents/{file path}
-```
-
-#### Specifying the Terraform version in a stage
-
-This is optional and requires Armory Spinnaker 2.4.2 or later. The Terraform Integration supports selecting a version of Terraform during a stage. You can configure the version of Terraform to run with the following example:
-
-
-```
-{
-  "action": "plan",
-...
-  "terraformVersion": "0.12.1",
-  "type": "terraform"
-}
-```
-**Note**: The `terraformVersion` field is optional. If you specify this field, then all terraform stages that modify state (apply, output, destroy) require the same version.
-
-
-#### Selecting and creating Terraform workspaces in a stage
-
-This is optional and requires Armory Spinnaker 2.4.2 or later. 
-
-The Terraform Integration supports the selection and creation of Terraform workspaces during a stage. You can configure the workspace that Terraform should use with the following example:
-
-
-```
-{
-  "action": "plan",
-...
-  "terraformVersion": "0.12.1",
-  "workspace": "armory-dev",
-  "type": "terraform"
-}
-```
-
-Keep the following in mind when using this feature:
-
-* If the workspace specified does not exist, the Terraform Integration creates it.
-* The `workspace` field is optional. If you specify this field, then all terraform stages that reference state (plan, apply, output, destroy) require the same workspace.
-
-For more information on `terraform workspace`, see the [Terraform documentation](https://www.terraform.io/docs/state/workspaces.html).
-
-#### State Locking
-
-The Terraform Integration supports the ability to ignore backend state locking in Armory Spinnaker 2.4.2 and later.  **This is potentially dangerous.  Only use this feature if understand the consequences.**
-
-Locking flags are only used on the apply and destroy operations.
-
-```
-{
-  "action": "plan",
-...
-  "terraformVersion": "0.12.1",
-  "lock": false,
-  "workspace": "armory-dev",
-  "type": "terraform"
-}
-```
-
-#### Plan Artifact
-
-The Terraform Integration supports `terraform plan -out=file` in Armory Spinnaker 2.5.2 and above. The output of the plan command is saved to a base64-encoded Spinnaker artifact and is injected into context.  You can then use this artifact with a webhook to send the plan data to an external system or to use it in an `apply` stage for the Terraform Integration.
-
-The following JSON describes how this feature is configured and used (comments are in-line):
-
-**Plan Stage**
-
-For a `plan` stage, the `expectedArtifacts` key is required.
-
-```
-{
-  "action": "plan",
-...
-  "expectedArtifacts": [
-    {
-      "defaultArtifact": {},
-      "id": "2d3519d9-040a-41ff-b258-a8a2fee7bf5f", // any string
-      "matchArtifact": {
-        "name": "planfile", // required
-        "type": "embedded/base64" // required
-      },
-      "useDefaultArtifact": false
-    }
-  ],
-  "overrides": {
-    "environment_name": "${parameters.environment_name}"
-  },
-  "terraformVersion": "0.12.1",
-  "type": "terraform",
-  "workspace": "foo"
-}
-```
-
-The apply stage requires this (or similar) SpEL expression(s) to pass the data in.
-
-**Apply Stage**
-
-```
-{
-  "action": "apply",
-  "artifacts": [
-    {
-      "reference": "https://github.com/someorg/somerepo",
-      "type": "git/repo",
-      "version": "refs/heads/branch-testing"
-    },
-    {
-      "name": "planfile", // required
-      "reference": "${#stage('Plan')['context']['artifacts'][0]['reference']}", // the actual base64 encoded data from the previous stage
-      "type": "embedded/base64" // required
-    }
-  ],
-  "backendArtifact": {
-    "artifactAccount": "github-for-terraform",
-    "reference": "https://api.github.com/repos/someorg/somerepo/contents/backend.tf",
-    "type": "github/file"
-  },
-  "dir": "workspace",
-  "overrides": {
-    "environment_name": "${parameters.environment_name}"
-  },
-  "terraformVersion": "0.12.1",
-  "type": "terraform",
-  "workspace": "foo"
-}
-```
+      For the `backendArtifact` and other artifacts, you can replace `github/file` with some other artifact type. For example, if you're using the BitBucket artifact provider, specify `bitbucket/file` and the corresponding artifact account.
 
 ### Custom Plugins
-
-This feature requires Armory Spinnaker 2.5.2 or later.
 
 The Terraform Integration supports the use of custom Terraform providers and plugins. The Terraform Integration downloads the plugins and injects them into each stage dynamically as needed to ensure the Terraform code can run.
 
@@ -424,7 +246,7 @@ Any plugin you want to use must meet the following requirements:
 * Have a SHA256 Sum
 * Follow the Terraform plugin naming [conventions](https://www.terraform.io/docs/extend/how-terraform-works.html#discovery)
 
-**Note**: If any Terraform Integration stage in a pipeline defines a custom plugin, all terraformer stages must then define that same plugin in that pipeline.
+**Note**: If any Terraform Integration stage in a pipeline defines a custom plugin, all Terraform Integration stages must then define that same plugin in the pipeline.
 
 **Configuring Terraform plugins**:
 
@@ -460,61 +282,21 @@ The Terraform Integration caches all the defined plugins by default and does not
 }
 ```
 
-
-#### Actions
-
-The Terraform Integration supports the following actions:
-
-* plan
-* apply
-* destroy
-* output
-
-Additionally, you can perform a `plan destroy` by adding this field:
-
-```
-{
-  "action": "plan",
-  "planForDestroy": true,
-...
-  "type": "terraform"
-}
-```
-
-By default, the Terraform Integration pulls the `master` branch.  If you want to specify a different branch, add a `version` field to the `git/repo` spec.  For example:
-
-```
-{
-  "reference": "https://github.com/myorg/my-terraform-repo",
-  "type": "git/repo",
-  "version": "refs/heads/my-new-branch"
-}
-```
-
 ## Viewing Terraform log output
 
-Terraform's primary interface for user feedback is logging. When executed on your workstation, the log output is streamed to `stdout`. The Terraform Integration captures that output and makes it available via the API. These logs can be viewed by inserting the following spinnet into the Comments section of the `terraform` stage or the Instructions section of a Manual Judgement stage.
+![Terraform Integration logs](/images/terraformer-ui-logs.png)
 
-To use the following example, make sure you do the following:
-* Change the reference to `your-gate-url` with the actual URL for Gate
-* Change the `Plan` stage name to the name of your plan or apply stages
-* Change`plan_stdout`and `plan_stderr` for the corresponding action names
+Terraform's primary interface for user feedback is logging. When executed on your workstation, the log output is streamed to `stdout`. The Terraform Integration captures the log output and makes it available on the **Pipelines** page of Deck as part of the **Execution Details**. Exit codes in the log represent the following states:
 
 ```
-Init Out:
-<pre>${#stage('Plan')['outputs']['status']['logs']['init_stdout']}</pre>
-Init Err:
-<pre>${#stage('Plan')['outputs']['status']['logs']['init_stderr']}</pre>
-Plan Out:
-<pre>${#stage('Plan')['outputs']['status']['logs']['plan_stdout']}</pre>
-Plan Err:
-<pre>${#stage('Plan')['outputs']['status']['logs']['plan_stderr']}</pre>
-<a target="_blank" href="http://your-gate-url/proxies/terraform/api/v1/job/${#stage('Plan')['outputs']['status']['id']}">Full job output</a>
+0 = Succeeded with empty diff (no changes)
+1 = Error
+2 = Succeeded with non-empty diff (changes present)
 ```
+
+For more information about Terraform logs, see the [Terraform documentation](https://www.terraform.io/docs/commands/plan.html#detailed-exitcode).
 
 ## Consuming Terraform output via SpEL
-
-This feature requires Armory Spinnaker 2.4.1 or later.
 
 If you have a Terraform template configured with [Output Values](https://www.terraform.io/docs/configuration/outputs.html), then you can use the `Output` stage to parse the output and add it to your pipeline execution context.
 
@@ -532,17 +314,13 @@ Then you can set up an `Output` stage that exposes this in the pipeline executio
 ${#stage('My Output Stage')["context"]["status"]["outputs"]["bucket_arn"]["value"]}
 ```
 
-## Reference pipeline
-
-You can find a reference pipeline to build from [here](https://gist.github.com/ethanfrogers/5123a5336f7e6ae4fd5fcda76536199b) or [here](https://gist.github.com/justinrlee/3abe62e38f957ecd0ba3c417a6125555). It should help you get started! To use one of the references, create a pipeline in Deck and click **Pipeline Actions** > **Edit as JSON** and paste the pipeline JSON into the text box.
-
 ## Configuring Terraform for your cloud provider
 
 Since the Terraform Integration executes all Terraform commands against the `terraform` binary, all methods of configuring authentication are supported for your desired cloud provider. This section describes how to accomplish this for various cloud providers.
 
 ### Configuration for AWS
 
-There are many ways to enable Terraform to authenticate with AWS. You can find the full list [here](https://www.terraform.io/docs/providers/aws/#authentication). Each of these methods is supported; however, you may need to do additional configuration to enable them .
+There are several ways to enable Terraform to authenticate with AWS. You can find the full list [here](https://www.terraform.io/docs/providers/aws/#authentication). Each of these methods is supported; however, you may need to do additional configuration to enable them.
 
 #### Shared credentials file
 
@@ -599,6 +377,7 @@ provider "aws" {
   profile = "dev"
 }
 ```
+
 ## SSH Keys in the Terraform Integration
 
 ### Background
@@ -641,7 +420,7 @@ On your local workstation, create a directory and place the SSH Key and any othe
     kubectl create secret generic spin-terraformer-sshkey -n spinnaker-system --from-file=id_rsa=ssh/id_rsa --from-file=config=ssh/config
     ```
 
-In this example, we create a secret with the SSH key and a config to ignore `known hosts` file issues. 
+In this example, you create a secret with the SSH key and a config to ignore `known hosts` file issues. 
 
 ### Update the Manifest
 

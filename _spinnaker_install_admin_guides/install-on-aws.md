@@ -29,8 +29,8 @@ This document currently does not fully cover the following (see [Next Steps](#ne
 Note: This document is focused on Armory Spinnaker, but can be adapted to install Open Source Spinnaker by using a different Halyard container and a corresponding different Spinnaker version
 
 {:.no_toc}
-
-- This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it. {:toc}
+* This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
+{:toc}
 
 # Assumptions / Prerequisites / Environments
 
@@ -195,8 +195,8 @@ If you do not yet have an S3 bucket, create the S3 bucket:
 5. Click "Next"
 6. Select the following two checkboxes:
 
-  1. Keep all versions of an object in the same bucket
-  2. Automatically encrypt objects when they are stored in S3
+     * Keep all versions of an object in the same bucket
+     * Automatically encrypt objects when they are stored in S3
 
 7. Click "Next"
 
@@ -306,7 +306,7 @@ mkdir -p ${WORKING_DIRECTORY}/resources
 
 You should have one files:
 
-- A kubeconfig file (`kubeconfig-spinnaker-system-sa`) with the credentials for a service account in your GKE cluster
+- A kubeconfig file (`kubeconfig-spinnaker-system-sa`) with the credentials for a service account in your EKS cluster
 
 Copy it into `.secret` so it is available to your Halyard docker container:
 

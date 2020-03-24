@@ -133,7 +133,7 @@ spec:
 
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: halyard
   namespace: halyard
@@ -142,8 +142,7 @@ spec:
   selector:
     matchLabels:
       app: halyard
-  strategy:    
-    type: Recreate
+  serviceName: halyard
   template:
     metadata:
       labels:
@@ -151,10 +150,10 @@ spec:
     spec:
       containers:
       - name: halyard
-        image: index.docker.io/armory/halyard-armory:1.7.2
+        image: index.docker.io/armory/halyard-armory:{{ site.data.versions.halyard-armory-version }}
         volumeMounts:
         - name: halconfig
-          mountPath: /home/spinnaker/.hal
+          mountPath: /home/spinnaker/
       securityContext:
         fsGroup: 65533
       volumes:

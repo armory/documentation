@@ -46,7 +46,16 @@ hal armory dinghy edit \
 hal deploy apply
 ```
 
-Set up webhooks at the organization level for Push events. You can do this by going to: https://github.com/organizations/your_org_here/settings/hooks. Set the `Payload URL` to: `https://<your-gate-url>/webhooks/git/github` and a content type of `application/json`.  If your gate endpoint is protected by a firewall, you’ll need to configure your firewall to allow inbound webhooks from Github's IP addresses. You can find their IPs here: [](https://api.github.com/meta), you can read [Github's docs here](https://help.github.com/articles/about-github-s-ip-addresses/).
+**Configure GitHub webhooks**
+
+Set up webhooks at the organization level for Push events. You can do this by going to: https://github.com/organizations/your_org_here/settings/hooks:
+1. Set `content-type` to `application/json`. 
+2. Set the `Payload URL` to your Gate URL. Depending on whether you configured Gate to use its own DNS name or a path on the same DNS name as Deck, the URL follows one of the following formats: 
+
+  * `https://<your-gate-url>/webhooks/git/github` (if you have a separate DNS name or port for Gate)
+  * `https://<your-spinnaker-url>/api/v1/webhooks/git/github` (if you're using a different path for Gate)
+
+If your gate endpoint is protected by a firewall, you’ll need to configure your firewall to allow inbound webhooks from Github's IP addresses. You can find their IPs here: [](https://api.github.com/meta), you can read [Github's docs here](https://help.github.com/articles/about-github-s-ip-addresses/).
 
 ### Bitbucket / Stash Example
 
@@ -104,6 +113,8 @@ All providers available in Dinghy are supported. Please refer to the list below 
 * `bitbucket-cloud`
 * `bitbucket-server`
 
+This configuration goes inside your `profiles/dinghy-local.yml` file: 
+
 ```yaml
 repoConfig:
   - branch: some_branch
@@ -139,6 +150,9 @@ If you have configured Spinnaker to send Slack notifications for pipeline events
 $ hal armory dinghy slack enable --channel my-channel
 ```
 
+![Slack Notifications](/images/dinghy-slack-notifications.png)
+
+
 For a complete listing of options check out the [Armory Halyard](/spinnaker/armory_halyard/#hal-armory-dinghy-edit) documentation.
 
 ### Other Template Formats
@@ -163,3 +177,14 @@ The `parserFormat` configuration only accepts the following values:
 * hcl
 
 *Note: in the future armory will add this configuration to halyard cli.
+
+## Known Issue:
+
+If Dinghy crashes on start up and you encounter an error in Dinghy similar to:
+`time="2020-03-06T22:35:54Z" level=fatal msg="failed to load configuration: 1 error(s) decoding:\n\n* 'Logging.Level' expected type 'string', got unconvertible type 'map[string]interface {}'"`
+
+You have probably configured global logging levels with `spinnaker-local.yml`. The work around is to create a `.hal/default/profiles/dinghy-local.yml` with the following:
+```
+Logging:
+  Level: INFO
+```
