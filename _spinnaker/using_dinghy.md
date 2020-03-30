@@ -69,7 +69,7 @@ Each pipeline should have a field called `stages`, which is an array of the defi
 * `name` (<*string*>): The name of the stage. This can be any string.
 * `type` (<*string*>): The type of the stage.  Must match a stage type; the types available depend on Spinnaker's configuration. For example, AWS stages can only be used if the AWS provider is enabled.
 * `refId` (<*string*>): A locally unique string that identifies the stage.  It is often (but not necessarily) numerical.
-* `requisiteStageRefIds` (<*array of strings*>):  The list of stages that must complete before this stage runs, referenced by their `refId`.  See the [Stage Dependency Graph](#stage-dependency-graph) section, below, for details.
+* `requisiteStageRefIds` (<*array of strings*>):  The list of stages that must complete before this stage runs, referenced by their `refId`.  See the [Stage Dependency Graph](#stage-dependency-graph) section for details.
 
 In addition to the above, this is a non-exhaustive list of fields supported on all stage types:
 
