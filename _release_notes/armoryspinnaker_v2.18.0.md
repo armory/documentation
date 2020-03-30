@@ -15,6 +15,9 @@ hidden: false
 
 
 ## Known Issues
+
+### Breaking Changes
+
 Two known breaking changes with this release:
 * Lambda stages changed casing on the JSON for the bucket information.  
 * Orca SQL Configuration has changed from
@@ -43,6 +46,18 @@ executionRepository:
     primaryName: sqlExecutionRepository
     previousName: redisExecutionRepository
 ```
+
+### Known Issues
+
+* **Policy Engine**
+  
+    If your OPA policies contain any top level declarations other than `deny`, the Policy Engine prevents pipelines from being saved.
+
+    **Workaround** 
+    
+    Only use `deny` declarations at the top level. Other declarations can still be used at lower levels of the policy. 
+
+
 
 # Highlighted Updates
 ## Armory
