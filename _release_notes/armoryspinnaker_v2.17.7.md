@@ -15,13 +15,20 @@ hidden: false
 
 
 ## Known Issues
-There are currently no known issues with this release.
+
+* **Policy Engine**
+  
+    If your OPA policies contain any top level declarations other than `deny`, the Policy Engine prevents pipelines from being saved.
+
+    **Workaround** 
+    
+    Only use `deny` declarations at the top level. Other declarations can still be used at lower levels of the policy. 
 
 ## Highlighted Updates
 ### Armory
 This release includes the following:
-  - Improved error handling in Dinghy
-  - Terraformer relies on Clouddriver for retrieving `git/repo` artifact types
+  - Improved error handling in Pipelines as Code and its microservice, Dinghy.
+  - The Terraform integration now uses Clouddriver's built-in support for `git/repo` artifact types. Previously, you had to create a custom artifact that was a `git/repo` type.
   - Addresses a number of CVE's related to `springframework`, `tomcat`, and `jackson-databind` found in Spinnaker Java services
 
 
