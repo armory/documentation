@@ -40,7 +40,6 @@ Remember that Spinnaker considers an application to be anything you would put in
 
 Notes: 
 
-- The Name of the application cannot have hyphens, or it will interfere with the naming convention.
 - The Account(s) can include your AWS account and your Docker registry.
 - When you create an application in Spinnaker, consider it to be anything you would put into a single code repository. 
 
