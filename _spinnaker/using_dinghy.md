@@ -31,10 +31,133 @@ application that the pipelines should live in &mdash; Dinghy will create
 the application if it doesn't already exist, and you can also provide
 settings for the application within this file as well.  Finally, the
 `pipelines` key is an array of pipeline definitions that will be
-created/updated in that application.  Here's an example Dinghyfile that has
+created/updated in that application.
+
+{
+  "application": "helloworldapp",
+  "pipelines": [
+    {
+      "application": "helloworldapp",
+      "name": "my-pipeline-name",
+      "stages": [
+        {
+          "name": "one",
+          "type": "wait",
+          "waitTIme": 10
+        }
+      ]
+    }
+  ]
+}
+
+These fields should be specified order for the Dinghyfile to create an actual pipeline with stages:
+
+* `.application`: This is the name of the application where pipelines will be created or updated.  If the application does not exist, it will be created.
+* `.pipelines`: This is an array of pipelines; each item defines a pipeline within the pipeline, and you can have zero, one, or more pipelines in a Dinghyfile.
+* `.pipelines[*].application`: This is the name of the application where pipelines will be created or updated.  It must match the top-level `.application` field.
+* `.pipelines[*].name`: This is the name of the pipeline:
+* `.pipelines[*].stages`: This is an array of stages that make up the pipeline.
+
+### Stage Fields
+
+Each pipeline should have a field called `stages`, which is an array of the definitions of the stages that make up the pipeline.  Each stage definition should have these fields:
+
+* `name` (*string*): The name of the stage (can be any string)
+* `type` (*string*): The type of the stage.  Must match a stage type; the types available will depend on Spinnaker's configuration (e.g., AWS stages can only be used if the AWS provider is enabled).
+* `refId` (*string*): A locally unique string, identifying the stage.  It is often (but not necessarily) numerical.
+* `requisiteStageRefIds` (*array of strings*):  This is the list of stages that must complete before this stage runs, referenced by their refId.  See the "Stage Dependency Graph" section, below, for details.
+
+In addition to the above, this is a non-exhaustive list of fields supported on all stage types:
+
+* `stageEnabled` (*string*): Spring Expression Language expression; if this is set, the stage will only continue if this expression evaluates to non-false.
+* `comments` (*string*): Comments for the stage, which are visible when viewing the state of the stage.
+* `sendNotifications` (*boolean*): Whether to notify on the notifications configurations.  Used in conjunction with the `notifications` field.
+* `notifications` (*array*): An array of notification settings, to be used to notify on stage conditions.  Used in conjunction with the `sendNotifications` array.
+* `completeOtherBranchesThenFail` (*boolean*): If set to true, if the stage fails, other branches will be allowed to complete, but the pipeline will be failed.
+* `continuePipeline` (*boolean*): If set to true, continue the current branch of the pipeline even if the stage fails.
+* `failPipeline` (*boolean*): If set to true, fail the whole pipeline immediately if the stage fails.
+* `failOnFailedExpressions` (*boolean*): If set to true, fail the stage if it contains invalid Spring Expression Language.
+* `restrictExecutionDuringTimeWindow` (*boolean*): If set to true, only run the stage during whitelisted execution windows (indicated in the `restrictedExecutionWindow` object)
+* `restrictedExecutionWindow` (*object*): A set of fields used to control when the stage is allowed to run (by default, stages are unrestricted).  Used in conjunction with `restrictExecutionDuringTimeWindow`.
+
+Additionally, each stage type will support one or more stage-specific fields.  For example. the `wait` stage type has an integer field `waitTime`, which is the number of seconds the stage will wait.
+
+The above is a non-exhaustive list of fields that are available on Spinnaker stages.  Additional stage fields can be identified by configuring the stage through the UI and examining the "Stage JSON" that gets generated.
+
+### Stage dependency Graph
+
+While a JSON array is an ordered list, the order of the stages in you pipeline's `stages` array isn't used for stage order.  Instead, Spinnaker stages each have a `refId`, which is a unique string within the pipeline to identify the stage (these are often, but not necessarily, numerical), and an array of stages that the stage depends on.  For example, this is a four-stage pipeline:
+
+```json
+
+  "application": "helloworld",
+  "pipelines": [
+    {
+      "application": "helloworld",
+      "name": "my-pipeline-name",
+      "stages": [
+        {
+          "name": "one",
+          "type": "wait",
+          "waitTIme":  10,
+          "refId": "first-stage",
+          "requisiteStageRefIds": []
+        },
+        {
+          "name": "two-a",
+          "type": "wait",
+          "waitTIme":  15,
+          "refId": "my-second-stage",
+          "requisiteStageRefIds": [
+            "first-stage"
+          ]
+        },
+        {
+          "name": "two-b",
+          "type": "wait",
+          "waitTIme":  30,
+          "refId": "my-other-second-stage",
+          "requisiteStageRefIds": [
+            "first-stage"
+          ]
+        },
+        {
+          "name": "last",
+          "type": "wait",
+          "waitTIme":  20,
+          "refId": "my-final-stage",
+          "requisiteStageRefIds": [
+            "my-second-stage",
+            "my-other-second-stage",
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+The above Dinghyfile defines a single pipeline with four stages.  Here is how this pipeline will behave:
+
+* The stage called "one" (with refId `first-stage` and no requisiteStageRefIds), will run first.  It will take 10 seconds to complete.
+* Once the stage "one" is complete, stages "two-a" and "two-b" will start in parallel, because they both have `first-stage` as a requisite stage (they both depend on "first-stage"). 
+* Stage "two-a" will complete in fifteen seconds.
+* Stage "two-b", which started at the same, will complete in thirty seconds (fifteen seconds after stage "two-a" completes)
+* Stage "last", which depends on both "two-a" and "two-b" (identified by their refIds of "my-second-stage" and "my-other-second-stage"), will start once both stage "two-a" and "two-b" are complete.
+
+#### Application Permissions
+
+You can define in the "spec" block the permissions to set on the application.
+The items in the 'spec' field will only apply if they are defined for a new 
+Spinnaker application.  One note of caution here, if you set the WRITE 
+permissions to a group that the Dinghy service is NOT part of, Dinghy will not
+be able to update anything within that application (pipelines won't get created
+or updated).
+
+Here's an example Dinghyfile that has
 no pipelines, but would create an application named `mynewapp`, along with
 a few options.  Note that only the "application" and "pipelines" keys are
-required; everything else is optional.:
+required; everything else is optional:
 
 ```
 {
@@ -49,14 +172,6 @@ required; everything else is optional.:
   }
 }
 ```
-
-#### Application Permissions
-
-You can define in the "spec" block the permissions to set on the
-application.  One note of caution here, if you set the WRITE permissions to
-a group that the Dinghy service is NOT part of, Dinghy will not be able to
-update anything within that application (pipelines won't get created or
-updated).
 
 ## Primitives
 
