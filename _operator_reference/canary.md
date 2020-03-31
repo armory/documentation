@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Canary Config Reference
-order: 12
+order: 3
 ---
 
 {:.no_toc}

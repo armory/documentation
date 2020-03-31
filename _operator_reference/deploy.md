@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Deploy Config Reference
-order: 12
+order: 5
 ---
 
 {:.no_toc}

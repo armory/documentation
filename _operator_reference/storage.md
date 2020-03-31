@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Storage Config Reference
-order: 12
+order: 14
 ---
 
 {:.no_toc}

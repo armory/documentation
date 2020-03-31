@@ -1,7 +1,7 @@
 ---
 layout: post
 title: CI Config Reference
-order: 12
+order: 4
 ---
 
 {:.no_toc}

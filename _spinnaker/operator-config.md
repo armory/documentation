@@ -126,7 +126,7 @@ Note that you can use spinsvc for brevity. You can also use `spinnakerservices.s
 
 Contains the same information as the `deploymentConfigurations` entry in a Halyard configuration.
 
-For example, given the following `~/.hal/config` file: 
+For example, given the following `~/.hal/config` file:
 
 ```yaml
 currentDeployment: default
@@ -156,21 +156,12 @@ spec:
 
 `.spec.spinnakerConfig.config` contains the following sections:
 
-
-|                                              |                                                  |                                              |
-|----------------------------------------------|--------------------------------------------------|----------------------------------------------|
-| [artifact](/operator_reference/artifact)     | [notification](/operator_reference/notification) | [security](/operator_reference/security)     |
-| [canary](/operator_reference/canary)         | [plugins](/operator_reference/plugins)           | [stats](/operator_reference/stats)           |
-| [ci](/operator_reference/ci)                 | [providers](/operator_reference/providers)       | [storage](/operator_reference/storage)       |
-| [deploy](/operator_reference/deploy)         | [pubsub](/operator_reference/pubsub)             | [webhook](/operator_reference/webhook)       |
-
-
 * [armory](/operator_reference/armory)
 * [artifact](/operator_reference/artifact)
 * [canary](/operator_reference/canary)
 * [ci](/operator_reference/ci)
 * [deploy](/operator_reference/deploy)
-* [metric-stores](/operator_reference/metric-stores)
+* [metric-stores](/operator_reference/metricstores)
 * [notification](/operator_reference/notification)
 * [plugins](/operator_reference/plugins)
 * [providers](/operator_reference/providers)
@@ -256,7 +247,7 @@ A double underscore (`__`) in the file name is translated to a path separator (`
         echo "hello world!"
 ```
 
-### spec.expose 
+### spec.expose
 Optional. Controls how Spinnaker gets exposed. If you omit it, no load balancer gets created. If this section gets removed, the Load Balancer does not get deleted.
 
 Use the following configurations:
@@ -269,7 +260,7 @@ Use the following configurations:
 
 ### spec.validation
 
-**Currently these configurations are experimental. By default the Operator always validates Kubernetes accounts when applying a SpinnakerService manifest.** 
+**Currently these configurations are experimental. By default the Operator always validates Kubernetes accounts when applying a SpinnakerService manifest.**
 
 Validation options that apply to all validations that Operator performs:
 

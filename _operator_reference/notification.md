@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Notification Config Reference
-order: 12
+order: 7
 ---
 
 {:.no_toc}

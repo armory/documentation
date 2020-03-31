@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Providers Config Reference
-order: 12
+order: 9
 ---
 
 {:.no_toc}

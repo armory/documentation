@@ -1,9 +1,96 @@
 ---
 layout: post
 title: Armory Config Reference
-order: 12
+order: 1
 ---
 
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
+
+
+**spec.spinnakerConfig.config.armory**
+
+```yaml
+armory:
+  dinghy:
+    enabled:
+    templateOrg:
+    githubToken:
+    githubEndpoint:
+    stashUsername:
+    stashToken:
+    stashEndpoint:
+    gitlabToken:
+    gitlabEndpoint:
+    dinghyFilename:
+    autoLockPipelines:
+    fiatUser:
+    notifiers:
+      slack:
+        enabled:
+        channel:
+  diagnostics:
+    enabled:
+    uuid:
+    logging:
+      enabled:
+      endpoint:
+  terraform:
+    enabled:
+    git:
+      enabled:
+      accessToken:
+      username:
+  secrets:
+    vault:
+      enabled:
+      url:
+      path:
+      role:
+      authMethod:
+```
+
+# Dinghy parameters
+
+- `enabled`: true or false.
+- `templateOrg`: SCM organization or namespace where application and template repositories are located.
+- `githubToken`: GitHub token.
+- `githubEndpoint`: (Default: https://api.github.com) Github API endpoint. Useful if you’re using Github Enterprise.
+- `stashUsername`: Stash username.
+- `stashToken`: Stash token.
+- `stashEndpoint`: Stash API endpoint.
+- `gitlabToken`: GitLab token.
+- `gitlabEndpoint`: GitLab endpoint.
+- `dinghyFilename`: (Default: dinghyfile) Name of the file in application repositories which contains pipelines.
+- `autoLockPipelines`: (Default: true) Lock pipelines in the UI before overwriting on change.
+- `fiatUser`: Fiat user to use for Dinghy operations.
+- `notifiers`:
+  - `slack`:
+    - `enabled`: true or false.
+    - `channel`: Name of channel to send notifications to.
+
+# Diagnostics parameters
+
+- `enabled`: true or false.
+- `uuid`: UUID of the Armory installation
+- `logging`:
+  - `enabled`: true or false.
+  - `endpoint`: Example: `https://debug.armory.io/v1/logs`
+
+# Terraform parameters
+
+- `enabled`: true or false.
+- `git`:
+  - `enabled`: true or false.
+  - `accessToken`: Git access token.
+  - `username`: Git username.
+
+# Secrets parameters
+
+- `vault`:
+  - `enabled`: true or false.
+  - `url`: URL of the Vault endpoint from Spinnaker services.
+  - `path`: (Default: kubernetes) (Applies to KUBERNETES authentication method) Path of the kubernetes authentication backend mount.
+  - `role`: (Applies to KUBERNETES authentication method) Name of the role against which the login is being attempted.
+  - `authMethod`: Method used to authenticate with the Vault endpoint. Must be either KUBERNETES for Kubernetes service account auth or TOKEN for Vault token auth. The TOKEN method requires a VAULT_TOKEN environment variable for Operator and the services.

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Artifact Config Reference
-order: 12
+order: 2
 ---
 
 {:.no_toc}
@@ -10,7 +10,7 @@ order: 12
 
 # Bitbucket
 
-**artifacts.bitbucket.accounts**
+**spec.spinnakerConfig.config.artifacts.bitbucket.accounts**
 
 ```
 artifacts:
@@ -31,7 +31,7 @@ artifacts:
 
 # GCS
 
-**artifacts.gcs.accounts**
+**spec.spinnakerConfig.config.artifacts.gcs.accounts**
 
 ```
 gcs:
@@ -48,7 +48,7 @@ gcs:
 
 # GitHub
 
-**artifacts.github.accounts**
+**spec.spinnakerConfig.config.artifacts.github.accounts**
 
 ```
 github:
@@ -72,7 +72,7 @@ github:
 
 # GitLab
 
-**artifacts.github.accounts**
+**spec.spinnakerConfig.config.artifacts.github.accounts**
 
 ```
 gitlab:
@@ -90,7 +90,7 @@ gitlab:
 
 # GitRepo
 
-**artifacts.gitrepo.accounts**
+**spec.spinnakerConfig.config.artifacts.gitrepo.accounts**
 
 ```
 gitrepo:
@@ -122,7 +122,7 @@ gitrepo:
 
 # Helm
 
-**artifacts.helm.accounts**
+**spec.spinnakerConfig.config.artifacts.helm.accounts**
 
 ```
 helm:
@@ -145,7 +145,7 @@ helm:
 
 # HTTPS
 
-**artifacts.https.accounts**
+**spec.spinnakerConfig.config.artifacts.https.accounts**
 
 ```
 http:
@@ -166,7 +166,7 @@ http:
 
 # Maven
 
- **artifacts.maven.accounts**
+ **spec.spinnakerConfig.config.artifacts.maven.accounts**
 
  ```
  maven:
@@ -233,7 +233,7 @@ s3:
 ```
 templates:
 - name: my-template
-  templatePath: 
+  templatePath:
  ```
 
 `templatePath`: The path to the Jinja template to use for artifact extraction

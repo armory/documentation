@@ -1,7 +1,7 @@
 ---
 layout: post
 title: PubSub Config Reference
-order: 12
+order: 10
 ---
 
 {:.no_toc}

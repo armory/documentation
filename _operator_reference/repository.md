@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Repository Config Reference
-order: 12
+order: 11
 ---
 
 {:.no_toc}
