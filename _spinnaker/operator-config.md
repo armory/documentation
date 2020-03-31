@@ -154,6 +154,33 @@ spec:
           rootFolder: front50
 ```
 
+`.spec.spinnakerConfig.config` contains the following sections:
+
+
+|                                              |                                                  |                                              |
+|----------------------------------------------|--------------------------------------------------|----------------------------------------------|
+| [artifact](/operator_reference/artifact)     | [notification](/operator_reference/notification) | [security](/operator_reference/security)     |
+| [canary](/operator_reference/canary)         | [plugins](/operator_reference/plugins)           | [stats](/operator_reference/stats)           |
+| [ci](/operator_reference/ci)                 | [providers](/operator_reference/providers)       | [storage](/operator_reference/storage)       |
+| [deploy](/operator_reference/deploy)         | [pubsub](/operator_reference/pubsub)             | [webhook](/operator_reference/webhook)       |
+
+
+* [armory](/operator_reference/armory)
+* [artifact](/operator_reference/artifact)
+* [canary](/operator_reference/canary)
+* [ci](/operator_reference/ci)
+* [deploy](/operator_reference/deploy)
+* [metric-stores](/operator_reference/metric-stores)
+* [notification](/operator_reference/notification)
+* [plugins](/operator_reference/plugins)
+* [providers](/operator_reference/providers)
+* [pubsub](/operator_reference/pubsub)
+* [repository](/operator_reference/repository)
+* [security](/operator_reference/security)
+* [stats](/operator_reference/stats)
+* [storage](/operator_reference/storage)
+* [webhook](/operator_reference/webhook)
+
 ### .spec.spinnakerConfig.profiles
 
 Configuration for each service profile. This is the equivalent of `~/.hal/default/profiles/<service>-local.yml`. For example the following `profile` is for Gate:

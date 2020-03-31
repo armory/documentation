@@ -14,7 +14,7 @@ order: 12
 
 The App Engine provider is used to deploy resources to any number of App Engine applications. To get started with App Engine, visit [the App Engine docs](https://cloud.google.com/appengine/docs/). An account in the App Engine provider refers to a single App Engine application. Spinnaker assumes that your App Engine application already exists.
 
-```
+```yaml
 appengine:
   enabled: false
   gcloudPath:
@@ -27,24 +27,24 @@ appengine:
     gitHttpsPassword:
     githubOAuthAccessToken:
     jsonPath:
-    localRepositoryDirectory:	 
+    localRepositoryDirectory:     
     omitServices:
-    omitVersions:	 
+    omitVersions:     
     permissions:
-	  READ:
-	  WRITE:
-	  EXECUTE:
-	  CREATE:
+      READ:
+      WRITE:
+      EXECUTE:
+      CREATE:
     project:  
     providerVersion:
-    requiredGroupMembership:	  
+    requiredGroupMembership:      
     sshPrivateKeyFilePath:
     sshPrivateKeyPassphrase:
     sshKnownHostsFilePath:
-    sshTrustUnknownHosts: 	  
+    sshTrustUnknownHosts:       
     services:  
     versions:
-  primaryAccount:	  
+  primaryAccount:      
 ```
 
 ## Provider parameters
@@ -85,68 +85,68 @@ appengine:
 
 **spec.spinnakerConfig.config.providers.aws**
 
-```
+```yaml
 aws:
   enabled: false
   accessKeyId:  
   defaults:
     iamRole: BaseIAMRole
   defaultAssumeRole:
-  defaultKeyPairTemplate: 
+  defaultKeyPairTemplate:
   defaultRegions:
     - name:  
   primaryAccount:
   secretAccessKey:
   accounts:
   - name: aws-dev
-	accountId:
-	assumeRole:
-	edda:
-	environment:
-	defaultKeyPair:
-	discovery:
-	lifecycleHooks:
-      - defaultResult: ABANDON
-        heartbeatTimeout: 12
-        lifecycleTransition: autoscaling:EC2_INSTANCE_TERMINATING
-        notificationTargetARN: arn:aws:sns:{{region}}:{{accountId}}:term-targ
-        roleARN: arn:aws:iam::{{accountId}}:role-arn
-	permissions:
-	  READ:
-	  WRITE:
-	  EXECUTE:
-	  CREATE:
-	providerVersion: V1
-	regions:
-	  - name:
-	requiredGroupMembership:
+    accountId:
+    assumeRole:
+    edda:
+    environment:
+    defaultKeyPair:
+    discovery:
+    lifecycleHooks:
+      - defaultResult:
+        heartbeatTimeout:
+        lifecycleTransition:
+        notificationTargetARN:
+        roleARN:
+    permissions:
+      READ:
+      WRITE:
+      EXECUTE:
+      CREATE:
+    providerVersion: V1
+    regions:
+      - name:
+    requiredGroupMembership:
   bakeryDefaults:
-	awsAccessKey:
-	awsAssociatePublicIpAddress:
-	awsSecretKey:
-	awsSubnetId:
-	awsVpcId:
-	defaultVirtualizationType:
-	baseImages:
-	- baseImage:
-		id:
-		shortDescription:
-		detailedDescription:
-		packageType:
-		templateFile:
-	  virtualizationSettings:
-	  - region:
-		virtualizationType:
-		instanceType:
-		sourceAmi:
-		sshUserName:
-		winRmUserName:
-		spotPrice:
-		spotPriceAutoProduct:
-	templateFile:
+    awsAccessKey:
+    awsAssociatePublicIpAddress:
+    awsSecretKey:
+    awsSubnetId:
+    awsVpcId:
+    defaultVirtualizationType:
+    baseImages:
+    - baseImage:
+        id:
+        shortDescription:
+        detailedDescription:
+        packageType:
+        templateFile:
+      virtualizationSettings:
+      - region:
+        virtualizationType:
+        instanceType:
+        sourceAmi:
+        sshUserName:
+        winRmUserName:
+        spotPrice:
+        spotPriceAutoProduct:
+    templateFile:
   features:
-	cloudFormation:
-	  enabled:
+    cloudFormation:
+      enabled:
 ```
 
 ## Provider parameters
@@ -196,7 +196,7 @@ The AWS provider requires a central "Managing Account" to authenticate on behalf
 - `awsSecretKey`: The secret key used to communicate with AWS.
 - `awsSubnetId`: If using VPC, the default ID of the subnet, such as subnet-12345def, where Packer will launch the EC2 instance. This field is required if you are using a non-default VPC.
 - `awsVpcId`: If launching into a VPC subnet, Packer needs the VPC ID in order to create a temporary security group within the VPC. Requires subnet_id to be set. If this default value is left blank, Packer will try to get the VPC ID from the subnet_id.
-- `baseImages`: `[]`		
+- `baseImages`: `[]`        
 - `defaultVirtualizationType`: The default type of virtualization for the AMI you are building. This option must match the supported virtualization type of source_ami. Can be pv or hvm.
 - `templateFile`: This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this [list](https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer), or supplied as described in the [bakery docs](https://spinnaker.io/setup/bakery/)
 
@@ -209,14 +209,14 @@ The AWS provider requires a central "Managing Account" to authenticate on behalf
  - `packageType`:This is used to help Spinnaker's bakery download the build artifacts you supply it with. For example, specifying deb indicates that your artifacts will need to be fetched from a debian repository.
  - `templateFile`: The name of the Packer template that will be used to bake images from this base image. The template file must be found in this list: https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer, or supplied as described here: https://spinnaker.io/setup/bakery/.
  - `virtualizationSettings`:
-	 - `region`:The name of the region in which to launch the EC2 instance to create the AMI.
-	 - `virtualizationType`: The type of virtualization for the AMI you are building. This option must match the supported virtualization type of sourceAmi. Acceptable values: pv, hvm.
-	 - `instanceType`: The EC2 instance type to use while building the AMI, such as t2.small.
-	 - `sourceAmi`:The source AMI whose root volume will be copied and provisioned on the currently running instance. This must be an EBS-backed AMI with a root volume snapshot that you have access to.
-	 - `sshUserName`:The username to connect to SSH with. Required if using SSH.
-	 - `winRmUserName`:The username to use to connect to WinRM.
-	 - `spotPrice`:The maximum hourly price to pay for a spot instance to create the AMI. Spot instances are a type of instance that EC2 starts when the current spot price is less than the maximum price you specify. Spot price will be updated based on available spot instance capacity and current spot instance requests. It may save you some costs. You can set this to auto for Packer to automatically discover the best spot price or to "0" to use an on demand instance (default).
-	 - `spotPriceAutoProduct`:Required if spotPrice is set to auto. This tells Packer what sort of AMI you are launching to find the best spot price. This must be one of: Linux/UNIX, SUSE Linux, Windows, Linux/UNIX (Amazon VPC), SUSE Linux (Amazon VPC), Windows (Amazon VPC).
+     - `region`:The name of the region in which to launch the EC2 instance to create the AMI.
+     - `virtualizationType`: The type of virtualization for the AMI you are building. This option must match the supported virtualization type of sourceAmi. Acceptable values: pv, hvm.
+     - `instanceType`: The EC2 instance type to use while building the AMI, such as t2.small.
+     - `sourceAmi`:The source AMI whose root volume will be copied and provisioned on the currently running instance. This must be an EBS-backed AMI with a root volume snapshot that you have access to.
+     - `sshUserName`:The username to connect to SSH with. Required if using SSH.
+     - `winRmUserName`:The username to use to connect to WinRM.
+     - `spotPrice`:The maximum hourly price to pay for a spot instance to create the AMI. Spot instances are a type of instance that EC2 starts when the current spot price is less than the maximum price you specify. Spot price will be updated based on available spot instance capacity and current spot instance requests. It may save you some costs. You can set this to auto for Packer to automatically discover the best spot price or to "0" to use an on demand instance (default).
+     - `spotPriceAutoProduct`:Required if spotPrice is set to auto. This tells Packer what sort of AMI you are launching to find the best spot price. This must be one of: Linux/UNIX, SUSE Linux, Windows, Linux/UNIX (Amazon VPC), SUSE Linux (Amazon VPC), Windows (Amazon VPC).
 
 ## Features parameters
 
@@ -226,46 +226,46 @@ The AWS provider requires a central "Managing Account" to authenticate on behalf
 
 **spec.spinnakerConfig.config.providers.azure**
 
-```
+```yaml
 azure:
   enabled: false
   primaryAccount: azure-dev
   accounts:
   - name: azure-dev
     appKey:
-	clientId:
-	defaultKeyVault:
-	defaultResourceGroup:
-	environment: dev
-	objectId:
-	packerResourceGroup:
-	packerStorageAccount:
-	permissions:
-	  READ:
-	  WRITE:
-	  EXECUTE:
-	  CREATE:
-	providerVersion: V1
-	regions:
-	  - name:
-	requiredGroupMembership:
-	subscriptionId:
-	tenantId:
-	useSshPublicKey:
+    clientId:
+    defaultKeyVault:
+    defaultResourceGroup:
+    environment:
+    objectId:
+    packerResourceGroup:
+    packerStorageAccount:
+    permissions:
+      READ:
+      WRITE:
+      EXECUTE:
+      CREATE:
+    providerVersion: V1
+    regions:
+      - name:
+    requiredGroupMembership:
+    subscriptionId:
+    tenantId:
+    useSshPublicKey:
   bakeryDefaults:
-	templateFile:
-	baseImages:
-	- baseImage:
-		id:
-		detailedDescription:
-		packageType:
-		publisher:
-		offer:
-		shortDescription:
-		templateFile:
-		sku:
-		version:
-	  virtualizationSettings: {}
+    templateFile:
+    baseImages:
+    - baseImage:
+        id:
+        detailedDescription:
+        packageType:
+        publisher:
+        offer:
+        shortDescription:
+        templateFile:
+        sku:
+        version:
+      virtualizationSettings: {}
 ```
 
 ## Provider parameters
@@ -286,10 +286,10 @@ azure:
 - `packerResourceGroup`: The resource group to use if baking images with Packer.
 - `packerStorageAccount`: The storage account to use if baking images with Packer.
 - `permissions`:
-	- `READ`: `[]` A user must have at least one of these roles in order to view this account's cloud resources.
-	- `WRITE`: `[]` A user must have at least one of these roles in order to make changes to this account's cloud resources.
-	- `EXECUTE`:
-	- `CREATE`:
+    - `READ`: `[]` A user must have at least one of these roles in order to view this account's cloud resources.
+    - `WRITE`: `[]` A user must have at least one of these roles in order to make changes to this account's cloud resources.
+    - `EXECUTE`:
+    - `CREATE`:
 - `regions`: The Azure regions this Spinnaker account will manage.
 - `requiredGroupMembership`: (Deprecated): Configure permissions instead.
 - `subscriptionId`: (*Required*) The subscriptionId that your service principal is assigned to.
@@ -316,25 +316,25 @@ azure:
 
 **spec.spinnakerConfig.config.providers.cloudfoundry**
 
-```
+```yaml
 cloudfoundry:
   enabled: false
   accounts:
   - name: cf-dev
     apiHost:
     appsManagerUrl:
-	environment:
-	metricsUrl:
-	providerVersion: V1
-	password:
-	permissions:
-	  READ:
-	  WRITE:
-	  EXECUTE:
-	  CREATE:
-	requiredGroupMembership:
-	skipSslValidation:
-	user:
+    environment:
+    metricsUrl:
+    providerVersion: V1
+    password:
+    permissions:
+      READ:
+      WRITE:
+      EXECUTE:
+      CREATE:
+    requiredGroupMembership:
+    skipSslValidation:
+    user:
   primaryAccount: cf-dev
   ```
 ## Provider parameters
@@ -351,10 +351,10 @@ cloudfoundry:
  - `metricsUrl`: HTTP(S) URL of the metrics application for the CloudFoundry Foundation. Example `https://metrics.sys.somesystem.com`
  - `password`: (*Required*) Password for the account to use on for this CloudFoundry Foundation
  - `permissions`:
- 	- `READ`: `[]` A user must have at least one of these roles in order to view this account's cloud resources.
- 	- `WRITE`: `[]` A user must have at least one of these roles in order to make changes to this account's cloud resources.
- 	- `EXECUTE`:
- 	- `CREATE`:
+     - `READ`: `[]` A user must have at least one of these roles in order to view this account's cloud resources.
+     - `WRITE`: `[]` A user must have at least one of these roles in order to make changes to this account's cloud resources.
+     - `EXECUTE`:
+     - `CREATE`:
  - `requiredGroupMembership`: `[]` (Deprecated): Configure permissions instead.
  - `skipSslValidation`: (*Default*: `false`) Skip SSL server certificate validation of the API endpoint
  - `user`: (*Required*) User name for the account to use on for this CloudFoundry Foundation
@@ -364,35 +364,35 @@ cloudfoundry:
 
 **spec.spinnakerConfig.config.providers.dcos**
 
-```
+```yaml
 dcos:
   enabled: false
   accounts:
   - name: dcos-dev
     clusters:
-	  - name:	    
-	    password:
-	    serviceKeyFile:
-	    uid:
-	dockerRegistries:
-	  - accountName:
-	    namespaces:
-	environment:
-	permissions:
-	  READ:
-	  WRITE:
-	  EXECUTE:
-	  CREATE:
-	providerVersion: V1
-	requiredGroupMembership:  
+      - name:        
+        password:
+        serviceKeyFile:
+        uid:
+    dockerRegistries:
+      - accountName:
+        namespaces:
+    environment:
+    permissions:
+      READ:
+      WRITE:
+      EXECUTE:
+      CREATE:
+    providerVersion: V1
+    requiredGroupMembership:  
   clusters:
     - name:
       caCertFile:
-	  dcosUrl:
-	  insecureSkipTlsVerify:
-	  loadBalancer:
-	    image:
-	    serviceAccountSecret:
+      dcosUrl:
+      insecureSkipTlsVerify:
+      loadBalancer:
+        image:
+        serviceAccountSecret:
   primaryAccount:
 ```
 
@@ -424,7 +424,7 @@ dcos:
 - `dcosUrl`: (*Required*) URL of the endpoint for the DC/OS cluster's admin router.
 - `insecureSkipTlsVerify`:  If true, disables verification of certificates from the cluster (insecure).
 - `loadBalancer`: Configuration for a DC/OS load balancer
-  - `image`:  	Marathon-lb image to use when creating a load balancer with Spinnaker.
+  - `image`: Marathon-lb image to use when creating a load balancer with Spinnaker.
   - `serviceAccountSecret`: Name of the secret to use for allowing marathon-lb to authenticate with the cluster. Only necessary for clusters with strict or permissive security.
 
 
@@ -432,35 +432,35 @@ dcos:
 
 **spec.spinnakerConfig.config.providers.dockerRegistry**
 
-```
+```yaml
 dockerRegistry:
   enabled: true
   primaryAccount: dockerhub
   accounts:
   - name: dockerhub
-	environment:
-	requiredGroupMembership:
-	providerVersion: V1
-	permissions:
-	  READ:
-	  WRITE:
-	  EXECUTE:
-	  CREATE:
-	address:
-	username:
-	password:
-	passwordCommand:
-	email:
-	cacheIntervalSeconds:
-	clientTimeoutMillis:
-	cacheThreads:
-	paginateSize:
-	sortTagsByDate:
-	trackDigests:
-	insecureRegistry:
-	repositories:
-	passwordFile:
-	dockerconfigFile: docker-config
+    environment:
+    requiredGroupMembership:
+    providerVersion: V1
+    permissions:
+      READ:
+      WRITE:
+      EXECUTE:
+      CREATE:
+    address:
+    username:
+    password:
+    passwordCommand:
+    email:
+    cacheIntervalSeconds:
+    clientTimeoutMillis:
+    cacheThreads:
+    paginateSize:
+    sortTagsByDate:
+    trackDigests:
+    insecureRegistry:
+    repositories:
+    passwordFile:
+    dockerconfigFile:
 
 ```
 ## Provider parameters
@@ -498,19 +498,19 @@ dockerRegistry:
 
 **spec.spinnakerConfig.config.providers.ecs**
 
-```
+```yaml
 ecs:
   enabled: false
   accounts:
   - name: aws-dev
-	environment:
-	awsAccount:
-	requiredGroupMembership:
-	permissions:
-	  READ:
-	  WRITE:
-	  EXECUTE:
-	  CREATE:
+    environment:
+    awsAccount:
+    requiredGroupMembership:
+    permissions:
+      READ:
+      WRITE:
+      EXECUTE:
+      CREATE:
   providerVersion: v1
   primaryAccount: aws-dev
 ```
@@ -526,10 +526,10 @@ ecs:
 - `awsAccount`: (*Required*) Provide the name of the AWS account associated with this ECS account.See [https://github.com/spinnaker/clouddriver/blob/master/clouddriver-ecs/README.md](https://github.com/spinnaker/clouddriver/blob/master/clouddriver-ecs/README.md) for more information.
 - `environment`: The environment name for the account. Many accounts can share the same environment (e.g. dev, test, prod)
 - `permissions`:
-	- `READ`: `[]` A user must have at least one of these roles in order to view this account's cloud resources.
-	- `WRITE`: `[]` A user must have at least one of these roles in order to make changes to this account's cloud resources.
-	- `EXECUTE`:
-	- `CREATE`:
+    - `READ`: `[]` A user must have at least one of these roles in order to view this account's cloud resources.
+    - `WRITE`: `[]` A user must have at least one of these roles in order to make changes to this account's cloud resources.
+    - `EXECUTE`:
+    - `CREATE`:
 - `requiredGroupMembership`: `[]` (Deprecated): Configure permissions instead.
 
 
@@ -537,6 +537,65 @@ ecs:
 # Google
 
 **spec.spinnakerConfig.config.providers.google**
+
+```yaml
+google:
+  enabled:
+  accounts:
+  - name:
+    environment:
+    requiredGroupMembership:
+    - readers
+    providerVersion: V1
+    permissions:
+      READ:
+      - read1
+      - read2
+      WRITE:
+      - write1
+      - write2
+      EXECUTE:
+      - exec1
+      - exec2
+      CREATE:
+      - create1
+      - create2
+    project:
+    jsonPath:
+    alphaListed:
+    imageProjects:
+    - abc
+    consul:
+      enabled:
+      agentEndpoint:
+      agentPort:
+      datacenters:
+      - abc
+    userDataFile:
+    regions:
+    - abc
+  primaryAccount: google-dev
+  bakeryDefaults:
+    templateFile:
+    baseImages:
+    - baseImage:
+        id:
+        shortDescription:
+        detailedDescription:
+        packageType:
+        templateFile:
+        isImageFamily:
+      virtualizationSettings:
+        sourceImage:
+        sourceImageFamily:
+      zone:
+      network:
+      networkProjectId:
+      useInternalIp:
+  defaultKeyPairTemplate:
+  defaultRegions:
+   - name:
+```
 
 ## Provider parameters
 
@@ -553,10 +612,10 @@ ecs:
 - `imageProjects`: (*Default*: `[]`) A list of Google Cloud Platform projects Spinnaker will be able to cache and deploy images from. When this is omitted, it defaults to the current project. Each project must have granted the IAM role `compute.imageUser` to the service account associated with the json key used by this account, as well as to the 'Google APIs service account' automatically created for the project being managed (should look similar to `12345678912@cloudservices.gserviceaccount.com`). See [Sharing Images Across Projects](https://cloud.google.com/compute/docs/images/sharing-images-across-projects) for more information about sharing images across GCP projects.
 - `jsonPath`: The path to a JSON service account that Spinnaker will use as credentials. This is only needed if Spinnaker is not deployed on a Google Compute Engine VM, or needs permissions not afforded to the VM it is running on. See [https://cloud.google.com/compute/docs/access/service-accounts](https://cloud.google.com/compute/docs/access/service-accounts) for more information.
 - `permissions`:
-	- `READ`: `[]` A user must have at least one of these roles in order to view this account's cloud resources.
-	- `WRITE`: `[]` A user must have at least one of these roles in order to make changes to this account's cloud resources.
-	- `EXECUTE`:
-	- `CREATE`:
+    - `READ`: `[]` A user must have at least one of these roles in order to view this account's cloud resources.
+    - `WRITE`: `[]` A user must have at least one of these roles in order to make changes to this account's cloud resources.
+    - `EXECUTE`:
+    - `CREATE`:
 - `requiredGroupMembership`: `[]` (Deprecated): Configure permissions instead.
 - `project`: (*Required*) The Google Cloud Platform project this Spinnaker account will manage.
 - `readPermissions`: (*Default*: `[]`) A user must have at least one of these roles in order to view this account's cloud resources.
@@ -593,6 +652,63 @@ ecs:
 
 **spec.spinnakerConfig.config.providers.huawei**
 
+```yaml
+huaweicloud:
+  enabled:
+  accounts:
+  - name: huawei-dev
+    environment:
+    requiredGroupMembership:
+    providerVersion: V1
+    permissions:
+      READ:
+      - read1
+      - read2
+      WRITE:
+      - write1
+      - write2
+      EXECUTE:
+      - exec1
+      - exec2
+      CREATE:
+      - create1
+      - create2
+    accountType:
+    authUrl:
+    username:
+    password:
+    projectName:
+    domainName:
+    insecure:
+    regions:
+  primaryAccount: huawei-dev
+  bakeryDefaults:
+    templateFile:
+    baseImages:
+    - baseImage:
+        id:
+        shortDescription:
+        detailedDescription:
+        packageType:
+        templateFile:
+      virtualizationSettings:
+      - region:
+        instanceType:
+        sourceImageId:
+        sshUserName:
+        eipType:
+    authUrl:
+    username:
+    password:
+    projectName:
+    domainName:
+    insecure:
+    vpcId:
+    subnetId:
+    securityGroup:
+    eipBandwidthSize:
+```
+
 ## Provider parameters
 
 - `enabled`: Whether the provider is enabled.
@@ -613,10 +729,10 @@ ecs:
 - `regions`: (*Default*: `[]`) (*Required*) The region(s) of the cloud.
 - `username`: (*Required*) The username used to access cloud.
 - `permissions`:
-	- `READ`: `[]` A user must have at least one of these roles in order to view this account's cloud resources.
-	- `WRITE`: `[]` A user must have at least one of these roles in order to make changes to this account's cloud resources.
-	- `EXECUTE`:
-	- `CREATE`:
+    - `READ`: `[]` A user must have at least one of these roles in order to view this account's cloud resources.
+    - `WRITE`: `[]` A user must have at least one of these roles in order to make changes to this account's cloud resources.
+    - `EXECUTE`:
+    - `CREATE`:
 - `requiredGroupMembership`: `[]` (Deprecated): Configure permissions instead.
 
 ## Bakery parameters
@@ -644,56 +760,57 @@ ecs:
 
 # Kubernetes
 
+**spec.spinnakerConfig.config.providers.kubernetes**
+
 The Kubernetes provider is used to deploy Kubernetes resources to any number of Kubernetes clusters. Spinnaker assumes you have a Kubernetes cluster already running. If you don't, you must configure one: [https://Kubernetes.io/docs/getting-started-guides/](https://Kubernetes.io/docs/getting-started-guides/).
 
 Before proceeding, please visit [https://Kubernetes.io/docs/concepts/cluster-administration/authenticate-across-clusters-kubeconfig/](https://Kubernetes.io/docs/concepts/cluster-administration/authenticate-across-clusters-kubeconfig/) to make sure you're familiar with the authentication terminology.
 
 
-```
+```yaml
 Kubernetes:
   enabled: true
   accounts:
   - name: spinnaker
-	context:
-	cluster:
-	user:
-	configureImagePullSecrets:
-	cacheThreads:
-	namespaces:
-	omitNamespaces:
-	kinds:
-	omitKinds:
-	customResources:
-	- KubernetesKind:
-	  versioned:
-	cachingPolicies:
-	- KubernetesKind:
-	  maxEntriesPerAgent:
-	kubeconfigFile:
-	kubeconfigContents:
-	kubectlPath:
-	kubectlRequestTimeoutSeconds:
-	liveManifestCalls:
-	oAuthServiceAccount:
-	oAuthScopes:
-	namingStrategy:
-	skin:
-	onlySpinnakerManaged:
-	debug:
-	dockerRegistries:
-	- accountName:
-	  namespaces:
-	providerVersion: V2
-	requiredGroupMembership:
-	permissions:
-	  READ:
-	  WRITE:
-	  EXECUTE:
-	  CREATE:
+    context:
+    cluster:
+    user:
+    configureImagePullSecrets:
+    cacheThreads:
+    namespaces:
+    omitNamespaces:
+    kinds:
+    omitKinds:
+    customResources:
+    - KubernetesKind:
+      versioned:
+    cachingPolicies:
+    - KubernetesKind:
+      maxEntriesPerAgent:
+    kubeconfigFile:
+    kubeconfigContents:
+    kubectlPath:
+    kubectlRequestTimeoutSeconds:
+    liveManifestCalls:
+    oAuthServiceAccount:
+    oAuthScopes:
+    namingStrategy:
+    skin:
+    onlySpinnakerManaged:
+    debug:
+    dockerRegistries:
+    - accountName:
+      namespaces:
+    providerVersion: V2
+    requiredGroupMembership:
+    permissions:
+      READ:
+      WRITE:
+      EXECUTE:
+      CREATE:
   primaryAccount: spinnaker
 ```
 
-**spec.spinnakerConfig.config.providers.Kubernetes**
 
 ## Provider parameters
 
@@ -736,97 +853,181 @@ An account in the Kubernetes provider refers to a single Kubernetes context. In 
 - `onlySpinnakerManaged`: false # (V2 Only) When true, Spinnaker will only cache/display applications that have been created by Spinnaker; as opposed to attempting to configure applications for resources already present in Kubernetes.
 - `debug`: false
 - `dockerRegistries`:
-	- `accountName`: dockerhub
-	- `namespaces`:
+    - `accountName`: dockerhub
+    - `namespaces`:
 - `providerVersion`: V2
 - `permissions`:
-	- `READ`: `[]` A user must have at least one of these roles in order to view this account's cloud resources.
-	- `WRITE`: `[]` A user must have at least one of these roles in order to make changes to this account's cloud resources.
-	- `EXECUTE`:
-	- `CREATE`:
+    - `READ`: `[]` A user must have at least one of these roles in order to view this account's cloud resources.
+    - `WRITE`: `[]` A user must have at least one of these roles in order to make changes to this account's cloud resources.
+    - `EXECUTE`:
+    - `CREATE`:
 - `requiredGroupMembership`: `[]` (Deprecated): Configure permissions instead.
 
 
 
 # Oracle
 
+**spec.spinnakerConfig.config.providers.oracle**
 
+```yaml
+oracle:
+  enabled:
+  accounts:
+  - name: oracle-dev
+    environment:
+    requiredGroupMembership:
+    providerVersion: V1
+    permissions:
+      READ:
+      - read1
+      - read2
+      WRITE:
+      - write1
+      - write2
+      EXECUTE:
+      - exec1
+      - exec2
+      CREATE:
+      - create1
+      - create2
+    compartmentId:
+    userId:
+    fingerprint:
+    sshPrivateKeyFilePath:
+    privateKeyPassphrase:
+    tenancyId:
+    region:
+  primaryAccount: oracle-dev
+  bakeryDefaults:
+    templateFile:
+    baseImages:
+    - baseImage:
+        id:
+        shortDescription:
+        detailedDescription:
+        packageType:
+        templateFile:
+      virtualizationSettings:
+        baseImageId:
+        sshUserName:
+    availabilityDomain:
+    subnetId:
+    instanceShape:
+```
 
 ## Account parameters
 
-`ACCOUNT`: The name of the account to operate on.
- - `compartment-id`: (*Required*) Provide the OCID of the Oracle Compartment to use.
+ - `compartmentId`: (*Required*) Provide the OCID of the Oracle Compartment to use.
  - `deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
  - `environment`: The environment name for the account. Many accounts can share the same environment (e.g. dev, test, prod)
  - `fingerprint`: (*Required*) Fingerprint of the public key
- - `noValidate`: (*Default*: `false`) Skip validation.
- - `private-key-passphrase`: (*Sensitive data- - user will be prompted on standard input) Passphrase used for the private key, if it is encrypted
- - `readPermissions`: (*Default*: `[]`) A user must have at least one of these roles in order to view this account's cloud resources.
+ - `privateKeyPassphrase`: Passphrase used for the private key, if it is encrypted
+ - `permissions`:
+     - `READ`: `[]` A user must have at least one of these roles in order to view this account's cloud resources.
+     - `WRITE`: `[]` A user must have at least one of these roles in order to make changes to this account's cloud resources.
+     - `EXECUTE`:
+     - `CREATE`:
+ - `requiredGroupMembership`: `[]` (Deprecated): Configure permissions instead.
  - `region`: (*Required*) An Oracle region (e.g., us-phoenix-1)
- - `required-group-membership`: (*Default*: `[]`) A user must be a member of at least one specified group in order to make changes to this account's cloud resources.
- - `ssh-private-key-file-path`: (*Required*) Path to the private key in PEM format
+ - `sshPrivateKeyFilePath`: (*Required*) Path to the private key in PEM format
  - `tenancyId`: (*Required*) Provide the OCID of the Oracle Tenancy to use.
- - `user-id`: (*Required*) Provide the OCID of the Oracle User you're authenticating as
- - `write-permissions`: (*Default*: `[]`) A user must have at least one of these roles in order to make changes to this account's cloud resources.
+ - `userI`: (*Required*) Provide the OCID of the Oracle User you're authenticating as
 
 ## Bakery parameters
 
-- `availability-domain`: (*Required*) The name of the Availability Domain within which a new instance is launched and provisioned.
+- `availabilityDomain`: (*Required*) The name of the Availability Domain within which a new instance is launched and provisioned.
 - `deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
-- `instance-shape`: (*Required*) The shape for allocated to a newly created instance.
-- `noValidate`: (*Default*: `false`) Skip validation.
-- `subnet-id`: (*Required*) The name of the subnet within which a new instance is launched and provisioned.
-- `template-file`: This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this list [https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer](https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer), or supplied as described here: [https://spinnaker.io/setup/bakery/](https://spinnaker.io/setup/bakery/)
+- `instanceShape`: (*Required*) The shape for allocated to a newly created instance.
+- `subnetId`: (*Required*) The name of the subnet within which a new instance is launched and provisioned.
+- `templateFile`: This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this list [https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer](https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer), or supplied as described here: [https://spinnaker.io/setup/bakery/](https://spinnaker.io/setup/bakery/)
 
 ### Bakery base image parameters
 
-`BASE-IMAGE`: The name of the base image to operate on.
- - `base-image-id`: (*Required*) The OCID of the base image ID for the baking configuration.
+ - `baseImageId`: (*Required*) The OCID of the base image ID for the baking configuration.
  - `deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
- - `detailed-description`: A long description to help human operators identify the image.
- - `noValidate`: (*Default*: `false`) Skip validation.
- - `package-type`: This is used to help Spinnaker's bakery download the build artifacts you supply it with. For example, specifying 'deb' indicates that your artifacts will need to be fetched from a debian repository.
- - `short-description`: A short description to help human operators identify the image.
- - `ssh-user-name`: (*Required*) The ssh username for the baking configuration.
- - `template-file`: This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this list [https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer](https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer), or supplied as described here: [https://spinnaker.io/setup/bakery/](https://spinnaker.io/setup/bakery/)
+ - `detailedDescription`: A long description to help human operators identify the image.
+ - `packageType`: This is used to help Spinnaker's bakery download the build artifacts you supply it with. For example, specifying 'deb' indicates that your artifacts will need to be fetched from a debian repository.
+ - `shortDescription`: A short description to help human operators identify the image.
+ - `sshUserName`: (*Required*) The ssh username for the baking configuration.
+ - `templateFile`: This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this list [https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer](https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer), or supplied as described here: [https://spinnaker.io/setup/bakery/](https://spinnaker.io/setup/bakery/)
 
 
 # Tencent Cloud
 
+**spec.spinnakerConfig.config.providers.tencentcloud**
+
+```yaml
+tencentcloud:
+  enabled:
+  accounts:
+  - name: tencent-dev
+    environment: dev
+    requiredGroupMembership:
+    providerVersion: V1
+    permissions:
+      READ:
+      - read1
+      - read2
+      WRITE:
+      - write1
+      - write2
+      EXECUTE:
+      - exec1
+      - exec2
+      CREATE:
+      - create1
+      - create2
+    secretId:
+    secretKey:
+    regions:
+  primaryAccount: tencent-dev
+  bakeryDefaults:
+    templateFile:
+    baseImages:
+    - baseImage:
+        id:
+        shortDescription:
+        detailedDescription:
+        packageType:
+        templateFile:
+      virtualizationSettings:
+      - region:
+        zone:
+        instanceType:
+        sourceImageId:
+        sshUserName:
+    secretId:
+    secretKey:
+```
 
 ## Account parameters
 
-`ACCOUNT`: The name of the account to operate on.
  - `deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
  - `environment`: The environment name for the account. Many accounts can share the same environment (e.g. dev, test, prod)
- - `noValidate`: (*Default*: `false`) Skip validation.
- - `readPermissions`: (*Default*: `[]`) A user must have at least one of these roles in order to view this account's cloud resources.
+ - `permissions`:
+     - `READ`: `[]` A user must have at least one of these roles in order to view this account's cloud resources.
+     - `WRITE`: `[]` A user must have at least one of these roles in order to make changes to this account's cloud resources.
+     - `EXECUTE`:
+     - `CREATE`:
+ - `requiredGroupMembership`: `[]` (Deprecated): Configure permissions instead.
  - `regions`: The Tencent CLoud regions this Spinnaker account will manage.
- - `required-group-membership`: (*Default*: `[]`) A user must be a member of at least one specified group in order to make changes to this account's cloud resources.
- - `secret-id`: (*Required*) The secret id used to access Tencent Cloud.
- - `secret-key`: (*Required*) (*Sensitive data- - user will be prompted on standard input) (Sensitive data - user will be prompted on standard input) The secret key used to access Tencent Cloud.
- - `write-permissions`: (*Default*: `[]`) A user must have at least one of these roles in order to make changes to this account's cloud resources.
+ - `secretId`: (*Required*) The secret id used to access Tencent Cloud.
+ - `secretKey`: (*Required*) The secret key used to access Tencent Cloud.
 
 ## Bakery parameters
 
-- `deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
-- `noValidate`: (*Default*: `false`) Skip validation.
-- `secret-id`: (*Required*) The default access key used to communicate with AWS.
-- `secret-key`: (*Required*)  The secret key used to communicate with AWS.
-- `template-file`: This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this list [https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer](https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer), or supplied as described here: [https://spinnaker.io/setup/bakery/](https://spinnaker.io/setup/bakery/)
-
+- `secretId`: (*Required*) The default access key used to communicate with AWS.
+- `secretKey`: (*Required*)  The secret key used to communicate with AWS.
+- `templateFile`: This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this list [https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer](https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer), or supplied as described here: [https://spinnaker.io/setup/bakery/](https://spinnaker.io/setup/bakery/)
 
 ### Bakery base image parameters
 
-`BASE-IMAGE`: The name of the base image to operate on.
- - `deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
- - `detailed-description`: A long description to help human operators identify the image.
- - `instance-type`: (*Required*) The instance type for the baking configuration.
- - `noValidate`: (*Default*: `false`) Skip validation.
- - `package-type`: This is used to help Spinnaker's bakery download the build artifacts you supply it with. For example, specifying 'deb' indicates that your artifacts will need to be fetched from a debian repository.
+ - `detailedDescription`: A long description to help human operators identify the image.
+ - `instanceType`: (*Required*) The instance type for the baking configuration.
+ - `packageType`: This is used to help Spinnaker's bakery download the build artifacts you supply it with. For example, specifying 'deb' indicates that your artifacts will need to be fetched from a debian repository.
  - `region`: (*Required*) The region for the baking configuration.
- - `short-description`: A short description to help human operators identify the image.
- - `source-image-id`: (*Required*) The source image ID for the baking configuration.
- - `ssh-user-name`: (*Required*) The ssh username for the baking configuration.
- - `template-file`: This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this list [https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer](https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer), or supplied as described here: [https://spinnaker.io/setup/bakery/](https://spinnaker.io/setup/bakery/)
+ - `shortDescription`: A short description to help human operators identify the image.
+ - `sourceImageId`: (*Required*) The source image ID for the baking configuration.
+ - `sshUserName`: (*Required*) The ssh username for the baking configuration.
+ - `templateFile`: This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this list [https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer](https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer), or supplied as described here: [https://spinnaker.io/setup/bakery/](https://spinnaker.io/setup/bakery/)
  - `zone`: (*Required*) The zone for the baking configuration.
