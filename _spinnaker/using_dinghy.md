@@ -66,23 +66,23 @@ Make sure you specify the following fields so that the Dinghyfile can create a p
 
 Each pipeline should have a field called `stages`, which is an array of the definitions of the stages that make up the pipeline.  Each stage definition should have these fields:
 
-* `name` (<*string*>): The name of the stage. This can be any string.
-* `type` (<*string*>): The type of the stage.  Must match a stage type; the types available depend on Spinnaker's configuration. For example, AWS stages can only be used if the AWS provider is enabled.
-* `refId` (<*string*>): A locally unique string that identifies the stage.  It is often (but not necessarily) numerical.
-* `requisiteStageRefIds` (<*array of strings*>):  The list of stages that must complete before this stage runs, referenced by their `refId`.  See the [Stage Dependency Graph](#stage-dependency-graph) section for details.
+* `name` (*string*): The name of the stage. This can be any string.
+* `type` (*string*): The type of the stage.  Must match a stage type; the types available depend on Spinnaker's configuration. For example, AWS stages can only be used if the AWS provider is enabled.
+* `refId` (*string*): A locally unique string that identifies the stage.  It is often (but not necessarily) numerical.
+* `requisiteStageRefIds` (*array of strings*):  The list of stages that must complete before this stage runs, referenced by their `refId`.  See the [Stage Dependency Graph](#stage-dependency-graph) section for details.
 
 In addition to the above, this is a non-exhaustive list of fields supported on all stage types:
 
-* `stageEnabled` (<*string*>): Spring Expression Language expression; if this is set, the stage will only continue if this expression evaluates to non-false.
-* `comments` (<*string*>): Comments for the stage, which are visible when viewing the state of the stage.
-* `sendNotifications` (<*boolean*>): Whether to notify on the notifications configurations.  Used in conjunction with the `notifications` field.
-* `notifications` (<*array*>): An array of notification settings, to be used to notify on stage conditions.  Used in conjunction with the `sendNotifications` array.
-* `completeOtherBranchesThenFail` (<*boolean*>): If set to true, the following happens when the stage fails: other branches will be allowed to complete, but the pipeline as a whole fails.
-* `continuePipeline` (<*boolean*>): If set to true, continue the current branch of the pipeline even if the stage fails.
-* `failPipeline` (<*boolean*>): If set to true, fail the whole pipeline immediately if the stage fails.
-* `failOnFailedExpressions` (<*boolean*>): If set to true, fail the stage if it contains invalid Spring Expression Language.
-* `restrictExecutionDuringTimeWindow` (<*boolean*>): If set to true, only run the stage during whitelisted execution windows (indicated in the `restrictedExecutionWindow` object).
-* `restrictedExecutionWindow` (<*object*>): A set of fields used to control when the stage is allowed to run. By default, stages are unrestricted.  Used in conjunction with `restrictExecutionDuringTimeWindow`.
+* `stageEnabled` (*string*): Spring Expression Language expression; if this is set, the stage will only continue if this expression evaluates to non-false.
+* `comments` (*string*): Comments for the stage, which are visible when viewing the state of the stage.
+* `sendNotifications` (*boolean*): Whether to notify on the notifications configurations.  Used in conjunction with the `notifications` field.
+* `notifications` (*array*): An array of notification settings, to be used to notify on stage conditions.  Used in conjunction with the `sendNotifications` array.
+* `completeOtherBranchesThenFail` (*boolean*): If set to true, the following happens when the stage fails: other branches will be allowed to complete, but the pipeline as a whole fails.
+* `continuePipeline` (*boolean*): If set to true, continue the current branch of the pipeline even if the stage fails.
+* `failPipeline` (*boolean*): If set to true, fail the whole pipeline immediately if the stage fails.
+* `failOnFailedExpressions` (*boolean*): If set to true, fail the stage if it contains invalid Spring Expression Language.
+* `restrictExecutionDuringTimeWindow` (*boolean*): If set to true, only run the stage during whitelisted execution windows (indicated in the `restrictedExecutionWindow` object).
+* `restrictedExecutionWindow` (*object*): A set of fields used to control when the stage is allowed to run. By default, stages are unrestricted.  Used in conjunction with `restrictExecutionDuringTimeWindow`.
 
 Additionally, each stage type supports one or more stage-specific fields.  For example, the `wait` stage type has an integer field called `waitTime`, which is the number of seconds the stage will wait.
 
