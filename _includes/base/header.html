@@ -37,6 +37,16 @@
           </ul>
         </li>
 
+		<li class="Nav-list__section">
+          <h3 class="Header--tiny toggle-section-trigger js__toggle-section-trigger" tabindex="0">Armory Spinnaker Operator Reference</h3>
+          <ul class="toggle-section">
+            {% assign sorted_operator_reference = site.operator_reference | sort: 'title' %}
+            {% for link in sorted_operator_reference %}
+              <li><a class="Nav-list__link{% if page.url == link.url %} is-active{% endif %}" href="{{ link.url | relative_url }}">{{ link.title | escape }}</a></li>
+            {% endfor %}
+          </ul>
+        </li>
+
         <li class="Nav-list__section">
           <h3 class="Header--tiny toggle-section-trigger js__toggle-section-trigger" tabindex="0">User Guides</h3>
           <ul class="toggle-section">
@@ -88,15 +98,7 @@
         </li>
 
 
-		<li class="Nav-list__section">
-          <h3 class="Header--tiny toggle-section-trigger js__toggle-section-trigger" tabindex="0">Armory Spinnaker Operator Reference</h3>
-          <ul class="toggle-section">
-            {% assign sorted_operator_reference = site.operator_reference | sort: 'order' %}
-            {% for link in sorted_operator_reference %}
-              <li><a class="Nav-list__link{% if page.url == link.url %} is-active{% endif %}" href="{{ link.url | relative_url }}">{{ link.title | escape }}</a></li>
-            {% endfor %}
-          </ul>
-        </li>
+
 
 
         <li class="Nav-list__section">

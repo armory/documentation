@@ -32,7 +32,7 @@ notifications:
     enabled:
 ```
 
-# Slack parameters
+## Slack parameters
 
 - `enabled`: true or false.
 - `botName`: The name of your Slack bot.
@@ -40,7 +40,7 @@ notifications:
 - `baseUrl`: Slack endpoint. Optional, only set if using a compatible API.
 - `forceUseIncomingWebhook`: true or false. Force usage of incoming webhooks endpoint for Slack. Optional, only set if using a compatible API.
 
-# Twilio parameters
+## Twilio parameters
 
 - `enabled`: true or false.
 - `account`: Your Twilio account SID.
@@ -48,7 +48,7 @@ notifications:
 - `from`: The phone number from which the SMS will be sent (e.g. +1234-567-8910).
 - `token`: Your Twilio auth token.
 
-# GitHub status parameters
+## GitHub status parameters
 
 - `enabled`: true or false.
 - `token`: aYour GitHub account token.
