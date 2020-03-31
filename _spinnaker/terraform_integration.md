@@ -172,7 +172,8 @@ To add profiles that a user can select from, perform the following steps:
     - name: pixel-git
         variables:
         - kind: git-ssh 
-          keyContents: encrypted:vault!e:<secret engine>!p:<path to secret>!k:<key>!b:<is base64 encoded?> 
+          options:
+          sshPrivateKey: encrypted:vault!e:<secret engine>!p:<path to secret>!k:<key>!b:<is base64 encoded?> 
     ```
     
     When a user creates or edits a Terraform Integration stage in Deck, they can select the profile `pixel-git` from a dropdown.
@@ -181,6 +182,14 @@ To add profiles that a user can select from, perform the following steps:
 
       * You can add multiple profiles under the `profile` section.
       * Do not commit plain text secrets to `terraformer-local.yml`. Instead, use a secret store: [Vault](/spinnaker-install-admin-guides/secrets-vault), an [encrypted S3 bucket](/spinnaker-install-admin-guides/secrets-s3), or an [encrypted GCS bucket](/spinnaker-install-admin-guides/secrets-gcs). 
+      * Only one option parameter at a time is supported. This means that you can use a private key file (`sshPrivateKeyFilePath`) or the key (`sshPrivateKey`) as the option. To use the key file path, use `sshPrivateKeyFilePath` for the option and provide the path to the key file. The path can also be encrypted using a secret store such as Vault. The following `option` example uses `sshPrivateKeyFilePath`:
+        
+        ```
+        options:
+        sshPrivateKeyFilePath: encryptedFile:<secret_store>!e:...
+        ```
+        
+        For more information, see the documentation for your secret store.
 3. Save the file. 
 
 ### Enabling the Terraform Integration UI
@@ -343,7 +352,7 @@ ${#stage('My Output Stage')["context"]["status"]["outputs"]["bucket_arn"]["value
 
 ## Configuring Terraform for your cloud provider
 
-Since the Terraform Integration executes all Terraform commands against the `terraform` binary, all methods of configuring authentication are supported for your desired cloud provider. This section describes how to accomplish this for various cloud providers.
+Since the Terraform Integration executes all Terraform commands against the `terraform` binary, all methods of configuring authentication are supported for your desired cloud provider. This section describes how to configure this for AWS specifically.
 
 ### Configuration for AWS
 
@@ -367,7 +376,7 @@ Terraform supports the ability to reference AWS profiles defined via a [shared c
         aws_access_key_id = {your-aws-access-key}
         aws_secret_access_key = {your-aws-secret-access-key}
     ```
-    **Note**: You can swap the `ConfigMap` for a `Secret` if you prefer. The `ConfigMap` is used in this documentation for simplicity.
+    **Note**: You can swap the `ConfigMap` for a `Secret` if you prefer. `ConfigMap` is used in this documentation for simplicity.
 
 2. Apply the `ConfigMap`: 
    
