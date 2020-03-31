@@ -39,7 +39,7 @@ Remember that Spinnaker considers an application to be anything you would put in
 ![](/images/Image 2017-03-24 at 3.22.30 PM.png)
 
 Notes: 
-
+-  The name of the application cannot have hyphens. Using a hyphen in the application name interferes with the naming convention. This applies to all types of applications except for those that use the Kubernetes V2 provider to deploy.
 - The Account(s) can include your AWS account and your Docker registry.
 - When you create an application in Spinnaker, consider it to be anything you would put into a single code repository. 
 
