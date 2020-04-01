@@ -15,8 +15,8 @@ The Armory Policy Engine is designed to allow enterprises more complete control 
 
 Armory recommends the following versions for the Policy Engine:
 * OPA versions 0.12.x or 0.13.x
-* Halyard 1.7.2 or later
 * Spinnaker 2.16.0 or later
+* If using Halyard, version 1.7.2 or later
 
 ## Before You Start
 Keep the following guidelines in mind when using the Policy Engine: 
@@ -25,31 +25,79 @@ Keep the following guidelines in mind when using the Policy Engine:
 
 ## Enabling the Policy Engine
 
-To enable Armory's Policy Engine, add the following configuration to Halyard in `~/.hal/default/profiles/front50-local.yml`:
+To enable Armory's Policy Engine:
 
-```yaml
-armory:
-  opa:
-    enabled: true
-    url: <OPA Server URL>:<port>/v1
-```
+* If using Operator
 
-*Note: There must be a trailing /v1 on the URL. This extension is only compatible with OPA's v1 API.*
+    Add the following section to `SpinnakerService` manifest:
+    
+    ```yaml
+    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+    kind: SpinnakerService
+    metadata:
+      name: spinnaker
+    spec:
+      spinnakerConfig:
+        profiles:
+          front50: |
+            armory:
+              opa:
+                enabled: true
+                url: <OPA Server URL>:<port>/v1     
+    ```
+    
+    *Note: There must be a trailing /v1 on the URL. This extension is only compatible with OPA's v1 API.*
 
-If you are using an in-cluster OPA instance (such as one set up with the instructions below), Spinnaker can access OPA via the Kubernetes service DNS name. The following example configures Spinnaker to connect with an OPA server at http://opa.opaserver:8181:
+    If you are using an in-cluster OPA instance (such as one set up with the instructions below), Spinnaker can access OPA via the Kubernetes service DNS name. The following example configures Spinnaker to connect with an OPA server at http://opa.opaserver:8181:
+    
+    ```yaml
+    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+    kind: SpinnakerService
+    metadata:
+      name: spinnaker
+    spec:
+      spinnakerConfig:
+        profiles:
+          front50: |
+            armory:
+              opa:
+                enabled: true
+                url: http://opa.opaserver:8181/v1
+    ```
+  
+    Deploy the changes (assuming that Spinnaker lives in the: `spinnaker` namespace and the manifest file is named `spinnakerservice.yml`:
+    
+    ```bash
+    kubectl -n spinnaker apply -f spinnakerservice.yml
+    ```
 
-```yaml
-armory:
-  opa:
-    enabled: true
-    url: http://opa.opaserver:8181/v1
-```
+* If using Halyard
 
-After you update `front50-local.yml`, deploy your changes:
+    Add the following configuration to Halyard in `~/.hal/default/profiles/front50-local.yml`:
 
-```bash
-hal deploy apply
-```
+    ```yaml
+    armory:
+      opa:
+        enabled: true
+        url: <OPA Server URL>:<port>/v1
+    ```
+
+    *Note: There must be a trailing /v1 on the URL. This extension is only compatible with OPA's v1 API.*
+
+    If you are using an in-cluster OPA instance (such as one set up with the instructions below), Spinnaker can access OPA via the Kubernetes service DNS name. The following example configures Spinnaker to connect with an OPA server at http://opa.opaserver:8181:
+
+    ```yaml
+    armory:
+      opa:
+        enabled: true
+        url: http://opa.opaserver:8181/v1
+    ```
+
+    After you update `front50-local.yml`, deploy your changes:
+
+    ```bash
+    hal deploy apply
+    ```
 
 ## OPA Server Deployment
 

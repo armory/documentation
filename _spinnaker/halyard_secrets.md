@@ -7,13 +7,16 @@ order: 25
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
+## Storing configurations is source control
 
-## Storing configurations using Open Source Halyard
-OSS Spinnaker and Halyard stores secrets prompted by **hal commands** into your halyard configuration directory, typically `~/.hal/config.yml` and other `~/.hal/` folders/files.
+Halyard stores secrets prompted by **hal commands** into your halyard configuration directory, typically `~/.hal/config.yml` and other `~/.hal/` folders/files.
 
-**Our recommendation** is that you take the halyard configuration directory and treat this like a secret, stored in your secret store of choice. The quickest place to store them is in AWS S3 in a private, encrypted bucket. 
+Either if you're using Halyard or the Spinnaker Operator to deploy and manage Spinnaker, you need to separate secrets from the rest of the config. This is done by replacing secret values and secret files by `encrypted...` or `encryptedFile...` references as described [here](/spinnaker-install-admin-guides/secrets), then you will be able to store the secret-free configuration files under source control. When you need to make any changes you can download the files, change them, deploy the changes and then upload the files again.
+ 
+## Deploying config changes using Spinnaker Operator
+ 
+If you're using the Spinnaker Operator, you can use any standard Kubernetes mechanism to update and apply config changes, like `kubectl apply`.
+ 
+## Deploying config changes using Halyard
 
-While it's possible to store the halyard configurations files in source control, _it is not recommended_, as this is considered bad practice. If you need revision history, most blob stores (S3, GCS) will keep history for you.
-
-Another method is to turn `config.yml` and other files in your Halyard configuration directory into a template and to build a process around hydrating/baking it, then doing a `hal deploy apply`.
-> Warning: you may lose the ability to run `hal` commands, because halyard may not understand your templates.
+If you're using Halyard you need to issue `hal` commands to modify the configuration and then run `hal deploy apply` to apply the changes to Spinnaker.

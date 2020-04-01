@@ -19,29 +19,73 @@ our Deck service (the UI), and `gate.demo.armory.io` to be our Gate service
 (the API).
 
 ## Exposing Spinnaker on EKS with a public Load Balancer
-### Create a LoadBalancer service
 
-Note: This guide assumes you’re deploying Spinnaker on Kubernetes using the Distributed deployment type with Halyard.
+### Create a LoadBalancer service
 
 While there are many ways to expose Spinnaker, we find the method described in this post to be the easiest way to get started. If your organization has other requirements, this post may be helpful as you start working through the process.
 
-First, we’ll start by creating LoadBalancer Services which will expose the API (Gate) and the UI (Deck) via a Load Balancer in your cloud provider. We’ll do this by running the commands below and creating the spin-gate-public and spin-deck-public Services.
+* If using Spinnaker Operator
 
-`NAMESPACE` is the Kubernetes namespace where your Spinnaker install is located. Halyard defaults to spinnaker unless explicitly overridden.
+    Update your `SpinnakerService` manifest with the following example `expose` configuration, which will automatically create one Kubernetes service LoadBalancer for the API (Gate) and one for the UI (Deck):
+    
+    ```yaml
+    apiversion: spinnaker.io/{{ site.data.versions.operator-extended-crd-version }}
+    kind: SpinnakerService
+    metadata:
+      name: spinnaker
+    spec:
+      ...  # rest of config omitted for brevity
+      expose:
+        type: service
+        service:
+          type: loadbalancer
+    ```
 
-Note: if you want to secure each endpoint with SSL, change it to `443` and continue through the guide.
-```bash
-export NAMESPACE=spinnaker
-kubectl -n ${NAMESPACE} expose service spin-gate --type LoadBalancer \
-  --port 80,443 \
-  --target-port 8084 \
-  --name spin-gate-public
+    Save and apply the configuration. After some time, you can see the LoadBalancer CNAMEs that were created:
+    
+    ```bash
+    NAMESPACE={spinnaker namespace}
+    API_URL=$(kubectl -n $NAMESPACE get spinsvc spinnaker -o jsonpath='{.status.apiUrl}')
+    UI_URL=$(kubectl -n $NAMESPACE get spinsvc spinnaker -o jsonpath='{.status.uiUrl}')
+    ```
 
-kubectl -n ${NAMESPACE} expose service spin-deck --type LoadBalancer \
-  --port 80,443 \
-  --target-port 9000 \
-  --name spin-deck-public
-```
+* If using Halyard
+
+    First, we’ll start by creating LoadBalancer Services which will expose the API (Gate) and the UI (Deck) via a Load Balancer in your cloud provider. We’ll do this by running the commands below and creating the spin-gate-public and spin-deck-public Services.
+
+    `NAMESPACE` is the Kubernetes namespace where your Spinnaker install is located. Halyard defaults to spinnaker unless explicitly overridden.
+
+    Note: if you want to secure each endpoint with SSL, change it to `443` and continue through the guide.
+    ```bash
+    export NAMESPACE=spinnaker
+    kubectl -n ${NAMESPACE} expose service spin-gate --type LoadBalancer \
+      --port 80,443 \
+      --target-port 8084 \
+      --name spin-gate-public
+
+    kubectl -n ${NAMESPACE} expose service spin-deck --type LoadBalancer \
+      --port 80,443 \
+      --target-port 9000 \
+      --name spin-deck-public
+    ```
+
+    Once these Services have been created, we’ll need to update our Spinnaker deployment so that the UI understands where the API is located. To do this, we’ll use Halyard to override the base URL for both the API and the UI and then redeploy Spinnaker.
+
+    ```bash
+    # use the newly created LBs
+    export NAMESPACE={namespace}
+    export API_URL=$(kubectl -n $NAMESPACE get svc spin-gate-public -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+    export UI_URL=$(kubectl -n $NAMESPACE get svc spin-deck-public -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+
+    # or use DNS records
+    # export API_URL=spinnaker-gate.armory.io
+    # export UI_URL=spinnaker.armory.io
+
+    # note, we're not using SSL yet, later in the guide we will.
+    hal config security api edit --override-base-url http://${API_URL}
+    hal config security ui edit --override-base-url http://${UI_URL}
+    hal deploy apply
+    ```
 
 If you have a DNS in mind set it up like:
 ```
@@ -49,72 +93,87 @@ spinnaker-gate.armory.io CNAME --> (spin-gate-public dns) aaaaa-1111.us-west-2.e
 spinnaker.armory.io      CNAME --> (spin-deck-public dns) aaaaa-2222.us-west-2.elb.amazonaws.com
 ```
 
-Once these Services have been created, we’ll need to update our Spinnaker deployment so that the UI understands where the API is located. To do this, we’ll use Halyard to override the base URL for both the API and the UI and then redeploy Spinnaker.
-
-```bash
-# use the newly created LBs
-export NAMESPACE={namespace}
-export API_URL=$(kubectl -n $NAMESPACE get svc spin-gate-public -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-export UI_URL=$(kubectl -n $NAMESPACE get svc spin-deck-public -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-
-# or use DNS records
-# export API_URL=spinnaker-gate.armory.io
-# export UI_URL=spinnaker.armory.io
-
-# note, we're not using SSL yet, later in the guide we will.
-hal config security api edit --override-base-url http://${API_URL}
-hal config security ui edit --override-base-url http://${UI_URL}
-hal deploy apply
-```
-
 ### Secure with SSL on EKS
-
-Note: If you created the services with port 8084 and 9000, you will need to edit them to make SSL work. To do so run
-`kubectl -n spinnaker edit service spin-gate-public`
-and
-`kubectl -n spinnaker edit service spin-deck-public`
-and change the public port to 443
 
 This tutorial presumes you've already created a certificate in the AWS Certificate Manager.
 
-First get the certificate arn and run
-```bash
-export ACM_CERT_ARN="arn:::::your:cert"
-```
+* If using Spinnaker Operator
 
-Edit the LoadBalancer service `spin-gate-public` and  `spin-deck-public` we will include 3 annotations for each.
+    Update and apply the `SpinnakerService` manifest to specify the DNS names for Gate and Deck, and to provide annotations specific for EKS LoadBalancers:
+    
+    ```yaml
+    apiversion: spinnaker.io/{{ site.data.versions.operator-extended-crd-version }}
+    kind: SpinnakerService
+    metadata:
+      name: spinnaker
+    spec:
+      spinnakerConfig:
+        config:
+          security:
+            apiSecurity:
+              overrideBaseUrl: https://spinnaker-gate.armory.io  # Specify your DNS name for Gate with https scheme
+            uiSecurity:
+              overrideBaseUrl: https://spinnaker.armory.io       # Specify your DNS name for Deck with https scheme
+            ...  # rest of config omitted for brevity
+      expose:
+        type: service
+        service:
+          type: LoadBalancer
+          annotations:
+            service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+            service.beta.kubernetes.io/aws-load-balancer-ssl-cert: <ACM CERT ARN>  # Replace with your cert ARN
+            service.beta.kubernetes.io/aws-load-balancer-ssl-ports: 80,443
+    ```
+  
+    Assuming that Spinnaker is installed in `spinnaker` namespace:
+    
+    ```bash
+    kubectl -n spinnaker apply -f spinnakerservice.yml
+    ```
 
-```bash
-kubectl -n ${NAMESPACE} annotate svc spin-gate-public service.beta.kubernetes.io/aws-load-balancer-backend-protocol=http
-kubectl -n ${NAMESPACE} annotate svc spin-gate-public service.beta.kubernetes.io/aws-load-balancer-ssl-cert=${ACM_CERT_ARN}
-kubectl -n ${NAMESPACE} annotate svc spin-gate-public service.beta.kubernetes.io/aws-load-balancer-ssl-ports=80,443
+* If using Halyard
 
-kubectl -n ${NAMESPACE} annotate svc spin-deck-public service.beta.kubernetes.io/aws-load-balancer-backend-protocol=http
-kubectl -n ${NAMESPACE} annotate svc spin-deck-public service.beta.kubernetes.io/aws-load-balancer-ssl-cert=${ACM_CERT_ARN}
-kubectl -n ${NAMESPACE} annotate svc spin-deck-public service.beta.kubernetes.io/aws-load-balancer-ssl-ports=80,443
-```
+    Note: If you created the services with port 8084 and 9000, you will need to edit them to make SSL work. To do so run
+    `kubectl -n spinnaker edit service spin-gate-public`
+    and
+    `kubectl -n spinnaker edit service spin-deck-public`
+    and change the public port to 443
 
-### Update the Internal URLS in Spinnaker to https
-We’ll need to update the internal URLs (Deck will complain about trying to call out to an HTTP resource from an HTTPS request). Update the URLs like we did before, but changing the protocols to https:
+    First get the certificate arn and run
+    ```bash
+    export ACM_CERT_ARN="arn:::::your:cert"
+    ```
 
-```bash
-  hal config security api edit --override-base-url https://gate.demo.armory.io
-  hal config security ui edit --override-base-url https://demo.armory.io
-  hal deploy apply
-```
+    Edit the LoadBalancer service `spin-gate-public` and  `spin-deck-public` we will include 3 annotations for each.
 
+    ```bash
+    kubectl -n ${NAMESPACE} annotate svc spin-gate-public service.beta.kubernetes.io/aws-load-balancer-backend-protocol=http
+    kubectl -n ${NAMESPACE} annotate svc spin-gate-public service.beta.kubernetes.io/aws-load-balancer-ssl-cert=${ACM_CERT_ARN}
+    kubectl -n ${NAMESPACE} annotate svc spin-gate-public service.beta.kubernetes.io/aws-load-balancer-ssl-ports=80,443
+
+    kubectl -n ${NAMESPACE} annotate svc spin-deck-public service.beta.kubernetes.io/aws-load-balancer-backend-protocol=http
+    kubectl -n ${NAMESPACE} annotate svc spin-deck-public service.beta.kubernetes.io/aws-load-balancer-ssl-cert=${ACM_CERT_ARN}
+    kubectl -n ${NAMESPACE} annotate svc spin-deck-public service.beta.kubernetes.io/aws-load-balancer-ssl-ports=80,443
+    ```
+
+    We’ll need to update the internal URLs (Deck will complain about trying to call out to an HTTP resource from an HTTPS request). Update the URLs like we did before, but changing the protocols to https:
+
+    ```bash
+    hal config security api edit --override-base-url https://gate.demo.armory.io
+    hal config security ui edit --override-base-url https://demo.armory.io
+    hal deploy apply
+    ```
 
 ### Enabling sticky sessions
 
-If you're Armory Spinnaker installation will be using [authentication](https://docs.armory.io/install-guide/auth/) and you expect to scale the API server (Gate) beyond more than one instance you'll want to enable sticky sessions. This will ensure that clients will connect and authenticate with the same server each time. Otherwise, you may be forced to reauthenticate if you get directed to a new server. To enable sticky sessions, you'll want to enable session affinity on the Gate service created above.
+If your Armory Spinnaker installation will be using [authentication](https://docs.armory.io/install-guide/auth/) and you expect to scale the API server (Gate) beyond more than one instance you'll want to enable sticky sessions. This will ensure that clients will connect and authenticate with the same server each time. Otherwise, you may be forced to reauthenticate if you get directed to a new server. To enable sticky sessions, you'll want to enable session affinity on the Gate service created above.
 
 ```
-kubectl -n ${NAMESPACE} patch service/spin-gate-public --patch '{"spec": {"sessionAffinity": "ClientIP"}}'
+GATE_SVC=<spin-gate/spin-gate-public>  # spin-gate if using Spinnaker Operator, spin-gate-public if using Halyard
+kubectl -n ${NAMESPACE} patch service/$GATE_SVC --patch '{"spec": {"sessionAffinity": "ClientIP"}}'
 ```
 
 For more details about session affinity, see the Kubernetes documentation on [Services](https://kubernetes.io/docs/concepts/services-networking/service/).
-
-
 
 ## Exposing Spinnaker on EKS with an internal Load balancer
 
@@ -123,27 +182,61 @@ In this option the goal is to use AWS ALB's of type `internal` for exposing Spin
 ### Step 1: Create Kubernetes NodePort services
 
 A `NodePort` Kubernetes service opens the same port (automatically chosen) on all EKS worker nodes, and forwards requests to internal pods. In this case we'll be creating two services: one for Deck (Spinnaker's UI) and one for Gate (Spinnaker's API).
-Replace the namespace by the one where spinnaker is installed:
 
-```bash
-export NAMESPACE=spinnaker
-kubectl -n ${NAMESPACE} expose service spin-gate --type NodePort \
-  --port 8084 \
-  --target-port 8084 \
-  --name spin-gate-nodeport
+* If using Operator
 
-kubectl -n ${NAMESPACE} expose service spin-deck --type NodePort \
-  --port 9000 \
-  --target-port 9000 \
-  --name spin-deck-nodeport
-```
+    Change the service type in `SpinnakerService` manifest to `NodePort` and apply the changes:
+    
+    ```yaml
+    apiversion: spinnaker.io/{{ site.data.versions.operator-extended-crd-version }}
+    kind: SpinnakerService
+    metadata:
+      name: spinnaker
+    spec:
+      ...  # rest of config omitted for brevity
+      expose:
+        type: service
+        service:
+          type: NodePort
+          ...  # rest of config omitted for brevity
+    ```
+  
+    Assuming that Spinnaker is installed in `spinnaker` namespace:
+    
+    ```bash
+    kubectl -n spinnaker apply -f spinnakerservice.yml
+    ```
+  
+    After a few seconds you can view which ports were opened in EKS worker nodes, you'll need them in the next step:
 
-After a few seconds you can view which ports were opened in EKS worker nodes, you'll need them in the next step:
+    ```
+    DECK_PORT=$(kubectl get service spin-deck -o jsonpath='{.spec.ports[0].nodePort}')
+    GATE_PORT=$(kubectl get service spin-gate -o jsonpath='{.spec.ports[0].nodePort}')
+    ```
 
-```
-DECK_PORT=$(kubectl get service spin-deck-nodeport -o jsonpath='{.spec.ports[0].nodePort}')
-GATE_PORT=$(kubectl get service spin-gate-nodeport -o jsonpath='{.spec.ports[0].nodePort}')
-```
+* If using Halyard
+
+    Replace the namespace by the one where spinnaker is installed:
+
+    ```bash
+    export NAMESPACE=spinnaker
+    kubectl -n ${NAMESPACE} expose service spin-gate --type NodePort \
+      --port 8084 \
+      --target-port 8084 \
+      --name spin-gate-nodeport
+
+    kubectl -n ${NAMESPACE} expose service spin-deck --type NodePort \
+      --port 9000 \
+      --target-port 9000 \
+      --name spin-deck-nodeport
+    ```
+
+    After a few seconds you can view which ports were opened in EKS worker nodes, you'll need them in the next step:
+
+    ```
+    DECK_PORT=$(kubectl get service spin-deck-nodeport -o jsonpath='{.spec.ports[0].nodePort}')
+    GATE_PORT=$(kubectl get service spin-gate-nodeport -o jsonpath='{.spec.ports[0].nodePort}')
+    ```
 
 ### Step 2: Create AWS internal load balancers
 
@@ -189,12 +282,40 @@ Finally repeat the same steps for creating Gate Load balancer.
 
 Spinnaker needs to know which url's are used to access it. After you have updated your DNS with the Load Balancers CNAME's created in the previous step, the next step is to update Spinnaker configuration:
 
-```bash
-  hal config security api edit --override-base-url https://${GATE_DNS_NAME}
-  hal config security ui edit --override-base-url https://${DECK_DNS_NAME}
-  hal deploy apply
-```
+* If using Operator
 
+    Update and apply the `SpinnakerService` manifest:
+    
+    ```yaml
+    apiversion: spinnaker.io/{{ site.data.versions.operator-extended-crd-version }}
+    kind: SpinnakerService
+    metadata:
+      name: spinnaker
+    spec:
+      spinnakerConfig:
+        config:
+          security:
+            apiSecurity:
+              overrideBaseUrl: https://spinnaker-gate.armory.io  # Specify your DNS name for Gate with https scheme
+            uiSecurity:
+              overrideBaseUrl: https://spinnaker.armory.io       # Specify your DNS name for Deck with https scheme
+              ...  # rest of config omitted for brevity
+    ```
+  
+    Assuming that Spinnaker is installed in `spinnaker` namespace:
+    
+    ```bash
+    kubectl -n spinnaker apply -f spinnakerservice.yml
+    ```
+
+
+* If using Halyard
+
+    ```bash
+    hal config security api edit --override-base-url https://${GATE_DNS_NAME}
+    hal config security ui edit --override-base-url https://${DECK_DNS_NAME}
+    hal deploy apply
+    ```
 
 
 ## Exposing Spinnaker on GKE with Ingress
@@ -204,7 +325,7 @@ GKE has a “built-in” ingress controller and that's what we will use.
 
 First create a file called basic-ingress.yaml and paste it the following
 
-```
+```yaml
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -217,14 +338,14 @@ spec:
       paths:
       - backend:
           serviceName: spin-deck
-          servicePort: 9000
+          servicePort: 80  # Port 80 if using Operator, port 9000 if using Halyard
         path: /
   - host: gate.demo.armory.io
     http:
       paths:
       - backend:
           serviceName: spin-gate
-          servicePort: 8084
+          servicePort: 80  # Port 80 if using Operator, port 8084 if using Halyard
         path: /
 ```
 
@@ -246,7 +367,43 @@ Note: It may take a few minutes for GKE to allocate an external IP address and s
 
 You need to update your DNS records to have the demo.armory.io host point to the IP address generated.
 
-After doing that you can visit http://demo.armory.io:9000/ to view spinnaker.
+Now tell Spinnaker about its external endpoints:
+
+* If using Operator
+
+    Update and apply the `SpinnakerService` manifest:
+    
+    ```yaml
+    apiversion: spinnaker.io/{{ site.data.versions.operator-extended-crd-version }}
+    kind: SpinnakerService
+    metadata:
+      name: spinnaker
+    spec:
+      spinnakerConfig:
+        config:
+          security:
+            apiSecurity:
+              overrideBaseUrl: http://gate.demo.armory.io  # Specify your DNS name for Gate
+            uiSecurity:
+              overrideBaseUrl: http://demo.armory.io       # Specify your DNS name for Deck
+              ...  # rest of config omitted for brevity
+    ```
+  
+    Assuming that Spinnaker is installed in `spinnaker` namespace:
+    
+    ```bash
+    kubectl -n spinnaker apply -f spinnakerservice.yml
+    ```
+
+* If using Halyard
+
+    ```bash
+    hal config security api edit --override-base-url https://gate.demo.armory.io
+    hal config security ui edit --override-base-url https://demo.armory.io
+    hal deploy apply
+    ```
+
+After doing that you can visit http://demo.armory.io/ to view spinnaker.
 
 ### Secure with SSL on GKE
 To enable SSL and configure your certificates you can follow this guide:
@@ -260,7 +417,39 @@ You must enable HTTP/HTTPS redirects when your Spinnaker deployment fits the fol
 
 To enable redirects, complete the following steps:
 
-1. Add the following entry to your `.hal/<deployment-name>/profiles/gate-local.yml`:
+* If using Operator
+
+    Update the `SpinnakerService` manifest with the following:
+    
+    ```yaml
+    apiversion: spinnaker.io/{{ site.data.versions.operator-extended-crd-version }}
+    kind: SpinnakerService
+    metadata:
+      name: spinnaker
+    spec:
+      spinnakerConfig:
+        profiles:
+          gate:
+            server:
+              tomcat:
+                protocolHeader: X-Forwarded-Proto
+                remoteIpHeader: X-Forwarded-For
+                internalProxies: .*
+                httpsServerPort: X-Forwarded-Port
+                ...  # rest of config omitted for brevity
+    ```
+  
+    Assuming that Spinnaker is installed in `spinnaker` namespace:
+    
+    ```bash
+    kubectl -n spinnaker apply -f spinnakerservice.yml
+    ```
+  
+    Clear your cache.
+
+* If using Halyard
+
+    Add the following entry to your `.hal/<deployment-name>/profiles/gate-local.yml`:
 
     ```yaml
     server:
@@ -270,7 +459,7 @@ To enable redirects, complete the following steps:
         internalProxies: .*
         httpsServerPort: X-Forwarded-Port
     ```
-2. Run the following command: `hal deploy apply`.
-3. Clear your cache.
+    Run the following command: `hal deploy apply`.
+    Clear your cache.
 
 For an alternative solution, see the following Knowledge Base article: [Troubleshooting http/https redirects with authentication](https://kb.armory.io/troubleshooting/https-redirects/).
