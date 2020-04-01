@@ -16,6 +16,7 @@ armory:
   dinghy:
     enabled:
     templateOrg:
+    templateRepo:
     githubToken:
     githubEndpoint:
     stashUsername:
@@ -55,6 +56,7 @@ armory:
 
 - `enabled`: true or false.
 - `templateOrg`: SCM organization or namespace where application and template repositories are located.
+- `templateRepo`: SCM repository where module templates are located
 - `githubToken`: GitHub token.
 - `githubEndpoint`: (Default: https://api.github.com) Github API endpoint. Useful if you’re using Github Enterprise.
 - `stashUsername`: Stash username.
