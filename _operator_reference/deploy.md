@@ -8,6 +8,7 @@ order: 5
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
+# Deployment Environment
 
 ```yaml
 deploymentEnvironment:
@@ -80,3 +81,15 @@ deploymentEnvironment:
 	echo:
 	  enabled: false
 ```
+
+
+## Parameters
+- `size`: (*Required*) (Default: `SMALL`) Currently unused but the field is required for now.
+- `type`: (**Required**)
+
+
+
+## Parameters
+- `name`: (*Required*) (Default: `value`) ([Secret]()) ([File]()) account name
+Secret link to -> Page about secret `encrypted: ...` -> secret management, K8s secrets etc..
+File: page about file: you can either mount it by yourself, or use secrets.
