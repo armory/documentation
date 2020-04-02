@@ -22,4 +22,3 @@ spec:
     config:
       deploymentEnvironment: {}  # this section from your halconfig can be discarded as this key is unused
 ```
-
