@@ -211,19 +211,19 @@ canary:
 ```
 
 - `name`: prometheus
-  - `enabled`: false
+  - `enabled`: true or false
   - `accounts`:
-      - `name`: abc
+      - `name`:
         - `endpoint`:
-          - `baseUrl`: abc # The base URL to the Prometheus server.
-        - `username`: abc # A basic auth username.
-        - `password`: abc # A basic auth password.
-        - `usernamePasswordFile`: creds # The path to a file containing "username:password".
-        - `supportedTypes`: # One of: METRICS_STORE, METRICS_STORE, OBJECT_STORE
+          - `baseUrl`: (*Required*) The base URL to the Prometheus server.
+        - `username`: A basic auth username.
+        - `password`: A basic auth password.
+        - `usernamePasswordFile`: The path to a file containing "username:password".
+        - `supportedTypes`: One of: METRICS_STORE, METRICS_STORE, OBJECT_STORE
             - METRICS_STORE
             - CONFIGURATION_STORE
             - OBJECT_STORE
-  - `metadataCachingIntervalMS`: 60000 # Number of milliseconds to wait in between caching the names of available metric types (for use in building canary configs; Default: 60000).
+  - `metadataCachingIntervalMS`: Number of milliseconds to wait in between caching the names of available metric types (for use in building canary configs; Default: 60000).
   -
 ### SignalFX
 
@@ -250,7 +250,7 @@ canary:
       - `name`: abc
         - `endpoint`:
           - `baseUrl`: The base URL to the SignalFx server. Defaults to https://stream.signalfx.com
-        - `accessToken`: The SignalFx access token.
+        - `accessToken`: (*Required*) The SignalFx access token.
         - `defaultScopeKey`: Scope key is used to distinguish between base and canary deployments. If omitted every request must supply the `_scope_key` param in extended scope params
         - `defaultLocationKey`: Location key is used to filter by deployment region. If omitted requests must supply the `_location_key` if it is needed.
         - `supportedTypes`: One of: METRICS_STORE, METRICS_STORE, OBJECT_STORE

@@ -8,9 +8,8 @@ order: 10
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-# `pubsub`
+# spec.spinnakerConfig.config.pubsub*
 
-**spec.spinnakerConfig.config.pubsub**
 
 ```yaml
 pubsub:
@@ -33,12 +32,10 @@ pubsub:
       content:
 ```
 
-## Parameters
-
 - `enabled`: true or false.
 - `google`:
 
-### Google
+## Google
 
 - `enabled`: true or false.
 - `subscriptions:
@@ -49,8 +46,8 @@ pubsub:
   - `templatePath`: A path to a jinja template that specifies how artifacts from this pubsub system are interpreted and transformed into Spinnaker artifacts. See spinnaker.io/reference/artifacts for more information.
   - `ackDeadlineSeconds`: Time in seconds before an outstanding message is considered unacknowledged and is re-sent. Configurable in your Google Cloud Pubsub subscription. See the docs here`: https://cloud.google.com/pubsub/docs/subscriber
   - `messageFormat`: One of 'GCB', 'GCS', 'GCR', or 'CUSTOM'. This can be used to help Spinnaker translate the contents of the Pub/Sub message into Spinnaker artifacts.
-- `publishers:
+- `publishers`:
   - `name`: name of publisher
       - `project`:
       - `topicName`:
-      - `jsonPath`: 
+      - `jsonPath`:
