@@ -19,7 +19,7 @@ No known issues
  No Changes
 
 ## Halyard Community Contributions
-- fix(stats): New stats command only available in 1.19+ (#1569)
+- fix(stats): New stats command only available in Armory 2.19+ (OSS 1.19+) (#1569)
 - feat(stats): Rename telemetry to stats, enable by default (#1565)
 - chore(containers): Upgrade the bundled tools (#1568)
 - chore(dependencies): upgrade commons-collections  version (#1545)
