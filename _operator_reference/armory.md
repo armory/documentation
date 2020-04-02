@@ -8,6 +8,7 @@ order: 1
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
+# Parameters
 
 **spec.spinnakerConfig.config.armory**
 
@@ -52,7 +53,7 @@ armory:
       authMethod:
 ```
 
-# Dinghy parameters
+## Dinghy parameters
 
 - `enabled`: true or false.
 - `templateOrg`: SCM organization or namespace where application and template repositories are located.
@@ -72,7 +73,7 @@ armory:
     - `enabled`: true or false.
     - `channel`: Name of channel to send notifications to.
 
-# Diagnostics parameters
+## Diagnostics parameters
 
 - `enabled`: true or false.
 - `uuid`: UUID of the Armory installation
@@ -80,7 +81,7 @@ armory:
   - `enabled`: true or false.
   - `endpoint`: Example: `https://debug.armory.io/v1/logs`
 
-# Terraform parameters
+## Terraform parameters
 
 - `enabled`: true or false.
 - `git`:
@@ -88,7 +89,7 @@ armory:
   - `accessToken`: Git access token.
   - `username`: Git username.
 
-# Secrets parameters
+## Secrets parameters
 
 - `vault`:
   - `enabled`: true or false.

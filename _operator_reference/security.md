@@ -8,30 +8,29 @@ order: 12
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-# `security`
+
+# Parameters
 
 **spec.spinnakerConfig.config.security**
 
 Configure Spinnaker's security. This includes external SSL, authentication mechanisms, and authorization policies.
 
-# Parameters
+```yaml
+security:
+        apiSecurity:
+        uiSecurity:
+        authn:
+        authz:
+```
 
 - `apiSecurity`
+- `uiSecurity`
 - `authn`
 - `authz`
-- `uiSecurity`
 
 ## API
 
 **spec.spinnakerConfig.config.security.apiSecurity**
-
-### Parameters
-
-- `ssl`:
-- `overrideBaseUrl`: If you are accessing the API server remotely, provide the full base URL of whatever proxy or load balancer is fronting the API requests.
-- `corsAccessPattern`: `^.*$` If you have authentication enabled, are accessing Spinnaker remotely, and are logging in from sources other than the UI, provide a regex matching all URLs authentication redirects may come from.
-
-#### SSL parameters
 
 ```yaml
 apiSecurity:
@@ -49,6 +48,12 @@ apiSecurity:
   corsAccessPattern:
 ```
 
+- `ssl`:
+- `overrideBaseUrl`: If you are accessing the API server remotely, provide the full base URL of whatever proxy or load balancer is fronting the API requests.
+- `corsAccessPattern`: `^.*$` If you have authentication enabled, are accessing Spinnaker remotely, and are logging in from sources other than the UI, provide a regex matching all URLs authentication redirects may come from.
+
+### SSL parameters
+
 - `enabled`: true or false.
 - `keyAlias`: Name of your keystore entry as generated with your keytool.
 - `keyStore`: Path to the keystore holding your security certificates.
@@ -64,7 +69,14 @@ apiSecurity:
 
 **spec.spinnakerConfig.config.security.authn**
 
-### Parameters
+```yaml
+authn:
+  oauth2:
+  saml:
+  ldap:
+  x509:
+  iap:    
+```
 
 - `enabled`: true or false.
 - `oauth2`:
@@ -73,35 +85,35 @@ apiSecurity:
 - `x509`:
 - `iap`
 
-#### OAUTH2
+### OAUTH2
 
 **spec.spinnakerConfig.config.security.authn.oauth2**
 
 ```yaml
 oauth2:
-enabled:
-client:
-  clientId:
-  clientSecret:
-  accessTokenUri:
-  userAuthorizationUri:
-  clientAuthenticationScheme:
-  scope:
-  preEstablishedRedirectUri:
-  useCurrentUri:
-userInfoRequirements:
-resource:
-  userInfoUri:
-userInfoMapping:
-  email:
-  firstName:
-  lastName:
-  username:
-provider:
+    enabled:
+    client:
+      clientId:
+      clientSecret:
+      accessTokenUri:
+      userAuthorizationUri:
+      clientAuthenticationScheme:
+      scope:
+      preEstablishedRedirectUri:
+      useCurrentUri:
+    userInfoRequirements:
+    resource:
+      userInfoUri:
+    userInfoMapping:
+      email:
+      firstName:
+      lastName:
+      username:
+    provider:
 ```
 
 - `enabled`: true or false.
-- `client:
+- `client`:
   - `clientId`: The OAuth client ID you have configured with your OAuth provider.
   - `clientSecret`: The OAuth client secret you have configured with your OAuth provider.
   - `accessTokenUri`: The access token uri for your OAuth provider.
@@ -111,16 +123,16 @@ provider:
   - `preEstablishedRedirectUri`: The externally accessible URL for Gate. For use with load balancers that do any kind of address manipulation for Gate traffic, such as an SSL terminating load balancer.
   - `useCurrentUri`: false
 - `userInfoRequirements`: {} The map of requirements the userInfo request must have. This is used to restrict user login to specific domains or having a specific attribute. Use equal signs between key and value, and additional key/value pairs need to repeat the flag. Example: '--user-info-requirements foo=bar --userInfoRequirements baz=qux'.
-- `resource:
+- `resource`:
   - `userInfoUri`: The user info uri for your OAuth provider.
-- `userInfoMapping:
+- `userInfoMapping`:
   - `email`: The email field returned from your OAuth provider.
   - `firstName`: The first name field returned from your OAuth provider.
   - `lastName`: The last name field returned from your OAuth provider.
   - `username`: The username field returned from your OAuth provider.
 - `provider`: One of azure, github, oracle, other, google
 
-#### SAML
+### SAML
 
 **spec.spinnakerConfig.config.security.authn.saml**
 
@@ -150,8 +162,8 @@ saml:
 - `keyStore`: Path to the keystore that contains this server's private key. This key is used to cryptographically sign SAML AuthNRequest objects.
 - `keyStorePassword`: The password used to access the file specified in --keystore
 - `keyStoreAliasName`: The name of the alias under which this server's private key is stored in the --keystore file.
-- `serviceAddress`: The address of the Gate server that will be accesible by the SAML identity provider. This should be the full URL, including port, e.g. https://gate.org.com:8084/. If deployed behind a load balancer, this would be the laod balancer's address.
-- `userAttributeMapping:
+- `serviceAddress`: The address of the Gate server that will be accesible by the SAML identity provider. This should be the full URL, including port, e.g. https://gate.org.com:8084/. If deployed behind a load balancer, this would be the load balancer's address.
+- `userAttributeMapping`:
   - `firstName`: The first name field returned from your SAML provider.
   - `lastName`: The last name field returned from your SAML provider.
   - `roles`: The roles field returned from your SAML provider.
@@ -159,7 +171,7 @@ saml:
   - `username`: aThe username field returned from your SAML provider.
   - `email`: The email field returned from your SAML provider.
 
-#### LDAP
+### LDAP
 
 **spec.spinnakerConfig.config.security.authn.ldap**
 
@@ -184,7 +196,7 @@ ldap:
 - `managerPassword`: The password for the LDAP manager user.
 - `groupSearchBase`: The part of the directory tree under which group searches should be performed.
 
-#### x509
+### x509
 
 **spec.spinnakerConfig.config.security.authn.x509**
 
@@ -199,7 +211,7 @@ x509:
 - `roleOid`: The OID that encodes roles that the user specified in the x509 certificate belongs to
 - `subjectPrincipalRegex`: `EMAILADDRESS=(.*?)(?:,|$)` The regex used to parse the subject principal name embedded in the x509 certificate if necessary
 
-#### IAP
+### IAP
 
 **spec.spinnakerConfig.config.security.authn.iap**
 
@@ -215,7 +227,7 @@ iap:
 - `enabled`: true or false.
 - `jwtHeader`: The HTTP request header that contains the JWT token.
 - `issuerId`: The Issuer from the ID token payload.
-- `audience`: The Audience from the ID token payload. You can retrieve this field from the IAP console`: https://cloud.google.com/iap/docs/signed-headers-howto#verify_the_id_token_header.
+- `audience`: The Audience from the ID token payload. You can retrieve this field from the IAP console: https://cloud.google.com/iap/docs/signed-headers-howto#verify_the_id_token_header.
 - `iapVerifyKeyUrl`: The URL containing the Cloud IAP public keys in JWK format.
 
 
@@ -223,12 +235,16 @@ iap:
 
 **spec.spinnakerConfig.config.security.authz**
 
-### Parameters
+```yaml
+authz:
+  enabled:
+  groupMembership:
+```
 
-- `enabled`:
+- `enabled`: true or false.
 - `groupMembership`:
 
-#### Group Membership
+### Group Membership
 
 ```yaml
 groupMembership:
@@ -260,20 +276,20 @@ groupMembership:
 ```
 
 - `service`: One of EXTERNAL, FILE, GOOGLE, GITHUB, LDAP
-- `google:
+- `google`:
   - `roleProviderType`: GOOGLE
   - `credentialPath`: A path to a valid json service account that can authenticate against the Google role provider.
   - `adminUsername`: Your role provider's admin username e.g. admin@myorg.net
   - `domain`: The domain your role provider is configured for e.g. myorg.net.
-- `github:
+- `github`:
   - `roleProviderType`: GITHUB
   - `baseUrl`: Used if using GitHub enterprise some other non github.com GitHub installation.
   - `accessToken`: A personal access token of an account with access to your organization's GitHub Teams structure.
   - `organization`: The GitHub organization under which to query for GitHub Teams.
-- `file:
+- `file`:
   - `roleProviderType`: FILE
   - `path`: A path to a file describing the roles of each user.
-- `ldap:
+- `ldap`:
   - `roleProviderType`: LDAP
   - `url`: ldap:// or ldaps:// url of the LDAP server
   - `managerDn`: The manager user's distinguished name (principal) to use for querying ldap groups.
@@ -289,12 +305,16 @@ groupMembership:
 
 **spec.spinnakerConfig.config.security.uiSecurity**
 
-### Parameters
+```yaml
+uiSecurity:
+  ssl:
+  overrideBaseUrl:
+```
 
 - `overrideBaseUrl`: If you are accessing the UI server remotely, provide the full base URL of whatever proxy or load balancer is fronting the UI requests.
 - `ssl`:
 
-#### SSL
+### SSL
 
 ```yaml
 uiSecurity:

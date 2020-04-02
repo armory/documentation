@@ -8,7 +8,24 @@ order: 9
 - This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-# App Engine
+# Parameters
+
+```yaml
+providers:
+   appengine:
+   aws:
+   ecs:
+   dcos:
+   dockerRegistry:
+   google:
+   huaweicloud:
+   kubernetes:
+   tencentcloud:
+   oracle:
+   cloudfoundry:
+```
+
+## App Engine
 
 **spec.spinnakerConfig.config.providers.appengine**
 
@@ -47,14 +64,12 @@ appengine:
   primaryAccount:      
 ```
 
-## Provider parameters
-
 - `enabled`:
 - `accounts`:
 - `gCloudPath`: The path to the gcloud executable on the machine running clouddriver. Ex: `/root`
 - `primaryAccount`:
 
-## Account parameters
+### Account parameters
 
  - `cachingIntervalSeconds`: The interval in seconds at which Spinnaker will poll for updates in your AppEngine clusters.
  - `environment`: The environment name for the account. Many accounts can share the same environment (e.g. dev, test, prod)
@@ -81,7 +96,7 @@ appengine:
  - `sshTrustUnknownHosts`: (*Default*: `false`) Enabling this flag will allow Spinnaker to connect with a remote git repository over SSH without verifying the server's IP address against a known_hosts file.
  - `versions`: A list of regular expressions. Any version matching one of these regexes will be indexed by Spinnaker.
 
-# AWS
+## AWS
 
 **spec.spinnakerConfig.config.providers.aws**
 
@@ -149,8 +164,6 @@ aws:
       enabled:
 ```
 
-## Provider parameters
-
 The AWS provider requires a central "Managing Account" to authenticate on behalf of other AWS accounts, or act as your sole, credential-based account.
 
 - `enabled`: whether the provider is enabled
@@ -165,7 +178,7 @@ The AWS provider requires a central "Managing Account" to authenticate on behalf
 - `primaryAccount`: the account you want to be primary of the configured accounts
 - `secretAccessKey`: AWS Secret Key; note that if you are baking AMIs via Rosco, you may also need to set the secret key on the AWS bakery default options.
 
-## Account parameters
+### Account parameters
 
 - `accountId`: (*Required*) Your AWS account ID to manage. See the [AWS IAM User Guide](http://docs.aws.amazon.com/IAM/latest/UserGuide/console_account-alias.html) for more information.
 - `assumeRole`: (*Required*) If set, will configure a credentials provider that uses AWS Security Token Service to assume the specified role. Example: "user/spinnaker" or "role/spinnakerManaged"
@@ -189,7 +202,7 @@ The AWS provider requires a central "Managing Account" to authenticate on behalf
 - `requiredGroupMemberships`: (Deprecated): Configure permissions instead.
 
 
-## Bakery parameters
+### Bakery parameters
 
 - `awsAccessKey`: The default access key used to communicate with AWS.
 - `awsAssociatePublicIpAddress`: If using a non-default VPC, public IP addresses are not provided by default. If this is enabled, your new instance will get a Public IP.
@@ -200,7 +213,7 @@ The AWS provider requires a central "Managing Account" to authenticate on behalf
 - `defaultVirtualizationType`: The default type of virtualization for the AMI you are building. This option must match the supported virtualization type of source_ami. Can be pv or hvm.
 - `templateFile`: This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this [list](https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer), or supplied as described in the [bakery docs](https://spinnaker.io/setup/bakery/)
 
-### Bakery base image parameters
+#### Bakery base image parameters
 
  - `detailedDescription`: A long description to help human operators identify the image.
  - `id`:This is the identifier used by AWS to find this base image.
@@ -218,11 +231,11 @@ The AWS provider requires a central "Managing Account" to authenticate on behalf
      - `spotPrice`:The maximum hourly price to pay for a spot instance to create the AMI. Spot instances are a type of instance that EC2 starts when the current spot price is less than the maximum price you specify. Spot price will be updated based on available spot instance capacity and current spot instance requests. It may save you some costs. You can set this to auto for Packer to automatically discover the best spot price or to "0" to use an on demand instance (default).
      - `spotPriceAutoProduct`:Required if spotPrice is set to auto. This tells Packer what sort of AMI you are launching to find the best spot price. This must be one of: Linux/UNIX, SUSE Linux, Windows, Linux/UNIX (Amazon VPC), SUSE Linux (Amazon VPC), Windows (Amazon VPC).
 
-## Features parameters
+### Features parameters
 
  - `cloud-formation`: (*Required*) Enable CloudFormation support for AWS.
 
-# Azure
+## Azure
 
 **spec.spinnakerConfig.config.providers.azure**
 
@@ -268,14 +281,12 @@ azure:
       virtualizationSettings: {}
 ```
 
-## Provider parameters
-
 - `enabled`: whether the provider is enabled
 - `primaryAccount`: name of primary account
 - `accounts`: list of configured accounts
 - `bakeryDefaults`: configuration for Spinnaker's image bakery
 
-## Account parameters
+### Account parameters
 
 - `appKey`: (*Required*)  The appKey (password) of your service principal.
 - `clientId`: (*Required*) The clientId (also called appId) of your service principal.
@@ -297,11 +308,11 @@ azure:
 - `useSshPublicKey`: Whether to use SSH public key to provision the linux vm. The default value is true which means using the ssh public key. Setting it to false means using the password instead.
 
 
-## Bakery parameters
+### Bakery parameters
 
 - `templateFile`: his is the name of the packer template that will be used to bake images from this base image. The template file must be found in this [list](https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer), or supplied as described in the [bakery docs](https://spinnaker.io/setup/bakery/)
 
-### Bakery base image parameters
+#### Bakery base image parameters
 
  - `detailedDescription`: A long description to help human operators identify the image.
  - `offer`: (*Required*) The offer for your base image. See [https://aka.ms/azspinimage](https://aka.ms/azspinimage) to get a list of images.
@@ -312,7 +323,7 @@ azure:
  - `templateFile`: This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this list [https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer](https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer), or supplied as described here: [https://spinnaker.io/setup/bakery/](https://spinnaker.io/setup/bakery/)
  - `version`: The version of your base image. This defaults to 'latest' if not specified.
 
-# Cloud Foundry
+## Cloud Foundry
 
 **spec.spinnakerConfig.config.providers.cloudfoundry**
 
@@ -337,13 +348,12 @@ cloudfoundry:
     user:
   primaryAccount: cf-dev
   ```
-## Provider parameters
 
 - `enabled`: whether the provider is enabled
 - `primaryAccount`: name of primary account
 - `accounts`: list of configured accounts
 
-## Account parameters
+### Account parameters
 
  - `apiHost`: (*Required*) Host of the CloudFoundry Foundation API endpoint ie. `api.sys.somesystem.com`
  - `appsManagerUrl`: HTTP(S) URL of the Apps Manager application for the CloudFoundry Foundation. Example: `https://apps.sys.somesystem.com`
@@ -360,7 +370,7 @@ cloudfoundry:
  - `user`: (*Required*) User name for the account to use on for this CloudFoundry Foundation
 
 
-# DC/OS
+## DC/OS
 
 **spec.spinnakerConfig.config.providers.dcos**
 
@@ -396,14 +406,12 @@ dcos:
   primaryAccount:
 ```
 
-## Provider parameters
-
 - `enabled`: Whether the provider is enabled.
 - `accounts`: the list of configured accounts
 - `primaryAccount`: The name of the primary account.
 - `clusters`: the list of configured clusters
 
-## Accounts parameters
+### Accounts parameters
 
  - `clusters`: (*Required*) The clusters against which this account will authenticate.
    - `name`: (*Required*) The name of the account.
@@ -417,7 +425,7 @@ dcos:
  - `uid`: (*Required*) User or service account identifier
 
 
-## Clusters parameters
+### Clusters parameters
 
 - `name`: (*Required*)  The name of the cluster.
 - `caCertFile`: Root certificate file to trust for connections to the cluster
@@ -428,7 +436,7 @@ dcos:
   - `serviceAccountSecret`: Name of the secret to use for allowing marathon-lb to authenticate with the cluster. Only necessary for clusters with strict or permissive security.
 
 
-# Docker Registry
+## Docker Registry
 
 **spec.spinnakerConfig.config.providers.dockerRegistry**
 
@@ -463,13 +471,12 @@ dockerRegistry:
     dockerconfigFile:
 
 ```
-## Provider parameters
 
 - `enabled`: Whether the provider is enabled.
 - `accounts`: the list of configured accounts
 - `primaryAccount`: The name of the primary account.
 
-## Account parameters
+### Account parameters
 
 - `name`: name of the account
 - `address`: (*Default*: `gcr.io`) (*Required*) The registry address you want to pull and deploy images from; e.g. `https://index.docker.io`
@@ -494,7 +501,7 @@ dockerRegistry:
 - `trackDigests`: (*Default*: `false`) Track digest changes. This is not recommended as it consumes a high QPM, and most registries are flaky.
 - `username`: Your docker registry username
 
-# ECS
+## ECS
 
 **spec.spinnakerConfig.config.providers.ecs**
 
@@ -514,13 +521,12 @@ ecs:
   providerVersion: v1
   primaryAccount: aws-dev
 ```
-## Provider parameters
 
 - `enabled`: Whether the provider is enabled.
 - `accounts`: the list of configured accounts
 - `primaryAccount`: The name of the primary account.
 
-## Account parameters
+### Account parameters
 
 - `name`: name of the account
 - `awsAccount`: (*Required*) Provide the name of the AWS account associated with this ECS account.See [https://github.com/spinnaker/clouddriver/blob/master/clouddriver-ecs/README.md](https://github.com/spinnaker/clouddriver/blob/master/clouddriver-ecs/README.md) for more information.
@@ -597,14 +603,12 @@ google:
    - name:
 ```
 
-## Provider parameters
-
 - `enabled`: Whether the provider is enabled.
 - `accounts`: the list of configured accounts
 - `primaryAccount`: The name of the primary account.
 - `bakeryDefaults`: configuration for Spinnaker's image bakery
 
-## Account parameters
+### Account parameters
 
 - `name`: name of the account
 - `alphaListed`: (*Default*: `false`) Enable this flag if your project has access to alpha features and you want Spinnaker to take advantage of them.
@@ -628,7 +632,7 @@ google:
   - `datacenters`: List of data centers to cache and keep updated.
 
 
-## Bakery parameters
+### Bakery parameters
 
 - `network`: Set the default network your images will be baked in.
 - `networkProjectId`: Set the default project id for the network and subnet to use for the VM baking your image.
@@ -636,7 +640,7 @@ google:
 - `useInternalIp`: Use the internal rather than external IP of the VM baking your image.
 - `zone`: Set the default zone your images will be baked in.
 
-### Bakery base image parameters
+#### Bakery base image parameters
 
 - `detailedDescription`: A long description to help human operators identify the image.
 - `isImageFamily`: (*Default*: `false`)
@@ -648,7 +652,7 @@ google:
   - `source-image-family`: The source image family to create the image from. The newest, non-deprecated image is used.
 
 
-# Huawei Cloud
+## Huawei Cloud
 
 **spec.spinnakerConfig.config.providers.huawei**
 
@@ -709,14 +713,12 @@ huaweicloud:
     eipBandwidthSize:
 ```
 
-## Provider parameters
-
 - `enabled`: Whether the provider is enabled.
 - `accounts`: the list of configured accounts
 - `primaryAccount`: The name of the primary account.
 - `bakeryDefaults`: configuration for Spinnaker's image bakery
 
-## Account parameters
+### Account parameters
 
 - `name`: name of the account
 - `accountType`: The type of account.
@@ -735,7 +737,7 @@ huaweicloud:
     - `CREATE`:
 - `requiredGroupMembership`: `[]` (Deprecated): Configure permissions instead.
 
-## Bakery parameters
+### Bakery parameters
 
 - `authUrl`: (*Required*) Set the default auth URL your images will be baked in.
 - `domainName`: (*Required*) Set the default domainName your images will be baked in.
@@ -750,7 +752,7 @@ huaweicloud:
 - `username`: (*Required*) Set the default username your images will be baked with.
 - `vpcId`: (*Required*) Set the vpc your images will be baked in.
 
-### Bakery base image parameters
+#### Bakery base image parameters
 
 - `detailedDescription`: A long description to help human operators identify the image.
 - `packageType`: This is used to help Spinnaker's bakery download the build artifacts you supply it with. For example, specifying 'deb' indicates that your artifacts will need to be fetched from a debian repository.
@@ -758,7 +760,7 @@ huaweicloud:
 - `templateFile`: This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this list [https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer](https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer), or supplied as described here: [https://spinnaker.io/setup/bakery/](https://spinnaker.io/setup/bakery/)
 
 
-# Kubernetes
+## Kubernetes
 
 **spec.spinnakerConfig.config.providers.kubernetes**
 
@@ -811,14 +813,11 @@ Kubernetes:
   primaryAccount: spinnaker
 ```
 
-
-## Provider parameters
-
 - `enabled`: Whether the provider is enabled.
 - `accounts`: the list of configured accounts
 - `primaryAccount`: The name of the primary account.
 
-## Account parameters
+### Account parameters
 
 An account in the Kubernetes provider refers to a single Kubernetes context. In Kubernetes, a context is the combination of a Kubernetes cluster and some credentials. If no context is specified, the default context in in your kubeconfig is assumed. You must also provide a set of Docker Registries for each account. Spinnaker will automatically upload that Registry's credentials to the specified Kubernetes cluster allowing you to deploy those images without further configuration.
 
@@ -865,7 +864,7 @@ An account in the Kubernetes provider refers to a single Kubernetes context. In 
 
 
 
-# Oracle
+## Oracle
 
 **spec.spinnakerConfig.config.providers.oracle**
 
@@ -915,7 +914,7 @@ oracle:
     instanceShape:
 ```
 
-## Account parameters
+### Account parameters
 
  - `compartmentId`: (*Required*) Provide the OCID of the Oracle Compartment to use.
  - `deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
@@ -933,7 +932,7 @@ oracle:
  - `tenancyId`: (*Required*) Provide the OCID of the Oracle Tenancy to use.
  - `userI`: (*Required*) Provide the OCID of the Oracle User you're authenticating as
 
-## Bakery parameters
+### Bakery parameters
 
 - `availabilityDomain`: (*Required*) The name of the Availability Domain within which a new instance is launched and provisioned.
 - `deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
@@ -941,7 +940,7 @@ oracle:
 - `subnetId`: (*Required*) The name of the subnet within which a new instance is launched and provisioned.
 - `templateFile`: This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this list [https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer](https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer), or supplied as described here: [https://spinnaker.io/setup/bakery/](https://spinnaker.io/setup/bakery/)
 
-### Bakery base image parameters
+#### Bakery base image parameters
 
  - `baseImageId`: (*Required*) The OCID of the base image ID for the baking configuration.
  - `deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
@@ -952,7 +951,7 @@ oracle:
  - `templateFile`: This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this list [https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer](https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer), or supplied as described here: [https://spinnaker.io/setup/bakery/](https://spinnaker.io/setup/bakery/)
 
 
-# Tencent Cloud
+## Tencent Cloud
 
 **spec.spinnakerConfig.config.providers.tencentcloud**
 
@@ -1000,7 +999,12 @@ tencentcloud:
     secretKey:
 ```
 
-## Account parameters
+- `enabled`: true or false
+- `accounts`: account configuration list
+- `primaryAccount`: primary account to use
+- `bakeryDefaults`: image baking configuration
+
+### Account parameters
 
  - `deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
  - `environment`: The environment name for the account. Many accounts can share the same environment (e.g. dev, test, prod)
@@ -1014,13 +1018,13 @@ tencentcloud:
  - `secretId`: (*Required*) The secret id used to access Tencent Cloud.
  - `secretKey`: (*Required*) The secret key used to access Tencent Cloud.
 
-## Bakery parameters
+### Bakery parameters
 
 - `secretId`: (*Required*) The default access key used to communicate with AWS.
 - `secretKey`: (*Required*)  The secret key used to communicate with AWS.
 - `templateFile`: This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this list [https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer](https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer), or supplied as described here: [https://spinnaker.io/setup/bakery/](https://spinnaker.io/setup/bakery/)
 
-### Bakery base image parameters
+#### Bakery base image parameters
 
  - `detailedDescription`: A long description to help human operators identify the image.
  - `instanceType`: (*Required*) The instance type for the baking configuration.

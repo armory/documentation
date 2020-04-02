@@ -9,17 +9,15 @@ order: 13
 {:toc}
 
 
-# `stats`
+# Parameters
 
 **spec.spinnakerConfig.config.stats**
 
-``yaml
+```yaml
 stats:
   enabled: true
-  endpoint: https://stats.spinnaker.io # Set the endpoint for stats metrics.
-``
-
-# Parameters
+  endpoint: # Set the endpoint for stats metrics.
+```
 
 - `enabled`: true or false.
-- `endpoint`: Set the endpoint for stats metrics.
+- `endpoint`: Set the endpoint for stats metrics, such as `https://stats.spinnaker.io`

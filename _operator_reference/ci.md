@@ -24,8 +24,6 @@ codebuild:
     region:
 ```
 
-## Parameters
-
 - `enabled`: whether this CI tool is enabled
 - `accounts`: list of configured accounts
 
@@ -56,8 +54,6 @@ concourse:
     password:
 ```
 
-## Parameters
-
 - `enabled`: whether this CI tool is enabled
 - `masters`: list of configured masters
 
@@ -87,8 +83,6 @@ gcb:
     subscriptionName:
     jsonKey:
 ```
-
-## Parameters
 
 - `enabled`: whether this CI tool is enabled
 - `accounts`: list of configured masters
@@ -122,8 +116,6 @@ jenkins:
     trustStoreType:
     trustStorePassword:
 ```
-
-## Parameters
 
 - `enabled`: whether this CI tool is enabled
 - `masters`: list of configured masters
@@ -161,8 +153,6 @@ travis:
     numberOfRepositories:
 ```
 
-## Parameters
-
 - `enabled`: whether this CI tool is enabled
 - `masters`: list of configured masters
 
@@ -196,8 +186,6 @@ wercker:
     user:
     token:
 ```
-
-## Parameters
 
 - `enabled`: whether this CI tool is enabled
 - `masters`: list of configured masters

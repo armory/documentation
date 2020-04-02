@@ -8,9 +8,6 @@ order: 12
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-
-# `features`
-
 **spec.spinnakerConfig.config.features**
 
 ```yaml
@@ -30,8 +27,6 @@ features:
   managedPipelineTemplatesV2UI:
   gremlin:
 ```
-
-# Parameters
 
 - `artifacts`: true or false. Enable artifact support. Read more at https://spinnaker.io/reference/artifacts/
 - `auth`: true or false.

@@ -8,7 +8,9 @@ order: 8
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-# spec.spinnakerConfig.config.spinnaker.extensibility.plugins
+# Parameters
+
+**spec.spinnakerConfig.config.spinnaker.extensibility.plugins**
 
 Please see the [Plugins User Guide]<https://www.spinnaker.io/guides/user/plugin-users/> for a detailed explanation of how to add and configure plugins.
 

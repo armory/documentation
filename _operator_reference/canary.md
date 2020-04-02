@@ -224,9 +224,8 @@ canary:
             - CONFIGURATION_STORE
             - OBJECT_STORE
   - `metadataCachingIntervalMS`: Number of milliseconds to wait in between caching the names of available metric types (for use in building canary configs; Default: 60000).
-  -
-### SignalFX
 
+### SignalFX
 
 ```yaml
 - name: signalfx

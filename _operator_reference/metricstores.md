@@ -8,7 +8,7 @@ order: 6
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-# `metricStores`
+# Parameters
 
 **spec.spinnakerConfig.config.metricStores**
 
@@ -41,7 +41,6 @@ metricStores:
     tags:
     - tag1
 ```
-# Parameters
 
 - `enabled`: true or false.
 - `period`: Set the polling period for the monitoring daemon, e.g. 30
