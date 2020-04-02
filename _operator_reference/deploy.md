@@ -19,67 +19,67 @@ deploymentEnvironment:
   bootstrapOnly: false # A bootstrap-only account is the account in which Spinnaker itself is deployed. When true, this account will not be included the accounts managed by Spinnaker.
   updateVersions: true # When set to "false", any local version of Spinnaker components will be used instead of attempting to update. This does not work for distributed installations of Spinnaker, where no local version exists.
   consul:
-	enabled: false # Whether or not to use Consul as a service discovery mechanism to deploy Spinnaker.
-	address: abc # The address of a running Consul cluster. See https://www.consul.io/. This is only required when Spinnaker is being deployed in non-Kubernetes clustered configuration.
+  enabled: false # Whether or not to use Consul as a service discovery mechanism to deploy Spinnaker.
+  address: abc # The address of a running Consul cluster. See https://www.consul.io/. This is only required when Spinnaker is being deployed in non-Kubernetes clustered configuration.
   vault:
-	enabled: false # Whether or not to use Vault as a secret storage mechanism to deploy Spinnaker.
-	address: abc  # The address of a running Vault datastore. See https://www.vaultproject.io/. This is only required when Spinnaker is being deployed in non-Kubernetes clustered configuration.
+  enabled: false # Whether or not to use Vault as a secret storage mechanism to deploy Spinnaker.
+  address: abc  # The address of a running Vault datastore. See https://www.vaultproject.io/. This is only required when Spinnaker is being deployed in non-Kubernetes clustered configuration.
   location: spinnaker # This is the location spinnaker will be deployed to. When deploying to Kubernetes, use this flag to specify the namespace to deploy to (defaults to 'spinnaker')
   customSizing: # Configure, validate, and view the component sizings for the Spinnaker services.
-	spin-clouddriver:
-	  replicas: 1 # Set the number of replicas (pods) to be created for this service.
-	  requests:
-		memory: 8Gi # Sets the memory request for the container running the spinnaker service. Example: 512Mi.
-		cpu: 250m # Sets the cpu request for the container running the spinnaker service. Example: 250m.
-	  limits:
-		memory: 8Gi
-		cpu: 250m
+  spin-clouddriver:
+    replicas: 1 # Set the number of replicas (pods) to be created for this service.
+    requests:
+    memory: 8Gi # Sets the memory request for the container running the spinnaker service. Example: 512Mi.
+    cpu: 250m # Sets the cpu request for the container running the spinnaker service. Example: 250m.
+    limits:
+    memory: 8Gi
+    cpu: 250m
   sidecars:
-	spin-clouddriver:
-	- name: abc
-	  dockerImage: abc
-	  port: 123
-	  env:
-		abc: def
-	  args:
-	  - abc
-	  command:
-	  - abc
-	  configMapVolumeMounts:
-	  - configMapName: abc
-		mountPath: abc
-	  secretVolumeMounts:
-	  - secretName: abc
-		mountPath: abc
-	  mountPath: abc
-	  securityContext:
-		privileged: false
+  spin-clouddriver:
+  - name: abc
+    dockerImage: abc
+    port: 123
+    env:
+    abc: def
+    args:
+    - abc
+    command:
+    - abc
+    configMapVolumeMounts:
+    - configMapName: abc
+    mountPath: abc
+    secretVolumeMounts:
+    - secretName: abc
+    mountPath: abc
+    mountPath: abc
+    securityContext:
+    privileged: false
   initContainers: {}
   hostAliases: {}
   nodeSelectors:
-	abc: def
+  abc: def
   affinity: {}
   tolerations:
-	spin-clouddriver:
-	- key: abc
-	  operator: Exists # Exists, Equal, DoesNotExist
-	  value: abc
-	  effect: abc
+  spin-clouddriver:
+  - key: abc
+    operator: Exists # Exists, Equal, DoesNotExist
+    value: abc
+    effect: abc
   gitConfig:
-	upstreamUser: spinnaker # This is the upstream git user you are configuring to pull changes from & push PRs to.
-	originUser: abc # This is the git user your github fork exists under.
+  upstreamUser: spinnaker # This is the upstream git user you are configuring to pull changes from & push PRs to.
+  originUser: abc # This is the git user your github fork exists under.
   livenessProbeConfig:
-	enabled: true # When true, enable Kubernetes liveness probes on Spinnaker services deployed in a Distributed installation. See docs for more information: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
-	initialDelaySeconds: 30 # The number of seconds to wait before performing the first liveness probe. Should be set to the longest service startup time. See docs for more information: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+  enabled: true # When true, enable Kubernetes liveness probes on Spinnaker services deployed in a Distributed installation. See docs for more information: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+  initialDelaySeconds: 30 # The number of seconds to wait before performing the first liveness probe. Should be set to the longest service startup time. See docs for more information: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
   haServices:
-	clouddriver:
-	  enabled: false
-	  disableClouddriverRoDeck: false
-	  redisMasterEndpoint: abc # Set external Redis endpoint for clouddriver-rw and clouddriver-caching. The Redis URI schema is described here: https://www.iana.org/assignments/uri-schemes/prov/redis. clouddriver-rw and clouddriver-caching are configured to use the shared Redis, by default.
-	  redisSlaveEndpoint: abc # Set external Redis endpoint for clouddriver-ro. The Redis URI schema is described here: https://www.iana.org/assignments/uri-schemes/prov/redis. clouddriver-ro is configured to use the shared Redis, by default.
-	  redisSlaveDeckEndpoint: abc # Set external Redis endpoint for clouddriver-ro-deck. The Redis URI schema is described here: https://www.iana.org/assignments/uri-schemes/prov/redis. clouddriver-ro-deck is configured to use the shared Redis, by default.
-	echo:
-	  enabled: false
+  clouddriver:
+    enabled: false
+    disableClouddriverRoDeck: false
+    redisMasterEndpoint: abc # Set external Redis endpoint for clouddriver-rw and clouddriver-caching. The Redis URI schema is described here: https://www.iana.org/assignments/uri-schemes/prov/redis. clouddriver-rw and clouddriver-caching are configured to use the shared Redis, by default.
+    redisSlaveEndpoint: abc # Set external Redis endpoint for clouddriver-ro. The Redis URI schema is described here: https://www.iana.org/assignments/uri-schemes/prov/redis. clouddriver-ro is configured to use the shared Redis, by default.
+    redisSlaveDeckEndpoint: abc # Set external Redis endpoint for clouddriver-ro-deck. The Redis URI schema is described here: https://www.iana.org/assignments/uri-schemes/prov/redis. clouddriver-ro-deck is configured to use the shared Redis, by default.
+  echo:
+    enabled: false
 ```
 
 
