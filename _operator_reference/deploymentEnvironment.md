@@ -11,12 +11,8 @@ order: 5
 {:toc}
 
 
-# Example YAML
+# Example YAML snippet
 ```yaml
-apiVersion: spinnaker.armory.io/v1alpha2
-kind: SpinnakerService
-metadata:
-  name: spinnaker
 spec:
   spinnakerConfig:
     config:
