@@ -17,14 +17,6 @@ hidden: false
 ## Known Issues
 There are currently no known issues with this release.
 
-<!--- Example of a problem
-Igor added ..... which does.....
-
-**Symptoms:**
-**Fix:**
--->
-
-
 
 ## Highlighted Updates
 ### Armory
@@ -95,7 +87,6 @@ artifactSources:
  - fix(notif): surface policy engine errors in notifications (#194)
 
 #### Terraformer&trade; - 266ac86...4ed31a9
- - feature(profiles): support git-ssh profiles (#121)
  - fix(vulns): fix vulnerabilities by upgrading go (#129)
  - chore(artifacts): refactor plugin handling logic (#127)
  - chore(artifacts): fix git/repo handling & refactor (#126)
@@ -105,7 +96,7 @@ artifactSources:
  - feat(terraform): add additional context arround terraform executable errors (#122)
  - chore(dependencies): updated and vendored go-yaml-tools (#119)
  - fix(profiles): handle case where no profile is configured (#118)
- - feat(profiles): Add named profiles support (#116)
+
 
 #### Armory Clouddriver  - f969aaf...40c9a8c
  - chore(docker): Bump to Python3 for AWS CLI and Google SDK (#86)
@@ -115,7 +106,7 @@ artifactSources:
  - feat(policyEngine): add runtime validation features to release (#58)
 
 #### Armory Deck  - 5f306f6...367a2b6
- - feature(terraformer): added profile selection to the Terraformer stage (#576)
+
 
 #### Armory Echo  - 48991a0...925793f
  - fix(cve): upgrade sprint, tomcat, jackson-databind (#131)
@@ -129,7 +120,7 @@ artifactSources:
 
 #### Armory Gate  - 42ccb4f...23b4000
  - chore(cve): upgrade spring, tomcat, jackson-databind deps (#95)
- - feature(terraformer): Added Terraformer profile proxy endpoint (#88) (#89)
+
 
 #### Armory Igor  - 7bd757d...2066eb2
  - fix(build): fixes CVE-2020-5398, CVE-2020-1938, CVE-2020-8840 (#45)
