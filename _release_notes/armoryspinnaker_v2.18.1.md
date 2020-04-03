@@ -30,8 +30,7 @@ This release includes the following:
 
 ###  Spinnaker Community Contributions
 
-There have also been numerous enhancements, fixes and features across all of Spinnaker's services from the open source community. See their changes here:  
-[Spinnaker's v1.18.8](https://www.spinnaker.io/community/releases/versions/1-18-8-changelog)  
+There have also been numerous enhancements, fixes and features across all of Spinnaker's services from the open source community. See their changes here: [Spinnaker's v1.18.7](https://www.spinnaker.io/community/releases/versions/1-18-7-changelog).  
 
 <br>
 
