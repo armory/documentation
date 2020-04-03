@@ -8,19 +8,24 @@ published: true
 ## Overview
 
 Fiat is the microservice in Spinnaker responsible for authorization (authz) for the other Spinnaker services. By default it is not enabled, so users are able to perform any action in Spinnaker. This page describes how Fiat interacts with other Spinnaker services, but at a high level, Fiat works with the following Spinnaker services:
+
 * Clouddriver for account permission
 * Front50 for application permissions
 * Igor for build services permissions
 
+When Fiat is enabled, users start with no permissions and must be explicitly granted permissions.
+
 ## Requirements
 
-To use Fiat, you need an external identity provider. Create the user roles and maintain them in the identity provider. Fiat controls what permissions are mapped to roles. 
+To use Fiat, you need an external identity provider. Create the user roles and maintain them in the identity provider. Fiat controls what permissions are mapped to roles.  
 
 Fiat supports the following identity providers:
 * SAML
 * LDAP
 * Oauth
 * X509
+
+## Spinnaker services
 
 ## Clouddriver accounts
 
@@ -32,24 +37,62 @@ Note that for AWS, a role/group needs both read and write access to deploy an AM
 
 ## Front50 accounts
 
-Front50 is the Spinnaker service that acts as the system of record for all the other Spinnaker services. In other words, all metadata for things such as applications and pipelines are stored in and served by Front50.
+Front50 is the Spinnaker service that acts as the system of record for all the other Spinnaker services. In other words, all metadata for things such as applications and pipelines are stored in and served by Front50. Control access to Front50 by creating service accounts. This can be done through a series of [cURL commands](https://www.spinnaker.io/setup/security/authorization/service-accounts/).
 
-To use Fiat with Front50, you need to create service accounts in Front50. This can be done through a series of [cURL commands](https://www.spinnaker.io/setup/security/authorization/service-accounts/).
+Service accounts are used to delegate authority to a pipeline to perform actions in Spinnaker. Users with ALL the roles defined in a service account can grant a pipeline “Run as” permission. The service accounts you create should map to roles/groups in your identity provider. Additionally, all pipelines configured to run off of a trigger must also be configured with “Run as” permission, or it will fail.
 
-Service accounts are used to delegate authority to a pipeline to perform actions in Spinnaker. Users with ALL the roles defined in the service account can grant a pipeline “Run as” permission. The service accounts created should map to roles/groups in the identity provider. All pipelines configured to run off of a trigger must also be configured with “Run as” permission, or it will fail.
-
-The best practice for service accounts is to map one service account per role/group in the IDP that will be accessing Spinnaker. This prevents privilege escalation and makes it easier to figure out which roles/group ran what pipeline.
+Armory recommends that you map one service account for each role/group in the identity provider that will be accessing Spinnaker. This prevents privilege escalation and makes it easier to figure out which roles/group ran which pipeline.
 
 
+## Example Fiat
 
+The rest of this explanation uses the following example roles to illustrate how Fiat works:
 
-This page uses the following example roles to illustrate how Fiat works:
-
+* `fiat-admin`
+  * Administrator for all of Spinnaker. Can do anything implicitly.
 * `admin`
-* `dev`
-* `qa`
-* `ops`
+  * Administrator. Can do anything for all apps. Can read and execute build/ci jobs.
+* `dev`  
+  * Full control of pipeline definition for app1 & app2
+  * Can deploy to `dev-infra`
+  * Can see `qa-infra`
+  * Can attach a build/ci trigger to a pipeline definition
+* `qa`  
+  * Full control of pipeline definition for app1 & app3 
+  * Can deploy to `qa-infra`
+  * Can see `dev-infra`
+  * Can attach a build/ci trigger to pipeline definitions
+* `ops` 
+  * Can deploy to all accounts but cannot change the pipeline definitions. Can read and execute build/ci jobs.
 
 Note that roles, as far as Fiat is concerned, are case insensitive. This means that `admin` is equivalent to `Admin`, `ADMIN`, or any other permutation. 
 
-When Fiat is enabled, users start with no permissions and must be explicitly granted permissions. 
+
+## Mapping exercise
+
+Before you configure permissions, answer the following questions to figure out how to map roles and permissions in your deployment:
+
+* Which roles/groups have READ and/or WRITE access to which Clouddriver accounts
+* Which roles/groups have READ, WRITE, EXECUTE access to each Spinnaker Application
+* Which roles/groups have READ and/or WRITE/EXECUTE access to which CI/Build accounts
+
+Answering these questions will help you determine what permissions and roles are needed.
+
+The following image shows an example result of this exercise based on the user roles described in [Example Fiat](#example-fiat):
+
+![Mapping Exercise Role Matrix](/images/fiat_overview_role_matrix.png)
+
+## Example Halyard Configurations
+
+## fiat-admin
+
+`fiat-admin` is the superuser and has permissions across your whole Spinnaker deployment.
+
+The configuration for `fiat-admin` in the `fiat-local.yml` file looks like the following snippet:
+
+```
+admin:
+  roles:
+    - fiat-admin
+```
+
