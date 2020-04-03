@@ -31,20 +31,15 @@ Igor added ..... which does.....
 This release includes the following:
   - Improved error handling in Pipelines as Code and its microservice, Dinghy.
   - The Terraform integration now uses Clouddriver's built-in support for `git/repo` artifact types. Previously, you had to create a custom artifact that was a `git/repo` type.
-  - Improve edgecase handling in Policy Engine; support more complex policies that inclue other top-level declarations besides `deny`.
-  - Addresses a number of CVE's related to `springframework`, `tomcat`, and `jackson-databind` found in Spinnaker Java services
+  - Improved edge case handling in Policy Engine to better support more complex policies that include other top-level declarations besides `deny`. This resolves a previous known issue with Policy Engine where OPA policies that contain a top level declaration other than `deny` prevent any pipeline from being saved.
+  - Addressed a number of CVE's related to `springframework`, `tomcat`, and `jackson-databind` found in Spinnaker Java services.
 
 
 
 ###  Spinnaker Community Contributions
-REMOVE ME: link to the spninaker release: https://www.spinnaker.io/community/releases/versions
-REMOVE ME: maybe copy their notable changes here
 
-<!--- Example message
-There have also been numerous enhancements, fixes and features across all of Spinnaker's other services. See their changes here:  
-[Spinnaker's v1.7.0](https://www.spinnaker.io/community/releases/versions/1-7-0-changelog)  
-[Spinnaker's v1.7.1](https://www.spinnaker.io/community/releases/versions/1-7-1-changelog)  
--->
+There have also been numerous enhancements, fixes and features across all of Spinnaker's services from the open source community. See their changes here:  
+[Spinnaker's v1.18.8](https://www.spinnaker.io/community/releases/versions/1-18-8-changelog)  
 
 <br>
 
