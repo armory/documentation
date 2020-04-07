@@ -217,7 +217,6 @@ The API call returns information about the apps. Refer to the `name` and `permis
     },
     ...
 }
-
 ```
 
 ### Permissions for Spinnaker service accounts
@@ -238,7 +237,7 @@ export FIAT=http://spin-fiat:7003
 curl -s $FIAT/authorize/$user-or-service-account
 ```
 
-The command returns a JSON listing the following:
+The command returns JSON that lists the following information:
  * Roles the user/service account is in
  * Spinnaker applications the user/service account has access to
  * Clouddriver accounts the user/service account has access toW
