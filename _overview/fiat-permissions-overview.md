@@ -35,8 +35,6 @@ Fiat supports the following identity providers:
 In all these methods, users are referenced by a userId, which is determined by the authentication method of your choice.
 
 You also need access to the Halyard machine in order to configure Spinnaker.
-  
-## Spinnaker services
 
 ## Clouddriver accounts
 
