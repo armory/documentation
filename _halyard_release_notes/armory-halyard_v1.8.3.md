@@ -13,7 +13,18 @@ This version is required to deploy Armory Spinnaker 2.19+.
 1.8.3-rc569 (OSS 1.32.0-214e5ba-stable548 build 569)
 
 ## Known Issues
-No known issues
+
+When you try to deploy Spinnaker using Halyard 1.8.3, you encounter the following error:
+
+```
+Validation in Global:
+! ERROR Could not translate your halconfig: Unrecognized field
+  "plugins" (class
+```
+
+**Workaround** 
+
+Remove the top level key for Plugins in your Halconfig. 
 
 ## Halyard Armory Enterprise Spinnaker
  No Changes
