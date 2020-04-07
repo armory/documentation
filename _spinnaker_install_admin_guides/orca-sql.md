@@ -35,14 +35,14 @@ sql:
     password: <orca_migrate password>
 
 # Ensure we're only using SQL for accessing execution state
-executionRepository:
+execution-repository:
   sql:
     enabled: true
   redis:
     enabled: false
 
 monitor:
-  activeExecutions:
+  active-executions:
     redis: false
 ```
 
@@ -77,11 +77,11 @@ The above configuration will point Orca to your database.
 You have the option to run a dual repository with the following in `profiles/orca-local.yml`:
 
 ```yaml
-executionHistory:
+execution-repository:
   dual:
     enabled: true
-    primaryClass: com.netflix.spinnaker.orca.sql.pipeline.persistence.SqlExecutionRepository
-    previousClass: com.netflix.spinnaker.orca.pipeline.persistence.jedis.RedisExecutionRepository
+    primary-class: com.netflix.spinnaker.orca.sql.pipeline.persistence.SqlExecutionRepository
+    previous-class: com.netflix.spinnaker.orca.pipeline.persistence.jedis.RedisExecutionRepository
 
   sql:
     enabled: true
@@ -94,12 +94,12 @@ To migrate the data from Redis to SQL, you need to add the following
 
 ```
 pollers:
-  orchestrationMigrator:
+  orchestration-migrator:
     enabled: true
-    intervalMs: 1800000
-  pipelineMigrator:
+    interval-ms: 1800000
+  pipeline-migrator:
     enabled: true
-    intervalMs: 1800000  # After how much time the migration process is going to start
+    interval-ms: 1800000  # After how much time the migration process is going to start
 ```
 
 Once everything has been migrated (you will see logs in the orca pod about the migration process) you can remove these settings.
