@@ -89,7 +89,7 @@ To keep the configurations in sync, set up automation to create a passive Spinna
 
 Make sure you set replicas for all Spinnaker services to 0.
 
-Once you're done configuring Halyard for the passive SPinnaker, run `hal deploy apply` to deploy.
+Once you're done configuring Halyard for the passive Spinnaker, run `hal deploy apply` to deploy.
 
 | **Note**: Armory recommends performing a DR exercise run to make sure the passive Spinnaker is set up correctly. Ideally, the DR exercise should include both failing over to the DR region and failing back to the primary region. |
 

@@ -4,7 +4,7 @@ title: Using Pipelines as Code
 order: 131
 ---
 
-Armory's Pipelines As Code ("Dinghy") feature provides a way to specify pipeline definitions in source code repos such as ke GitHub & BitBucket.
+Armory's Pipelines As Code ("Dinghy") feature provides a way to specify pipeline definitions in source code repos such as GitHub & BitBucket.
 
 The Armory Spinnaker installation provides a service called "Dinghy", which keeps the pipeline in Spinnaker in sync with what is defined in the GitHub repo. Also, users are able to make a pipeline by composing other pipelines, stages, or tasks and templating certain values.
 
