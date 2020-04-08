@@ -30,44 +30,10 @@ Make sure you have a kubernetes cluster with a minimum of **15 GB** of memory an
 
 ## Install Armory Halyard
 
-You can install Armory's version of Halyard directly on macOS, or use Docker
-to run Halyard and its command line.
+Install Armory's version of Halyard in a Docker container or Kubernetes cluster in order
+to run Halyard and its command line interface.
 
 See also [Armory Halyard configuration](/spinnaker-install-admin-guides/configure-halyard/).
-
-### Install Armory Halyard for macOS
-
-#### Before You Start
-
-The current installer requires your `kubectl` to be version 1.10 or greater.
-
-Our installer currently expects to use your `kubectl` to find your current
-configuration (usually stored in `~/.kube/config`).  Ensure that the config
-file kubectl defaults to is the one you want to use.
-
-#### Installing Armory Halyard for macOS
-
-You can download the installer and run it with this command:
-
-```
-curl -L https://get.armory.io/halyard/install/latest/macos/InstallArmoryHalyard.sh > InstallArmoryHalyard.sh && sudo bash InstallArmoryHalyard.sh --version {{ site.data.versions.halyard-armory-version }}
-```
-
-This should install the `hal` command in `/usr/local/bin`.  You can test that
-you have the correct version in your path by running `hal armory` and see a
-help screen that includes a `SUBCOMMANDS` section with at least an `init`
-option that "Runs Armory installer":
-
-```
-$ hal armory
-ARMORY
-...
-SUBCOMMANDS
-
-  init
-    Runs Armory installer
-```
-From there, you can issue all your [halyard commands](https://www.spinnaker.io/reference/halyard/).
 
 ### Install Armory Halyard in Docker
 
