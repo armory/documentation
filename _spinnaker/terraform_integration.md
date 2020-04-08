@@ -4,8 +4,6 @@ title: Terraform Integration
 order: 141
 ---
 
-Note that the Terraform integration is in beta while we work on improving the user experience.
-
 {:.no_toc}
 ## Overview
 
