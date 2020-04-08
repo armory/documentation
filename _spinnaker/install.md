@@ -30,8 +30,8 @@ Make sure you have a kubernetes cluster with a minimum of **15 GB** of memory an
 
 ## Install Armory Halyard
 
-You can install Armory's version of Halyard on Docker or on Kubernetes in order
-to run Halyard and its command line.
+Install Armory's version of Halyard in a Docker container or Kubernetes cluster in order
+to run Halyard and its command line interface.
 
 See also [Armory Halyard configuration](/spinnaker-install-admin-guides/configure-halyard/).
 
