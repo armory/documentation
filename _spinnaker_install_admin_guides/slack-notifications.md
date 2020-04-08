@@ -30,8 +30,6 @@ Select the “OAuth & Permissions” menu, copy the *Bot User OAuth Access Token
 
 Select the “Install your app to your workspace” from the Bot “Basic Information” page and deploy it. 
 
-Then 
-
 ## Configure Halyard
 In `halyard.yml`, configure the deployments you'd like to manage:
 
