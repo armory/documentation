@@ -51,4 +51,4 @@ notifications:
 ## GitHub status parameters
 
 - `enabled`: true or false.
-- `token`: aYour GitHub account token.
+- `token`: Your GitHub account token.

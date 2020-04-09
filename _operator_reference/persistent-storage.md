@@ -21,7 +21,7 @@ persistentStorage:
   s3:
 ```
 
-- `persistentStorageType`: one of azs, gcs, oracle, s3; the configured storage type for Spinnaker to use
+- `persistentStorageType`: one of `azs`, `gcs`, `oracle`, `s3`; the configured storage type for Spinnaker to use
 - `azs`: Azure persistent storage configuration
 - `gcs`: Google Cloud persistent storage configuration
 - `oracle`: Oracle persistent storage configuration
@@ -39,7 +39,7 @@ azs:
 
 - `storageAccountName`: The name of an Azure Storage Account used for Spinnaker's persistent data.
 - `storageAccountKey`: The key to access the Azure Storage Account used for Spinnaker's persistent data.
-- `storageContainerName`: (Default: spinnaker) The container name in the chosen storage account to place all of Spinnaker's persistent data.
+- `storageContainerName`: (Default: `spinnaker`) The container name in the chosen storage account to place all of Spinnaker's persistent data.
 
 ## GCS
 
@@ -53,7 +53,7 @@ gcs:
 ```
 
 - `jsonPath`: A path to a JSON service account with permission to read and write to the bucket to be used as a backing store.
-- `project`: he Google Cloud Platform project you are using to host the GCS bucket as a backing store.
+- `project`: The Google Cloud Platform project you are using to host the GCS bucket as a backing store.
 - `bucket`: The name of a storage bucket that your specified account has access to. If not specified, a random name will be chosen. If you specify a globally unique bucket name that doesn't exist yet, Halyard will create that bucket for you.
 - `rootFolder`: The root folder in the chosen bucket to place all of Spinnaker's persistent data in.
 - `bucketLocation`: This is only required if the bucket you specify doesn't exist yet. In that case, the bucket will be created in that location. See https://cloud.google.com/storage/docs/managing-buckets#manage-class-location.
@@ -75,10 +75,10 @@ oracle:
 
 - `bucketName`: The bucket name to store persistent state object in
 - `namespace`: The namespace the bucket and objects should be created in
-- `compartmentId`: aProvide the OCID of the Oracle Compartment to use.
-- `region`: aAn Oracle region (e.g., us-phoenix-1)
+- `compartmentId`: Provide the OCID of the Oracle Compartment to use.
+- `region`: An Oracle region (e.g., us-phoenix-1)
 - `userId`: Provide the OCID of the Oracle User you're authenticating as
-- `fingerprint`: aFingerprint of the public key
+- `fingerprint`: Fingerprint of the public key
 - `sshPrivateKeyFilePath`: Path to the private key in PEM format
 - `privateKeyPassphrase`: Passphrase used for the private key, if it is encrypted
 - `tenancyId`: Provide the OCID of the Oracle Tenancy to use.

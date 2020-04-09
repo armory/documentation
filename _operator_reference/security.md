@@ -62,7 +62,7 @@ apiSecurity:
 - `trustStore`: Path to the truststore holding your trusted certificates.
 - `trustStoreType`: The type of your truststore. Examples include JKS, and PKCS12.
 - `trustStorePassword`: The password to unlock your truststore.
-- `clientAuth`: Declare 'WANT' when client auth is wanted but not mandatory, or 'NEED', when client auth is mandatory.
+- `clientAuth`: Declare `WANT` when client auth is wanted but not mandatory or `NEED` when client auth is mandatory.
 
 
 ## Authentication
@@ -130,7 +130,7 @@ oauth2:
   - `firstName`: The first name field returned from your OAuth provider.
   - `lastName`: The last name field returned from your OAuth provider.
   - `username`: The username field returned from your OAuth provider.
-- `provider`: One of azure, github, oracle, other, google
+- `provider`: One of `azure`, `github`, `oracle`, `other`, `google`
 
 ### SAML
 
@@ -275,31 +275,31 @@ groupMembership:
     groupRoleAttributes:
 ```
 
-- `service`: One of EXTERNAL, FILE, GOOGLE, GITHUB, LDAP
+- `service`: One of `EXTERNAL`, `FILE`, `GOOGLE`, `GITHUB`, `LDAP`
 - `google`:
-  - `roleProviderType`: GOOGLE
+  - `roleProviderType`: `GOOGLE`
   - `credentialPath`: A path to a valid json service account that can authenticate against the Google role provider.
   - `adminUsername`: Your role provider's admin username e.g. admin@myorg.net
   - `domain`: The domain your role provider is configured for e.g. myorg.net.
 - `github`:
-  - `roleProviderType`: GITHUB
+  - `roleProviderType`: `GITHUB`
   - `baseUrl`: Used if using GitHub enterprise some other non github.com GitHub installation.
   - `accessToken`: A personal access token of an account with access to your organization's GitHub Teams structure.
   - `organization`: The GitHub organization under which to query for GitHub Teams.
 - `file`:
-  - `roleProviderType`: FILE
+  - `roleProviderType`: `FILE`
   - `path`: A path to a file describing the roles of each user.
 - `ldap`:
-  - `roleProviderType`: LDAP
-  - `url`: ldap:// or ldaps:// url of the LDAP server
+  - `roleProviderType`: `LDAP`
+  - `url`: ldap:// or ldaps:// URL of the LDAP server
   - `managerDn`: The manager user's distinguished name (principal) to use for querying ldap groups.
   - `managerPassword`: The manager user's password to use for querying ldap groups.
   - `userDnPattern`: The pattern for finding a user's DN using simple pattern matching. For example, if your LDAP server has the URL ldap://mysite.com/dc=spinnaker,dc=org, and you have the pattern 'uid={0},ou=members', 'me' will map to a DN uid=me,ou=members,dc=spinnaker,dc=org. If no match is found, will try to find the user using --user-search-filter, if set.
   - `userSearchBase`: The part of the directory tree under which user searches should be performed. If --user-search-base isn't supplied, the search will be performed from the root.
   - `groupSearchBase`: The part of the directory tree under which group searches should be performed.
   - `userSearchFilter`: The filter to use when searching for a user's DN. Will search either from --user-search-base (if specified) or root for entires matching the filter.
-  - `groupSearchFilter`: The filter which is used to search for group membership. The default is 'uniqueMember={0}', corresponding to the groupOfUniqueMembers LDAP class. In this case, the substituted parameter is the full distinguished name of the user. The parameter '{1}' can be used if you want to filter on the login name.
-  - `groupRoleAttributes`: The attribute which contains the name of the authority defined by the group entry. Defaults to 'cn'.
+  - `groupSearchFilter`: The filter which is used to search for group membership. The default is `uniqueMember={0}`, corresponding to the groupOfUniqueMembers LDAP class. In this case, the substituted parameter is the full distinguished name of the user. The parameter '{1}' can be used if you want to filter on the login name.
+  - `groupRoleAttributes`: The attribute which contains the name of the authority defined by the group entry. Defaults to `cn`.
 
 ## UI
 
@@ -335,7 +335,7 @@ uiSecurity:
 - `keyStore`: Path to the keystore holding your security certificates.
 - `keyStoreType`: The type of your keystore. Examples include JKS, and PKCS12.
 - `keyStorePassword`: The password to unlock your keystore. Due to a limitation in Tomcat, this must match your key's password in the keystore.
-- `trustStore`: tPath to the truststore holding your trusted certificates.
+- `trustStore`: Path to the truststore holding your trusted certificates.
 - `trustStoreType`: The type of your truststore. Examples include JKS, and PKCS12.
 - `trustStorePassword`: The password to unlock your truststore.
-- `clientAuth`: Declare 'WANT' when client auth is wanted but not mandatory, or 'NEED', when client auth is mandatory.
+- `clientAuth`: Declare `WANT` when client auth is wanted but not mandatory or `NEED` when client auth is mandatory.

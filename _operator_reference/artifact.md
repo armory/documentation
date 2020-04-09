@@ -34,7 +34,7 @@ artifacts:
   bitbucket:
     enabled: false
     accounts:
-    - name: my-bitbucket-account
+    - name:
       username:
       password:
       usernamePasswordFile:
@@ -47,6 +47,8 @@ artifacts:
 - `username`: Bitbucket username
 - `password`: Bitbucket password
 - `usernamePasswordFile`: File containing "username:password" to use for Bitbucket authentication
+
+Note: supply `username` and `password` OR `usernamePasswordFile`
 
 ## GCS
 
@@ -92,15 +94,17 @@ github:
  - `token`: GitHub token
  - `tokenFile`: File containing a GitHub authentication token
 
+Note: supply `username` and `password` OR `usernamePasswordFile` or `token` or `tokenFile`
+
 ## GitLab
 
 **spec.spinnakerConfig.config.artifacts.gitlab**
 
 ```yaml
 gitlab:
-  enabled: false
+  enabled:
   accounts:
-  - name: gitlab-account
+  - name:
     token:
     tokenFile:
 ```
@@ -112,13 +116,15 @@ gitlab:
  - `token`: Gitlab token
  - `tokenFile`: File containing a Gitlab authentication token
 
+Note: supply `token` or `tokenFile`
+
 ## GitRepo
 
 **spec.spinnakerConfig.config.artifacts.gitrepo**
 
 ```yaml
 gitrepo:
-  enabled: false
+  enabled:
   accounts:
   - name:
     username:
@@ -146,15 +152,17 @@ gitrepo:
 - `sshKnownHostsFilePath`: File containing the known and trusted SSH hosts.
 - `sshTrustUnknownHosts`: Setting this to true allows Spinnaker to authenticate with unknown hosts
 
+Note: supply `username` and `password` OR `usernamePasswordFile` or `token` or `tokenFile`
+
 ## Helm
 
 **spec.spinnakerConfig.config.artifacts.helm**
 
 ```yaml
 helm:
-  enabled: false
+  enabled:
   accounts:
-  - name: my-helm-account
+  - name:
     repository:
     username:
     password:
@@ -162,14 +170,15 @@ helm:
 ```
 
 - `enabled`: true or false
-#
-## Account parameters
+
+### Account parameters
 
  - `repository`: Helm chart repository
  - `username`: Helm chart repository basic auth username
  - `password`: Helm chart repository basic auth password
  - `usernamePasswordFile`: File containing "username:password" to use for helm chart repository basic auth
 
+Note: supply `username` and `password` OR `usernamePasswordFile`
 
 ## HTTPS
 
@@ -177,9 +186,9 @@ helm:
 
 ```yaml
 http:
-  enabled: false
+  enabled:
   accounts:
-  - name: my-http-account
+  - name:
     username:
     password:
     usernamePasswordFile:
@@ -193,6 +202,7 @@ http:
  - `password`: HTTP basic auth password
  - `usernamePasswordFile`: File containing "username:password" to use for HTTP basic auth
 
+Note: supply `username` and `password` OR `usernamePasswordFile`
 
 ## Maven
 
@@ -200,10 +210,10 @@ http:
 
  ```yaml
  maven:
-   enabled: false
+   enabled:
    accounts:
-   - name: my-maven-account
- 	repositoryUrl:
+   - name:
+     repositoryUrl:
  ```
 
 - `enabled`: true or false
@@ -216,9 +226,9 @@ http:
 
 ```yaml
 oracle:
-  enabled: false
+  enabled:
   accounts:
-  - name: my-oracle-account
+  - name:
     namespace:
     region:
     userId:
@@ -244,9 +254,9 @@ oracle:
 
 ```yaml
 s3:
-  enabled: false
+  enabled:
   accounts:
-  - name: my-s3-account
+  - name:
     apiEndpoint:
     apiRegion:
     region:
@@ -268,7 +278,7 @@ s3:
 
 ```yaml
 templates:
-- name: my-template
+- name:
   templatePath:
  ```
 

@@ -261,7 +261,7 @@ Use the following configurations:
 
 ### spec.validation
 
-**Currently these configurations are experimental. By default the Operator always validates Kubernetes accounts when applying a SpinnakerService manifest.**
+**Currently these configurations are experimental. By default, the Operator always validates Kubernetes accounts when applying a SpinnakerService manifest.**
 
 Validation options that apply to all validations that Operator performs:
 

@@ -59,13 +59,13 @@ armory:
 - `templateOrg`: SCM organization or namespace where application and template repositories are located.
 - `templateRepo`: SCM repository where module templates are located
 - `githubToken`: GitHub token.
-- `githubEndpoint`: (Default: https://api.github.com) Github API endpoint. Useful if you’re using Github Enterprise.
+- `githubEndpoint`: (Default: `https://api.github.com`) Github API endpoint. Useful if you’re using Github Enterprise.
 - `stashUsername`: Stash username.
 - `stashToken`: Stash token.
 - `stashEndpoint`: Stash API endpoint.
 - `gitlabToken`: GitLab token.
 - `gitlabEndpoint`: GitLab endpoint.
-- `dinghyFilename`: (Default: dinghyfile) Name of the file in application repositories which contains pipelines.
+- `dinghyFilename`: (Default: `dinghyfile`) Name of the file in application repositories which contains pipelines.
 - `autoLockPipelines`: (Default: true) Lock pipelines in the UI before overwriting on change.
 - `fiatUser`: Fiat user to use for Dinghy operations.
 - `notifiers`:
@@ -81,7 +81,7 @@ armory:
   - `enabled`: true or false.
   - `endpoint`: Example: `https://debug.armory.io/v1/logs`
 
-## Terraform parameters
+## Armory Terraform parameters
 
 - `enabled`: true or false.
 - `git`:
@@ -94,6 +94,6 @@ armory:
 - `vault`:
   - `enabled`: true or false.
   - `url`: URL of the Vault endpoint from Spinnaker services.
-  - `path`: (Default: kubernetes) (Applies to KUBERNETES authentication method) Path of the kubernetes authentication backend mount.
-  - `role`: (Applies to KUBERNETES authentication method) Name of the role against which the login is being attempted.
-  - `authMethod`: Method used to authenticate with the Vault endpoint. Must be either KUBERNETES for Kubernetes service account auth or TOKEN for Vault token auth. The TOKEN method requires a VAULT_TOKEN environment variable for Operator and the services.
+  - `path`: (Default: `kubernetes`) (Applies to Kubernetes authentication method) Path of the Kubernetes authentication backend mount.
+  - `role`: (Applies to Kubernetes authentication method) Name of the role against which the login is being attempted.
+  - `authMethod`: Method used to authenticate with the Vault endpoint. Must be either `KUBERNETES` for Kubernetes service account auth or `TOKEN` for Vault token auth. The `TOKEN` method requires a `VAULT_TOKEN` environment variable for Operator and the services.

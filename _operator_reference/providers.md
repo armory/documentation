@@ -8,7 +8,7 @@ order: 9
 - This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-# Parameters
+# Providers Parameters
 
 ```yaml
 providers:
@@ -540,7 +540,7 @@ ecs:
 
 
 
-# Google
+## Google
 
 **spec.spinnakerConfig.config.providers.google**
 
@@ -770,7 +770,7 @@ Before proceeding, please visit [https://Kubernetes.io/docs/concepts/cluster-adm
 
 
 ```yaml
-Kubernetes:
+kubernetes:
   enabled: true
   accounts:
   - name: spinnaker
@@ -784,10 +784,12 @@ Kubernetes:
     kinds:
     omitKinds:
     customResources:
-    - KubernetesKind:
+    - kubernetesKind:
+      versioned:
+    - spinnakerKind:
       versioned:
     cachingPolicies:
-    - KubernetesKind:
+    - kubernetesKind:
       maxEntriesPerAgent:
     kubeconfigFile:
     kubeconfigContents:
@@ -822,35 +824,36 @@ Kubernetes:
 An account in the Kubernetes provider refers to a single Kubernetes context. In Kubernetes, a context is the combination of a Kubernetes cluster and some credentials. If no context is specified, the default context in in your kubeconfig is assumed. You must also provide a set of Docker Registries for each account. Spinnaker will automatically upload that Registry's credentials to the specified Kubernetes cluster allowing you to deploy those images without further configuration.
 
 - `name`: spinnaker
-- `context`: abc # The kubernetes context to be managed by Spinnaker. See http://kubernetes.io/docs/user-guide/kubeconfig-file/#context for more information. When no context is configured for an account the 'current-context' in your kubeconfig is assumed.
-- `cluster`: abc # Used with V1 provider (deprecated)
-- `user`: abc # Used with V1 provider (deprecated)
-- `configureImagePullSecrets`: true # Used with V1 provider. When true, Spinnaker will create & manage your image pull secrets for you; when false, you will have to create and attach them to your pod specs by hand.
-- `serviceAccount`: true # When true, Spinnaker attempt to authenticate against Kubernetes using a Kubernetes service account. This only works when Halyard & Spinnaker are deployed in Kubernetes. Read more about service accounts here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/.
-- `cacheThreads`: 1 # Number of caching agents for this kubernetes account. Each agent handles a subset of the namespaces available to this account. By default, only 1 agent caches all kinds for all namespaces in the account.
-- `namespaces`: # A list of namespaces this Spinnaker account can deploy to and will cache. When no namespaces are configured, this defaults to 'all namespaces'.
-- `omitNamespaces`: # A list of namespaces this Spinnaker account cannot deploy to or cache. This can only be set when --namespaces is empty or not set.
-- `kinds`: # (V2 Only) A list of resource kinds this Spinnaker account can deploy to and will cache. When no kinds are configured, this defaults to 'all kinds described here https://spinnaker.io/reference/providers/kubernetes-v2/'.
-- `omitKinds`: # (V2 Only) A list of resource kinds this Spinnaker account cannot deploy to or cache. This can only be set when --kinds is empty or not set.
-- `customResources`: # (V2 Only) List of Kubernetes custom resources to managed by clouddriver and made available for use in patch and delete manifest stages.
-- `kubernetesKind`: abc # Fully qualified name of the Kubernetes CRD
-- `spinnakerKind`: instances # One of instances, configs, serverGroups, loadBalancers, securityGroups, serverGroupManagers, unclassified
-- `versioned`: false
+- `context`: The kubernetes context to be managed by Spinnaker. See http://kubernetes.io/docs/user-guide/kubeconfig-file/#context for more information. When no context is configured for an account the 'current-context' in your kubeconfig is assumed.
+- `cluster`: Used with V1 provider (deprecated)
+- `user`: Used with V1 provider (deprecated)
+- `configureImagePullSecrets`: Used with V1 provider. When true, Spinnaker will create & manage your image pull secrets for you; when false, you will have to create and attach them to your pod specs by hand.
+- `serviceAccount`: When true, Spinnaker attempt to authenticate against Kubernetes using a Kubernetes service account. This only works when Halyard & Spinnaker are deployed in Kubernetes. Read more about service accounts here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/.
+- `cacheThreads`: Number of caching agents for this kubernetes account. Each agent handles a subset of the namespaces available to this account. By default, only 1 agent caches all kinds for all namespaces in the account.
+- `namespaces`: A list of namespaces this Spinnaker account can deploy to and will cache. When no namespaces are configured, this defaults to 'all namespaces'.
+- `omitNamespaces`: A list of namespaces this Spinnaker account cannot deploy to or cache. This can only be set when --namespaces is empty or not set.
+- `kinds`: (V2 Only) A list of resource kinds this Spinnaker account can deploy to and will cache. When no kinds are configured, this defaults to 'all kinds described here https://spinnaker.io/reference/providers/kubernetes-v2/'.
+- `omitKinds`: (V2 Only) A list of resource kinds this Spinnaker account cannot deploy to or cache. This can only be set when --kinds is empty or not set.
+- `customResources`: (V2 Only) List of Kubernetes custom resources to managed by clouddriver and made available for use in patch and delete manifest stages.
+	- `kubernetesKind`: Fully qualified name of the Kubernetes CRD
+	  - `versioned`: true or false
+	- `spinnakerKind`: One of instances, configs, serverGroups, loadBalancers, securityGroups, serverGroupManagers, unclassified
+	  - `versioned`: true or false
 - `cachingPolicies`:
-- `kubernetesKind`: abc
-- `maxEntriesPerAgent`: 100
-- `kubeconfigFile`: kubecfg # The path to your kubeconfig file. By default, it will be under the Spinnaker user's home directory in the typical .kube/config location.
-- `kubeconfigContents`: | # Inline kubeconfig file contents
-- `kubectlPath`: /root # Alternate path inside clouddriver pod of the kubectl binary
-- `kubectlRequestTimeoutSeconds`: 300 # Timeout in seconds of kubectl calls
-- `checkPermissionsOnStartup`: false # When false, clouddriver will skip the permission checks for all kubernetes kinds at startup. This can save a great deal of time during clouddriver startup when you have many kubernetes accounts configured. This disables the log messages at startup about missing permissions.
-- `liveManifestCalls`: false # When true, clouddriver will query manifest status during pipeline executions using live data rather than the cache. This eliminates all time spent in the "force cache refresh" task in pipelines, greatly reducing execution time.
-- `oAuthServiceAccount`: oauth-sa
+  - `kubernetesKind`:
+  - `maxEntriesPerAgent`:
+- `kubeconfigFile`: The path to your kubeconfig file. By default, it will be under the Spinnaker user's home directory in the typical .kube/config location.
+- `kubeconfigContents`: Inline kubeconfig file contents
+- `kubectlPath`: Alternate path inside clouddriver pod of the kubectl binary
+- `kubectlRequestTimeoutSeconds`: Timeout in seconds of kubectl calls
+- `checkPermissionsOnStartup`:  When false, clouddriver will skip the permission checks for all Kubernetes Kinds at startup. This can save a great deal of time during clouddriver startup when you have many Kubernetes accounts configured. This disables the log messages at startup about missing permissions.
+- `liveManifestCalls`: When true, clouddriver will query manifest status during pipeline executions using live data rather than the cache. This eliminates all time spent in the "force cache refresh" task in pipelines, greatly reducing execution time.
+- `oAuthServiceAccount`:
 - `oAuthScopes`:
-- `namingStrategy`: abc
-- `skin`: abc
-- `onlySpinnakerManaged`: false # (V2 Only) When true, Spinnaker will only cache/display applications that have been created by Spinnaker; as opposed to attempting to configure applications for resources already present in Kubernetes.
-- `debug`: false
+- `namingStrategy`:
+- `skin`:
+- `onlySpinnakerManaged`: (V2 Only) When true, Spinnaker will only cache/display applications that have been created by Spinnaker; as opposed to attempting to configure applications for resources already present in Kubernetes.
+- `debug`: true or false
 - `dockerRegistries`:
     - `accountName`: dockerhub
     - `namespaces`:

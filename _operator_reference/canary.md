@@ -27,7 +27,7 @@ canary:
   serviceIntegrations:
 ```
 
-- `enabled`:
+- `enabled`: true or false
 - `reduxLoggerEnabled`: true or false; whether or not to enable redux logging in the canary module in deck (Default: true).
 - `defaultMetricsAccount`: Name of metrics account to use by default.
 - `defaultStorageAccount`: Name of storage account to use by default.
@@ -45,7 +45,7 @@ canary:
 
 ```yaml
 canary:
-  enabled: true
+  enabled:
   serviceIntegrations:
     - name:
       enabled:
@@ -79,7 +79,7 @@ canary:
 - `name`: aws
   - `enabled`: true or false
   - `accounts`:
-      - `name`:
+      - `name`: account name
         - `bucket`: The name of a storage bucket that your specified account has access to. If you specify a globally unique bucket name that doesn't exist yet, Kayenta will create that bucket for you.
         - `region`: The region to use.
         - `rootFolder`: The root folder in the chosen bucket to place all of the canary service's persistent data in (Default: kayenta).
@@ -87,16 +87,16 @@ canary:
         - `endpoint`: The endpoint used to reach the service implementing the AWS api. Typical use is with Minio.
         - `accessKeyId`: The default access key used to communicate with AWS.
         - `secretAccessKey`: The secret key used to communicate with AWS.
-        - `supportedTypes`: One of: METRICS_STORE, METRICS_STORE, OBJECT_STORE
+        - `supportedTypes`: One of: `METRICS_STORE`, `METRICS_STORE`, `OBJECT_STORE`
             - METRICS_STORE
             - CONFIGURATION_STORE
             - OBJECT_STORE
-  - `s3Enabled`: true or false; whether or not to enable S3 as a persistent store (Default: false).
+  - `s3Enabled`: true or false; whether or not to enable S3 as a persistent store (Default: `false`).
 
 ### Datadog
 
 ```yaml
-- name: datadog
+- name:
   enabled:
   accounts:
   - name:
@@ -111,14 +111,14 @@ canary:
 ```
 
 - `name`: datadog
-  - `enabled`: true
+  - `enabled`: true or false
   - `accounts`:
-      - `name`: my-datadog-account
+      - `name`: account name
         - `endpoint`:
           - `baseUrl`: (*Required*) The base URL to the Datadog server.
         - `apiKey`: (*Required*) Your org's unique Datadog API key. See https://app.datadoghq.com/account/settings#api.
         - `applicationKey`: (*Required*) Your Datadog application key. See https://app.datadoghq.com/account/settings#api.
-        - `supportedTypes`: # One of: METRICS_STORE, METRICS_STORE, OBJECT_STORE
+        - `supportedTypes`: One of: `METRICS_STORE`, `METRICS_STORE`, `OBJECT_STORE`
             - METRICS_STORE
             - CONFIGURATION_STORE
             - OBJECT_STORE
@@ -126,7 +126,7 @@ canary:
 ### Google
 
 ```yaml
-- name: google
+- name:
   enabled:
   accounts:
   - name:
@@ -145,26 +145,26 @@ canary:
 ```
 
 - `name`: google
-  - `enabled`: true
+  - `enabled`: true or false
   - `accounts`:`
-      - `name`:
+      - `name`: account name
         - `project`: (*Required*) The Google Cloud Platform project the canary service will use to consume GCS and Stackdriver.
         - `jsonPath`: The path to a JSON service account that Spinnaker will use as credentials. This is only needed if Spinnaker is not deployed on a Google Compute Engine VM, or needs permissions not afforded to the VM it is running on. See https://cloud.google.com/compute/docs/access/service-accounts for more information.
         - `bucket`: The name of a storage bucket that your specified account has access to. If you specify a globally unique bucket name that doesn't exist yet, Kayenta will create that bucket for you.
         - `bucketLocation`: This is only required if the bucket you specify doesn't exist yet. In that case, the bucket will be created in that location. See https://cloud.google.com/storage/docs/managing-buckets#manage-class-location.
         - `rootFolder`: The root folder in the chosen bucket to place all of the canary service's persistent data in (Default: kayenta).
-        - `supportedTypes`: One of: METRICS_STORE, METRICS_STORE, OBJECT_STORE
+        - `supportedTypes`: One of: `METRICS_STORE`, `CONFIGURATION_STORE`, `OBJECT_STORE`
             - METRICS_STORE
             - CONFIGURATION_STORE
             - OBJECT_STORE
-  - `gcsEnabled`: true # Whether or not to enable GCS as a persistent store (Default: false).
-  - `stackdriverEnabled`: false # Whether or not to enable Stackdriver as a metrics service (Default: false).
-  - `metadataCachingIntervalMS`: Number of milliseconds to wait in between caching the names of available metric types (for use in building canary configs; Default: 60000).
+  - `gcsEnabled`: true or false. Whether or not to enable GCS as a persistent store (Default: false).
+  - `stackdriverEnabled`: true or false. Whether or not to enable Stackdriver as a metrics service (Default: false).
+  - `metadataCachingIntervalMS`: Number of milliseconds to wait in between caching the names of available metric types (for use in building canary configs; default: 60000).
 
 ### New Relic
 
 ```yaml
-- name: newrelic
+- name:
   enabled:
   accounts:
   - name:
@@ -179,14 +179,14 @@ canary:
 ```
 
 - `name`: newrelic
-  - `enabled`: false
+  - `enabled`: true or false
   - `accounts`:`
-      - `name`:  
+      - `name`: account name
         - `endpoint`:
           - `baseUrl`: (*Required*) The base URL to the New Relic Insights server.
         - `apiKey`: (*Required*) Your account's unique New Relic Insights API key. See https://docs.newrelic.com/docs/insights/insights-api/get-data/query-insights-event-data-api.
         - `applicationKey`: (*Required*) Your New Relic account id. See https://docs.newrelic.com/docs/accounts/install-new-relic/account-setup/account-id.
-        - `supportedTypes`: One of: METRICS_STORE, METRICS_STORE, OBJECT_STORE
+        - `supportedTypes`: One of: `METRICS_STORE`, `CONFIGURATION_STORE`, `OBJECT_STORE`
             - METRICS_STORE
             - CONFIGURATION_STORE
             - OBJECT_STORE
@@ -194,7 +194,7 @@ canary:
 ### Prometheus
 
 ```yaml
-- name: prometheus
+- name:
   enabled:
   accounts:
   - name:
@@ -212,14 +212,14 @@ canary:
 
 - `name`: prometheus
   - `enabled`: true or false
-  - `accounts`:
+  - `accounts`: account name
       - `name`:
         - `endpoint`:
           - `baseUrl`: (*Required*) The base URL to the Prometheus server.
         - `username`: A basic auth username.
         - `password`: A basic auth password.
         - `usernamePasswordFile`: The path to a file containing "username:password".
-        - `supportedTypes`: One of: METRICS_STORE, METRICS_STORE, OBJECT_STORE
+        - `supportedTypes`: One of: `METRICS_STORE`, `CONFIGURATION_STORE`, `OBJECT_STORE`
             - METRICS_STORE
             - CONFIGURATION_STORE
             - OBJECT_STORE
@@ -244,15 +244,15 @@ canary:
 ```
 
 - `name`: signalfx
-  - `enabled`: true
+  - `enabled`: true or false
   - `accounts`:
-      - `name`: abc
+      - `name`: account name
         - `endpoint`:
           - `baseUrl`: The base URL to the SignalFx server. Defaults to https://stream.signalfx.com
         - `accessToken`: (*Required*) The SignalFx access token.
         - `defaultScopeKey`: Scope key is used to distinguish between base and canary deployments. If omitted every request must supply the `_scope_key` param in extended scope params
         - `defaultLocationKey`: Location key is used to filter by deployment region. If omitted requests must supply the `_location_key` if it is needed.
-        - `supportedTypes`: One of: METRICS_STORE, METRICS_STORE, OBJECT_STORE
+        - `supportedTypes`: One of: `METRICS_STORE`, `CONFIGURATION_STORE`, `OBJECT_STORE`
             - METRICS_STORE
             - CONFIGURATION_STORE
             - OBJECT_STORE
