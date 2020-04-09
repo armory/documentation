@@ -320,51 +320,6 @@ Note the values that you need to modify:
 - metadata `name`: Change if you're installing Spinnaker to a namespace other than `spinnaker`.
 
 ```yaml
-apiVersion: spinnaker.armory.io/v1alpha2
-kind: SpinnakerService
-metadata:
-  name: spinnaker
-spec:
-  spinnakerConfig:
-    config:
-      version: 2.17.1  # Replace with desired version of Spinnaker to deploy
-      persistentStorage:
-        persistentStoreType: s3
-        s3:
-          bucket: spinnaker-abcxyz # Replace with the name of the S3 bucket created previously
-          region: us-west-2        # Replace with correct bucket's region
-          accessKeyId: XYZ         # (Optional, set only when using an IAM user to authenticate to the bucket instead of an IAM role)
-          secretAccessKey: XYZ     # (Optional, set only when using an IAM user to authenticate to the bucket instead of an IAM role)
-          rootFolder: front50
-      features:
-        artifacts: true
-      providers:
-        kubernetes:
-          accounts:
-          - name: spinnaker
-            cacheThreads: 1
-            cachingPolicies: []
-            configureImagePullSecrets: true
-            customResources: []
-            dockerRegistries: []
-            kinds: []
-            namespaces:
-            - spinnaker  # Name of the namespace where Spinnaker is installed
-            oAuthScopes: []
-            omitKinds: []
-            omitNamespaces: []
-            onlySpinnakerManaged: false
-            permissions: {}
-            providerVersion: V2
-            requiredGroupMembership: []
-            serviceAccount: true
-          enabled: true
-          primaryAccount: spinnaker
-    service-settings:
-      clouddriver:
-        kubernetes:
-          serviceAccountName: spin-sa
----
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -461,6 +416,51 @@ roleRef:
   kind: Role
   name: spin-role
   apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: spinnaker.armory.io/v1alpha2
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    config:
+      version: 2.17.1  # Replace with desired version of Spinnaker to deploy
+      persistentStorage:
+        persistentStoreType: s3
+        s3:
+          bucket: spinnaker-abcxyz # Replace with the name of the S3 bucket created previously
+          region: us-west-2        # Replace with correct bucket's region
+          accessKeyId: XYZ         # (Optional, set only when using an IAM user to authenticate to the bucket instead of an IAM role)
+          secretAccessKey: XYZ     # (Optional, set only when using an IAM user to authenticate to the bucket instead of an IAM role)
+          rootFolder: front50
+      features:
+        artifacts: true
+      providers:
+        kubernetes:
+          accounts:
+          - name: spinnaker
+            cacheThreads: 1
+            cachingPolicies: []
+            configureImagePullSecrets: true
+            customResources: []
+            dockerRegistries: []
+            kinds: []
+            namespaces:
+            - spinnaker  # Name of the namespace where Spinnaker is installed
+            oAuthScopes: []
+            omitKinds: []
+            omitNamespaces: []
+            onlySpinnakerManaged: false
+            permissions: {}
+            providerVersion: V2
+            requiredGroupMembership: []
+            serviceAccount: true
+          enabled: true
+          primaryAccount: spinnaker
+    service-settings:
+      clouddriver:
+        kubernetes:
+          serviceAccountName: spin-sa
 ```
 
 Deploy the manifest with the following command:

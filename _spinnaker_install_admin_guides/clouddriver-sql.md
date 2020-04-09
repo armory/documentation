@@ -15,7 +15,8 @@ Armory recommends MySQL 5.7. For AWS, you can use Aurora.
 
 ## Base Configuration
 
-You can find a complete description of the options in the [open source documentation](https://www.spinnaker.io/setup/productionize/persistence/clouddriver-sql/). SQL is not currently supported in Halyard's main configuration but can be setup in `<HALYARD>/<DEPLOYMENT>/profiles/clouddriver-local.yml`.
+You can find a complete description of the options in the [open source documentation](https://www.spinnaker.io/setup/productionize/persistence/clouddriver-sql/). 
+
 
 ## Database Setup
 You can skip this step if you create the database during provisioning - for instance with Terraform.
@@ -49,7 +50,7 @@ You have two options for deploying Clouddriver with MySQL: a simpler deployment,
 
 ### Simple Deployment
 
-If you are not worried about downtime or if Spinnaker is not currently executing any pipelines, you can run a simply deployment by applying the configuration in `<HALYARD>/<DEPLOYMENT>/profiles/clouddriver-local.yml`:
+If you are not worried about downtime or if Spinnaker is not currently executing any pipelines, you can run a simple deployment by adding the following snippet to `SpinnakerService` manifest under `spec.spinnakerConfig.profiles.clouddriver` if using the Operator, or to `<HALYARD>/<DEPLOYMENT>/profiles/clouddriver-local.yml` if using Halyard:
 
 ```yaml
 sql:
@@ -113,7 +114,7 @@ You can do it manually or by using the [following script](https://gist.github.co
 
 After waiting a few minutes (from 2 to 10 minutes depending on how many accounts are connected), we'll update Spinnaker to use MySQL but remain aware of task statuses in Redis.
 
-We're deploying Spinnaker with the following configuration in `clouddriver-local.yml`:
+We're deploying Spinnaker with the following configuration in `SpinnakerService` manifest under the key `spec.spinnakerConfig.profiles.clouddriver` if using the Operator, or in `clouddriver-local.yml` if using Halyard:
 
 ```yaml
 sql:

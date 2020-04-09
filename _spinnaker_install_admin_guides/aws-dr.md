@@ -81,15 +81,29 @@ In this setup, point your CNAME to `us-east` when a disaster event happens.
 
 ## Setting up a Passive Spinnaker 
 
-To make a passive version of Spinnaker using Halyard, use the same Halyard configuration file as the current active installation for your starting point. Then, modify it to deactivate certain services before deployment. 
+To make a passive version of Spinnaker, use the same configuration files as the current active installation for your starting point. Then, modify it to deactivate certain services before deployment. 
 
 To keep the configurations in sync, set up automation to create a passive Spinnaker configuration every time a configuration is changed for the active Spinnaker. An easy way to do this is to use [Kustomize Overlays](https://www.mirantis.com/blog/introduction-to-kustomize-part-2-overriding-values-with-overlays/).
 
-### Halyard configuration modifications**
+### Configuration modifications**
 
-Make sure you set replicas for all Spinnaker services to 0.
+Make sure you set replicas for all Spinnaker services to 0. Example in `SpinnakerService` manifest for service `gate`:
 
-Once you're done configuring Halyard for the passive SPinnaker, run `hal deploy apply` to deploy.
+```yaml
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    config:
+      deploymentEnvironment:
+        customSizing: # Configure, validate, and view the component sizings for the Spinnaker services. 
+          gate:
+            replicas: 0
+```
+
+Once you're done configuring for the passive Spinnaker, run `kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest>` if using Operator, or `hal deploy apply` if using Halyard to deploy.
 
 | **Note**: Armory recommends performing a DR exercise run to make sure the passive Spinnaker is set up correctly. Ideally, the DR exercise should include both failing over to the DR region and failing back to the primary region. |
 
@@ -101,10 +115,10 @@ If the active Spinnaker is failing, the following actions need to be taken:
 
 Perform the following tasks when you make the passive Spinnaker into the active Spinnaker:
 
-* Use the same version of Halyard to deploy the passive Spinnaker installation that was used to deploy the active Spinnaker.
+* Use the same version of Operator or Halyard to deploy the passive Spinnaker installation that was used to deploy the active Spinnaker.
 * AWS Aurora
     * Promote another cluster in the global database to have read/write capability. 
-    * Update Halyard configuration to point to the promoted database if the database endpoint and/or the database credentials have changed.
+    * Update `SpinnakerService` manifest if using Operator, or Halyard configuration if using Halyard to point to the promoted database if the database endpoint and/or the database credentials have changed.
 * Create the Redis clusters.
 * Activate the passive instance.
     * Set the replicas to more than 0. Ideally, this should be set to the same number of replicas that the active Spinnaker used.

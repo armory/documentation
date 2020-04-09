@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Configuring Vault for Kubernetes Auth
-order: 153
+order: 155
 ---
 
 {:toc}
@@ -96,7 +96,7 @@ The Kubernetes Vault Auth Secrets Engine does not currently support token renewa
 **Note** by default Vault has a max_ttl parameter set to `768h0m0s` that's 32 days, if you want to set the `TTL` to a higher value, you need to modify this parameter.
 
 
-**Important:** Spinnaker must be redeployed sometime during the defined `TTL` window -- we recommend this be done by updating to a new version of Spinnaker and running `hal deploy apply`.
+**Important:** Spinnaker must be redeployed sometime during the defined `TTL` window -- we recommend this be done by updating to a new version of Spinnaker and running `kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest>` if using Operator, or `hal deploy apply` if using Halyard.
 
 ---
 
