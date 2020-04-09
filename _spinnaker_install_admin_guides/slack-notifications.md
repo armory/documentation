@@ -30,8 +30,6 @@ Select the “OAuth & Permissions” menu, copy the *Bot User OAuth Access Token
 
 Select the “Install your app to your workspace” from the Bot “Basic Information” page and deploy it. 
 
-Then 
-
 ## Invite The Bot To A Channel
 
 Spinnaker only requires to be able to publish on a channel to interact with Slack. All you have to do is connect to a channel or create a new channel and name the bot you’ve just created. Slack will propose to invite the bot. Accept the invitation.
