@@ -95,28 +95,31 @@ The following script generates these files in the `services` directory:
 - Self-signed CA (`ca.pem`) and its PKCS12 truststore (`ca.p12`)
 - Keystore files for each Java service (`clouddriver.p12`, ...)
 - Certificate and key files for each Golang services (`terraformer.crt` and `terraformer.key`, ...)
+- a `tls-passwords` file containing all the passwords. You can store as-is in a bucket.
 
 ```
 #!/bin/bash -e
 
-CA_PASSWORD="password"
-SERVER_PASSWORD="password"
-CLIENT_PASSWORD="password"
-# Don't change me actually
-TRUSTSTORE_PASSWORD="password"
-USERS=("user1" "user2" "user3")
-JAVA_SVCS=("clouddriver" "orca" "echo" "fiat" "igor" "rosco" "front50" "kayenta" "gate")
-JAVA_SVCS_PASS=("clouddriver123" "orca123" "echo123" "fiat123" "igor123" "rosco123" "front50123" "kayenta123" "gate123")
-GOLANG_SVCS=("dinghy" "terraformer")
-GOLANG_SVCS_PASS=("dinghy123" "terraformer123")
+# You can change it to a different method
+newPassword() {
+  echo $(openssl rand -base64 32)
+}
 
+# Namespace where you're installing Spinnaker. Used for the hostname.
+NAMESPACE="spinnaker"
+
+CA_PASSWORD="password"
+TRUSTSTORE_PASSWORD=$(newPassword)
+JAVA_SVCS=("clouddriver" "orca" "echo" "fiat" "igor" "rosco" "front50" "kayenta" "gate")
+# JAVA_SVCS=("clouddriver-rw" "clouddriver-caching" "clouddriver-ro" "clouddriver-ro-deck" "orca" "echo-scheduler" "echo-worker" "fiat" "igor" "rosco" "front50" "kayenta" "gate")
+GOLANG_SVCS=("dinghy" "terraformer")
 
 echo "Cleaning up..."
 rm -rf services/*
 mkdir -p services/
 
 echo "Generating CA key..."
-openssl genrsa -aes256 -passout pass:${CA_PASSWORD} -out services/ca.key 2048 
+openssl genrsa -aes256 -passout pass:${CA_PASSWORD} -out services/ca.key 4096 
 
 echo "Generate self signed root certificate"
 openssl req -x509 -new -nodes -key services/ca.key -sha256 -days 3650 -out services/ca.pem -passin pass:${CA_PASSWORD} -subj /C=US/CN=Test
@@ -124,27 +127,31 @@ openssl req -x509 -new -nodes -key services/ca.key -sha256 -days 3650 -out servi
 echo "Generate trust store as PKCS12"
 keytool -importcert -storetype PKCS12 -keystore services/ca.p12 -storepass $TRUSTSTORE_PASSWORD -alias ca -file services/ca.pem -noprompt
 
+echo "truststore: ${TRUSTSTORE_PASSWORD}" > services/tls-passwords
 
 for i in ${!JAVA_SVCS[@]};
 do
   svc=${JAVA_SVCS[$i]}
-  password=${JAVA_SVCS_PASS[$i]}
+  password=$(newPassword)
   echo "Generating $svc key and certificate..."
-  openssl genrsa -aes256 -passout pass:${password} -out services/${svc}.key 2048
-  openssl req -new -key services/${svc}.key -out services/${svc}.csr -subj /C=US/CN=spin-${svc}.spinnaker -passin pass:${password}
+  openssl genrsa -aes256 -passout pass:${password} -out services/${svc}.key 4096
+  openssl req -new -key services/${svc}.key -out services/${svc}.csr -subj /C=US/CN=spin-${svc}.${NAMESPACE} -passin pass:${password}
   openssl x509 -req -in services/${svc}.csr -CA services/ca.pem -CAkey services/ca.key -CAcreateserial -out services/${svc}.crt -days 3649 -sha256 -passin pass:${CA_PASSWORD}
   openssl pkcs12 -export -out services/${svc}.p12 -inkey services/${svc}.key -in services/${svc}.crt -passout pass:${password} -passin pass:${password}
+  echo "${svc}: ${password}" >> services/tls-passwords
 done
 
 
 for i in ${!GOLANG_SVCS[@]};
 do
   svc=${GOLANG_SVCS[$i]}
-  password=${GOLANG_SVCS_PASS[$i]}
+  password=$(newPassword)
   echo "Generating $svc key and certificate..."
-  openssl genrsa -aes256 -passout pass:${password} -out services/${svc}.key 2048
-  openssl req -new -key services/${svc}.key -out services/${svc}.csr -subj /C=US/CN=spin-${svc}.spinnaker -passin pass:${password}
+  openssl genrsa -aes256 -passout pass:${password} -out services/${svc}.key 4096
+  openssl req -new -key services/${svc}.key -out services/${svc}.csr -subj /C=US/CN=spin-${svc}.${NAMESPACE} -passin pass:${password}
   openssl x509 -req -in services/${svc}.csr -CA services/ca.pem -CAkey services/ca.key -CAcreateserial \
     -out services/${svc}.crt -days 3650 -sha256 -passin pass:${CA_PASSWORD}
+
+  echo "${svc}: ${password}" >> services/tls-passwords
 done
 ```
