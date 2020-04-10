@@ -84,3 +84,6 @@ collections:
   glossary:
     output: true
     permalink: /glossary/:title/
+  operator_reference:
+    output: true
+    permalink: /operator_reference/:title/
