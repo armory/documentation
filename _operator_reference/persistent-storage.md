@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Persistent Storage Config Reference
-order: 14
+title: Persistent Storage Config
+order: 10
 ---
 
 {:.no_toc}

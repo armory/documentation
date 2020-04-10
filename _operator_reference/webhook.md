@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Webhook Config Reference
-order: 15
+title: Webhook Config
+order: 17
 ---
 
 {:.no_toc}

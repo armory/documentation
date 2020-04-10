@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Providers Config Reference
-order: 9
+title: Providers Config
+order: 12
 ---
 
 {:.no_toc}
@@ -784,10 +784,9 @@ kubernetes:
     kinds:
     omitKinds:
     customResources:
+      versioned:
     - kubernetesKind:
-      versioned:
     - spinnakerKind:
-      versioned:
     cachingPolicies:
     - kubernetesKind:
       maxEntriesPerAgent:
@@ -835,10 +834,9 @@ An account in the Kubernetes provider refers to a single Kubernetes context. In 
 - `kinds`: (V2 Only) A list of resource kinds this Spinnaker account can deploy to and will cache. When no kinds are configured, this defaults to 'all kinds described here https://spinnaker.io/reference/providers/kubernetes-v2/'.
 - `omitKinds`: (V2 Only) A list of resource kinds this Spinnaker account cannot deploy to or cache. This can only be set when --kinds is empty or not set.
 - `customResources`: (V2 Only) List of Kubernetes custom resources to managed by clouddriver and made available for use in patch and delete manifest stages.
+    - `versioned`: true or false
 	- `kubernetesKind`: Fully qualified name of the Kubernetes CRD
-	  - `versioned`: true or false
 	- `spinnakerKind`: One of instances, configs, serverGroups, loadBalancers, securityGroups, serverGroupManagers, unclassified
-	  - `versioned`: true or false
 - `cachingPolicies`:
   - `kubernetesKind`:
   - `maxEntriesPerAgent`:

@@ -19,13 +19,13 @@ Operator has two distinct modes you can install and use:
 - **Basic**: Operator in basic mode installs Spinnaker into a single namespace without `ValidatingAdmissionWebhook` for doing preflight checks.
 - **Cluster**: Operator in cluster mode installs Spinnaker across namespaces with `ValidatingAdmissionWebhook` for doing preflight checks. This mode requires a `ClusterRole`.
 
-If you want to get started quickly, install Operator and Spinnaker by running the following commands: 
+If you want to get started quickly, install Operator and Spinnaker by running the following commands:
 
 ```
 # Pick a release from https://github.com/armory-io/spinnaker-operator/releases (or clone the repo https://github.com/armory-io/armory-operator and use the master branch for the latest development work)
 $ mkdir -p spinnaker-operator && cd spinnaker-operator
 $ RELEASE=v0.3.0 bash -c 'curl -L https://github.com/armory-io/spinnaker-operator/releases/download/${RELEASE}/manifests.tgz | tar -xz'
- 
+
 # Install or update CRDs cluster wide
 $ kubectl apply -f deploy/crds/
 
@@ -47,12 +47,12 @@ The rest of this page describes how to modify some of the default configurations
 # Benefits of Operator
 
 - Stop using Halyard commands: just `kubectl apply` your Spinnaker configuration. This includes support for local files.
-- Expose Spinnaker to the outside world (via `LoadBalancer`). You can still disable that behavior if you prefer to manage ingresses and load balancers yourself. 
-- Deploy any version of Spinnaker. Operator is not tied to a particular version of Spinnaker. 
+- Expose Spinnaker to the outside world (via `LoadBalancer`). You can still disable that behavior if you prefer to manage ingresses and load balancers yourself.
+- Deploy any version of Spinnaker. Operator is not tied to a particular version of Spinnaker.
 - Keep secrets separate from your config. Store your config in `git` and have an easy Gitops workflow.
-- Validate your configuration before applying it (with webhook validation). 
+- Validate your configuration before applying it (with webhook validation).
 - Store Spinnaker secrets in [Kubernetes secrets](https://github.com/armory/spinnaker-operator/blob/release-0.3.x/doc/managing-spinnaker.md#secrets-in-kubernetes-secrets).
-- Patch versions, accounts or any setting with `kustomize`. 
+- Patch versions, accounts or any setting with `kustomize`.
 - Monitor the health of Spinnaker via `kubectl`.
 - Define Kubernetes accounts in `SpinnakerAccount` objects and store kubeconfig inline, in Kubernetes secrets, in s3, or GCS **(Experimental)**.
 
@@ -149,7 +149,7 @@ To install Operator for cluster mode, perform the following steps:
 
     `<op_namespace>` is the namespace where you want the operator to live. By default, this namespace is `spinnaker-operator`, so you would run the following command:
 
-    ```bash 
+    ```bash
     $ kubectl apply -n spinnaker-operator -f deploy/operator/cluster
     ```
 
@@ -177,15 +177,15 @@ In the examples, the `spinnaker-namespace` parameter refers to the namespace whe
 
 **Important**: You must edit `deploy/spinnaker/basic/SpinnakerService.yml` to point to persistent storage, such as an S3 bucket. Other attributes can also be changed. For example, if you change the value of the `version` field to `2.16.0`, Operator installs version 2.16.0.
 
-A detailed description of the SpinnakerService CRD can be found [here](../operator-config).
+A detailed description of the SpinnakerService CRD is [here](/operator_reference/operator-config/).
 
 # Install Spinnaker with Operator and Kustomize
 
-Operator supports Kustomize, a templating engine for Kubernetes. Using Kustomize along with Operator helps you create consistent, repeatable deployments of Spinnaker. 
+Operator supports Kustomize, a templating engine for Kubernetes. Using Kustomize along with Operator helps you create consistent, repeatable deployments of Spinnaker.
 
 1. Edit `deploy/spinnaker/kustomize/kustomization.yml`.
 2. Run the following commands:
-    
+
     ```bash
     $ kubectl create ns <spinnaker-namespace>
     $ kustomize build deploy/spinnaker/kustomize | kubectl -n <spinnaker-namespace> apply -f -
@@ -200,7 +200,7 @@ To upgrade an existing Spinnaker deployment using the Operator, perform the foll
 2. Apply the updated manifest:
 
     ```bash
-    $ kubectl -n <spinnaker-namespace> apply -f deploy/spinnaker/basic/SpinnakerService.yml 
+    $ kubectl -n <spinnaker-namespace> apply -f deploy/spinnaker/basic/SpinnakerService.yml
     ```
     Replace `<spinnaker-namespace>` with the namespace for the existing Spinnaker deployment.
 
@@ -301,19 +301,19 @@ spec:
 
 # Uninstalling operator
 
-Uninstalling the operator involves deleting its deployment and `SpinnakerService` CRD. When you delete the CRD, any Spinnaker installation created by Operator will also be deleted. This occurs because the CRD is set as the owner of the Spinnaker resources, so they get garbage collected. 
+Uninstalling the operator involves deleting its deployment and `SpinnakerService` CRD. When you delete the CRD, any Spinnaker installation created by Operator will also be deleted. This occurs because the CRD is set as the owner of the Spinnaker resources, so they get garbage collected.
 
 There are two ways in which you can remove this ownership relationship. so that Spinnaker is not deleted when deleting the operator: [replacing Operator with Halyard](#replacing-operator-with-halyard) or [removing Operator ownership of Spinnaker resources](#removing-operator-ownership-from-spinnaker-resources).
 
 ### Replacing Operator with Halyard
 
-First, export Spinnaker configuration settings to a format that Halyard understands: 
+First, export Spinnaker configuration settings to a format that Halyard understands:
 1. From the `SpinnakerService` manifest, copy the contents of `spec.spinnakerConfig.config` to its own file named `config`, and save it with the following structure:
 ```
 currentDeployment: default
 deploymentConfigurations:
 - name: default
-  <<CONTENT HERE>> 
+  <<CONTENT HERE>>
 ```
 2. For each entry in `spec.spinnakerConfig.profiles`, copy it to its own file inside a `profiles` folder with a `<entry-name>-local.yml` name.
 3. For each entry in `spec.spinnakerConfig.service-settings`, copy it to its own file inside a `service-settings` folder with a `<entry-name>.yml` name.
@@ -345,7 +345,7 @@ Run the following script to remove ownership of Spinnaker resources, where `NAME
 NAMESPACE=
 for rtype in deployment service
 do
-    for r in $(kubectl -n $NAMESPACE get $rtype --selector=app=spin -o jsonpath='{.items[*].metadata.name}') 
+    for r in $(kubectl -n $NAMESPACE get $rtype --selector=app=spin -o jsonpath='{.items[*].metadata.name}')
     do
         kubectl -n $NAMESPACE patch $rtype $r --type json -p='[{"op": "remove", "path": "/metadata/ownerReferences"}]'
     done

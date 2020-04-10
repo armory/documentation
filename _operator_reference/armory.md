@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Armory Config Reference
-order: 1
+title: Armory Config
+order: 2
 ---
 
 {:.no_toc}

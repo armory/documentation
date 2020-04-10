@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Security Config Reference
-order: 12
+title: Security Config
+order: 15
 ---
 
 {:.no_toc}

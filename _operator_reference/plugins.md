@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Plugins Config Reference
-order: 8
+title: Plugins Config
+order: 11
 ---
 
 {:.no_toc}

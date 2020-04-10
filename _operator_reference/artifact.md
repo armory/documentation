@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Artifact Config Reference
-order: 2
+title: Artifact Config
+order: 3
 ---
 
 {:.no_toc}

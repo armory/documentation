@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Features Config Reference
-order: 12
+title: Features Config
+order: 7
 ---
 
 {:.no_toc}

@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Stats Config Reference
-order: 13
+title: Stats Config
+order: 16
 ---
 
 {:.no_toc}

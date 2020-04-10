@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Metric Stores Config Reference
-order: 6
+title: Metric Stores Config
+order: 8
 ---
 
 {:.no_toc}

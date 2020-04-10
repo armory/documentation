@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Deployment Environment Config Reference
-order: 5
+title: Deployment Environment Config
+order: 6
 ---
 
 {:.no_toc}
