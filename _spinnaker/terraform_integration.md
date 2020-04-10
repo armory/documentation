@@ -48,7 +48,7 @@ The examples on this page describe how to configure the Terraform Integration an
 
 If you do not already have a `git/repo` artifact account configured, you must do so to use the Terraform Integration stage.
 
-* If using Operator
+* **Operator**
 
     Edit the `SpinnakerService` manifest to add the following:
 
@@ -69,7 +69,7 @@ If you do not already have a `git/repo` artifact account configured, you must do
                   token: 12344 # GitHub personal access token
     ```
 
-* If using Halyard
+* **Halyard**
 
     Edit the `~/.hal/default/profiles/clouddriver-local.yml` file and add the following:
 
@@ -112,7 +112,7 @@ skip this section.
 
 **Note**: The following examples use `github-for-terraform` as a unique identifier for the artifact account. Replace it with your own identifier.
 
-* If using Operator
+* Operator
 
     Edit the `SpinnakerService` manifest to add the following:
     
@@ -132,7 +132,7 @@ skip this section.
               enabled: true
     ```
 
-* If using Halyard
+* Halyard
 
     1. Enable GitHub as an artifact provider:
         ```
@@ -150,7 +150,7 @@ The Terraform Integration needs access to the GitHub token to download GitHub di
 
 1. Enable the Terraform Integration
 
-* If using Operator
+* **Operator**
 
     In `SpinnakerService` manifest:
     
@@ -170,7 +170,7 @@ The Terraform Integration needs access to the GitHub token to download GitHub di
                 accessToken: abc  # PAT GitHub token. This field supports "encrypted" field references (https://docs.armory.io/spinnaker-install-admin-guides/secrets/)
     ```
 
-* If using Halyard
+* **Halyard**
 
     ```
     hal armory terraform enable
@@ -193,7 +193,7 @@ If you already have a BitBucket artifact account configured in Spinnaker, skip t
 Replace `bitbucket-for-terraform` with any unique identifier to
 identify the artifact account.
 
-* If using Operator
+* **Operator**
 
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
@@ -212,7 +212,7 @@ identify the artifact account.
                 password: abc # Bitbucket password. This field supports "encrypted" field references (https://docs.armory.io/spinnaker-install-admin-guides/secrets/)
     ```
 
-* If using Halyard
+* **Halyard**
 
     ```bash
     hal config artifact bitbucket enable
@@ -228,7 +228,7 @@ identify the artifact account.
 The Terraform Integration also needs access to the BitBucket token to download full
 Github directories hosting your Terraform templates.
 
-* If using Operator
+* **Operator**
 
     In `SpinnakerService` manifest:
     
@@ -249,7 +249,7 @@ Github directories hosting your Terraform templates.
                 accessToken: abc  # BitBucket password. This field supports "encrypted" field references (https://docs.armory.io/spinnaker-install-admin-guides/secrets/)
     ```
 
-* If using Halyard
+* **Halyard**
 
     ```
     # This will prompt for the token, which is your BitBucket password
@@ -275,7 +275,7 @@ If you previously used the Terraform Integration stage by editing the JSON repre
 
 Depending on the version, you may need to manually enable the stage UI for Deck. To do so:
 
-* If using Operator
+* **Operator**
 
     Edit the `SpinnakerService` manifest to add the following:
     
@@ -292,9 +292,9 @@ Depending on the version, you may need to manually enable the stage UI for Deck.
               window.spinnakerSettings.feature.terraform = true;
     ```
     
-* If using Halyard
+* **Halyard**
 
-    Edit the file `~/.hal/default/profiles/settings-local.js` and add the following line:
+    Edit `~/.hal/default/profiles/settings-local.js` and add the following line:
 
     ```
     window.spinnakerSettings.feature.terraform = true;
@@ -306,7 +306,7 @@ After you finish your Terraform integration configuration, perform the following
 
 1. Apply the changes: 
 
-* If using Operator
+* **Operator**
 
     Assuming that Spinnaker lives in the namespace `spinnaker` and the `SpinnakerService` manifest is named `spinnakerservice.yml`:
 
@@ -314,13 +314,13 @@ After you finish your Terraform integration configuration, perform the following
     kubectl -n spinnaker apply -f spinnakerservice.yml
     ```
 
-* If using Halyard
+* **Halyard**
    
     ```bash
     hal deploy apply
     ```
 
-2. Confirm that the Terraform Integration service (Terraformer) is deployed with your Spinnaker deployment:
+1. Confirm that the Terraform Integration service (Terraformer) is deployed with your Spinnaker deployment:
     
     ```
     kubectl get pods -n {your-spinnaker-namespace}
@@ -492,9 +492,9 @@ Terraform supports the ability to reference AWS profiles defined via a [shared c
     kubectl apply -f {temp-filename}`
     ```
 
-3. Configure the Terraform Integration to mount this `ConfigMap` at runtime by adding the following [Service Setting]():
+3. Configure the Terraform Integration to mount this `ConfigMap` at runtime by adding the following service setting:
 
-* If using Operator
+* **Operator**
  
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
@@ -512,7 +512,7 @@ Terraform supports the ability to reference AWS profiles defined via a [shared c
                 mountPath: /home/spinnaker/.aws/
     ```
  
-* If using Halyard
+* **Halyard**
 
     Add to `~/.hal/default/service-settings/terraformer.yml`:
 
@@ -524,15 +524,15 @@ Terraform supports the ability to reference AWS profiles defined via a [shared c
         mountPath: /home/spinnaker/.aws/
     ```
 
-4. Deploy these changes to your Spinnaker instance: 
+1. Deploy these changes to your Spinnaker instance: 
    
-* If using Operator
+* **Operator**
 
     ```bash
     kubectl -n spinnaker apply -f spinnakerservice.yml
     ```
    
-* If using Halyard
+* **Halyard**
    
     ```bash
     hal deploy apply

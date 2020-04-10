@@ -835,9 +835,9 @@ In the template, the access path for that variable is: `.RawData.pusher.name`.
 If Dinghy crashes on start up and you encounter an error in Dinghy similar to:
 `time="2020-03-06T22:35:54Z" level=fatal msg="failed to load configuration: 1 error(s) decoding:\n\n* 'Logging.Level' expected type 'string', got unconvertible type 'map[string]interface {}'"`
 
-You have probably configured global logging levels with `spinnaker-local.yml`. The work around is to override dinghy levels:
+You have probably configured global logging levels with `spinnaker-local.yml`. The work around is to override Dinghy's logging levels:
 
-* If using Operator
+* **Operator**
 
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
@@ -853,9 +853,9 @@ You have probably configured global logging levels with `spinnaker-local.yml`. T
               ... # Rest of config omitted for brevity
     ```
  
-* If using Halayrd
+* **Halyard**
  
-    Create a `.hal/default/profiles/dinghy-local.yml` with the following:
+    Create `.hal/default/profiles/dinghy-local.yml` and add the following snippet:
     
     ```
     Logging:

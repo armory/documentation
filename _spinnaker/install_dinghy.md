@@ -11,16 +11,16 @@ order: 130
 # What To Expect
 This guide should include:
 
-* Required configuration to enable "Pipelines as code" feature (for Spinnaker Operator and Halyard deployment methods)
-* Setting up GitHub, GitLab, or Bitbucket/Stash webhooks to work with the "Pipelines as code" feature
+* Configurations for enabling Armory's Pipelines as code feature using Spinnaker Operator or Halyard
+* Settings for GitHub, GitLab, or Bitbucket/Stash webhooks to work with the Pipelines as code
 
 ## Overview
-To get an overview of Pipelines as code, check out the [user guide](/spinnaker/using_dinghy)
+To get an overview of Pipelines as code, check out the [user guide](/spinnaker/using_dinghy).
 
 ## Enabling Pipelines as code
-In order to configure "Pipelines as code", it has to be enabled:
+To configure Pipelines as code, start by enabling it:
 
-* If using Operator
+* **Operator**
 
     In `SpinnakerService` manifest:
 
@@ -38,17 +38,19 @@ In order to configure "Pipelines as code", it has to be enabled:
               ... # Rest of config omitted for brevity
     ```
   
-    Assuming that Spinnaker lives in the `spinnaker` namespace:
+    Assuming Spinnaker lives in the `spinnaker` namespace:
     
     ```bash
     kubectl -n spinnaker apply -f spinnakerservice.yml
     ```
 
-* If using Halyard
+* **Halyard**
 
     ```bash
     hal armory dinghy enable
     ```
+
+    Dinghy is the microservice for Pipelines as code.
 
 ## Steps to follow to configure Pipelines as code:
 
@@ -60,7 +62,7 @@ In order to configure "Pipelines as code", it has to be enabled:
 
 ### GitHub Example
 
-* If using Operator
+* **Operator**
 
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
@@ -72,7 +74,7 @@ In order to configure "Pipelines as code", it has to be enabled:
         config:
           armory:
             dinghy:
-              enabled: true                  # Whether or not dinghy is enabled
+              enabled: true                  # Whether or not Dinghy is enabled
               templateOrg: my-org            # SCM organization or namespace where application and template repositories are located
               templateRepo: dinghy-templates # SCM repository where module templates are located
               githubToken: abc               #  GitHub token. This field supports "encrypted" field references (https://docs.armory.io/spinnaker-install-admin-guides/secrets/)
@@ -84,7 +86,7 @@ In order to configure "Pipelines as code", it has to be enabled:
     kubectl -n spinnaker apply -f spinnakerservice.yml
     ```
 
-* If using Halyard
+* **Halyard**
 
     ```bash
     hal armory dinghy edit \
@@ -111,7 +113,7 @@ If your gate endpoint is protected by a firewall, you’ll need to configure you
 
 ### Bitbucket / Stash Example
 
-* If using Operator
+* **Operator**
 
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
@@ -136,7 +138,7 @@ If your gate endpoint is protected by a firewall, you’ll need to configure you
     kubectl -n spinnaker apply -f spinnakerservice.yml
     ```
   
-* If using Halyard
+* **Halyard**
 
     ```bash
     hal armory dinghy edit \
@@ -154,7 +156,7 @@ You'll need to setup webhooks for each project that has the dinghyfile or module
 
 ### GitLab Example
 
-* If using Operator
+* **Operator**
 
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
@@ -178,7 +180,7 @@ You'll need to setup webhooks for each project that has the dinghyfile or module
     kubectl -n spinnaker apply -f spinnakerservice.yml
     ```
 
-* If using Halyard
+* **Halyard**
 
     **Requirements**
 
@@ -218,7 +220,7 @@ All providers available in Dinghy are supported. Please refer to the list below 
 * `bitbucket-cloud`
 * `bitbucket-server`
 
-* If using Operator
+* **Operator**
 
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
@@ -239,7 +241,7 @@ All providers available in Dinghy are supported. Please refer to the list below 
               ... # Rest of config omitted for brevity
     ```
 
-* If using Halyard
+* **Halyard**
 
     This configuration goes inside your `profiles/dinghy-local.yml` file: 
 
@@ -253,28 +255,26 @@ All providers available in Dinghy are supported. Please refer to the list below 
       repo: my-github-repository
     ```
 
-    *Note: in the future armory will add this configuration to halyard cli.
-
 ### Other Options
 #### Fiat
 
-If Fiat is enabled, add the field `fiatUser: "your-service-account"` to dinghy section in `SpinnakerService` manifest, or the option: `--fiat-user "your-service-account"` if using Halyard. Note that the service account has to be in a group that has read/write access to the pipelines you will be updating. 
+If Fiat is enabled, add the field `fiatUser: "your-service-account"` to the `dinghy` section in `SpinnakerService` manifest (Operator) or pass the option `--fiat-user "your-service-account"` (Halyard). Note that the service account has to be in a group that has read/write access to the pipelines you will be updating. 
 
 If you have app specific permissions configured in Spinnaker, make sure you add the service account. For information on how to create a service account, click [here](https://www.spinnaker.io/setup/security/authorization/service-accounts/#creating-service-accounts).
 
 #### Custom Filename
 
-If you want to change the name of the file that describes pipelines, add the field `dinghyFilename: "your-name-here"` to dinghy section in `SpinnakerService` manifest, or the option: `--dinghyfile-name "your-name-here"` if using Halyard.
+If you want to change the name of the file that describes pipelines, add the field `dinghyFilename: "your-name-here"` to the `dinghy` section in `SpinnakerService` manifest (Operator) or pass the option: `--dinghyfile-name "your-name-here"` (Halyard).
 
 #### Disabling Locks
 
-If you want to disable lock pipelines in the UI before overwriting changes, add the field `autoLockPipelines: false` to `SpinnakerService` manifest, or the option: `--autolock-pipelines false` if using Halyard.
+If you want to disable lock pipelines in the UI before overwriting changes, add the field `autoLockPipelines: false` to `SpinnakerService` manifest (Operator) or pass the option: `--autolock-pipelines false` (Halyard).
 
 #### Slack Notifications
 
 If you have configured Spinnaker to send Slack notifications for pipeline events (documentation [here](/spinnaker-install-admin-guides/slack-notifications)), you can configure Dinghy to send pipeline update results to Slack:
 
-* If using Operator
+* **Operator**
 
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
@@ -294,7 +294,7 @@ If you have configured Spinnaker to send Slack notifications for pipeline events
                   ... # Rest of config omitted for brevity
     ```
     
-* If using Halyard
+* **Halyard**
 
     ```bash
     $ hal armory dinghy slack enable --channel my-channel
@@ -317,7 +317,7 @@ Dinghy supports two additional template formats in addition to JSON:
 
 To use one of these alternate formats, you'll need to configure a local override with one of these parsers.
  
-* If using Operator
+* **Operator**
  
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
@@ -332,9 +332,9 @@ To use one of these alternate formats, you'll need to configure a local override
             ... # Rest of config omitted for brevity
     ```
  
-* If using Halyard
+* **Halyard**
 
-    Set in `~/.hal/default/profiles/dinghy-local.yml`:
+    Add the following config to `~/.hal/default/profiles/dinghy-local.yml`:
 
     ```yaml
     parserFormat: hcl
@@ -352,9 +352,9 @@ The `parserFormat` configuration only accepts the following values:
 If Dinghy crashes on start up and you encounter an error in Dinghy similar to:
 `time="2020-03-06T22:35:54Z" level=fatal msg="failed to load configuration: 1 error(s) decoding:\n\n* 'Logging.Level' expected type 'string', got unconvertible type 'map[string]interface {}'"`
 
-You have probably configured global logging levels with `spinnaker-local.yml`. The work around is to override dinghy levels:
+You have probably configured global logging levels with `spinnaker-local.yml`. The work around is to override Dinghy's logging levels:
 
-* If using Operator
+* **Operator**
 
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
@@ -370,9 +370,9 @@ You have probably configured global logging levels with `spinnaker-local.yml`. T
               ... # Rest of config omitted for brevity
     ```
  
-* If using Halayrd
+* **Halayrd**
  
-    Create a `.hal/default/profiles/dinghy-local.yml` with the following:
+    Create `.hal/default/profiles/dinghy-local.yml` with the following config:
     
     ```
     Logging:

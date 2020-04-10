@@ -13,9 +13,9 @@ Many people have Spinnaker sitting in a different AWS account than where they ar
 
 ## Configuration
 
-* If using Operator
+* **Operator**
 
-    You can add the following snippet to your `SpinnakerService` manifest and apply it after replacing appropriate values. It adds an AWS account and configures the baking service (Rosco) with default values:
+    You can add the following snippet to your `SpinnakerService` manifest and apply it after replacing the example values with ones that correspond to your environment. The example adds an AWS account and configures the baking service (Rosco) with default values:
     
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
@@ -53,14 +53,16 @@ Many people have Spinnaker sitting in a different AWS account than where they ar
               ... # Config omitted for brevity
     ```
 
-* If using Halyard
+* **Halyard**
 
-    Add the AWS provider account with [Halyard](https://github.com/spinnaker/halyard/blob/master/docs/commands.md#hal-config-provider-aws-account-add). Next make sure to enable the AWS provider:
+    First, add the AWS provider account with [Halyard](https://github.com/spinnaker/halyard/blob/master/docs/commands.md#hal-config-provider-aws-account-add). Next, make sure to enable the AWS provider:
+
     ```bash
     hal config provider aws enable
     ```
 
-    Now we need to add a `rosco.yml` file under `~/.hal/default/service-settings/` that contains the following:
+    Then, add a `rosco.yml` file under `~/.hal/default/service-settings/` that contains the following snippet:
+
     ```yaml
     env:
       SPINNAKER_AWS_DEFAULT_REGION: "YOUR_DEFAULT_REGION"

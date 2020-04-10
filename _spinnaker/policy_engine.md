@@ -27,7 +27,7 @@ Keep the following guidelines in mind when using the Policy Engine:
 
 To enable Armory's Policy Engine:
 
-* If using Operator
+* **Operator**
 
     Add the following section to `SpinnakerService` manifest:
     
@@ -71,7 +71,7 @@ To enable Armory's Policy Engine:
     kubectl -n spinnaker apply -f spinnakerservice.yml
     ```
 
-* If using Halyard
+* **Halyard**
 
     Add the following configuration to Halyard in `~/.hal/default/profiles/front50-local.yml`:
 
