@@ -8,7 +8,7 @@ published: true
 ## Overview
 {:.no_toc}
 
-Fiat is the microservice in Spinnaker responsible for authorization (authz) for the other Spinnaker services. By default it is not enabled, so users are able to perform any action in Spinnaker. This page describes how Fiat interacts with other Spinnaker services. At a high level, Fiat works with the following Spinnaker services:
+Fiat is the microservice in Spinnaker responsible for authorization (authz) for the other Spinnaker services. By default, it is not enabled, so users are able to perform any action in Spinnaker. This page describes how Fiat interacts with the following Spinnaker services: 
 
 * Clouddriver for account permission
 * Front50 for application permissions
@@ -48,7 +48,7 @@ Note that for AWS, a role/group needs both read and write access to deploy an AM
 
 Front50 is the Spinnaker service that acts as the system of record for all the other Spinnaker services. In other words, all metadata for things such as applications and pipelines are stored in and served by Front50. Control access to Front50 by creating service accounts. This can be done through a series of [cURL commands](https://www.spinnaker.io/setup/security/authorization/service-accounts/).
 
-Service accounts are used to delegate authority to a pipeline to perform actions in Spinnaker. Users with ALL the roles defined in a service account can grant a pipeline “Run as” permission. The service accounts you create should map to roles/groups in your identity provider. Additionally, all pipelines configured to run off of a trigger must also be configured with “Run as” permission, or it will fail.
+Service accounts are used to delegate authority to a pipeline to perform actions in Spinnaker. Users with ALL the roles defined in a service account can grant a pipeline “Run as” permission. The service accounts you create should map to roles/groups in your identity provider. Additionally, all pipelines configured to run off of a trigger must also be configured with “Run as” permission, or they will fail.
 
 Armory recommends that you map one service account for each role/group in the identity provider that will be accessing Spinnaker. This prevents privilege escalation and makes it easier to figure out which roles/group ran which pipeline.
 
@@ -78,13 +78,11 @@ Note that roles, as far as Fiat is concerned, are case insensitive. This means t
 
 ## Mapping exercise
 
-Before you configure permissions, answer the following questions to figure out how to map roles and permissions in your deployment:
+Answer the following questions to figure out how to map roles and permissions in your deployment:
 
 * Which roles/groups have READ and/or WRITE access to which Clouddriver accounts
 * Which roles/groups have READ, WRITE, EXECUTE access to each Spinnaker Application
 * Which roles/groups have READ and/or WRITE/EXECUTE access to which CI/Build accounts
-
-Answering these questions will help you determine what permissions and roles are needed.
 
 The following image shows an example result of this exercise based on the user roles described in [Example Fiat](#example-fiat):
 
@@ -92,7 +90,7 @@ The following image shows an example result of this exercise based on the user r
 
 ## Example Configurations
 
-The following describe 
+The following sections describe some of the roles from the role matrix example in the [Mapping exercise](#mapping-exercise).
 
 ## Superuser
 
@@ -105,7 +103,7 @@ admin:
   roles:
     - fiat-admin
 ```
-## Infrastructure
+## Infrastructure 
 
 `dev-infra` is one of the potential deployment targets (pictured in ([Mapping exercise](#mapping-exercise)). 
 
@@ -155,7 +153,7 @@ ci:
 
 ## Applications
 
-`app1` is one of the applications that need to be deployed. Configuring permissions for an application is done in Deck, Spinnaker's UI, when you create or edit an application:
+`app1` is one of the applications that needs to be deployed. Configuring permissions for an application is done in Deck, Spinnaker's UI, when you create or edit an application:
 
 ![app1 permissions](/images/fiat_overview_app1_perms.png)
 
