@@ -28,13 +28,13 @@ features:
   gremlin:
 ```
 
-- `artifacts`: true or false. Enable artifact support. Read more at https://spinnaker.io/reference/artifacts/
+- `artifacts`: true or false. Enable [artifact](https://spinnaker.io/reference/artifacts/) support.
 - `auth`: true or false.
 - `fiat`: true or false.
-- `chaos`: true or false. Enable Chaos Monkey support. For this to work, you'll need a running Chaos Monkey deployment. Currently, Halyard doesn't configure Chaos Monkey for you; read more instructions here https://github.com/Netflix/chaosmonkey/wiki.
+- `chaos`: true or false. Enable [Chaos Monkey](https://github.com/Netflix/chaosmonkey/wiki) support. For this to work, you'll need a running Chaos Monkey deployment. Currently, Halyard doesn't configure Chaos Monkey for you.
 - `entityTags`: true or false.
-- `pipelineTemplates`: true or false. Enable pipeline template support. Read more at https://github.com/spinnaker/dcd-spec.
-- `artifactsRewrite`: true or false.  Enable new artifact support. Read more at https://www.spinnaker.io/reference/artifacts-with-artifactsrewrite/
+- `pipelineTemplates`: true or false. Enable [pipeline template](https://github.com/spinnaker/dcd-spec) support.
+- `artifactsRewrite`: true or false.  Enable [new artifact](https://www.spinnaker.io/reference/artifacts-with-artifactsrewrite/) support.
 - `mineCanary`: true or false. Enable Canary support. For this to work, you'll need a Canary judge configured. Currently, Halyard does not configure Canary judge for you.
 - `appengineContainerImageUrlDeployments`: true or false. Enable appengine deployments using a container image URL from gcr.io.
 - `infrastructureStages`: true or false. Enable infrastructure stages. Allows for creating Load Balancers as part of pipelines.

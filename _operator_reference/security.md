@@ -227,7 +227,7 @@ iap:
 - `enabled`: true or false.
 - `jwtHeader`: The HTTP request header that contains the JWT token.
 - `issuerId`: The Issuer from the ID token payload.
-- `audience`: The Audience from the ID token payload. You can retrieve this field from the IAP console: https://cloud.google.com/iap/docs/signed-headers-howto#verify_the_id_token_header.
+- `audience`: The Audience from the ID token payload. You can retrieve this field from the [IAP console](https://cloud.google.com/iap/docs/signed-headers-howto#verify_the_id_token_header).
 - `iapVerifyKeyUrl`: The URL containing the Cloud IAP public keys in JWK format.
 
 
