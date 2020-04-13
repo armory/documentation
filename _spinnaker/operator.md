@@ -456,7 +456,7 @@ The migration process from Halyard to Operator can be completed in 7 steps:
 
 # Custom Halyard Configuration
 
-To override Halyard's configuration, create a `ConfigMap` with the configuration changes you need. For example, if using [secrets management with Vault](https://docs.armory.io/spinnaker-install-admin-guides/secrets-vault/), Halyard will need your Vault configuration:
+To override Halyard's configuration, create a `ConfigMap` with the configuration changes you need. For example, if using [secrets management with Vault](https://docs.armory.io/spinnaker-install-admin-guides/secrets-vault/), Halyard and Operator containers will need your Vault configuration:
 
 ```yaml
 apiVersion: v1
@@ -474,7 +474,7 @@ data:
         authMethod: KUBERNETES
 ```
 
-You can then mount it in the operator deployment and make it available to the Halyard container:
+You can then mount it in the operator deployment and make it available to the Halyard and Operator containers:
 
 ```yaml
 apiVersion: extensions/v1beta1
@@ -488,6 +488,10 @@ spec:
       containers:
       - name: spinnaker-operator
         ...
+        volumeMounts:
+        - mountPath: /opt/spinnaker/config/halyard.yml
+          name: halconfig-volume
+          subPath: halyard-local.yml
       - name: halyard
         ...
         volumeMounts:
