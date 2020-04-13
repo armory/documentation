@@ -20,7 +20,7 @@ To learn more about Kustomize and how to define a `kustomization.yaml` file, see
 ​
 In the context of Spinnaker, Kustomize lets you generate a custom manifest, which can be deployed in a downstream `Deploy (Manifest)` stage. This manifest is tailored to your requirements and built on existing configurations.
 ​
-Spinnaker uses the latest non-kubectl version of Kustomize. 
+Spinnaker uses the latest non-kubectl version of Kustomize.
 ​
 
 # Kustomize in 2.16 (Beta)
@@ -29,10 +29,10 @@ Spinnaker uses the latest non-kubectl version of Kustomize.
 ​
 Kustomize can be enabled by a feature flag in 2.16.
 
-* If using Operator
+* **Operator**
 
     Add the following settings to the `SpinnakerService` manifest:
-    
+
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
     kind: SpinnakerService
@@ -46,7 +46,7 @@ Kustomize can be enabled by a feature flag in 2.16.
               window.spinnakerSettings.feature.kustomizeEnabled = true;
     ```
 ​
-* If using Halyard
+* **Halyard**
 
     Add the following line to `~/.hal/{DEPLOYMENT_NAME}/profiles/settings-local.js`:
 ​
@@ -77,16 +77,16 @@ You can now run your pipeline and get a Kustomize rendered manifest!
 # Kustomize in 2.17 (Beta)
 ​
 ### Requirements
-Kustomize in 2.17+ requires the [git/repo](https://www.spinnaker.io/reference/artifacts/types/git-repo/) artifact type. 
+Kustomize in 2.17+ requires the [git/repo](https://www.spinnaker.io/reference/artifacts/types/git-repo/) artifact type.
 ​
 ## Enable Kustomize
 ​
 Kustomize can be enabled by a feature flag in Armory Spinnaker 2.16 and later.
 
-* If using Operator
+* **Operator**
 
     Add the following settings to the `SpinnakerService` manifest and apply the changes:
-    
+
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
     kind: SpinnakerService
@@ -100,7 +100,7 @@ Kustomize can be enabled by a feature flag in Armory Spinnaker 2.16 and later.
               window.spinnakerSettings.feature.kustomizeEnabled = true;
     ```
 
-* If using Halyard
+* **Halyard**
 
     Add the following line to `~/.hal/{DEPLOYMENT_NAME}/profiles/settings-local.js`:
 ​
@@ -115,7 +115,7 @@ You can now use the *KUSTOMIZE* option on a _Bake (Manifest)_ stage.
 ​
 ![](/images/kustomize-enable.png)
 ​
-> **Note:** Sometimes you will need to clear the cache in your browser in order to see the new *KUSTOMIZE* option available on a _Bake (Manifest)_ stage. 
+> **Note:** Sometimes you will need to clear the cache in your browser in order to see the new *KUSTOMIZE* option available on a _Bake (Manifest)_ stage.
 
 ​
 ## Build the Pipeline
@@ -126,9 +126,9 @@ For this example, we are going to use this [kustomize public repository](https:/
 ​
 Add a **git/repo** Expected Artifact in the _Configuration_ section:
 ​
-- **Account** (Required): The `git/repo` account to use. 
+- **Account** (Required): The `git/repo` account to use.
 - **URL** (Required): The location of the Git repository.
-- **Branch** (Optional): The branch of the repository you want to use. _Defaults to  `master`._ 
+- **Branch** (Optional): The branch of the repository you want to use. _Defaults to  `master`._
 - **Subpath** (Optional): By clicking `Checkout subpath`, you can optionally pass in a relative subpath within the repository. This provides the option to checkout only a portion of the repository, thereby reducing the size of the generated artifact.
 
 ​![](/images/kustomize-expected-artifact.png)
@@ -158,7 +158,7 @@ Finally, add a **Deploy (Manifest)** stage. Make sure to select the _Manifest So
 
 ## Run the Pipeline
 ​
-After you execute the pipeline, you can see the manifest generated in YAML format by clicking on the _Baked Manifest YAML_ link: 
+After you execute the pipeline, you can see the manifest generated in YAML format by clicking on the _Baked Manifest YAML_ link:
 ​
 ![](/images/kustomize-execution.png)
 ​
