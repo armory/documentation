@@ -234,7 +234,7 @@ curl -s $FIAT/authorize/$user-or-service-account
 ```
 
 The command returns JSON that lists the following information:
- * Roles the user/service account is in
+ * Roles the user/service account is part of
  * Spinnaker applications the user/service account has access to
- * Clouddriver accounts the user/service account has access toW
+ * Clouddriver accounts the user/service account has access to
  * Build services the user/service account has access to
