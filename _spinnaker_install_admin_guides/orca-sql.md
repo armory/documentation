@@ -17,7 +17,7 @@ Armory recommends MySQL 5.7. For AWS, you can use Aurora.
 
 You can find a complete description of the options in the [open source documentation](https://www.spinnaker.io/setup/productionize/persistence/orca-sql/).
 
-SQL is not currently supported in Halyard's main configuration but can be setup in `<HALYARD>/<DEPLOYMENT>/profiles/orca-local.yml`:
+SQL can be configured by adding the following snippet to `SpinnakerService` manifest under `spec.spinnakerConfig.profiles.orca` if using the Operator, or to `<HALYARD>/<DEPLOYMENT>/profiles/orca-local.yml` if using Halyard:
 
 ```yaml
 sql:

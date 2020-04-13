@@ -14,8 +14,8 @@ Once you have (OSS or Armory) Spinnaker up and running in Kubernetes, you'll wan
 
 Note that this document assumes the following conditions are true:
 
-* Spinnaker was installed with Halyard.
-* You have access to your current halconfig (and a way to operate `hal` against it).
+* Spinnaker was installed with Operator or Halyard.
+* You have access to the Spinnaker config files, and a way to apply them (`kubectl` for Operator or `hal` for Halyard),
 * You have a way to create AWS permissions, users, and roles.
 
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
@@ -33,7 +33,7 @@ This document will guide you through the following:
   * Creating a Managing Account IAM Policy in your primary AWS Account
   * Adding the Managing Account IAM Policy to the existing IAM Instance Role on the AWS nodes
   * Configuring the Managed Accounts IAM Roles to trust the IAM Instance Role from the AWS nodes
-  * Adding the Managed Accounts to Spinnaker via Halyard
+  * Adding the Managed Accounts to Spinnaker
   * Adding/Enabling the AWS Cloud Provider to Spinnaker
 
 ## Background: Understanding AWS Deployment from Spinnaker
@@ -52,7 +52,7 @@ Spinnaker is able to deploy EC2 instances (via ASGs).
 * Clouddriver is configured with direct access to a **"Managing Account"** Policy (_it may be helpful to think of this as the **Master** or **Source** Policy_), which is accomplished in one of two ways:
   * If Spinnaker is running in AWS (either in AWS EKS, or with Kubernetes nodes running in AWS EC2), the Managing Account Policy can be made available to Spinnaker by adding it to the AWS nodes (EC2 instances) where the Spinnaker Clouddriver pod(s) are running.
     * _(You can also use Kube2IAM or similar capabilities, but this is not covered in this document)_
-  * An IAM User with access to the Managing Account Policy can be passed directly to Spinnaker via an Access Key and Secret Access Key, configured via Halyard
+  * An IAM User with access to the Managing Account Policy can be passed directly to Spinnaker via an Access Key and Secret Access Key
 * For each AWS account that you want Spinnaker to be able to deploy to, Spinnaker needs a **"Managed Account"** Role in that AWS account, with permissions to do the things you want Spinnaker to be able to do (_it may be helpful to think of this as a **Target Role**_)
 * The Managing Account Role (Source/Master Role) should be able to assume each of the Managed Account Roles (Target Roles).  This requires two things:
   * The Managing Account Role needs a permission string for each Managed Account it needs to be able to assume.  _It may be helpful to think of this as an outbound permission._
@@ -82,66 +82,129 @@ Here's an example situation:
 
 ### Configuration
 
-Here's a sample halconfig `aws` YAML block that supports the above:
+* **Operator**
 
-```yml
-    aws:
-      enabled: true
-      accounts:
-      - name: aws-1
-        requiredGroupMembership: []
-        providerVersion: V1
-        permissions: {}
-        accountId: '111111111111'
-        regions:
-        - name: us-east-1
-        - name: us-west-2
-        assumeRole: role/spinnakerManaged
-      - name: aws-2
-        requiredGroupMembership: []
-        providerVersion: V1
-        permissions: {}
-        accountId: '222222222222'
-        regions:
-        - name: us-east-1
-        - name: us-west-2
-        assumeRole: role/spinnakerManaged
-      - name: aws-3
-        requiredGroupMembership: []
-        providerVersion: V1
-        permissions: {}
-        accountId: '333333333333'
-        regions:
-        - name: us-east-1
-        - name: us-west-2
-        assumeRole: role/spinnakerManaged
-      # Because we're baking in 111111111111, this must match the accountName that is associated with 111111111111
-      primaryAccount: aws-1
-      bakeryDefaults:
-        templateFile: aws-ebs-shared.json
-        baseImages: []
-        # These creds are for our Baking IAM user in account 111111111111
-        awsAccessKey: ABC123
-        awsSecretKey: abc123
-        awsAssociatePublicIpAddress: true
-        defaultVirtualizationType: hvm
-      # These creds are for our Managing Account IAM User in account 111111111111
-      accessKeyId: DEF456
-      secretAccessKey: def456
-      defaultKeyPairTemplate: '{{name}}-keypair'
-      defaultRegions:
-      - name: us-west-2
-      defaults:
-        iamRole: BaseIAMRole
-```
+    Here's a sample `SpinnakerService` manifest block that supports the above:
+
+   ```yaml
+    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+    kind: SpinnakerService
+    metadata:
+      name: spinnaker
+    spec:
+      spinnakerConfig:
+        config:
+          providers:
+            aws:
+              enabled: true
+              accounts:
+              - name: aws-1
+                requiredGroupMembership: []
+                providerVersion: V1
+                permissions: {}
+                accountId: '111111111111'
+                regions:
+                - name: us-east-1
+                - name: us-west-2
+                assumeRole: role/spinnakerManaged
+              - name: aws-2
+                requiredGroupMembership: []
+                providerVersion: V1
+                permissions: {}
+                accountId: '222222222222'
+                regions:
+                - name: us-east-1
+                - name: us-west-2
+                assumeRole: role/spinnakerManaged
+              - name: aws-3
+                requiredGroupMembership: []
+                providerVersion: V1
+                permissions: {}
+                accountId: '333333333333'
+                regions:
+                - name: us-east-1
+                - name: us-west-2
+                assumeRole: role/spinnakerManaged
+              # Because we're baking in 111111111111, this must match the accountName that is associated with 111111111111
+              primaryAccount: aws-1
+              bakeryDefaults:
+                templateFile: aws-ebs-shared.json
+                # These creds are for our Baking IAM user in account 111111111111
+                awsAccessKey: ABC123
+                awsSecretKey: abc123
+                baseImages: []
+                awsAssociatePublicIpAddress: true
+                defaultVirtualizationType: hvm
+              accessKeyId: DEF456
+              secretAccessKey: def456
+              defaultKeyPairTemplate: '{{name}}-keypair'
+              defaultRegions:
+              - name: us-west-2
+              defaults:
+                iamRole: BaseIAMRole
+    ```
+
+* **Halyard**
+
+    Here's a sample halconfig `aws` YAML block that supports the above:
+
+    ```yml
+        aws:
+          enabled: true
+          accounts:
+          - name: aws-1
+            requiredGroupMembership: []
+            providerVersion: V1
+            permissions: {}
+            accountId: '111111111111'
+            regions:
+            - name: us-east-1
+            - name: us-west-2
+            assumeRole: role/spinnakerManaged
+          - name: aws-2
+            requiredGroupMembership: []
+            providerVersion: V1
+            permissions: {}
+            accountId: '222222222222'
+            regions:
+            - name: us-east-1
+            - name: us-west-2
+            assumeRole: role/spinnakerManaged
+          - name: aws-3
+            requiredGroupMembership: []
+            providerVersion: V1
+            permissions: {}
+            accountId: '333333333333'
+            regions:
+            - name: us-east-1
+            - name: us-west-2
+            assumeRole: role/spinnakerManaged
+          # Because we're baking in 111111111111, this must match the accountName that is associated with 111111111111
+          primaryAccount: aws-1
+          bakeryDefaults:
+            templateFile: aws-ebs-shared.json
+            baseImages: []
+            # These creds are for our Baking IAM user in account 111111111111
+            awsAccessKey: ABC123
+            awsSecretKey: abc123
+            awsAssociatePublicIpAddress: true
+            defaultVirtualizationType: hvm
+          accessKeyId: DEF456
+          secretAccessKey: def456
+          defaultKeyPairTemplate: '{{name}}-keypair'
+          defaultRegions:
+          - name: us-west-2
+          defaults:
+            iamRole: BaseIAMRole
+    ```
 
 ## Prerequisites
 
 This document assumes the following:
 
 * Your Spinnaker is up and running
-* Your Spinnaker was installed and configured via Halyard
-* You have access to Halyard
+* Your Spinnaker was installed and configured via Operator or Halyard
+* If you're using Operator, you have a access to run `kubectl` commands against the cluster where Spinnaker is installed. If you're using Halyard, you have access to it
 * You have permissions to create IAM roles using IAM policies and permissions, in all relevant AWS accounts
   * You should also be able to set up cross-account trust relationships between IAM roles.
 * If you want to add the IAM Role to Spinnaker via an Access Key/Secret Access Key, you have permissions to create an IAM User
@@ -197,7 +260,7 @@ For each account you want to deploy to, perform the following:
 
 1. Click "Review Policy"
 1. Call it "PassRole-and-Certificates", and click "Create Policy"
-1. Copy the Role ARN and save it.  It should look something like this: `arn:aws:iam::123456789012:role/DevSpinnakerManagedRole`.  **This will be used in the section "IAM User Part 3", and in the Halyard section, "IAM User Part 6"**
+1. Copy the Role ARN and save it.  It should look something like this: `arn:aws:iam::123456789012:role/DevSpinnakerManagedRole`.  **This will be used in the section "IAM User Part 3" and in section "IAM User Part 6"**
 
 You will end up with a Role ARN for each Managed / Target account.  The Role names do not have to be the same (although it is a bit cleaner if they are).  For example, you may end up with roles that look like this:
 
@@ -316,59 +379,114 @@ For each account you want to deploy to, perform the following:
 
 1. Click "Update Trust Policy", in the bottom right.
 
-### IAM User Part 6: Adding the Managing Account User and Managed Accounts to Spinnaker via Halyard
+### IAM User Part 6: Adding the Managing Account User and Managed Accounts to Spinnaker
 
-The Clouddriver pod(s) should be now able to assume each of the Managed Roles (Target Roles) in each of your Deployment Target accounts.  We need to configure Spinnaker to be aware of the accounts and roles it is allowed to consume.  This is done via Halyard.
+The Clouddriver pod(s) should be now able to assume each of the Managed Roles (Target Roles) in each of your Deployment Target accounts.  We need to configure Spinnaker to be aware of the accounts and roles it is allowed to consume.
 
-For each of the Managed (Target) accounts you want to deploy to, perform the following from your Halyard instance:
+* **Operator**
 
-1. Run this command, **updating fields as follows**:
+    For each of the Managed (Target) accounts you want to deploy to, add a new entry to the `accounts` array in `SpinnakerService` manifest as follows:
 
-   * `AWS_ACCOUNT_NAME` should be a unique name which is used in the Spinnaker UI and API  to identify the deployment target.  For example, `aws-dev-1` or `aws-dev-2`
-   * `ACCOUNT_ID` should be the account ID for the Managed Role (Target Role) you are  assuming.  For example, if the role ARN is `arn:aws:iam::123456789012:role/DevSpinnakerManagedRole`, then ACCOUNT_ID would be `123456789012`
-   * `ROLE_NAME` should be the full role name within the account, including the type of  object (`role`).  For example, if the role ARN is `arn:aws:iam::123456789012:role/DevSpinnakerManagedRole`, then ROLE_NAME would be `role/DevSpinnakerManagedRole`
+    ```yaml
+    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+    kind: SpinnakerService
+    metadata:
+      name: spinnaker
+    spec:
+      spinnakerConfig:
+        config:
+          providers:
+            aws:
+              enabled: true
+              accounts:
+              - name: aws-dev-1                   # Should be a unique name which is used in the Spinnaker UI and API  to identify the deployment target.  For example, aws-dev-1 or aws-dev-2
+                requiredGroupMembership: []
+                providerVersion: V1
+                permissions: {}
+                accountId: '111111111111'         # Should be the account ID for the Managed Role (Target Role) you are  assuming.  For example, if the role ARN is arn:aws:iam::123456789012:role/ DevSpinnakerManagedRole, then ACCOUNT_ID would be 123456789012
+                regions:                          # Configure the regions you want to deploy to
+                - name: us-east-1
+                - name: us-west-2
+                assumeRole: role/spinnakerManaged # Should be the full role name within the account, including the type of object (role). For example, if the role ARN is arn:aws:iam::123456789012:role/DevSpinnakerManagedRole, then ROLE_NAME would be role/DevSpinnakerManagedRole
+              primaryAccount: aws-dev-1
+              bakeryDefaults:
+                templateFile: aws-ebs-shared.json
+                baseImages: []
+                awsAssociatePublicIpAddress: true
+                defaultVirtualizationType: hvm
+                # These creds are for our Baking IAM user in account 111111111111
+                awsAccessKey: ABC123
+                awsSecretKey: abc123
+              accessKeyId: DEF456                 # AWS access key and secret access key from "IAM User Part 4"
+              secretAccessKey: def456             # AWS access key and secret access key from "IAM User Part 4"
+              defaultKeyPairTemplate: '{{name}}-keypair'
+              defaultRegions:
+              - name: us-west-2
+              defaults:
+                iamRole: BaseIAMRole
+    ```
 
-   ```bash
-   # Enter the account name you want Spinnaker to use to identify the deployment target, 
-   # as well as the account ID, and the role name.
-   export AWS_ACCOUNT_NAME=aws-dev-1
-   export ACCOUNT_ID=123456789012
-   export ROLE_NAME=role/DevSpinnakerManagedRole
+* **Halyard**
 
-   hal config provider aws account add ${AWS_ACCOUNT_NAME} \
-       --account-id ${ACCOUNT_ID} \
-       --assume-role ${ROLE_NAME}
-   ```
+    For each of the Managed (Target) accounts you want to deploy to, perform the following from your Halyard instance:
 
-1. Optionally, edit the account with additional options such as those indicated in the [halyard documentation](https://www.spinnaker.io/reference/halyard/commands/#hal-config-provider-aws-account-edit).  For example, to set the regions that you can deploy to:
+    1. Run this command, **updating fields as follows**:
 
-   ```bash
-   export AWS_ACCOUNT_NAME=aws-dev-1
-   hal config provider aws account edit ${AWS_ACCOUNT_NAME} \
-       --regions us-east-1,us-west-2
-   ```
+        * `AWS_ACCOUNT_NAME` should be a unique name which is used in the Spinnaker UI and API  to identify the deployment target.  For example, `aws-dev-1` or `aws-dev-2`
+        * `ACCOUNT_ID` should be the account ID for the Managed Role (Target Role) you are  assuming.  For example, if the role ARN is `arn:aws:iam::123456789012:role/DevSpinnakerManagedRole`, then ACCOUNT_ID would be `123456789012`
+        * `ROLE_NAME` should be the full role name within the account, including the type of  object (`role`).  For example, if the role ARN is `arn:aws:iam::123456789012:role/DevSpinnakerManagedRole`, then ROLE_NAME would be `role/DevSpinnakerManagedRole`
+
+        ```bash
+        # Enter the account name you want Spinnaker to use to identify the deployment target,
+        # as well as the account ID, and the role name.
+        export AWS_ACCOUNT_NAME=aws-dev-1
+        export ACCOUNT_ID=123456789012
+        export ROLE_NAME=role/DevSpinnakerManagedRole
+
+        hal config provider aws account add ${AWS_ACCOUNT_NAME} \
+            --account-id ${ACCOUNT_ID} \
+            --assume-role ${ROLE_NAME}
+        ```
+
+    1. Optionally, edit the account with additional options such as those indicated in the [Halyard documentation](https://www.spinnaker.io/reference/halyard/commands/#hal-config-provider-aws-account-edit).  For example, to set the regions that you can deploy to:
+
+        ```bash
+        export AWS_ACCOUNT_NAME=aws-dev-1
+        hal config provider aws account edit ${AWS_ACCOUNT_NAME} \
+            --regions us-east-1,us-west-2
+        ```
 
 ### IAM User Part 7: Adding/Enabling the AWS CloudProvider configuration to Spinnaker
 
-Once you've added all of the Managed (Target) accounts, run these commands to set up and enable the AWS cloudprovider setting as whole (this can be run multiple times with no ill effects):
+* **Operator**
 
-1. Add the AWS access key and secret access key from "IAM User Part 4" using Halyard (don't forget to provide the correct access key).
-  
-   ```bash
-   export ACCESS_KEY_ID=AKIA1234567890ABCDEF
-   hal config provider aws edit --access-key-id ${ACCESS_KEY_ID} \
-     --secret-access-key # do not supply the key here, you will be prompted
-   ```
+    Apply the changes done in `Spinnakerservice` manifest:
 
-1. Enable AWS Provider
+    ```bash
+    kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest file>
+    ```
 
-   ```bash
-   hal config provider aws enable
-   ```
+* **Halyard**
 
-1. Apply all Spinnaker changes:
+    Once you've added all of the Managed (Target) accounts, run these commands to set up and enable the AWS cloudprovider setting as whole (this can be run multiple times with no ill effects):
 
-   ```bash
-   # Apply changes
-   hal deploy apply
-   ```
+    1. Add the AWS access key and secret access key from "IAM User Part 4" using Halyard (don't forget to provide the correct access key).
+
+        ```bash
+        export ACCESS_KEY_ID=AKIA1234567890ABCDEF
+        hal config provider aws edit --access-key-id ${ACCESS_KEY_ID} \
+            --secret-access-key # do not supply the key here, you will be prompted
+        ```
+
+    1. Enable AWS Provider
+
+        ```bash
+        hal config provider aws enable
+        ```
+
+    1. Apply all Spinnaker changes:
+
+        ```bash
+        # Apply changes
+        hal deploy apply
+        ```

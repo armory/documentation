@@ -23,7 +23,7 @@ When managing roles for Spinnaker, keep the following in mind:
 
 Perform the following steps:
 
-1. In `fiat-local.yml`, set the value for `auth.permissions.provider.application` parameter to `aggregate`.
+1. Add the line `auth.permissions.provider.application: aggregate` to `SpinnakerService` manifest under key `spec.spinnakerConfig.profiles.fiat` if you are using Operator to deploy Spinnaker, or to `fiat-local.yml` if you are using Halyard.
 2. Add prefixes as a source:
 
     ```
@@ -44,65 +44,80 @@ Perform the following steps:
        EXECUTE:
        - "user role n>"
    ```
-    Here is an example `fiat-local.yml` configuration with in-line comments:
+   
+    Here is an example configuration with in-line comments:
 
     ```yaml
-    # fiat-local.yml
-    # Enables Fiat to read from new sources.
-    auth.permissions.provider.application: aggregate
-    # Sets `prefix` as one of these new sources
-    auth.permissions.source.application.prefix:
-      enabled: true
-      prefixes:
-         # Defines the prefix `apptest-x`. 
-       - prefix: "apptest-*"
-         permissions:
-           # Defines permission requirements for all applications that match the prefix `apptest-*` based on roles.
-           # role-one and role-two have READ permission 
-           READ:
-           - "role-one"
-           - "role-two"
-           # role-one has write permission
-           WRITE:
-           - "role-one"
-           # role-one has execute permission
-           EXECUTE:
-           - "role-one"
+    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+    kind: SpinnakerService
+    metadata:
+      name: spinnaker
+    spec:
+      spinnakerConfig:  
+        profiles:
+          fiat: # Below section maps to fiat-local.yml if using Halyard
+            # Enables Fiat to read from new sources.
+            auth.permissions.provider.application: aggregate
+            # Sets `prefix` as one of these new sources
+            auth.permissions.source.application.prefix:
+              enabled: true
+              prefixes:
+                # Defines the prefix `apptest-x`. 
+              - prefix: "apptest-*"
+                permissions:
+                  # Defines permission requirements for all applications that match the prefix `apptest-*` based on roles.
+                  # role-one and role-two have READ permission 
+                  READ:
+                  - "role-one"
+                  - "role-two"
+                  # role-one has write permission
+                  WRITE:
+                  - "role-one"
+                  # role-one has execute permission
+                  EXECUTE:
+                  - "role-one"
     ```
 
     As a result, any application that matches the prefix `apptest-*` has restrictions on who can perform actions. For example, a user with the user role `role-two` only has `READ` permission.<br>
 
-4. To restrict application creation specifically, add `fiat.restrictApplicationCreation` to `fiat-local.yml` and set it to `true`.
+4. To restrict application creation specifically, add `fiat.restrictApplicationCreation` at the top of fiat config and set it to `true`.
 
     **Note: Currently, the prefix source is the only source that support the CREATE permission.**
 
     The following example builds upon the example from the previous steps. In-line comments describe additions:
 
     ```yaml
-    # fiat-local.yml
-    # Add CREATE as a permission
-    fiat.restrictApplicationCreation: true
-    auth.permissions.provider.application: aggregate
-    auth.permissions.source.application.prefix:
-      enabled: true
-      prefixes:
-       - prefix: "*"
-         permissions:
-           # Assign CREATE permission to role-one
-           CREATE:
-           - "role-one"
-           READ:
-           - "role-one"
-           - "role-two"
-           WRITE:
-           - "role-one"
-           EXECUTE:
-           - "role-one"
+    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+    kind: SpinnakerService
+    metadata:
+      name: spinnaker
+    spec:
+      spinnakerConfig:  
+        profiles:
+          fiat: # Below section maps to fiat-local.yml if using Halyard
+            # Add CREATE as a permission
+            fiat.restrictApplicationCreation: true
+            auth.permissions.provider.application: aggregate
+            auth.permissions.source.application.prefix:
+              enabled: true
+              prefixes:
+              - prefix: "*"
+                permissions:
+                  # Assign CREATE permission to role-one
+                  CREATE:
+                  - "role-one"
+                  READ:
+                  - "role-one"
+                  - "role-two"
+                  WRITE:
+                  - "role-one"
+                  EXECUTE:
+                  - "role-one"
     ```
 
     The above example assigns CREATE permission to users with the `role-one` role. Users without the `role-one` role cannot create any applications in Spinnaker.
 
-5. Apply your configuration changes to Spinnaker by running the following command: `hal deploy apply`.
+5. Apply your configuration changes to Spinnaker by running the following command: `kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest>` if you are using Operator, or `hal deploy apply` if you are using Halyard.
 
 The following screenshot shows what happens when a user without sufficient permissions attempts to create an application in Deck, Spinnaker's UI: 
 ![No CREATE Permission](/assets/images/authz_create_permission.png)
