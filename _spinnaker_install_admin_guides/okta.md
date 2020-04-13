@@ -52,7 +52,7 @@ On the "Configure SAML page", configure the following settings:
 
 In the GROUP ATTRIBUTE STATEMENTS section:
 
-* Name = memberOf, Name format = Unspecified, Filter = Regex: .* 
+* Name = memberOf, Name format = Unspecified, Filter = Regex: .*
 
 Then, hit the green "Next" button
 ![SamlSettings](/assets/images/okta-samlsettings.png)
@@ -86,7 +86,7 @@ keytool -genkey -v -keystore $KEYSTORE_PATH -alias saml -keyalg RSA -keysize 204
 
 > Note: The value you enter for `issuerId` must match the value entered in "Audience URI (SP Entity ID)" when configuring the app in Okta
 
-* If using Operator
+* **Operator**
 
     Add the following snippet to `SpinnakerService` manifest. This references secrets stored in a Kubernetes secrets in the same namespace as Spinnaker, but secrets can be stored in any of the supported [secret engines](/spinnaker-install-admin-guides/secrets):
 
@@ -102,30 +102,30 @@ keytool -genkey -v -keystore $KEYSTORE_PATH -alias saml -keyalg RSA -keysize 204
             authn:
               saml:
                 enabled: true
-                keyStore: encryptedFile:k8s!spin-secrets!k:saml.jks 
+                keyStore: encryptedFile:k8s!spin-secrets!k:saml.jks
                 keyStoreAliasName: saml
                 keyStorePassword: encrypted:k8s!spin-secrets!k:keystorePassword
                 metadataLocal: encryptedFile:k8s!spin-secrets!k:metadata.xml
                 issuerId: io.armory.spinnaker.oktatest # The identity of the Spinnaker application registered with the SAML provider.
                 serviceAddress: https://<gate-URL>     # The address of the Gate server that will be accesible by the SAML identity provider. This should be the full URL, including port, e.g. https://gate.org.com:8084/. If deployed behind a load balancer, this would be the laod balancer's address.
     ```
-  
+
     Create the kubernetes secret holding the spinnaker secrets:
-    
+
     ```bash
     kubectl -n <spinnaker namespace> create secret generic spin-secrets \
         --from-file=saml.jks \
         --from-file=metadata.xml \
         --from-literal=keystorePassword=<password-entered-in-step-1>
     ```
-  
+
     Apply the changes of `SpinnakerService` manifest:
-    
+
     ```bash
     kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest>
     ```
 
-* If using Halyard
+* **Halyard**
 
     ```bash
     KEYSTORE_PATH=/Users/armory/.hal/saml/saml.jks
@@ -141,7 +141,7 @@ keytool -genkey -v -keystore $KEYSTORE_PATH -alias saml -keyalg RSA -keysize 204
         --metadata $METADATA_PATH \
         --issuer-id $ISSUER_ID \
         --service-address-url $SERVICE_ADDR_URL
-    
+
     hal config security authn saml enable
     ```
 

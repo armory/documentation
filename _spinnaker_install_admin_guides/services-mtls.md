@@ -66,7 +66,7 @@ server:
     trust-store-type: PKCS12
     trust-store-password: <TRUSTSTORE_PASS>
     # Roll out with "want" initially
-    client-auth: need 
+    client-auth: need
 
 # Needed for all Java services
 ok-http-client:
@@ -105,12 +105,12 @@ This section is identical to [changing endpoints for TLS](../services-tls#changi
 
 ## Changing Readiness Probe
 
-Change the readiness probe used by Kubernetes from an HTTP request to a TCP probe. 
+Change the readiness probe used by Kubernetes from an HTTP request to a TCP probe.
 
-* If using Operator
+* **Operator**
 
     Add the following snippet to each service in `SpinnakerService` manifest:
-    
+
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
     kind: SpinnakerService
@@ -124,9 +124,9 @@ Change the readiness probe used by Kubernetes from an HTTP request to a TCP prob
               useTcpProbe: true
     ```
 
-* If using Halyard
+* **Halyard**
 
-    This can be done by adding the following to each service, under `<deploy>/service-settings/<service>.yml`:
+    This can be done by adding the following to each service under `<deploy>/service-settings/<service>.yml`:
 
     ```
     kubernetes:
@@ -139,17 +139,16 @@ Change the readiness probe used by Kubernetes from an HTTP request to a TCP prob
 
 Apply your changes to your Spinnaker deployment:
 
-* If using Operator
+* **Operator**
 
     ```bash
     kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest>
     ```
-  
-* If using Halyard
+
+* **Halyard**
 
     ```bash
     hal deploy apply
     ```
 
 If Spinnaker services are already using HTTPS, you can roll out mTLS without interruption by making the client certificate optional (`want`) in `server.ssl.client-auth` (Java) and `server.ssl.clientAuth`. Then once all the services are stable, rolling out a new configuration with that value set to `need`.
-

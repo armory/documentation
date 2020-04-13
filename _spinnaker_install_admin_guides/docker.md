@@ -21,7 +21,7 @@ a look at the [Halyard command reference](https://www.spinnaker.io/reference/hal
 If you haven't done this yet (for example, if you've just installed Armory
 Spinnaker fresh), you'll need to enable Docker registry providers:
 
-* If using Operator
+* **Operator**
 
     Add the following snippet to `SpinnakerService` manifest:
 
@@ -38,7 +38,7 @@ Spinnaker fresh), you'll need to enable Docker registry providers:
               enabled: true
     ```
 
-* If using Halyard
+* **Halyard**
 
     ```bash
     hal config provider docker-registry enable
@@ -53,7 +53,7 @@ public.  In most cases, you'll be configuring a private registry and the
 authentication credentials will be required, so the options are shown here
 as an example.
 
-* If using Operator
+* **Operator**
 
     Add the following snippet to `SpinnakerService` manifest:
 
@@ -91,7 +91,7 @@ as an example.
                 # environment: dev # The environment name for the account. Many accounts can share the same environment (e.g. dev, test, prod)
     ```
 
-* If using Halyard
+* **Halyard**
 
     ```bash
     hal config provider docker-registry account add my-docker-registry \
@@ -109,6 +109,3 @@ Container Registry).  Further details can be found [here](https://www.spinnaker.
 
 Amazon's ECR requires additional configuration to work properly with Spinnaker.
 [We've documented this separately.](/spinnaker-install-admin-guides/ecr-registry/)
-
-
-

@@ -21,7 +21,7 @@ Note: If multiple clusters need to access the same Vault server, you'll need to 
 
 After configuring authentication on the Vault side, use the following configuration to enable Vault secrets in Spinnaker:
 
-* If using the Operator
+* **Operator**
 
     Add the following snippet to the `SpinnakerService` manifest:
 
@@ -43,7 +43,7 @@ After configuring authentication on the Vault side, use the following configurat
                 # path: <k8s cluster path>                  # (Default: kubernetes) (Applies to KUBERNETES authentication method) Path of the kubernetes authentication backend mount. Default is "kubernetes"
     ```
 
-* If using Halyard
+* **Halyard**
 
     ```
     hal armory secrets vault enable
@@ -56,11 +56,11 @@ After configuring authentication on the Vault side, use the following configurat
 
 ### 2. Token authentication
 
-This method is not recommended but it is supported if you choose. We recommend this for testing and development purposes only. For token authentication, you'll need to have a `VAULT_TOKEN` environment variable set in the Halyard container of the Operator pod (or in the Halyard machine if using plain Halyard) and each of the services.
+This method is not recommended, but it is supported if you choose to use it. We recommend this for testing and development purposes only. For token authentication, you need to have a `VAULT_TOKEN` environment variable set in the Halyard container of the Operator pod (or in the Halyard machine if using plain Halyard) as well as each of the services.
 
 Use the following configuration to enable Vault secrets using token auth:
 
-* If using Operator
+* **Operator**
 
     Add the following snippet to the `SpinnakerService` manifest:
 
@@ -80,7 +80,7 @@ Use the following configuration to enable Vault secrets using token auth:
                 url: <Vault server URL>:<port, if required> # URL of the Vault endpoint from Spinnaker services.
     ```
 
-* If using Halyard
+* **Halyard**
 
     ```
     hal armory secrets vault enable
@@ -109,7 +109,7 @@ Once you've mounted your `ConfigMap` to the `spinnaker-operator` deployment, it 
 >Note: You'll need to be running Armory Halyard version 1.5.1 or later.
 ```
 sudo update-halyard --version 1.5.1
-``` 
+```
 
 Halyard will need access to the Vault server in order to decrypt secrets for validation and deployment. While the Spinnaker services are configured through `~/.hal/config`, the Halyard daemon has its own configuration file found at `/opt/spinnaker/config/halyard.yml`. The contents of your file may look different than this example, but just make sure to add the secrets block somewhere at the root level.
 
@@ -156,10 +156,10 @@ secrets:
     role: <k8s role>
     path: <k8s cluster path>
 ```
-Restart the pod so that Halyard restarts with your new config. 
+Restart the pod so that Halyard restarts with your new config.
 
 ## Storing secrets
-To store a file, simply prepend the file path with `@`. It accepts relative paths but cannot resolve `~`: 
+To store a file, simply prepend the file path with `@`. It accepts relative paths but cannot resolve `~`:
 
 ```
 vault kv put secret/spinnaker/kubernetes config=@path/to/kube/config
@@ -183,7 +183,7 @@ Now that secrets are safely stored in Vault, you'll reference them in config fil
 
 ```
 encrypted:vault!e:<secret engine>!p:<path to secret>!k:<key>!b:<is base64 encoded?>
-``` 
+```
 
 
 For example, to reference the GitHub password from above:
@@ -202,7 +202,7 @@ encrypted:vault!e:secret!p:spinnaker/kubernetes!k:config
 ```
 
 ---
-**NOTE:** The `p` param is used (but `n` is still supported) starting in Armory Halyard version 1.6.4 and Armory Spinnaker version 2.15.0. Previous versions use the now deprecated `n` param for the path. 
+**NOTE:** The `p` param is used (but `n` is still supported) starting in Armory Halyard version 1.6.4 and Armory Spinnaker version 2.15.0. Previous versions use the now deprecated `n` param for the path.
 
 ---
 

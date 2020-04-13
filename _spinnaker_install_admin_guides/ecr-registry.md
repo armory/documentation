@@ -80,13 +80,13 @@ kubectl -n <namespace> create configmap token-refresh-config --from-file <config
 
 ### Update your Spinnaker installation
 
-* If using Operator
+* **Operator**
 
     ```bash
     kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest>
     ```
 
-* If using Halyard
+* **Halyard**
 
     ```bash
     hal deploy apply --service-names clouddriver

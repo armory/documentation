@@ -6,7 +6,7 @@ redirect_from:
   - /spinnaker_install_admin_guides/jenkins/
 ---
 
-Before you can make use of Jenkins in Spinnaker, you'll need to 
+Before you can make use of Jenkins in Spinnaker, you'll need to
 configure access to your Jenkins masters.
 
 {:.no_toc}
@@ -18,10 +18,10 @@ configure access to your Jenkins masters.
 
 ## Enable Jenkins Support
 
-* If using Operator
+* **Operator**
 
     Add the following snippet to your `SpinnakerService` manifest:
-    
+
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
     kind: SpinnakerService
@@ -35,9 +35,9 @@ configure access to your Jenkins masters.
               enabled: true
     ```
 
-* If using Halyard
+* **Halyard**
 
-    Enable Jenkins using the Halyard command: 
+    Enable Jenkins using the Halyard command:
 
     ```bash
     hal config ci jenkins enable
@@ -59,12 +59,12 @@ You can add as many Jenkins masters as needed.  Once the master is configured
 properly, Spinnaker will use the credentials provided to query for all
 available jobs and display them in the UI for triggers and stages.
 
-Add the Jenkins master to Spinnaker: 
+Add the Jenkins master to Spinnaker:
 
-* If using Operator
+* **Operator**
 
     Add the following snippet to your `SpinnakerService` manifest:
-    
+
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
     kind: SpinnakerService
@@ -77,19 +77,19 @@ Add the Jenkins master to Spinnaker:
             jenkins:
               enabled: true
               masters:
-              - name: <jenkins-master-name> 
+              - name: <jenkins-master-name>
                 address: https://<jenkins-url>/ # The address your jenkins master is reachable at.
                 username: <jenkins-username>    # The username of the jenkins user to authenticate as.
                 password: abc                   # The password of the jenkins user to authenticate as. This field support "encrypted" secret references.
     ```
-  
+
     Don't forget to apply your changes:
-    
+
     ```bash
     kubectl -n >spinnaker namespace> apply -f <SpinnakerService manifest>
     ```
 
-* If using Halyard
+* **Halyard**
 
     ```bash
     hal config ci jenkins master add <jenkins-master-name> \
@@ -102,7 +102,7 @@ Add the Jenkins master to Spinnaker:
 
 ## Troubleshooting Authentication / Connectivity
 
-Igor is the service that interacts with Jenkins.  You can test Spinnaker-Jenkins connectivity using `curl` from another pod. The Deck or Clouddriver pod is a good option since `curl` is already installed there. 
+Igor is the service that interacts with Jenkins.  You can test Spinnaker-Jenkins connectivity using `curl` from another pod. The Deck or Clouddriver pod is a good option since `curl` is already installed there.
 
 ```bash
 curl https://<jenkins-url>/api/json --user <jenkins-username>:<jenkins-api-token>

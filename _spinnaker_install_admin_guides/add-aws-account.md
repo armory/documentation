@@ -15,7 +15,7 @@ Once you have (OSS or Armory) Spinnaker up and running in Kubernetes, you'll wan
 Note that this document assumes the following conditions are true:
 
 * Spinnaker was installed with Operator or Halyard.
-* You have access to the Spinnaker config files, and a way to apply them (`kubectl` for operator or `hal` for Halyard),
+* You have access to the Spinnaker config files, and a way to apply them (`kubectl` for Operator or `hal` for Halyard),
 * You have a way to create AWS permissions, users, and roles.
 
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
@@ -82,10 +82,10 @@ Here's an example situation:
 
 ### Configuration
 
-* If using Operator
+* **Operator**
 
     Here's a sample `SpinnakerService` manifest block that supports the above:
-    
+
    ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
     kind: SpinnakerService
@@ -144,7 +144,7 @@ Here's an example situation:
                 iamRole: BaseIAMRole
     ```
 
-* If using Halyard
+* **Halyard**
 
     Here's a sample halconfig `aws` YAML block that supports the above:
 
@@ -197,7 +197,7 @@ Here's an example situation:
           defaults:
             iamRole: BaseIAMRole
     ```
-  
+
 ## Prerequisites
 
 This document assumes the following:
@@ -383,10 +383,10 @@ For each account you want to deploy to, perform the following:
 
 The Clouddriver pod(s) should be now able to assume each of the Managed Roles (Target Roles) in each of your Deployment Target accounts.  We need to configure Spinnaker to be aware of the accounts and roles it is allowed to consume.
 
-* If using Operator
+* **Operator**
 
     For each of the Managed (Target) accounts you want to deploy to, add a new entry to the `accounts` array in `SpinnakerService` manifest as follows:
-    
+
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
     kind: SpinnakerService
@@ -425,9 +425,9 @@ The Clouddriver pod(s) should be now able to assume each of the Managed Roles (T
               defaults:
                 iamRole: BaseIAMRole
     ```
-  
-* If using Halyard
-    
+
+* **Halyard**
+
     For each of the Managed (Target) accounts you want to deploy to, perform the following from your Halyard instance:
 
     1. Run this command, **updating fields as follows**:
@@ -437,7 +437,7 @@ The Clouddriver pod(s) should be now able to assume each of the Managed Roles (T
         * `ROLE_NAME` should be the full role name within the account, including the type of  object (`role`).  For example, if the role ARN is `arn:aws:iam::123456789012:role/DevSpinnakerManagedRole`, then ROLE_NAME would be `role/DevSpinnakerManagedRole`
 
         ```bash
-        # Enter the account name you want Spinnaker to use to identify the deployment target, 
+        # Enter the account name you want Spinnaker to use to identify the deployment target,
         # as well as the account ID, and the role name.
         export AWS_ACCOUNT_NAME=aws-dev-1
         export ACCOUNT_ID=123456789012
@@ -448,7 +448,7 @@ The Clouddriver pod(s) should be now able to assume each of the Managed Roles (T
             --assume-role ${ROLE_NAME}
         ```
 
-    1. Optionally, edit the account with additional options such as those indicated in the [halyard documentation](https://www.spinnaker.io/reference/halyard/commands/#hal-config-provider-aws-account-edit).  For example, to set the regions that you can deploy to:
+    1. Optionally, edit the account with additional options such as those indicated in the [Halyard documentation](https://www.spinnaker.io/reference/halyard/commands/#hal-config-provider-aws-account-edit).  For example, to set the regions that you can deploy to:
 
         ```bash
         export AWS_ACCOUNT_NAME=aws-dev-1
@@ -458,20 +458,20 @@ The Clouddriver pod(s) should be now able to assume each of the Managed Roles (T
 
 ### IAM User Part 7: Adding/Enabling the AWS CloudProvider configuration to Spinnaker
 
-* If using Operator
+* **Operator**
 
     Apply the changes done in `Spinnakerservice` manifest:
-    
+
     ```bash
     kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest file>
     ```
 
-* If using Halyard
+* **Halyard**
 
     Once you've added all of the Managed (Target) accounts, run these commands to set up and enable the AWS cloudprovider setting as whole (this can be run multiple times with no ill effects):
 
     1. Add the AWS access key and secret access key from "IAM User Part 4" using Halyard (don't forget to provide the correct access key).
-  
+
         ```bash
         export ACCESS_KEY_ID=AKIA1234567890ABCDEF
         hal config provider aws edit --access-key-id ${ACCESS_KEY_ID} \

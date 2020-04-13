@@ -10,7 +10,7 @@ redirect_from:
   - /spinnaker-install-admin-guides/add_aws_account_iam/
 ---
 
-Once you have (OSS or Armory) Spinnaker up and running in Kubernetes, you'll want to start adding deployment targets.  *(This document assumes Spinnaker was installed with operator or halyard, that you have access to the Spinnaker config files, a way to apply them (`kubectl` or `hal`), and that you have a way to create AWS permissions, users, and roles*
+Once you have (OSS or Armory) Spinnaker up and running in Kubernetes, you'll want to start adding deployment targets.  *This document assumes Spinnaker was installed with Operator or Halyard, that you have access to the Spinnaker config files, a way to apply them (`kubectl` or `hal`), and that you have a way to create AWS permissions, users, and roles*
 
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
@@ -77,10 +77,10 @@ Here's an example situation:
 
 ### Configuration
 
-* If using Operator
+* **Operator**
 
     Here's a sample `SpinnakerService` manifest block that supports the above:
-    
+
    ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
     kind: SpinnakerService
@@ -134,7 +134,7 @@ Here's an example situation:
                 iamRole: BaseIAMRole
     ```
 
-* If using Halyard
+* **Halyard**
 
     Here's a sample halconfig `aws` YAML block that supports the above:
 
@@ -189,7 +189,7 @@ This document assumes the following:
 
 * Your Spinnaker is up and running
 * Your Spinnaker was installed and configured via Operator or Halyard
-* If you're using Operator, you have a access to run `kubectl` commands against the cluster where Spinnaker is installed. If you're using Halyard, you have access to it
+* **Operator**: you have access to run `kubectl` commands against the cluster where Spinnaker is installed. If you're using Halyard, you have access to it
 * You have permissions to create IAM roles using IAM policies and permissions, in all relevant AWS accounts
   * You should also be able to set up cross-account trust relationships between IAM roles.
 * If you want to add the IAM Role to Spinnaker via an Access Key/Secret Access Key, you have permissions to create an IAM User
@@ -378,10 +378,10 @@ For each account you want to deploy to, perform the following:
 
 The Clouddriver pod(s) should be now able to assume each of the Managed Roles (Target Roles) in each of your Deployment Target accounts.  We need to configure Spinnaker to be aware of the accounts and roles its allowed to consume.
 
-* If using Operator
+* **Operator**
 
     For each of the Managed (Target) accounts you want to deploy to, add a new entry to the `accounts` array in `SpinnakerService` manifest as follows:
-    
+
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
     kind: SpinnakerService
@@ -417,7 +417,7 @@ The Clouddriver pod(s) should be now able to assume each of the Managed Roles (T
 
     ```
 
-* If using Halyard
+* **Halyard**
 
     For each of the Managed (Target) accounts you want to deploy to, perform the following from your Halyard instance:
 
@@ -425,13 +425,13 @@ The Clouddriver pod(s) should be now able to assume each of the Managed Roles (T
         * `AWS_ACCOUNT_NAME` should be a unique name which is used in the Spinnaker UI and API  to identify the deployment target.  For example, `aws-dev-1` or `aws-dev-2`
         * `ACCOUNT_ID` should be the account ID for the Managed Role (Target Role) you are  assuming.  For example, if the role ARN is `arn:aws:iam::123456789012:role/ DevSpinnakerManagedRole`, then ACCOUNT_ID would be `123456789012`
         * `ROLE_NAME` should be the full role name within the account, including the type of  object (`role`).  For example, if the role ARN is `arn:aws:iam::123456789012:role/ DevSpinnakerManagedRole`, then ROLE_NAME would be `role/DevSpinnakerManagedRole`
- 
+
         ```bash
         # Enter the account name you want Spinnaker to use to identify the deployment target,  the account ID, and the role name.
         export AWS_ACCOUNT_NAME=aws-dev-1
         export ACCOUNT_ID=123456789012
         export ROLE_NAME=role/DevSpinnakerManagedRole
- 
+
         hal config provider aws account add ${AWS_ACCOUNT_NAME} \
             --account-id ${ACCOUNT_ID} \
             --assume-role ${ROLE_NAME}
@@ -447,15 +447,15 @@ The Clouddriver pod(s) should be now able to assume each of the Managed Roles (T
 
 ### Instance Role Part 7: Adding/Enabling the AWS CloudProvider configuration to Spinnaker
 
-* If using Operator
+* **Operator**
 
     Apply the changes done in `Spinnakerservice` manifest:
-    
+
     ```bash
     kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest file>
     ```
 
-* If using Halyard
+* **Halyard**
 
     Once you've added all of the Managed (Target) accounts, run these commands to set up and enable the AWS cloudprovider setting as whole (this can be run multiple times with no ill effects):
 

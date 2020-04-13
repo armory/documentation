@@ -10,7 +10,7 @@ To utilize the Kubernetes auth method for managing your Spinnaker secrets you ne
 
 ## Overview
 
-Configuration of Vault for the Kubernetes auth method requires configuring both Vault and Kubernetes. We will begin by configuring Kubernetes and wrap things up by then configuring Vault itself. 
+Configuration of Vault for the Kubernetes auth method requires configuring both Vault and Kubernetes. We will begin by configuring Kubernetes and wrap things up by then configuring Vault itself.
 
 ## Kubernetes configuration
 
@@ -96,7 +96,7 @@ The Kubernetes Vault Auth Secrets Engine does not currently support token renewa
 **Note** by default Vault has a max_ttl parameter set to `768h0m0s` that's 32 days, if you want to set the `TTL` to a higher value, you need to modify this parameter.
 
 
-**Important:** Spinnaker must be redeployed sometime during the defined `TTL` window -- we recommend this be done by updating to a new version of Spinnaker and running `kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest>` if using Operator, or `hal deploy apply` if using Halyard.
+**Important:** Spinnaker must be redeployed sometime during the defined `TTL` window -- Armory recommends this be done by updating to a new version of Spinnaker and running `kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest>` if using Operator, or `hal deploy apply` if using Halyard.
 
 ---
 

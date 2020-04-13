@@ -35,7 +35,7 @@ more detailed help, take a look at the
 If you haven't done this yet (for example, if you've just installed Armory
 Spinnaker fresh), you'll need to enable Github as an artifact source:
 
-* If using Operator
+* **Operator**
 
     Add the following snippet to `SpinnakerService` manifest:
 
@@ -54,7 +54,7 @@ Spinnaker fresh), you'll need to enable Github as an artifact source:
               enabled: true
     ```
 
-* If using Halyard
+* **Halyard**
 
     ```bash
     hal config features edit --artifacts true
@@ -74,7 +74,7 @@ this:
 
 *Replace the account name `github_user` with the string you want to use to identify this Github credential.*
 
-* If using Operator
+* **Operator**
 
     Add the following snippet to `SpinnakerService` manifest:
 
@@ -99,16 +99,16 @@ this:
                 # usernamePasswordFile: creds.txt # File containing "username:password" to use for GitHub authentication. This fields supports `encryptedFile` references to secrets.
                 # tokenFile: token.txt # File containing a GitHub authentication token. This fields supports `encryptedFile` references to secrets.
     ```
-  
+
     If you have a Github personal access token, you only need that to authenticate against Github, but there are other authentication options like username/password, or specifying credentials in a `file` entry.
-    
+
     Don't forget to apply your changes:
-    
+
     ```bash
     kubectl -n >spinnaker namespace> apply -f <SpinnakerService manifest>
     ```
-  
-* If using Halyard
+
+* **Halyard**
 
     ```bash
     GITHUB_ACCOUNT_NAME=github_user

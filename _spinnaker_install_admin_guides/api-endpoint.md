@@ -75,7 +75,7 @@ You should have the following items:
 
 ### Creating a Self-Signed CA Certificate
 
-If your organization has a CA certificate or you do not have a way to request client certificates signed by the CA, you can generate a self-signed CA certificate and private key.  We will use this 
+If your organization has a CA certificate or you do not have a way to request client certificates signed by the CA, you can generate a self-signed CA certificate and private key.  We will use this
 
 We will use `openssl` to generate a Certificate Authority (CA) key and a server
 certificate. These instructions create a self-signed CA and key. You might want to
@@ -95,7 +95,7 @@ a self-signed Certificate Authority.
 
    ```bash
    CA_KEY_PASSWORD=SOME_PASSWORD_FOR_CA_KEY
-   
+
    openssl genrsa \
      -des3 \
      -out ca.key \
@@ -103,12 +103,12 @@ a self-signed Certificate Authority.
      4096
    ```
 
-1. Self-sign the CA certificate.  You can remove the `-passin` flag to have the command prompt for the passphrase.  This should be the pass phrase used to 
+1. Self-sign the CA certificate.  You can remove the `-passin` flag to have the command prompt for the passphrase.  This should be the pass phrase used to
 encrypt `ca.key`.
 
    ```bash
    CA_KEY_PASSWORD=SOME_PASSWORD_FOR_CA_KEY
-   
+
    openssl req \
      -new \
      -x509 \
@@ -143,7 +143,7 @@ If you want to generate your own certificates (for example, from the self-signed
    ```bash
    # This will be the passphrase used to encrypt the Deck private key
    DECK_KEY_PASSWORD=SOME_PASSWORD_FOR_DECK_KEY
-   
+
    openssl genrsa \
      -des3 \
      -out deck.key \
@@ -157,7 +157,7 @@ Deck's eventual fully-qualified domain name (FQDN) as the Common Name (CN).
    ```bash
    # This should be the passphrase used to encrypt the Deck private key
    DECK_KEY_PASSWORD=SOME_PASSWORD_FOR_DECK_KEY
-   
+
    openssl req \
      -new \
      -key deck.key \
@@ -171,7 +171,7 @@ Deck's eventual fully-qualified domain name (FQDN) as the Common Name (CN).
    ```bash
    # This should be the passphrase used to encrypt the self-signed CA private key
    CA_KEY_PASSWORD=SOME_PASSWORD_FOR_CA_KEY
-   
+
    openssl x509 \
      -req \
      -days 365 \
@@ -220,7 +220,7 @@ If you want to generate your own certificates (for example, from the self-signed
    ```bash
    # This will be the passphrase used to encrypt the Gate private key
    GATE_KEY_PASSWORD=SOME_PASSWORD_FOR_GATE_KEY
-   
+
    openssl genrsa \
      -des3 \
      -out gate.key \
@@ -228,7 +228,7 @@ If you want to generate your own certificates (for example, from the self-signed
      4096
    ```
 
-1. Generate a certificate signing request (CSR) for Gate. Ideally, specify 
+1. Generate a certificate signing request (CSR) for Gate. Ideally, specify
 Gate's eventual fully-qualified domain name (FQDN) as the Common Name (CN).  
 
    This will prompt for the pass phrase for `gate.key`.
@@ -236,7 +236,7 @@ Gate's eventual fully-qualified domain name (FQDN) as the Common Name (CN).
    ```bash
    # This should be the passphrase used to encrypt the Gate private key
    GATE_KEY_PASSWORD=SOME_PASSWORD_FOR_GATE_KEY
-   
+
    openssl req \
      -new \
      -key gate.key \
@@ -252,7 +252,7 @@ Gate's eventual fully-qualified domain name (FQDN) as the Common Name (CN).
    ```bash
    # This should be the passphrase used to encrypt the self-signed CA private key
    CA_KEY_PASSWORD=SOME_PASSWORD_FOR_CA_KEY
-   
+
    openssl x509 \
      -req \
      -days 365 \
@@ -296,10 +296,10 @@ which is importable into a Java Keystore (JKS).
    ```bash
    # GATE_KEY_PASSWORD should be the passphrase you used to encrypt `gate.key`
    GATE_KEY_PASSWORD=SOME_PASSWORD_FOR_GATE_KEY
-   
+
    # GATE_EXPORT_PASSWORD can be a new passphrase that will be used to encrypted `gate.p12`
    GATE_EXPORT_PASSWORD=SOME_PASSWORD_FOR_GATE_P12
-   
+
    openssl pkcs12 \
      -export \
      -clcerts \
@@ -317,14 +317,14 @@ which is importable into a Java Keystore (JKS).
 
    Because Gate assumes that the keystore password and the password for the key
    in the keystore are the same, we must provide both via the command line.
- 
+
    ```bash
    # GATE_EXPORT_PASSWORD should be the passphrase that was used to encrypted `gate.p12`
    GATE_EXPORT_PASSWORD=SOME_PASSWORD_FOR_GATE_P12
- 
+
    # JKS_PASSWORD can be a new password that will be used to encrypt `gate.jks`
    JKS_PASSWORD=SOME_JKS_PASSWORD
- 
+
    keytool -importkeystore \
      -srckeystore gate.p12 \
      -srcstoretype pkcs12 \
@@ -338,12 +338,12 @@ which is importable into a Java Keystore (JKS).
    ```
 
 1. Import the CA certificate into the Java Keystore.  
-    
+
 
    ```bash
    # JKS_PASSWORD should be the password that was used to encrypt `gate.jks`
    JKS_PASSWORD=SOME_JKS_PASSWORD
- 
+
    keytool -importcert \
      -keystore gate.jks \
      -alias ca \
@@ -357,25 +357,25 @@ which is importable into a Java Keystore (JKS).
    ```bash
    # JKS_PASSWORD should be the password that was used to encrypt `gate.jks`
    JKS_PASSWORD=SOME_JKS_PASSWORD
- 
+
    keytool \
      -list \
      -keystore gate.jks \
      -storepass ${JKS_PASSWORD}
    ```
- 
+
    It should contain two entries:
- 
+
    * `gate` as a `PrivateKeyEntry`
    * `ca` as a `trustedCertEntry`
 
 ## Back Up Your Spinnaker Configuration
 
-* If using Operator
+* **Operator**
 
     Backup all `SpinnakerService` related files.
 
-* If using Halyard
+* **Halyard**
 
     Before making any changes with Halyard, it is recommended to back up your current configuration.  You can back up your Halyard configuration with this:
 
@@ -389,10 +389,10 @@ which is importable into a Java Keystore (JKS).
 
 Next, we will configure Spinnaker's Deck service to use the Deck certificate and private key that we've generated.
 
-* If using Operator
+* **Operator**
 
     Add the following snippet to the `SpinnakerService` manifest:
-    
+
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
     kind: SpinnakerService
@@ -407,16 +407,16 @@ Next, we will configure Spinnaker's Deck service to use the Deck certificate and
                 enabled: true
                 sslCertificateFile: encrypted:k8s!n:spin-deck-secrets!k:deck.crt
                 sslCertificateKeyFile: encrypted:k8s!n:spin-deck-secrets!k:deck.key
-                sslCertificatePassphrase: abc # Your passphrase 
+                sslCertificatePassphrase: abc # Your passphrase
     ```
-  
+
     Create a new Kubernetes secret having the above files. Here we assume that Spinnaker is installed in the `spinnaker` namespace, and you are in the folder where `deck.crt` and `deck.key` are located:
-    
+
     ```bash
     kubectl -n spinnaker create secret generic spin-deck-secrets --from-file=deck.crt --from-file=deck.key
     ```
-  
-* If using Halyard
+
+* **Halyard**
 
     Copy `deck.crt` and `deck.key` to locations accessible to your Halyard. For example, if Halyard is a Docker container with the `.secret` directory mounted into it, copy `deck.crt` and `deck.key` to `.secret/`.
 
@@ -442,10 +442,10 @@ Depending on how your load balancer is configured (if you're using an Ingress vs
 
 Next, we will configure Spinnaker's Gate service to use the JKS that we've generated.
 
-* If using Operator
+* **Operator**
 
     Add the following snippet to the `SpinnakerService` manifest:
-    
+
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
     kind: SpinnakerService
@@ -467,14 +467,14 @@ Next, we will configure Spinnaker's Gate service to use the JKS that we've gener
                 trustStorePassword: abc # The password to unlock your truststore.
                 clientAuth: WANT # Declare 'WANT' when client auth is wanted but not mandatory, or 'NEED', when client auth is mandatory.
     ```
-  
+
     Create a new Kubernetes secret having the above files. Here we assume that Spinnaker is installed in the `spinnaker` namespace, and you are in the folder where `gate.jks` is located:
-    
+
     ```bash
     kubectl -n spinnaker create secret generic spin-gate-secrets --from-file=gate.jks
     ```
-  
-* If using Halyard
+
+* **Halyard**
 
     First, copy `gate.jks` to a location accessible to your Halyard.  For example, if Halyard is a Docker container with the `.secret` directory mounted into it, copy `gate.jks` to `.secret/`.
 
@@ -533,10 +533,10 @@ The mechanism to achieve this will depend on what type of Ingress you are using.
 
 If you are instead using a Layer 4 (TCP) load balancer (such as a `Service` configured as a `LoadBalancer` in EKS), or directly exposing your Kubernetes `Service` objects using a `NodePort` configuration, then you'll need to change the base URL overrides.
 
-* If using Operator
+* **Operator**
 
     In the `SpinnakerService` manifest you need to change the `overrideBaseUrl` settings of Deck and Gate in the following way:
-    
+
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
     kind: SpinnakerService
@@ -551,10 +551,10 @@ If you are instead using a Layer 4 (TCP) load balancer (such as a `Service` conf
             uiSecurity:
               overrideBaseUrl: https://spinnaker.domain.com        # URL to access Deck, using HTTPS scheme
     ```
-  
+
     Although Spinnaker also supports using a different DNS name, Armory recommends that you use the same DNS but different paths for Deck and Gate. Tasks such as Cross-Origin Resource Sharing (CORS) between your Gate and Deck endpoints and securing Gate and Deck are much easier when both services use the same DNS name.
 
-* If using Halyard
+* **Halyard**
 
     Look at your existing Halconfig (`cat .hal/config` or `hal config`), and look for these sections:
     `security.apiSecurity.overrideBaseUrl`
@@ -571,7 +571,7 @@ If you are instead using a Layer 4 (TCP) load balancer (such as a `Service` conf
 
     ```bash
     SPINNAKER_FQDN=spinnaker.domain.com
-    GATE_FQDN=spinnaker.domain.com/api/v1 
+    GATE_FQDN=spinnaker.domain.com/api/v1
     hal config security ui edit --override-base-url https://${SPINNAKER_FQDN}
     hal config security api edit --override-base-url https://${GATE_FQDN}
     ```
@@ -580,13 +580,13 @@ If you are instead using a Layer 4 (TCP) load balancer (such as a `Service` conf
 
 Before enabling the API endpoint, we should apply the changes that we've made so far and make sure everything continues to work.
 
-* If using Operator
+* **Operator**
 
     ```bash
     kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest>
     ```
 
-* If using Halyard
+* **Halyard**
 
     ```bash
     hal deploy apply
@@ -600,11 +600,11 @@ Before enabling the API endpoint, we should apply the changes that we've made so
 
 1. If you have any issues, perform various troubleshooting steps (such as those related to HTTPS in our [KB](https://kb.armory.io/category/troubleshooting/)), or restore your prior backup:
 
-* If using Operator
+* **Operator**
 
     Just apply the backed up manifests files with `kubectl -n <spinnaker namespace> apply -f ...`
 
-* If using Halyard
+* **Halyard**
 
     ```bash
     hal backup restore --backup-path <backup-name>.tar
@@ -616,7 +616,7 @@ Once you've verified that your existing Gate and Deck endpoints continue to work
 
 1. Enable x509 Authentication
 
-* If using Operator
+* **Operator**
 
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
@@ -632,7 +632,7 @@ Once you've verified that your existing Gate and Deck endpoints continue to work
                 enabled: true
     ```
 
-* If using Halyard
+* **Halyard**
 
     ```bash
     hal config security authn x509 enable
@@ -640,7 +640,7 @@ Once you've verified that your existing Gate and Deck endpoints continue to work
 
 1. Configure Gate to use a second port for the x509 API port.  
 
-* If using Operator
+* **Operator**
 
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
@@ -655,7 +655,7 @@ Once you've verified that your existing Gate and Deck endpoints continue to work
               apiPort: 8085
     ```
 
-* If using Halyard
+* **Halyard**
 
     This must currently be done via a local profile override.  Create and/or update the file `.hal/default/profiles/gate-local.yml` with these contents:
 
@@ -666,13 +666,13 @@ Once you've verified that your existing Gate and Deck endpoints continue to work
 
 1. Apply your changes
 
-* If using Operator
+* **Operator**
 
     ```bash
     kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest>
     ```
 
-* If using Halyard
+* **Halyard**
 
     ```bash
     hal deploy apply
@@ -684,11 +684,11 @@ Gate will now have a second API port set up listening on port 8085, which will e
 
 You must expose port 8085 on your Gate containers externally, and you should **not** terminate TLS in front of them.  Depending on how your Kubernetes cluster lives, you may be able to use a `LoadBalancer` or `NodePort` Service.  Alternatively, if your Ingress Controller is configured to support TLS pass-through, you can use that.
 
-* If using Operator
+* **Operator**
 
     No action needed, Operator automatically exposes Gate's api port.
 
-* If using Halyard
+* **Halyard**
 
     We detail two options here.
 
@@ -696,7 +696,7 @@ You must expose port 8085 on your Gate containers externally, and you should **n
 
     ```bash
     # Replace this with the namespace where Spinnaker is installed
-    NAMESPACE=spinnaker
+    NAMESPACE=<spinnaker-namespace>
 
     tee gate-api-service.yml <<-'EOF'
     apiVersion: v1
@@ -803,7 +803,7 @@ If you created a self-signed CA, you can use that CA to sign certificates for yo
    ```bash
    # This will be the passphrase used to encrypt the client private key
    CLIENT_PASSWORD=SOME_CLIENT_PASSPHRASE
- 
+
    openssl genrsa \
      -des3 \
      -out client.key \
@@ -816,7 +816,7 @@ If you created a self-signed CA, you can use that CA to sign certificates for yo
    ```bash
    # This should be the same passphrase used to encrypt the client private key
    CLIENT_PASSWORD=SOME_CLIENT_PASSPHRASE
- 
+
    openssl req \
      -new \
      -key client.key \
@@ -825,11 +825,11 @@ If you created a self-signed CA, you can use that CA to sign certificates for yo
    ```
 
 1. Use the CA to sign the client's request.
-    
+
    ```bash
    # This should be the passphrase used to encrypt the self-signed CA private key
    CA_KEY_PASSWORD=SOME_PASSWORD_FOR_CA_KEY
- 
+
    openssl x509 \
      -req \
      -days 365 \
@@ -870,7 +870,7 @@ The OID `1.2.840.10070.8.1` is used to identify roles for a given user, so it is
 
 You can configure Gate to look for a list of endline-delimited groups in the `1.2.840.10070.8.1` OID:
 
-* If using Operator
+* **Operator**
 
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
@@ -885,12 +885,12 @@ You can configure Gate to look for a list of endline-delimited groups in the `1.
               x509:
                 roleOid: 1.2.840.10070.8.1
     ```
-    
+
     ```bash
     kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest>
     ```
 
-* If using Halyard
+* **Halyard**
 
     ```bash
     hal config security authn x509 edit --role-oid 1.2.840.10070.8.1
@@ -916,7 +916,7 @@ Then, add that to a configuration file that looks like this (replacing `GROUP_ST
  distinguished_name	= req_distinguished_name
  attributes		= req_attributes
  req_extensions = v3_req
- 
+
  [ req_distinguished_name ]
  countryName			= Country Name (2 letter code)
  countryName_min			= 2
@@ -929,12 +929,12 @@ Then, add that to a configuration file that looks like this (replacing `GROUP_ST
  commonName_max			= 64
  emailAddress			= Email Address
  emailAddress_max		= 64
- 
+
  [ req_attributes ]
  challengePassword		= A challenge password
  challengePassword_min		= 4
  challengePassword_max		= 20
- 
+
  [ v3_req ]
  keyUsage = nonRepudiation, digitalSignature, keyEncipherment
  1.2.840.10070.8.1 = ASN1:UTF8String:GROUP_STRING
@@ -950,7 +950,7 @@ Here's an example of how to use this:
    distinguished_name	= req_distinguished_name
    attributes		= req_attributes
    req_extensions = v3_req
- 
+
    [ req_distinguished_name ]
    countryName			= Country Name (2 letter code)
    countryName_min			= 2
@@ -963,12 +963,12 @@ Here's an example of how to use this:
    commonName_max			= 64
    emailAddress			= Email Address
    emailAddress_max		= 64
- 
+
    [ req_attributes ]
    challengePassword		= A challenge password
    challengePassword_min		= 4
    challengePassword_max		= 20
- 
+
    [ v3_req ]
    keyUsage = nonRepudiation, digitalSignature, keyEncipherment
    1.2.840.10070.8.1 = ASN1:UTF8String:spinnaker-example0\nspinnaker-example1
@@ -980,7 +980,7 @@ Here's an example of how to use this:
    ```bash
    # This will be the passphrase used to encrypt the client private key
    CLIENT_PASSWORD=SOME_CLIENT_PASSPHRASE
- 
+
    openssl genrsa \
      -des3 \
      -out client.key \
@@ -993,7 +993,7 @@ Here's an example of how to use this:
    ```bash
    # This should be the same passphrase used to encrypt the client private key
    CLIENT_PASSWORD=SOME_CLIENT_PASSPHRASE
- 
+
    openssl req \
      -new \
      -key client.key \
@@ -1007,7 +1007,7 @@ Here's an example of how to use this:
    ```bash
    # This should be the passphrase used to encrypt the self-signed CA private key
    CA_KEY_PASSWORD=SOME_PASSWORD_FOR_CA_KEY
- 
+
    openssl x509 \
      -req \
      -days 365 \
@@ -1026,7 +1026,7 @@ Now, when you use the generated certificate and key, your API client will be abl
 ### Configuring Spinnaker to parse out usernames from client certificate(s)
 When looking at audit logs, it can be helpful to differentiate different API clients. One way to achieve this is to parse out a "username" from the client for each API client certificate.  This is achieved by configuring Spinnaker to use regex to pull out a subject from the certificate. This is set up with the `subject principal regex` field, which is configured like this:
 
-* If using Operator
+* **Operator**
 
     ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
@@ -1041,12 +1041,12 @@ When looking at audit logs, it can be helpful to differentiate different API cli
               x509:
                 subjectPrincipalRegex: DESIRED_REGEX # For example, if you want to use the "Email Address" field from the certificate, the regex would be: EMAILADDRESS=(.*?)(?:,|$)
     ```
-  
+
     ```bash
     kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest>
     ```
 
-* If using Halyard
+* **Halyard**
 
     ```bash
     hal config security authn x509 edit \
@@ -1055,7 +1055,7 @@ When looking at audit logs, it can be helpful to differentiate different API cli
     hal deploy apply
     ```
 
-    For example, if you want to use the "Email Address" field from the certificate, 
+    For example, if you want to use the "Email Address" field from the certificate,
 
     ```bash
     hal config security authn x509 edit \

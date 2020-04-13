@@ -28,16 +28,17 @@ Select the “OAuth & Permissions” menu, copy the *Bot User OAuth Access Token
 
 ![Github Webhook](/images/slack-bot-credentials.png)
 
-Select the “Install your app to your workspace” from the Bot “Basic Information” page and deploy it. 
+Select the “Install your app to your workspace” from the Bot “Basic Information” page and deploy it.
 
 ## Invite The Bot To A Channel
 
 Spinnaker only requires to be able to publish on a channel to interact with Slack. All you have to do is connect to a channel or create a new channel and name the bot you’ve just created. Slack will propose to invite the bot. Accept the invitation.
 
-## Register The Slack Token With spinnaker
-You are now ready to configure Spinnaker with the bot you’ve just registered. 
+## Register The Slack Token With Spinnaker
 
-* If using Operator
+You are now ready to configure Spinnaker with the bot you’ve just registered.
+
+* **Operator**
 
     Add the following snippet to the `SpinnakerService` manifest:
 
@@ -55,14 +56,14 @@ You are now ready to configure Spinnaker with the bot you’ve just registered.
               botName: spinnaker                                         # The name of your slack bot.
               token: xoxb-xxxxxxxx-xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxx # Your slack bot token. This field supports "encrypted" secret references (https://docs.armory.io/spinnaker-install-admin-guides/secrets/)
     ```
-  
+
     Apply the changes:
-    
+
     ```bash
     kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest>
     ```
 
-* If using Halyard
+* **Halyard**
 
     Start by setting the variables below:
 

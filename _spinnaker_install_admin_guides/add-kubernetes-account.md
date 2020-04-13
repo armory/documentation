@@ -163,10 +163,10 @@ export TARGET_NAMESPACES_COMMA_SEPARATED=dev-1,dev-2
 
 ## Add the kubeconfig and cloud provider to Spinnaker
 
-* If using Operator
+* **Operator**
 
     Add the following configuration to the `SpinnakerServce` manifest, replacing values as needed:
-    
+
    ```yaml
     apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
     kind: SpinnakerService
@@ -201,15 +201,15 @@ export TARGET_NAMESPACES_COMMA_SEPARATED=dev-1,dev-2
         files:
           kubeconfig-spinnaker-dev: |
             <FILE CONTENTS HERE>
-    ``` 
-  
+    ```
+
     Finally apply the changes
-    
+
     ```bash
     kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest file>
     ```
 
-* If using Halyard
+* **Halyard**
 
     You should copy the kubeconfig to a place accessible to halyard; this choice is left to the reader, but one option is `~/.secret/`, which can be mounted into your halyard container
 
@@ -218,7 +218,7 @@ export TARGET_NAMESPACES_COMMA_SEPARATED=dev-1,dev-2
     ```bash
     # Replace with the name of your kubeconfig file
     export KUBECONFIG_FILE=KUBECONFIG_FILE_NAME # This must be updated
-    
+
     # Enter the account name you want Spinnaker to use to identify the deployment target (should be the same as above)
     export ACCOUNT_NAME="spinnaker-dev"
 
