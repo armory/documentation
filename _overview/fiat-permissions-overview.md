@@ -38,7 +38,7 @@ You also need access to the Halyard machine in order to configure Spinnaker.
 
 ## Clouddriver accounts
 
-Clouddriver is the Spinnaker service that interacts with the various cloud providers. When Fiat is enabled, account permissions for Clouddriver determine whether a role or group can perform the following actions:
+Clouddriver is the Spinnaker service that interacts with the various providers. When Fiat is enabled, account permissions for Clouddriver determine whether a role or group can perform the following actions:
 * `READ` - See objects in a given cloud account.
 * `WRITE` - Deploy objects to a given account. 
 
@@ -163,7 +163,7 @@ For information about how to configure permissions for applications, see [Applic
 
 ## Applying changes
 
-Whenever you make a change to permissions, run `hal deploy apply` to apply your changes to the Spinnaker deployment.
+Whenever you make a change to permissions that involves modifying your Halconfig, run `hal deploy apply` to apply your changes to the Spinnaker deployment. Some permission changes do not require this, such as adding a service account.
 
 ## Verifying permissions
 
