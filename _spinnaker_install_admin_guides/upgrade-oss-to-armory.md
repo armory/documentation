@@ -8,7 +8,7 @@ published: true
 Armory Spinnaker is installed with Armory Halyard, very similarly to the way Open Source Spinnaker is installed with Open Source Halyard. These are the key differences:
 
 * Armory Halyard installs Armory Spinnaker; Open Source Halyard installs Open Source Spinnaker.
-* Armory Spinnaker versions are one major version ahead of Open Source. Armory Spinnaker versions start with 2.x; Open Source Spinnaker versions start with 1.x. For example, Armory Spinnaker 2.18.x maps to Open Source Spinnaker 1.18.x.
+* Armory Spinnaker versions are one major version ahead of Open Source. For example, Armory Spinnaker 2.18.x maps to Open Source Spinnaker 1.18.x.
 * Armory Spinnaker has an extra subcommand block `hal armory` (mapping to an `armory` block in your `.hal/config`), which controls Armory-specific features.
 
 This guide differentiates between the two by referring to them as Armory Spinnaker and OSS Spinnaker, respectively.

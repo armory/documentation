@@ -141,15 +141,15 @@ kubectl -n halyard exec -ti halyard-xxxxx bash  # make sure you get the exact po
 
 ## Installing Armory Spinnaker
 
-With Armory's version of Halyard installed, you can interact with Armory with the exact same
-commands used to interact with Open Source Halyard.  The key differences between Armory Halyard and
-OSS Halyard are as follows:
+With Armory's version of Halyard installed, you can interact with Armory Spinnaker with the exact same
+commands used to interact with Open Source Halyard.  The key differences between Armory and
+OSS are as follows:
 
 * Armory Halyard installs Armory Spinnaker instead of Open Source Spinnaker
-* Armory Spinnaker version numbers start with 2.x, Open Source Spinnaker version numbers start with 1.x (for example, Armory 2.18.x maps to Open Source Spinnaker 1.18.x)
-* Armory Halyard has several additional capabilities, primarily centered on Armory-specific features (Terraformer, Pipelines as Code, Vault, etc.)
+* Armory Spinnaker version numbers are one major version ahead of Open Source Spinnaker. For example, Armory Spinnaker 2.18 maps toOpen Source Spinnaker version 1.18.
+* Armory Halyard has several additional capabilities, primarily centered on Armory-specific features, including Terraform integration, Pipelines as Code, and Vault integration.
 
-To install Armory Spinnaker, you use the same `hal` commands as Open Source Spinnaker.  Here are some guides on how to install these:
+To install Armory Spinnaker, you use the same `hal` commands as Open Source Spinnaker.  Here are some guides on how to install Spinnaker based on your environment:
 
 * [Install Armory Spinnaker on K8s](_spinnaker-install-admin-guides/install-on-k8s/)
 * [Install Armory Spinnaker on AWS](/spinnaker-install-admin-guides/install-on-aws/)
