@@ -861,3 +861,97 @@ You have probably configured global logging levels with `spinnaker-local.yml`. T
     Logging:
       Level: INFO
     ```
+
+
+# Webhook secret validation
+
+If you want to add a layer of security or restrict which repositories dinghy will process you can do it with this feature.
+
+Enabling webhook secret validation you ensure that your service provider is the only one that can trigger your pipelines, not an imposter.
+
+At this moment only **github** version control provider is supported.
+
+
+## Enabling/Disabling Webhook secrets
+When you enable Webhook secrets validation, **ALL** webhooks for that provider will be validated to have a secret, more behavior details can be found in Configuring Webhook secrets.
+
+* **Operator**
+
+    ```yaml
+    I should ask for operator?
+    ```
+ 
+* **Halyard**
+  * **Enable**
+
+    In halyard execute `hal armory dinghy webhooksecrets <version control provider> enable`.
+   
+  * **Disable**
+
+    In halyard execute `hal armory dinghy webhooksecrets <version control provider> disable`.
+
+
+## Webhook validation fields
+
+When you enable Webhook secrets feature, all the webhooks dinghy receives for that provider will be validated.
+
+A Webhook validation should have a couple of fields:
+
+* **organization**: Organization for the repository.
+* **repo**: Repository name.
+* **enabled**: true/false flag to enable this validation.
+  * **true**: Validation will be performed against the secret in the Webhook validation.
+  * **false**: Validation for this repo will be considered as disabled, so no validation and direct dinghy execution will be done regardless secret is not good.
+* **secret**: Secret configured.
+
+## Webhook validation default secret
+
+In case you have multiple repositories that have the same secret in your organization you can set a default one that will be used in case that an specific repository is not found.
+
+Default name for the repository should be `default-webhook-secret` and in order to be taken in consideration it should have the field enabled also like a normal Webhook validation.
+
+
+## Add/Edit Webhook validations
+
+When adding/editing webhook validations the organization/repository relationship is taken as the key to execute this actions, so if you want to add a repository you need to:
+
+* **Halyard**
+
+    Replace and execute: `hal armory dinghy webhooksecrets <version control provider> edit --organization testOrg --repo repoName --enabled true --secret testSecret`.
+   
+If you need to edit the same repository (change enabled or secret fields) you can do it.
+
+* **Halyard**
+
+    Replace and execute: `hal armory dinghy webhooksecrets <version control provider> edit --organization testOrg --repo repoName --enabled false --secret testSuperSecret`.
+   
+
+## List Webhook validations
+
+If you want to get information regarding the current Webhook validations that you have you can.
+
+* **Halyard**
+
+    Replace and execute: `hal armory dinghy webhooksecrets <version control provider> list`.
+   
+You can apply filders based on the Webhook validation fields. Filters can be stacked.
+
+* **Halyard**
+
+    Replace and execute: `hal armory dinghy webhooksecrets <version control provider> list --organization armory-io --enabled false`.
+
+
+## Delete Webhook validations
+
+If you want to delete Webhook validations you can do it.
+
+* **Halyard**
+
+    Replace and execute: `hal armory dinghy webhooksecrets <version control provider> delete --repo testRepo`.
+   
+With this command you should apply at least one filter, this is done to avoid deleting all Webhook validations by mistake, filters can be stacked. If you want to delete all Webhook validations you can do it sending --all parameter.
+
+* **Halyard**
+
+    Replace and execute: `hal armory dinghy webhooksecrets <version control provider> delete --all`.
+
