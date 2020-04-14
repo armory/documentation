@@ -877,10 +877,27 @@ When you enable Webhook secrets validation, **ALL** webhooks for that provider w
 
 * **Operator**
 
+    You need  to add the `webhookValidationEnabledProviders` element to the dinghy configuration from the `SpinnakerService` manifest and the providers as a list. To disable Webhooks secret just delete the `webhookValidationEnabledProviders` element with the list of providers.
+
     ```yaml
-    I should ask for operator?
+      apiVersion: spinnaker.armory.io/v1alpha2
+      kind: SpinnakerService
+      metadata:
+        name: spinnaker
+      spec:
+        spinnakerConfig:
+          config:
+            armory:
+              dinghy:
+                webhookValidationEnabledProviders:
+                - github
+                ... # Rest of config omitted for brevity
     ```
- 
+
+    ```bash
+      kubectl -n spinnaker apply -f spinnakerservice.yml 
+    ```
+
 * **Halyard**
   * **Enable**
 
@@ -914,6 +931,38 @@ Default name for the repository should be `default-webhook-secret` and in order 
 ## Add/Edit Webhook validations
 
 When adding/editing webhook validations the organization/repository relationship is taken as the key to execute this actions, so if you want to add a repository you need to:
+
+* **Operator**
+
+    You need  to add the `webhookValidations` element to the dinghy configuration from the `SpinnakerService` manifest and the list of the `webhookvalidation` elements. Just add and delete as needed.
+
+    ```yaml
+      apiVersion: spinnaker.armory.io/v1alpha2
+      kind: SpinnakerService
+      metadata:
+        name: spinnaker
+      spec:
+        spinnakerConfig:
+          config:
+            armory:
+              dinghy:
+              webhookValidations:
+              - enabled: true
+                versionControlProvider: github
+                organization: testorg
+                repo: testrepo
+                secret: testSecret
+              - enabled: true
+                versionControlProvider: github
+                organization: armory
+                repo: test-repo
+                secret: testSecret
+                ... # Rest of config omitted for brevity
+    ```
+
+    ```bash
+      kubectl -n spinnaker apply -f spinnakerservice.yml 
+    ```
 
 * **Halyard**
 
