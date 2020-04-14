@@ -35,7 +35,7 @@ to run Halyard and its command line interface.
 
 See also [Armory Halyard configuration](/spinnaker-install-admin-guides/configure-halyard/).
 
-### Install Armory Halyard in Docker
+### Run Armory Halyard in Docker
 
 #### Before You Start
 
@@ -53,7 +53,7 @@ Our installer currently expects to find your kubeconfig named `config` in
 the `.kube` directory you map below.  If you've named your config something
 else, you'll need to rename or symlink the file accordingly.
 
-#### Installing Armory Halyard in Docker
+#### Running Armory Halyard in Docker
 
 You can start Armory Halyard in a Docker container with the following command:
 
@@ -79,7 +79,7 @@ docker exec -it armory-halyard bash
 
 From there, you can issue all your [halyard commands](https://www.spinnaker.io/reference/halyard/).
 
-### Install Armory Halyard in Kubernetes
+### Run Armory Halyard in Kubernetes
 You can start Armory Halyard in a pod with the following manifest:
 ```
 ---
@@ -141,23 +141,19 @@ kubectl -n halyard exec -ti halyard-xxxxx bash  # make sure you get the exact po
 
 ## Installing Armory Spinnaker
 
-With Armory's version of Halyard installed, you can install Armory Spinnaker
-with the command:
+With Armory's version of Halyard installed, you can interact with Armory Spinnaker with the exact same
+commands used to interact with Open Source Halyard.  The key differences between Armory and
+OSS are as follows:
 
-```
-$ hal armory init
-```
+* Armory Halyard installs Armory Spinnaker instead of Open Source Spinnaker
+* Armory Spinnaker version numbers are one major version ahead of Open Source Spinnaker. For example, Armory Spinnaker 2.18 maps toOpen Source Spinnaker version 1.18.
+* Armory Halyard has several additional capabilities, primarily centered on Armory-specific features, including Terraform integration, Pipelines as Code, and Vault integration.
 
-This will download the Armory installer and walk you through the initial
-installation of Spinnaker.  You'll need to have a kubectl file already set
-up to use Amazon EKS, and your AWS credentials file handy.
+To install Armory Spinnaker, you use the same `hal` commands as Open Source Spinnaker.  Here are some guides on how to install Spinnaker based on your environment:
 
-The installer will walk you through the selection of clusters, the region
-and bucket names for S3 storage, and the creation of service accounts;
-finally, it will set up the pods to run Spinnaker and then provide you a
-proxy to interact with.
-
-Options for [hal armory init](https://docs.armory.io/spinnaker/armory_halyard/#hal-armory-init).
+* [Install Armory Spinnaker on K8s](_spinnaker-install-admin-guides/install-on-k8s/)
+* [Install Armory Spinnaker on AWS](/spinnaker-install-admin-guides/install-on-aws/)
+* [Install Armory Spinnaker on GKE](/spinnaker-install-admin-guides/install-on-gke/)
 
 #### Notes on Docker
 
@@ -173,10 +169,3 @@ kubectl -n ${SPINNAKER_NAMESPACE} port-forward services/spin-gate 8084:8084 &
 
 You should then be able to connect to http://localhost:9000/ with your
 browser and use your newly installed Spinnaker.
-
-# More Information
-
-The following pages provide more detailed information for installing Armory Spinnaker in different environments:
-
-* [Install Armory Spinnaker on AWS](/spinnaker-install-admin-guides/install-on-aws/)
-* [Install Armory Spinnaker on GKE](/spinnaker-install-admin-guides/install-on-gke/)
