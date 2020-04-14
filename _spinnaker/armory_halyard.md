@@ -291,6 +291,65 @@ hal armory dinghy slack disable [parameters]
  * `--no-validate`: (*Default*: `false`) Skip validation.
 
 ---
+## hal armory dinghy webhooksecrets <provider> [enable | disable]
+
+Enable/Disable Webhook secrets validations, only `github` provider is supported at this moment. If this option is enabled all github webhooks will be validated.   (Halyard >= ? add version)
+
+#### Usage
+```
+hal armory dinghy webhooksecrets <provider> [ enable | disable]
+```
+
+---
+## hal armory dinghy webhooksecrets <provider> edit 
+
+Add/Edit Webhook secrets validations, only `github` provider is supported at this moment.   (Halyard >= ? add version)
+
+#### Usage
+```
+hal armory dinghy webhooksecrets <provider> edit [parameters]
+```
+
+#### Parameters
+ * `--organization`: Organization for the repository.
+ * `--repo`: Repository name.
+ * `--secret`: Secret for the Webhook.
+ * `--enabled`: true/false value. If enabled is true then validation will be done. If is false then validation will always pass (bypass validation).
+
+---
+## hal armory dinghy webhooksecrets <provider> list
+
+List Webhook secrets validations, only `github` provider is supported at this moment. Parameters are filters, this can be stacked.   (Halyard >= ? add version)
+
+#### Usage
+```
+hal armory dinghy webhooksecrets <provider> list [parameters]
+```
+
+#### Parameters
+ * `--organization`: Organization for the repository.
+ * `--repo`: Repository name.
+ * `--secret`: Secret for the Webhook.
+ * `--enabled`: true/false value.
+
+---
+## hal armory dinghy webhooksecrets <provider> delete
+
+Delete Webhook secrets validations, only `github` provider is supported at this moment. Parameters are filters, this can be stacked and at least one should be passed in order to delete something.   (Halyard >= ? add version)
+
+#### Usage
+```
+hal armory dinghy webhooksecrets <provider> delete [parameters]
+```
+
+#### Parameters
+ * `--organization`: Organization for the repository.
+ * `--repo`: Repository name.
+ * `--secret`: Secret for the Webhook.
+ * `--enabled`: true/false value.
+ * `--all`: Deletes all Webhook validation records. This param should be used alone.
+
+---
 ## hal armory init
 
 Runs Armory installer
