@@ -300,7 +300,7 @@ hal armory dinghy slack disable [parameters]
 ---
 ## hal armory dinghy webhooksecrets <provider> [enable | disable]
 
-Enable/Disable Webhook secrets validations, only `github` provider is supported at this moment. If this option is enabled all github webhooks will be validated.   (Halyard >= ? add version)
+Enable/Disable Webhook secrets validations, only `github` provider is supported at this moment. If this option is enabled all github webhooks will be validated.   (Halyard >= 1.8.4)
 
 #### Usage
 ```
@@ -310,7 +310,7 @@ hal armory dinghy webhooksecrets <provider> [ enable | disable]
 ---
 ## hal armory dinghy webhooksecrets <provider> edit 
 
-Add/Edit Webhook secrets validations, only `github` provider is supported at this moment.   (Halyard >= ? add version)
+Add/Edit Webhook secrets validations, only `github` provider is supported at this moment.   (Halyard >= 1.8.4)
 
 #### Usage
 ```
@@ -326,7 +326,7 @@ hal armory dinghy webhooksecrets <provider> edit [parameters]
 ---
 ## hal armory dinghy webhooksecrets <provider> list
 
-List Webhook secrets validations, only `github` provider is supported at this moment. Parameters are filters, this can be stacked.   (Halyard >= ? add version)
+List Webhook secrets validations, only `github` provider is supported at this moment. Parameters are filters, this can be stacked.   (Halyard >= 1.8.4)
 
 #### Usage
 ```
@@ -342,7 +342,7 @@ hal armory dinghy webhooksecrets <provider> list [parameters]
 ---
 ## hal armory dinghy webhooksecrets <provider> delete
 
-Delete Webhook secrets validations, only `github` provider is supported at this moment. Parameters are filters, this can be stacked and at least one should be passed in order to delete something.   (Halyard >= ? add version)
+Delete Webhook secrets validations, only `github` provider is supported at this moment. Parameters are filters, this can be stacked and at least one should be passed in order to delete something.   (Halyard >= 1.8.4)
 
 #### Usage
 ```
