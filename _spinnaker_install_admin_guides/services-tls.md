@@ -123,7 +123,7 @@ http:
 ### Halyard
 You can change each Java or Golang service endpoints by adding the following in `<hal directory>/<deployment>/service-settings/<service>.yml`:
 ```yaml
-scheme: https
+baseUrl: https://spin-<SERVICE>.<NAMESPACE>:<SERVICE PORT>
 ```
 
 ### Spinnaker Operator
@@ -137,27 +137,27 @@ spec:
   spinnakerConfig:
     service-settings:
       clouddriver:
-        scheme: https
+        baseUrl: https://spin-clouddriver.<NAMESPACE>:7002
       dinghy:
-        scheme: https
+        baseUrl: https://spin-dinghy.<NAMESPACE>:8081
       echo:
-        scheme: https
+        baseUrl: https://spin-echo.<NAMESPACE>:8089
       fiat:
-        scheme: https
+        baseUrl: https://spin-fiat.<NAMESPACE>:7003
       front50:
-        scheme: https
+        baseUrl: https://spin-front50.<NAMESPACE>:8080
       gate:
-        scheme: https
+        baseUrl: https://spin-gate.<NAMESPACE>:8084
       kayenta:
-        scheme: https
+        baseUrl: https://spin-kayenta.<NAMESPACE>:8090
       orca:
-        scheme: https
+        baseUrl: https://spin-orca.<NAMESPACE>:8083
       igor:
-        scheme: https
+        baseUrl: https://spin-igor.<NAMESPACE>:8088
       rosco:
-        scheme: https
+        baseUrl: https://spin-rosco.<NAMESPACE>:8087
       terraformer:
-        scheme: https
+        baseUrl: https://spin-terraformer.<NAMESPACE>:7088
 ```
 
 ## Deployment
