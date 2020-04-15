@@ -32,6 +32,13 @@ armory:
       slack:
         enabled:
         channel:
+    webhookValidationEnabledProviders:
+    webhookValidations:
+    - enabled:
+      versionControlProvider:
+      organization:
+      repo:
+      secret:
   diagnostics:
     enabled:
     uuid:
@@ -72,6 +79,13 @@ armory:
   - `slack`:
     - `enabled`: true or false.
     - `channel`: Name of channel to send notifications to.
+- `webhookValidationEnabledProviders`: List of enabled providers for Webhook validations.
+- `webhookValidations`: Webhook validations list
+  - `enabled`: true/false flag to enable this validation.
+  - `versionControlProvider`: Version control provider.
+  - `organization`: Organization for the repository.
+  - `repo`: Repository name.
+  - `secret`: Secret configured.
 
 ## Diagnostics parameters
 

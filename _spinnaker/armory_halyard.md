@@ -227,6 +227,13 @@ spec:
             slack: 
               enabled: false  # Whether or not Slack notifications are enabled for dinghy events
               channel: abc    # Slack channel where notifications will be sent to
+          webhookValidationEnabledProviders:  # List of enabled providers for webhook validations.
+          webhookValidations: # Webhook validations list
+          - enabled: true     # true/false flag to enable validation for the repository.
+            versionControlProvider: abc    # Version Control provider.
+            organization: abc # Organization for the repository.
+            repo: abc         # Repository name.
+            secret: abc       # Secret for the Webhook.
 ```
 
 ---
