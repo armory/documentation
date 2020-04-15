@@ -227,13 +227,13 @@ spec:
             slack: 
               enabled: false  # Whether or not Slack notifications are enabled for dinghy events
               channel: abc    # Slack channel where notifications will be sent to
-          webhookValidationEnabledProviders:  # List of enabled providers for webhook validations.
+          webhookValidationEnabledProviders:  # List of enabled providers for webhook validations
           webhookValidations: # Webhook validations list
-          - enabled: true     # true/false flag to enable validation for the repository.
-            versionControlProvider: abc    # Version Control provider.
-            organization: abc # Organization for the repository.
-            repo: abc         # Repository name.
-            secret: abc       # Secret for the Webhook.
+          - enabled: true     # true/false flag to enable validation for the repository
+            versionControlProvider: abc    # Version Control provider
+            organization: abc # Organization for the repository
+            repo: abc         # Repository name
+            secret: abc       # Secret for the Webhook
 ```
 
 ---
@@ -300,7 +300,7 @@ hal armory dinghy slack disable [parameters]
 ---
 ## hal armory dinghy webhooksecrets <provider> [enable | disable]
 
-Enable/Disable Webhook secrets validations, only `github` provider is supported at this moment. If this option is enabled all github webhooks will be validated.   (Halyard >= 1.8.4)
+Enable or disable webhook secrets validation in GitHub. This does not support other providers. If this option is enabled, all GitHub webhooks will be validated.  (Halyard >= 1.8.4)
 
 #### Usage
 ```
@@ -308,9 +308,9 @@ hal armory dinghy webhooksecrets <provider> [ enable | disable]
 ```
 
 ---
-## hal armory dinghy webhooksecrets <provider> edit 
-
-Add/Edit Webhook secrets validations, only `github` provider is supported at this moment.   (Halyard >= 1.8.4)
+## hal armory dinghy webhooksecrets <provider> edit
+ 
+Add or edit webhook secrets validation in GitHub. This does not support other providers.  (Halyard >= 1.8.4)
 
 #### Usage
 ```
@@ -321,12 +321,12 @@ hal armory dinghy webhooksecrets <provider> edit [parameters]
  * `--organization`: Organization for the repository.
  * `--repo`: Repository name.
  * `--secret`: Secret for the Webhook.
- * `--enabled`: true/false value. If enabled is true then validation will be done. If is false then validation will always pass (bypass validation).
+ * `--enabled`: true or false. If true, then validation will be done. If false, then validation will always pass (bypass validation).
 
 ---
 ## hal armory dinghy webhooksecrets <provider> list
 
-List Webhook secrets validations, only `github` provider is supported at this moment. Parameters are filters, this can be stacked.   (Halyard >= 1.8.4)
+List webhook secrets validations for GitHub. This does not support other providers. (Halyard >= 1.8.4)
 
 #### Usage
 ```
@@ -336,13 +336,13 @@ hal armory dinghy webhooksecrets <provider> list [parameters]
 #### Parameters
  * `--organization`: Organization for the repository.
  * `--repo`: Repository name.
- * `--secret`: Secret for the Webhook.
- * `--enabled`: true/false value.
+ * `--secret`: Secret for the webhook.
+ * `--enabled`: true or false.
 
 ---
 ## hal armory dinghy webhooksecrets <provider> delete
 
-Delete Webhook secrets validations, only `github` provider is supported at this moment. Parameters are filters, this can be stacked and at least one should be passed in order to delete something.   (Halyard >= 1.8.4)
+Delete webhook secrets validations for GitHub. This does not support other providers. Provide at least one parameter for the command to delete the webhook secrets.  (Halyard >= 1.8.4)
 
 #### Usage
 ```

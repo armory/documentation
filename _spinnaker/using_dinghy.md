@@ -4,11 +4,11 @@ title: Using Pipelines as Code
 order: 131
 ---
 
-Armory's Pipelines As Code ("Dinghy") feature provides a way to specify pipeline definitions in source code repos such as GitHub & BitBucket.
+Armory's _Pipelines-as-Code_ feature provides a way to specify pipeline definitions in source code repos such as GitHub and BitBucket.
 
-The Armory Spinnaker installation provides a service called "Dinghy", which keeps the pipeline in Spinnaker in sync with what is defined in the GitHub repo. Also, users are able to make a pipeline by composing other pipelines, stages, or tasks and templating certain values.
+The Armory Spinnaker installation provides a service called _Dinghy_, which keeps the pipeline in Spinnaker in sync with what is defined in the GitHub repo. Also, users are able to make a pipeline by composing other pipelines, stages, or tasks and templating certain values.
 
-> NOTE: before you can use this feature, please ensure you have [configured it](http://docs.armory.io/spinnaker/install_dinghy/) correctly.
+> NOTE: before you can use this feature, please ensure you have [configured](http://docs.armory.io/spinnaker/install_dinghy/) it correctly.
 
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
@@ -16,24 +16,23 @@ The Armory Spinnaker installation provides a service called "Dinghy", which keep
 
 ## How It Works in a Nutshell
 
-GitHub (or BitBucket) webhooks are sent off when either the Templates or the Module definitions are modified. The Dinghy service looks for and fetches all dependent modules and parses the template and updates the pipelines in Spinnaker. The pipelines get automatically updated whenever a module that is used by a pipeline is updated in VCS. This is done by maintaining a dependency graph.  Dinghy will look for `dinghyfile`s in all directories not just the root path.  Unless otherwise configured, Dinghy will process changes found in the master branch. For more information on how to configure branches, see [Custom branch configuration](http://docs.armory.io/spinnaker/install_dinghy/#custom-branch-configuration)
+GitHub (or BitBucket) webhooks are sent off when you modify either the Templates or the Module definitions. The Dinghy service looks for and fetches all dependent modules and parses the template and updates the pipelines in Spinnaker. The pipelines get automatically updated whenever a module that is used by a pipeline is updated in VCS. This is done by maintaining a dependency graph.  Dinghy will look for a `dinghyfile` in all directories, not just the root path.  Unless otherwise configured, Dinghy will process changes found in the master branch. For more information on how to configure branches, see [Custom branch configuration](http://docs.armory.io/spinnaker/install_dinghy/#custom-branch-configuration)
 
-For a deeper look at how Pipelines-as-Code works in your SDLC, take a look at
-[https://kb.armory.io/concepts/Pipelines-as-Code-Workflow/](https://kb.armory.io/concepts/Pipelines-as-Code-Workflow/)
+For a deeper look at how Pipelines-as-Code works in your SDLC, take a look at the [Pipelines-as-Code-Workflow](https://kb.armory.io/concepts/Pipelines-as-Code-Workflow/) article.
 
 ## Basic Format
 
-A Dinghyfile is a JSON (or HCL or YAML, [see
+A `Dinghyfile` is a JSON (or HCL or YAML, [see
 below](#alternate-template-formats)) dictionary that wraps a
 few top-level elements to instruct Dinghy where to create/update the
 pipelines that are being defined.  This outer layer identifies the
-application that the pipelines should live in &mdash; Dinghy will create
-the application if it doesn't already exist, and you can also provide
+application that the pipelines should live in. Dinghy creates
+the application if it doesn't already exist. You can also provide
 settings for the application within this file as well.  Finally, the
 `pipelines` key is an array of pipeline definitions that will be
 created/updated in that application.
 
-Here is an example Dinghyfile: 
+Here is an example Dinghyfile:
 
 ```
 {
@@ -144,7 +143,7 @@ While a JSON array is an ordered list, the order of the stages in your pipeline'
 The above Dinghyfile defines a single pipeline with four stages.  Here is how the pipeline behaves:
 
 * The stage called `one` (with `refId` `first-stage` and no `requisiteStageRefIds`), runs first.  It will take 10 seconds to complete.
-* Once the stage "one" is complete, stages "two-a" and "two-b" start in parallel because they both have `first-stage` as a requisite stage. This means they both depend on `first-stage` completing. 
+* Once the stage "one" is complete, stages "two-a" and "two-b" start in parallel because they both have `first-stage` as a requisite stage. This means they both depend on `first-stage` completing.
 * Stage `two-a` will complete in fifteen seconds.
 * Stage `two-b`, which started at the same, will complete in thirty seconds (fifteen seconds after stage "two-a" completes).
 * Stage `last`, which depends on both `two-a` and `two-b` (identified by their `refIds` of `my-second-stage` and `my-other-second-stage`), starts once both stage `two-a` and `two-b` are complete.
@@ -152,8 +151,8 @@ The above Dinghyfile defines a single pipeline with four stages.  Here is how th
 #### Application Permissions
 
 You can define in the `spec` block the permissions to set on the application.
-The items in the `spec` field only apply if they are defined for a new 
-Spinnaker application.  One note of caution here, if you set the WRITE 
+The items in the `spec` field only apply if they are defined for a new
+Spinnaker application.  One note of caution here, if you set the WRITE
 permissions to a group that the Dinghy service is NOT part of, Dinghy will not
 be able to update anything within that application. Pipelines will not get created
 or updated.
@@ -598,7 +597,7 @@ If you have already created a pipeline in the Spinnaker UI, you can create a din
     Note that the value you set for `"application"` must be the same as the value in step 3.
 
     For example, if your pipeline called "Wait Pipeline" has a JSON definition that looks like this:
-  
+
     ```
       {
         "isNew": true,
@@ -618,11 +617,11 @@ If you have already created a pipeline in the Spinnaker UI, you can create a din
         "triggers": [],
         "updateTs": "1572455128000"
       }
-  
+
     ```
 
     Then a Dinghy file managing this pipeline in the "helloworld" application looks like this:
-  
+
     ```
       {
         "application": "helloworld",
@@ -752,12 +751,12 @@ Then a Dinghyfile that looks like this (note the commas in order for the loop to
         {{ $stages := makeSlice "First Wait" "Second Wait" }}
         {{ range $stages }}
           {{
-            module "stage.minimal.wait.module" 
-            "waitname" . 
+            module "stage.minimal.wait.module"
+            "waitname" .
           }},
         {{ end }}
         {{
-          module "stage.minimal.wait.module" 
+          module "stage.minimal.wait.module"
           "waitname" "Final Wait"
         }}
       ]
@@ -825,12 +824,13 @@ In the template, the access path for that variable is: `.RawData.pusher.name`.
             }}
         ]
     }
-{% endraw %}```
+{% endraw %}
+```
 
 *Note: The structure of the webhook data passed to Dinghy's template engine depends on the Git service that sends the webhook. This example uses a GitHub webhook.*
 
 
-## Known Issue:
+## Known Issue
 
 If Dinghy crashes on start up and you encounter an error in Dinghy similar to:
 `time="2020-03-06T22:35:54Z" level=fatal msg="failed to load configuration: 1 error(s) decoding:\n\n* 'Logging.Level' expected type 'string', got unconvertible type 'map[string]interface {}'"`
@@ -852,32 +852,30 @@ You have probably configured global logging levels with `spinnaker-local.yml`. T
               Level: INFO
               ... # Rest of config omitted for brevity
     ```
- 
+
 * **Halyard**
- 
+
     Create `.hal/default/profiles/dinghy-local.yml` and add the following snippet:
-    
+
     ```
     Logging:
       Level: INFO
     ```
 
 
-# Webhook secret validation
+# Webhook Secret Validation
 
-If you want to add a layer of security or restrict which repositories dinghy will process you can do it with this feature.
+You can add a layer of security or restrict which repositories dinghy will process by using webhook secret validation. Enabling webhook secret validation ensures that your service provider is the only one that can trigger your pipelines, not an imposter.
 
-Enabling webhook secret validation you ensure that your service provider is the only one that can trigger your pipelines, not an imposter.
+This feature supports **GitHub** webhooks.
 
-At this moment only **github** version control provider is supported.
+## Enable or Disable Webhook Secret Validation
 
-
-## Enabling/Disabling Webhook secrets
-When you enable Webhook secrets validation, **ALL** webhooks for that provider will be validated to have a secret, more behavior details can be found in Configuring Webhook secrets.
+When you enable webhook secret validation, **ALL** webhooks for that provider are validated for a secret.
 
 * **Operator**
 
-    You need  to add the `webhookValidationEnabledProviders` element to the dinghy configuration from the `SpinnakerService` manifest and the providers as a list. To disable Webhooks secret just delete the `webhookValidationEnabledProviders` element with the list of providers.
+    Add the `webhookValidationEnabledProviders` element to the `dinghy` configuration in the `SpinnakerService` manifest. Add the providers as a list. To disable webhooks secrets, delete the `webhookValidationEnabledProviders` element with the list of providers.
 
     ```yaml
       apiVersion: spinnaker.armory.io/v1alpha2
@@ -895,46 +893,50 @@ When you enable Webhook secrets validation, **ALL** webhooks for that provider w
     ```
 
     ```bash
-      kubectl -n spinnaker apply -f spinnakerservice.yml 
+      kubectl -n spinnaker apply -f spinnakerservice.yml
     ```
 
 * **Halyard**
   * **Enable**
 
-    In halyard execute `hal armory dinghy webhooksecrets <version control provider> enable`.
-   
+    ```bash
+	hal armory dinghy webhooksecrets <version control provider> enable
+	```
+
   * **Disable**
 
-    In halyard execute `hal armory dinghy webhooksecrets <version control provider> disable`.
+    ```bash
+	hal armory dinghy webhooksecrets <version control provider> disable
+	```
 
 
-## Webhook validation fields
+## Webhook Validation Fields
 
-When you enable Webhook secrets feature, all the webhooks dinghy receives for that provider will be validated.
+When you enable `webhook secret validation`, Dinghy validates all the webhooks it receives from the specified provider.
 
-A Webhook validation should have a couple of fields:
+A webhook validation has the following fields:
 
 * **organization**: Organization for the repository.
 * **repo**: Repository name.
-* **enabled**: true/false flag to enable this validation.
+* **enabled**: true or false.
   * **true**: Validation will be performed against the secret in the Webhook validation.
   * **false**: Validation for this repo will be considered as disabled, so no validation and direct dinghy execution will be done regardless secret is not good.
 * **secret**: Secret configured.
 
-## Webhook validation default secret
+## Webhook Validation Default Secret
 
-In case you have multiple repositories that have the same secret in your organization you can set a default one that will be used in case that an specific repository is not found.
+You can specify a default secret to use when your GitHub organization has multiple repositories with the same secret. The repository name is `default-webhook-secret` and must be enabled.
 
-Default name for the repository should be `default-webhook-secret` and in order to be taken in consideration it should have the field enabled also like a normal Webhook validation.
+* **organization**: Organization for the repository.
+* **repo**: default-webhook-secret
+* **enabled**: true
+* **secret**: Secret configured.
 
-
-## Add/Edit Webhook validations
-
-When adding/editing webhook validations the organization/repository relationship is taken as the key to execute this actions, so if you want to add a repository you need to:
+## Add or Edit Webhook Validations
 
 * **Operator**
 
-    You need  to add the `webhookValidations` element to the dinghy configuration from the `SpinnakerService` manifest and the list of the `webhookvalidation` elements. Just add and delete as needed.
+    Add the `webhookValidations` element to the `dinghy` configuration in the `SpinnakerService` manifest.
 
     ```yaml
       apiVersion: spinnaker.armory.io/v1alpha2
@@ -961,46 +963,65 @@ When adding/editing webhook validations the organization/repository relationship
     ```
 
     ```bash
-      kubectl -n spinnaker apply -f spinnakerservice.yml 
+      kubectl -n spinnaker apply -f spinnakerservice.yml
     ```
 
 * **Halyard**
 
-    Replace and execute: `hal armory dinghy webhooksecrets <version control provider> edit --organization testOrg --repo repoName --enabled true --secret testSecret`.
-   
-If you need to edit the same repository (change enabled or secret fields) you can do it.
+    ```bash
+	hal armory dinghy webhooksecrets <version control provider> edit \
+	--organization testOrg \
+	--repo repoName \
+	--enabled true \
+	--secret testSecret
+	```
 
-* **Halyard**
+* Edit with Halyard
+	To disable a repository, set `enabled` to `false`:
 
-    Replace and execute: `hal armory dinghy webhooksecrets <version control provider> edit --organization testOrg --repo repoName --enabled false --secret testSuperSecret`.
-   
-
-## List Webhook validations
-
-If you want to get information regarding the current Webhook validations that you have you can.
-
-* **Halyard**
-
-    Replace and execute: `hal armory dinghy webhooksecrets <version control provider> list`.
-   
-You can apply filders based on the Webhook validation fields. Filters can be stacked.
-
-* **Halyard**
-
-    Replace and execute: `hal armory dinghy webhooksecrets <version control provider> list --organization armory-io --enabled false`.
+    ```bash
+	hal armory dinghy webhooksecrets <version control provider> edit \
+	--organization testOrg \
+	--repo repoName \
+	--enabled false \
+	--secret testSuperSecret \
+	```
 
 
-## Delete Webhook validations
+## List Webhook Validations
 
-If you want to delete Webhook validations you can do it.
+**Halyard**
 
-* **Halyard**
+```bash
+hal armory dinghy webhooksecrets <version control provider> list
+```
 
-    Replace and execute: `hal armory dinghy webhooksecrets <version control provider> delete --repo testRepo`.
-   
-With this command you should apply at least one filter, this is done to avoid deleting all Webhook validations by mistake, filters can be stacked. If you want to delete all Webhook validations you can do it sending --all parameter.
+You can use parameters to search for specific elements.
 
-* **Halyard**
+```bash
+hal armory dinghy webhooksecrets <version control provider> list \
+--organization armory-io \
+--enabled false
+```
 
-    Replace and execute: `hal armory dinghy webhooksecrets <version control provider> delete --all`.
 
+## Delete Webhook Validations
+
+**Operator**
+
+Delete a `webhookValidations` element by deleting it from the manifest and then applying the manifest.
+
+**Halyard**
+
+Apply at least one filter to avoid deleting all webhook validations by mistake.
+
+```bash
+hal armory dinghy webhooksecrets <version control provider> delete \
+--repo testRepo
+```
+
+Delete all Webhook validations with the `--all` parameter.
+
+```bash
+hal armory dinghy webhooksecrets <version control provider> delete --all
+```
