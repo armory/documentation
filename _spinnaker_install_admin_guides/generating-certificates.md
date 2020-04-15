@@ -97,6 +97,7 @@ The following script generates these files in the `services` directory:
 - Certificate and key files for each Golang services (`terraformer.crt` and `terraformer.key`, ...)
 - a `tls-passwords` file containing all the passwords. You can store as-is in a bucket.
 
+
 ```
 #!/bin/bash -e
 
@@ -136,7 +137,17 @@ do
   echo "Generating $svc key and certificate..."
   openssl genrsa -aes256 -passout pass:${password} -out services/${svc}.key 4096
   openssl req -new -key services/${svc}.key -out services/${svc}.csr -subj /C=US/CN=spin-${svc}.${NAMESPACE} -passin pass:${password}
-  openssl x509 -req -in services/${svc}.csr -CA services/ca.pem -CAkey services/ca.key -CAcreateserial -out services/${svc}.crt -days 3649 -sha256 -passin pass:${CA_PASSWORD}
+  cat <<EOF>services/${svc}.ext
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = spin-${svc}.${NAMESPACE}
+DNS.2 = spin-${svc}.${NAMESPACE}.svc.cluster.local
+EOF
+  openssl x509 -req -in services/${svc}.csr -CA services/ca.pem -CAkey services/ca.key -CAcreateserial -out services/${svc}.crt -days 3649 -sha256 -passin pass:${CA_PASSWORD} -extfile services/${svc}.ext
   openssl pkcs12 -export -out services/${svc}.p12 -inkey services/${svc}.key -in services/${svc}.crt -passout pass:${password} -passin pass:${password}
   echo "${svc}: ${password}" >> services/tls-passwords
 done
@@ -148,9 +159,19 @@ do
   password=$(newPassword)
   echo "Generating $svc key and certificate..."
   openssl genrsa -aes256 -passout pass:${password} -out services/${svc}.key 4096
+  cat <<EOF>services/${svc}.ext
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = spin-${svc}.${NAMESPACE}
+DNS.2 = spin-${svc}.${NAMESPACE}.svc.cluster.local
+EOF
   openssl req -new -key services/${svc}.key -out services/${svc}.csr -subj /C=US/CN=spin-${svc}.${NAMESPACE} -passin pass:${password}
   openssl x509 -req -in services/${svc}.csr -CA services/ca.pem -CAkey services/ca.key -CAcreateserial \
-    -out services/${svc}.crt -days 3650 -sha256 -passin pass:${CA_PASSWORD}
+    -out services/${svc}.crt -days 3650 -sha256 -passin pass:${CA_PASSWORD} -extfile services/${svc}.ext
 
   echo "${svc}: ${password}" >> services/tls-passwords
 done
