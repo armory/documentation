@@ -84,7 +84,7 @@ Answer the following questions to figure out how to map roles and permissions in
 * Which roles/groups have READ, WRITE, EXECUTE access to each Spinnaker Application
 * Which roles/groups have READ and/or WRITE/EXECUTE access to which CI/Build accounts
 
-The following image shows an example result of this exercise based on the user roles described in [Example Fiat](#example-fiat):
+The following image shows an example result of this exercise based on the user roles described in [Example Roles](#example-roles):
 
 ![Mapping Exercise Role Matrix](/images/fiat_overview_role_matrix.png)
 
