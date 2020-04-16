@@ -90,15 +90,15 @@ In order to make default settings consistent whether deploying using Halyard or 
 Here's the bom for this version.
 <details><summary>Expand</summary>
 <pre class="highlight">
-<code>version: 2.19.4-rc.9
-timestamp: "2020-04-16 01:25:59"
+<code>version: 2.19.4-rc.12
+timestamp: "2020-04-16 22:36:27"
 services:
   clouddriver:
     commit: 07ce2a12
     version: 2.19.6
   echo:
-    commit: 3e2dc3b3
-    version: 2.19.6
+    commit: 9ac67cce
+    version: 2.19.7
   fiat:
     commit: a75473f4
     version: 2.19.3
@@ -112,8 +112,8 @@ services:
     commit: 360d9491
     version: 2.19.3
   orca:
-    commit: b36c6800
-    version: 2.19.6
+    commit: 685ae010
+    version: 2.19.7
   rosco:
     commit: 6e6f34c3
     version: 2.19.3
@@ -121,8 +121,8 @@ services:
     commit: 5c34e55b
     version: 2.19.2
   dinghy:
-    commit: 135a0758
-    version: 2.19.3
+    commit: e691b529
+    version: 2.19.4
   terraformer:
     commit: f498d00e
     version: 1.0.5
@@ -144,7 +144,8 @@ artifactSources:
 
 
 ### Armory
-#### Dinghy&trade; - 16cebe7...135a0758
+#### Dinghy&trade; - 16cebe7...e691b529
+ - feat(vendor): upgrade base dinghy, but don't upgrade go-gitlab (#204) (#205)
  - chore(build): update Dinghy (#201) (#202)
  - fix(bump): Autobump armory commons and spinnaker release (#199) (#200)
  - fix(templates): allow separate template orgs (#198)
@@ -202,7 +203,8 @@ artifactSources:
  - chore(UI): Update Terraformer UI text and help text (#572)
  - feature(terraformer): added profile selection to the Terraformer stage form (#571)
 
-#### Armory Echo  - 925793f...3e2dc3b3
+#### Armory Echo  - 925793f...9ac67cce
+ - feat(dinghy): Support for webhook secrets in dinghy (bp #138) (#145)
  - fix(echo.yaml): copied from 1.19.x (#143) (#144)
  - fix(bump): Autobump armory commons and spinnaker release (#141) (#142)
  - release(2.19.x): Release 2.19.x (#137)
@@ -262,7 +264,8 @@ artifactSources:
  - chore(cve): upgrade spring, tomcat, jackson-databind deps (#49)
  - feat(build): update project to new build system (#47)
 
-#### Armory Orca  - a0c169e...b36c6800
+#### Armory Orca  - a0c169e...685ae010
+ - fix(terraformer): just pass through the var instead of setting it… (#87)
  - fix(orca.yaml): copied from 1.19.x (bp #84) (#85)
  - fix(bump): Autobump armory commons and spinnaker release (#82) (#83)
  - chore(config): update default redis endpoint (#78) (#79)
