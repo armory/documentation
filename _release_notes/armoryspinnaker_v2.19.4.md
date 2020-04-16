@@ -32,7 +32,6 @@ There are currently no known issues with this release.
 
 ## Highlighted Updates
 ### Armory
-<!-- A quick summary of what's changed with Armory -->
 Highlighted Updates describe some of the major changes in this release. Highlights specific to Armory Spinnaker for this release include:
 
 **Policy Engine**
