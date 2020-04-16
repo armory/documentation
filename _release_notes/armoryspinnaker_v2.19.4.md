@@ -35,11 +35,14 @@ There are currently no known issues with this release.
 <!-- A quick summary of what's changed with Armory -->
 Highlighted Updates describe some of the major changes in this release. Highlights specific to Armory Spinnaker for this release include:
 
-**Policy Engine**: 
+**Policy Engine**
 Armory's Policy Engine for the SDLC now also performs Runtime validation on Spinnaker pipelines. This means that when a pipeline runs, the Policy Engine evaluates the pipeline. This validation only operates on tasks that you have explicitly created policies for. For more information, see [Policy Engine](/spinnaker/policy-engine).
 
 **CVEs**
-Addressed a number of CVEs found within the Spinnaker services. 
+Addressed a number of CVEs found within the Spinnaker services.
+
+**Support for Plugins**
+This release supports Plugin deployment using Armory Halyard or the [Spinnaker Operator](/_spinnaker/operator/). Consult the open source [Plugin](https://www.spinnaker.io/guides/user/plugins/user-guide/) docs for Halyard usage or the [Plugins Operator Reference](/_operator_reference/plugins/) for a manifest example.
 
 
 ###  Spinnaker Community Contributions
@@ -52,7 +55,7 @@ The Kubernetes V1 provider will be removed in Spinnaker 1.21. Please see the [RF
 Breaking change: Kubernetes accounts with an unspecified providerVersion will now default to V2. Update your Halconfig to specify `providerVersion: v1` for any Kubernetes accounts you are currently using with the V1 provider.
 
 **Java 11**
-> The migration to Java 11 continues. This should not affect Spinnaker users. If you extend Spinnaker, this change may affect you. 
+> The migration to Java 11 continues. This should not affect Spinnaker users. If you extend Spinnaker, this change may affect you.
 
 The Java 11 JRE runs Spinnaker when deployed to a Kubernetes cluster using Halyard (or if you consume the official containers in some other way). If this causes problems, or your organization isn't ready to run Java 11 in production, you can specify deploymentEnvironment.imageVariant: JAVA8 (or UBUNTU_JAVA8) in your Halyard config. Please notify [sig-platform@spinnaker.io](sig-platform@spinnaker.io) if you run into issues and decide to downgrade.
 
