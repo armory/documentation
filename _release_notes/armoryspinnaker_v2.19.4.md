@@ -33,37 +33,55 @@ There are currently no known issues with this release.
 ## Highlighted Updates
 ### Armory
 <!-- A quick summary of what's changed with Armory -->
-Highlighted Updates describe some of the major changes in this release. Highlights for this release include:
+Highlighted Updates describe some of the major changes in this release. Highlights specific to Armory Spinnaker for this release include:
 
-* **Policy Engine**: Armory's Policy Engine for the SDLC now also performs Runtime validation on Spinnaker pipelines. This means that when a pipeline runs, the Policy Engine evaluates the pipeline. This validation only operates on tasks that you have explicitly created policies for. For more information, see [Policy Engine](/spinnaker/policy-engine).
-* **CVEs**: Addressed a number of CVEs found within the Spinnaker services. 
+**Policy Engine**: 
+Armory's Policy Engine for the SDLC now also performs Runtime validation on Spinnaker pipelines. This means that when a pipeline runs, the Policy Engine evaluates the pipeline. This validation only operates on tasks that you have explicitly created policies for. For more information, see [Policy Engine](/spinnaker/policy-engine).
+
+**CVEs**
+Addressed a number of CVEs found within the Spinnaker services. 
 
 
 ###  Spinnaker Community Contributions
-REMOVE ME: link to the spninaker release: https://www.spinnaker.io/community/releases/versions
-REMOVE ME: maybe copy their notable changes here
 
-<!-- Example message
-There have also been numerous enhancements, fixes and features across all of Spinnaker's other services. See their changes here:  
-[Spinnaker's v1.7.0](https://www.spinnaker.io/community/releases/versions/1-7-0-changelog)  
-[Spinnaker's v1.7.1](https://www.spinnaker.io/community/releases/versions/1-7-1-changelog)  
--->
+The following highlights describe some of the major changes from the Spinnaker community for version 1.19.x, which is included in this release of Armory Spinnaker 2.19:
 
+**Scheduled Removal of Kubernetes V1 Provider**
+The Kubernetes V1 provider will be removed in Spinnaker 1.21. Please see the [RFC](https://github.com/spinnaker/governance/blob/master/rfc/eol_kubernetes_v1.md) for more details.
 
-#### Igor
-REMOVE ME: FOR EACH OF SPINNAKER'S SERVICES, PICK OUT SOME NOTIBLE CHANGES
+Breaking change: Kubernetes accounts with an unspecified providerVersion will now default to V2. Update your Halconfig to specify `providerVersion: v1` for any Kubernetes accounts you are currently using with the V1 provider.
 
-<!-- An example of a problem
-Igor added ..... which does.....
+**Java 11**
+> The migration to Java 11 continues. This should not affect Spinnaker users. If you extend Spinnaker, this change may affect you. 
 
-**Symptoms:**
-**Fix:**
--->
+The Java 11 JRE runs Spinnaker when deployed to a Kubernetes cluster using Halyard (or if you consume the official containers in some other way). If this causes problems, or your organization isn't ready to run Java 11 in production, you can specify deploymentEnvironment.imageVariant: JAVA8 (or UBUNTU_JAVA8) in your Halyard config. Please notify [sig-platform@spinnaker.io](sig-platform@spinnaker.io) if you run into issues and decide to downgrade.
 
+All users need to switch to a Java 11 JRE by Spinnaker 1.21, which is scheduled to be released in early July. Please see the [RFC](https://github.com/spinnaker/governance/blob/master/rfc/java11.md) for the full schedule and more details. We encourage everyone to start testing Spinnaker under a Java 11 JRE now in preparation for the cutover. If you have any concerns about the migration timeline, please reach out to sig-platform@spinnaker.io.
 
+**IAM service-linked roles for ECS**
 
+The ECS provider now requires IAM service-linked roles for use with ECS and Application Auto Scaling. Deployments to AWS accounts that do not already have service-linked roles for these AWS services may see failed deployments after upgrading to Spinnaker 1.19. To create the required service-linked roles, run the following:
+
+```
+aws iam create-service-linked-role --aws-service-name ecs.amazonaws.com
+aws iam create-service-linked-role --aws-service-name ecs.application-autoscaling.amazonaws.com
+```
+
+Visit the [ECS service-linked role documentation](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using-service-linked-roles.html) and the [Application Auto Scaling service-linked role documentation](https://docs.aws.amazon.com/autoscaling/application/userguide/application-auto-scaling-service-linked-roles.html) for information on the permissions in these roles.
+
+**Changes to default settings for non-Halyard users**
+
+In order to make default settings consistent whether deploying using Halyard or manually, the following properties of Orca and Clouddriver have had their defaults changed. This change does not affect users who deploy using Halyard, as Halyard was already setting these properties to the new values.
+
+* Clouddriver
+  * `shutdown-wait-seconds`, which sets the number of seconds Clouddriver waits for outstanding work to complete when shutting down, will now default to 600 seconds.
+* Orca
+  * Orca will no longer consider the environment variable `REDIS_URL` when setting the connection to Redis.
+  * The setting `echo.enabled` now defaults to `true`.
+  * The `bakery.extractBuildDetails` setting now defaults to `true`.
 
 <br><br><br>
+
 ## Detailed Updates
 
 ### Bill of Materials
@@ -265,40 +283,10 @@ artifactSources:
 
 
 ###  Spinnaker Community Contributions
-<!-- UNCOMMENT ME:
-See Spinnaker's release notes that are included in this release:  
-[Spinnaker's v1.8.0](https://www.spinnaker.io/community/releases/versions/1-8-0-changelog#individual-service-changes)  
-[Spinnaker's v1.8.1](https://www.spinnaker.io/community/releases/versions/1-8-1-changelog#individual-service-changes)  
 
-<!-- UNCOMMENT ME: Changes listed below is are extra changes that have not yet made it to another Spinnaer release version: -->
-<!-- You may need to pick out some extra contributions from OSS -->
-
-#### Clouddriver  - 07ce2a12
-No Changes
-
-#### Deck  - 5c34e55b
-No Changes
-
-#### Echo  - 3e2dc3b3
-No Changes
-
-#### Fiat  - a75473f4
-No Changes
-
-#### Front50  - 51451737
-No Changes
-
-#### Gate  - 771300da
-No Changes
-
-#### Igor  - 360d9491
-No Changes
-
-#### Kayenta  - 527c4dc4
-No Changes
-
-#### Orca  - b36c6800
-No Changes
-
-#### Rosco  - 6e6f34c3
-No Changes
+See the Open Source Spinnaker Release Notes for the versions included in this release:  
+* [Spinnaker's v1.19.0](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-0)  
+* [Spinnaker's v1.19.1](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-1)  
+* [Spinnaker's v1.19.2](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-2)
+* [Spinnaker's v1.19.3](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-3)
+* [Spinnaker's v1.19.4](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-4)
