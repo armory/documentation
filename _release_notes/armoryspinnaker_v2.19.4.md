@@ -18,26 +18,21 @@ hidden: false
 most of the time this will be empty, however we're leaving this section for a consistant format.
 -->
 ### HTTP sessions for Gate
-This version has upgrade the Spring Boot dependency which will require you to flush Gate sessions. [Here's the guide on flushing gate sessions](https://kb.armory.io/admin/flush-gate-sessions/).
+This version includes an upgrade to the Spring Boot dependency. This requires you to flush all the Gate sessions for your Spinnaker deployment. For more information, see [Flushing Gate Sessions](https://kb.armory.io/admin/flush-gate-sessions/).
 
 
 
 ## Known Issues
 There are currently no known issues with this release.
 
-<!-- Example of a problem
-Igor added ..... which does.....
-
-**Symptoms:**
-**Fix:**
--->
-
-
 
 ## Highlighted Updates
 ### Armory
 <!-- A quick summary of what's changed with Armory -->
+Highlighted Updates describe some of the major changes in this release. Highlights for this release include:
 
+* **Policy Engine**: Armory's Policy Engine for the SDLC now also performs Runtime validation on Spinnaker pipelines. This means that when a pipeline runs, the Policy Engine evaluates the pipeline. This validation only operates on tasks that you have explicitly created policies for. For more information, see [Policy Engine](/spinnaker/policy-engine).
+* **CVEs**: Addressed a number of CVEs found within the Spinnaker services. 
 
 
 ###  Spinnaker Community Contributions
