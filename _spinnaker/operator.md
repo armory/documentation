@@ -80,7 +80,7 @@ Download CRDs and example manifests from the [latest stable release](https://git
 ```bash
 # For a stable release (https://github.com/armory-io/spinnaker-operator/releases)
 $ mkdir -p spinnaker-operator && cd spinnaker-operator
-$ RELEASE=v0.3.0 bash -c 'curl -L https://github.com/armory-io/spinnaker-operator/releases/download/${RELEASE}/manifests.tgz | tar -xz'
+$ bash -c 'curl -L https://github.com/armory-io/spinnaker-operator/releases/latest/download/manifests.tgz | tar -xz'
 ```
 
 For both Basic and Cluster modes, you must download and apply the SpinnakerService CRD.
