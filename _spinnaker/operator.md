@@ -24,7 +24,7 @@ If you want to get started quickly, install Operator and Spinnaker by running th
 ```
 # Pick a release from https://github.com/armory-io/spinnaker-operator/releases 
 $ mkdir -p spinnaker-operator && cd spinnaker-operator
-$ RELEASE=v0.4.0 bash -c 'curl -L https://github.com/armory-io/spinnaker-operator/releases/download/${RELEASE}/manifests.tgz | tar -xz'
+$ bash -c 'curl -L https://github.com/armory-io/spinnaker-operator/releases/latest/download/manifests.tgz | tar -xz'
 
 # Install or update CRDs cluster wide
 $ kubectl apply -f deploy/crds/

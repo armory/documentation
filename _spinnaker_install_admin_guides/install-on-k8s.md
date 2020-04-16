@@ -265,8 +265,7 @@ The command returns the namespaces in the EKS cluster.
 First, download the CRDs and manifests from the [latest stable release](https://github.com/armory-io/spinnaker-operator/releases).
 
 ```bash
-$ export RELEASE=<x.x.x>
-$ bash -c 'curl -L https://github.com/armory-io/spinnaker-operator/releases/download/${RELEASE}/manifests.tgz | tar -xz'
+$ bash -c 'curl -L https://github.com/armory-io/spinnaker-operator/releases/latest/download/manifests.tgz | tar -xz'
 ```
 
 Install Spinnaker CRDs:
