@@ -13,31 +13,22 @@ hidden: false
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-<!--
-## Breaking Changes
-<!--
-most of the time this will be empty, however we're leaving this section for a consistent format.
--->
-### HTTP sessions for Gate
-Warning: Version 2.19.x includes an upgrade to the Spring Boot dependency. This requires you to flush all the Gate sessions for your Spinnaker deployment. For more information, see [Flushing Gate Sessions](https://kb.armory.io/admin/flush-gate-sessions/).
 
--->
+## Breaking Changes
+
+### Required Halyard version
+
+Armory Spinnaker 2.19.x requires Armory Halyard 1.8.3 or later.
+
+
+### HTTP sessions for Gate
+
+Armory Spinnaker 2.19.x and later include an upgrade to the Spring Boot dependency. This requires you to flush all the Gate sessions for your Spinnaker deployment if you are upgrading from a version before 2.19.4. For more information, see [Flushing Gate Sessions](https://kb.armory.io/admin/flush-gate-sessions/).
 
 
 
 ## Known Issues
 There are currently no known issues with this release.
-
-<!-- example format of a known issue
-### Igor wants his name to be changed to eye-gor
-Igor (pronounced "eye-gor" /ˈaɪɡɔːr/)[1] is a fictional character in the 1974 film Young Frankenstein and its 2007 musical adaptation. He is the hunchbacked assistant of Dr. Frederick Frankenstein, and the grandson of Igor, the original assistant of Frederick's grandfather, Victor Frankenstein.
-
-**Symptoms:**
-Calling eye-gor by Igor will invoke his wrath
-
-**Fix:**
-Call eye-gor by eye-gor
--->
 
 
 
@@ -45,34 +36,29 @@ Call eye-gor by eye-gor
 ### Armory
 Highlighted Updates describe some of the major changes in this release. Highlights specific to Armory Spinnaker for this release include:
 
-<!-- format should look something like this
-**Policy Engine**
+**CVE**
 
-Armory's Policy Engine ....
+Fixed a recently discovered CVE that affects Igor: `CVE-2020-11612`.
 
+**Managed Pipeline Templates v2 UI**
 
-**CVEs**
+Armory Spinnaker 2.19.x contains the latest version of Managed Pipeline Templates v2 (MPTv2), which is the default pipeline templating solution offered in OSS Spinnaker. 
 
-Addressed a number of CVEs found within the Spinnaker services.
--->
+Armory recommends using Armory's Pipeline as Code feature instead of MPTv2 because it offers the following benefits:
 
+* Integration with GitHub, GitLab and BitBucket enabling teams to store pipelines with application code
+* Templates and access to the templates can be stored and managed separately from pipelines
+* The ability to compose complex templates and pipelines from modules
 
+Note that Armory's Pipeline as Code and the open source Managed Pipeline Templates are not integrated and do not work together.
+
+By default, the MPTv2 UI is disabled in Armory Spinnaker 2.19.5. Leaving the UI disabled maintains the same experience you had with Armory Spinnaker 2.18.x (OSS 1.18.x).
+
+If you want to enable the MPTv2 UI, see [Enabling the Managed Pipeline Templates UI](https://kb.armory.io/admin/enable-mptv2/).
 
 ###  Spinnaker Community Contributions
-The following highlights describe some of the major changes from the Spinnaker community for version OSS Release 1.19.5, which is included in this release of Armory Spinnaker 2.19:
 
-
-#### Igor
-<!-- An example of a problem
-Igor added ..... which does.....
-
-**Symptoms:**
-**Fix:**
--->
-
-
-
-<br><br><br>
+See the release notes for [2.19.4](/release-notes/armoryspinnaker_v2.19.4/) for the Spinnaker Community Contributions for Armory Spinnaker 2.19.x (OSS 1.19.x).
 
 ## Detailed Updates
 
@@ -148,7 +134,15 @@ artifactSources:
 
 
 ###  Spinnaker Community Contributions
-<!-- UNCOMMENT ME and add these by hand:
-See the Open Source Spinnaker Release Notes for the versions included in this release:
 
+<<<<<<< HEAD
 [Spinnaker's v1.19.5](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#individual-service-changes)  
+=======
+See the Open Source Spinnaker Release Notes for the versions included in this release:  
+
+* [Spinnaker's v1.19.0](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-0)  
+* [Spinnaker's v1.19.1](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-1)  
+* [Spinnaker's v1.19.2](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-2)
+* [Spinnaker's v1.19.3](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-3)
+* [Spinnaker's v1.19.4](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-4)
+>>>>>>> add highlights
