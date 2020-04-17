@@ -58,7 +58,7 @@ accounts
 Download the current `pacrd` manifest to your local machine:
 
 ```
-curl -fsSL https://engineering.armory.io/manifests/pacrd-0.4.0.yaml > pacrd-0.4.0.yaml
+curl -fsSL https://engineering.armory.io/manifests/pacrd-0.4.4.yaml > pacrd-0.4.4.yaml
 ```
 
 Then, inspect the manifest to make sure it is compatible with your cluster.
@@ -72,7 +72,7 @@ the installation settings:
 ```yaml
 # file: kustomization.yaml
 resources:
-  - pacrd-0.4.0.yaml
+  - pacrd-0.4.4.yaml
 patchesStrategicMerge:
   - patch.yaml
 namespace: spinnaker  # Note: you should change this value if you are _not_ deploying into the `spinnaker` namespace.
@@ -130,6 +130,9 @@ live under the `pacrd.armory.spinnaker.io/v1alpha1` version moniker.
 In Spinnaker, an Application is a logical construct that allows you to group
 resources under a single name. You can read more about applications in the
 Spinnaker [docs][app-docs].
+
+For available Application configuration options check out
+[our CRD documentation here][crd-docs].
 
 ### Creating an application
 
@@ -213,6 +216,8 @@ kubectl describe app myapplicationname
 Pipelines allow you to encode the process that your team follows to take a
 service from commit to a desired environment, such as production. You can
 read more about pipelines in the Spinnaker [docs][pipe-docs].
+
+View Pipeline configuration options in the [CRD documentation][crd-docs].
 
 ### Creating pipelines
 
@@ -347,12 +352,7 @@ kubectl describe pipeline myapplicationpipeline
 
 ### Applications
 
-- Documentation for available Application spec fields must be
-found in the installation manifest for this controller. You can do so by
-grepping for `applications.pacrd.armory.spinnaker.io` in the installation
-manifest. Fields are documented under `spec.validation.openAPIV3Schema`.
-- For users of version `v0.1.x`, deleting an application in Kubernetes triggers
-the following behavior:
+- Deleting an application in Kubernetes triggers the following behavior:
 
     - Delete the application in Kubernetes.
     - Delete the application in Spinnaker.
@@ -374,6 +374,18 @@ stages:
 # ...
 ```
 
+
+## v0.1.x - v0.4.0
+
+### Applications
+
+- Documentation for available Application spec fields must be
+found in the installation manifest for this controller. You can do so by
+grepping for `applications.pacrd.armory.spinnaker.io` in the installation
+manifest. Fields are documented under `spec.validation.openAPIV3Schema`.
+
+### Pipelines
+
 - Documentation for available Pipeline spec fields must be
 found in the installation manifest for this controller. You can do so by
 grepping for `pipelines.pacrd.armory.spinnaker.io` in the installation
@@ -388,3 +400,4 @@ manifest. Fields are documented under `spec.validation.openAPIV3Schema`.
 [kind]: https://github.com/kubernetes-sigs/kind
 [create an application]: https://www.spinnaker.io/guides/user/applications/create/#create-an-application
 [create a pipeline]: https://www.spinnaker.io/guides/user/pipeline/managing-pipelines/#create-a-pipeline
+[crd-docs]: ../pacrd-crd-docs/
