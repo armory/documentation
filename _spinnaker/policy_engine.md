@@ -48,9 +48,47 @@ spec:
             url: <OPA Server URL>:<port>/v1     
 ```
 
-*Note: There must be a trailing /v1 on the URL. This extension is only compatible with OPA's v1 API.*
+    Add the following section to `SpinnakerService` manifest:
+    
+    ```yaml
+    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+    kind: SpinnakerService
+    metadata:
+      name: spinnaker
+    spec:
+      spinnakerConfig:
+        profiles:
+          front50: |
+            armory:
+              opa:
+                enabled: true
+                url: <OPA Server URL>:<port>/v1     
+    ```
+    
+    *Note: There must be a trailing /v1 on the URL. This extension is only compatible with OPA's v1 API.*
 
-If you are using an in-cluster OPA instance (such as one set up with the instructions below), Spinnaker can access OPA via the Kubernetes service DNS name. The following example configures Spinnaker to connect with an OPA server at http://opa.opaserver:8181:
+    If you are using an in-cluster OPA instance (such as one set up with the instructions below), Spinnaker can access OPA via the Kubernetes service DNS name. The following example configures Spinnaker to connect with an OPA server at http://opa.opaserver:8181:
+    
+    ```yaml
+    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+    kind: SpinnakerService
+    metadata:
+      name: spinnaker
+    spec:
+      spinnakerConfig:
+        profiles:
+          front50: |
+            armory:
+              opa:
+                enabled: true
+                url: http://opa.opaserver:8181/v1
+    ```
+  
+    Deploy the changes (assuming that Spinnaker lives in the: `spinnaker` namespace and the manifest file is named `spinnakerservice.yml`:
+    
+    ```bash
+    kubectl -n spinnaker apply -f spinnakerservice.yml
+    ```
 
 ```yaml
 apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
@@ -226,6 +264,8 @@ spec:
           args:
           # Change this to the namespace where you want OPA to look for policies
             - "--policies=<namespace>"
+          # Configure the OPA server to only check ConfigMaps with the relevant label
+            - "--require-policy-label=true" 
 ---
 # Create a static DNS endpoint for Spinnaker to reach OPA
 apiVersion: v1
@@ -296,6 +336,14 @@ If you have configured OPA to look for a ConfigMap, you can create the ConfigMap
 ```
 kubectl create configmap manual-judgment --from-file=manual-judgment.rego
 ```
+
+After you create the policy ConfigMap, apply a label to it:
+
+```
+kubectl label configmap manual-judgment openpolicyagent.org/policy=rego
+```
+
+This label corresponds to the label you add in the [example ConfigMap](#using-configmaps-for-opa-policies). The label in the ConfigMap for creating an OPA server configures the OPA server and, by extension, the Policy Engine to only check ConfigMaps that have the corresponding label. This improves performance.
 
 **API Example** 
 

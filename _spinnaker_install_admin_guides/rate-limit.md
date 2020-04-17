@@ -36,8 +36,7 @@ There are several things you can do to help reduce the effects of throttling:
 
 Spinnaker queries your Cloud Provider (AWS, GCP, Azure, Kubernetes, etc) frequently to understand the state of your existing infrastructure and current deployments.  However, this might cause you to run into rate limits imposed by the Cloud Provider. To help avoid this Spinnaker provides controls to limit the number of requests it generates. The unit used for these controls is "requests per second" (a double float value). Global defaults are `10.0` max requests per second.
 
-
-Below is an example configuration for global rate limits for all services that you would place in `~/.hal/<deployment-name>/profiles/clouddriver-local.yml`:
+Below is an example configuration for global rate limits for all services that you would place in your `SpinnakerService` manifest under section `spec.spinnakerConfig.profiles.clouddriver` if using the Operator, or in `~/.hal/<deployment-name>/profiles/clouddriver-local.yml` if using Halyard:
 
 ```yml
 serviceLimits:
@@ -208,7 +207,6 @@ aws:
 This is the number of retries before the request fails. It's used with an exponential backoff, maxing out at 20 seconds.
 
 
-
 # Fiat hitting rate limits
 
 If Fiat is configured to poll Github or Google, you may end up seeing rate limits when Fiat does its polling for user groups. Some symptoms that you might see are:
@@ -221,7 +219,7 @@ If Fiat is configured to poll Github or Google, you may end up seeing rate limit
   GoogleDirectoryUserRolesProvider : [] Failed to fetch groups for user x: Rate Limit Exceeded
   ```
 
-To address this issue, adjust poll cycle time and/or timeouts in `~/.hal/<deployment-name>/profiles/fiat-local.yml`, see ([FiatServerConfigurationProperties.java for more details](https://github.com/spinnaker/fiat/blob/v1.7.0/fiat-web/src/main/java/com/netflix/spinnaker/fiat/config/FiatServerConfigurationProperties.java)).:
+To address this issue, adjust poll cycle time and/or timeouts in your `SpinnakerService` manifest under section `spec.spinnakerConfig.profiles.fiat` if using the Operator (beware: you will end up with two nested `fiat` sections), or in  `~/.hal/<deployment-name>/profiles/fiat-local.yml` if using Halyard. See ([FiatServerConfigurationProperties.java for more details](https://github.com/spinnaker/fiat/blob/v1.7.0/fiat-web/src/main/java/com/netflix/spinnaker/fiat/config/FiatServerConfigurationProperties.java)).:
 
 ```yml
 fiat:

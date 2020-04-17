@@ -50,8 +50,8 @@ A typical work flow with Spinnaker starts with baking a Linux-based machine imag
 
 Armory Spinnaker is an enterprise-grade distribution of Spinnaker that forms the core of Armory's Platform. It is preconfigured and runs in your Kubernetes cluster. The platform is an extension of open source Spinnaker and includes all those benefits as well as the following:
 - Pipeline as Code (Dinghy) allows you to store Spinnaker pipelines in Github and manage them like you would manage code, including version control, templatization, and modularization. Spinnaker pipelines are flexible and customizable series of deployment stages. Combine all these to rapidly and repeatably scale pipelines in your Spinnaker deployment.
-- Armory Halyard Installer helps you configure, deploy, and update Spinnaker
-- Policy Engine helps you meet compliance requirements.
+- Armory Spinnaker Operator helps you configure, deploy, and update Spinnaker on Kubernetes clusters. If you cannot use a Kubernetes Operatork, you can use Armory Halyard to accomplish the same tasks.
+- Policy Engine helps you meet compliance requirements based on custom policies you set.
 - Integrations with many of your existing tools, such as Terraform. For a full list, see [Integrations](https://www.armory.io/armory-integrations/.)
 
 ## Need More Help?
@@ -65,4 +65,4 @@ If you have questions, comments or suggestions about this documentation *(especi
 
 ## Features and Pricing
 
-Armory Spinnaker is an enterprise-grade distribution of Spinnaker that forms the core of Armory's Platform. Armory's Platform helps software teams ship better software, faster.  [Learn more here](http://www.armory.io/pricing).
+Armory Spinnaker is an enterprise-grade distribution of Spinnaker that forms the core of Armory's Platform. Armory's Platform helps software teams ship better software, faster.  [Learn more here](https://www.armory.io/pricing).

@@ -7,7 +7,7 @@ order: 51
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-Armory Halyard can be configured via `/opt/spinnaker/config/halyard.yml`. If you run the Docker image, you can provide your own configuration by mounting the file or directory to the container.
+Armory Halyard can be configured via `/opt/spinnaker/config/halyard.yml`. If you run the Docker image, you can provide your own configuration by mounting the file or directory to the container. If you're running the Operator, you can also configure the behavior of the internal Halyard by creating a Kubernetes ConfigMap and mounting it to the Halyard container.
 
 ```
 halyard:

@@ -12,7 +12,7 @@ This guide includes:
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-> Before you start, you'll need to [configure a Docker registry](/spinnaker-install-admin-guides/docker/) using Halyard.  If
+> Before you start, you'll need to [configure a Docker registry](/spinnaker-install-admin-guides/docker/).  If
 > you don't see your Docker registry as an option, or you're missing your
 > organization or image in the UI, you'll need to double-check your Spinnaker
 > is configured to use that registry (and/or repository)

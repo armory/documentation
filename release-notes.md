@@ -58,6 +58,7 @@ We use [semantic versioning](https://semver.org/) for tagging, e.g. `12.3.4`.
 | 2.16.x         | 1.16.x             |
 | 2.17.x         | 1.17.x             |
 | 2.18.x         | 1.18.x             |
+| 2.19.x         | 1.19.x             |
 
 
 ### RC Releases

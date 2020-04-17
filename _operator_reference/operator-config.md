@@ -1,9 +1,9 @@
 ---
 layout: post
 title: Spinnaker Operator Reference
-order: 12
+order: 1
 ---
-This page describes the fields in `SpinnakerService` CRD and example manifests:
+This page describes the fields in `SpinnakerService` CRD and example manifests.
 
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
@@ -126,7 +126,7 @@ Note that you can use spinsvc for brevity. You can also use `spinnakerservices.s
 
 Contains the same information as the `deploymentConfigurations` entry in a Halyard configuration.
 
-For example, given the following `~/.hal/config` file: 
+For example, given the following `~/.hal/config` file:
 
 ```yaml
 currentDeployment: default
@@ -153,6 +153,25 @@ spec:
           bucket: mybucket
           rootFolder: front50
 ```
+
+`.spec.spinnakerConfig.config` contains the following sections:
+
+* [armory](/operator_reference/armory)
+* [artifact](/operator_reference/artifact)
+* [canary](/operator_reference/canary)
+* [ci](/operator_reference/ci)
+* [deploymentEnvironment](/operator_reference/deploy)
+* [features](/operator_reference/features)
+* [metricStores](/operator_reference/metricstores)
+* [notification](/operator_reference/notification)
+* [persistentStorage](/operator_reference/persistent-storage)
+* [plugins](/operator_reference/plugins)
+* [providers](/operator_reference/providers)
+* [pubsub](/operator_reference/pubsub)
+* [repository](/operator_reference/repository)
+* [security](/operator_reference/security)
+* [stats](/operator_reference/stats)
+* [webhook](/operator_reference/webhook)
 
 ### .spec.spinnakerConfig.profiles
 
@@ -229,7 +248,7 @@ A double underscore (`__`) in the file name is translated to a path separator (`
         echo "hello world!"
 ```
 
-### spec.expose 
+### spec.expose
 Optional. Controls how Spinnaker gets exposed. If you omit it, no load balancer gets created. If this section gets removed, the Load Balancer does not get deleted.
 
 Use the following configurations:
@@ -242,7 +261,7 @@ Use the following configurations:
 
 ### spec.validation
 
-**Currently these configurations are experimental. By default the Operator always validates Kubernetes accounts when applying a SpinnakerService manifest.** 
+**Currently these configurations are experimental. By default, the Operator always validates Kubernetes accounts when applying a SpinnakerService manifest.**
 
 Validation options that apply to all validations that Operator performs:
 

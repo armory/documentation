@@ -39,30 +39,55 @@ _sourceCategory="dev/sales-demo-cluster/echo" and _collector="Spinnaker Instance
 ## Collect Logs for Spinnaker
 
 ### Collection Process Overview
-Note: This assumes you have already installed Spinnaker and have access to the halyard configuration files  to make changes to Spinnaker.
+Note: This assumes you have already installed Spinnaker and have access to the configuration files to make changes to Spinnaker.
 
 **Collection Step 1: Retrieve SumoLogic URL for HTTP logs**
 
 Configure an HTTP Source. And get a copy of the endpoint URL from your SumoLogic console.
 
-**Collection Step 2: Modify Spinnaker echo-local.yml to export logs to SumoLogic**
+**Collection Step 2: Modify Spinnaker configuration to export logs to SumoLogic**
 
-Add (and create if necessary) to `.hal/default/profiles/echo-local.yml` the following:
-```yaml
-rest:
-  enabled: true
-  endpoints:
-    - wrap: false
-      url: [insert your custom HTTP endpoint] #e.g. https://endpoint1.collection.us1.sumologic.com/...
-```
-**Collection Step 3: Run `hal deploy apply`**
+* **Operator**
 
-Run `hal deploy apply` and wait for the services to restart.  Check SumoLogic console for ingestion of data.
+    Add to the `SpinnakerService` manifest the following snippet:
+
+    ```yaml
+    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+    kind: SpinnakerService
+    metadata:
+      name: spinnaker
+    spec:
+      spinnakerConfig:  
+        profiles:
+          echo:
+            rest:
+              enabled: true
+              endpoints:
+              - wrap: false
+                url: [insert your custom HTTP endpoint] #e.g. https://endpoint1.collection.us1.sumologic.com/...
+    ```
+
+* **Halyard**
+
+    Add (and create if necessary) to `.hal/default/profiles/echo-local.yml` the following:
+    ```yaml
+    rest:
+      enabled: true
+      endpoints:
+      - wrap: false
+        url: [insert your custom HTTP endpoint] #e.g. https://endpoint1.collection.us1.sumologic.com/...
+    ```
+
+**Collection Step 3: Apply changes**
+
+Run `kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest>` if using the Operator, or `hal deploy apply` if using Halyard, and wait for the services to restart. Check SumoLogic console for ingestion of data.
 
 ## Install the Spinnaker App and View the Dashboards
+
 Go to Sumo Logic App Catalog and search for "Spinnaker" by Armory
 
-### Dashboard filters  
+### Dashboard filters
+ 
 The Spinnaker Pipelines dashboard has a set of filters that you can apply to the entire dashboard as shown in the following example. Click the funnel icon in the top dashboard menu bar to display a scrollable list of filters that are applied across the entire dashboard.
 
 NOTE: You can use filters to drill down and examine the data on a granular level by application and pipeline

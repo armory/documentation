@@ -1,1 +1,3 @@
 halyard-armory-version: abce1234
+operator-extended-crd-version: v1alpha2
+operator-oss-crd-version: v1alpha2

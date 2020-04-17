@@ -11,21 +11,65 @@ order: 100
 
 Many people have Spinnaker sitting in a different AWS account than where they are deploying to (the target account). This guide will show you how to configure Spinnaker to share an AMI created where Spinnaker lives with the AWS account where your applications live. This guide is assuming that AWS roles are already properly setup for talking to the target account.
 
-## Halyard Configuration
+## Configuration
 
-Add the AWS provider account with [Halyard](https://github.com/spinnaker/halyard/blob/master/docs/commands.md#hal-config-provider-aws-account-add). Next make sure to enable the AWS provider:
-```bash
-hal config provider aws enable
-```
+* **Operator**
 
-Now we need to add a `rosco.yml` file under `~/.hal/default/service-settings/` that contains the following:
-```yaml
-env:
-  SPINNAKER_AWS_DEFAULT_REGION: "YOUR_DEFAULT_REGION"
-  SPINNAKER_AWS_DEFAULT_ACCOUNT: "YOUR_DEFAULT_AWS_ACCOUNT_ID"
-```
+    You can add the following snippet to your `SpinnakerService` manifest and apply it after replacing the example values with ones that correspond to your environment. The example adds an AWS account and configures the baking service (Rosco) with default values:
+    
+    ```yaml
+    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+    kind: SpinnakerService
+    metadata:
+      name: spinnaker
+    spec:
+      spinnakerConfig:
+        config: 
+          aws:
+            enabled: true
+            accounts:
+            - name: my-aws-account
+              requiredGroupMembership: []
+              providerVersion: V1
+              permissions: {}
+              accountId: 'aws-account-id'               # Use your AWS account id
+              regions:                                  # Specify all target regions for deploying applications
+                - name: us-west-2
+              assumeRole: role/SpinnakerManagedProfile  # Role name that worker nodes of Spinnaker cluster can assume in the target account to make deployments and scan infrastructure
+            primaryAccount: my-aws-account
+            bakeryDefaults:
+              baseImages: []
+            {% raw %}defaultKeyPairTemplate: '{{"{{"}}name{{"}}"}}-keypair'{% endraw %}
+            defaultRegions:
+            - name: us-west-2
+            defaults:
+              iamRole: BaseIAMRole
+              ... # Config omitted for brevity
+        service-settings:
+          rosco:
+            env:
+              SPINNAKER_AWS_DEFAULT_REGION: "us-west-2"               # Replace by default bake region
+              SPINNAKER_AWS_DEFAULT_ACCOUNT: "target-aws-account-id"  # Target AWS account id
+              ... # Config omitted for brevity
+    ```
 
-`SPINNAKER_AWS_DEFAULT_ACCOUNT` is the target account ID.
+* **Halyard**
+
+    First, add the AWS provider account with [Halyard](https://github.com/spinnaker/halyard/blob/master/docs/commands.md#hal-config-provider-aws-account-add). Next, make sure to enable the AWS provider:
+
+    ```bash
+    hal config provider aws enable
+    ```
+
+    Then, add a `rosco.yml` file under `~/.hal/default/service-settings/` that contains the following snippet:
+
+    ```yaml
+    env:
+      SPINNAKER_AWS_DEFAULT_REGION: "YOUR_DEFAULT_REGION"
+      SPINNAKER_AWS_DEFAULT_ACCOUNT: "YOUR_DEFAULT_AWS_ACCOUNT_ID"
+    ```
+
+    `SPINNAKER_AWS_DEFAULT_ACCOUNT` is the target account ID.
 
 ## Bake Stage
 
