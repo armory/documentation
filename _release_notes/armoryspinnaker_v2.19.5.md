@@ -146,9 +146,6 @@ artifactSources:
 #### Armory Igor  - 360d9491...8cbc70d2
  - fix(cve): CVE-2020-11612 (bp #55) (#57)
 
-#### Armory Rosco  - 6e6f34c3...2d6fdf58
- - fix(gradle): update spinnaker release (#44)
-
 
 
 ###  Spinnaker Community Contributions
