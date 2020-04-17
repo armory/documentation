@@ -80,7 +80,7 @@ Igor added ..... which does.....
 Here's the bom for this version.
 <details><summary>Expand</summary>
 <pre class="highlight">
-<code>version: 2.19.5-rc.1
+<code>version: 2.19.5
 timestamp: "2020-04-17 22:46:33"
 services:
   clouddriver:
@@ -151,5 +151,4 @@ artifactSources:
 <!-- UNCOMMENT ME and add these by hand:
 See the Open Source Spinnaker Release Notes for the versions included in this release:
 
-[Spinnaker's v1.8.0](https://www.spinnaker.io/community/releases/versions/1-8-0-changelog#individual-service-changes)  
-[Spinnaker's v1.8.1](https://www.spinnaker.io/community/releases/versions/1-8-1-changelog#individual-service-changes)  
+[Spinnaker's v1.19.5](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#individual-service-changes)  
