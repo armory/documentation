@@ -217,8 +217,7 @@ Pipelines allow you to encode the process that your team follows to take a
 service from commit to a desired environment, such as production. You can
 read more about pipelines in the Spinnaker [docs][pipe-docs].
 
-For available Pipeline configuration options check out
-[our CRD documentation here][crd-docs].
+View Pipeline configuration options in the [CRD documentation][crd-docs].
 
 ### Creating pipelines
 
