@@ -147,7 +147,26 @@ See Spinnaker's release notes that are included in this release:
 [Spinnaker 1.17.8](https://www.spinnaker.io/community/releases/versions/1-17-8-changelog#individual-service-changes)
 
 #### Clouddriver  - 0f2d1d7
-No Changes
+- fix(core): Only log relevant details of description (#4456) (#4459)
+- fix(sql): Cherry pick jooq changes  (#4435)
+- fix(provider/cf): Don't call to spaces on every call to /credentials (#4441) (#4)
+- fix(repository): Enforce serialization order for JedisTask (#4394) (#4398)
+- fix(cf): More parallel processing in the caching agent (#4352)
+- fix(cf): Improved caching agent robustness (#4351)
+- fix(cf): remove the empty cache results for SG (#4310)
+- fix(cf): Parallelize apps/lbs cache building (#4305)
+- fix(cf): allow results per page to be configurable (#4289)
+- fix(cf): reduce results per page requests to lower timeout frequency (#4271)
+- fix(cf): Improve API client error message reporting
+- fix(cf): remove cf secondary cache expiry to prevent expensive api calls (#4244)
+- feat(cf): separate lb and sg into separate caching agents (#4154)
+- refactor(cf): removed unused code, fix spelling and etc (#4159)
+- feat(cf): increase logging for cf to better detect fails (#4156)
+- feat(cf): provide more info when retrying an API (#4137)
+- fix(kubernetes): return provider field with kubernetes /search results (#4249) (#4387)
+- fix(cloudFoundry): fix cloudFoundry job provider (#4379) (#4381)
+- fix(ecs): ECS IAM Path role fix for 1.17 (#4323)
+
 
 #### Deck  - 75cecc4...ad367c6
  - fix(artifacts): only remove deleted expected artifacts from stages on trigger update (#8071) (#8077)
