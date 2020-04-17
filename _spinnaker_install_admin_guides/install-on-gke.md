@@ -509,7 +509,7 @@ Once the ingress is up (this may take some time), you can get the IP address for
 
 ```bash
 $ kubectl describe -n spinnaker-system ingress spin-ingress
-Name:             spinnaker-ingress
+Name:             spin-ingress
 Namespace:        spinnaker
 Address:          35.233.216.189
 Default backend:  default-http-backend:80 (10.36.2.7:8080)
