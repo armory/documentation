@@ -18,7 +18,7 @@ The Armory Policy Engine is designed to allow enterprises more complete control 
 
 Make sure you can meet the following version requirements for the Policy Engine:
 * OPA versions 0.12.x or 0.13.x
-* Halyard 1.7.2 or later
+* Halyard 1.7.2 or later if you are using Halyard to manage Spinnaker
 * Armory Spinnaker 2.16.0 or later for Pipeline save time validation
 * Armory Spinnaker 2.19.0 or later for Pipeline runtime validation 
 
@@ -27,14 +27,63 @@ Using the Policy Engine requires an understanding of OPA's [rego syntax](https:/
 
 ## Enabling the Policy Engine
 
-To enable the Policy Engine validations, add the following configuration to `.hal/default/profiles/spinnaker-local.yml`:
+The steps to enable the Policy Engine vary based on whether you use the [Operator](#enabling-policy-engine-using-operator) or [Halyard](#enabling-policy-engine-using-halyard).
+
+### Enabling Policy Engine using Operator
+
+Add the following section to `SpinnakerService` manifest:
+    
+```yaml
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    profiles:
+      front50: |
+        armory:
+          opa:
+            enabled: true
+            url: <OPA Server URL>:<port>/v1     
+```
+
+*Note: There must be a trailing /v1 on the URL. This extension is only compatible with OPA's v1 API.*
+
+If you are using an in-cluster OPA instance (such as one set up with the instructions below), Spinnaker can access OPA via the Kubernetes service DNS name. The following example configures Spinnaker to connect with an OPA server at http://opa.opaserver:8181:
 
 ```yaml
-armory:
-  opa:
-    enabled: true
-    url: <OPA Server URL>:<port>/v1
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    profiles:
+      front50: |
+        armory:
+          opa:
+            enabled: true
+            url: http://opa.opaserver:8181/v1
 ```
+
+Deploy the changes (assuming that Spinnaker lives in the: `spinnaker` namespace and the manifest file is named `spinnakerservice.yml`:
+
+```bash
+kubectl -n spinnaker apply -f spinnakerservice.yml
+```
+
+
+### Enabling Policy Engine using Halyard 
+  
+  Add the following configuration to `.hal/default/profiles/spinnaker-local.yml`:
+
+  ```yaml
+  armory:
+    opa:
+      enabled: true
+      url: <OPA Server URL>:<port>/v1
+  ```
 
 *Note: There must be a trailing `/v1` on the URL. The Policy Engine is only compatible with OPA's v1 API.*
 
