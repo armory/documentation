@@ -1,7 +1,7 @@
 ---
 layout: post
-title: v2.19.5 Armory Release (OSS Release 1.19.4)
-order: -21920200417225049
+title: v2.19.5 Armory Release (OSS Release 1.19.5)
+order: -21920200417225655
 hidden: false
 ---
 
@@ -59,7 +59,7 @@ Addressed a number of CVEs found within the Spinnaker services.
 
 
 ###  Spinnaker Community Contributions
-The following highlights describe some of the major changes from the Spinnaker community for version OSS Release 1.19.4, which is included in this release of Armory Spinnaker 2.19:
+The following highlights describe some of the major changes from the Spinnaker community for version OSS Release 1.19.5, which is included in this release of Armory Spinnaker 2.19:
 
 
 #### Igor
