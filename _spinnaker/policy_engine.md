@@ -47,48 +47,10 @@ spec:
             enabled: true
             url: <OPA Server URL>:<port>/v1     
 ```
+    
+*Note: There must be a trailing /v1 on the URL. This extension is only compatible with OPA's v1 API.*
 
-    Add the following section to `SpinnakerService` manifest:
-    
-    ```yaml
-    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
-    kind: SpinnakerService
-    metadata:
-      name: spinnaker
-    spec:
-      spinnakerConfig:
-        profiles:
-          front50: |
-            armory:
-              opa:
-                enabled: true
-                url: <OPA Server URL>:<port>/v1     
-    ```
-    
-    *Note: There must be a trailing /v1 on the URL. This extension is only compatible with OPA's v1 API.*
-
-    If you are using an in-cluster OPA instance (such as one set up with the instructions below), Spinnaker can access OPA via the Kubernetes service DNS name. The following example configures Spinnaker to connect with an OPA server at http://opa.opaserver:8181:
-    
-    ```yaml
-    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
-    kind: SpinnakerService
-    metadata:
-      name: spinnaker
-    spec:
-      spinnakerConfig:
-        profiles:
-          front50: |
-            armory:
-              opa:
-                enabled: true
-                url: http://opa.opaserver:8181/v1
-    ```
-  
-    Deploy the changes (assuming that Spinnaker lives in the: `spinnaker` namespace and the manifest file is named `spinnakerservice.yml`:
-    
-    ```bash
-    kubectl -n spinnaker apply -f spinnakerservice.yml
-    ```
+If you are using an in-cluster OPA instance (such as one set up with the instructions below), Spinnaker can access OPA via the Kubernetes service DNS name. The following example configures Spinnaker to connect with an OPA server at http://opa.opaserver:8181:
 
 ```yaml
 apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
@@ -110,7 +72,6 @@ Deploy the changes (assuming that Spinnaker lives in the: `spinnaker` namespace 
 ```bash
 kubectl -n spinnaker apply -f spinnakerservice.yml
 ```
-
 
 ### Enabling Policy Engine using Halyard 
   
