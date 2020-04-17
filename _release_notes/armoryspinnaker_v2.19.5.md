@@ -135,7 +135,6 @@ artifactSources:
 
 ### Armory
 #### Terraformer&trade; - f498d00e...f3edd3da
- - fix(mergify): fix rules (#142)
  - fix(api/createJob): make sure to init a runner (#139)
  - feat(terraform/versions): 0.12.21, 0.12.22, 0.12.23, 0.12.24 (#138)
  - fix(api/createJob): handle when savePlanOutput is undefined/null (#136)
