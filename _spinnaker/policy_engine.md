@@ -41,7 +41,12 @@ metadata:
 spec:
   spinnakerConfig:
     profiles:
-      front50: |
+      front50: | #Enables Save time validation of policies
+        armory:
+          opa:
+            enabled: true
+            url: <OPA Server URL>:<port>/v1
+      clouddriver: | #Enables Runtime validation of policies
         armory:
           opa:
             enabled: true
@@ -60,7 +65,12 @@ metadata:
 spec:
   spinnakerConfig:
     profiles:
-      front50: |
+      front50: | #Enables Save time validation of policies
+        armory:
+          opa:
+            enabled: true
+            url: http://opa.opaserver:8181/v1
+      clouddriver: | #Enables Runtime validation of policies
         armory:
           opa:
             enabled: true
