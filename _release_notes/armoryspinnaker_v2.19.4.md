@@ -35,12 +35,15 @@ There are currently no known issues with this release.
 Highlighted Updates describe some of the major changes in this release. Highlights specific to Armory Spinnaker for this release include:
 
 **Policy Engine**
+
 Armory's Policy Engine for the SDLC now also performs Runtime validation on Spinnaker pipelines. This means that when a pipeline runs, the Policy Engine evaluates the pipeline. This validation only operates on tasks that you have explicitly created policies for. For more information, see [Policy Engine](/spinnaker/policy-engine).
 
 **CVEs**
+
 Addressed a number of CVEs found within the Spinnaker services.
 
 **Support for Plugins**
+
 This release supports Plugin deployment using Armory Halyard or the [Spinnaker Operator](/_spinnaker/operator/). Consult the open source [Plugin](https://www.spinnaker.io/guides/user/plugins/user-guide/) docs for Halyard usage or the [Plugins Operator Reference](/_operator_reference/plugins/) for a manifest example.
 
 
