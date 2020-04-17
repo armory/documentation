@@ -127,8 +127,7 @@ kubectl config set-context $CONTEXT --user ${CONTEXT}-token-user
 
 # Create GCS Bucket
 
-Use the Cloud Console to do this, or you can let front50 do it for you.
-However, if you're going to put secrets in the bucket, you should create the bucket yourself with a secrets directory. Make sure the bucket is accessible with the service account you created.
+Use the Cloud Console to do create your bucket. If you're going to put secrets in the bucket, make sure to create a secrets directory in the bucket. Also, ensure the bucket is accessible from the service account you created.
 
 # Customize the Kustomize Files
 
