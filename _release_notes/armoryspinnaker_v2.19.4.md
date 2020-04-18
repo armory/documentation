@@ -8,7 +8,7 @@ hidden: false
 # 04/15/20 Release Notes
 {:.no_toc}
 
-> Note: If you're experiencing production issues after upgrading Spinnaker, rollback to a [previous working version](http://docs.armory.io/admin-guides/troubleshooting/#i-upgraded-spinnaker-and-it-is-no-longer-responding-how-do-i-rollback) and please report issues to [http://go.armory.io/support](http://go.armory.io/support).
+> Note: Do not upgrade to Armory Spinnaker 2.19.4 (this version). Instead, upgrade to Armory Spinnaker [2.19.5](/release-notes/armoryspinnaker_v2.19.5/) or later.
 
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
@@ -25,7 +25,6 @@ Armory Spinnaker 2.19.x requires Armory Halyard 1.8.3 or later.
 This version includes an upgrade to the Spring Boot dependency. This requires you to flush all the Gate sessions for your Spinnaker deployment. For more information, see [Flushing Gate Sessions](https://kb.armory.io/admin/flush-gate-sessions/).
 
 
-
 ## Known Issues
 There are currently no known issues with this release.
 
@@ -39,9 +38,6 @@ Armory's Policy Engine for the SDLC now also performs Runtime validation on Spin
 
 **CVEs**
 Addressed a number of CVEs found within the Spinnaker services.
-
-**Support for Plugins**
-This release supports Plugin deployment using Armory Halyard or the [Spinnaker Operator](/_spinnaker/operator/). Consult the open source [Plugin](https://www.spinnaker.io/guides/user/plugins/user-guide/) docs for Halyard usage or the [Plugins Operator Reference](/_operator_reference/plugins/) for a manifest example.
 
 
 ###  Spinnaker Community Contributions
