@@ -25,12 +25,11 @@ Armory Spinnaker 2.19.x requires Armory Halyard 1.8.3 or later.
 
 Armory Spinnaker 2.19.x and later include an upgrade to the Spring Boot dependency. This requires you to flush all the Gate sessions for your Spinnaker deployment if you are upgrading from a version before 2.19.4. For more information, see [Flushing Gate Sessions](https://kb.armory.io/admin/flush-gate-sessions/).
 
+### Plugins framework
 
+If you are using a custom plugin for Deck built using the Plugins framework or intend to build one, do not upgrade to Armory Spinnaker 2.19.5.
 
 ## Known Issues
-There are currently no known issues with this release.
-
-
 
 ## Highlighted Updates
 ### Armory
@@ -58,7 +57,43 @@ If you want to enable the MPTv2 UI, see [Enabling the Managed Pipeline Templates
 
 ###  Spinnaker Community Contributions
 
-See the release notes for [2.19.4](/release-notes/armoryspinnaker_v2.19.4/) for the Spinnaker Community Contributions for Armory Spinnaker 2.19.x (OSS 1.19.x).
+The following highlights describe some of the major changes from the Spinnaker community for version 1.19.x, which is included in this release of Armory Spinnaker 2.19:
+
+**Scheduled Removal of Kubernetes V1 Provider**
+The Kubernetes V1 provider will be removed in Spinnaker 1.21. Please see the [RFC](https://github.com/spinnaker/governance/blob/master/rfc/eol_kubernetes_v1.md) for more details.
+
+Breaking change: Kubernetes accounts with an unspecified providerVersion will now default to V2. Update your Halconfig to specify `providerVersion: v1` for any Kubernetes accounts you are currently using with the V1 provider.
+
+**Java 11**
+> The migration to Java 11 continues. This should not affect Spinnaker users. If you extend Spinnaker, this change may affect you.
+
+The Java 11 JRE runs Spinnaker when deployed to a Kubernetes cluster using Halyard (or if you consume the official containers in some other way). If this causes problems, or your organization isn't ready to run Java 11 in production, you can specify deploymentEnvironment.imageVariant: JAVA8 (or UBUNTU_JAVA8) in your Halyard config. Please notify [sig-platform@spinnaker.io](sig-platform@spinnaker.io) if you run into issues and decide to downgrade.
+
+All users need to switch to a Java 11 JRE by Spinnaker 1.21, which is scheduled to be released in early July. Please see the [RFC](https://github.com/spinnaker/governance/blob/master/rfc/java11.md) for the full schedule and more details. We encourage everyone to start testing Spinnaker under a Java 11 JRE now in preparation for the cutover. If you have any concerns about the migration timeline, please reach out to sig-platform@spinnaker.io.
+
+**IAM service-linked roles for ECS**
+
+The ECS provider now requires IAM service-linked roles for use with ECS and Application Auto Scaling. Deployments to AWS accounts that do not already have service-linked roles for these AWS services may see failed deployments after upgrading to Spinnaker 1.19. To create the required service-linked roles, run the following:
+
+```
+aws iam create-service-linked-role --aws-service-name ecs.amazonaws.com
+aws iam create-service-linked-role --aws-service-name ecs.application-autoscaling.amazonaws.com
+```
+
+Visit the [ECS service-linked role documentation](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using-service-linked-roles.html) and the [Application Auto Scaling service-linked role documentation](https://docs.aws.amazon.com/autoscaling/application/userguide/application-auto-scaling-service-linked-roles.html) for information on the permissions in these roles.
+
+**Changes to default settings for non-Halyard users**
+
+In order to make default settings consistent whether deploying using Halyard or manually, the following properties of Orca and Clouddriver have had their defaults changed. This change does not affect users who deploy using Halyard, as Halyard was already setting these properties to the new values.
+
+* Clouddriver
+  * `shutdown-wait-seconds`, which sets the number of seconds Clouddriver waits for outstanding work to complete when shutting down, will now default to 600 seconds.
+* Orca
+  * Orca will no longer consider the environment variable `REDIS_URL` when setting the connection to Redis.
+  * The setting `echo.enabled` now defaults to `true`.
+  * The `bakery.extractBuildDetails` setting now defaults to `true`.
+
+<br><br><br>
 
 ## Detailed Updates
 
