@@ -29,6 +29,7 @@ Armory Spinnaker 2.19.x and later include an upgrade to the Spring Boot dependen
 
 If you are using a custom plugin for Deck built using the Plugins framework or intend to build one, do not upgrade to Armory Spinnaker 2.19.5.
 
+
 ## Known Issues
 
 ## Highlighted Updates
@@ -37,7 +38,7 @@ Highlighted Updates describe some of the major changes in this release. Highligh
 
 **CVE**
 
-Fixed a recently discovered CVE that affects Igor: `CVE-2020-11612`.
+Fixed a recently discovered CVE that affects Igor: [`CVE-2020-11612`](https://nvd.nist.gov/vuln/detail/CVE-2020-11612).
 
 **Managed Pipeline Templates v2 UI**
 
