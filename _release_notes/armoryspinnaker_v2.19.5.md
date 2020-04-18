@@ -169,8 +169,7 @@ artifactSources:
 
 
 ###  Spinnaker Community Contributions
-
-[Spinnaker's v1.19.5](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#individual-service-changes)  
+ 
 See the Open Source Spinnaker Release Notes for the versions included in this release:  
 
 * [Spinnaker's v1.19.0](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-0)  
@@ -178,4 +177,4 @@ See the Open Source Spinnaker Release Notes for the versions included in this re
 * [Spinnaker's v1.19.2](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-2)
 * [Spinnaker's v1.19.3](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-3)
 * [Spinnaker's v1.19.4](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-4)
->>>>>>> add highlights
+* [Spinnaker's v1.19.5](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#individual-service-changes) 
