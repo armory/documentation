@@ -30,6 +30,12 @@ Armory Spinnaker 2.19.x and later include an upgrade to the Spring Boot dependen
 If you are using a custom plugin for Deck built using the Plugins framework or intend to build one, do not upgrade to Armory Spinnaker 2.19.5.
 
 
+### Scheduled Removal of Kubernetes V1 Provider
+The Kubernetes V1 provider will be removed in Spinnaker 1.21. Please see the [RFC](https://github.com/spinnaker/governance/blob/master/rfc/eol_kubernetes_v1.md) for more details.
+
+Breaking change: Kubernetes accounts with an unspecified providerVersion will now default to V2. Update your Halconfig to specify `providerVersion: v1` for any Kubernetes accounts you are currently using with the V1 provider.
+
+
 ## Known Issues
 
 ## Highlighted Updates
