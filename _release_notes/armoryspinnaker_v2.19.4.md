@@ -8,7 +8,7 @@ hidden: false
 # 04/15/20 Release Notes
 {:.no_toc}
 
-> Note: Do not upgrade to Armory Spinnaker 2.19.4 Instead, upgrade to Armory Spinnaker [2.19.5](/release-notes/armoryspinnaker_v2.19.5/) or later.
+> Note: Do not upgrade to Armory Spinnaker 2.19.4 (this version). Instead, upgrade to Armory Spinnaker [2.19.5](/release-notes/armoryspinnaker_v2.19.5/) or later.
 
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
