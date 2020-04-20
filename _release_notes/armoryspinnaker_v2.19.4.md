@@ -8,7 +8,7 @@ hidden: false
 # 04/15/20 Release Notes
 {:.no_toc}
 
-> Note: Do not upgrade to Armory Spinnaker 2.19.4 (this version). Instead, upgrade to Armory Spinnaker [2.19.5](/release-notes/armoryspinnaker_v2.19.5/) or later.
+> Note: Do not upgrade to Armory Spinnaker 2.19.4 (this version). Instead, upgrade to Armory Spinnaker [2.19.6](/release-notes/armoryspinnaker_v2.19.6/) or later.
 
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
@@ -34,9 +34,11 @@ There are currently no known issues with this release.
 Highlighted Updates describe some of the major changes in this release. Highlights specific to Armory Spinnaker for this release include:
 
 **Policy Engine**
+
 Armory's Policy Engine for the SDLC now also performs Runtime validation on Spinnaker pipelines. This means that when a pipeline runs, the Policy Engine evaluates the pipeline. This validation only operates on tasks that you have explicitly created policies for. For more information, see [Policy Engine](/spinnaker/policy-engine).
 
 **CVEs**
+
 Addressed a number of CVEs found within the Spinnaker services.
 
 
