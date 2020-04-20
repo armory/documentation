@@ -320,22 +320,14 @@ uiSecurity:
 uiSecurity:
   ssl:
     enabled:
-    keyAlias:
-    keyStore:
-    keyStoreType:
-    keyStorePassword:
-    trustStore:
-    trustStoreType:
-    trustStorePassword:
-    clientAuth:
+    sslCertificateFile:
+    sslCertificateKeyFile:
+    sslCertificatePassphrase:
+    sslCACertificateFile:
 ```
 
 - `enabled`: true or false.
-- `keyAlias`: Name of your keystore entry as generated with your keytool.
-- `keyStore`: Path to the keystore holding your security certificates.
-- `keyStoreType`: The type of your keystore. Examples include JKS, and PKCS12.
-- `keyStorePassword`: The password to unlock your keystore. Due to a limitation in Tomcat, this must match your key's password in the keystore.
-- `trustStore`: Path to the truststore holding your trusted certificates.
-- `trustStoreType`: The type of your truststore. Examples include JKS, and PKCS12.
-- `trustStorePassword`: The password to unlock your truststore.
-- `clientAuth`: Declare `WANT` when client auth is wanted but not mandatory or `NEED` when client auth is mandatory.
+- `sslCertificateFile`: Path to your .crt file.
+- `sslCertificateKeyFile`: Path to your .key file.
+- `sslCertificatePassphrase`: The passphrase needed to unlock your SSL certificate. This will be provided to Apache on startup.
+- `sslCACertificateFile`: Path to the .crt file for the CA that issued your SSL certificate. This is only needed for localgitdeployments that serve the UI using webpack dev server.
