@@ -138,4 +138,4 @@ artifactSources:
 ###  Spinnaker Community Contributions
 See the Open Source Spinnaker Release Notes for the versions included in this release:
 
-This version cherry-picks ![spinnaker/deck/pull/8180](https://github.com/spinnaker/deck/pull/8180)
+This version cherry-picks [spinnaker/deck/pull/8180](https://github.com/spinnaker/deck/pull/8180)
