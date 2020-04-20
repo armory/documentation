@@ -81,8 +81,8 @@ serviceaccount/spinnaker-operator created
 # Create GCS Service Account
 
 ```bash
-export SERVICE_ACCOUNT_NAME=spinnaker-gcs-account-mb
-export SERVICE_ACCOUNT_FILE=spinnaker-gcs-account.json
+export SERVICE_ACCOUNT_NAME=<your-service-acount-name>
+export SERVICE_ACCOUNT_FILE=<your-service-account-json>
 export PROJECT=$(gcloud info --format='value(config.project)')
 
 gcloud --project ${PROJECT} iam service-accounts create \
@@ -136,21 +136,22 @@ Use the Cloud Console to do create your bucket. If you're going to put secrets i
 - Update Spinnaker version to deploy
 - Set the persistent storage type, bucket, rootFolder, project, jsonPath (pick something unique)
 - Add `gcs`` to the config patch
+
 	```yaml
     config:
       version: 2.18.0  
       persistentStorage:
         persistentStoreType: gcs
         gcs:
-          bucket: mb-spin-sandbox
+          bucket: <my-bucket-name>
           rootFolder: front50
-          project: cloud-armory
-          jsonPath: gcs-account.json
+          project: <your-project-name>
+          jsonPath: <your-unique-gcs-account.json>
     ```
 
 **deploy/spinnaker/kustomize/files-patch.yml**
 
-Under files, add a file for the `gcs-account.json`. This will be the content from the GCS service account you created above.
+Under files, add a file for the `your-unique-gcs-account.json`. This will be the content from the GCS service account you created above. The file is named `gcs-account.json` in the following example:
 
 ```yaml
 files:
@@ -160,12 +161,12 @@ files:
       "project_id": "cloud-project",
       "private_key_id": "cf04d5d545bOTHERSTUFFHERE9f9d134f",
       "private_key": "-----BEGIN PRIVATE KEY-----\nSTUFF HERE\n-----END PRIVATE KEY-----\n",
-      "client_email": "spinnaker-gcs-account-mb@cloud-armory.iam.gserviceaccount.com",
-      "client_id": "1170676289461",
+      "client_email": <your-client-email>,
+      "client_id": <your-client-id>,
       "auth_uri": "https://accounts.google.com/o/oauth2/auth",
       "token_uri": "https://oauth2.googleapis.com/token",
       "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-      "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/spinnaker-gcs-account-mb%40cloud-armory.iam.gserviceaccount.com"
+      "client_x509_cert_url": <your-cert-url>
     }
 ```
 
