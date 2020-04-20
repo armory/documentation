@@ -803,14 +803,10 @@ spec:
         uiSecurity:
           ssl:
             enabled: false
-            keyAlias: abc # Name of your keystore entry as generated with your keytool.
-            keyStore: key # Path to the keystore holding your security certificates.
-            keyStoreType: abc # The type of your keystore. Examples include JKS, and PKCS12.
-            keyStorePassword: abc # The password to unlock your keystore. Due to a limitation in Tomcat, this must match your key's password in the keystore.
-            trustStore: trust # Path to the truststore holding your trusted certificates.
-            trustStoreType: abc # The type of your truststore. Examples include JKS, and PKCS12.
-            trustStorePassword: abc # The password to unlock your truststore.
-            clientAuth: WANT # Declare 'WANT' when client auth is wanted but not mandatory, or 'NEED', when client auth is mandatory.
+            sslCertificateFile: # Path to your .crt file.
+            sslCertificateKeyFile: # Path to your .key file.
+            sslCertificatePassphrase: # The passphrase needed to unlock your SSL certificate. This will be provided to Apache on startup.
+            sslCACertificateFile: # Path to the .crt file for the CA that issued your SSL certificate. This is only needed for localgitdeployments that serve the UI using webpack dev server.
           overrideBaseUrl: https://spinnaker-api.armory.io #  If you are accessing the UI server remotely, provide the full base URL of whatever proxy or load balancer is fronting the UI requests.
         authn:
           oauth2:
