@@ -174,4 +174,4 @@ See the Open Source Spinnaker Release Notes for the versions included in this re
 * [Spinnaker's v1.19.4](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-4)
 * [Spinnaker's v1.19.5](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#individual-service-changes) 
 
-This version cherry-picks [spinnaker/deck/pull/8180](https://github.com/spinnaker/deck/pull/8180)
+This version cherry-picks [spinnaker/deck/pull/8180](https://github.com/spinnaker/deck/pull/8180).
