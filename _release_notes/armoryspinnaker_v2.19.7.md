@@ -47,6 +47,10 @@ Addressed a number of CVEs found within the Spinnaker services.
 
 This version includes a cherry picked commit that fixes an issue with creating or updating service accounts. The issue caused pipeline permissions to not work. 
 
+**Affected versions**: Armory Spinnaker 2.19.6 and earlier.
+
+**Fixed versions**: Armory Spinnaker 2.19.7 and later
+
 **Plugins**
 
 This release supports Plugin deployment using Armory Halyard or the [Spinnaker Operator](/_spinnaker/operator/). Consult the open source [Plugin](https://www.spinnaker.io/guides/user/plugins/user-guide/) docs for Halyard usage or the [Plugins Operator Reference](/_operator_reference/plugins/) for a manifest example.
@@ -181,6 +185,6 @@ See the Open Source Spinnaker Release Notes for the versions included in this re
 * [Spinnaker's v1.19.4](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-4)
 * [Spinnaker's v1.19.5](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#individual-service-changes) 
 
-Armory Spinnaker 2.19.6 cherry-picks [spinnaker/fiat/pull/656](https://github.com/spinnaker/fiat/pull/656).
+Armory Spinnaker 2.19.7 cherry-picks [spinnaker/fiat/pull/656](https://github.com/spinnaker/fiat/pull/656), which resolves an issue with Fiat and service accounts.
 
 

@@ -31,10 +31,11 @@ Breaking change: Kubernetes accounts with an unspecified providerVersion will no
 
 ### Service Accounts using Fiat
 
-There is an issue creating or updating service accounts. This causes the pipeline permission feature to not work.  
+There is an issue creating or updating service accounts. This causes the pipeline permissions feature to not work.  
 
-**Affected versions**: Armory Spinnaker 2.19.6 and lower.
-**Fixed in**: Armory Spinnaker 2.19.7
+**Affected versions**: Armory Spinnaker 2.19.6 and earlier.
+
+**Fixed versions**: Armory Spinnaker 2.19.7 and later
 
 ## Highlighted Updates
 
