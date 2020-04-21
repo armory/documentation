@@ -8,7 +8,7 @@ hidden: false
 # 04/20/20 Release Notes
 {:.no_toc}
 
-> Note: If you're experiencing production issues after upgrading Spinnaker, rollback to a [previous working version](http://docs.armory.io/admin-guides/troubleshooting/#i-upgraded-spinnaker-and-it-is-no-longer-responding-how-do-i-rollback) and please report issues to [http://go.armory.io/support](http://go.armory.io/support).
+> Note: Do not upgrade to Armory Spinnaker 2.19.6 (this version). Instead, upgrade to Armory Spinnaker [2.19.7](/release-notes/armoryspinnaker_v2.19.7/) or later.
 
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
@@ -28,7 +28,13 @@ The Kubernetes V1 provider will be removed in Spinnaker 1.21. Please see the [RF
 Breaking change: Kubernetes accounts with an unspecified providerVersion will now default to V2. Update your Halconfig to specify `providerVersion: v1` for any Kubernetes accounts you are currently using with the V1 provider.
 
 ## Known Issues
-There are currently no known issues with this release.
+
+### Service Accounts using Fiat
+
+There is an issue creating or updating service accounts. This causes the pipeline permission feature to not work.  
+
+**Affected versions**: Armory Spinnaker 2.19.6 and lower.
+**Fixed in**: Armory Spinnaker 2.19.7
 
 ## Highlighted Updates
 
@@ -174,4 +180,4 @@ See the Open Source Spinnaker Release Notes for the versions included in this re
 * [Spinnaker's v1.19.4](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-4)
 * [Spinnaker's v1.19.5](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#individual-service-changes) 
 
-This version cherry-picks [spinnaker/deck/pull/8180](https://github.com/spinnaker/deck/pull/8180).
+This version cherry picks [spinnaker/deck/pull/8180](https://github.com/spinnaker/deck/pull/8180).

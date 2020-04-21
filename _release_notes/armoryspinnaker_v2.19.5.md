@@ -8,7 +8,7 @@ hidden: false
 # 04/17/20 Release Notes
 {:.no_toc}
 
-> Note: If you're experiencing production issues after upgrading Spinnaker, rollback to a [previous working version](http://docs.armory.io/admin-guides/troubleshooting/#i-upgraded-spinnaker-and-it-is-no-longer-responding-how-do-i-rollback) and please report issues to [http://go.armory.io/support](http://go.armory.io/support).
+> Note: Do not upgrade to Armory Spinnaker 2.19.5 (this version). Instead, upgrade to Armory Spinnaker [2.19.7](/release-notes/armoryspinnaker_v2.19.7/) or later.
 
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
@@ -37,6 +37,13 @@ Breaking change: Kubernetes accounts with an unspecified providerVersion will no
 
 
 ## Known Issues
+
+### Service Accounts using Fiat
+
+There is an issue creating or updating service accounts. This causes the pipeline permission feature to not work.  
+
+**Affected versions**: Armory Spinnaker 2.19.6 and lower.
+**Fixed in**: Armory Spinnaker 2.19.7
 
 ## Highlighted Updates
 ### Armory
