@@ -39,10 +39,6 @@ Highlighted Updates describe some of the major changes in this release. Highligh
 
 This version includes a cherry picked commit that fixes an issue with creating or updating service accounts. The issue caused pipeline permissions to not work. 
 
-**Affected versions**: Armory Spinnaker 2.19.6 and earlier.
-
-**Fixed versions**: Armory Spinnaker 2.19.7 and later
-
 **Policy Engine**
 
 Armory's Policy Engine for the SDLC now also performs Runtime validation on Spinnaker pipelines. This means that when a pipeline runs, the Policy Engine evaluates the pipeline. This validation only operates on tasks that you have explicitly created policies for. For more information, see [Policy Engine](/spinnaker/policy-engine).

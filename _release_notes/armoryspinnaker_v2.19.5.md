@@ -42,7 +42,7 @@ Breaking change: Kubernetes accounts with an unspecified providerVersion will no
 
 There is an issue creating or updating service accounts. This causes the pipeline permissions feature to not work.  
 
-**Affected versions**: Armory Spinnaker 2.19.6 and earlier.
+**Affected versions**: Armory Spinnaker 2.19.6, 2.19.5, and 2.19.4.
 
 **Fixed versions**: Armory Spinnaker 2.19.7 and later
 
