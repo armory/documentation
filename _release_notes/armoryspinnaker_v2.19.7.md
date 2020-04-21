@@ -35,14 +35,6 @@ There are currently no known issues with this release.
 ### Armory
 Highlighted Updates describe some of the major changes in this release. Highlights specific to Armory Spinnaker for this release include:
 
-**Policy Engine**
-
-Armory's Policy Engine for the SDLC now also performs Runtime validation on Spinnaker pipelines. This means that when a pipeline runs, the Policy Engine evaluates the pipeline. This validation only operates on tasks that you have explicitly created policies for. For more information, see [Policy Engine](/spinnaker/policy-engine).
-
-**CVEs**
-
-Addressed a number of CVEs found within the Spinnaker services.
-
 **Service Accounts using Fiat**
 
 This version includes a cherry picked commit that fixes an issue with creating or updating service accounts. The issue caused pipeline permissions to not work. 
@@ -50,6 +42,14 @@ This version includes a cherry picked commit that fixes an issue with creating o
 **Affected versions**: Armory Spinnaker 2.19.6 and earlier.
 
 **Fixed versions**: Armory Spinnaker 2.19.7 and later
+
+**Policy Engine**
+
+Armory's Policy Engine for the SDLC now also performs Runtime validation on Spinnaker pipelines. This means that when a pipeline runs, the Policy Engine evaluates the pipeline. This validation only operates on tasks that you have explicitly created policies for. For more information, see [Policy Engine](/spinnaker/policy-engine).
+
+**CVEs**
+
+Addressed a number of CVEs found within the Spinnaker services.
 
 **Plugins**
 
