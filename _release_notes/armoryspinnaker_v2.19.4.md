@@ -8,7 +8,7 @@ hidden: false
 # 04/15/20 Release Notes
 {:.no_toc}
 
-> Note: Do not upgrade to Armory Spinnaker 2.19.4 (this version). Instead, upgrade to Armory Spinnaker [2.19.6](/release-notes/armoryspinnaker_v2.19.6/) or later.
+> Note: Do not upgrade to Armory Spinnaker 2.19.4 (this version). Instead, upgrade to Armory Spinnaker [2.19.7](/release-notes/armoryspinnaker_v2.19.7/) or later.
 
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
@@ -26,7 +26,14 @@ This version includes an upgrade to the Spring Boot dependency. This requires yo
 
 
 ## Known Issues
-There are currently no known issues with this release.
+
+### Service Accounts using Fiat
+
+There is an issue creating or updating service accounts. This causes the pipeline permissions feature to not work.  
+
+**Affected versions**: Armory Spinnaker 2.19.6, 2.19.5, and 2.19.4.
+
+**Fixed versions**: Armory Spinnaker 2.19.7 and later
 
 
 ## Highlighted Updates

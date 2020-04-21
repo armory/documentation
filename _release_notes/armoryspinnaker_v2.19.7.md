@@ -1,18 +1,17 @@
 ---
 layout: post
-title: v2.19.5 Armory Release (OSS Release 1.19.5)
-order: -21920200417225655
+title: v2.19.7 Armory Release (OSS Release 1.19.5)
+order: -21920200421040114
 hidden: false
 ---
 
-# 04/17/20 Release Notes
+# 04/20/20 Release Notes
 {:.no_toc}
 
-> Note: Do not upgrade to Armory Spinnaker 2.19.5 (this version). Instead, upgrade to Armory Spinnaker [2.19.7](/release-notes/armoryspinnaker_v2.19.7/) or later.
+> Note: If you're experiencing production issues after upgrading Spinnaker, rollback to a [previous working version](http://docs.armory.io/admin-guides/troubleshooting/#i-upgraded-spinnaker-and-it-is-no-longer-responding-how-do-i-rollback) and please report issues to [http://go.armory.io/support](http://go.armory.io/support).
 
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
-
 
 ## Breaking Changes
 
@@ -20,39 +19,39 @@ hidden: false
 
 Armory Spinnaker 2.19.x requires Armory Halyard 1.8.3 or later.
 
-
 ### HTTP sessions for Gate
-
-Armory Spinnaker 2.19.x and later include an upgrade to the Spring Boot dependency. This requires you to flush all the Gate sessions for your Spinnaker deployment if you are upgrading from a version before 2.19.4. For more information, see [Flushing Gate Sessions](https://kb.armory.io/admin/flush-gate-sessions/).
-
-### Plugins framework
-
-If you are using a custom plugin for Deck built using the Plugins framework or intend to build one, do not upgrade to Armory Spinnaker 2.19.5.
-
+This version includes an upgrade to the Spring Boot dependency. This requires you to flush all the Gate sessions for your Spinnaker deployment. For more information, see [Flushing Gate Sessions](https://kb.armory.io/admin/flush-gate-sessions/).
 
 ### Scheduled Removal of Kubernetes V1 Provider
 The Kubernetes V1 provider will be removed in Spinnaker 1.21. Please see the [RFC](https://github.com/spinnaker/governance/blob/master/rfc/eol_kubernetes_v1.md) for more details.
 
 Breaking change: Kubernetes accounts with an unspecified providerVersion will now default to V2. Update your Halconfig to specify `providerVersion: v1` for any Kubernetes accounts you are currently using with the V1 provider.
 
-
 ## Known Issues
-
-### Service Accounts using Fiat
-
-There is an issue creating or updating service accounts. This causes the pipeline permissions feature to not work.  
-
-**Affected versions**: Armory Spinnaker 2.19.6, 2.19.5, and 2.19.4.
-
-**Fixed versions**: Armory Spinnaker 2.19.7 and later
+There are currently no known issues with this release.
 
 ## Highlighted Updates
+
 ### Armory
 Highlighted Updates describe some of the major changes in this release. Highlights specific to Armory Spinnaker for this release include:
 
-**CVE**
+**Service Accounts using Fiat**
 
-Fixed a recently discovered CVE that affects Igor: [`CVE-2020-11612`](https://nvd.nist.gov/vuln/detail/CVE-2020-11612).
+This version includes a cherry picked commit that fixes an issue with creating or updating service accounts. The issue caused pipeline permissions to not work. 
+
+**Policy Engine**
+
+Armory's Policy Engine for the SDLC now also performs Runtime validation on Spinnaker pipelines. This means that when a pipeline runs, the Policy Engine evaluates the pipeline. This validation only operates on tasks that you have explicitly created policies for. For more information, see [Policy Engine](/spinnaker/policy-engine).
+
+**CVEs**
+
+Addressed a number of CVEs found within the Spinnaker services.
+
+**Plugins**
+
+This release supports Plugin deployment using Armory Halyard or the [Spinnaker Operator](/_spinnaker/operator/). Consult the open source [Plugin](https://www.spinnaker.io/guides/user/plugins/user-guide/) docs for Halyard usage or the [Plugins Operator Reference](/_operator_reference/plugins/) for a manifest example.
+
+Additionally, this version of Spinnaker includes updates to how Deck is built. Previously, Deck's builds were non-deterministic, causing issues with loading plugins into the UI. Deck's builds are now deterministic and support UI plugins.
 
 **Managed Pipeline Templates v2 UI**
 
@@ -66,18 +65,12 @@ Armory recommends using Armory's Pipeline as Code feature instead of MPTv2 becau
 
 Note that Armory's Pipeline as Code and the open source Managed Pipeline Templates are not integrated and do not work together.
 
-By default, the MPTv2 UI is disabled in Armory Spinnaker 2.19.5. Leaving the UI disabled maintains the same experience you had with Armory Spinnaker 2.18.x (OSS 1.18.x).
+By default, the MPTv2 UI is disabled in Armory Spinnaker 2.19.6. Leaving the UI disabled maintains the same experience you had with Armory Spinnaker 2.18.x (OSS 1.18.x).
 
 If you want to enable the MPTv2 UI, see [Enabling the Managed Pipeline Templates UI](https://kb.armory.io/admin/enable-mptv2/).
 
 ###  Spinnaker Community Contributions
-
-The following highlights describe some of the major changes from the Spinnaker community for version 1.19.x, which is included in this release of Armory Spinnaker 2.19:
-
-**Scheduled Removal of Kubernetes V1 Provider**
-The Kubernetes V1 provider will be removed in Spinnaker 1.21. Please see the [RFC](https://github.com/spinnaker/governance/blob/master/rfc/eol_kubernetes_v1.md) for more details.
-
-Breaking change: Kubernetes accounts with an unspecified providerVersion will now default to V2. Update your Halconfig to specify `providerVersion: v1` for any Kubernetes accounts you are currently using with the V1 provider.
+The following highlights describe some of the major changes from the Spinnaker community for OSS Release 1.19.5, which is included in this release of Armory Spinnaker 2.19:
 
 **Java 11**
 > The migration to Java 11 continues. This should not affect Spinnaker users. If you extend Spinnaker, this change may affect you.
@@ -107,7 +100,6 @@ In order to make default settings consistent whether deploying using Halyard or 
   * Orca will no longer consider the environment variable `REDIS_URL` when setting the connection to Redis.
   * The setting `echo.enabled` now defaults to `true`.
   * The `bakery.extractBuildDetails` setting now defaults to `true`.
-
 <br><br><br>
 
 ## Detailed Updates
@@ -116,8 +108,8 @@ In order to make default settings consistent whether deploying using Halyard or 
 Here's the bom for this version.
 <details><summary>Expand</summary>
 <pre class="highlight">
-<code>version: 2.19.5
-timestamp: "2020-04-17 22:46:33"
+<code>version: 2.19.7-rc.1
+timestamp: "2020-04-21 03:33:51"
 services:
   clouddriver:
     commit: ef9da881
@@ -126,8 +118,8 @@ services:
     commit: 43e1966a
     version: 2.19.8
   fiat:
-    commit: a955c640
-    version: 2.19.4
+    commit: 8494a0c4
+    version: 2.19.5
   front50:
     commit: eaeb2a64
     version: 2.19.5
@@ -141,11 +133,11 @@ services:
     commit: 85dbdae9
     version: 2.19.8
   rosco:
-    commit: 2d6fdf58
-    version: 2.19.4
+    commit: 2bb01d9e
+    version: 2.19.5
   deck:
-    commit: e8ded5b9
-    version: 2.19.4
+    commit: 4f6b2719
+    version: 2.19.7
   dinghy:
     commit: ef444037
     version: 2.19.5
@@ -170,21 +162,16 @@ artifactSources:
 
 
 ### Armory
-#### Terraformer&trade; - f498d00e...f3edd3da
- - fix(api/createJob): make sure to init a runner (#139)
- - feat(terraform/versions): 0.12.21, 0.12.22, 0.12.23, 0.12.24 (#138)
- - fix(api/createJob): handle when savePlanOutput is undefined/null (#136)
-
-#### Armory Deck  - 5c34e55b...e8ded5b9
- - fix(mptv2): restore feature flag (bp #586) (#587)
-
-#### Armory Igor  - 360d9491...8cbc70d2
- - fix(cve): CVE-2020-11612 (bp #55) (#57)
+#### Armory Fiat  - a955c640...8494a0c4
+ - fix(roles): Use snapshot fiat with the role permission fixes (#45), see [spinnaker/deck/pull/8180](https://github.com/spinnaker/deck/pull/8180)
 
 
 
 ###  Spinnaker Community Contributions
- 
+See the Open Source Spinnaker Release Notes for the versions included in this release:
+
+###  Spinnaker Community Contributions
+
 See the Open Source Spinnaker Release Notes for the versions included in this release:  
 
 * [Spinnaker's v1.19.0](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-0)  
@@ -193,3 +180,7 @@ See the Open Source Spinnaker Release Notes for the versions included in this re
 * [Spinnaker's v1.19.3](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-3)
 * [Spinnaker's v1.19.4](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-4)
 * [Spinnaker's v1.19.5](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#individual-service-changes) 
+
+Armory Spinnaker 2.19.7 cherry-picks [spinnaker/fiat/pull/656](https://github.com/spinnaker/fiat/pull/656), which resolves an issue with Fiat and service accounts.
+
+
