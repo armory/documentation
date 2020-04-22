@@ -115,7 +115,7 @@ oauth2:
 - `enabled`: true or false.
 - `client`:
   - `clientId`: The OAuth client ID you have configured with your OAuth provider.
-  - `clientSecret`: The OAuth client secret you have configured with your OAuth provider.
+  - `clientSecret`: The OAuth client secret you have configured with your OAuth provider. Supports encrypted value.
   - `accessTokenUri`: The access token uri for your OAuth provider.
   - `userAuthorizationUri`: The user authorization uri for your OAuth provider.
   - `clientAuthenticationScheme`: The client authentication scheme for your OAuth provider.
@@ -156,11 +156,11 @@ saml:
 ```
 
 - `enabled`: true or false.
-- `metadataLocal`: The address to your identity provider's metadata XML file. This is a local file.
+- `metadataLocal`: The address to your identity provider's metadata XML file. File needs to be present on the machine running Spinnaker. Supports encrypted file.
 - `metadataRemote`: The address to your identity provider's metadata XML file. This is a URL.
 - `issuerId`: The identity of the Spinnaker application registered with the SAML provider.
-- `keyStore`: Path to the keystore that contains this server's private key. This key is used to cryptographically sign SAML AuthNRequest objects.
-- `keyStorePassword`: The password used to access the file specified in --keystore
+- `keyStore`: Path to the keystore that contains this server's private key. This key is used to cryptographically sign SAML AuthNRequest objects. File needs to be present on the machine running Spinnaker. Supports encrypted file.
+- `keyStorePassword`: The password used to access the file specified in --keystore. Supports encrypted value.
 - `keyStoreAliasName`: The name of the alias under which this server's private key is stored in the --keystore file.
 - `serviceAddress`: The address of the Gate server that will be accesible by the SAML identity provider. This should be the full URL, including port, e.g. https://gate.org.com:8084/. If deployed behind a load balancer, this would be the load balancer's address.
 - `userAttributeMapping`:

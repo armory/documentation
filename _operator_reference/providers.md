@@ -74,9 +74,9 @@ appengine:
  - `cachingIntervalSeconds`: The interval in seconds at which Spinnaker will poll for updates in your AppEngine clusters.
  - `environment`: The environment name for the account. Many accounts can share the same environment (e.g. dev, test, prod)
  - `gcloudReleaseTrack`: The gcloud release track (ALPHA, BETA, or STABLE) that Spinnaker will use when deploying to App Engine.
- - `gitHttpsPassword`: A password to be used when connecting with a remote git repository server over HTTPS.
+ - `gitHttpsPassword`: A password to be used when connecting with a remote git repository server over HTTPS. Supports encrypted value.
  - `gitHttpsUsername`: A username to be used when connecting with a remote git repository server over HTTPS.
- - `githubOAuthAccessToken`: An OAuth token provided by Github for connecting to  a git repository over HTTPS. See [Creating an Access Token for Command Line Use](https://help.github.com/articles/creating-an-access-token-for-command-line-use) for more information.
+ - `githubOAuthAccessToken`: An OAuth token provided by Github for connecting to  a git repository over HTTPS. See [Creating an Access Token for Command Line Use](https://help.github.com/articles/creating-an-access-token-for-command-line-use) for more information. Supports encrypted value.
  - `json-path`: The path to a JSON service account that Spinnaker will use as credentials. This is only needed if Spinnaker is not deployed on a Google Compute Engine VM, or needs permissions not afforded to the VM it is running on. See [Service Accounts](https://cloud.google.com/compute/docs/access/service-accounts) for more information.
  - `localRepositoryDirectory`: A local directory to be used to stage source files for App Engine deployments within Spinnaker's Clouddriver microservice.
  - `omitServices`: A list of regular expressions. Any service matching one of these regexes will be ignored by Spinnaker.
@@ -90,9 +90,9 @@ appengine:
  - `providerVersion`:
  - `requiredGroupMembership`: (*Default*: `[]`) A user must be a member of at least one specified group in order to make changes to this account's cloud resources.
  - `services`: A list of regular expressions. Any service matching one of these regexes will be indexed by Spinnaker.
- - `sshKnownHostsFilePath`: The path to a known_hosts file to be used when connecting with a remote git repository over SSH.
- - `sshPrivateKeyFilePath`: The path to an SSH private key to be used when connecting with a remote git repository over SSH.
- - `sshPrivateKeyPassphrase`: The passphrase to an SSH private key to be used when connecting with a remote git repository over SSH.
+ - `sshKnownHostsFilePath`: The path to a known_hosts file to be used when connecting with a remote git repository over SSH. File needs to be present on the machine running Spinnaker. Supports encrypted file.
+ - `sshPrivateKeyFilePath`: The path to an SSH private key to be used when connecting with a remote git repository over SSH. File needs to be present on the machine running Spinnaker. Supports encrypted file.
+ - `sshPrivateKeyPassphrase`: The passphrase to an SSH private key to be used when connecting with a remote git repository over SSH. Supports encrypted value.
  - `sshTrustUnknownHosts`: (*Default*: `false`) Enabling this flag will allow Spinnaker to connect with a remote git repository over SSH without verifying the server's IP address against a known_hosts file.
  - `versions`: A list of regular expressions. Any version matching one of these regexes will be indexed by Spinnaker.
 
@@ -176,7 +176,7 @@ The AWS provider requires a central "Managing Account" to authenticate on behalf
 - `defaultRegions`: array of `name: <region-name>` items
 - `features`: configuration for AWS-specific features
 - `primaryAccount`: the account you want to be primary of the configured accounts
-- `secretAccessKey`: AWS Secret Key; note that if you are baking AMIs via Rosco, you may also need to set the secret key on the AWS bakery default options.
+- `secretAccessKey`: AWS Secret Key; note that if you are baking AMIs via Rosco, you may also need to set the secret key on the AWS bakery default options. Supports encrypted value.
 
 ### Account parameters
 
@@ -206,7 +206,7 @@ The AWS provider requires a central "Managing Account" to authenticate on behalf
 
 - `awsAccessKey`: The default access key used to communicate with AWS.
 - `awsAssociatePublicIpAddress`: If using a non-default VPC, public IP addresses are not provided by default. If this is enabled, your new instance will get a Public IP.
-- `awsSecretKey`: The secret key used to communicate with AWS.
+- `awsSecretKey`: The secret key used to communicate with AWS. Supports encrypted value.
 - `awsSubnetId`: If using VPC, the default ID of the subnet, such as subnet-12345def, where Packer will launch the EC2 instance. This field is required if you are using a non-default VPC.
 - `awsVpcId`: If launching into a VPC subnet, Packer needs the VPC ID in order to create a temporary security group within the VPC. Requires subnet_id to be set. If this default value is left blank, Packer will try to get the VPC ID from the subnet_id.
 - `baseImages`: `[]`        
@@ -288,7 +288,7 @@ azure:
 
 ### Account parameters
 
-- `appKey`: (*Required*)  The appKey (password) of your service principal.
+- `appKey`: (*Required*)  The appKey (password) of your service principal. Supports encrypted value.
 - `clientId`: (*Required*) The clientId (also called appId) of your service principal.
 - `defaultKeyVault`: (*Required*) The name of a KeyVault that contains the user name, password, and ssh public key used to create VMs
 - `defaultResourceGroup`: (*Required*) The default resource group to contain any non-application specific resources.
@@ -359,7 +359,7 @@ cloudfoundry:
  - `appsManagerUrl`: HTTP(S) URL of the Apps Manager application for the CloudFoundry Foundation. Example: `https://apps.sys.somesystem.com`
  - `environment`: The environment name for the account. Many accounts can share the same environment (e.g. dev, test, prod)
  - `metricsUrl`: HTTP(S) URL of the metrics application for the CloudFoundry Foundation. Example `https://metrics.sys.somesystem.com`
- - `password`: (*Required*) Password for the account to use on for this CloudFoundry Foundation
+ - `password`: (*Required*) Password for the account to use on for this CloudFoundry Foundation. Supports encrypted value.
  - `permissions`:
      - `READ`: `[]` A user must have at least one of these roles in order to view this account's cloud resources.
      - `WRITE`: `[]` A user must have at least one of these roles in order to make changes to this account's cloud resources.
@@ -415,8 +415,8 @@ dcos:
 
  - `clusters`: (*Required*) The clusters against which this account will authenticate.
    - `name`: (*Required*) The name of the account.
-   - `password`: Password for a user account. If set, `serviceKeyFile` should not be set.
-   - `serviceKeyFile`: Path to a file containing the secret key for service account authentication. If set, `password` should not be set.
+   - `password`: Password for a user account. If set, `serviceKeyFile` should not be set. Supports encrypted value.
+   - `serviceKeyFile`: Path to a file containing the secret key for service account authentication. If set, `password` should not be set. File needs to be present on the machine running Spinnaker. Supports encrypted file.
    - `uid`:  (*Required*) User or service account identifier.
  - `dockerRegistries`: `[]`; (*Required*) Provide the list of docker registries to use with this DC/OS account
  - `environment`: The environment name for the account. Many accounts can share the same environment (e.g. dev, test, prod)
@@ -428,7 +428,7 @@ dcos:
 ### Clusters parameters
 
 - `name`: (*Required*)  The name of the cluster.
-- `caCertFile`: Root certificate file to trust for connections to the cluster
+- `caCertFile`: Root certificate file to trust for connections to the cluster. File needs to be present on the machine running Spinnaker. Supports encrypted file.
 - `dcosUrl`: (*Required*) URL of the endpoint for the DC/OS cluster's admin router.
 - `insecureSkipTlsVerify`:  If true, disables verification of certificates from the cluster (insecure).
 - `loadBalancer`: Configuration for a DC/OS load balancer
@@ -487,9 +487,9 @@ dockerRegistry:
 - `environment`: The environment name for the account. Many accounts can share the same environment (e.g. dev, test, prod)
 - `insecureRegistry`: (*Default*: `false`) Treat the docker registry as insecure (don't validate the ssl cert).
 - `paginateSize`: (*Default*: `100`) Paginate size for the docker repository `_catalog` endpoint.
-- `password`:  Your docker registry password
+- `password`:  Your docker registry password. Supports encrypted value.
 - `passwordCommand`: Command to retrieve docker token/password, commands must be available in environment
-- `passwordFile`: The path to a file containing your docker password in plaintext (not a docker/config.json file)
+- `passwordFile`: The path to a file containing your docker password in plaintext (not a docker/config.json file). File needs to be present on the machine running Spinnaker. Supports encrypted file.
 - `permissions`:
    - `READ`: `[]` A user must have at least one of these roles in order to view this account's cloud resources.
    - `WRITE`: `[]` A user must have at least one of these roles in order to make changes to this account's cloud resources.
@@ -614,7 +614,7 @@ google:
 - `alphaListed`: (*Default*: `false`) Enable this flag if your project has access to alpha features and you want Spinnaker to take advantage of them.
 - `environment`: The environment name for the account. Many accounts can share the same environment (e.g. dev, test, prod)
 - `imageProjects`: (*Default*: `[]`) A list of Google Cloud Platform projects Spinnaker will be able to cache and deploy images from. When this is omitted, it defaults to the current project. Each project must have granted the IAM role `compute.imageUser` to the service account associated with the json key used by this account, as well as to the 'Google APIs service account' automatically created for the project being managed (should look similar to `12345678912@cloudservices.gserviceaccount.com`). See [Sharing Images Across Projects](https://cloud.google.com/compute/docs/images/sharing-images-across-projects) for more information about sharing images across GCP projects.
-- `jsonPath`: The path to a JSON service account that Spinnaker will use as credentials. This is only needed if Spinnaker is not deployed on a Google Compute Engine VM, or needs permissions not afforded to the VM it is running on. See [https://cloud.google.com/compute/docs/access/service-accounts](https://cloud.google.com/compute/docs/access/service-accounts) for more information.
+- `jsonPath`: The path to a JSON service account that Spinnaker will use as credentials. This is only needed if Spinnaker is not deployed on a Google Compute Engine VM, or needs permissions not afforded to the VM it is running on. See [https://cloud.google.com/compute/docs/access/service-accounts](https://cloud.google.com/compute/docs/access/service-accounts) for more information. File needs to be present on the machine running Spinnaker. Supports encrypted file.
 - `permissions`:
     - `READ`: `[]` A user must have at least one of these roles in order to view this account's cloud resources.
     - `WRITE`: `[]` A user must have at least one of these roles in order to make changes to this account's cloud resources.
@@ -624,7 +624,7 @@ google:
 - `project`: (*Required*) The Google Cloud Platform project this Spinnaker account will manage.
 - `readPermissions`: (*Default*: `[]`) A user must have at least one of these roles in order to view this account's cloud resources.
 - `regions`: A list of regions for caching and mutating calls. This overwrites any default-regions set on the provider.
-- `userDataFile`: The path to user data template file. Spinnaker has the ability to inject userdata into generated instance templates. The mechanism is via a template file that is token replaced to provide some specifics about the deployment. See [https://github.com/spinnaker/clouddriver/blob/master/clouddriver-aws/UserData.md](https://github.com/spinnaker/clouddriver/blob/master/clouddriver-aws/UserData.md) for more information.
+- `userDataFile`: The path to user data template file. Spinnaker has the ability to inject userdata into generated instance templates. The mechanism is via a template file that is token replaced to provide some specifics about the deployment. See [https://github.com/spinnaker/clouddriver/blob/master/clouddriver-aws/UserData.md](https://github.com/spinnaker/clouddriver/blob/master/clouddriver-aws/UserData.md) for more information. File needs to be present on the machine running Spinnaker.
 - `consul`: Configuration for Consul.
   - `enabled`: Whether Consul is enabled.
   - `agentEndpoint`: Reachable Consul node endpoint connected to the Consul cluster. Defaults to localhost.
@@ -726,8 +726,8 @@ huaweicloud:
 - `domainName`: (*Required*) The domain name of the cloud.
 - `environment`: The environment name for the account. Many accounts can share the same environment (e.g. dev, test, prod)
 - `insecure`: (*Default*: `false`) Disable certificate validation on SSL connections. Needed if certificates are self signed. Default false.
-- `password`: (*Required*) (*Sensitive data- - user will be prompted on standard input) (Sensitive data - user will be prompted on standard input) The password used to access cloud.
-- `project-name`: (*Required*) The name of the project within the cloud.
+- `password`: (*Required*)  The password used to access cloud. Supports encrypted value.
+- `projectName`: (*Required*) The name of the project within the cloud.
 - `regions`: (*Default*: `[]`) (*Required*) The region(s) of the cloud.
 - `username`: (*Required*) The username used to access cloud.
 - `permissions`:
@@ -840,13 +840,13 @@ An account in the Kubernetes provider refers to a single Kubernetes context. In 
 - `cachingPolicies`:
   - `kubernetesKind`:
   - `maxEntriesPerAgent`:
-- `kubeconfigFile`: The path to your kubeconfig file. By default, it will be under the Spinnaker user's home directory in the typical .kube/config location.
+- `kubeconfigFile`: The path to your kubeconfig file. By default, it will be under the Spinnaker user's home directory in the typical .kube/config location. File needs to be present on the machine running Spinnaker. Supports encrypted file.
 - `kubeconfigContents`: Inline kubeconfig file contents
 - `kubectlPath`: Alternate path inside clouddriver pod of the kubectl binary
 - `kubectlRequestTimeoutSeconds`: Timeout in seconds of kubectl calls
 - `checkPermissionsOnStartup`:  When false, clouddriver will skip the permission checks for all Kubernetes Kinds at startup. This can save a great deal of time during clouddriver startup when you have many Kubernetes accounts configured. This disables the log messages at startup about missing permissions.
 - `liveManifestCalls`: When true, clouddriver will query manifest status during pipeline executions using live data rather than the cache. This eliminates all time spent in the "force cache refresh" task in pipelines, greatly reducing execution time.
-- `oAuthServiceAccount`:
+- `oAuthServiceAccount`: File needs to be present on the machine running Spinnaker.
 - `oAuthScopes`:
 - `namingStrategy`:
 - `skin`:
@@ -921,7 +921,7 @@ oracle:
  - `deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
  - `environment`: The environment name for the account. Many accounts can share the same environment (e.g. dev, test, prod)
  - `fingerprint`: (*Required*) Fingerprint of the public key
- - `privateKeyPassphrase`: Passphrase used for the private key, if it is encrypted
+ - `privateKeyPassphrase`: Passphrase used for the private key, if it is encrypted.Supports encrypted value.
  - `permissions`:
      - `READ`: `[]` A user must have at least one of these roles in order to view this account's cloud resources.
      - `WRITE`: `[]` A user must have at least one of these roles in order to make changes to this account's cloud resources.
@@ -929,7 +929,7 @@ oracle:
      - `CREATE`:
  - `requiredGroupMembership`: `[]` (Deprecated): Configure permissions instead.
  - `region`: (*Required*) An Oracle region (e.g., us-phoenix-1)
- - `sshPrivateKeyFilePath`: (*Required*) Path to the private key in PEM format
+ - `sshPrivateKeyFilePath`: (*Required*) Path to the private key in PEM format. File needs to be present on the machine running Spinnaker. Supports encrypted file.
  - `tenancyId`: (*Required*) Provide the OCID of the Oracle Tenancy to use.
  - `userI`: (*Required*) Provide the OCID of the Oracle User you're authenticating as
 
@@ -1017,12 +1017,12 @@ tencentcloud:
  - `requiredGroupMembership`: `[]` (Deprecated): Configure permissions instead.
  - `regions`: The Tencent CLoud regions this Spinnaker account will manage.
  - `secretId`: (*Required*) The secret id used to access Tencent Cloud.
- - `secretKey`: (*Required*) The secret key used to access Tencent Cloud.
+ - `secretKey`: (*Required*) The secret key used to access Tencent Cloud. Supports encrypted value.
 
 ### Bakery parameters
 
 - `secretId`: (*Required*) The default access key used to communicate with AWS.
-- `secretKey`: (*Required*)  The secret key used to communicate with AWS.
+- `secretKey`: (*Required*)  The secret key used to communicate with AWS. Supports encrypted value.
 - `templateFile`: This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this list [https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer](https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer), or supplied as described here: [https://spinnaker.io/setup/bakery/](https://spinnaker.io/setup/bakery/)
 
 #### Bakery base image parameters

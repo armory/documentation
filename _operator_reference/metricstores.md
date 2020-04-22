@@ -65,7 +65,7 @@ metricStores:
 ## Stackdriver
 
 - `enabled`: true or false.
-- `credentials_path`: A path to a Google JSON service account that has permission to publish metrics.
+- `credentials_path`: A path to a Google JSON service account that has permission to publish metrics. File needs to be present on the machine running Spinnaker. Supports encrypted file.
 - `project`: The project Spinnaker's metrics should be published to.
 - `zone`: The zone Spinnaker's metrics should be associated with.
 - `instance_id`:

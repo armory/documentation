@@ -65,7 +65,7 @@ concourse:
     - `WRITE`: A user must have at least one of these roles in order to be able to run jobs on this build master.
 - `url`: (*Required*)  The url your concourse search is reachable at.
 - `username`: (*Required*)  The username of the concourse user to authenticate as.
-- `password`: (*Required*) The password of the concourse user to authenticate as.
+- `password`: (*Required*) The password of the concourse user to authenticate as. Supports encrypted value.
 
 # Google CloudBuild (gcb)
 
@@ -127,11 +127,11 @@ jenkins:
    - `READ`: A user must have at least one of these roles in order to view this build master or use it as a trigger source.
 - `address`: (*Required*) The address your Jenkins master is reachable at.
 - `username`: The username of the Jenkins user to authenticate as.
-- `password`: The password of the Jenkins user to authenticate as.
+- `password`: The password of the Jenkins user to authenticate as. Supports encrypted value.
 - `csrf`:  Whether or not to negotiate CSRF tokens when calling Jenkins.
-- `trustStore`:
+- `trustStore`: File needs to be present on the machine running Spinnaker. Supports encrypted file.
 - `trustStoreType`:
-- `trustStorePassword`:
+- `trustStorePassword`: Supports encrypted value.
 
 # Travis
 
@@ -164,7 +164,7 @@ travis:
    - `WRITE`: A user must have at least one of these roles in order to be able to run jobs on this build master.
 - `address`: (*Required*) The address of the Travis API.
 - `baseUrl`: (*Required*) The base URL to the Travis UI.
-- `githubToken`: The github token to authenticate against Travis with.
+- `githubToken`: The github token to authenticate against Travis with. Supports encrypted value.
 - `numberOfRepositories`: How many repositories the Travis integration should fetch from the api each time the poller runs. Should be set a bit higher than the expected maximum number of repositories built within the poll interval.
 
 
@@ -198,4 +198,4 @@ wercker:
    - `WRITE`: A user must have at least one of these roles in order to be able to run jobs on this build master.
 - `address`: (*Required*) The address your Wercker master is reachable at.
 - `user`: The username of the Wercker user to authenticate as.
-- `token`: The personal token of the Wercker user to authenticate as.
+- `token`: The personal token of the Wercker user to authenticate as. Supports encrypted value.

@@ -65,12 +65,12 @@ armory:
 - `enabled`: true or false.
 - `templateOrg`: SCM organization or namespace where application and template repositories are located.
 - `templateRepo`: SCM repository where module templates are located
-- `githubToken`: GitHub token.
+- `githubToken`: GitHub token. Supports encrypted value.
 - `githubEndpoint`: (Default: `https://api.github.com`) Github API endpoint. Useful if you’re using Github Enterprise.
 - `stashUsername`: Stash username.
-- `stashToken`: Stash token.
+- `stashToken`: Stash token. Supports encrypted value.
 - `stashEndpoint`: Stash API endpoint.
-- `gitlabToken`: GitLab token.
+- `gitlabToken`: GitLab token.  Supports encrypted value.
 - `gitlabEndpoint`: GitLab endpoint.
 - `dinghyFilename`: (Default: `dinghyfile`) Name of the file in application repositories which contains pipelines.
 - `autoLockPipelines`: (Default: true) Lock pipelines in the UI before overwriting on change.
@@ -100,7 +100,7 @@ armory:
 - `enabled`: true or false.
 - `git`:
   - `enabled`: true or false.
-  - `accessToken`: Git access token.
+  - `accessToken`: Git access token. Supports encrypted value.
   - `username`: Git username.
 
 ## Secrets parameters

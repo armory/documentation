@@ -86,7 +86,7 @@ canary:
         - `profileName`: The profile name to use when resolving AWS credentials. Typically found in ~/.aws/credentials (Default: default).
         - `endpoint`: The endpoint used to reach the service implementing the AWS api. Typical use is with Minio.
         - `accessKeyId`: The default access key used to communicate with AWS.
-        - `secretAccessKey`: The secret key used to communicate with AWS.
+        - `secretAccessKey`: The secret key used to communicate with AWS. Supports encrypted value.
         - `supportedTypes`: One of: `METRICS_STORE`, `METRICS_STORE`, `OBJECT_STORE`
             - METRICS_STORE
             - CONFIGURATION_STORE
@@ -116,8 +116,8 @@ canary:
       - `name`: account name
         - `endpoint`:
           - `baseUrl`: (*Required*) The base URL to the Datadog server.
-        - `apiKey`: (*Required*) Your org's unique Datadog API key. See https://app.datadoghq.com/account/settings#api.
-        - `applicationKey`: (*Required*) Your Datadog application key. See https://app.datadoghq.com/account/settings#api.
+        - `apiKey`: (*Required*) Your org's unique Datadog API key. See https://app.datadoghq.com/account/settings#api. Supports encrypted value.
+        - `applicationKey`: (*Required*) Your Datadog application key. See https://app.datadoghq.com/account/settings#api. Supports encrypted value.
         - `supportedTypes`: One of: `METRICS_STORE`, `METRICS_STORE`, `OBJECT_STORE`
             - METRICS_STORE
             - CONFIGURATION_STORE
@@ -149,7 +149,7 @@ canary:
   - `accounts`:`
       - `name`: account name
         - `project`: (*Required*) The Google Cloud Platform project the canary service will use to consume GCS and Stackdriver.
-        - `jsonPath`: The path to a JSON service account that Spinnaker will use as credentials. This is only needed if Spinnaker is not deployed on a Google Compute Engine VM, or needs permissions not afforded to the VM it is running on. See https://cloud.google.com/compute/docs/access/service-accounts for more information.
+        - `jsonPath`: The path to a JSON service account that Spinnaker will use as credentials. This is only needed if Spinnaker is not deployed on a Google Compute Engine VM, or needs permissions not afforded to the VM it is running on. See https://cloud.google.com/compute/docs/access/service-accounts for more information. File needs to be present on the machine running Spinnaker. Supports encrypted file.
         - `bucket`: The name of a storage bucket that your specified account has access to. If you specify a globally unique bucket name that doesn't exist yet, Kayenta will create that bucket for you.
         - `bucketLocation`: This is only required if the bucket you specify doesn't exist yet. In that case, the bucket will be created in that location. See https://cloud.google.com/storage/docs/managing-buckets#manage-class-location.
         - `rootFolder`: The root folder in the chosen bucket to place all of the canary service's persistent data in (Default: kayenta).
@@ -184,8 +184,8 @@ canary:
       - `name`: account name
         - `endpoint`:
           - `baseUrl`: (*Required*) The base URL to the New Relic Insights server.
-        - `apiKey`: (*Required*) Your account's unique New Relic Insights API key. See https://docs.newrelic.com/docs/insights/insights-api/get-data/query-insights-event-data-api.
-        - `applicationKey`: (*Required*) Your New Relic account id. See https://docs.newrelic.com/docs/accounts/install-new-relic/account-setup/account-id.
+        - `apiKey`: (*Required*) Your account's unique New Relic Insights API key. See https://docs.newrelic.com/docs/insights/insights-api/get-data/query-insights-event-data-api. Supports encrypted value.
+        - `applicationKey`: (*Required*) Your New Relic account id. See https://docs.newrelic.com/docs/accounts/install-new-relic/account-setup/account-id. Supports encrypted value.
         - `supportedTypes`: One of: `METRICS_STORE`, `CONFIGURATION_STORE`, `OBJECT_STORE`
             - METRICS_STORE
             - CONFIGURATION_STORE
@@ -218,7 +218,7 @@ canary:
           - `baseUrl`: (*Required*) The base URL to the Prometheus server.
         - `username`: A basic auth username.
         - `password`: A basic auth password.
-        - `usernamePasswordFile`: The path to a file containing "username:password".
+        - `usernamePasswordFile`: The path to a file containing "username:password". File needs to be present on the machine running Spinnaker. Supports encrypted file.
         - `supportedTypes`: One of: `METRICS_STORE`, `CONFIGURATION_STORE`, `OBJECT_STORE`
             - METRICS_STORE
             - CONFIGURATION_STORE
@@ -249,7 +249,7 @@ canary:
       - `name`: account name
         - `endpoint`:
           - `baseUrl`: The base URL to the SignalFx server. Defaults to https://stream.signalfx.com
-        - `accessToken`: (*Required*) The SignalFx access token.
+        - `accessToken`: (*Required*) The SignalFx access token. Supports encrypted value.
         - `defaultScopeKey`: Scope key is used to distinguish between base and canary deployments. If omitted every request must supply the `_scope_key` param in extended scope params
         - `defaultLocationKey`: Location key is used to filter by deployment region. If omitted requests must supply the `_location_key` if it is needed.
         - `supportedTypes`: One of: `METRICS_STORE`, `CONFIGURATION_STORE`, `OBJECT_STORE`
