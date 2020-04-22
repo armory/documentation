@@ -37,6 +37,10 @@ There is an issue creating or updating service accounts. This causes the pipelin
 
 **Fixed versions**: Armory Spinnaker 2.19.7 and later
 
+### Plugins Framework
+
+There is a known issue with the Plugins framework in Armory Spinnaker 2.17.6. If you want to build or use custom plugins, do not use this version. Use Armory Spinnaker 2.17.8 or later.
+
 ## Highlighted Updates
 
 ### Armory

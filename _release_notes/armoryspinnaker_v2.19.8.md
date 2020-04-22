@@ -13,31 +13,25 @@ hidden: false
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-<!--
+
 ## Breaking Changes
-<!--
-most of the time this will be empty, however we're leaving this section for a consistent format.
--->
+
+### Required Halyard version
+
+Armory Spinnaker 2.19.x requires Armory Halyard 1.8.3 or later.
+
 ### HTTP sessions for Gate
-This version includes an upgrade to the Spring Boot dependency. This requires you to flush all the Gate sessions for your Spinnaker deployment. For more information, see [Flushing Gate Sessions](https://kb.armory.io/admin/flush-gate-sessions/).
+Armory Spinnaker 2.19.x includes an upgrade to the Spring Boot dependency. This requires you to flush all the Gate sessions for your Spinnaker deployment. For more information, see [Flushing Gate Sessions](https://kb.armory.io/admin/flush-gate-sessions/).
 
--->
+### Scheduled Removal of Kubernetes V1 Provider
+The Kubernetes V1 provider will be removed in Spinnaker 1.21. Please see the [RFC](https://github.com/spinnaker/governance/blob/master/rfc/eol_kubernetes_v1.md) for more details.
 
+Breaking change: Kubernetes accounts with an unspecified providerVersion will now default to V2. Update your Halconfig to specify `providerVersion: v1` for any Kubernetes accounts you are currently using with the V1 provider.
 
 
 ## Known Issues
 There are currently no known issues with this release.
 
-<!-- example format of a known issue
-### Igor wants his name to be changed to eye-gor
-Igor (pronounced "eye-gor" /ˈaɪɡɔːr/)[1] is a fictional character in the 1974 film Young Frankenstein and its 2007 musical adaptation. He is the hunchbacked assistant of Dr. Frederick Frankenstein, and the grandson of Igor, the original assistant of Frederick's grandfather, Victor Frankenstein.
-
-**Symptoms:**
-Calling eye-gor by Igor will invoke his wrath
-
-**Fix:**
-Call eye-gor by eye-gor
--->
 
 
 
@@ -45,18 +39,12 @@ Call eye-gor by eye-gor
 ### Armory
 Highlighted Updates describe some of the major changes in this release. Highlights specific to Armory Spinnaker for this release include:
 
-<!-- format should look something like this
-**Policy Engine**
+**Plugins**
 
-Armory's Policy Engine ....
+This update contians improvements and fixes to the Plugins framework:
 
-
-**CVEs**
-
-Addressed a number of CVEs found within the Spinnaker services.
--->
-
-
+* Support for Plugin deployment using Armory Halyard or the [Spinnaker Operator](/_spinnaker/operator/). Consult the open source [Plugin](https://www.spinnaker.io/guides/user/plugins/user-guide/) docs for Halyard usage or the [Plugins Operator Reference](/_operator_reference/plugins/) for a manifest example.
+* Updates to how Deck is built. Previously, Deck's builds were non-deterministic, causing issues with loading plugins into the UI. Deck's builds are now deterministic and support UI plugins.
 
 ###  Spinnaker Community Contributions
 The following highlights describe some of the major changes from the Spinnaker community for version OSS Release 1.19.5, which is included in this release of Armory Spinnaker 2.19:
@@ -159,5 +147,9 @@ artifactSources:
 ###  Spinnaker Community Contributions
 See the Open Source Spinnaker Release Notes for the versions included in this release:
 
-[Spinnaker's v1.8.0](https://www.spinnaker.io/community/releases/versions/1-8-0-changelog#individual-service-changes)  
-[Spinnaker's v1.8.1](https://www.spinnaker.io/community/releases/versions/1-8-1-changelog#individual-service-changes)  
+* [Spinnaker's v1.19.0](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-0)  
+* [Spinnaker's v1.19.1](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-1)  
+* [Spinnaker's v1.19.2](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-2)
+* [Spinnaker's v1.19.3](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-3)
+* [Spinnaker's v1.19.4](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#spinnaker-release-1-19-4)
+* [Spinnaker's v1.19.5](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#individual-service-changes)   
