@@ -92,7 +92,7 @@ executionRepository:
 However it won't migrate your existing execution history to your new database. This will make your spinnaker instance run on both the SQL and redis backend, it will only write the new execution on SQL but will continue to read the data on redis.
 To migrate the data from Redis to SQL, you need to add the following
 
-```
+```yaml
 pollers:
   orchestrationMigrator:
     enabled: true
