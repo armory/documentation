@@ -327,7 +327,7 @@ uiSecurity:
 ```
 
 - `enabled`: true or false.
-- `sslCertificateFile`: Path to your .crt file.
-- `sslCertificateKeyFile`: Path to your .key file.
-- `sslCertificatePassphrase`: The passphrase needed to unlock your SSL certificate. This will be provided to Apache on startup.
-- `sslCACertificateFile`: Path to the .crt file for the CA that issued your SSL certificate. This is only needed for localgitdeployments that serve the UI using webpack dev server.
+- `sslCertificateFile`: Path to your .crt file. File needs to be present on the machine running Spinnaker. Supports encrypted file.
+- `sslCertificateKeyFile`: Path to your .key file. File needs to be present on the machine running Spinnaker. Supports encrypted file.
+- `sslCertificatePassphrase`: The passphrase needed to unlock your SSL certificate. This will be provided to Apache on startup. Supports encrypted value.
+- `sslCACertificateFile`: Path to the .crt file for the CA that issued your SSL certificate. This is only needed for localgitdeployments that serve the UI using webpack dev server. File needs to be present on the machine running Spinnaker. Supports encrypted file.
