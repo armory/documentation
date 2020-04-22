@@ -21,38 +21,38 @@ Note: If multiple clusters need to access the same Vault server, you'll need to 
 
 After configuring authentication on the Vault side, use the following configuration to enable Vault secrets in Spinnaker:
 
-* **Operator**
+**Operator**
 
-    Add the following snippet to the `SpinnakerService` manifest:
+Add the following snippet to the `SpinnakerService` manifest:
 
-    ```yaml
-    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
-    kind: SpinnakerService
-    metadata:
-      name: spinnaker
-    spec:
-      spinnakerConfig:  
-        config:
-          armory:
-            secrets:
-              vault:
-                enabled: true
-                authMethod: KUBERNETES                      # Method used to authenticate with the Vault endpoint. Must be either KUBERNETES for Kubernetes service account auth or TOKEN for Vault token auth. The TOKEN method will require a VAULT_TOKEN environment variable set for Operator and the services.  
-                url: <Vault server URL>:<port, if required> # URL of the Vault endpoint from Spinnaker services.
-                role: <k8s role with access to Vault>       # (Applies to KUBERNETES authentication method) Name of the role against which the login is being attempted.
+```yaml
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:  
+    config:
+      armory:
+        secrets:
+          vault:
+            enabled: true
+            authMethod: KUBERNETES                      # Method used to authenticate with the Vault endpoint. Must be either KUBERNETES for Kubernetes service account auth or TOKEN for Vault token auth. The TOKEN method will require a VAULT_TOKEN environment variable set for Operator and the services.  
+            url: <Vault server URL>:<port, if required> # URL of the Vault endpoint from Spinnaker services.
+            role: <k8s role with access to Vault>       # (Applies to KUBERNETES authentication method) Name of the role against which the login is being attempted.
                 # path: <k8s cluster path>                  # (Default: kubernetes) (Applies to KUBERNETES authentication method) Path of the kubernetes authentication backend mount. Default is "kubernetes"
-    ```
+```
 
-* **Halyard**
+**Halyard**
 
-    ```
-    hal armory secrets vault enable
-    hal armory secrets vault edit \
-        --auth-method KUBERNETES \
-        --url <Vault server URL>:<port, if required> \
-        --role <k8s role with access to Vault> \
-        --path <k8s cluster path> (*optional*, default is 'kubernetes')
-    ```
+```
+hal armory secrets vault enable
+hal armory secrets vault edit \
+    --auth-method KUBERNETES \
+    --url <Vault server URL>:<port, if required> \
+    --role <k8s role with access to Vault> \
+    --path <k8s cluster path> (*optional*, default is 'kubernetes')
+```
 
 ### 2. Token authentication
 
@@ -60,34 +60,34 @@ This method is not recommended, but it is supported if you choose to use it. We 
 
 Use the following configuration to enable Vault secrets using token auth:
 
-* **Operator**
+**Operator**
 
-    Add the following snippet to the `SpinnakerService` manifest:
+Add the following snippet to the `SpinnakerService` manifest:
 
-    ```yaml
-    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
-    kind: SpinnakerService
-    metadata:
-      name: spinnaker
-    spec:
-      spinnakerConfig:  
-        config:
-          armory:
-            secrets:
-              vault:
-                enabled: true
-                authMethod: TOKEN                           # Method used to authenticate with the Vault endpoint. Must be either KUBERNETES for Kubernetes service account auth or TOKEN for Vault token auth. The TOKEN method will require a VAULT_TOKEN environment variable set for Operator and the services.  
-                url: <Vault server URL>:<port, if required> # URL of the Vault endpoint from Spinnaker services.
-    ```
+```yaml
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:  
+    config:
+      armory:
+        secrets:
+          vault:
+            enabled: true
+            authMethod: TOKEN                           # Method used to authenticate with the Vault endpoint. Must be either KUBERNETES for Kubernetes service account auth or TOKEN for Vault token auth. The TOKEN method will require a VAULT_TOKEN environment variable set for Operator and the services.  
+            url: <Vault server URL>:<port, if required> # URL of the Vault endpoint from Spinnaker services.
+```
 
-* **Halyard**
+**Halyard**
 
-    ```
-    hal armory secrets vault enable
-    hal armory secrets vault edit \
-        --auth-method TOKEN \
-        --url <Vault server URL>:<port, if required>
-    ```
+```
+hal armory secrets vault enable
+hal armory secrets vault edit \
+    --auth-method TOKEN \
+    --url <Vault server URL>:<port, if required>
+```
 
 ## Configuring the Operator to use Vault secrets
 

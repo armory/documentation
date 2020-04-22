@@ -125,33 +125,33 @@ To install Operator for cluster mode, perform the following steps:
 1. Decide which namespace you want Operator to live in and then create the namespace. Armory recommends `spinnaker-operator`.
 2. If you want to use a namespace other than `spinnaker-operator`, edit `deploy/operator/cluster/role_binding.yaml`:
 
-    ```yaml
-    kind: ClusterRoleBinding
-    apiVersion: rbac.authorization.k8s.io/v1
-    metadata:
-​​      name: spinnaker-operator-binding
-​​    subjects:
-​​    - kind: ServiceAccount
-​​      name: spinnaker-operator
-​​      namespace: spinnaker-operator # Edit this value if you want Operator to live in a different namespace.
-​​    roleRef:
-      kind: ClusterRole
-​​      name: spinnaker-operator-role
-​​      apiGroup: rbac.authorization.k8s.io
-    ```
+   ```yaml
+   kind: ClusterRoleBinding
+   apiVersion: rbac.authorization.k8s.io/v1
+   metadata:
+​      name: spinnaker-operator-binding
+​    subjects:
+​    - kind: ServiceAccount
+​      name: spinnaker-operator
+​      namespace: spinnaker-operator # Edit this value if you want Operator to live in a different namespace.
+​    roleRef:
+     kind: ClusterRole
+​      name: spinnaker-operator-role
+​      apiGroup: rbac.authorization.k8s.io
+   ```
 
     Then, save the changes to `role_binding.yaml`.
 3. Run the following command:
 
-    ```bash
-    $ kubectl apply -n <op_namespace> -f deploy/operator/cluster
-    ```
+   ```bash
+   $ kubectl apply -n <op_namespace> -f deploy/operator/cluster
+   ```
 
-    `<op_namespace>` is the namespace where you want the operator to live. By default, this namespace is `spinnaker-operator`, so you would run the following command:
+   `<op_namespace>` is the namespace where you want the operator to live. By default, this namespace is `spinnaker-operator`, so you would run the following command:
 
-    ```bash
-    $ kubectl apply -n spinnaker-operator -f deploy/operator/cluster
-    ```
+   ```bash
+   $ kubectl apply -n spinnaker-operator -f deploy/operator/cluster
+   ```
 
 After installation, you can verify that the Operator is running with the following command:
 
@@ -186,11 +186,11 @@ Operator supports Kustomize, a templating engine for Kubernetes. Using Kustomize
 1. Edit `deploy/spinnaker/kustomize/kustomization.yml`.
 2. Run the following commands:
 
-    ```bash
-    $ kubectl create ns <spinnaker-namespace>
-    $ kustomize build deploy/spinnaker/kustomize | kubectl -n <spinnaker-namespace> apply -f -
-    ```
-    `<spinnaker-namespace>` is the `namespace` where you want to deploy Spinnaker.
+   ```bash
+   $ kubectl create ns <spinnaker-namespace>
+   $ kustomize build deploy/spinnaker/kustomize | kubectl -n <spinnaker-namespace> apply -f -
+   ```
+   `<spinnaker-namespace>` is the `namespace` where you want to deploy Spinnaker.
 
 # Upgrading Spinnaker Using Operator
 
@@ -199,37 +199,38 @@ To upgrade an existing Spinnaker deployment using the Operator, perform the foll
 1. Change the `version` field in `/deploy/spinnaker/basic/SpinnakerService.yml`  file to the target version for the upgrade.
 2. Apply the updated manifest:
 
-    ```bash
-    $ kubectl -n <spinnaker-namespace> apply -f deploy/spinnaker/basic/SpinnakerService.yml
-    ```
-    Replace `<spinnaker-namespace>` with the namespace for the existing Spinnaker deployment.
+   ```bash
+   $ kubectl -n <spinnaker-namespace> apply -f deploy/spinnaker/basic/SpinnakerService.yml
+   ```
+   Replace `<spinnaker-namespace>` with the namespace for the existing Spinnaker deployment.
 
-    You can view the upgraded services starting up with the following command:
-    ```bash
-    $ kubectl -n <spinnaker-namespace> describe spinsvc spinnaker
-    ```
+   You can view the upgraded services starting up with the following command:
+   ```bash
+   $ kubectl -n <spinnaker-namespace> describe spinsvc spinnaker
+   ```
 
 3. Verify the upgraded version of Spinnaker:
 
-    ```bash
-    $ kubectl -n <spinnaker-namespace> get spinsvc
-    ```
+   ```bash
+   $ kubectl -n <spinnaker-namespace> get spinsvc
+   ```
 
-    The command returns information similar to the following:
+   The command returns information similar to the following:
 
-    ```
-    NAME         VERSION
-    spinnaker    2.15.3
-    ```
+   ```
+   NAME         VERSION
+   spinnaker    2.15.3
+   ```
 
-    `VERSION` should reflect the target version for your upgrade.
+   `VERSION` should reflect the target version for your upgrade.
 
-    Once the upgrade is complete, you can view information related to your Spinnaker deployment with the following command:
-    ```bash
-    $ kubectl -n <spinnaker-namespace> get svc
-    ```
+   Once the upgrade is complete, you can view information related to your Spinnaker deployment with the following command:
 
-    The command returns information about the running Spinnaker services.
+   ```bash
+   $ kubectl -n <spinnaker-namespace> get svc
+   ```
+
+   The command returns information about the running Spinnaker services.
 
 
 # Managing Spinnaker Using Operator
@@ -264,195 +265,196 @@ The migration process from Halyard to Operator can be completed in 7 steps:
 
     Copy the desired profile's content from the `config` file 
     
-    For example, if you want to migrate the `default` hal profile, use the following `SpinnakerService` manifest structure:
+   For example, if you want to migrate the `default` hal profile, use the following `SpinnakerService` manifest structure:
+   
+   ```yaml
+   currentDeployment: default
+   deploymentConfigurations:
+   - name: default
+     <CONTENT> 
+   ```
     
-    ```yaml
-    currentDeployment: default
-    deploymentConfigurations:
-    - name: default
-      <CONTENT> 
-    ```
+   Add `<CONTENT>` in the `spec.spinnakerConfig.config` section in the `SpinnakerService` manifest as follows:
+   
+   ```yaml
+   spec:
+     spinnakerConfig:
+       config:
+         <<CONTENT>> 
+   ```
     
-    Add `<CONTENT>` in the `spec.spinnakerConfig.config` section in the `SpinnakerService` manifest as follows:
+   Note: `config` is under `~/.hal`
     
-    ```yaml
-    spec:
-      spinnakerConfig:
-        config:
-          <<CONTENT>> 
-    ```
-    
-    Note: `config` is under `~/.hal`
-    
-    More details on [SpinnakerService Options](../operator-config/#specspinnakerconfig) on `.spec.spinnakerConfig.config` section
+   More details on [SpinnakerService Options](../operator-config/#specspinnakerconfig) on `.spec.spinnakerConfig.config` section
 
 3. Export Spinnaker profiles.
 
-    If you have configured Spinnaker profiles, you will need to migrate these profiles to the `SpinnakerService` manifest.
+   If you have configured Spinnaker profiles, you will need to migrate these profiles to the `SpinnakerService` manifest.
     
-    First, identify the current profiles under  `~/.hal/default/profiles`
+   First, identify the current profiles under  `~/.hal/default/profiles`
     
-    For each file, create an entry under `spec.spinnakerConfig.profiles`
+   For each file, create an entry under `spec.spinnakerConfig.profiles`
     
-    For example, you have the following profile: 
+   For example, you have the following profile: 
     
-    ```bash
-    $ ls -a ~/.hal/default/profiles | sort
-    echo-local.yml
-    ```
+   ```bash
+   $ ls -a ~/.hal/default/profiles | sort
+   echo-local.yml
+   ```
     
-    Create a new entry with the name of the file without `-local.yaml` as follows:
+   Create a new entry with the name of the file without `-local.yaml` as follows:
     
-    ```yaml
-    spec:
-      spinnakerConfig:
-        profiles:
-          echo: 
-            <CONTENT>
-    ```
+   ```yaml
+   spec:
+     spinnakerConfig:
+       profiles:
+         echo: 
+           <CONTENT>
+   ```
     
-    More details on [SpinnakerService Options](../operator-config/#specspinnakerconfigprofiles) on `.spec.spinnakerConfig.profiles` section
+   More details on [SpinnakerService Options](../operator-config/#specspinnakerconfigprofiles) on `.spec.spinnakerConfig.profiles` section
 
 4. Export Spinnaker settings.
 
-    If you configured Spinnaker settings, you need to migrate these settings to the `SpinnakerService` manifest also.
+   If you configured Spinnaker settings, you need to migrate these settings to the `SpinnakerService` manifest also.
     
-    First, identify the current settings under  `~/.hal/default/service-settings`
+   First, identify the current settings under  `~/.hal/default/service-settings`
     
-    For each file, create an entry under `spec.spinnakerConfig.service-settings`
+   For each file, create an entry under `spec.spinnakerConfig.service-settings`
     
-    For example, you have the following settings: 
+   For example, you have the following settings: 
     
-    ```bash
-    $ ls -a ~/.hal/default/service-settings | sort
-    echo.yml
-    ```
+   ```bash
+   $ ls -a ~/.hal/default/service-settings | sort
+   echo.yml
+   ```
     
    Create a new entry with the name of the file without `.yaml` as follows:
     
-    ```yaml
-    spec:
-      spinnakerConfig:
-        service-settings: 
-          echo:
-            <CONTENT>
-    ```
-    More details on [SpinnakerService Options](../operator-config/#specspinnakerconfigservice-settings) on `.spec.spinnakerConfig.service-settings` section
+   ```yaml
+   spec:
+     spinnakerConfig:
+       service-settings: 
+         echo:
+           <CONTENT>
+   ```
+   More details on [SpinnakerService Options](../operator-config/#specspinnakerconfigservice-settings) on `.spec.spinnakerConfig.service-settings` section
 
 5. Export local file references.
 
-    If you have references to local files in any part of the config, like `kubeconfigFile`, service account json files or others, you need to migrate these files to the `SpinnakerService` manifest.
+   If you have references to local files in any part of the config, like `kubeconfigFile`, service account json files or others, you need to migrate these files to the `SpinnakerService` manifest.
     
-    For each file, create an entry under `spec.spinnakerConfig.files`
+   For each file, create an entry under `spec.spinnakerConfig.files`
     
-    For example, you have a Kubernetes account configured like this:
+   For example, you have a Kubernetes account configured like this:
     
-    ```yaml
-    kubernetes:
-      enabled: true
-      accounts:
-      - name: prod
-        requiredGroupMembership: []
-        providerVersion: V2
-        permissions: {}
-        dockerRegistries: []
-        configureImagePullSecrets: true
-        cacheThreads: 1
-        namespaces: []
-        omitNamespaces: []
-        kinds: []
-        omitKinds: []
-        customResources: []
-        cachingPolicies: []
-        oAuthScopes: []
-        onlySpinnakerManaged: false
-        kubeconfigFile: /home/spinnaker/.hal/secrets/kubeconfig-prod
-      primaryAccount: prod
-    ```
+   ```yaml
+   kubernetes:
+     enabled: true
+     accounts:
+     - name: prod
+       requiredGroupMembership: []
+       providerVersion: V2
+       permissions: {}
+       dockerRegistries: []
+       configureImagePullSecrets: true
+       cacheThreads: 1
+       namespaces: []
+       omitNamespaces: []
+       kinds: []
+       omitKinds: []
+       customResources: []
+       cachingPolicies: []
+       oAuthScopes: []
+       onlySpinnakerManaged: false
+       kubeconfigFile: /home/spinnaker/.hal/secrets/kubeconfig-prod
+     primaryAccount: prod
+   ```
     
-    The `kubeconfigFile` field is a reference to a physical file on the machine running Halyard. You need to create a new entry in `files` section like this:
+   The `kubeconfigFile` field is a reference to a physical file on the machine running Halyard. You need to create a new entry in `files` section like this:
      
-    ```yaml
-    spec:
-      spinnakerConfig:
-        files: 
-          kubeconfig-prod: |
-            <CONTENT>
-    ```
+   ```yaml
+   spec:
+     spinnakerConfig:
+       files: 
+         kubeconfig-prod: |
+           <CONTENT>
+   ```
     
-    Then replace the file path in the config to match the key in the `files` section:
+   Then replace the file path in the config to match the key in the `files` section:
     
-    ```yaml
-    kubernetes:
-      enabled: true
-      accounts:
-      - name: prod
-        requiredGroupMembership: []
-        providerVersion: V2
-        permissions: {}
-        dockerRegistries: []
-        configureImagePullSecrets: true
-        cacheThreads: 1
-        namespaces: []
-        omitNamespaces: []
-        kinds: []
-        omitKinds: []
-        customResources: []
-        cachingPolicies: []
-        oAuthScopes: []
-        onlySpinnakerManaged: false
-        kubeconfigFile: kubeconfig-prod  # File name must match "files" key
-      primaryAccount: prod
-    ```
+   ```yaml
+   kubernetes:
+     enabled: true
+     accounts:
+     - name: prod
+       requiredGroupMembership: []
+       providerVersion: V2
+       permissions: {}
+       dockerRegistries: []
+       configureImagePullSecrets: true
+       cacheThreads: 1
+       namespaces: []
+       omitNamespaces: []
+       kinds: []
+       omitKinds: []
+       customResources: []
+       cachingPolicies: []
+       oAuthScopes: []
+       onlySpinnakerManaged: false
+       kubeconfigFile: kubeconfig-prod  # File name must match "files" key
+     primaryAccount: prod
+   ```
     
-    More details on [SpinnakerService Options](../operator-config/#specspinnakerconfigfiles) on `.spec.spinnakerConfig.files` section
+   More details on [SpinnakerService Options](../operator-config/#specspinnakerconfigfiles) on `.spec.spinnakerConfig.files` section
     
 6. Export Packer template files (if used). 
 
-    If you are using custom Packer templates for baking images, you need to migrate these files to the `SpinnakerService` manifest.
+   If you are using custom Packer templates for baking images, you need to migrate these files to the `SpinnakerService` manifest.
     
-    First, identify the current templates under  `~/.hal/default/profiles/rosco/packer`
+   First, identify the current templates under  `~/.hal/default/profiles/rosco/packer`
     
-    For each file, reate an entry under `spec.spinnakerConfig.files`
+   For each file, reate an entry under `spec.spinnakerConfig.files`
     
-    For example, you have the following `example-packer-config` file:
+   For example, you have the following `example-packer-config` file:
     
-    ```bash
-    $ tree -v ~/.hal/default/profiles
-    ├── echo-local.yml
-    └── rosco
-        └── packer
-            └── example-packer-config.json
+   ```bash
+   $ tree -v ~/.hal/default/profiles
+   ├── echo-local.yml
+   └── rosco
+       └── packer
+           └── example-packer-config.json
     
-    2 directories, 2 files
-    ```
+   2 directories, 2 files
+   ```
     
-    You need to create a new entry with the name of the file following these instructions:
-     
-    - For each file, list the folder name starting with `profiles`, followed by double underscores (`__`) and at the very end the name of the file.
+   You need to create a new entry with the name of the file following these instructions:
     
-    ```yaml
-    spec:
-      spinnakerConfig:
-        files: 
-          profiles__rosco__packer__example-packer-config.json: |
-            <CONTENT>
-    ```
-    More details on [SpinnakerService Options](../operator-config/#specspinnakerconfigfiles) on `.spec.spinnakerConfig.files` section
+   - For each file, list the folder name starting with `profiles`, followed by double underscores (`__`) and at the very end the name of the file.
+   
+   ```yaml
+   spec:
+     spinnakerConfig:
+       files: 
+         profiles__rosco__packer__example-packer-config.json: |
+           <CONTENT>
+   ```
+
+   More details on [SpinnakerService Options](../operator-config/#specspinnakerconfigfiles) on `.spec.spinnakerConfig.files` section
 
 6. Validate your Spinnaker configuration if you plan to run the Operator in cluster mode.
 
-    ```bash
-    $ kubectl -n <namespace> apply -f <spinnaker service manifest> --server-dry-run
-    ```
-    
-    The validation service throws an error when something is wrong with your manifest.
+   ```bash
+   $ kubectl -n <namespace> apply -f <spinnaker service manifest> --server-dry-run
+   ```
+   
+   The validation service throws an error when something is wrong with your manifest.
 
 7. Apply your SpinnakerService 
 
-    ```bash
-    $ kubectl -n <namespace> apply -f <spinnaker service>
-    ```
+   ```bash
+   $ kubectl -n <namespace> apply -f <spinnaker service>
+   ```
 
 # Custom Halyard Configuration
 
@@ -515,15 +517,17 @@ There are two ways in which you can remove this ownership relationship. so that 
 
 First, export Spinnaker configuration settings to a format that Halyard understands:
 1. From the `SpinnakerService` manifest, copy the contents of `spec.spinnakerConfig.config` to its own file named `config`, and save it with the following structure:
-```
-currentDeployment: default
-deploymentConfigurations:
-- name: default
-  <<CONTENT HERE>>
-```
-2. For each entry in `spec.spinnakerConfig.profiles`, copy it to its own file inside a `profiles` folder with a `<entry-name>-local.yml` name.
-3. For each entry in `spec.spinnakerConfig.service-settings`, copy it to its own file inside a `service-settings` folder with a `<entry-name>.yml` name.
-4. For each entry in `spec.spinnakerConfig.files`, copy it to its own file inside a directory structure following the name of the entry with double underscores (__) replaced by a path separator. For example, an entry named `profiles__rosco__packer__example-packer-config.json` results inthe file `profiles/rosco/packer/example-packer-config.json`.
+
+   ```
+   currentDeployment: default
+   deploymentConfigurations:
+   - name: default
+     <<CONTENT HERE>>
+   ```
+
+1. For each entry in `spec.spinnakerConfig.profiles`, copy it to its own file inside a `profiles` folder with a `<entry-name>-local.yml` name.
+2. For each entry in `spec.spinnakerConfig.service-settings`, copy it to its own file inside a `service-settings` folder with a `<entry-name>.yml` name.
+3. For each entry in `spec.spinnakerConfig.files`, copy it to its own file inside a directory structure following the name of the entry with double underscores (__) replaced by a path separator. For example, an entry named `profiles__rosco__packer__example-packer-config.json` results inthe file `profiles/rosco/packer/example-packer-config.json`.
 
 When finished, you have the following directory tree:
 
@@ -547,7 +551,7 @@ $ kubectl delete -f deploy/crds/
 
 Run the following script to remove ownership of Spinnaker resources, where `NAMESPACE` is the namespace where Spinnaker is installed:
 
-```bash
+```
 NAMESPACE=
 for rtype in deployment service
 do
@@ -559,7 +563,7 @@ done
 ```
 After the script completes, delete the operator and their CRDs from the Kubernetes cluster:
 
-```bash
+```
 $ kubectl delete -n <namespace> -f deploy/operator/<installation type>
 $ kubectl delete -f deploy/crds/
 ```

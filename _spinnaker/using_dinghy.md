@@ -93,50 +93,50 @@ While a JSON array is an ordered list, the order of the stages in your pipeline'
 
 ```json
 
-  "application": "helloworld",
-  "pipelines": [
-    {
-      "application": "helloworld",
-      "name": "my-pipeline-name",
-      "stages": [
-        {
-          "name": "one",
-          "type": "wait",
-          "waitTIme":  10,
-          "refId": "first-stage",
-          "requisiteStageRefIds": []
-        },
-        {
-          "name": "two-a",
-          "type": "wait",
-          "waitTIme":  15,
-          "refId": "my-second-stage",
-          "requisiteStageRefIds": [
-            "first-stage"
-          ]
-        },
-        {
-          "name": "two-b",
-          "type": "wait",
-          "waitTIme":  30,
-          "refId": "my-other-second-stage",
-          "requisiteStageRefIds": [
-            "first-stage"
-          ]
-        },
-        {
-          "name": "last",
-          "type": "wait",
-          "waitTIme":  20,
-          "refId": "my-final-stage",
-          "requisiteStageRefIds": [
-            "my-second-stage",
-            "my-other-second-stage",
-          ]
-        }
-      ]
-    }
-  ]
+"application": "helloworld",
+"pipelines": [
+  {
+    "application": "helloworld",
+    "name": "my-pipeline-name",
+    "stages": [
+      {
+        "name": "one",
+        "type": "wait",
+        "waitTIme":  10,
+        "refId": "first-stage",
+        "requisiteStageRefIds": []
+      },
+      {
+        "name": "two-a",
+        "type": "wait",
+        "waitTIme":  15,
+        "refId": "my-second-stage",
+        "requisiteStageRefIds": [
+          "first-stage"
+        ]
+      },
+      {
+        "name": "two-b",
+        "type": "wait",
+        "waitTIme":  30,
+        "refId": "my-other-second-stage",
+        "requisiteStageRefIds": [
+          "first-stage"
+        ]
+      },
+      {
+        "name": "last",
+        "type": "wait",
+        "waitTIme":  20,
+        "refId": "my-final-stage",
+        "requisiteStageRefIds": [
+          "my-second-stage",
+          "my-other-second-stage",
+        ]
+      }
+    ]
+  }
+]
 }
 ```
 
@@ -578,81 +578,76 @@ If you have already created a pipeline in the Spinnaker UI, you can create a din
 2. Click on the `Pipeline Actions` dropdown and select 'Edit as JSON'
 3. Copy/paste this data into a new file, you will need to wrap this JSON with the following
 
-    ```
-    {
-      "application": "YourSpinnakerApplicationName",
-      "pipelines": [
-         "name": "the name of your pipeline",
-         "application": "YourSpinnakerApplicationName",
-         The JSON obtained from the UI
-       ]
-    }
-    ```
+   ```
+   {
+     "application": "YourSpinnakerApplicationName",
+     "pipelines": [
+        "name": "the name of your pipeline",
+        "application": "YourSpinnakerApplicationName",
+        The JSON obtained from the UI
+      ]
+   }
+   ```
 4. Add the following parameters to each pipeline in the collection within the root of its JSON:
 
-    ```
-    "application": "YourSpinnakerApplicationName"
-    "name": "<the name of the pipeline you wish to create>"
-    ```
-    Note that the value you set for `"application"` must be the same as the value in step 3.
+   ```
+   "application": "YourSpinnakerApplicationName"
+   "name": "<the name of the pipeline you wish to create>"
+   ```
+   Note that the value you set for `"application"` must be the same as the value in step 3.
+   For example, if your pipeline called "Wait Pipeline" has a JSON definition that looks like this:
+   ```
+   {
+     "isNew": true,
+     "keepWaitingPipelines": false,
+     "lastModifiedBy": "justin@acompany.com",
+     "limitConcurrent": true,
+     "stages": [
+       {
+         "isNew": true,
+         "name": "Wait",
+         "refId": "1",
+         "requisiteStageRefIds": [],
+         "type": "wait",
+         "waitTime": 30
+       }
+     ],
+     "triggers": [],
+     "updateTs": "1572455128000"
+   }
+   ```
 
-    For example, if your pipeline called "Wait Pipeline" has a JSON definition that looks like this:
+   Then a Dinghy file managing this pipeline in the "helloworld" application looks like this:
 
-    ```
-      {
-        "isNew": true,
-        "keepWaitingPipelines": false,
-        "lastModifiedBy": "justin@acompany.com",
-        "limitConcurrent": true,
-        "stages": [
-          {
-            "isNew": true,
-            "name": "Wait",
-            "refId": "1",
-            "requisiteStageRefIds": [],
-            "type": "wait",
-            "waitTime": 30
-          }
-        ],
-        "triggers": [],
-        "updateTs": "1572455128000"
-      }
-
-    ```
-
-    Then a Dinghy file managing this pipeline in the "helloworld" application looks like this:
-
-    ```
-      {
-        "application": "helloworld",
-        "pipelines": [
-          {
-            "application": "helloworld",
-            "name": "Wait Pipeline",
-            "isNew": true,
-            "keepWaitingPipelines": false,
-            "lastModifiedBy": "justin@acompany.com",
-            "limitConcurrent": true,
-            "stages": [
-              {
-                "isNew": true,
-                "name": "Wait",
-                "refId": "1",
-                "requisiteStageRefIds": [],
-                "type": "wait",
-                "waitTime": 30
-              }
-            ],
-            "triggers": [],
-            "updateTs": "1572455128000"
-          }
-         ]
-      }
-    ```
-
-    Save this file as `dinghyfile` in the root of your project and push it to your repository.
-
-    You may want to follow the [deleting stale pipelines](https://docs.armory.io/spinnaker/using_dinghy/#deleting-stale-pipelines).
+   ```
+   {
+     "application": "helloworld",
+     "pipelines": [
+       {
+         "application": "helloworld",
+         "name": "Wait Pipeline",
+         "isNew": true,
+         "keepWaitingPipelines": false,
+         "lastModifiedBy": "justin@acompany.com",
+         "limitConcurrent": true,
+         "stages": [
+           {
+             "isNew": true,
+             "name": "Wait",
+             "refId": "1",
+             "requisiteStageRefIds": [],
+             "type": "wait",
+             "waitTime": 30
+           }
+         ],
+         "triggers": [],
+         "updateTs": "1572455128000"
+       }
+      ]
+   }
+   ```
+   Save this file as `dinghyfile` in the root of your project and push it to your repository.
+   You may want to follow the [deleting stale pipelines](https://docs.armory.io/spinnaker/using_dinghy/#deleting-stale-pipelines).
 
 # Alternate Template Formats
 
@@ -837,30 +832,30 @@ If Dinghy crashes on start up and you encounter an error in Dinghy similar to:
 
 You have probably configured global logging levels with `spinnaker-local.yml`. The work around is to override Dinghy's logging levels:
 
-* **Operator**
+**Operator**
 
-    ```yaml
-    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
-    kind: SpinnakerService
-    metadata:
-      name: spinnaker
-    spec:
-      spinnakerConfig:
-        profiles:
-          dinghy: |
-            Logging:
-              Level: INFO
-              ... # Rest of config omitted for brevity
-    ```
+```yaml
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    profiles:
+      dinghy: |
+        Logging:
+          Level: INFO
+          ... # Rest of config omitted for brevity
+```
 
-* **Halyard**
+**Halyard**
 
-    Create `.hal/default/profiles/dinghy-local.yml` and add the following snippet:
+Create `.hal/default/profiles/dinghy-local.yml` and add the following snippet:
 
-    ```
-    Logging:
-      Level: INFO
-    ```
+```
+Logging:
+  Level: INFO
+```
 
 
 # Webhook Secret Validation
@@ -873,41 +868,40 @@ This feature supports **GitHub** webhooks.
 
 When you enable webhook secret validation, **ALL** webhooks for that provider are validated for a secret.
 
-* **Operator**
+**Operator**
 
-    Add the `webhookValidationEnabledProviders` element to the `dinghy` configuration in the `SpinnakerService` manifest. Add the providers as a list. To disable webhooks secrets, delete the `webhookValidationEnabledProviders` element with the list of providers.
+Add the `webhookValidationEnabledProviders` element to the `dinghy` configuration in the `SpinnakerService` manifest. Add the providers as a list. To disable webhooks secrets, delete the `webhookValidationEnabledProviders` element with the list of providers.
 
-    ```yaml
-      apiVersion: spinnaker.armory.io/v1alpha2
-      kind: SpinnakerService
-      metadata:
-        name: spinnaker
-      spec:
-        spinnakerConfig:
-          config:
-            armory:
-              dinghy:
-                webhookValidationEnabledProviders:
-                - github
-                ... # Rest of config omitted for brevity
-    ```
+```yaml
+apiVersion: spinnaker.armory.io/v1alpha2
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    config:
+      armory:
+        dinghy:
+          webhookValidationEnabledProviders:
+          - github
+          ... # Rest of config omitted for brevity
+```
+```bash
+  kubectl -n spinnaker apply -f spinnakerservice.yml
+```
+**Halyard**
 
-    ```bash
-      kubectl -n spinnaker apply -f spinnakerservice.yml
-    ```
+* **Enable**
 
-* **Halyard**
-  * **Enable**
+   ```bash
+   hal armory dinghy webhooksecrets <version control provider> enable
+   ```
 
-    ```bash
-	hal armory dinghy webhooksecrets <version control provider> enable
-	```
+* **Disable**
 
-  * **Disable**
-
-    ```bash
-	hal armory dinghy webhooksecrets <version control provider> disable
-	```
+   ```bash
+   hal armory dinghy webhooksecrets <version control provider> disable
+   ```
 
 
 ## Webhook Validation Fields
@@ -934,58 +928,58 @@ You can specify a default secret to use when your GitHub organization has multip
 
 ## Add or Edit Webhook Validations
 
-* **Operator**
+**Operator**
 
-    Add the `webhookValidations` element to the `dinghy` configuration in the `SpinnakerService` manifest.
+Add the `webhookValidations` element to the `dinghy` configuration in the `SpinnakerService` manifest.
 
-    ```yaml
-      apiVersion: spinnaker.armory.io/v1alpha2
-      kind: SpinnakerService
-      metadata:
-        name: spinnaker
-      spec:
-        spinnakerConfig:
-          config:
-            armory:
-              dinghy:
-              webhookValidations:
-              - enabled: true
-                versionControlProvider: github
-                organization: testorg
-                repo: testrepo
-                secret: testSecret
-              - enabled: true
-                versionControlProvider: github
-                organization: armory
-                repo: test-repo
-                secret: testSecret
-                ... # Rest of config omitted for brevity
-    ```
+```yaml
+  apiVersion: spinnaker.armory.io/v1alpha2
+  kind: SpinnakerService
+  metadata:
+    name: spinnaker
+  spec:
+    spinnakerConfig:
+      config:
+        armory:
+          dinghy:
+          webhookValidations:
+          - enabled: true
+            versionControlProvider: github
+            organization: testorg
+            repo: testrepo
+            secret: testSecret
+          - enabled: true
+            versionControlProvider: github
+            organization: armory
+            repo: test-repo
+            secret: testSecret
+            ... # Rest of config omitted for brevity
+```
+```bash
+  kubectl -n spinnaker apply -f spinnakerservice.yml
+```
 
-    ```bash
-      kubectl -n spinnaker apply -f spinnakerservice.yml
-    ```
+**Halyard**
 
-* **Halyard**
+```bash
+hal armory dinghy webhooksecrets <version control provider> edit \
+--organization testOrg \
+--repo repoName \
+--enabled true \
+--secret testSecret
+```
 
-    ```bash
-	hal armory dinghy webhooksecrets <version control provider> edit \
-	--organization testOrg \
-	--repo repoName \
-	--enabled true \
-	--secret testSecret
-	```
+Edit with Halyard
 
-* Edit with Halyard
-	To disable a repository, set `enabled` to `false`:
+To disable a repository, set `enabled` to `false`:
 
-    ```bash
-	hal armory dinghy webhooksecrets <version control provider> edit \
-	--organization testOrg \
-	--repo repoName \
-	--enabled false \
-	--secret testSuperSecret \
-	```
+```bash
+hal armory dinghy webhooksecrets <version control provider> edit \
+--organization testOrg \
+--repo repoName \
+--enabled false \
+--secret testSuperSecret \
+```
 
 
 ## List Webhook Validations
@@ -1003,7 +997,6 @@ hal armory dinghy webhooksecrets <version control provider> list \
 --organization armory-io \
 --enabled false
 ```
-
 
 ## Delete Webhook Validations
 
