@@ -126,20 +126,12 @@ artifactSources:
 
 
 ### Armory
-#### Dinghy&trade; - ef444037
-No Changes
-
-#### Terraformer&trade; - f3edd3da
-No Changes
 
 #### Armory Clouddriver  - ef9da881...2bd55acb
  - fix(plugins): add plugins dir (bp #103) (#104)
 
-#### Armory Deck  - 4f6b2719
-No Changes
-
 #### Armory Echo  - 43e1966a
-No Changes
+- fix(plugins): add plugins dir (bp #46) (#47)
 
 #### Armory Fiat  - 8494a0c4...e7d5efa3
  - fix(plugins): add plugins dir (bp #46) (#47)
