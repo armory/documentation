@@ -43,13 +43,11 @@ Highlighted Updates describe some of the major changes in this release. Highligh
 
 This update contians improvements and fixes to the Plugins framework:
 
-* Support for Plugin deployment using Armory Halyard or the [Spinnaker Operator](/_spinnaker/operator/). Consult the open source [Plugin](https://www.spinnaker.io/guides/user/plugins/user-guide/) docs for Halyard usage or the [Plugins Operator Reference](/_operator_reference/plugins/) for a manifest example.
+* Support for Plugin deployment using Armory Halyard or the [Spinnaker Operator](/spinnaker/operator/). Consult the open source [Plugin](https://www.spinnaker.io/guides/user/plugins/user-guide/) docs for Halyard usage or the [Plugins Operator Reference](/operator_reference/plugins/) for a manifest example.
 * Updates to how Deck is built. Previously, Deck's builds were non-deterministic, causing issues with loading plugins into the UI. Deck's builds are now deterministic and support UI plugins.
 
 ###  Spinnaker Community Contributions
-The following highlights describe some of the major changes from the Spinnaker community for version OSS Release 1.19.5, which is included in this release of Armory Spinnaker 2.19:
-
-
+See the Armory Spinnaker [2.19.7 release notes](/release-notes/armoryspinnaker_v2.19.7/) for detailed list of community contributions.
 
 
 <br><br><br>
