@@ -23,23 +23,22 @@ If you want to get started quickly, install Operator and Spinnaker by running th
 
 ```
 # Pick a release from https://github.com/armory-io/spinnaker-operator/releases 
-$ mkdir -p spinnaker-operator && cd spinnaker-operator
-$ bash -c 'curl -L https://github.com/armory-io/spinnaker-operator/releases/latest/download/manifests.tgz | tar -xz'
+mkdir -p spinnaker-operator && cd spinnaker-operator
+bash -c 'curl -L https://github.com/armory-io/spinnaker-operator/releases/latest/download/manifests.tgz | tar -xz'
 
 # Install or update CRDs cluster wide
-$ kubectl apply -f deploy/crds/
+kubectl apply -f deploy/crds/
 
 # Install Operator in namespace spinnaker-operator. If you want a different namespace, see the below documentaiton.
-$ kubectl create ns spinnaker-operator
-$ kubectl -n spinnaker-operator apply -f deploy/operator/cluster
+kubectl create ns spinnaker-operator
+kubectl -n spinnaker-operator apply -f deploy/operator/cluster
 
 # Install Spinnaker in the "spinnaker" namespace
-$ kubectl create ns spinnaker
-$ kubectl -n spinnaker apply -f deploy/spinnaker/basic
+kubectl create ns spinnaker
+kubectl -n spinnaker apply -f deploy/spinnaker/basic
 
 # Watch the install progress and check out the pods being created too!
-$ kubectl -n spinnaker get spinsvc spinnaker -w
-
+kubectl -n spinnaker get spinsvc spinnaker -w
 ```
 
 The rest of this page describes how to modify some of the default configurations within Operator to suit your needs.
@@ -79,15 +78,15 @@ Download CRDs and example manifests from the [latest stable release](https://git
 
 ```bash
 # For a stable release (https://github.com/armory-io/spinnaker-operator/releases)
-$ mkdir -p spinnaker-operator && cd spinnaker-operator
-$ bash -c 'curl -L https://github.com/armory-io/spinnaker-operator/releases/latest/download/manifests.tgz | tar -xz'
+mkdir -p spinnaker-operator && cd spinnaker-operator
+bash -c 'curl -L https://github.com/armory-io/spinnaker-operator/releases/latest/download/manifests.tgz | tar -xz'
 ```
 
 For both Basic and Cluster modes, you must download and apply the SpinnakerService CRD.
 Note that you must have admin rights to install the CRD.
 
 ```bash
-$ kubectl apply -f deploy/crds/
+kubectl apply -f deploy/crds/
 ```
 
 **Note**: To install OSS Spinnaker, use [https://github.com/armory/spinnaker-operator](https://github.com/armory/spinnaker-operator) instead.
@@ -97,19 +96,19 @@ $ kubectl apply -f deploy/crds/
 To install Operator in basic mode, run:
 
 ```bash
-$ kubectl apply -n <op_namespace> -f deploy/operator/basic
+kubectl apply -n <op_namespace> -f deploy/operator/basic
 ```
 
 `<op_namespace>` is the namespace where you want the operator to live. To monitor installation, run the following command:
 
 ```
 # Watch the install progress. Check out the pods being created too!
-$ kubectl -n spinnaker get spinsvc spinnaker -w
+kubectl -n spinnaker get spinsvc spinnaker -w
 ```
 
 After installation, you can verify that the Operator is running with the following command:
 ```bash
-$ kubectl -n <op_namespace> get pods
+kubectl -n <op_namespace> get pods
 ```
 
 The command returns output similar to the following if the pod for the Operator is running:
@@ -129,18 +128,19 @@ To install Operator for cluster mode, perform the following steps:
    kind: ClusterRoleBinding
    apiVersion: rbac.authorization.k8s.io/v1
    metadata:
-​      name: spinnaker-operator-binding
-​    subjects:
-​    - kind: ServiceAccount
-​      name: spinnaker-operator
-​      namespace: spinnaker-operator # Edit this value if you want Operator to live in a different namespace.
-​    roleRef:
+     name: spinnaker-operator-binding
+   subjects:
+   - kind: ServiceAccount
+     name: spinnaker-operator
+     namespace: spinnaker-operator # Edit this value if you want Operator to live in a different namespace.
+   roleRef:
      kind: ClusterRole
-​      name: spinnaker-operator-role
-​      apiGroup: rbac.authorization.k8s.io
+     name: spinnaker-operator-role
+     apiGroup: rbac.authorization.k8s.io
    ```
 
     Then, save the changes to `role_binding.yaml`.
+
 3. Run the following command:
 
    ```bash
@@ -156,7 +156,7 @@ To install Operator for cluster mode, perform the following steps:
 After installation, you can verify that the Operator is running with the following command:
 
 ```bash
-$ kubectl -n <op_namespace> get pods
+kubectl -n <op_namespace> get pods
 ```
 The command returns output similar to the following if the pod for the Operator is running:
 
@@ -187,8 +187,8 @@ Operator supports Kustomize, a templating engine for Kubernetes. Using Kustomize
 2. Run the following commands:
 
    ```bash
-   $ kubectl create ns <spinnaker-namespace>
-   $ kustomize build deploy/spinnaker/kustomize | kubectl -n <spinnaker-namespace> apply -f -
+   kubectl create ns <spinnaker-namespace>
+   kustomize build deploy/spinnaker/kustomize | kubectl -n <spinnaker-namespace> apply -f -
    ```
    `<spinnaker-namespace>` is the `namespace` where you want to deploy Spinnaker.
 
@@ -200,19 +200,21 @@ To upgrade an existing Spinnaker deployment using the Operator, perform the foll
 2. Apply the updated manifest:
 
    ```bash
-   $ kubectl -n <spinnaker-namespace> apply -f deploy/spinnaker/basic/SpinnakerService.yml
+   kubectl -n <spinnaker-namespace> apply -f deploy/spinnaker/basic/SpinnakerService.yml
    ```
+   
    Replace `<spinnaker-namespace>` with the namespace for the existing Spinnaker deployment.
 
    You can view the upgraded services starting up with the following command:
+   
    ```bash
-   $ kubectl -n <spinnaker-namespace> describe spinsvc spinnaker
+   kubectl -n <spinnaker-namespace> describe spinsvc spinnaker
    ```
 
 3. Verify the upgraded version of Spinnaker:
 
    ```bash
-   $ kubectl -n <spinnaker-namespace> get spinsvc
+   kubectl -n <spinnaker-namespace> get spinsvc
    ```
 
    The command returns information similar to the following:
@@ -227,7 +229,7 @@ To upgrade an existing Spinnaker deployment using the Operator, perform the foll
    Once the upgrade is complete, you can view information related to your Spinnaker deployment with the following command:
 
    ```bash
-   $ kubectl -n <spinnaker-namespace> get svc
+   kubectl -n <spinnaker-namespace> get svc
    ```
 
    The command returns information about the running Spinnaker services.
@@ -238,19 +240,24 @@ To upgrade an existing Spinnaker deployment using the Operator, perform the foll
 Operator allows you to use `kubectl` to manager you Spinnaker deployment.
 
 **Listing Spinnaker Instances**
+
 ```bash
-$ kubectl get spinnakerservice --all-namespaces
+kubectl get spinnakerservice --all-namespaces
 ```
+
 The short name `spinsvc` is also available.
 
 **Describing Spinnaker Instances**
+
 ```bash
-$ kubectl -n <namespace> describe spinnakerservice spinnaker
+kubectl -n <namespace> describe spinnakerservice spinnaker
 ```
 
+
 **Deleting Spinnaker Instances**
+
 ```bash
-$ kubectl -n <namespace> delete spinnakerservice spinnaker
+kubectl -n <namespace> delete spinnakerservice spinnaker
 ```
  
 # Migrating from Halyard to Operator
@@ -445,7 +452,7 @@ The migration process from Halyard to Operator can be completed in 7 steps:
 6. Validate your Spinnaker configuration if you plan to run the Operator in cluster mode.
 
    ```bash
-   $ kubectl -n <namespace> apply -f <spinnaker service manifest> --server-dry-run
+   kubectl -n <namespace> apply -f <spinnaker service manifest> --server-dry-run
    ```
    
    The validation service throws an error when something is wrong with your manifest.
@@ -453,7 +460,7 @@ The migration process from Halyard to Operator can be completed in 7 steps:
 7. Apply your SpinnakerService 
 
    ```bash
-   $ kubectl -n <namespace> apply -f <spinnaker service>
+   kubectl -n <namespace> apply -f <spinnaker service>
    ```
 
 # Custom Halyard Configuration
@@ -543,8 +550,8 @@ After that, move these files to your Halyard home directory and deploy Spinnaker
 Finally, delete Operator and their CRDs from the Kubernetes cluster.
 
 ```bash
-$ kubectl delete -n <namespace> -f deploy/operator/<installation type>
-$ kubectl delete -f deploy/crds/
+kubectl delete -n <namespace> -f deploy/operator/<installation type>
+kubectl delete -f deploy/crds/
 ```
 
 ### Removing Operator Ownership from Spinnaker Resources
@@ -564,6 +571,6 @@ done
 After the script completes, delete the operator and their CRDs from the Kubernetes cluster:
 
 ```
-$ kubectl delete -n <namespace> -f deploy/operator/<installation type>
-$ kubectl delete -f deploy/crds/
+kubectl delete -n <namespace> -f deploy/operator/<installation type>
+kubectl delete -f deploy/crds/
 ```

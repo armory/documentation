@@ -325,7 +325,6 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: basic-ingress
-
 spec:
   rules:
   - host: demo.armory.io

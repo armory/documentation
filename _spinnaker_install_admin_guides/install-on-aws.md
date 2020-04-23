@@ -8,7 +8,7 @@ redirect_from:
   - /spinnaker_install_admin_guides/install-on-eks/
   - /spinnaker-install-admin-guides/install_on_eks/
   - /spinnaker-install-admin-guides/install-on-eks/
-  - /spinnaker-install-admin-guides/install-on-aws/
+  - /spinnaker-install-admin-guides/install_on_aws/
   - /spinnaker_install_admin_guides/install_on_aws/
   - /spinnaker_install_admin_guides/install-on-aws/
 ---
@@ -173,12 +173,13 @@ Halyard uses this Kubeconfig file to create the Kubernetes deployment objects th
    DEST_KUBECONFIG=kubeconfig-spinnaker-system-sa
    SPINNAKER_NAMESPACE=spinnaker-system
    SPINNAKER_SERVICE_ACCOUNT_NAME=spinnaker-service-account
+
    ./spinnaker-tools create-service-account \
-   --kubeconfig ${SOURCE_KUBECONFIG} \
-   --context ${CONTEXT} \
-   --output ${DEST_KUBECONFIG} \
-   --namespace ${SPINNAKER_NAMESPACE} \
-   --service-account-name ${SPINNAKER_SERVICE_ACCOUNT_NAME}
+     --kubeconfig ${SOURCE_KUBECONFIG} \
+     --context ${CONTEXT} \
+     --output ${DEST_KUBECONFIG} \
+     --namespace ${SPINNAKER_NAMESPACE} \
+     --service-account-name ${SPINNAKER_SERVICE_ACCOUNT_NAME}
    ```
 
 You should be left with a file called `kubeconfig-spinnaker-system-sa` (or something similar, if you're using a different namespace for spinnaker)
@@ -232,17 +233,17 @@ Then, add an inline policy to your IAM user:
 
    ```json
    {
-   "Version": "2012-10-17",
-   "Statement": [
-   {
-   "Effect": "Allow",
-   "Action": "s3:*",
-   "Resource": [
-      "arn:aws:s3:::spinnaker-jq6cqvmpro",
-      "arn:aws:s3:::spinnaker-jq6cqvmpro/*"
-   ]
-   }
-   ]
+     "Version": "2012-10-17",
+     "Statement": [
+       {
+         "Effect": "Allow",
+         "Action": "s3:*",
+         "Resource": [
+           "arn:aws:s3:::spinnaker-jq6cqvmpro",
+           "arn:aws:s3:::spinnaker-jq6cqvmpro/*"
+         ]
+       }
+     ]
    }
    ```
 
@@ -266,17 +267,17 @@ Alternately, you can attach an IAM policy to the role attached to your Kubernete
 
    ```json
    {
-   "Version": "2012-10-17",
-   "Statement": [
-   {
-   "Effect": "Allow",
-   "Action": "s3:*",
-   "Resource": [
-      "arn:aws:s3:::spinnaker-jq6cqvmpro",
-      "arn:aws:s3:::spinnaker-jq6cqvmpro/*"
-   ]
-   }
-   ]
+     "Version": "2012-10-17",
+     "Statement": [
+       {
+        "Effect": "Allow",
+        "Action": "s3:*",
+        "Resource": [
+          "arn:aws:s3:::spinnaker-jq6cqvmpro",
+          "arn:aws:s3:::spinnaker-jq6cqvmpro/*"
+        ]
+       }
+     ]
    }
    ```
 
@@ -422,10 +423,10 @@ export ACCESS_KEY_ID=<access-key>
 
 # This will prompt for the secret key
 hal config storage s3 edit \
-    --bucket ${BUCKET_NAME} \
-    --access-key-id ${ACCESS_KEY_ID} \
-    --secret-access-key \
-    --region ${REGION}
+  --bucket ${BUCKET_NAME} \
+  --access-key-id ${ACCESS_KEY_ID} \
+  --secret-access-key \
+  --region ${REGION}
 
 hal config storage edit --type s3
 ```
@@ -439,9 +440,9 @@ export REGION=us-west-2
 
 # This will prompt for the secret key
 hal config storage s3 edit \
-    --bucket ${BUCKET_NAME} \
-    --region ${REGION} \
-    --no-validate
+  --bucket ${BUCKET_NAME} \
+  --region ${REGION} \
+  --no-validate
 
 hal config storage edit --type s3
 ```

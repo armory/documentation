@@ -18,9 +18,10 @@ Before you start, ensure that have completed the following requirements:
 
     Running the following command from your local machine should return the namespaces for the EKS cluster you want to deploy to.
 
-    ```bash
-    kubectl get ns
-    ```
+  ```bash
+  kubectl get ns
+  ```
+
 * Have a way to copy files from your local workstation to the Minnaker VM, such as `scp`.
 
 
@@ -46,9 +47,9 @@ The Account name is arbitrary and should be a name that is an identifiable.  The
 
    ```bash
    hal config provider aws account add ${AWS_ACCOUNT_NAME} \
-       --account-id ${ACCOUNT_ID} \
-       --assume-role ${ROLE_NAME} \
-       --regions us-east-1,us-west-2
+     --account-id ${ACCOUNT_ID} \
+     --assume-role ${ROLE_NAME} \
+     --regions us-east-1,us-west-2
    ```
 
 3. Enable the AWS provider:
@@ -86,14 +87,12 @@ Key                 Value
 immutable_metadata  {"purpose":"example-purpose"}
 ```
 
-* Do not change `purpose`.
 * Replace `example-purpose` with your subnet identifier. The subnet shows up in Deck as a dropdown option.
 
- **Example:** 
+**Example:**
 
-```
- immutable_metadata {"purpose":"**us-west-2-dev-subnet**"}
-```
+* Key: `immutable_metadata`
+* Value: `{"purpose":"us-west-2-dev-subnet"}`
 
 # Second: Connect Spinnaker to an Amazon EKS cluster
 

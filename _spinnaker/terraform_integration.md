@@ -71,7 +71,7 @@ If you do not already have a `git/repo` artifact account configured, you must do
 
   Edit the `~/.hal/default/profiles/clouddriver-local.yml` file and add the following:
 
-  ```
+  ```yaml
   artifacts:
     gitRepo:
       enabled: true
@@ -133,13 +133,17 @@ spec:
 **Halyard**
 
 1. Enable GitHub as an artifact provider:
+
+ ```bash
+ hal config artifact github enable
  ```
-hal config artifact github enable
- ```
+
 2. Add the GitHub account:
+
+ ```bash
+ hal config artifact github account add github-for-terraform --token
  ```
-hal config artifact github account add github-for-terraform --token
- ```
+
 3. Provide the PAT.
 
 #### 3. Enabling and configuring the Terraform Integration
@@ -170,7 +174,7 @@ spec:
 
 **Halyard**
 
-```
+```bash
 hal armory terraform enable
 
 # This will prompt for the token
@@ -212,7 +216,7 @@ spec:
 
 **Halyard**
 
-```
+```bash
 hal config artifact bitbucket enable
 # This will prompt for the password
 hal config artifact bitbucket account add bitbucket-for-terraform \
@@ -248,7 +252,7 @@ spec:
 
 **Halyard**
 
-```
+```bash
 # This will prompt for the token, which is your BitBucket password
 hal armory terraform edit \
   --git-enabled \
@@ -292,7 +296,8 @@ spec:
 **Halyard**
 
 Edit `~/.hal/default/profiles/settings-local.js` and add the following line:
-```
+
+```yaml
 window.spinnakerSettings.feature.terraform = true;
 ```
 
@@ -318,7 +323,7 @@ hal deploy apply
 
 Then, confirm that the Terraform Integration service (Terraformer) is deployed with your Spinnaker deployment:
     
-```
+```bash
 kubectl get pods -n {your-spinnaker-namespace}
 ```
 
@@ -468,7 +473,7 @@ Terraform supports the ability to reference AWS profiles defined via a [shared c
 
 1. Create a Kubernetes `ConfigMap` containing the contents of this config file and put it in a temporary file:
 
-   ```
+   ```yaml
    apiVersion: v1
    kind: ConfigMap
    metadata:
@@ -480,11 +485,12 @@ Terraform supports the ability to reference AWS profiles defined via a [shared c
        aws_access_key_id = {your-aws-access-key}
        aws_secret_access_key = {your-aws-secret-access-key}
    ```
+
    **Note**: You can swap the `ConfigMap` for a `Secret` if you prefer. The `ConfigMap` is used in this documentation for simplicity.
 
 2. Apply the `ConfigMap`: 
    
-   ```
+   ```bash
    kubectl apply -f {temp-filename}`
    ```
 
@@ -512,7 +518,7 @@ Terraform supports the ability to reference AWS profiles defined via a [shared c
 
    Add to `~/.hal/default/service-settings/terraformer.yml`:
  
-   ```
+   ```yaml
    kubernetes:
      volumes:
      - id: terraformer-credentials
@@ -536,7 +542,7 @@ Terraform supports the ability to reference AWS profiles defined via a [shared c
 
 Once deployed, you can reference these profiles in your Terraform state and provider configuration. See the following snippet for an example:
 
-```
+```hcl
 terraform {
   backend "s3" {
     profile = "dev"

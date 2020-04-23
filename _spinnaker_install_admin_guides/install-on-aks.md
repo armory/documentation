@@ -95,6 +95,7 @@ To create an AKS cluster, perform the following steps on the `workstation machin
    mkdir ~/aks-spinnaker
    cd ~/aks-spinnaker
    ```
+   
    For this guide, use the `~/aks-spinnaker` directory, but this can be any persistent directory on any Linux or OSX machine.
 
 2. Run the following commands to set up the `az` CLI:

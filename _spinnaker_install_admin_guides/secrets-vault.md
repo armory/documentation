@@ -48,10 +48,10 @@ spec:
 ```
 hal armory secrets vault enable
 hal armory secrets vault edit \
-    --auth-method KUBERNETES \
-    --url <Vault server URL>:<port, if required> \
-    --role <k8s role with access to Vault> \
-    --path <k8s cluster path> (*optional*, default is 'kubernetes')
+  --auth-method KUBERNETES \
+  --url <Vault server URL>:<port, if required> \
+  --role <k8s role with access to Vault> \
+  --path <k8s cluster path> (*optional*, default is 'kubernetes')
 ```
 
 ### 2. Token authentication
@@ -85,8 +85,8 @@ spec:
 ```
 hal armory secrets vault enable
 hal armory secrets vault edit \
-    --auth-method TOKEN \
-    --url <Vault server URL>:<port, if required>
+  --auth-method TOKEN \
+  --url <Vault server URL>:<port, if required>
 ```
 
 ## Configuring the Operator to use Vault secrets

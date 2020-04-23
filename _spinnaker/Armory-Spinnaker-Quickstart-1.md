@@ -129,7 +129,7 @@ Need help setting this up? -  For a guided tutorial, watch the **Video Walkthrou
    The command returns output similar to the following output:
     
    ```bash
-       ubuntu:~$ aws sts get-caller-identity
+   ubuntu:~$ aws sts get-caller-identity
    {
        "UserId": "AROA3SQXSP.............7893f355",
        "Account": "[YOUR_AWS_ACCOUNT_ID]",
@@ -158,7 +158,6 @@ Need help setting this up? -  For a guided tutorial, watch the **Video Walkthrou
            "Arn": "arn:aws:sts::[YOUR_AWS_ACCOUNT_ID]:assumed-role/Spinnaker-Managed-Role/test"
        }
    }
-   ubuntu@:~$
    ```
 ### Congratulations! 
 You have completed the 1st step in setting up the Spinnaker AWS Provider.  For Step 2, see [AWS Quick Start Step 2](/spinnaker/Armory-Spinnaker-Quickstart-2).

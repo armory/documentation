@@ -226,7 +226,7 @@ metadata:
 spec:
   spinnakerConfig:
     profiles:
-      dinghy: |
+      dinghy:
         repoConfig:
         - branch: some_branch
           provider: bitbucket-server
@@ -322,7 +322,7 @@ metadata:
 spec:
   spinnakerConfig:
     profiles:
-      dinghy: |
+      dinghy:
         parserFormat: hcl
         ... # Rest of config omitted for brevity
 ```
@@ -359,7 +359,7 @@ metadata:
 spec:
   spinnakerConfig:
     profiles:
-      dinghy: |
+      dinghy:
         Logging:
           Level: INFO
           ... # Rest of config omitted for brevity
