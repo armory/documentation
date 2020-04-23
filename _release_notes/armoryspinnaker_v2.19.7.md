@@ -28,7 +28,10 @@ The Kubernetes V1 provider will be removed in Spinnaker 1.21. Please see the [RF
 Breaking change: Kubernetes accounts with an unspecified providerVersion will now default to V2. Update your Halconfig to specify `providerVersion: v1` for any Kubernetes accounts you are currently using with the V1 provider.
 
 ## Known Issues
-There are currently no known issues with this release.
+
+### Plugins
+
+There is a known issue with the Plugins framework in Armory Spinnaker 2.17.7. If you want to build or use plugins, do not use this version. Use Armory Spinnaker 2.17.8 or later.
 
 ## Highlighted Updates
 
