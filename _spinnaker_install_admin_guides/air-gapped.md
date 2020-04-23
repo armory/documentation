@@ -131,13 +131,13 @@ kubectl apply -f manifest.yml
 Finally, to access the deployed Halyard environment, perform the following steps:
 
 1. Get the name for the Halyard pod: 
-    ```
-    kubectl get pods
-    ```
+   ```
+   kubectl get pods
+   ```
 2. Exec into the pod: 
-    ```
-    kubectl exec -it {pod-name} /bin/bash
-    ``` 
+   ```
+   kubectl exec -it {pod-name} /bin/bash
+   ``` 
     
 ### Option 2: Spinnaker Operator
 

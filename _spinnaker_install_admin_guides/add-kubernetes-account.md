@@ -163,104 +163,104 @@ export TARGET_NAMESPACES_COMMA_SEPARATED=dev-1,dev-2
 
 ## Add the kubeconfig and cloud provider to Spinnaker
 
-* **Operator**
+**Operator**
 
-    Add the following configuration to the `SpinnakerServce` manifest, replacing values as needed:
+   Add the following configuration to the `SpinnakerServce` manifest, replacing values as needed:
 
    ```yaml
-    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
-    kind: SpinnakerService
-    metadata:
-      name: spinnaker
-    spec:
-      spinnakerConfig:
-        config:
-          providers:
-            kubernetes:
-              enabled: true
-              accounts:
-              - name: spinnaker-dev # Account name you want Spinnaker to use to identify the deployment target
-                requiredGroupMembership: []
-                providerVersion: V2
-                permissions: {}
-                dockerRegistries: []
-                configureImagePullSecrets: true
-                cacheThreads: 1
-                namespaces: [] # Change if you only want to deploy to specific namespaces
-                omitNamespaces: []
-                kinds: []
-                omitKinds: []
-                customResources: []
-                cachingPolicies: []
-                oAuthScopes: []
-                onlySpinnakerManaged: false
-                kubeconfig: kubeconfig-spinnaker-dev
-              primaryAccount: spinnaker-dev  # Change to a desired account from the accounts array
-          features:
-            artifacts: true # Not strictly necessary for Kubernetes but will be useful in general
-        files:
-          kubeconfig-spinnaker-dev: |
-            <FILE CONTENTS HERE>
-    ```
+   apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+   kind: SpinnakerService
+   metadata:
+     name: spinnaker
+   spec:
+     spinnakerConfig:
+       config:
+         providers:
+           kubernetes:
+             enabled: true
+             accounts:
+             - name: spinnaker-dev # Account name you want Spinnaker to use to identify the deployment target
+               requiredGroupMembership: []
+               providerVersion: V2
+               permissions: {}
+               dockerRegistries: []
+               configureImagePullSecrets: true
+               cacheThreads: 1
+               namespaces: [] # Change if you only want to deploy to specific namespaces
+               omitNamespaces: []
+               kinds: []
+               omitKinds: []
+               customResources: []
+               cachingPolicies: []
+               oAuthScopes: []
+               onlySpinnakerManaged: false
+               kubeconfig: kubeconfig-spinnaker-dev
+             primaryAccount: spinnaker-dev  # Change to a desired account from the accounts array
+         features:
+           artifacts: true # Not strictly necessary for Kubernetes but will be useful in general
+       files:
+         kubeconfig-spinnaker-dev: |
+           <FILE CONTENTS HERE>
+   ```
 
-    Finally apply the changes
+   Finally apply the changes
 
-    ```bash
-    kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest file>
-    ```
+   ```bash
+   kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest file>
+   ```
 
-* **Halyard**
+**Halyard**
 
-    You should copy the kubeconfig to a place accessible to halyard; this choice is left to the reader, but one option is `~/.secret/`, which can be mounted into your halyard container
+You should copy the kubeconfig to a place accessible to halyard; this choice is left to the reader, but one option is `~/.secret/`, which can be mounted into your halyard container
 
-    First, we'll set up bash environment variables that will be used by later commands
+First, we'll set up bash environment variables that will be used by later commands
 
-    ```bash
-    # Replace with the name of your kubeconfig file
-    export KUBECONFIG_FILE=KUBECONFIG_FILE_NAME # This must be updated
+```bash
+# Replace with the name of your kubeconfig file
+export KUBECONFIG_FILE=KUBECONFIG_FILE_NAME # This must be updated
 
-    # Enter the account name you want Spinnaker to use to identify the deployment target (should be the same as above)
-    export ACCOUNT_NAME="spinnaker-dev"
+# Enter the account name you want Spinnaker to use to identify the deployment target (should be the same as above)
+export ACCOUNT_NAME="spinnaker-dev"
 
-    # If you only want to deploy to specific namespaces (should be the same as above)
-    export TARGET_NAMESPACES=(dev-1 dev-2)
-    ```
+# If you only want to deploy to specific namespaces (should be the same as above)
+export TARGET_NAMESPACES=(dev-1 dev-2)
+```
 
-    Set up the initial Kubernetes cloud provider account:
+Set up the initial Kubernetes cloud provider account:
 
-    ```bash
-    # Feel free to reference a different location
-    KUBECONFIG_DIRECTORY=~/.secret/
-    cp ${KUBECONFIG_FILE} ${KUBECONFIG_DIRECTORY}
-    export KUBECONFIG_FULL=$(realpath ${KUBECONFIG_DIRECTORY}${KUBECONFIG_FILE})
+```bash
+# Feel free to reference a different location
+KUBECONFIG_DIRECTORY=~/.secret/
+cp ${KUBECONFIG_FILE} ${KUBECONFIG_DIRECTORY}
+export KUBECONFIG_FULL=$(realpath ${KUBECONFIG_DIRECTORY}${KUBECONFIG_FILE})
 
-    # Enable the kubernetes provider - this is probably already enabled, if Spinnaker is installed in Kubernetes
-    hal config provider kubernetes enable
-    # Enable artifacts; not strictly necessary for Kubernetes but will be useful in general
-    hal config features edit --artifacts true
+# Enable the kubernetes provider - this is probably already enabled, if Spinnaker is installed in Kubernetes
+hal config provider kubernetes enable
+# Enable artifacts; not strictly necessary for Kubernetes but will be useful in general
+hal config features edit --artifacts true
 
-    # Add account
-    hal config provider kubernetes account add ${ACCOUNT_NAME} \
-        --provider-version v2 \
-        --kubeconfig-file ${KUBECONFIG_FULL}
-    ```
+# Add account
+hal config provider kubernetes account add ${ACCOUNT_NAME} \
+    --provider-version v2 \
+    --kubeconfig-file ${KUBECONFIG_FULL}
+```
 
-    If you are configuring to only deploy to specific namespaces:
+If you are configuring to only deploy to specific namespaces:
 
-    ```bash
-    # Loop and add namespaces
-    for TARGET_NS in ${TARGET_NAMESPACES[@]}; do
-        hal config provider kubernetes account edit ${ACCOUNT_NAME} \
-            --add-namespace ${TARGET_NS}
-    done
-    ```
+```bash
+# Loop and add namespaces
+for TARGET_NS in ${TARGET_NAMESPACES[@]}; do
+    hal config provider kubernetes account edit ${ACCOUNT_NAME} \
+        --add-namespace ${TARGET_NS}
+done
+```
 
-    Apply your changes:
+Apply your changes:
 
-    ```bash
-    # Apply changes
-    hal deploy apply
-    ```
+```bash
+# Apply changes
+hal deploy apply
+```
 
 ## Done!
 
