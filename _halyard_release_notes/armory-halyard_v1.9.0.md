@@ -21,7 +21,9 @@ This version is required to deploy Armory Spinnaker 2.19+.
 
 
 
-## Halyard Community Contributions [version-1.32.0...version-1.34.0](https://github.com/spinnaker/halyard/compare/version-1.32.0...version-1.34.0)
+## Halyard Community Contributions 
+You can see the full changelog here: [version-1.32.0...version-1.34.0](https://github.com/spinnaker/halyard/compare/version-1.32.0...version-1.34.0)
+
 - chore(java11): Compile with Java 11 (but targeting Java 8) (#1608)
 - chore(containers): Make Dockerfiles work with buildtool's containers.yml (#1607)
 - chore(mergify): autobump reviews should go to oss-approvers (#1606)
