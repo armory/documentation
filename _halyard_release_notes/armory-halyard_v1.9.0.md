@@ -4,7 +4,7 @@ title: v1.9.0 Armory Halyard (OSS 1.34.0)
 order: -202001061114156
 ---
 
-# 04/23/2020 Release Notes
+## 04/23/2020 Release Notes
 {:.no_toc}
 
 This version is required to deploy Armory Spinnaker 2.19+. 
