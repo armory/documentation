@@ -36,44 +36,44 @@ The Account name is arbitrary and should be a name that is an identifiable.  The
 
 1. Set environment variables for halyard command:
    
-    ```bash 
-    export AWS_ACCOUNT_NAME=aws-dev-1 \
-    export ACCOUNT_ID=[YOUR_ACCOUNT_ID] \
-    export ROLE_NAME=role/Spinnaker-Managed-Role
-    ```
+   ```bash 
+   export AWS_ACCOUNT_NAME=aws-dev-1 \
+   export ACCOUNT_ID=[YOUR_ACCOUNT_ID] \
+   export ROLE_NAME=role/Spinnaker-Managed-Role
+   ```
 
 2. Add the AWS provider account to Spinnaker:
 
-    ```bash
-    hal config provider aws account add ${AWS_ACCOUNT_NAME} \
-        --account-id ${ACCOUNT_ID} \
-        --assume-role ${ROLE_NAME} \
-        --regions us-east-1,us-west-2
-    ```
+   ```bash
+   hal config provider aws account add ${AWS_ACCOUNT_NAME} \
+       --account-id ${ACCOUNT_ID} \
+       --assume-role ${ROLE_NAME} \
+       --regions us-east-1,us-west-2
+   ```
 
 3. Enable the AWS provider:
    
-    ```bash
-    hal config provider aws enable
-    ```
+   ```bash
+   hal config provider aws enable
+   ```
 
 4. Add an account to the ECS provider:
    
-    ```bash
-    hal config provider ecs account add ecs-account-name --aws-account aws-dev-1
-    ```
+   ```bash
+   hal config provider ecs account add ecs-account-name --aws-account aws-dev-1
+   ```
 
 5. Enable the ECS provider:
    
-    ```bash
-    hal config provider ecs enable
-    ```
+   ```bash
+   hal config provider ecs enable
+   ```
 
 6. Apply the new configurations and redeploy Spinnaker:
    
-    ```bash
-    hal deploy apply
-    ```
+   ```bash
+   hal deploy apply
+   ```
 
 ### Tag AWS Subnets for Spinnaker Auto Discovery
 
