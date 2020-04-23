@@ -584,6 +584,7 @@ On your local workstation, create a directory and place the SSH Key and any othe
    ```bash
    cp $SSH_KEY_FILE ssh/id_rsa
    ```
+
 4. Create a config file for `SSH` to ignore the known_hosts checks:
 
    ```bash
