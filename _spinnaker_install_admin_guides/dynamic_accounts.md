@@ -38,6 +38,7 @@ The steps involved in setting up Dynamic Kubernetes Accounts are:
 1. Create or update the `spinnakerconfig.yml` file to enable Spring Cloud Config Server and to connect it to Vault.
 1. Redeploy Spinnaker.
 
+
 ## Create the Secret in Vault
 
 The secret in Vault contains the `accounts` section that was previously in your Halyard or Operator configuration. Note that you still need to leave the configuration in Halyard or Operator for the Kubernetes account where Spinnaker is deployed. Clouddriver *replaces* all of its account information with what it finds in the Vault token. You need to add the configuration for the Spinnaker cluster if you want to use that cluster as a deployment target for Clouddriver.

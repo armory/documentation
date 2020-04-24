@@ -25,20 +25,6 @@ order: 172
 <tbody>
 <tr>
 <td>
-<code>metadata</code><br />
-<em>
-<a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.13/#objectmeta-v1-meta">
-Kubernetes meta/v1.ObjectMeta
-</a>
-</em>
-</td>
-<td>
-Refer to the Kubernetes API documentation for the fields of the
-<code>metadata</code> field.
-</td>
-</tr>
-<tr>
-<td>
 <code>spec</code><br />
 <em>
 <a href="#applicationspec">
@@ -103,144 +89,14 @@ Permissions
 </table>
 </td>
 </tr>
-<tr>
-<td>
-<code>status</code><br />
-<em>
-<a href="#applicationstatus">
-ApplicationStatus
-</a>
-</em>
-</td>
-<td>
-</td>
-</tr>
-</tbody>
-</table>
-### ApplicationPhase (<code>string</code> alias)
-(__Appears on:__
-<a href="#applicationstatus">ApplicationStatus</a>)
-<p>ApplicationPhase represents the various stages an application could be in with Spinnaker.</p>
-### ApplicationSpec 
-(__Appears on:__
-<a href="#application">Application</a>)
-<p>ApplicationSpec defines the desired state of Application</p>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<code>email</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-<p>Email points to the e-mail user or list that owns this application.</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>description</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-<p>Description explains the purpose of this application.</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>dataSources</code><br />
-<em>
-<a href="#datasources">
-DataSources
-</a>
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-<p>DataSources optionally enable and disable elements of the Spinnaker Application UI.</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>permissions</code><br />
-<em>
-<a href="#permissions">
-Permissions
-</a>
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-<p>Permissions maps actions inside Spinnaker to authenticated roles that can take them.</p>
-</td>
-</tr>
-</tbody>
-</table>
-### ApplicationStatus 
-(__Appears on:__
-<a href="#application">Application</a>)
-<p>ApplicationStatus defines the observed state of Application</p>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<code>lastConfigured</code><br />
-<em>
-<a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.13/#time-v1-meta">
-Kubernetes meta/v1.Time
-</a>
-</em>
-</td>
-<td>
-<p>LastConfigured represents the last time the operator updated this application in Spinnaker.</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>phase</code><br />
-<em>
-<a href="#applicationphase">
-ApplicationPhase
-</a>
-</em>
-</td>
-<td>
-<p>Phase represents the current status of this application.</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>url</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-<p>Url represents the URL of the configured Spinnaker cluster.</p>
-</td>
-</tr>
 </tbody>
 </table>
 ### Artifact 
 (__Appears on:__
 <a href="#bakemanifest">BakeManifest</a>, 
 <a href="#webhook">Webhook</a>)
-<p>Artifact TODO</p>
+<p>Artifact is an object that references an external resource. It could be a
+Docker container, file in source control, AMI, or binary blob in S3, etc.</p>
 <table>
 <thead>
 <tr>
@@ -257,6 +113,8 @@ string
 </em>
 </td>
 <td>
+<p>ID is a unique identifier for this artifact. IDs must only be unique for
+the pipeline they are declared in.</p>
 </td>
 </tr>
 <tr>
@@ -267,6 +125,7 @@ string
 </em>
 </td>
 <td>
+<p>DisplayName tells Spinnaker how to render this artifact in the UI.</p>
 </td>
 </tr>
 <tr>
@@ -278,6 +137,9 @@ bool
 </td>
 <td>
 <em>(Optional)</em>
+<p>Attempt to match against an artifact in the prior pipeline execution&rsquo;s context.</p>
+<p>See the <a href="https://www.spinnaker.io/reference/artifacts/in-pipelines">reference</a>
+for more information.</p>
 </td>
 </tr>
 <tr>
@@ -289,19 +151,23 @@ bool
 </td>
 <td>
 <em>(Optional)</em>
+<p>If true, requires DefaultArtifact to be defined with a fallback artifact to use.</p>
 </td>
 </tr>
 <tr>
 <td>
 <code>defaultArtifact</code><br />
 <em>
-<a href="#defaultartifact">
-DefaultArtifact
+<a href="#matchartifact">
+MatchArtifact
 </a>
 </em>
 </td>
 <td>
 <em>(Optional)</em>
+<p>If your artifact either wasn&rsquo;t supplied from a trigger, or it wasn&rsquo;t found
+in a prior execution, the artifact specified here will end up in your
+pipeline&rsquo;s execution context.</p>
 </td>
 </tr>
 <tr>
@@ -315,6 +181,12 @@ MatchArtifact
 </td>
 <td>
 <em>(Optional)</em>
+<p>This specifies which fields in your incoming artifact to match against.
+Every field that you supply will be used to match against all incoming
+artifacts. If all specified fields match, the incoming artifact is bound
+to your pipeline context.</p>
+<p>See the <a href="https://www.spinnaker.io/reference/artifacts/in-pipelines/#expected-artifacts">reference</a>
+for more information.</p>
 </td>
 </tr>
 </tbody>
@@ -565,8 +437,6 @@ string
 <p>DataSource is a tab in the Spinnaker UI representing a kind of managed resource.
 Allowed values include: serverGroups,executions,loadBalancers,securityGroups.</p>
 ### DataSources 
-(__Appears on:__
-<a href="#applicationspec">ApplicationSpec</a>)
 <p>DataSources optionally enable and disable elements of the Spinnaker Application UI.</p>
 <table>
 <thead>
@@ -602,85 +472,6 @@ Allowed values include: serverGroups,executions,loadBalancers,securityGroups.</p
 <td>
 <em>(Optional)</em>
 <p>Disabled is the list of explicitly disabled UI elements.</p>
-</td>
-</tr>
-</tbody>
-</table>
-### DefaultArtifact 
-(__Appears on:__
-<a href="#artifact">Artifact</a>)
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<code>id</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-</td>
-</tr>
-<tr>
-<td>
-<code>artifactAccount</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-</td>
-</tr>
-<tr>
-<td>
-<code>name</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-</td>
-</tr>
-<tr>
-<td>
-<code>reference</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-</td>
-</tr>
-<tr>
-<td>
-<code>type</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-</td>
-</tr>
-<tr>
-<td>
-<code>version</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-<em>(Optional)</em>
 </td>
 </tr>
 </tbody>
@@ -1388,6 +1179,7 @@ JudgmentMessage
 ### MatchArtifact 
 (__Appears on:__
 <a href="#artifact">Artifact</a>)
+<p>MatchArtifact TODO</p>
 <table>
 <thead>
 <tr>
@@ -1645,8 +1437,6 @@ bool
 </tbody>
 </table>
 ### Permissions 
-(__Appears on:__
-<a href="#applicationspec">ApplicationSpec</a>)
 <p>Permissions maps actions inside Spinnaker to authenticated roles that can take them.</p>
 <table>
 <thead>
@@ -1704,20 +1494,6 @@ bool
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>
-<code>metadata</code><br />
-<em>
-<a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.13/#objectmeta-v1-meta">
-Kubernetes meta/v1.ObjectMeta
-</a>
-</em>
-</td>
-<td>
-Refer to the Kubernetes API documentation for the fields of the
-<code>metadata</code> field.
-</td>
-</tr>
 <tr>
 <td>
 <code>spec</code><br />
@@ -1837,141 +1613,6 @@ bool
 </td>
 </tr>
 </table>
-</td>
-</tr>
-<tr>
-<td>
-<code>status</code><br />
-<em>
-<a href="#pipelinestatus">
-PipelineStatus
-</a>
-</em>
-</td>
-<td>
-</td>
-</tr>
-</tbody>
-</table>
-### PipelinePhase (<code>string</code> alias)
-(__Appears on:__
-<a href="#pipelinestatus">PipelineStatus</a>)
-<p>PipelinePhase represents the various stages a pipeline could be in with Spinnaker.</p>
-### PipelineSpec 
-(__Appears on:__
-<a href="#pipeline">Pipeline</a>)
-<p>PipelineSpec defines the desired state of Pipeline</p>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<code>application</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-<p>Application is a reference to the application that owns this pipeline.</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>description</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-<p>Description tells the user what this pipeline is for.</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>parameterConfig</code><br />
-<em>
-<a href="#[]github.com/armory-io/pacrd/api/v1alpha1.parameter">
-[]github.com/armory-io/pacrd/api/v1alpha1.Parameter
-</a>
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-</td>
-</tr>
-<tr>
-<td>
-<code>expectedArtifacts</code><br />
-<em>
-<a href="#[]github.com/armory-io/pacrd/api/v1alpha1.artifact">
-[]github.com/armory-io/pacrd/api/v1alpha1.Artifact
-</a>
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-</td>
-</tr>
-<tr>
-<td>
-<code>executionEngine</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-<p>ExecutionEngine TODO</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>allowParallelExecutions</code><br />
-<em>
-bool
-</em>
-</td>
-<td>
-<p>AllowParallelExecutions TODO</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>limitConccurent</code><br />
-<em>
-bool
-</em>
-</td>
-<td>
-<p>LimitConcurrent TODO</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>keepWaitingPipelines</code><br />
-<em>
-bool
-</em>
-</td>
-<td>
-<p>KeepWaitingPipelines TODO</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>stages</code><br />
-<em>
-<a href="#stageunion">
-[]StageUnion
-</a>
-</em>
-</td>
-<td>
-<p>Stages TODO</p>
 </td>
 </tr>
 </tbody>
@@ -2219,8 +1860,6 @@ string
 </tbody>
 </table>
 ### StageUnion 
-(__Appears on:__
-<a href="#pipelinespec">PipelineSpec</a>)
 <p>StageUnion is a union type that encompasses strongly typed stage defnitions.</p>
 <table>
 <thead>
@@ -2466,89 +2105,6 @@ UndoRolloutManifest
 (__Appears on:__
 <a href="#deletemanifest">DeleteManifest</a>)
 <p>These values can be found in: /clouddriver/clouddriver-kubernetes-v2/src/main/java/com/netflix/spinnaker/clouddriver/kubernetes/v2/controllers/ManifestController.java</p>
-### TodoArtifact 
-<p>TodoArtifact represents an artifact in Spinnaker. TODO also a candidate for union type</p>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<code>artifactAccount</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<code>customKind</code><br />
-<em>
-bool
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-</td>
-</tr>
-<tr>
-<td>
-<code>location</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<code>name</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<code>reference</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<code>type</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<code>version</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-</td>
-</tr>
-</tbody>
-</table>
 ### UndoRolloutManifest 
 (__Appears on:__
 <a href="#stageunion">StageUnion</a>)
@@ -2962,5 +2518,5 @@ int
 <hr/>
 <p><em>
 Generated with <code>gen-crd-api-reference-docs</code>
-on git commit <code>9b8adb3</code>.
+on git commit <code>1c406ef</code>.
 </em></p>
