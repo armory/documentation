@@ -38,7 +38,7 @@ azs:
 ```
 
 - `storageAccountName`: The name of an Azure Storage Account used for Spinnaker's persistent data.
-- `storageAccountKey`: The key to access the Azure Storage Account used for Spinnaker's persistent data.
+- `storageAccountKey`: The key to access the Azure Storage Account used for Spinnaker's persistent data. Supports encrypted value.
 - `storageContainerName`: (Default: `spinnaker`) The container name in the chosen storage account to place all of Spinnaker's persistent data.
 
 ## GCS
@@ -52,7 +52,7 @@ gcs:
   bucketLocation:
 ```
 
-- `jsonPath`: A path to a JSON service account with permission to read and write to the bucket to be used as a backing store.
+- `jsonPath`: A path to a JSON service account with permission to read and write to the bucket to be used as a backing store. File needs to be present on the machine running Spinnaker. Supports encrypted file.
 - `project`: The Google Cloud Platform project you are using to host the GCS bucket as a backing store.
 - `bucket`: The name of a storage bucket that your specified account has access to. If not specified, a random name will be chosen. If you specify a globally unique bucket name that doesn't exist yet, Halyard will create that bucket for you.
 - `rootFolder`: The root folder in the chosen bucket to place all of Spinnaker's persistent data in.
@@ -79,8 +79,8 @@ oracle:
 - `region`: An Oracle region (e.g., us-phoenix-1)
 - `userId`: Provide the OCID of the Oracle User you're authenticating as
 - `fingerprint`: Fingerprint of the public key
-- `sshPrivateKeyFilePath`: Path to the private key in PEM format
-- `privateKeyPassphrase`: Passphrase used for the private key, if it is encrypted
+- `sshPrivateKeyFilePath`: Path to the private key in PEM format. File needs to be present on the machine running Spinnaker. Supports encrypted file.
+- `privateKeyPassphrase`: Passphrase used for the private key, if it is encrypted. Supports encrypted value.
 - `tenancyId`: Provide the OCID of the Oracle Tenancy to use.
 
 ## S3
@@ -104,4 +104,4 @@ s3:
 - `endpoint`: An alternate endpoint that your S3-compatible storage can be found at. This is intended for self-hosted storage services with S3-compatible APIs, e.g. Minio. If supplied, this storage type cannot be validated.
 - `accessKeyId`: Your AWS Access Key ID. If not provided, Halyard/Spinnaker will try to find AWS credentials as described at http://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html#credentials-default
 - `serverSideEncryption`: Use Amazon Server-Side Encryption ('x-amz-server-side-encryption' header). Supports 'AES256' (for Amazon S3-managed encryption keys, equivalent to a header value of 'AES256') and 'AWSKMS' (for AWS KMS-managed encryption keys, equivalent to a header value of 'aws:kms'.
-- `secretAccessKey`: Your AWS Secret Key.
+- `secretAccessKey`: Your AWS Secret Key. Supports encrypted value.

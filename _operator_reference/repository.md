@@ -34,4 +34,4 @@ repository:
       - `groupId`: The group id in your artifactory to be searched.
       - `repoType`: The package type of repo in your artifactory to be searched.
       - `username`: The username of the artifactory user to authenticate as.
-      - `password`: The password of the artifactory user to authenticate as.
+      - `password`: The password of the artifactory user to authenticate as. Supports encrypted value.
