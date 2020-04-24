@@ -58,8 +58,8 @@ metricStores:
 ## Datadog
 
 - `enabled`: true or false.
-- `api_key`: Your datadog API key.
-- `app_key`: Your datadog app key. This is only required if you want Spinnaker to push pre-configured Spinnaker dashboards to your Datadog account.
+- `api_key`: Your datadog API key. Supports encrypted value.
+- `app_key`: Your datadog app key. This is only required if you want Spinnaker to push pre-configured Spinnaker dashboards to your Datadog account. Supports encrypted value.
 - `tags`: Your datadog custom tags. Please delimit the KVP with colons, e.g. `app:test` `env:dev`
 
 ## Stackdriver
@@ -73,6 +73,6 @@ metricStores:
 ## New Relic
 
 - `enabled`: true or false.
-- `insert_key`: Your New Relic Insights insert key
+- `insert_key`: Your New Relic Insights insert key. Supports encrypted value.
 - `host`: The URL to post metric data to. In almost all cases, this is set correctly by default and should not be used.
 - `tags`: Your custom tags. Please delimit the KVP with colons, e.g. `app:test` `env:dev`

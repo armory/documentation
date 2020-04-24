@@ -94,7 +94,7 @@ gcb:
    - `READ`: A user must have at least one of these roles in order to view this build master or use it as a trigger source.
 - `project`: (*Required*) The name of the GCP project in which to trigger and monitor builds.
 - `subscriptionName`: The name of the PubSub subscription on which to listen for build changes.
-- `jsonKey`: The path to a JSON service account that Spinnaker will use as credentials.
+- `jsonKey`: The path to a JSON service account that Spinnaker will use as credentials. File needs to be present on the machine running Spinnaker. Supports encrypted file.
 
 # Jenkins
 

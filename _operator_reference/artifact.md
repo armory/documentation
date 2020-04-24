@@ -144,7 +144,7 @@ gitrepo:
 
 - `username`: Git username
 - `password`: Git password. Supports encrypted value.
-- `usernamePasswordFile`: File containing "username:password" to use for Git authentication
+- `usernamePasswordFile`: File containing "username:password" to use for Git authentication. File needs to be present on the machine running Spinnaker. Supports encrypted file.
 - `token`:  Git token. Supports encrypted value.
 - `tokenFile`: File containing a Git authentication token. File needs to be present on the machine running Spinnaker. Supports encrypted file.
 - `sshPrivateKeyFilePath`: Path to the ssh private key in PEM format. File needs to be present on the machine running Spinnaker. Supports encrypted file.

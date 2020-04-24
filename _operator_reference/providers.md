@@ -433,7 +433,7 @@ dcos:
 - `insecureSkipTlsVerify`:  If true, disables verification of certificates from the cluster (insecure).
 - `loadBalancer`: Configuration for a DC/OS load balancer
   - `image`: Marathon-lb image to use when creating a load balancer with Spinnaker.
-  - `serviceAccountSecret`: Name of the secret to use for allowing marathon-lb to authenticate with the cluster. Only necessary for clusters with strict or permissive security.
+  - `serviceAccountSecret`: Name of the secret to use for allowing marathon-lb to authenticate with the cluster. Only necessary for clusters with strict or permissive security. Supports encrypted value.
 
 
 ## Docker Registry
@@ -820,7 +820,7 @@ kubernetes:
 
 ### Account parameters
 
-An account in the Kubernetes provider refers to a single Kubernetes context. In Kubernetes, a context is the combination of a Kubernetes cluster and some credentials. If no context is specified, the default context in in your kubeconfig is assumed. You must also provide a set of Docker Registries for each account. Spinnaker will automatically upload that Registry's credentials to the specified Kubernetes cluster allowing you to deploy those images without further configuration.
+An account in the Kubernetes provider refers to a single Kubernetes context. In Kubernetes, a context is the combination of a Kubernetes cluster and some credentials. If no context is specified, the default context in in your `kubeconfig` is assumed. You must also provide a set of Docker Registries for each account. Spinnaker will automatically upload that Registry's credentials to the specified Kubernetes cluster allowing you to deploy those images without further configuration.
 
 - `name`: spinnaker
 - `context`: The kubernetes context to be managed by Spinnaker. See http://kubernetes.io/docs/user-guide/kubeconfig-file/#context for more information. When no context is configured for an account the 'current-context' in your kubeconfig is assumed.
@@ -846,7 +846,7 @@ An account in the Kubernetes provider refers to a single Kubernetes context. In 
 - `kubectlRequestTimeoutSeconds`: Timeout in seconds of kubectl calls
 - `checkPermissionsOnStartup`:  When false, clouddriver will skip the permission checks for all Kubernetes Kinds at startup. This can save a great deal of time during clouddriver startup when you have many Kubernetes accounts configured. This disables the log messages at startup about missing permissions.
 - `liveManifestCalls`: When true, clouddriver will query manifest status during pipeline executions using live data rather than the cache. This eliminates all time spent in the "force cache refresh" task in pipelines, greatly reducing execution time.
-- `oAuthServiceAccount`: File needs to be present on the machine running Spinnaker.
+- `oAuthServiceAccount`: File needs to be present on the machine running Spinnaker. Supports encrypted file.
 - `oAuthScopes`:
 - `namingStrategy`:
 - `skin`:
