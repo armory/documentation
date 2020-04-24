@@ -30,79 +30,79 @@ Need help setting this up? -  For a guided tutorial, watch the **Video Walkthrou
 
 4. **"PassRole-and-Certificate"** (inline policy for **Spinnaker-Managed-Role**):
 
-    ```json
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Action": [
-                "iam:ListServerCertificates",
-                "iam:PassRole"
-            ],
-            "Resource": [
-                "*"
-            ],
-            "Effect": "Allow"
-        }
-    ]
-}
-    ```
+   ```json
+   {
+       "Version": "2012-10-17",
+       "Statement": [
+           {
+               "Action": [
+                   "iam:ListServerCertificates",
+                   "iam:PassRole"
+               ],
+               "Resource": [
+                   "*"
+               ],
+               "Effect": "Allow"
+           }
+       ]
+   }
+   ```
 
-5. Create - **"Spinnaker-Managing-Role"**.
+1. Create - **"Spinnaker-Managing-Role"**.
 
-6. Bind **"PowerUserAccess"** to **"Spinnaker-Managing-Role"**.
+2. Bind **"PowerUserAccess"** to **"Spinnaker-Managing-Role"**.
 
-7. **"BaseIAM-PassRole"** (Create as inline policy on **"Spinnaker-Managing-Role"**). You must replace [YOUR_AWS_ACCOUNT_ID] with your actual AWS account id.
+3. **"BaseIAM-PassRole"** (Create as inline policy on **"Spinnaker-Managing-Role"**). You must replace [YOUR_AWS_ACCOUNT_ID] with your actual AWS account id.
 
-    ```json
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "ec2:DescribeAvailabilityZones",
-                "ec2:DescribeRegions"
-            ],
-            "Resource": [
-                "*"
-            ]
-        },
-        {
-            "Action": "sts:AssumeRole",
-            "Resource": [
-                "arn:aws:iam::[YOUR_AWS_ACCOUNT_ID]:role/Spinnaker-Managed-Role"
-            ],
-            "Effect": "Allow"
-        }
-    ]
-}
-    ```
+   ```json
+   {
+       "Version": "2012-10-17",
+       "Statement": [
+           {
+               "Effect": "Allow",
+               "Action": [
+                   "ec2:DescribeAvailabilityZones",
+                   "ec2:DescribeRegions"
+               ],
+               "Resource": [
+                   "*"
+               ]
+           },
+           {
+               "Action": "sts:AssumeRole",
+               "Resource": [
+                   "arn:aws:iam::[YOUR_AWS_ACCOUNT_ID]:role/Spinnaker-Managed-Role"
+               ],
+               "Effect": "Allow"
+           }
+       ]
+   }
+   ```
 
 8. **Spinnaker-Managed-Role** -> **Trust relationship**
 
-    Now, **"Spinnaker-Managed-Role"** must have Trust relationship with **"Spinnaker-Managing-Role"**. You must replace [YOUR_AWS_ACCOUNT_ID] with your actual AWS account id.
+   Now, **"Spinnaker-Managed-Role"** must have Trust relationship with **"Spinnaker-Managing-Role"**. You must replace [YOUR_AWS_ACCOUNT_ID] with your actual AWS account id.
 
-    ```json
-{
-    "Version": "2012-10-17",
-    "Statement": [
-    {
-        "Effect": "Allow",
-        "Principal": {
-        "AWS": "arn:aws:iam::[YOUR_AWS_ACCOUNT_ID]:role/Spinnaker-Managing-Role",
-        "Service": [
-            "ecs.amazonaws.com",
-            "application-autoscaling.amazonaws.com",
-            "ecs-tasks.amazonaws.com",
-            "ec2.amazonaws.com"
-        ]
-        },
-        "Action": "sts:AssumeRole"
-    }
-    ]
-}
-    ```
+   ```json
+   {
+       "Version": "2012-10-17",
+       "Statement": [
+       {
+           "Effect": "Allow",
+           "Principal": {
+           "AWS": "arn:aws:iam::[YOUR_AWS_ACCOUNT_ID]:role/Spinnaker-Managing-Role",
+           "Service": [
+               "ecs.amazonaws.com",
+               "application-autoscaling.amazonaws.com",
+               "ecs-tasks.amazonaws.com",
+               "ec2.amazonaws.com"
+           ]
+           },
+           "Action": "sts:AssumeRole"
+       }
+       ]
+   }
+   ```
 
 ### Bind "Spinnaker-Managing-Role" to Minnaker Instance in AWS Console
 
@@ -116,50 +116,49 @@ Need help setting this up? -  For a guided tutorial, watch the **Video Walkthrou
 
 1. Download the aws-cli: 
 
-    ```bash
-    sudo snap install aws-cli --classic
-    ```
+   ```bash
+   sudo snap install aws-cli --classic
+   ```
 
 2. Verify **"Spinnaker-Managing-Role"**:
 
-    ```bash
-    aws sts get-caller-identity 
-    ```
+   ```bash
+   aws sts get-caller-identity 
+   ```
     
-    The command returns output similar to the following output:
+   The command returns output similar to the following output:
     
-    ```bash
-        ubuntu:~$ aws sts get-caller-identity
-    {
-        "UserId": "AROA3SQXSP.............7893f355",
-        "Account": "[YOUR_AWS_ACCOUNT_ID]",
-        "Arn": "arn:aws:sts::[YOUR_AWS_ACCOUNT_ID]:assumed-role/Spinnaker-Managing-Role/i-0e.........7893f355"
-    }
-    ```
+   ```bash
+   ubuntu:~$ aws sts get-caller-identity
+   {
+       "UserId": "AROA3SQXSP.............7893f355",
+       "Account": "[YOUR_AWS_ACCOUNT_ID]",
+       "Arn": "arn:aws:sts::[YOUR_AWS_ACCOUNT_ID]:assumed-role/Spinnaker-Managing-Role/i-0e.........7893f355"
+   }
+   ```
 3. Verify that Spinnaker Managing Role can Assume Managing Role:
     
-    ```bash
-    aws sts assume-role --role-arn arn:aws:iam::[YOUR_AWS_ACCOUNT_ID]:role/Spinnaker-Managed-Role --role-session-name test
-    ```
+   ```bash
+   aws sts assume-role --role-arn arn:aws:iam::[YOUR_AWS_ACCOUNT_ID]:role/Spinnaker-Managed-Role --role-session-name   test
+   ```
 
-    The command returns output similar to the following output:
+   The command returns output similar to the following output:
 
-    ```bash
-    ubuntu:~$ aws sts assume-role --role-arn arn:aws:iam::[YOUR_AWS_ACCOUNT_ID]:role/Spinnaker-Managed-Role --role-session-name test
-    {
-        "Credentials": {
-            "Expiration": "2020-01-09T01:03:05Z",
-            "AccessKeyId": "AWS_ACCESS_KEY",
-            "SecretAccessKey": "AWS_SECRET_ACCESS_KEY",
-            "SessionToken": "FwoGZXIvYXdzEGEaDEyTECcALWUjAgy0GyKoAZ5PapC1qqFwN55X0vRISdtZh19mR3V9p3i5dGZugt3FQ4DNOamVgIG82I1qaspn83aBefdbpUtznN9fJxwPNoRhYinVgIXGdsTWnBuQ57U7s/cDoHosvV5+J3oZj8ffjLInzsI05IrRBiOTmqU3caEP/e+6N5nzHg/9+aS6TCWjCIzjL0mHtclBBQ7k/dijrg/5vTVFh8UGakcJL3SV6gaCHj0k6BUzEii529nwBTItq6/QISV8wfGNLQJOPDB5P3zoQkHjkpoWCEh1p0oc4hEwki8F7NutXNrg14W+"
-        },
-        "AssumedRoleUser": {
-            "AssumedRoleId": "AROA3SQXSP6SGOWFHHJ7B:test",
-            "Arn": "arn:aws:sts::[YOUR_AWS_ACCOUNT_ID]:assumed-role/Spinnaker-Managed-Role/test"
-        }
-    }
-    ubuntu@:~$
-    ```
+   ```bash
+   ubuntu:~$ aws sts assume-role --role-arn arn:aws:iam::[YOUR_AWS_ACCOUNT_ID]:role/Spinnaker-Managed-Role --role-session-name test
+   {
+       "Credentials": {
+           "Expiration": "2020-01-09T01:03:05Z",
+           "AccessKeyId": "AWS_ACCESS_KEY",
+           "SecretAccessKey": "AWS_SECRET_ACCESS_KEY",
+           "SessionToken": "FwoGZXIvYXdzEGEaDEyTECcALWUjAgy0GyKoAZ5PapC1qqFwN55X0vRISdtZh19mR3V9p3i5dGZugt3FQ4DNOamVgIG82I1qaspn83aBefdbpUtznN9fJxwPNoRhYinVgIXGdsTWnBuQ57U7s/cDoHosvV5+J3oZj8ffjLInzsI05IrRBiOTmqU3caEP/e+6N5nzHg/9+aS6TCWjCIzjL0mHtclBBQ7k/dijrg/5vTVFh8UGakcJL3SV6gaCHj0k6BUzEii529nwBTItq6/QISV8wfGNLQJOPDB5P3zoQkHjkpoWCEh1p0oc4hEwki8F7NutXNrg14W+"
+       },
+       "AssumedRoleUser": {
+           "AssumedRoleId": "AROA3SQXSP6SGOWFHHJ7B:test",
+           "Arn": "arn:aws:sts::[YOUR_AWS_ACCOUNT_ID]:assumed-role/Spinnaker-Managed-Role/test"
+       }
+   }
+   ```
 ### Congratulations! 
 You have completed the 1st step in setting up the Spinnaker AWS Provider.  For Step 2, see [AWS Quick Start Step 2](/spinnaker/Armory-Spinnaker-Quickstart-2).
 

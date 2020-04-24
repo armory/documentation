@@ -48,37 +48,37 @@ If you do not already have a `git/repo` artifact account configured, you must do
 
 * **Operator**
 
-    Edit the `SpinnakerService` manifest to add the following:
+  Edit the `SpinnakerService` manifest to add the following:
 
-    ```yaml
-    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
-    kind: SpinnakerService
-    metadata:
-      name: spinnaker
-    spec:
-      spinnakerConfig:
-        profiles:
-          clouddriver: |
-            artifacts:
-              gitRepo:
-                enabled: true
-                accounts:
-                - name: gitrepo
-                  token: 12344 # GitHub personal access token
-    ```
+  ```yaml
+  apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+  kind: SpinnakerService
+  metadata:
+    name: spinnaker
+  spec:
+    spinnakerConfig:
+      profiles:
+        clouddriver: |
+          artifacts:
+            gitRepo:
+              enabled: true
+              accounts:
+              - name: gitrepo
+                token: 12344 # GitHub personal access token
+  ```
 
 * **Halyard**
 
-    Edit the `~/.hal/default/profiles/clouddriver-local.yml` file and add the following:
+  Edit the `~/.hal/default/profiles/clouddriver-local.yml` file and add the following:
 
-    ```
-    artifacts:
-      gitRepo:
-        enabled: true
-        accounts:
-        - name: gitrepo
-          token: 12344 #GitHub personal access token
-    ```
+  ```yaml
+  artifacts:
+    gitRepo:
+      enabled: true
+      accounts:
+      - name: gitrepo
+        token: 12344 #GitHub personal access token
+  ```
   
 For more information, see [Git Repo](https://www.spinnaker.io/reference/artifacts/types/git-repo/).
 
@@ -110,74 +110,78 @@ skip this section.
 
 **Note**: The following examples use `github-for-terraform` as a unique identifier for the artifact account. Replace it with your own identifier.
 
-* Operator
+**Operator**
 
-    Edit the `SpinnakerService` manifest to add the following:
-    
-    ```yaml
-    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
-    kind: SpinnakerService
-    metadata:
-      name: spinnaker
-    spec:
-      spinnakerConfig:
-        config:
-          artifacts:
-            github:
-              accounts:
-              - name: github-for-terraform
-                token: abc # PAT GitHub token. This field supports "encrypted" field references (https://docs.armory.io/spinnaker-install-admin-guides/secrets/)
-              enabled: true
-    ```
+  Edit the `SpinnakerService` manifest to add the following:
+  
+```yaml
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    config:
+      artifacts:
+        github:
+          accounts:
+          - name: github-for-terraform
+            token: abc # PAT GitHub token. This field supports "encrypted" field references (https://docs.armory.io/spinnaker-install-admin-guides/secrets/)
+          enabled: true
+```
 
-* Halyard
+**Halyard**
 
-    1. Enable GitHub as an artifact provider:
-        ```
-        hal config artifact github enable
-        ```
-    2. Add the GitHub account:
-        ```
-        hal config artifact github account add github-for-terraform --token
-        ```
-    3. Provide the PAT.
+1. Enable GitHub as an artifact provider:
+
+ ```bash
+ hal config artifact github enable
+ ```
+
+2. Add the GitHub account:
+
+ ```bash
+ hal config artifact github account add github-for-terraform --token
+ ```
+
+3. Provide the PAT.
 
 #### 3. Enabling and configuring the Terraform Integration
 
 The Terraform Integration needs access to the GitHub token to download GitHub directories that hose your Terraform templates.
 
-1. Enable the Terraform Integration
+Enable the Terraform Integration
 
-* **Operator**
+**Operator**
 
-    In `SpinnakerService` manifest:
-    
-    ```yaml
-    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
-    kind: SpinnakerService
-    metadata:
-      name: spinnaker
-    spec:
-      spinnakerConfig:
-        config:
-          armory:
-            terraform:
-              enabled: true
-              git:
-                enabled: true
-                accessToken: abc  # PAT GitHub token. This field supports "encrypted" field references (https://docs.armory.io/spinnaker-install-admin-guides/secrets/)
-    ```
+In `SpinnakerService` manifest:
 
-* **Halyard**
+```yaml
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    config:
+      armory:
+        terraform:
+          enabled: true
+          git:
+            enabled: true
+            accessToken: abc  # PAT GitHub token. This field supports "encrypted" field references (https://docs.armory.io/spinnaker-install-admin-guides/secrets/)
+```
 
-    ```
-    hal armory terraform enable
-    
-    # This will prompt for the token
-    hal armory terraform edit \
-    --git-enabled \
-    --git-access-token
-    ```
+**Halyard**
+
+```bash
+hal armory terraform enable
+
+# This will prompt for the token
+hal armory terraform edit \
+--git-enabled \
+--git-access-token
+```
 
 ### Configuring the Terraform Integration with BitBucket
 
@@ -191,71 +195,70 @@ If you already have a BitBucket artifact account configured in Spinnaker, skip t
 Replace `bitbucket-for-terraform` with any unique identifier to
 identify the artifact account.
 
-* **Operator**
+**Operator**
 
-    ```yaml
-    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
-    kind: SpinnakerService
-    metadata:
-      name: spinnaker
-    spec:
-      spinnakerConfig:
-        config:
-          artifacts:
-            bitbucket: 
-              enabled: true
-              accounts:
-              - name: bitbucket-for-terraform
-                username: abc # Bitbucket username
-                password: abc # Bitbucket password. This field supports "encrypted" field references (https://docs.armory.io/spinnaker-install-admin-guides/secrets/)
-    ```
+```yaml
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    config:
+      artifacts:
+        bitbucket: 
+          enabled: true
+          accounts:
+          - name: bitbucket-for-terraform
+            username: abc # Bitbucket username
+            password: abc # Bitbucket password. This field supports "encrypted" field references (https://docs.armory.io/spinnaker-install-admin-guides/secrets/)
+```
 
-* **Halyard**
+**Halyard**
 
-    ```bash
-    hal config artifact bitbucket enable
-
-    # This will prompt for the password
-    hal config artifact bitbucket account add bitbucket-for-terraform \
-      --username <USERNAME> \
-      --password
-    ```
+```bash
+hal config artifact bitbucket enable
+# This will prompt for the password
+hal config artifact bitbucket account add bitbucket-for-terraform \
+  --username <USERNAME> \
+  --password
+```
 
 #### 2. Enabling and configuring the Terraform integration with a BitBucket token
 
 The Terraform Integration also needs access to the BitBucket token to download full
 Github directories hosting your Terraform templates.
 
-* **Operator**
+**Operator**
 
-    In `SpinnakerService` manifest:
-    
-    ```yaml
-    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
-    kind: SpinnakerService
-    metadata:
-      name: spinnaker
-    spec:
-      spinnakerConfig:
-        config:
-          armory:
-            terraform:
-              enabled: true
-              git:
-                enabled: true
-                username: my-user # BitBucket user name.
-                accessToken: abc  # BitBucket password. This field supports "encrypted" field references (https://docs.armory.io/spinnaker-install-admin-guides/secrets/)
-    ```
+In `SpinnakerService` manifest:
 
-* **Halyard**
+```yaml
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    config:
+      armory:
+        terraform:
+          enabled: true
+          git:
+            enabled: true
+            username: my-user # BitBucket user name.
+            accessToken: abc  # BitBucket password. This field supports "encrypted" field references (https://docs.armory.io/spinnaker-install-admin-guides/secrets/)
+```
 
-    ```
-    # This will prompt for the token, which is your BitBucket password
-    hal armory terraform edit \
-      --git-enabled \
-      --git-username <USERNAME> \
-      --git-access-token
-    ```
+**Halyard**
+
+```bash
+# This will prompt for the token, which is your BitBucket password
+hal armory terraform edit \
+  --git-enabled \
+  --git-username <USERNAME> \
+  --git-access-token
+```
 
 ### Terraform version
 
@@ -273,56 +276,56 @@ If you previously used the Terraform Integration stage by editing the JSON repre
 
 Depending on the version, you may need to manually enable the stage UI for Deck. To do so:
 
-* **Operator**
+**Operator**
 
-    Edit the `SpinnakerService` manifest to add the following:
+Edit the `SpinnakerService` manifest to add the following:
+
+```yaml
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    profiles:
+      deck:
+        settings-local.js: |
+          window.spinnakerSettings.feature.terraform = true;
+```
     
-    ```yaml
-    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
-    kind: SpinnakerService
-    metadata:
-      name: spinnaker
-    spec:
-      spinnakerConfig:
-        profiles:
-          deck:
-            settings-local.js: |
-              window.spinnakerSettings.feature.terraform = true;
-    ```
-    
-* **Halyard**
+**Halyard**
 
-    Edit `~/.hal/default/profiles/settings-local.js` and add the following line:
+Edit `~/.hal/default/profiles/settings-local.js` and add the following line:
 
-    ```
-    window.spinnakerSettings.feature.terraform = true;
-    ```
+```yaml
+window.spinnakerSettings.feature.terraform = true;
+```
 
 ### Completing the installation
 
 After you finish your Terraform integration configuration, perform the following steps:
 
-1. Apply the changes: 
+Apply the changes: 
 
-* **Operator**
+**Operator**
 
-    Assuming that Spinnaker lives in the namespace `spinnaker` and the `SpinnakerService` manifest is named `spinnakerservice.yml`:
+Assuming that Spinnaker lives in the namespace `spinnaker` and the `SpinnakerService` manifest is named `spinnakerservice.yml`:
 
-    ```bash
-    kubectl -n spinnaker apply -f spinnakerservice.yml
-    ```
+```bash
+kubectl -n spinnaker apply -f spinnakerservice.yml
+```
 
-* **Halyard**
-   
-    ```bash
-    hal deploy apply
-    ```
+**Halyard**
+ 
+```bash
+hal deploy apply
+```
 
-1. Confirm that the Terraform Integration service (Terraformer) is deployed with your Spinnaker deployment:
+Then, confirm that the Terraform Integration service (Terraformer) is deployed with your Spinnaker deployment:
     
-    ```
-    kubectl get pods -n {your-spinnaker-namespace}
-    ```
+```bash
+kubectl get pods -n {your-spinnaker-namespace}
+```
 
 ## Configuring a Terraform stage
 
@@ -470,75 +473,76 @@ Terraform supports the ability to reference AWS profiles defined via a [shared c
 
 1. Create a Kubernetes `ConfigMap` containing the contents of this config file and put it in a temporary file:
 
-    ```
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: terraformer-credentials
-      namespace: {your-spinnaker-namespace}
-    data:
-      credentials: |
-        [profile-name]
-        aws_access_key_id = {your-aws-access-key}
-        aws_secret_access_key = {your-aws-secret-access-key}
-    ```
-    **Note**: You can swap the `ConfigMap` for a `Secret` if you prefer. The `ConfigMap` is used in this documentation for simplicity.
+   ```yaml
+   apiVersion: v1
+   kind: ConfigMap
+   metadata:
+     name: terraformer-credentials
+     namespace: {your-spinnaker-namespace}
+   data:
+     credentials: |
+       [profile-name]
+       aws_access_key_id = {your-aws-access-key}
+       aws_secret_access_key = {your-aws-secret-access-key}
+   ```
+
+   **Note**: You can swap the `ConfigMap` for a `Secret` if you prefer. The `ConfigMap` is used in this documentation for simplicity.
 
 2. Apply the `ConfigMap`: 
    
-    ```
-    kubectl apply -f {temp-filename}`
-    ```
+   ```bash
+   kubectl apply -f {temp-filename}`
+   ```
 
 3. Configure the Terraform Integration to mount this `ConfigMap` at runtime by adding the following service setting:
 
-* **Operator**
+   **Operator**
  
-    ```yaml
-    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
-    kind: SpinnakerService
-    metadata:
-      name: spinnaker
-    spec:
-      spinnakerConfig:
-        service-settings:
-          terraformer: |
-            kubernetes:
-              volumes:
-              - id: terraformer-credentials
-                type: configMap
-                mountPath: /home/spinnaker/.aws/
-    ```
+   ```yaml
+   apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+   kind: SpinnakerService
+   metadata:
+     name: spinnaker
+   spec:
+     spinnakerConfig:
+       service-settings:
+         terraformer: |
+           kubernetes:
+             volumes:
+             - id: terraformer-credentials
+               type: configMap
+               mountPath: /home/spinnaker/.aws/
+   ```
  
-* **Halyard**
+   **Halyard**
 
-    Add to `~/.hal/default/service-settings/terraformer.yml`:
+   Add to `~/.hal/default/service-settings/terraformer.yml`:
+ 
+   ```yaml
+   kubernetes:
+     volumes:
+     - id: terraformer-credentials
+       type: configMap
+       mountPath: /home/spinnaker/.aws/
+   ```
 
-    ```
-    kubernetes:
-      volumes:
-      - id: terraformer-credentials
-        type: configMap
-        mountPath: /home/spinnaker/.aws/
-    ```
-
-1. Deploy these changes to your Spinnaker instance: 
+4. Deploy these changes to your Spinnaker instance: 
    
-* **Operator**
-
-    ```bash
-    kubectl -n spinnaker apply -f spinnakerservice.yml
-    ```
-   
-* **Halyard**
-   
-    ```bash
-    hal deploy apply
-    ```
+   **Operator**
+ 
+   ```bash
+   kubectl -n spinnaker apply -f spinnakerservice.yml
+   ```
+    
+   **Halyard**
+    
+   ```bash
+   hal deploy apply
+   ```
 
 Once deployed, you can reference these profiles in your Terraform state and provider configuration. See the following snippet for an example:
 
-```
+```hcl
 terraform {
   backend "s3" {
     profile = "dev"
@@ -571,26 +575,27 @@ On your local workstation, create a directory and place the SSH Key and any othe
 
 1. Create the directory:
 
-      ```bash
-      mkdir ssh
-      ```
+   ```bash
+   mkdir ssh
+   ``` 
 
 2. Copy the SSH Key:
 
-      ```bash
-      cp $SSH_KEY_FILE ssh/id_rsa
-      ```
+   ```bash
+   cp $SSH_KEY_FILE ssh/id_rsa
+   ```
+
 4. Create a config file for `SSH` to ignore the known_hosts checks:
 
-      ```bash
-      echo "StrictHostKeyChecking no" > ssh/config
-      ```
+   ```bash
+   echo "StrictHostKeyChecking no" > ssh/config
+   ```
 
 5. Create the secret using `kubectl`:
 
-    ```bash
-    kubectl create secret generic spin-terraformer-sshkey -n spinnaker-system --from-file=id_rsa=ssh/id_rsa --from-file=config=ssh/config
-    ```
+   ```bash
+   kubectl create secret generic spin-terraformer-sshkey -n spinnaker-system --from-file=id_rsa=ssh/id_rsa --from-file=config=ssh/config
+   ```
 
 In this example, you create a secret with the SSH key and a config to ignore `known hosts` file issues. 
 
@@ -601,42 +606,42 @@ Next, update the Kubernetes manifest:
 1. Update the secret and an empty directory volume
 that will contain the copy of the secret with the correct UID and permissions:
 
-    ```yaml
-    # spin-terraformer deployment
-    volumes:
-    - name: spin-terraformer-sshkey
-      secret:
-        defaultMode: 420
-        secretName: spin-terraformer-sshkey
-    - name: ssh-key-tmp
-      emptyDir:
-        sizeLimit: "128k"
-    ```
+   ```yaml
+   # spin-terraformer deployment
+   volumes:
+   - name: spin-terraformer-sshkey
+     secret:
+       defaultMode: 420
+       secretName: spin-terraformer-sshkey
+   - name: ssh-key-tmp
+     emptyDir:
+       sizeLimit: "128k"
+   ```
 
 2. Define an init container that copies the secret contents to the empty directory and sets the permissions and ownership.  The Spinnaker user uses `user id` `1000`:
 
-    ```yaml
-    # spin-terraformer deployment
-    
-    # This correctly sets the permissions and ownership of the ssh key
-    initContainers:
-    - name: set-key-ownership
-      image: alpine:3.6
-      command: ["sh", "-c", "cp /key-secret/* /key-spin/ && chown -R 1000:1000 /key-spin/* && chmod 600 /key-spin/*"]
-      volumeMounts:
-      - mountPath: /key-spin
-        name: ssh-key-tmp
-      - mountPath: /key-secret
-        name: spin-terraformer-sshkey
-    ```
+   ```yaml
+   # spin-terraformer deployment
+   
+   # This correctly sets the permissions and ownership of the ssh key
+   initContainers:
+   - name: set-key-ownership
+     image: alpine:3.6
+     command: ["sh", "-c", "cp /key-secret/* /key-spin/ && chown -R 1000:1000 /key-spin/* && chmod 600 /key-spin/*"]
+     volumeMounts:
+     - mountPath: /key-spin
+       name: ssh-key-tmp
+     - mountPath: /key-secret
+       name: spin-terraformer-sshkey
+   ```
 
 3. Mount the directory into the Terraform Integration container at the `/home/spinnaker/.ssh` location:
 
-    ```yaml
-    # spin-terraformer deployment
-    volumeMounts:
-    - mountPath: /home/spinnaker/.ssh
-      name: ssh-key-tmp
-    ```
+   ```yaml
+   # spin-terraformer deployment
+   volumeMounts:
+   - mountPath: /home/spinnaker/.ssh
+     name: ssh-key-tmp
+   ```
 
 The Terraform Integration now has access to clone private remote Git repositories via SSH after you make these changes and the Terraform Integration redeploys.

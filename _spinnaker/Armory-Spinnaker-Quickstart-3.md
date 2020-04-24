@@ -24,11 +24,11 @@ If you have forgotten the password to your Minnaker instance you can recover you
 1. SSH to the Minnaker host VM. Do not exec into the Halyard pod though.
 2. Run the following command: 
     
-    ```bash
-    cat /etc/spinnaker/.hal/.secret/spinnaker_password
-    ```
-    
-    The command returns the password for Minnaker.
+   ```bash
+   cat /etc/spinnaker/.hal/.secret/spinnaker_password
+   ```
+   
+   The command returns the password for Minnaker.
 
 After you log in to Deck, perform the following steps:
 
@@ -111,7 +111,7 @@ spec:
 
 Copy and paste the following example into the text field in the 2nd Deploy Manifest stage.
 
-```
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
