@@ -10,7 +10,7 @@ order: 32
 
 # Dynamic Kubernetes Accounts with Vault
 
-If you be add, delete, or modify Kubernetes deployment targets on a regular basis, you may find that redeploying Clouddriver to pull in new
+If you add, delete, or modify Kubernetes deployment targets on a regular basis, you may find that redeploying Clouddriver to pull in new
 account configuration impacts your teams. Spinnaker's [External Account Configuration](https://www.spinnaker.io/setup/configuration/#external-account-configuration) feature allows you to manage account configuration
 externally from Spinnaker and then read that configuration change without requiring a redeployment of Clouddriver.
 
@@ -40,7 +40,7 @@ The steps involved in setting up Dynamic Kubernetes Accounts are:
 
 ## Create the Secret in Vault
 
-The secret in Vault contains the `accounts` section that was previously in your Halyard or Operator configuration. Note that you still need to leave the configuration in Halyard or Operator for the Kubernetes account where Spinnaker is deployed. Clouddriver *replaces* all of its account information with what it finds in the Vault token. You need to add the configuration for the Spinnaker cluster if you want to use that cluster a deployment target for Clouddriver.
+The secret in Vault contains the `accounts` section that was previously in your Halyard or Operator configuration. Note that you still need to leave the configuration in Halyard or Operator for the Kubernetes account where Spinnaker is deployed. Clouddriver *replaces* all of its account information with what it finds in the Vault token. You need to add the configuration for the Spinnaker cluster if you want to use that cluster as a deployment target for Clouddriver.
 
 The `kubeconfig` file for each cluster is stored inline as a single line string in the `kubeconfigContents` element of the JSON. You can use a `sed` command to convert a `kubeconfig` file to a string:
 
