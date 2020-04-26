@@ -85,14 +85,14 @@ kubectl -n spinnaker apply -f spinnakerservice.yml
 
 ### Enabling Policy Engine using Halyard 
   
-  Add the following configuration to `.hal/default/profiles/spinnaker-local.yml`:
+Add the following configuration to `.hal/default/profiles/spinnaker-local.yml`:
 
-  ```yaml
-  armory:
-    opa:
-      enabled: true
-      url: <OPA Server URL>:<port>/v1
-  ```
+```yaml
+armory:
+  opa:
+    enabled: true
+    url: <OPA Server URL>:<port>/v1
+```
 
 *Note: There must be a trailing `/v1` on the URL. The Policy Engine is only compatible with OPA's v1 API.*
 
