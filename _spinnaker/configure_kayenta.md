@@ -354,7 +354,7 @@ substitute in the current production image hash we found in the previous
 stage, and set an environment variable on these pods to help them differentiate
 their data from other production pods:
 
-```
+```yaml
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
@@ -384,7 +384,7 @@ references to `baseline` (in the deployment name and environment variable)
 and we're using the trigger's build properties to identify the Docker image
 hash:
 
-```
+```yaml
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
@@ -457,7 +457,7 @@ Confident our new code performs at least as well under load as our old code,
 we can now deploy the new Docker image to our production deployment name,
 `kayentademo-prod`:
 
-```
+```yaml
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
