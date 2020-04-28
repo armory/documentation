@@ -65,7 +65,7 @@ be the one you referenced in the environment file.
 *Description*:  Free form text to help your coworkers know what this canary
 is doing.
 
-Note: If you see the following error `The was an error saving your config: 400` when you are trying to save your "Canary Config", try adding the following setting:
+Note: If you see the following error `The was an error saving your config: 400` when you are trying to save your "Canary Config", add the following setting:
 
 **Halyard**
 
