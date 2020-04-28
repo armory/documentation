@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Installing Spinnaker in GKE using Operator
-order: 24
+order: 25
 published: true
 ---
 
@@ -13,7 +13,30 @@ This guide contains instructions for installing Armory Spinnaker on a GKE Cluste
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
+# Prerequisites
+
+This document is written with the following workflow in mind:
+
+* You have a machine configured to use the `gcloud` CLI tool and a recent version of the `kubectl` tool
+* You have logged into the `gcloud` CLI and have permissions to create GKE clusters and a service account
+
+
+# Installation Summary
+
+Installing Spinnaker with the Operator consists of the following steps:
+
+* Create a cluster where Spinnaker and the Operator will reside
+* Setup the Operator CRDs (custom resource definitions)
+* Deploy Operator pods to the cluster
+* Create a GCS service account
+* Create a Kubernetes service account
+* Create a GCS storage bucket
+* Modify the Operator kustomize files for your installation
+* Deploy Spinnaker through the Operator
+
 # Create GKE Cluster
+
+This creates a minimal GKE cluster in your default region and zone.
 
 ```bash
 gcloud container clusters create spinnaker-cluster
@@ -62,6 +85,8 @@ customresourcedefinition.apiextensions.k8s.io/spinnakeraccounts.spinnaker.io cre
 
 # Deploy Operator
 
+These steps create the spinnaker-operator namespace and deploys the Operator pods.
+
 ```bash
 kubectl create ns spinnaker-operator
 
@@ -81,8 +106,8 @@ serviceaccount/spinnaker-operator created
 # Create GCS Service Account
 
 ```bash
-export SERVICE_ACCOUNT_NAME=<your-service-acount-name>
-export SERVICE_ACCOUNT_FILE=<your-service-account-json>
+export SERVICE_ACCOUNT_NAME=<name-for-your-service-account>
+export SERVICE_ACCOUNT_FILE=<name=for-your-service-account.json>
 export PROJECT=$(gcloud info --format='value(config.project)')
 
 gcloud --project ${PROJECT} iam service-accounts create \
@@ -113,7 +138,7 @@ kubectl apply --context $CONTEXT \
     -f https://spinnaker.io/downloads/kubernetes/service-account.yml
 
 TOKEN=$(kubectl get secret --context $CONTEXT \
-   $(kubectl get serviceaccount spinnaker-service-account \
+   $(kubectl get serviceaccount ${SERVICE_ACCOUNT_NAME} \
        --context $CONTEXT \
        -n spinnaker \
        -o jsonpath='{.secrets[0].name}') \
@@ -139,11 +164,11 @@ Use the Cloud Console to do create your bucket. If you're going to put secrets i
 
 	```yaml
     config:
-      version: 2.18.0  
+      version: 2.19.8  
       persistentStorage:
         persistentStoreType: gcs
         gcs:
-          bucket: <my-bucket-name>
+          bucket: <your-bucket-name>
           rootFolder: front50
           project: <your-project-name>
           jsonPath: <your-unique-gcs-account.json>
@@ -215,7 +240,7 @@ For the third option, the `gke-kubeconfig` file is copied to a bucket. Then the 
 kubeconfigFile: encryptedFile:gcs!b:bucketname!f:secrets/kubeconfig-gke
 ```
 
-# Install Kustomize
+# Install Kustomize (optional)
 
 You can do a `kubectl -k` to deploy Kustomize templates, but what may be more helpful is to install Kustomize so that you can build Kustomize and look at the YAML first. Note that Kustomize is installed as part of `kubectl`.
 

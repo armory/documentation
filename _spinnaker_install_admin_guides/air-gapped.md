@@ -46,17 +46,18 @@ To enable custom storage in Halyard, create `/opt/spinnaker/config/halyard-local
 spinnaker:
   config:
     input:
+      # To use a custom GCS bucket, switch this to true
       gcs:
-        # To use a custom GCS bucket
-        # enabled: true
+        enabled: false
       # Name of your private bucket
       bucket: myownbucket
-      # If your s3 bucket is not in us-west-2
-      # region: us-east-1
-      # For s3 like storage with custom endpoint
+      # If your s3 bucket is not in us-west-2 (region does not matter for Minio)
+      region: us-east-1
+      # If you are using a platform that does not support PathStyleAccess, such as Minio, switch this to true
+      # https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingBucket.html#access-bucket-intro
+      enablePathStyleAccess: false
+      # For s3 like storage with custom endpoint, such as Minio:
       # endpoint: https://my.minio:9000
-      # To enable path style access to your bucket: https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingBucket.html#access-bucket-intro
-      # enablePathStyleAccess: true
 ```
 
 
@@ -131,13 +132,13 @@ kubectl apply -f manifest.yml
 Finally, to access the deployed Halyard environment, perform the following steps:
 
 1. Get the name for the Halyard pod: 
-    ```
-    kubectl get pods
-    ```
+   ```
+   kubectl get pods
+   ```
 2. Exec into the pod: 
-    ```
-    kubectl exec -it {pod-name} /bin/bash
-    ``` 
+   ```
+   kubectl exec -it {pod-name} /bin/bash
+   ``` 
     
 ### Option 2: Spinnaker Operator
 

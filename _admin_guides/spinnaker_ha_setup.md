@@ -3,7 +3,9 @@ layout: post
 title: Spinnaker HA Setup
 order: 15
 ---
-{% include components/legacy_documentation.html %}
+<!-- {% include components/legacy_documentation.html %} --> 
+
+> The information on this page is deprecated. If you want to configure your Spinnaker to be more resilient, Armory recommends configuring Clouddriver and Orca to use relational databases instead of Redis. For more information, see  [Clouddriver with RDBMS](/spinnaker-install-admin-guides/clouddriver-sql/) and [Orca with RDBMS](/spinnaker-install-admin-guides/orca-sql/).
 
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}

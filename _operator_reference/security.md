@@ -56,12 +56,12 @@ apiSecurity:
 
 - `enabled`: true or false.
 - `keyAlias`: Name of your keystore entry as generated with your keytool.
-- `keyStore`: Path to the keystore holding your security certificates.
+- `keyStore`: Path to the keystore holding your security certificates. File needs to be present on the machine running Spinnaker. Supports encrypted file.
 - `keyStoreType`: The type of your keystore. Examples include JKS, and PKCS12.
-- `keyStorePassword`: The password to unlock your keystore. Due to a limitation in Tomcat, this must match your key's password in the keystore.
-- `trustStore`: Path to the truststore holding your trusted certificates.
+- `keyStorePassword`: The password to unlock your keystore. Due to a limitation in Tomcat, this must match your key's password in the keystore. Supports encrypted value.
+- `trustStore`: Path to the truststore holding your trusted certificates. File needs to be present on the machine running Spinnaker. Supports encrypted file.
 - `trustStoreType`: The type of your truststore. Examples include JKS, and PKCS12.
-- `trustStorePassword`: The password to unlock your truststore.
+- `trustStorePassword`: The password to unlock your truststore. Supports encrypted value.
 - `clientAuth`: Declare `WANT` when client auth is wanted but not mandatory or `NEED` when client auth is mandatory.
 
 
@@ -115,7 +115,7 @@ oauth2:
 - `enabled`: true or false.
 - `client`:
   - `clientId`: The OAuth client ID you have configured with your OAuth provider.
-  - `clientSecret`: The OAuth client secret you have configured with your OAuth provider.
+  - `clientSecret`: The OAuth client secret you have configured with your OAuth provider. Supports encrypted value.
   - `accessTokenUri`: The access token uri for your OAuth provider.
   - `userAuthorizationUri`: The user authorization uri for your OAuth provider.
   - `clientAuthenticationScheme`: The client authentication scheme for your OAuth provider.
@@ -156,11 +156,11 @@ saml:
 ```
 
 - `enabled`: true or false.
-- `metadataLocal`: The address to your identity provider's metadata XML file. This is a local file.
+- `metadataLocal`: The address to your identity provider's metadata XML file. File needs to be present on the machine running Spinnaker. Supports encrypted file.
 - `metadataRemote`: The address to your identity provider's metadata XML file. This is a URL.
 - `issuerId`: The identity of the Spinnaker application registered with the SAML provider.
-- `keyStore`: Path to the keystore that contains this server's private key. This key is used to cryptographically sign SAML AuthNRequest objects.
-- `keyStorePassword`: The password used to access the file specified in --keystore
+- `keyStore`: Path to the keystore that contains this server's private key. This key is used to cryptographically sign SAML AuthNRequest objects. File needs to be present on the machine running Spinnaker. Supports encrypted file.
+- `keyStorePassword`: The password used to access the file specified in --keystore. Supports encrypted value.
 - `keyStoreAliasName`: The name of the alias under which this server's private key is stored in the --keystore file.
 - `serviceAddress`: The address of the Gate server that will be accesible by the SAML identity provider. This should be the full URL, including port, e.g. https://gate.org.com:8084/. If deployed behind a load balancer, this would be the load balancer's address.
 - `userAttributeMapping`:
@@ -278,13 +278,13 @@ groupMembership:
 - `service`: One of `EXTERNAL`, `FILE`, `GOOGLE`, `GITHUB`, `LDAP`
 - `google`:
   - `roleProviderType`: `GOOGLE`
-  - `credentialPath`: A path to a valid json service account that can authenticate against the Google role provider.
+  - `credentialPath`: A path to a valid json service account that can authenticate against the Google role provider. File needs to be present on the machine running Spinnaker. Supports encrypted file.
   - `adminUsername`: Your role provider's admin username e.g. admin@myorg.net
   - `domain`: The domain your role provider is configured for e.g. myorg.net.
 - `github`:
   - `roleProviderType`: `GITHUB`
   - `baseUrl`: Used if using GitHub enterprise some other non github.com GitHub installation.
-  - `accessToken`: A personal access token of an account with access to your organization's GitHub Teams structure.
+  - `accessToken`: A personal access token of an account with access to your organization's GitHub Teams structure. Supports encrypted value.
   - `organization`: The GitHub organization under which to query for GitHub Teams.
 - `file`:
   - `roleProviderType`: `FILE`
@@ -293,7 +293,7 @@ groupMembership:
   - `roleProviderType`: `LDAP`
   - `url`: ldap:// or ldaps:// URL of the LDAP server
   - `managerDn`: The manager user's distinguished name (principal) to use for querying ldap groups.
-  - `managerPassword`: The manager user's password to use for querying ldap groups.
+  - `managerPassword`: The manager user's password to use for querying ldap groups. Supports encrypted value.
   - `userDnPattern`: The pattern for finding a user's DN using simple pattern matching. For example, if your LDAP server has the URL ldap://mysite.com/dc=spinnaker,dc=org, and you have the pattern 'uid={0},ou=members', 'me' will map to a DN uid=me,ou=members,dc=spinnaker,dc=org. If no match is found, will try to find the user using --user-search-filter, if set.
   - `userSearchBase`: The part of the directory tree under which user searches should be performed. If --user-search-base isn't supplied, the search will be performed from the root.
   - `groupSearchBase`: The part of the directory tree under which group searches should be performed.
@@ -327,7 +327,7 @@ uiSecurity:
 ```
 
 - `enabled`: true or false.
-- `sslCertificateFile`: Path to your .crt file.
-- `sslCertificateKeyFile`: Path to your .key file.
-- `sslCertificatePassphrase`: The passphrase needed to unlock your SSL certificate. This will be provided to Apache on startup.
-- `sslCACertificateFile`: Path to the .crt file for the CA that issued your SSL certificate. This is only needed for localgitdeployments that serve the UI using webpack dev server.
+- `sslCertificateFile`: Path to your .crt file. File needs to be present on the machine running Spinnaker. Supports encrypted file.
+- `sslCertificateKeyFile`: Path to your .key file. File needs to be present on the machine running Spinnaker. Supports encrypted file.
+- `sslCertificatePassphrase`: The passphrase needed to unlock your SSL certificate. This will be provided to Apache on startup. Supports encrypted value.
+- `sslCACertificateFile`: Path to the .crt file for the CA that issued your SSL certificate. This is only needed for localgitdeployments that serve the UI using webpack dev server. File needs to be present on the machine running Spinnaker. Supports encrypted file.

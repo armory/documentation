@@ -41,12 +41,12 @@ metadata:
 spec:
   spinnakerConfig:
     profiles:
-      front50: | #Enables Save time validation of policies
+      front50: #Enables Save time validation of policies
         armory:
           opa:
             enabled: true
             url: <OPA Server URL>:<port>/v1
-      clouddriver: | #Enables Runtime validation of policies
+      clouddriver: #Enables Runtime validation of policies
         armory:
           opa:
             enabled: true
@@ -65,12 +65,12 @@ metadata:
 spec:
   spinnakerConfig:
     profiles:
-      front50: | #Enables Save time validation of policies
+      front50: #Enables Save time validation of policies
         armory:
           opa:
             enabled: true
             url: http://opa.opaserver:8181/v1
-      clouddriver: | #Enables Runtime validation of policies
+      clouddriver: #Enables Runtime validation of policies
         armory:
           opa:
             enabled: true
@@ -85,14 +85,14 @@ kubectl -n spinnaker apply -f spinnakerservice.yml
 
 ### Enabling Policy Engine using Halyard 
   
-  Add the following configuration to `.hal/default/profiles/spinnaker-local.yml`:
+Add the following configuration to `.hal/default/profiles/spinnaker-local.yml`:
 
-  ```yaml
-  armory:
-    opa:
-      enabled: true
-      url: <OPA Server URL>:<port>/v1
-  ```
+```yaml
+armory:
+  opa:
+    enabled: true
+    url: <OPA Server URL>:<port>/v1
+```
 
 *Note: There must be a trailing `/v1` on the URL. The Policy Engine is only compatible with OPA's v1 API.*
 
@@ -140,7 +140,7 @@ When using the below example, keep the following guidelines in mind:
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: opa
+  name: opa # Change this to install OPA in a different namespace
 ---
 # Grant service accounts in the 'opa' namespace read-only access to resources.
 # This lets OPA/kube-mgmt replicate resources into OPA so they can be used in policies.
@@ -155,7 +155,7 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 subjects:
 - kind: Group
-  name: system:serviceaccounts:<namespace>
+  name: system:serviceaccounts:opa # Change this to the namespace OPA is installed in
   apiGroup: rbac.authorization.k8s.io
 ---
 # Define role in the `opa` namespace for OPA/kube-mgmt to update configmaps with policy status.
@@ -163,7 +163,7 @@ subjects:
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  namespace: <namespace>
+  namespace: opa # Change this to the namespace where policies will live
   name: configmap-modifier
 rules:
 - apiGroups: [""]
@@ -176,7 +176,7 @@ rules:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  namespace: <namespace>
+  namespace: opa # Change this to the namespace where policies will live
   name: opa-configmap-modifier
 roleRef:
   kind: Role
@@ -184,14 +184,14 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 subjects:
 - kind: Group
-  name: system:serviceaccounts:<namespace>
+  name: system:serviceaccounts:opa # Change this to the namespace OPA is installed in
   apiGroup: rbac.authorization.k8s.io
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: opa-deployment
-  namespace: <namespace>
+  namespace: opa # Change this to the namespace OPA is installed in
   labels:
     app: opa
 spec:
@@ -234,7 +234,7 @@ spec:
           image: openpolicyagent/kube-mgmt:0.9
           args:
           # Change this to the namespace where you want OPA to look for policies
-            - "--policies=<namespace>"
+            - "--policies=opa"
           # Configure the OPA server to only check ConfigMaps with the relevant label
             - "--require-policy-label=true" 
 ---
@@ -243,7 +243,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: opa
-  namespace: <namespace>
+  namespace: opa # Change this to the namespace OPA is installed in
 spec:
   selector:
     app: opa

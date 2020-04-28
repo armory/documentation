@@ -151,7 +151,7 @@ OSS are as follows:
 
 To install Armory Spinnaker, you use the same `hal` commands as Open Source Spinnaker.  Here are some guides on how to install Spinnaker based on your environment:
 
-* [Install Armory Spinnaker on K8s](_spinnaker-install-admin-guides/install-on-k8s/)
+* [Install Armory Spinnaker on K8s](/spinnaker-install-admin-guides/install-on-k8s/)
 * [Install Armory Spinnaker on AWS](/spinnaker-install-admin-guides/install-on-aws/)
 * [Install Armory Spinnaker on GKE](/spinnaker-install-admin-guides/install-on-gke/)
 

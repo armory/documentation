@@ -898,46 +898,46 @@ kubectl -n spinnaker apply -f spin-ingress.yml
 
 Spinnaker must be aware of its endpoints to work properly. Configuration updates vary depending upon whether you installed Spinnaker using Operator or Halyard. 
 
-* If you use Operator:
+**Operator**
     
-    Update `spinnakerservice.yml` adding the `security` section:
+Update `spinnakerservice.yml` adding the `security` section:
     
-    ```yaml
-    spec:
-      spinnakerConfig:
-        config:
-          security:
-            apiSecurity:
-              overrideBaseUrl: http://spinnaker.domain.com/api/v1  # Replace this with the IP address or DNS that points to our nginx ingress instance
-            uiSecurity:
-              overrideBaseUrl: http://spinnaker.domain.com         # Replace this with the IP address or DNS that points to our nginx ingress instance
-    ```
+```yaml
+spec:
+  spinnakerConfig:
+    config:
+      security:
+        apiSecurity:
+          overrideBaseUrl: http://spinnaker.domain.com/api/v1  # Replace this with the IP address or DNS that points to our nginx ingress instance
+        uiSecurity:
+          overrideBaseUrl: http://spinnaker.domain.com         # Replace this with the IP address or DNS that points to our nginx ingress instance
+```
   
-    Apply the changes:
+Apply the changes:
     
-    ```bash
-    kubectl -n spinnaker apply -f spinnakerservice.yml 
-    ```
+```bash
+kubectl -n spinnaker apply -f spinnakerservice.yml 
+```
 
-* If you use Halyard:
+**Halyard**
 
-    Run this command to get into the Halyard container:
+Run this command to get into the Halyard container:
 
-    ```
-    kubectl -n spinnaker exec -it halyard-0 bash
-    ```
+```
+kubectl -n spinnaker exec -it halyard-0 bash
+```
 
-    Then, run the following command from inside the container:
+Then, run the following command from inside the container:
 
-    ```bash
-    SPINNAKER_ENDPOINT=http://spinnaker.domain.com
-    # ^ Replace this with the IP address or DNS that points to our nginx ingress instance
+```bash
+SPINNAKER_ENDPOINT=http://spinnaker.domain.com
+# ^ Replace this with the IP address or DNS that points to our nginx ingress instance
 
-    hal config security ui edit --override-base-url ${SPINNAKER_ENDPOINT}
-    hal config security api edit --override-base-url ${SPINNAKER_ENDPOINT}/api/v1
+hal config security ui edit --override-base-url ${SPINNAKER_ENDPOINT}
+hal config security api edit --override-base-url ${SPINNAKER_ENDPOINT}/api/v1
 
-    hal deploy apply
-    ```
+hal deploy apply
+```
 
 ### Configuring TLS certificates
 

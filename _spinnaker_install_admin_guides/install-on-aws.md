@@ -8,7 +8,7 @@ redirect_from:
   - /spinnaker_install_admin_guides/install-on-eks/
   - /spinnaker-install-admin-guides/install_on_eks/
   - /spinnaker-install-admin-guides/install-on-eks/
-  - /spinnaker-install-admin-guides/install-on-aws/
+  - /spinnaker-install-admin-guides/install_on_aws/
   - /spinnaker_install_admin_guides/install_on_aws/
   - /spinnaker_install_admin_guides/install-on-aws/
 ---
@@ -110,22 +110,22 @@ If you're using an EKS cluster, you must be able to connect to the EKS cluster. 
 
 1. Create the local working directory on your workstation. For the purposes of this document, we will be using `~/aws-spinnaker`, but this can be any persistent directory on any Linux or OSX machine.
 
-	```bash
-	mkdir ~/aws-spinnaker
-	cd ~/aws-spinnaker
-	```
+   ```bash
+   mkdir ~/aws-spinnaker
+   cd ~/aws-spinnaker
+   ```
 
 2. If you have access to the role that created the EKS cluster, you can create a kubeconfig with access to your Kubernetes cluster with this command:
 
-	```bash
-	aws eks update-kubeconfig --name <EKS_CLUSTER_NAME> --kubeconfig kubeconfig-aws
-	```
+   ```bash
+   aws eks update-kubeconfig --name <EKS_CLUSTER_NAME> --kubeconfig kubeconfig-aws
+   ```
 
 3. From here, you can validate access to the cluster with this command:
 
-	```bash
-	kubectl --kubeconfig kubeconfig-aws get namespaces
-	```
+   ```bash
+   kubectl --kubeconfig kubeconfig-aws get namespaces
+   ```
 
 ## Connecting to other Kubernetes clusters
 
@@ -133,9 +133,9 @@ If you've stood up Kubernetes on AWS with KOPS or another Kubernetes tool, ensur
 
 Then, copy your `kubeconfig` file (this is typically located in `~/.kube/config`) to your working directory:
 
-	```bash
-	cp ~/.kube/config ~/aws-spinnaker/kubeconfig-aws
-	```
+```bash
+cp ~/.kube/config ~/aws-spinnaker/kubeconfig-aws
+```
 
 # Create a `kubeconfig` file for Halyard/Spinnaker
 
@@ -154,33 +154,33 @@ Halyard uses this Kubeconfig file to create the Kubernetes deployment objects th
 
 1. Obtain the `spinnaker-tools` CLI tool. Go to <https://github.com/armory/spinnaker-tools/releases>, and download the latest release for your operating system (OSX and Linux available). You can also use curl:
 
-	```bash
-	# If you're not already in the directory
-	cd ~/aws-spinnaker
-	# If you're on Linux instead of OSX, use this URL instead:
-	# https://github.com/armory/spinnaker-tools/releases/download/0.0.6/spinnaker-tools-linux
-	curl -L https://github.com/armory/spinnaker-tools/releases/download/0.0.6/spinnaker-tools-darwin -o spinnaker-tools
-	chmod +x spinnaker-tools
-	```
+   ```bash
+   # If you're not already in the directory
+   cd ~/aws-spinnaker
+   # If you're on Linux instead of OSX, use this URL instead:
+   # https://github.com/armory/spinnaker-tools/releases/download/0.0.6/spinnaker-tools-linux
+   curl -L https://github.com/armory/spinnaker-tools/releases/download/0.0.6/spinnaker-tools-darwin -o spinnaker-tools
+   chmod +x spinnaker-tools
+   ```
 
 2. Run the tool. Feel free to substitute other values for the parameters:
 
-	```bash
-	# The 'aws eks update-kubeconfig' command from above will create/update this file
-	SOURCE_KUBECONFIG=kubeconfig-aws
-	# Get the name of the context created by the aws tool)
-	CONTEXT=$(kubectl --kubeconfig ${SOURCE_KUBECONFIG} config current-context)
-	DEST_KUBECONFIG=kubeconfig-spinnaker-system-sa
-	SPINNAKER_NAMESPACE=spinnaker-system
-	SPINNAKER_SERVICE_ACCOUNT_NAME=spinnaker-service-account
+   ```bash
+   # The 'aws eks update-kubeconfig' command from above will create/update this file
+   SOURCE_KUBECONFIG=kubeconfig-aws
+   # Get the name of the context created by the aws tool)
+   CONTEXT=$(kubectl --kubeconfig ${SOURCE_KUBECONFIG} config current-context)
+   DEST_KUBECONFIG=kubeconfig-spinnaker-system-sa
+   SPINNAKER_NAMESPACE=spinnaker-system
+   SPINNAKER_SERVICE_ACCOUNT_NAME=spinnaker-service-account
 
-	./spinnaker-tools create-service-account \
-	--kubeconfig ${SOURCE_KUBECONFIG} \
-	--context ${CONTEXT} \
-	--output ${DEST_KUBECONFIG} \
-	--namespace ${SPINNAKER_NAMESPACE} \
-	--service-account-name ${SPINNAKER_SERVICE_ACCOUNT_NAME}
-	```
+   ./spinnaker-tools create-service-account \
+     --kubeconfig ${SOURCE_KUBECONFIG} \
+     --context ${CONTEXT} \
+     --output ${DEST_KUBECONFIG} \
+     --namespace ${SPINNAKER_NAMESPACE} \
+     --service-account-name ${SPINNAKER_SERVICE_ACCOUNT_NAME}
+   ```
 
 You should be left with a file called `kubeconfig-spinnaker-system-sa` (or something similar, if you're using a different namespace for spinnaker)
 
@@ -195,8 +195,8 @@ If you do not yet have an S3 bucket, create the S3 bucket:
 5. Click "Next"
 6. Select the following two checkboxes:
 
-     * Keep all versions of an object in the same bucket
-     * Automatically encrypt objects when they are stored in S3
+    * Keep all versions of an object in the same bucket
+    * Automatically encrypt objects when they are stored in S3
 
 7. Click "Next"
 
@@ -231,21 +231,21 @@ Then, add an inline policy to your IAM user:
 3. Click on the "JSON" tab
 4. Add this text (replace `s3-spinnaker-jq6cqvmpro` with the name of your bucket)
 
-	```json
-	{
-	"Version": "2012-10-17",
-	"Statement": [
-	{
-	"Effect": "Allow",
-	"Action": "s3:*",
-	"Resource": [
-	   "arn:aws:s3:::spinnaker-jq6cqvmpro",
-	   "arn:aws:s3:::spinnaker-jq6cqvmpro/*"
-	]
-	}
-	]
-	}
-	```
+   ```json
+   {
+     "Version": "2012-10-17",
+     "Statement": [
+       {
+         "Effect": "Allow",
+         "Action": "s3:*",
+         "Resource": [
+           "arn:aws:s3:::spinnaker-jq6cqvmpro",
+           "arn:aws:s3:::spinnaker-jq6cqvmpro/*"
+         ]
+       }
+     ]
+   }
+   ```
 
 5. Click on "Review Policy"
 
@@ -265,21 +265,21 @@ Alternately, you can attach an IAM policy to the role attached to your Kubernete
 6. Click on the "JSON" tab
 7. Add this text (replace `s3-spinnaker-jq6cqvmpro` with the name of your bucket)
 
-	```json
-	{
-	"Version": "2012-10-17",
-	"Statement": [
-	{
-	"Effect": "Allow",
-	"Action": "s3:*",
-	"Resource": [
-	   "arn:aws:s3:::spinnaker-jq6cqvmpro",
-	   "arn:aws:s3:::spinnaker-jq6cqvmpro/*"
-	]
-	}
-	]
-	}
-	```
+   ```json
+   {
+     "Version": "2012-10-17",
+     "Statement": [
+       {
+        "Effect": "Allow",
+        "Action": "s3:*",
+        "Resource": [
+          "arn:aws:s3:::spinnaker-jq6cqvmpro",
+          "arn:aws:s3:::spinnaker-jq6cqvmpro/*"
+        ]
+       }
+     ]
+   }
+   ```
 
 8. Click on "Review Policy"
 
@@ -423,10 +423,10 @@ export ACCESS_KEY_ID=<access-key>
 
 # This will prompt for the secret key
 hal config storage s3 edit \
-    --bucket ${BUCKET_NAME} \
-    --access-key-id ${ACCESS_KEY_ID} \
-    --secret-access-key \
-    --region ${REGION}
+  --bucket ${BUCKET_NAME} \
+  --access-key-id ${ACCESS_KEY_ID} \
+  --secret-access-key \
+  --region ${REGION}
 
 hal config storage edit --type s3
 ```
@@ -440,9 +440,9 @@ export REGION=us-west-2
 
 # This will prompt for the secret key
 hal config storage s3 edit \
-    --bucket ${BUCKET_NAME} \
-    --region ${REGION} \
-    --no-validate
+  --bucket ${BUCKET_NAME} \
+  --region ${REGION} \
+  --no-validate
 
 hal config storage edit --type s3
 ```
@@ -650,17 +650,15 @@ Configuration of TLS certificates for ingresses is often very organization-speci
 - Configure the ingress(es) so that NGINX (or your ingress) terminates TLS using the certificate(s)
 - Update Spinnaker to be aware of the new TLS endpoints (note `https` instead of `http`)
 
-	```bash
-	SPIN_DECK_ENDPOINT=spinnaker.some-url.com
-	SPIN_GATE_ENDPOINT=api.some-url.com
-	SPIN_DECK_URL=https://${SPIN_DECK_ENDPOINT}
-	SPIN_GATE_URL=https://${SPIN_GATE_ENDPOINT}
-
-	hal config security ui edit --override-base-url ${SPIN_DECK_URL}
-	hal config security api edit --override-base-url ${SPIN_GATE_URL}
-
-	hal deploy apply
-	```
+```bash
+SPIN_DECK_ENDPOINT=spinnaker.some-url.com
+SPIN_GATE_ENDPOINT=api.some-url.com
+SPIN_DECK_URL=https://${SPIN_DECK_ENDPOINT}
+SPIN_GATE_URL=https://${SPIN_GATE_ENDPOINT}
+hal config security ui edit --override-base-url ${SPIN_DECK_URL}
+hal config security api edit --override-base-url ${SPIN_GATE_URL}
+hal deploy apply
+```
 
 # Next Steps
 
