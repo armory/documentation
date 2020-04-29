@@ -80,8 +80,8 @@ You have the option to run a dual repository with the following in `profiles/orc
 executionRepository:
   dual:
     enabled: true
-    primaryClass: SqlExecutionRepository
-    previousClass: RedisExecutionRepository
+    primaryClass: sqlExecutionRepository
+    previousClass: redisExecutionRepository
 
   sql:
     enabled: true
