@@ -14,7 +14,7 @@ redirect_from:
 
 This document reviews configuring ECR as a registry for a Spinnaker installation
 
-### Adding ECR as a Docker Registry
+## Adding ECR as a Docker Registry
 
 When configuring a registry, you normally use standard `SpinnakerService` configuration if using the Operator, or the `hal` command for [adding a Docker Registry](https://www.spinnaker.io/reference/halyard/commands/#hal-config-provider-docker-registry-account-add) if using Halyard.
 
@@ -30,7 +30,7 @@ Note: If using Halyard, this process is easier in version `v1.10` and later. In 
 
 ## Update Configs
 
-### Add a Sidecar for Token Refresh
+## Add a Sidecar for Token Refresh
 
 In your `SpinnakerService` manifest, update the `spec.spinnakerConfig.config.deploymentEnvironment.sidecars` section if using Operator. If using Halyard, update your `~/.hal/config` in the `deploymentEnvironment.sidecars` section:
 
@@ -46,7 +46,7 @@ In your `SpinnakerService` manifest, update the `spec.spinnakerConfig.config.dep
           mountPath: /opt/config/ecr-token-refresh
 ```
 
-### Define an ECR registry
+## Define an ECR registry
 
 Add the following snippet in `SpinnakerService` manifest under section `spec.spinnakerConfig.profiles.clouddriver` if using the Operator, or create the file `~/.hal/<deployment>/profiles/clouddriver-local.yml` if using Halyard:
 
@@ -78,19 +78,19 @@ Apply it to the cluster with:
 kubectl -n <namespace> create configmap token-refresh-config --from-file <config.yaml location>
 ```
 
-### Update your Spinnaker installation
+## Update your Spinnaker installation
 
-* **Operator**
+**Operator**
 
-    ```bash
-    kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest>
-    ```
+```bash
+kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest>
+```
 
-* **Halyard**
+**Halyard**
 
-    ```bash
-    hal deploy apply --service-names clouddriver
-    ```
+```bash
+hal deploy apply --service-names clouddriver
+```
 
 Success! Now you will be able to use ECR as a docker registry in the configuration stage.
 
