@@ -80,8 +80,8 @@ You have the option to run a dual repository with the following in `profiles/orc
 executionRepository:
   dual:
     enabled: true
-    primaryClass: com.netflix.spinnaker.orca.sql.pipeline.persistence.SqlExecutionRepository
-    previousClass: com.netflix.spinnaker.orca.pipeline.persistence.jedis.RedisExecutionRepository
+    primaryClass: SqlExecutionRepository
+    previousClass: RedisExecutionRepository
 
   sql:
     enabled: true
