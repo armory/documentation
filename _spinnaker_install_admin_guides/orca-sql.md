@@ -74,7 +74,9 @@ The above configuration grants authorization from any host. You can restrict it 
 ## Keeping existing execution history
 
 The above configuration will point Orca to your database. 
-You have the option to run a dual repository with the following in `profiles/orca-local.yml`:
+You have the option to run a dual repository by adding `dual` in `profiles/orca-local.yml`.
+
+Armory Spinnaker v2.18+:
 
 ```yaml
 executionRepository:
@@ -82,6 +84,21 @@ executionRepository:
     enabled: true
     primaryClass: sqlExecutionRepository
     previousClass: redisExecutionRepository
+
+  sql:
+    enabled: true
+  redis:
+    enabled: true
+```
+
+Armory Spinnaker versions prior to v2.18:
+
+```yaml
+executionRepository:
+  dual:
+    enabled: true
+    primaryClass: com.netflix.spinnaker.orca.sql.pipeline.persistence.SqlExecutionRepository
+    previousClass: com.netflix.spinnaker.orca.pipeline.persistence.jedis.RedisExecutionRepository
 
   sql:
     enabled: true
