@@ -29,30 +29,30 @@ Spinnaker uses the latest non-kubectl version of Kustomize.
 ​
 Kustomize can be enabled by a feature flag in 2.16.
 
-* **Operator**
+**Operator**
 
-    Add the following settings to the `SpinnakerService` manifest:
+Add the following settings to the `SpinnakerService` manifest:
 
-    ```yaml
-    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
-    kind: SpinnakerService
-    metadata:
-      name: spinnaker
-    spec:
-      spinnakerConfig:    
-        profiles:
-          deck:
-            settings-local.js: |
-              window.spinnakerSettings.feature.kustomizeEnabled = true;
-    ```
+```yaml
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:    
+    profiles:
+      deck:
+        settings-local.js: |
+          window.spinnakerSettings.feature.kustomizeEnabled = true;
+```
 ​
-* **Halyard**
+**Halyard**
 
-    Add the following line to `~/.hal/{DEPLOYMENT_NAME}/profiles/settings-local.js`:
+Add the following line to `~/.hal/{DEPLOYMENT_NAME}/profiles/settings-local.js`:
 ​
-    ```javascript
-    window.spinnakerSettings.feature.kustomizeEnabled = true;
-    ```
+```javascript
+window.spinnakerSettings.feature.kustomizeEnabled = true;
+```
 ​
 ## Using Kustomize
 ​
@@ -83,32 +83,32 @@ Kustomize in 2.17+ requires the [git/repo](https://www.spinnaker.io/reference/ar
 ​
 Kustomize can be enabled by a feature flag in Armory Spinnaker 2.16 and later.
 
-* **Operator**
+**Operator**
 
-    Add the following settings to the `SpinnakerService` manifest and apply the changes:
+Add the following settings to the `SpinnakerService` manifest and apply the changes:
 
-    ```yaml
-    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
-    kind: SpinnakerService
-    metadata:
-      name: spinnaker
-    spec:
-      spinnakerConfig:    
-        profiles:
-          deck:
-            settings-local.js: |
-              window.spinnakerSettings.feature.kustomizeEnabled = true;
-    ```
+```yaml
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:    
+    profiles:
+      deck:
+        settings-local.js: |
+          window.spinnakerSettings.feature.kustomizeEnabled = true;
+```
 
-* **Halyard**
+**Halyard**
 
-    Add the following line to `~/.hal/{DEPLOYMENT_NAME}/profiles/settings-local.js`:
+Add the following line to `~/.hal/{DEPLOYMENT_NAME}/profiles/settings-local.js`:
 ​
-    ```javascript
-    window.spinnakerSettings.feature.kustomizeEnabled = true;
-    ```
+```javascript
+window.spinnakerSettings.feature.kustomizeEnabled = true;
+```
 
-    Apply your changes to your Spinnaker deployment:  `hal deploy apply`. Wait until the pods are in a RUNNING state before proceeding.
+Apply your changes to your Spinnaker deployment:  `hal deploy apply`. Wait until the pods are in a RUNNING state before proceeding.
 ​
 
 You can now use the *KUSTOMIZE* option on a _Bake (Manifest)_ stage.

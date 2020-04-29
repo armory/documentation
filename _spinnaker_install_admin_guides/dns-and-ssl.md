@@ -60,38 +60,38 @@ Add a CNAME entry for the given ELB to create a simple name you will use to acce
 
 Update the endpoints for Spinnaker Deck (the Spinnaker UI microservice) and Spinnaker Gate (the Spinnaker API microservice)
 
-* **Operator**
+**Operator**
 
-    ```yaml
-    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
-    kind: SpinnakerService
-    metadata:
-      name: spinnaker
-    spec:
-      spinnakerConfig:
-        config:
-          security:
-            apiSecurity:
-              overrideBaseUrl: https://spinnaker-gate.mydomain.com
-            uiSecurity:
-              overrideBaseUrl: https://spinnaker.mydomain.com
-    ```
+```yaml
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    config:
+      security:
+        apiSecurity:
+          overrideBaseUrl: https://spinnaker-gate.mydomain.com
+        uiSecurity:
+          overrideBaseUrl: https://spinnaker.mydomain.com
+```
 
-    Don't forget to apply your changes:
+Don't forget to apply your changes:
 
-    ```bash
-    kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest>
-    ```
+```bash
+kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest>
+```
 
-* **Halyard**
+**Halyard**
 
-    ```bash
-    hal config security ui edit --override-base-url=https://spinnaker.mydomain.com
-    hal config security api edit --override-base-url=https://spinnaker-gate.mydomain.com
-    ```
+```bash
+hal config security ui edit --override-base-url=https://spinnaker.mydomain.com
+hal config security api edit --override-base-url=https://spinnaker-gate.mydomain.com
+```
 
-    Don't forget to apply your changes:
+Don't forget to apply your changes:
 
-    ```bash
-    hal deploy apply
-    ```
+```bash
+hal deploy apply
+```

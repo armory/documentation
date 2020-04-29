@@ -28,7 +28,7 @@ A passive Spinnaker means that the deployment:
 
 ## Storage Considerations
 
-| **NOTE**: It is important that the storage being used is replicated across regions since these contain all the application and pipeline definitions |
+| **NOTE**: It is important that the storage being used is replicated across regions since these contain all the application and pipeline definitions. |
 
 Armory recommends using a relational database for Orca and Clouddriver. For Orca, a relational database helps maintain integrity. For Clouddriver, it reduces the time to recovery. Even though any MySQL version 5.7+ database can be used, Armory recommends using AWS Aurora for the following reasons:
 
@@ -87,7 +87,7 @@ To keep the configurations in sync, set up automation to create a passive Spinna
 
 ### Configuration modifications
 
-Make sure you set replicas for all Spinnaker services to 0. Example in `SpinnakerService` manifest for service `gate`:
+Make sure you set replicas for all Spinnaker services to 0. The following example for the Operator shows what that looks like in the `SpinnakerService` manifest for the service `gate`:
 
 ```yaml
 apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
@@ -108,8 +108,6 @@ Once you're done configuring for the passive Spinnaker, run `kubectl -n <spinnak
 | **Note**: Armory recommends performing a DR exercise run to make sure the passive Spinnaker is set up correctly. Ideally, the DR exercise should include both failing over to the DR region and failing back to the primary region. |
 
 ## Performing Disaster Recovery
-
-If the active Spinnaker is failing, the following actions need to be taken:
 
 ### Activating the passive Spinnaker
 
