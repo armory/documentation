@@ -9,6 +9,9 @@ order: 154
 
 This document describes how to set up Spinnaker secrets in Hashicorp's Vault. In this example, we'll be using the default KV secret engine called `secret` and will be storing GitHub credentials, a kubeconfig file and a Java keystore for SAML SSO.
 
+If you are using Halyard to maintain your Spinnaker deployment, verify that you are using Armory Halyard version 1.5.1 or later.
+
+
 ## Authorization
 
 We currently support two methods of authentication with Vault servers.
@@ -40,7 +43,7 @@ spec:
             authMethod: KUBERNETES                      # Method used to authenticate with the Vault endpoint. Must be either KUBERNETES for Kubernetes service account auth or TOKEN for Vault token auth. The TOKEN method will require a VAULT_TOKEN environment variable set for Operator and the services.  
             url: <Vault server URL>:<port, if required> # URL of the Vault endpoint from Spinnaker services.
             role: <k8s role with access to Vault>       # (Applies to KUBERNETES authentication method) Name of the role against which the login is being attempted.
-                # path: <k8s cluster path>                  # (Default: kubernetes) (Applies to KUBERNETES authentication method) Path of the kubernetes authentication backend mount. Default is "kubernetes"
+              # path: <k8s cluster path>                  # (Optional; default: kubernetes) Applies to KUBERNETES authentication method) Path of the kubernetes authentication backend mount. Default is "kubernetes"
 ```
 
 **Halyard**
@@ -48,10 +51,10 @@ spec:
 ```
 hal armory secrets vault enable
 hal armory secrets vault edit \
-  --auth-method KUBERNETES \
-  --url <Vault server URL>:<port, if required> \
-  --role <k8s role with access to Vault> \
-  --path <k8s cluster path> (*optional*, default is 'kubernetes')
+    --auth-method KUBERNETES \
+    --url <Vault server URL>:<port, if required> \
+    --role <k8s role with access to Vault> \
+    --path <k8s cluster path> (*optional*, default is 'kubernetes')
 ```
 
 ### 2. Token authentication
@@ -85,8 +88,8 @@ spec:
 ```
 hal armory secrets vault enable
 hal armory secrets vault edit \
-  --auth-method TOKEN \
-  --url <Vault server URL>:<port, if required>
+    --auth-method TOKEN \
+    --url <Vault server URL>:<port, if required>
 ```
 
 ## Configuring the Operator to use Vault secrets
@@ -106,10 +109,6 @@ secrets:
 Once you've mounted your `ConfigMap` to the `spinnaker-operator` deployment, it will restart the Halyard container with your Vault config.
 
 ## Configuring Halyard to use Vault secrets
->Note: You'll need to be running Armory Halyard version 1.5.1 or later.
-```
-sudo update-halyard --version 1.5.1
-```
 
 Halyard will need access to the Vault server in order to decrypt secrets for validation and deployment. While the Spinnaker services are configured through `~/.hal/config`, the Halyard daemon has its own configuration file found at `/opt/spinnaker/config/halyard.yml`. The contents of your file may look different than this example, but just make sure to add the secrets block somewhere at the root level.
 
