@@ -7,22 +7,24 @@ order: 142
 ## Overview
 {:.no_toc}
 
-Before you can use the Terraform Integration stage, verify that Armory's Terraform Integration for Spinnaker is enabled. For more information, see [Enabling the Terraform Integration](/spinnaker/terraform_integration)For a tour of the Terraform Integration Stage UI, see the [Terraform Integration UI video](https://www.youtube.com/watch?v=Xsjql3g-wtU).
+Before you can use the Terraform Integration stage, verify that Armory's Terraform Integration for Spinnaker is enabled. For more information, see [Enabling the Terraform Integration](/spinnaker/terraform_integration). To familiarize yourself with the Terraform stage, you can take a tour of the Terraform Integration Stage UI by watching the [Terraform Integration UI video](https://www.youtube.com/watch?v=Xsjql3g-wtU).
 
-![Terraform Stage in Deck](/images/terraform_stage_ui.png)
+At the core of the Terraform Integration is the Terraformer service. This service fetches your Terraform projects from source and executes various Terraform commands against them. When a `terraform` stage starts, Orca submits the task to Terraformer and monitors it until completion. Once a task is submitted, Terraformer fetches your target project, runs `terraform init` to initialize the project, and then runs your desired `action` (`plan` or `apply`). If the task is successful, the stage gets marked successful as well. If the task fails, the stage gets marked as a failure, and the pipeline stops.
 
-When you create or edit a pipeline in Deck,  a stage called **Terraform** is available. This stage can perform Terraform actions such as `plan` and `destroy` as part of your Spinnaker pipeline. 
+At a high level, a Terraform Integration stage performs the following actions when it runs:
 
-## How to submit feedback
-{:.no_toc}
-
-If you decide to enable this feature and have feedback you'd like to submit, please let us know at [go.armory.io/ideas](go.armory.io/ideas) or [feedback.armory.io](https://feedback.armory.io)! We're constantly iterating on customer feedback to ensure that the features we build make your life easier!
+1. Authenticates to your repo using basic authentication credentials you provide. This can be a GitHub token or a BitBucket username/password combination. 
+2. Pulls a full directory from your Git repository.
+3. Optionally uses a Spinnaker artifact provider (Github, BitBucket, or HTTP) to pull in a `tfvars`-formatted variable file.
+4. Runs the Terraform action you select.   
 
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
 ## Creating a Terraform Integration stage
+
+![Terraform Stage in Deck](/images/terraform_stage_ui.png)
 
 To use the stage, perform the following steps:
 
@@ -36,11 +38,11 @@ To use the stage, perform the following steps:
       * **Terraform Version**:  Terraform version to use. All Terraform stages within a pipeline that modify state (apply, output, destroy) must use the same version.
       * **Action**: Terraform action to perform. You can select any of the following actions:
         * **Plan**: The output of the plan command is saved to a base64-encoded Spinnaker artifact and is injected into context.  You can use this artifact with a webhook to send the plan data to an external system or to use it in an `apply` stage. Optionally, you can select **Plan for Destroy** to view what Terraform destroys if you run the Destroy action.
-        * **Apply**: Run `terraform apply`. Optionally, you can ignore state locking. Armory recommends you do not ignore state locking because it can lead to state corruption. Only use this setting if you understand the consequences. 
-        * **Destroy**: Run `terraform destroy`. Optionally, you can ignore state locking. Armory recommends you do not ignore state locking because it can lead to state corruption. Only use this setting if you understand the consequences.
+        * **Apply**: Run `terraform apply`. Optionally, you can ignore state locking. Armory recommends you do not ignore state locking because it can lead to state corruption. Only ignore state locking if you understand the consequences. 
+        * **Destroy**: Run `terraform destroy`. Optionally, you can ignore state locking. Armory recommends you do not ignore state locking because it can lead to state corruption.  Only ignore state locking if you understand the consequences.
         * **Output**: Run `terraform output`. 
       * **Targets**: Scope execution to a certain subset of resources.
-      * **Workspace**: [Terraform workspace](https://www.terraform.io/docs/state/workspaces.html) to use. The workspace gets created if it doesn't already exist.
+      * **Workspace**: [Terraform workspace](https://www.terraform.io/docs/state/workspaces.html) to use. The workspace gets created if it does not already exist.
     * **Main Terraform Artifact**
       * **Expected Artifact**: Required. Select or define only one `git/repo` type artifact.
         ![Terraform git repo artifact](/images/terraform-git-repo.png) 
@@ -69,7 +71,7 @@ To use the stage, perform the following steps:
 
       For the `backendArtifact` and other artifacts, you can replace `github/file` with some other artifact type. For example, if you're using the BitBucket artifact provider, specify `bitbucket/file` and the corresponding artifact account.
 
-### Custom Plugins
+## Custom Plugins
 
 The Terraform Integration supports the use of custom Terraform providers and plugins. The Terraform Integration downloads the plugins and injects them into each stage dynamically as needed to ensure the Terraform code can run.
 
@@ -120,7 +122,7 @@ The Terraform Integration caches all the defined plugins by default and does not
 
 ![Terraform Integration logs](/images/terraformer-ui-logs.png)
 
-Terraform's primary interface for user feedback is logging. When executed on your workstation, the log output is streamed to `stdout`. The Terraform Integration captures the log output and makes it available on the **Pipelines** page of Deck as part of the **Execution Details**. Exit codes in the log represent the following states:
+Terraform provides logs that describe the status of your Terraform action. When you run Terraform actions on your workstation, the log output is streamed to `stdout`. For Armory's Terraform Integration, Spinnaker captures the log output and makes it available on the **Pipelines** page of Deck as part of the **Execution Details**. Exit codes in the log represent the following states:
 
 ```
 0 = Succeeded with empty diff (no changes)
@@ -147,3 +149,8 @@ Then you can set up an `Output` stage that exposes this in the pipeline executio
 ```
 ${#stage('My Output Stage')["context"]["status"]["outputs"]["bucket_arn"]["value"]}
 ```
+
+## Submit feedback
+
+Let us know what you think at [go.armory.io/ideas](go.armory.io/ideas) or [feedback.armory.io](https://feedback.armory.io). We're constantly iterating on customer feedback to ensure that the features we build make your life easier!
+
