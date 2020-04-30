@@ -27,7 +27,7 @@ When creating a Terraform Integration stage, pipeline creators select a specific
 
 Note that all Terraform stages within a Pipeline that affect state must use the same Terraform version.
 
-### Requirements
+## Requirements
 
 * Credentials (in the form of basic auth) for your Terraform Git repository. The Terraform Integration needs access to credentials to download directories that house your Terraform templates. The credentials can take one of two forms:
    * If your Terraform repo is in GitHub, use a Personal Acccess Token (potentially associated with a service account) as the 'token'.  Generate this token in your GitHub settings. For more information, see [Generating a Github Personal Access Token (PAT)](#generating-a-github-personal-access-token-pat).
@@ -35,7 +35,7 @@ Note that all Terraform stages within a Pipeline that affect state must use the 
 * To use Terraform Input Variable Files (`tfvar`), you must have a separate artifact provider (such as the GitHub, BitBucket, or HTTP artifact provider) that can pull your `tfvar` file(s). Additionally, the credentials must be configured in both places: the Terraform Integration and the artifact provider.
 
 
-#### Generating a GitHub Personal Access Token (PAT)
+### Generating a GitHub Personal Access Token (PAT)
 {:.no_toc}
 
 Skip this section if you are using BitBucket, which requires your username and password.
