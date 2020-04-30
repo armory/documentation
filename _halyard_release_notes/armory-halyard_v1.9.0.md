@@ -10,6 +10,16 @@ order: -202001061114156
 This version is required to deploy Armory Spinnaker 2.19+. 
 
 
+## Known Issue
+
+### Halyard version
+
+There is a known issue where Armory Halyard 1.9.0 fails to install Armory Spinnaker 2.18.1. The Pod for Echo enters a crash loop.
+
+**Workaround** 
+
+Use Armory Halyard 1.8.3 if you want to install Armory Spinnaker 2.18.1. 
+
 ## Halyard Armory Enterprise Spinnaker
 - fix(secrets): have services decrypt their own secrets
 - chore(build): bump OSS Halyard to 1.34.0
