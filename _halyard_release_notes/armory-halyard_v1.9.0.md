@@ -20,6 +20,11 @@ There is a known issue where Armory Halyard 1.9.0 fails to install Armory Spinna
 
 Use Armory Halyard 1.8.3 if you want to install Armory Spinnaker 2.18.1. 
 
+## Highlights
+
+Armory Halyard 1.9.0 resolves an issue where secrets are stored decrypted at rest in the Pods of the Spinnaker services.
+
+
 ## Halyard Armory Enterprise Spinnaker
 - fix(secrets): have services decrypt their own secrets
 - chore(build): bump OSS Halyard to 1.34.0
