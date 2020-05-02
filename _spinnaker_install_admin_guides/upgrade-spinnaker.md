@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Upgrade Spinnaker using Halyard
-order: 10
+order: 28
 ---
 
 
