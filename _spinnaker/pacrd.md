@@ -58,7 +58,7 @@ accounts
 Download the current `pacrd` manifest to your local machine:
 
 ```
-curl -fsSL https://engineering.armory.io/manifests/pacrd-0.5.0.yaml > pacrd-0.5.0.yaml
+curl -fsSL https://engineering.armory.io/manifests/pacrd-0.6.0.yaml > pacrd-0.6.0.yaml
 ```
 
 Then, inspect the manifest to make sure it is compatible with your cluster.
@@ -72,7 +72,7 @@ the installation settings:
 ```yaml
 # file: kustomization.yaml
 resources:
-  - pacrd-0.5.0.yaml
+  - pacrd-0.6.0.yaml
 patchesStrategicMerge:
   - patch.yaml
 namespace: spinnaker  # Note: you should change this value if you are _not_ deploying into the `spinnaker` namespace.
@@ -346,9 +346,132 @@ the resource and looking in the "Events section":
 kubectl describe pipeline myapplicationpipeline
 ```
 
+## Artifacts
+
+An artifact is an object that references an external resource. It could be a
+Docker container, file in source control, AMI, or binary blob in S3, etc.
+artifacts in PaCRD come in two flavors:
+
+- **Definitions**, which contain all necessary information to locate an artifact.
+- **References**, which contain enough information to find a Definition.
+
+### Defining Artifacts
+
+Defining artifacts are similar to how one would approach it through the
+Spinnaker web interface. At the beginning of a Pipeline definition, there is
+a field for defining expected artifacts where you can tell Spinnaker which
+artifacts you expect to be present. The following is a sample artifact definition
+that defines a single container image that is expected to be present as an
+input to the bake manifest stage:
+
+```yaml
+apiVersion: pacrd.armory.spinnaker.io/v1alpha1
+kind: Pipeline
+metadata:
+  name: my-pipeline
+spec:
+  description: A sample showing how to define artifacts.
+  application: my-application
+  expectedArtifacts:
+    - id: &image-id my-application-docker-image
+      displayName: *image-id
+      matchArtifact:
+        type: docker/image
+        properties:
+          name: my-organization/my-container
+          artifactAccount: docker-registry
+  stages:
+    - type: BakeManifest
+      name: Let's Bake Some Manifests
+      refId: "1"
+      bakeManifest:
+        templateRenderer: helm2
+        outputName: myManifest
+        inputArtifacts:
+          - id: *image-id
+```
+
+Each `matchArtifact` block follows the same pattern:
+
+- A type field telling Spinnaker which artifact kind to use
+- A Properties field, which is a mapping of key value pairs appropriate for that
+artifact.
+
+While PaCRD can validate officially supported artifacts, it cannot do so for
+Custom Artifacts or artifacts defined [via Plugins]. A full list of official
+artifacts are listed [here][artifacts-overview].
+
+### Referencing Artifacts
+
+In order to reference an artifact that you've defined elsewhere in your pipeline
+you have two options: by identifier or by display name. If you're familiar with
+artifacts, you can use IDs without issue. If you are new to using artifacts, then
+you can reference the Display Name field, which is most often what will appear
+when your pipeline has rendered in the Spinnaker UI.
+
+Consider the following example, where we want to reference two inline artifacts,
+one by name and one by id. We would first define our inline artifacts, then
+reference them individually as in the following example:
+
+```
+apiVersion: pacrd.armory.spinnaker.io/v1alpha1
+kind: Pipeline
+metadata:
+  name: my-pipeline
+spec:
+  description: A sample showing how to reference artifacts.
+  application: my-application
+  expectedArtifacts:
+    - id: &by-id-example inline-artifact-id
+      displayName: My Inline Artifact Id
+      matchArtifact:
+        type: embedded/base64
+        properties:
+          name: my-inline-artifact
+    - id: second-inline-artifact
+      displayName: &by-name-example My Second Inline Artifact
+      matchArtifact:
+        type: embedded/base64
+        properties:
+          name: my-second-inline-artifact
+  stages:
+    - type: BakeManifest
+      name: Let's Bake Some Manifests
+      refId: "1"
+      bakeManifest:
+        templateRenderer: helm2
+        outputName: myManifest
+        inputArtifacts:
+          - id: *by-id-example
+          - displayName: *by-name-example
+```
+
+In both scenarios, PaCRD will validate that the `inputArtifacts` referenced
+in the Bake Manifest stage correspond to exactly one artifact declared in the
+pipeline. If an artifact cannot be found, you can determine which artifact
+by running a describe call against the pipeline under creation. For example,
+if we use the above example but replace our `id` reference to `a-nonsense-value`,
+we should expect to see the following events in our describe call.
+
+To describe our pipeline:
+
+```
+kubectl describe pipeline my-pipeline
+```
+
+And our expected output:
+
+```
+Events:
+  Type     Reason                    Age                    From       Message
+  ----     ------                    ----                   ----       -------
+  Normal   Updated                   2m53s (x2 over 2m54s)  pipelines  Pipeline successfully updated in Spinnaker.
+  Warning  PipelineValidationFailed  0s (x4 over 3s)        pipelines  artifact with id "a-nonsense-value" and name "" could not be found for this pipeline
+```
+
 # Known Limitations
 
-## v0.1.x - v0.5.x
+## v0.1.x - v0.6.x
 
 ### Applications
 
@@ -401,3 +524,5 @@ manifest. Fields are documented under `spec.validation.openAPIV3Schema`.
 [create an application]: https://www.spinnaker.io/guides/user/applications/create/#create-an-application
 [create a pipeline]: https://www.spinnaker.io/guides/user/pipeline/managing-pipelines/#create-a-pipeline
 [crd-docs]: ../pacrd-crd-docs/
+[via Plugins]: https://www.spinnaker.io/guides/user/plugins/user-guide/
+[artifacts-overview]: https://www.spinnaker.io/reference/artifacts/types/overview/
