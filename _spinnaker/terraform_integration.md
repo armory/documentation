@@ -192,56 +192,56 @@ To add profiles that a user can select from, perform the following steps:
 
 #### Types of credentials
 
-We support multiple types of credentials via Profiles to handle all of the various use cases that Terraform can be used for. If you don't see a credential that suits your use case, [let us know](https://feedback.armory.io/feature-requests)!
+We support multiple types of credentials via Profiles to handle the various use cases that you can use the Terraform integration for. If you don't see a credential that suits your use case, [let us know](https://feedback.armory.io/feature-requests)!
 
 *SSH Key*
 
-The `git-ssh` credential kind can be used to provide authentication to private Git repositories used as modules within your Terraform. The supplied SSH key will be available to Terraform for the duration of your execution, allowing it to fetch any modules it needs.
+Use the `git-ssh` credential kind to provide authentication to private Git repositories used as modules within your Terraform actions. The supplied SSH key will be available to Terraform for the duration of your execution, allowing it to fetch any modules it needs:
 
-```
-- name: pixel-git
+```yaml
+- name: pixel-git # Unique name for the profile. Shows up in the UI.
   variables:
-  - kind: git-ssh 
+  - kind: git-ssh  # Type of credential 
     options:
     sshPrivateKey: encrypted:vault!e:<secret engine>!p:<path to secret>!k:<key>!b:<is base64 encoded?> 
 ```
 
 *AWS*
 
-The `aws` credential type can used to provide authentication to AWS. There are two methods you can use to provide authentication - by defining a static key pair or a role that should be assumed before the Terraform is executed. 
+Use the `aws` credential type to provide authentication to AWS. There are two methods you can use to provide authentication - by defining a static key pair or a role that should be assumed before a Terraform action is executed. 
 
-For defining a static key pair, you can supply an `accessKeyId` and a `secretAccessKey`.
+For defining a static key pair, supply an `accessKeyId` and a `secretAccessKey`:
 
-```
-- name: devops
+```yaml
+- name: devops # Unique name for the profile. Shows up in the UI.
   variables:
-  - kind: aws
+  - kind: aws # Type of credential 
     options:
       accessKeyId: AKIAIOWQXTLW36DV7IEA
       secretAccessKey: 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
 ```
 
-If you'd like to assume a role instead of defining a static set of credentials, simply supply the ARN of the role to assume.
+For assuming a role instead of defining a static set of credentials, supply the ARN of the role to assume:
 
 
-```
-- name: devops
+```yaml 
+- name: devops # Unique name for the profile. Shows up in the UI.
   variables:
-  - kind: aws
+  - kind: aws # Type of credential 
     options:
       assumeRole: arn:aws:iam::012345567:role/roleAssume
 ```
 
-*When assuming a role, if `accessKeyId` and `secretAccessKey` are supplied, Terraformer will use these credentials to assume the role. Otherwise, the environment will be used for authentication (i.e. machine role or a shared credentials file).*
+*When assuming a role, if `accessKeyId` and `secretAccessKey` are supplied, the Terraform integration uses these credentials to assume the role. Otherwise, the environment gets used for authentication, such as a machine role or a shared credentials file.*
 
 *Static*
 
-The `static` credential kind can be used to provide any arbitrary key/value pair that isn't supported by any of the other credential kinds. For example, if you wanted all users of the `devops` profile to execute against the `AWS_REGION=us-west-2`, you could use the following `static` credential configuration.
+Use the `static` credential kind to provide any arbitrary key/value pair that isn't supported by any of the other credential kinds. For example, if you want all users of the `devops` profile to execute against the `AWS_REGION=us-west-2`, use the following `static` credential configuration.
 
-```
-- name: devops
+```yaml
+- name: devops # Unique name for the profile. Shows up in the UI.
   variables:
-  - kind: static
+  - kind: static # Type of credential 
     options:
       name: AWS_REGION
       value: us-west-2
