@@ -246,7 +246,7 @@ Pipeline definitions can include Modules defined in another GitHub Repo. e.g.:
 {% endraw %}
 ```
 
-Note that modules can be stored on a subfolder of your repository, to reference those modules you need to do it like
+Note that modules can be stored on a subfolder of your repository. To reference these modules, add a snippet like the following:
 
 ```{% raw %}
 {{ module "my/path/to/module/wait.stage.module" }}
