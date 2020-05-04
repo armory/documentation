@@ -243,7 +243,17 @@ Pipeline definitions can include Modules defined in another GitHub Repo. e.g.:
     }
   ]
 }
+{% endraw %}
+```
+
+Note that modules can be stored on a subfolder of your repository, to reference those modules you need to do it like
+
+```{% raw %}
+{{ module "my/path/to/module/wait.stage.module" }}
 {% endraw %}```
+
+Note that before Armory 2.19.9 using "/my/path/to/module/wait.stage.module" would result on a bug.
+
 
 The `{% raw %}{{ module "wait.stage.module" }}{% endraw %}` takes the wait.stage.module file inside the dinghy-templates repo, and includes it in the current template. Note that modules are simply text inserted into the JSON they are referenced by; if you wanted to add another stage after the module in the example above, you would need to add the comma after the substitution so the resulting JSON was correct.
 
@@ -265,7 +275,8 @@ We can also pass variables to our modules like so:
     }
   ]
 }
-{% endraw %}```
+{% endraw %}
+```
 
 Any number of variables can be passed to a module by simply specifying them as arguments, e.g.: `{% raw %}{{ module "wait.stage.module" "waitTime" 100 "name" "simpleWait" }}{% endraw %}`.
 
@@ -279,7 +290,8 @@ Inside wait.stage.module, we can then include these variables inline:
   "type": "wait",
   "waitTime": {{ var "waitTime" ?: 10 }}
 }
-{% endraw %}```
+{% endraw %}
+```
 
 The `{% raw %}{{ var }}{% endraw %}` function is used to access variables passed to the `{% raw %}{{ module }}{% endraw %}` call.
 The first parameter is the variable name: `{% raw %}{{ var "waitName" }}{% endraw %}`
@@ -359,7 +371,8 @@ You would use the following JSON to create such. Note that any of the stages cou
     }
   ]
 }
-{% endraw %}```
+{% endraw %}
+```
 
 The file `deploy.stage.module` would look like this:
 ```{% raw %}
@@ -371,7 +384,8 @@ The file `deploy.stage.module` would look like this:
   "requisiteStageRefIds": {{ var "requisiteStageRefIds" ?: [] }},
   "type": "deploy"
 }
-{% endraw %}```
+{% endraw %}
+```
 
 ## Multiple Level Inheritance
 
@@ -427,7 +441,7 @@ If you want any pipelines in the spinnaker application that are not part of the 
 ```{% raw %}
 {
   "application": "yourspinnakerapplicationname",
-  "deleteStalePipelines": true
+  "deleteStalePipelines": true,
   "pipelines": [
   ]
 }
