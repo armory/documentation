@@ -252,7 +252,7 @@ Note that modules can be stored on a subfolder of your repository. To reference 
 {{ module "my/path/to/module/wait.stage.module" }}
 {% endraw %}```
 
-Note that before Armory 2.19.9 using "/my/path/to/module/wait.stage.module" would result on a bug.
+> Using the path "/my/path/to/module/wait.stage.module" with a leading slash (`/`)is not supported in Armory 2.19.8 and earlier.
 
 
 The `{% raw %}{{ module "wait.stage.module" }}{% endraw %}` takes the wait.stage.module file inside the dinghy-templates repo, and includes it in the current template. Note that modules are simply text inserted into the JSON they are referenced by; if you wanted to add another stage after the module in the example above, you would need to add the comma after the substitution so the resulting JSON was correct.
