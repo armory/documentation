@@ -158,14 +158,12 @@ Note that all Terraform stages within a Pipeline that affect state must use the 
 
 ### Configuring a Profile
 
-Configure profiles that users can select when creating a Terraform Integration stage. A profile gives users the ability to reference certain kinds of external sources, such as a private remote repository, when creating pipelines.
-
-For example, if your Terraform scripts rely on modules stored in a private remote Git repository, add your `SSH` key to a profile. Then, a user can select that profile when creating a Terraform Integration stage. When a pipeline runs, the Terraform Integration automatically gains access to fetch what it needs from the private repo.
+Configure profiles that users can select when creating a Terraform Integration stage. A profile gives users the ability to reference certain kinds of external sources, such as a private remote repository, when creating pipelines. 
 
 To add profiles that a user can select from, perform the following steps:
 
 1. In the `.hal/default/profiles` directory, create or edit `terraformer-local.yml`.
-2. Add the values for the profile(s) you want to add under an `environments` section. The following example adds a profile named `pixel-git` for an SSH key secured in Vault and used to access a Git repo: 
+2. Add the values for the profile(s) you want to add under an `profiles` section. The following example adds a profile named `pixel-git` for an SSH key secured in Vault.
     
     ```
     # Profile name displayed in Deck
@@ -180,7 +178,7 @@ To add profiles that a user can select from, perform the following steps:
 
     Keep the following in mind when adding profiles:
 
-      * You can add multiple profiles under the `profile` section.
+      * You can add multiple profiles under the `profiles` section.
       * Do not commit plain text secrets to `terraformer-local.yml`. Instead, use a secret store: [Vault](/spinnaker-install-admin-guides/secrets-vault), an [encrypted S3 bucket](/spinnaker-install-admin-guides/secrets-s3), or an [encrypted GCS bucket](/spinnaker-install-admin-guides/secrets-gcs). 
       * Only one option parameter at a time is supported. This means that you can use a private key file (`sshPrivateKeyFilePath`) or the key (`sshPrivateKey`) as the option. To use the key file path, use `sshPrivateKeyFilePath` for the option and provide the path to the key file. The path can also be encrypted using a secret store such as Vault. The following `option` example uses `sshPrivateKeyFilePath`:
         
@@ -191,6 +189,64 @@ To add profiles that a user can select from, perform the following steps:
         
         For more information, see the documentation for your secret store.
 3. Save the file. 
+
+#### Types of credentials
+
+We support multiple types of credentials via Profiles to handle all of the various use cases that Terraform can be used for. If you don't see a credential that suits your use case, [let us know](https://feedback.armory.io/feature-requests)!
+
+*SSH Key*
+
+The `git-ssh` credential kind can be used to provide authentication to private Git repositories used as modules within your Terraform. The supplied SSH key will be available to Terraform for the duration of your execution, allowing it to fetch any modules it needs.
+
+```
+- name: pixel-git
+  variables:
+  - kind: git-ssh 
+    options:
+    sshPrivateKey: encrypted:vault!e:<secret engine>!p:<path to secret>!k:<key>!b:<is base64 encoded?> 
+```
+
+*AWS*
+
+The `aws` credential type can used to provide authentication to AWS. There are two methods you can use to provide authentication - by defining a static key pair or a role that should be assumed before the Terraform is executed. 
+
+For defining a static key pair, you can supply an `accessKeyId` and a `secretAccessKey`.
+
+```
+- name: devops
+  variables:
+  - kind: aws
+    options:
+      accessKeyId: AKIAIOWQXTLW36DV7IEA
+      secretAccessKey: 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
+```
+
+If you'd like to assume a role instead of defining a static set of credentials, simply supply the ARN of the role to assume.
+
+
+```
+- name: devops
+  variables:
+  - kind: aws
+    options:
+      assumeRole: arn:aws:iam::012345567:role/roleAssume
+```
+
+*When assuming a role, if `accessKeyId` and `secretAccessKey` are supplied, Terraformer will use these credentials to assume the role. Otherwise, the environment will be used for authentication (i.e. machine role or a shared credentials file).*
+
+*Static*
+
+The `static` credential kind can be used to provide any arbitrary key/value pair that isn't supported by any of the other credential kinds. For example, if you wanted all users of the `devops` profile to execute against the `AWS_REGION=us-west-2`, you could use the following `static` credential configuration.
+
+```
+- name: devops
+  variables:
+  - kind: static
+    options:
+      name: AWS_REGION
+      value: us-west-2
+```
+
 
 ### Enabling the Terraform Integration UI
 
