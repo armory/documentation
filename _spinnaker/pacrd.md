@@ -348,7 +348,7 @@ kubectl describe pipeline myapplicationpipeline
 
 ## Artifacts
 
-An [artifact](artifact-concept) is an object that references an external
+An [artifact](https://www.spinnaker.io/reference/artifacts-with-artifactsrewrite/) is an object that references an external
 resource. Examples include a Docker container, a file in source control, an AMI,
 or a binary blob in S3. Artifacts in PaCRD come in two types:
 
@@ -390,7 +390,7 @@ spec:
 
 Each `matchArtifact` block contains:
 
-- `type`: **required**; the artifact classification; see the [Types of Artifacts](artifacts-overview) section in the Spinnaker documentation for supported types
+- `type`: **required**; the artifact classification; see the [Types of Artifacts](https://www.spinnaker.io/reference/artifacts-with-artifactsrewrite/types/overview/) section in the Spinnaker documentation for supported types
 - `properties`: mapping of key value pairs appropriate for that artifact.
 
 PaCRD only validates officially supported artifacts. PaCRD does not support custom artifacts or artifacts defined [via Plugins].
@@ -519,5 +519,3 @@ manifest. Fields are documented under `spec.validation.openAPIV3Schema`.
 [create a pipeline]: https://www.spinnaker.io/guides/user/pipeline/managing-pipelines/#create-a-pipeline
 [crd-docs]: ../pacrd-crd-docs/
 [via Plugins]: https://www.spinnaker.io/guides/user/plugins/user-guide/
-[artifact-concept]: https://www.spinnaker.io/reference/artifacts-with-artifactsrewrite/
-[artifacts-overview]: https://www.spinnaker.io/reference/artifacts-with-artifactsrewrite/types/overview/
