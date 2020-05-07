@@ -178,9 +178,8 @@ vault kv put secret/spinnaker/saml base64keystore=@saml.b64
 
 ## Referencing secrets
 
-Now that secrets are safely stored in Vault, you'll reference them in config files with the general syntax below. 
+Now that secrets are safely stored in Vault, reference them in config files with the following syntax: 
 
-The format looks like.
 ```
 encrypted:vault!e:<secret engine>!p:<path to secret>!k:<key>!b:<is base64 encoded?>
 ```
