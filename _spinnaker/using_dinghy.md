@@ -735,11 +735,11 @@ Example:
       "name": "my-pipeline-name",
       "stages": [
           {
-              {{ if eq .RawData.pusher.name "Samtribal" }}
-                "name": "this_is_true",
-              {{ else }}
-                "name": "this_is_false",
-              {{ end }}
+            {{ if eq .RawData.pusher.name "Samtribal" }}
+              "name": "this_is_true",
+            {{ else }}
+              "name": "this_is_false",
+            {{ end }}
             "waitTime":  10,
             "type": "wait"
           }
