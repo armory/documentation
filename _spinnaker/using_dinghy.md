@@ -741,6 +741,30 @@ pipelines:
 
 Dinghy supports all of the usual Go template conditionals. In addition to that, Dinghy also provides the git webhoook content in the template, allowing you to use the raw push data in the template itself.
 
+Example:
+```{% raw %}
+{
+  "application": "conditionals",
+  "pipelines": [
+    {
+      "application": "conditionals",
+      "name": "my-pipeline-name",
+      "stages": [
+          {
+            {{ if eq .RawData.pusher.name "Samtribal" }}
+              "name": "this_is_true",
+            {{ else }}
+              "name": "this_is_false",
+            {{ end }}
+            "waitTime":  10,
+            "type": "wait"
+          }
+      ]
+    }
+  ]
+}
+{% endraw %}```
+
 ### Iterating over a map:
 
 In certain situations, you may want to iterate over a list of items.  Dinghy supports the `makeSlice` function.  Here's an example of how to do this:
