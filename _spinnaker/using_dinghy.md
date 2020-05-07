@@ -45,7 +45,7 @@ Here is an example Dinghyfile:
         {
           "name": "one",
           "type": "wait",
-          "waitTIme": 10
+          "waitTime": 10
         }
       ]
     }
@@ -102,14 +102,14 @@ While a JSON array is an ordered list, the order of the stages in your pipeline'
         {
           "name": "one",
           "type": "wait",
-          "waitTIme":  10,
+          "waitTime":  10,
           "refId": "first-stage",
           "requisiteStageRefIds": []
         },
         {
           "name": "two-a",
           "type": "wait",
-          "waitTIme":  15,
+          "waitTime":  15,
           "refId": "my-second-stage",
           "requisiteStageRefIds": [
             "first-stage"
@@ -118,7 +118,7 @@ While a JSON array is an ordered list, the order of the stages in your pipeline'
         {
           "name": "two-b",
           "type": "wait",
-          "waitTIme":  30,
+          "waitTime":  30,
           "refId": "my-other-second-stage",
           "requisiteStageRefIds": [
             "first-stage"
@@ -127,7 +127,7 @@ While a JSON array is an ordered list, the order of the stages in your pipeline'
         {
           "name": "last",
           "type": "wait",
-          "waitTIme":  20,
+          "waitTime":  20,
           "refId": "my-final-stage",
           "requisiteStageRefIds": [
             "my-second-stage",
