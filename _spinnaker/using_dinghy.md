@@ -548,7 +548,7 @@ Note that top-level variables are overwritten by variables in the call to module
       "application": "yourspinnakerapplicationname",
       "name": "Made By Armory Pipeline Templates",
       "stages": [
-        {{ module "wait.stage.module" "waitTime": "43" }}
+        {{ module "wait.stage.module" "waitTime" "43" }}
       ]
     }
   ]
