@@ -348,21 +348,18 @@ kubectl describe pipeline myapplicationpipeline
 
 ## Artifacts
 
-An artifact is an object that references an external resource. It could be a
-Docker container, file in source control, AMI, or binary blob in S3, etc.
-artifacts in PaCRD come in two flavors:
+An [artifact](artifact-concept) is an object that references an external
+resource. Examples include a Docker container, a file in source control, an AMI,
+or a binary blob in S3. Artifacts in PaCRD come in two types:
 
-- **Definitions**, which contain all necessary information to locate an artifact.
-- **References**, which contain enough information to find a Definition.
+- **Definitions** contain all necessary information to locate an artifact.
+- **References** contain enough information to find a Definition.
 
 ### Defining Artifacts
 
-Defining artifacts are similar to how one would approach it through the
-Spinnaker web interface. At the beginning of a Pipeline definition, there is
-a field for defining expected artifacts where you can tell Spinnaker which
-artifacts you expect to be present. The following is a sample artifact definition
-that defines a single container image that is expected to be present as an
-input to the bake manifest stage:
+Define your pipeline artifacts in a section called `expected artifacts`. The
+following example defines a single container image that the pipeline expects as
+an input to the BakeManifest stage:
 
 ```yaml
 apiVersion: pacrd.armory.spinnaker.io/v1alpha1
@@ -391,29 +388,23 @@ spec:
           - id: *image-id
 ```
 
-Each `matchArtifact` block follows the same pattern:
+Each `matchArtifact` block contains:
 
-- A type field telling Spinnaker which artifact kind to use
-- A Properties field, which is a mapping of key value pairs appropriate for that
-artifact.
+- `type`: **required**; the artifact classification; see the [Types of Artifacts](artifacts-overview) section in the Spinnaker documentation for supported types
+- `properties`: mapping of key value pairs appropriate for that artifact.
 
-While PaCRD can validate officially supported artifacts, it cannot do so for
-Custom Artifacts or artifacts defined [via Plugins]. A full list of official
-artifacts are listed [here][artifacts-overview].
+PaCRD only validates officially supported artifacts. PaCRD does not support custom artifacts or artifacts defined [via Plugins].
 
 ### Referencing Artifacts
 
-In order to reference an artifact that you've defined elsewhere in your pipeline
-you have two options: by identifier or by display name. If you're familiar with
-artifacts, you can use IDs without issue. If you are new to using artifacts, then
-you can reference the Display Name field, which is most often what will appear
-when your pipeline has rendered in the Spinnaker UI.
+Reference artifacts in the `inputArtifacts` section of a pipeline stage. You
+can use either the artifact `id` or `displayName`. If you are new to using
+artifacts, you can use the `displayName` value, which is most often what appears
+when the Spinnaker UI displays your pipeline.
 
-Consider the following example, where we want to reference two inline artifacts,
-one by name and one by id. We would first define our inline artifacts, then
-reference them individually as in the following example:
+The following example defines two artifacts in the `expectedArtifacts` section. Each artifact is then referenced in the `inputArtifacts` section of the `bakeManifest` stage. The first is declared with `id` and the second with `displayName`.
 
-```
+```yaml
 apiVersion: pacrd.armory.spinnaker.io/v1alpha1
 kind: Pipeline
 metadata:
@@ -422,14 +413,14 @@ spec:
   description: A sample showing how to reference artifacts.
   application: my-application
   expectedArtifacts:
-    - id: &by-id-example inline-artifact-id
-      displayName: My Inline Artifact Id
+    - id: first-inline-artifact-id
+      displayName: My First Inline Artifact Id
       matchArtifact:
         type: embedded/base64
         properties:
           name: my-inline-artifact
-    - id: second-inline-artifact
-      displayName: &by-name-example My Second Inline Artifact
+    - id: second-inline-artifact-id
+      displayName: My Second Inline Artifact
       matchArtifact:
         type: embedded/base64
         properties:
@@ -442,24 +433,27 @@ spec:
         templateRenderer: helm2
         outputName: myManifest
         inputArtifacts:
-          - id: *by-id-example
-          - displayName: *by-name-example
+          - id: first-inline-artifact-id
+          - displayName: My Second Inline Artifact
 ```
 
-In both scenarios, PaCRD will validate that the `inputArtifacts` referenced
-in the Bake Manifest stage correspond to exactly one artifact declared in the
-pipeline. If an artifact cannot be found, you can determine which artifact
-by running a describe call against the pipeline under creation. For example,
-if we use the above example but replace our `id` reference to `a-nonsense-value`,
-we should expect to see the following events in our describe call.
+PaCRD validates that the `inputArtifacts` referenced in the `bakeManifest` stage
+correspond to exactly one artifact declared in the `expectedArtifacts` section
+of the CRD.
 
-To describe our pipeline:
+PaCRD throws a `PipelineValidationFailed` error when it can't find an input
+artifact in the list of expected artifacts. You can see which input artifact
+failed validation by executing a describe call against the pipeline under
+creation. For example, if you use the above example but replace our `id`
+reference with `a-nonsense-value`, pipeline validation fails.
+
+Execute `kubectl describe`:
 
 ```
 kubectl describe pipeline my-pipeline
 ```
 
-And our expected output:
+Expected output displays which input artifact failed validation:
 
 ```
 Events:
@@ -525,4 +519,5 @@ manifest. Fields are documented under `spec.validation.openAPIV3Schema`.
 [create a pipeline]: https://www.spinnaker.io/guides/user/pipeline/managing-pipelines/#create-a-pipeline
 [crd-docs]: ../pacrd-crd-docs/
 [via Plugins]: https://www.spinnaker.io/guides/user/plugins/user-guide/
-[artifacts-overview]: https://www.spinnaker.io/reference/artifacts/types/overview/
+[artifact-concept]: https://www.spinnaker.io/reference/artifacts-with-artifactsrewrite/
+[artifacts-overview]: https://www.spinnaker.io/reference/artifacts-with-artifactsrewrite/types/overview/
