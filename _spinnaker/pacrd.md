@@ -13,7 +13,7 @@ order: 171
 
 {% include components/experimental_feature.html %}
 
-PaCRD is considered [**Experimental**] software. This feature is working and
+PaCRD is considered [**Experimental**](https://kb.armory.io/releases/early-release-beta-GA/) software. This feature is working and
 installable but is missing functionality and subject to rapid change.
 
 __Interested in joining this experiment?
@@ -26,7 +26,7 @@ __Interested in joining this experiment?
 # Overview
 
 PaCRD (a combination of "Pipelines as Code" and "Custom Resource Definition") is
-a [Kubernetes controller] that manages the lifecycle of Spinnaker applications
+a [Kubernetes controller](https://kubernetes.io/docs/concepts/architecture/controller/) that manages the lifecycle of Spinnaker applications
 and pipelines as objects within your cluster. PaCRD extends Kubernetes
 functionality to support Spinnaker Application and Pipeline objects that can be
 observed for changes through a mature lifecycle management API.
@@ -122,23 +122,23 @@ and include details about customizing an install.
 
 Once you have PaCRD installed and running in your cluster, you can define your applications and pipelines. Then apply them to the cluster.
 
-While this product is in an [**Experimental**] state, [kind] objects for PaCRD
+While this product is in an [**Experimental**](https://kb.armory.io/releases/early-release-beta-GA/) state, [kind](https://github.com/kubernetes-sigs/kind) objects for PaCRD
 live under the `pacrd.armory.spinnaker.io/v1alpha1` version moniker.
 
 ## Applications
 
 In Spinnaker, an Application is a logical construct that allows you to group
 resources under a single name. You can read more about applications in the
-Spinnaker [docs][app-docs].
+Spinnaker [docs](https://www.spinnaker.io/guides/user/applications/#about-applications).
 
 For available Application configuration options check out
-[our CRD documentation here][crd-docs].
+[our CRD documentation here](../pacrd-crd-docs/).
 
 ### Creating an application
 
-In Kubernetes, define your application in an `application.yaml` file.  The configuration fields are the same as what you see when you [create an application] using the Spinnaker UI. The following example defines an application named "myapplicationname".
+In Kubernetes, define your application in an `application.yaml` file.  The configuration fields are the same as what you see when you [create an application](https://www.spinnaker.io/guides/user/applications/create/#create-an-application) using the Spinnaker UI. The following example defines an application named "myapplicationname".
 
-*Note: Application names must adhere to both [Kubernetes][kube-name-doc]
+*Note: Application names must adhere to both [Kubernetes](https://kubernetes.io/docs/concepts/overview/working-with-objects/names/)
 __and__ Spinnaker name standards.*
 
 ```yaml
@@ -215,13 +215,13 @@ kubectl describe app myapplicationname
 
 Pipelines allow you to encode the process that your team follows to take a
 service from commit to a desired environment, such as production. You can
-read more about pipelines in the Spinnaker [docs][pipe-docs].
+read more about pipelines in the Spinnaker [docs][https://www.spinnaker.io/concepts/pipelines/].
 
-View Pipeline configuration options in the [CRD documentation][crd-docs].
+View Pipeline configuration options in the [CRD documentation](../pacrd-crd-docs/).
 
 ### Creating pipelines
 
-In Kubernetes, define your pipeline in a `pipeline.yaml` file. The configuration fields are the same as what you see when you [create a pipeline] using the Spinnaker UI. The following example defines a simple pipeline named "myapplicationpipeline", which bakes a manifest and prompts for a manual judgment.
+In Kubernetes, define your pipeline in a `pipeline.yaml` file. The configuration fields are the same as what you see when you [create a pipeline](https://www.spinnaker.io/guides/user/pipeline/managing-pipelines/#create-a-pipeline) using the Spinnaker UI. The following example defines a simple pipeline named "myapplicationpipeline", which bakes a manifest and prompts for a manual judgment.
 
 *Note: This example assumes that you've created the `myapplicationname`
 application from the [previous section](#applications). Create one before
@@ -391,9 +391,9 @@ spec:
 Each `matchArtifact` block contains:
 
 - `type`: **required**; the artifact classification; see the [Types of Artifacts](https://www.spinnaker.io/reference/artifacts-with-artifactsrewrite/types/overview/) section in the Spinnaker documentation for supported types
-- `properties`: mapping of key value pairs appropriate for that artifact.
+- `properties`: dictionary of key-value pairs appropriate for that artifact
 
-PaCRD only validates officially supported artifacts. PaCRD does not support custom artifacts or artifacts defined [via Plugins].
+PaCRD only validates officially supported artifacts. PaCRD does not validate custom artifacts or artifacts defined [via Plugins](https://www.spinnaker.io/guides/user/plugins/user-guide/).
 
 ### Referencing Artifacts
 
@@ -444,8 +444,8 @@ of the CRD.
 PaCRD throws a `PipelineValidationFailed` error when it can't find an input
 artifact in the list of expected artifacts. You can see which input artifact
 failed validation by executing a describe call against the pipeline under
-creation. For example, if you use the above example but replace our `id`
-reference with `a-nonsense-value`, pipeline validation fails.
+creation. If you use the above example but replace the `id` reference with
+`a-nonsense-value`, pipeline validation fails.
 
 Execute `kubectl describe`:
 
@@ -507,15 +507,3 @@ manifest. Fields are documented under `spec.validation.openAPIV3Schema`.
 found in the installation manifest for this controller. You can do so by
 grepping for `pipelines.pacrd.armory.spinnaker.io` in the installation
 manifest. Fields are documented under `spec.validation.openAPIV3Schema`.
-
-
-[**Experimental**]: https://kb.armory.io/releases/early-release-beta-GA/
-[Kubernetes controller]: https://kubernetes.io/docs/concepts/architecture/controller/
-[app-docs]: https://www.spinnaker.io/guides/user/applications/#about-applications
-[kube-name-doc]: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/
-[pipe-docs]: https://www.spinnaker.io/concepts/pipelines/
-[kind]: https://github.com/kubernetes-sigs/kind
-[create an application]: https://www.spinnaker.io/guides/user/applications/create/#create-an-application
-[create a pipeline]: https://www.spinnaker.io/guides/user/pipeline/managing-pipelines/#create-a-pipeline
-[crd-docs]: ../pacrd-crd-docs/
-[via Plugins]: https://www.spinnaker.io/guides/user/plugins/user-guide/
