@@ -178,41 +178,31 @@ vault kv put secret/spinnaker/saml base64keystore=@saml.b64
 
 ## Referencing secrets
 
-Now that secrets are safely stored in Vault, you'll reference them in config files with the general syntax below. The format for referencing string values and files is the same, with the exception of the additional `b:true` parameter for a base64 encoded file. The specific parameters, e.g. `e:<engine>`, `k:<key>`, etc, can be in any order. Only `b:true` is optional.
+Now that secrets are safely stored in Vault, you'll reference them in config files with the general syntax below. 
 
+The format looks like.
 ```
 encrypted:vault!e:<secret engine>!p:<path to secret>!k:<key>!b:<is base64 encoded?>
 ```
 
+### Parameters
+Parameters can be provided in any order.
 
-For example, to reference the GitHub password from above:
-```
-encrypted:vault!e:secret!p:spinnaker/github!k:password
-```
+- `!`: **required** is used as a delimiter between parameters
+- `e`: **required** Vault's Secret Engine.
+- `p`: **required** Path to your secret, ex: `spinnaker/github`
+- `k`: **required** Key of the secret.
+- `b`: **optional** If the value is a base64 encoded value or file, set this to `true`
 
----
-**NOTE:** That we created the secrets using the path `secret/spinnaker/github` but we reference it as `spinnaker/github`
+Example of how it's used in your YAML configs
+```yml
+github:
+  password: encrypted:vault!e:secret!p:spinnaker/github!k:password
 
----
+kubernetes:
+  kubeconfigFile: encrypted:vault!e:secret!p:spinnaker/kubernetes!k:config
 
-And the same for referencing a file:
-```
-encrypted:vault!e:secret!p:spinnaker/kubernetes!k:config
-```
-
----
-**NOTE:** The `p` param is used (but `n` is still supported) starting in Armory Halyard version 1.6.4 and Armory Spinnaker version 2.15.0. Previous versions use the now deprecated `n` param for the path.
-
----
-
-### Binary files
-
-Important! Spinnaker needs to base64 decode binary files on the way out of Vault, so make sure to add the `b:true` to the encrypted syntax. For example, to reference the Java keystore:
-```
-encrypted:vault!e:secret!n:spinnaker/saml!k:base64keystore!b:true
+gate:
+  javaKeyStoreBinary: encrypted:vault!e:secret!p:spinnaker/saml!k:base64keystore!b:true
 ```
 
-
-## Supported Versions
-
-Vault secrets are supported end-to-end in Armory Spinnaker 2.4.0 and with partial service support in 2.3.7.
