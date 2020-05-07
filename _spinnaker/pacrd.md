@@ -58,7 +58,7 @@ accounts
 Download the current `pacrd` manifest to your local machine:
 
 ```
-curl -fsSL https://engineering.armory.io/manifests/pacrd-0.6.0.yaml > pacrd-0.6.0.yaml
+curl -fsSL https://engineering.armory.io/manifests/pacrd-0.6.1.yaml > pacrd-0.6.1.yaml
 ```
 
 Then, inspect the manifest to make sure it is compatible with your cluster.
@@ -72,7 +72,7 @@ the installation settings:
 ```yaml
 # file: kustomization.yaml
 resources:
-  - pacrd-0.6.0.yaml
+  - pacrd-0.6.1.yaml
 patchesStrategicMerge:
   - patch.yaml
 namespace: spinnaker  # Note: you should change this value if you are _not_ deploying into the `spinnaker` namespace.
