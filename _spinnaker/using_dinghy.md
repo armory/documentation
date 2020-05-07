@@ -494,6 +494,8 @@ Notice both `app1` and `app2` are under the same repo, each app has its own `din
 ### Template Validation
 If, while rendering a `dinghyfile`, a malformed JSON file is encountered, the logs should indicate the line number and the column number of the error. The `arm cli` can be used to validate `dinghyfile`s and `module`s locally without having to put them in source control.
 
+Armory CLI: <https://github.com/armory-io/arm> 
+
 ### Newlines
 For ease of readablilty, you can split a single call to `module` across multiple lines. For example, the following two `dinghyfile`s are both valid & produce identical pipelines in spinnaker:
 ```{% raw %}
