@@ -45,7 +45,7 @@ Here is an example Dinghyfile:
         {
           "name": "one",
           "type": "wait",
-          "waitTIme": 10
+          "waitTime": 10
         }
       ]
     }
@@ -102,14 +102,14 @@ While a JSON array is an ordered list, the order of the stages in your pipeline'
       {
         "name": "one",
         "type": "wait",
-        "waitTIme":  10,
+        "waitTime":  10,
         "refId": "first-stage",
         "requisiteStageRefIds": []
       },
       {
         "name": "two-a",
         "type": "wait",
-        "waitTIme":  15,
+        "waitTime":  15,
         "refId": "my-second-stage",
         "requisiteStageRefIds": [
           "first-stage"
@@ -118,7 +118,7 @@ While a JSON array is an ordered list, the order of the stages in your pipeline'
       {
         "name": "two-b",
         "type": "wait",
-        "waitTIme":  30,
+        "waitTime":  30,
         "refId": "my-other-second-stage",
         "requisiteStageRefIds": [
           "first-stage"
@@ -127,7 +127,7 @@ While a JSON array is an ordered list, the order of the stages in your pipeline'
       {
         "name": "last",
         "type": "wait",
-        "waitTIme":  20,
+        "waitTime":  20,
         "refId": "my-final-stage",
         "requisiteStageRefIds": [
           "my-second-stage",
@@ -494,6 +494,8 @@ Notice both `app1` and `app2` are under the same repo, each app has its own `din
 ### Template Validation
 If, while rendering a `dinghyfile`, a malformed JSON file is encountered, the logs should indicate the line number and the column number of the error. The `arm cli` can be used to validate `dinghyfile`s and `module`s locally without having to put them in source control.
 
+Armory CLI: <https://github.com/armory-io/arm> 
+
 ### Newlines
 For ease of readablilty, you can split a single call to `module` across multiple lines. For example, the following two `dinghyfile`s are both valid & produce identical pipelines in spinnaker:
 ```{% raw %}
@@ -565,7 +567,7 @@ Note that top-level variables are overwritten by variables in the call to module
       "application": "yourspinnakerapplicationname",
       "name": "Made By Armory Pipeline Templates",
       "stages": [
-        {{ module "wait.stage.module" "waitTime": "43" }}
+        {{ module "wait.stage.module" "waitTime" "43" }}
       ]
     }
   ]
@@ -740,6 +742,30 @@ pipelines:
 ## Conditionals
 
 Dinghy supports all of the usual Go template conditionals. In addition to that, Dinghy also provides the git webhoook content in the template, allowing you to use the raw push data in the template itself.
+
+Example:
+```{% raw %}
+{
+  "application": "conditionals",
+  "pipelines": [
+    {
+      "application": "conditionals",
+      "name": "my-pipeline-name",
+      "stages": [
+          {
+            {{ if eq .RawData.pusher.name "Samtribal" }}
+              "name": "this_is_true",
+            {{ else }}
+              "name": "this_is_false",
+            {{ end }}
+            "waitTime":  10,
+            "type": "wait"
+          }
+      ]
+    }
+  ]
+}
+{% endraw %}```
 
 ### Iterating over a map:
 

@@ -17,6 +17,9 @@ This guide should include:
 ## Overview
 To get an overview of Pipelines as code, check out the [user guide](/spinnaker/using_dinghy).
 
+**Note:** Dinghy uses Redis to store relationships between pipeline templates and pipeline dinghy files. An external Redis instance is highly recommended 
+for production use. If Redis becomes unavailable, dinghy files will need to be updated in order to repopulate Redis with the relationships.
+
 ## Enabling Pipelines as code
 To configure Pipelines as code, start by enabling it:
 
