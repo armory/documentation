@@ -192,9 +192,6 @@ for more information.</p>
 </tbody>
 </table>
 ### ArtifactReference 
-(__Appears on:__
-<a href="#bakemanifest">BakeManifest</a>)
-<p>ArtifactReference TODO doesn&rsquo;t seem to be working&hellip;?</p>
 <table>
 <thead>
 <tr>
@@ -205,22 +202,24 @@ for more information.</p>
 <tbody>
 <tr>
 <td>
-<code>account</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
 <code>id</code><br />
 <em>
 string
 </em>
 </td>
 <td>
+<em>(Optional)</em>
+</td>
+</tr>
+<tr>
+<td>
+<code>displayName</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
 </td>
 </tr>
 </tbody>
@@ -320,8 +319,8 @@ bool
 <td>
 <code>inputArtifacts</code><br />
 <em>
-<a href="#artifactreference">
-[]ArtifactReference
+<a href="#*github.com/armory-io/pacrd/api/v1alpha1.artifactreference">
+[]*github.com/armory-io/pacrd/api/v1alpha1.ArtifactReference
 </a>
 </em>
 </td>
@@ -429,6 +428,87 @@ string
 </td>
 <td>
 <em>(Optional)</em>
+</td>
+</tr>
+</tbody>
+</table>
+### CustomArtifact 
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>type</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>name</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>id</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>location</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>reference</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>version</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>artifactAccount</code><br />
+<em>
+string
+</em>
+</td>
+<td>
 </td>
 </tr>
 </tbody>
@@ -768,6 +848,124 @@ Source
 </td>
 <td>
 <em>(Optional)</em>
+</td>
+</tr>
+</tbody>
+</table>
+### DockerArtifact 
+<p>DockerArtifact represents a container in the target Docker registry.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>artifactAccount</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+<p>ArtifactAccount represents the desired container registry to pull images from.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>name</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+<p>Name is the fully qualified Docker image name in the configured registry.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>id</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+<p>ID represents a pipeline-wide unique identifier.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>type</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+</tbody>
+</table>
+### EmbeddedArtifact 
+<p>EmbeddedArtifact represents a base64 encoded artifact.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>type</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>name</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>id</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+</tbody>
+</table>
+### ErrNameUndefined 
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>ArtifactName</code><br />
+<em>
+string
+</em>
+</td>
+<td>
 </td>
 </tr>
 </tbody>
@@ -1179,7 +1377,6 @@ JudgmentMessage
 ### MatchArtifact 
 (__Appears on:__
 <a href="#artifact">Artifact</a>)
-<p>MatchArtifact TODO</p>
 <table>
 <thead>
 <tr>
@@ -1190,64 +1387,21 @@ JudgmentMessage
 <tbody>
 <tr>
 <td>
-<code>id</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-</td>
-</tr>
-<tr>
-<td>
-<code>artifactAccount</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-</td>
-</tr>
-<tr>
-<td>
-<code>string</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-</td>
-</tr>
-<tr>
-<td>
-<code>name</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-</td>
-</tr>
-<tr>
-<td>
 <code>type</code><br />
 <em>
 string
 </em>
 </td>
 <td>
-<em>(Optional)</em>
 </td>
 </tr>
 <tr>
 <td>
-<code>version</code><br />
+<code>properties</code><br />
 <em>
-string
+<a href="https://godoc.org/k8s.io/apimachinery/pkg/runtime#RawExtension">
+k8s.io/apimachinery/pkg/runtime.RawExtension
+</a>
 </em>
 </td>
 <td>
@@ -1824,6 +1978,8 @@ SelectorsKind
 (__Appears on:__
 <a href="#deploymanifest">DeployManifest</a>)
 <p>Source represents the kind of DeployManifest stage is defined.</p>
+### SpinnakerMatchArtifact 
+<p>SpinnakerMatchArtifact represents TODO</p>
 ### StageEnabled 
 (__Appears on:__
 <a href="#stageunion">StageUnion</a>, 
@@ -1860,7 +2016,7 @@ string
 </tbody>
 </table>
 ### StageUnion 
-<p>StageUnion is a union type that encompasses strongly typed stage defnitions.</p>
+<p>Stage is a union type that encompasses strongly typed stage defnitions.</p>
 <table>
 <thead>
 <tr>
@@ -2200,6 +2356,37 @@ KubernetesKind
 (__Appears on:__
 <a href="#undorolloutmanifest">UndoRolloutManifest</a>)
 <p>UndoRolloutManifestMode is the means for undoing a manifest rollout.</p>
+### UnknownArtifact 
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>type</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>properties</code><br />
+<em>
+map[string]interface{}
+</em>
+</td>
+<td>
+</td>
+</tr>
+</tbody>
+</table>
 ### Webhook 
 (__Appears on:__
 <a href="#stageunion">StageUnion</a>)
@@ -2518,5 +2705,5 @@ int
 <hr/>
 <p><em>
 Generated with <code>gen-crd-api-reference-docs</code>
-on git commit <code>1c406ef</code>.
+on git commit <code>5c79111</code>.
 </em></p>
