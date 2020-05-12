@@ -29,7 +29,7 @@ At a high level, a Terraform Integration stage performs the following actions wh
 To use the stage, perform the following steps:
 
 1. In Deck, select the Application and pipeline you want to add the Terraform Integration stage to.
-2. Configure the pipeline and add a stage.
+2. Configure the Pipeline and add a stage.
 3. For **Type**, select **Terraform**.
 4. Add a **Stage Name**.
 5. Configure the Terraform Integration stage.
