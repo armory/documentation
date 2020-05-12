@@ -75,8 +75,8 @@ Once these Services have been created, we’ll need to update our Spinnaker depl
 ```bash
 # use the newly created LBs
 export NAMESPACE={namespace}
-export API_URL=$(kubectl -n $NAMESPACE get svc spin-gate-public -o jsonpath='{.status.loadBalancer.ingress[0hostname}')
-export UI_URL=$(kubectl -n $NAMESPACE get svc spin-deck-public -o jsonpath='{.status.loadBalancer.ingress[0hostname}')
+export API_URL=$(kubectl -n $NAMESPACE get svc spin-gate-public -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')	
+export UI_URL=$(kubectl -n $NAMESPACE get svc spin-deck-public -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 
 # or use DNS records
 # export API_URL=spinnaker-gate.armory.io
