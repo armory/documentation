@@ -87,7 +87,7 @@ artifacts:
     - name: gitrepo
       token: <Your GitHub PAT> # GitHub personal access token
 ```
-  
+
 For more information, see [Git Repo](https://www.spinnaker.io/reference/artifacts/types/git-repo/).
 
 ## Configure the Terraform Integration for GitHub
@@ -108,7 +108,7 @@ skip this section.
 **Operator**
 
 Edit the `SpinnakerService` manifest to add the following:
-    
+
 ```yaml
 apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
 kind: SpinnakerService
@@ -128,7 +128,7 @@ spec:
 **Halyard**
 
 1. Enable GitHub as an artifact provider:
-  
+
    ```
    hal config artifact github enable
    ```
@@ -146,7 +146,7 @@ Enable the Terraform Integration
 **Operator**
 
 In `SpinnakerService` manifest:
-   
+
 ```yaml
 apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
 kind: SpinnakerService
@@ -226,7 +226,7 @@ Github directories hosting your Terraform templates.
 **Operator**
 
 In `SpinnakerService` manifest:
-    
+
 ```yaml
 apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
 kind: SpinnakerService
@@ -278,7 +278,7 @@ spec:
         settings-local.js: |
           window.spinnakerSettings.feature.terraform = true;
 ```
-    
+
 **Halyard**
 
 Edit `~/.hal/default/profiles/settings-local.js` and add the following:
@@ -302,13 +302,13 @@ After you finish your Terraform integration configuration, perform the following
    ```
 
    **Halyard**
-   
+
    ```bash
    hal deploy apply
    ```
 
 2. Confirm that the Terraform Integration service (Terraformer) is deployed with your Spinnaker deployment:
-    
+
    ```
    kubectl get pods -n <your-spinnaker-namespace>
    ```
@@ -346,19 +346,19 @@ Additionally, you need `kubectl` installed. Perform the following steps:
 
 2. Create a directory named `ssh`.
 3. In the `ssh` directory, create a file named `id_rsa` with your SSH private key:
-   
+
    ```
    <Add your SSHA private key>
    ```
 
 4. In the `ssh` directory, create a file named `config` with the following contents:
-   
+
    ```
    StrictHostKeyChecking no
    ```
 
 5. Run the following command to create a generic Kubernetes secret named `spin-terraformer-secrets`:
-   
+
    ```
    kubectl create secret generic spin-terraformer-secrets -n <Spinnaker namespace> --from-file=credentials=aws-credentials --from-file=id_rsa=ssh/id_rsa --from-file=config=ssh/config
    ```
@@ -369,9 +369,9 @@ Additionally, you need `kubectl` installed. Perform the following steps:
    secret/spin-terraformer-secrets created
    ```
 
-6. Edit Terraformer service settings
+6. Edit Terraformer service settings:
 
-   ** Operator **
+   **Operator**
 
    ```yaml
    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
@@ -400,9 +400,10 @@ Additionally, you need `kubectl` installed. Perform the following steps:
                mountPath: /home/spinnaker/.aws
    ```
 
-   ** Halyard **
-   In the file `~/.hal/default/service-settings/terraformer.yml` and add the following:
-   
+   **Halyard**
+
+   In the `~/.hal/default/service-settings/terraformer.yml` file, add the following:
+
    ```yaml
    kubernetes:
      securityContext:
@@ -421,9 +422,10 @@ Additionally, you need `kubectl` installed. Perform the following steps:
        type: emptyDir
        mountPath: /home/spinnaker/.aws
    ```
-7. Edit `initContainer` in the config
+7. Edit `initContainer` in the config:
 
-   ** Operator **
+   **Operator**
+
    ```yaml
    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
    kind: SpinnakerService
@@ -450,9 +452,10 @@ Additionally, you need `kubectl` installed. Perform the following steps:
                  name: spin-terraformer-secrets
    ```
 
-   ** Halyard **
+   **Halyard**
+
    In the file `~/.hal/config` and add the following to the `initContainer` section:
-   
+
    ```yaml
    ...
    initContainers:
@@ -469,23 +472,25 @@ Additionally, you need `kubectl` installed. Perform the following steps:
          name: spin-terraformer-secrets # The secret name should match the name used to create the Kubernetes secret
    ...
    ```
+
    This section creates an init container for Terraformer to use that contains the necessary secrets for AWS, sets the UID and GID to 1000 (which Spinnaker uses), and moves the files to directories that are accessible to Spinnaker.
+
 8. Apply your changes to your Spinnaker deployment:
-   
+
    ```
    hal deploy apply
    ```
-   
+
 9.  Verify the following before you start using the Terraform integration:
 
    **Verify that the Terraformer pod is running**
-   
+
    ```
    kubectl -n <Your Spinnaker namespace> get pods
    ```
 
-   **Verify the credentials are available≈**
-   
+   **Verify the credentials are available**
+
    ```
    # Enter the Terraformer pod
    kubectl -n <Your Spinnaker namespace> exec -it <Terraformer pod name> bash
