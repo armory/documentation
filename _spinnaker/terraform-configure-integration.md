@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Enabling the Terraform Integration stage
+title: Enabling the Terraform Integration Stage
 order: 141
 redirect_from:
   - /spinnaker/terraform_integration/
@@ -66,7 +66,7 @@ metadata:
 spec:
   spinnakerConfig:
     profiles:
-      clouddriver: |
+      clouddriver:
         artifacts:
           gitRepo:
             enabled: true
@@ -323,7 +323,7 @@ After you finish your Terraform integration configuration, perform the following
 
 Since the Terraform Integration executes all Terraform commands against the `terraform` binary, all methods of configuring authentication are supported for your desired cloud provider. This section describes how to accomplish this for various cloud providers.
 
-### Configuring for AWS
+### Configuring for AWS and Git private repositories
 
 There are several ways to enable Terraform to authenticate with AWS. You can find the full list [here](https://www.terraform.io/docs/providers/aws/#authentication). Each of these methods is supported; however, you may need to do additional configuration to enable them.
 
@@ -332,7 +332,7 @@ The following example describes how to provide access to AWS and a remote privat
 Before you start though, make sure you have access to the following for your AWS account:
 * AWS access key
 * AWS secret key
-* SSH private key
+* SSH private key for the Git private repository
 
 Additionally, you need `kubectl` installed. Perform the following steps: 
 
@@ -369,7 +369,39 @@ Additionally, you need `kubectl` installed. Perform the following steps:
    secret/spin-terraformer-secrets created
    ```
 
-6. Edit `~/.hal/default/service-settings/terraformer.yml` and add the following:
+6. Edit Terraformer service settings
+
+   ** Operator **
+
+   ```yaml
+   apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+   kind: SpinnakerService
+   metadata:
+     name: spinnaker
+   spec:
+     spinnakerConfig:
+       service-settings:
+         terraformer:
+           kubernetes:
+             securityContext:
+               runAsUser: 1000
+               runAsGroup: 1000
+               fsGroup: 1000
+             volumes:
+             - id: spin-terraformer-secrets
+               type: secret
+               defaultMode: 420
+               mountPath: /secrets
+             - id: ssh-key-temp
+               type: emptyDir
+               mountPath: /home/spinnaker/.ssh
+             - id: aws-creds-temp
+               type: emptyDir
+               mountPath: /home/spinnaker/.aws
+   ```
+
+   ** Halyard **
+   In the file `~/.hal/default/service-settings/terraformer.yml` and add the following:
    
    ```yaml
    kubernetes:
@@ -378,7 +410,7 @@ Additionally, you need `kubectl` installed. Perform the following steps:
        runAsGroup: 1000
        fsGroup: 1000
      volumes:
-     - id: spin-terraformer-secrets # The secret name hou specified when you created the Kubernetes secret
+     - id: spin-terraformer-secrets # The secret name should match the name used to create the Kubernetes secret
        type: secret
        defaultMode: 420
        mountPath: /secrets
@@ -389,14 +421,44 @@ Additionally, you need `kubectl` installed. Perform the following steps:
        type: emptyDir
        mountPath: /home/spinnaker/.aws
    ```
-7. Edit `~/.hal/config` and add the following to the `initContainer` section:
+7. Edit `initContainer` in the config
+
+   ** Operator **
+   ```yaml
+   apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+   kind: SpinnakerService
+   metadata:
+     name: spinnaker
+   spec:
+     spinnakerConfig:
+       config:
+         deploymentEnvironment:
+           initContainers:
+             spin-terraformer:
+             - name: init-terraformer
+               image: busybox:latest
+               command:
+               - sh
+               - -c
+               - cp /secrets/* /ssh-spin && chown -R 1000:1000 /ssh-spin/* && chmod 600 /ssh-spin/* && mv /ssh-spin/credentials /aws-spin/
+               volumeMounts:
+               - mountPath: /ssh-spin
+                 name: ssh-key-temp
+               - mountPath: /aws-spin
+                 name: aws-creds-temp
+               - mountPath: /secrets
+                 name: spin-terraformer-secrets
+   ```
+
+   ** Halyard **
+   In the file `~/.hal/config` and add the following to the `initContainer` section:
    
    ```yaml
    ...
    initContainers:
      spin-terraformer:
      - name: init-terraformer
-       image: alpine:3.6
+       image: busybox:latest
        command: ["sh", "-c", "cp /secrets/* /ssh-spin && chow -R 1000:1000 /ssh-spin/* && chmod 600 /ssh-spin/* && mv /ssh-spin/credentials /aws-spin"]
        volumeMounts: 
        - mountPath: /ssh-spin
@@ -404,7 +466,7 @@ Additionally, you need `kubectl` installed. Perform the following steps:
        - mountPath: /aws-spin
          name: aws-creds-temp
        - mountPath: /secrets
-         name: spin-terraformer-secrets
+         name: spin-terraformer-secrets # The secret name should match the name used to create the Kubernetes secret
    ...
    ```
    This section creates an init container for Terraformer to use that contains the necessary secrets for AWS, sets the UID and GID to 1000 (which Spinnaker uses), and moves the files to directories that are accessible to Spinnaker.
@@ -414,7 +476,7 @@ Additionally, you need `kubectl` installed. Perform the following steps:
    hal deploy apply
    ```
    
-9. Verify the following before you start using the Terraform integration:
+9.  Verify the following before you start using the Terraform integration:
 
    **Verify that the Terraformer pod is running**
    
@@ -434,93 +496,7 @@ Additionally, you need `kubectl` installed. Perform the following steps:
    ls -l /home/spinnaker/.aws
    ```
 
-## SSH Keys in the Terraform Integration
-
-If your Terraform scripts rely on modules stored in a private remote repository, you need to add your `SSH` key to the Terraform Integration container in order for the repo to be cloned. This section describes how to make SSH keys available to the Terraform integration. If you need to add SSH keys and cloud provider credentials, see [Configuring Terraform for your cloud provider](#configure-terraform-for-your-cloud-provider). 
-
-The workflow below assumes you are using `SSH` in order to clone a remote repository.  A similar workflow exists for relying on `HTTP/HTTPS`.
-<br>
-
-### Prerequisites
-
-  * The SSH Key should already be created and added as a Deploy Key to the Git repository.
-
-### Create the Secret
-
-On your local workstation, create a directory and place the SSH Key and any other required authentication information inside:
-
-1. Create the directory:
-
-   ```bash
-   mkdir ssh
-   ``` 
-
-2. Copy the SSH Key:
-
-   ```bash
-   cp $SSH_KEY_FILE ssh/id_rsa
-   ```
-
-4. Create a config file for `SSH` to ignore the known_hosts checks:
-
-   ```bash
-   echo "StrictHostKeyChecking no" > ssh/config
-   ```
-
-5. Create the secret using `kubectl`:
-
-   ```bash
-   kubectl create secret generic spin-terraformer-sshkey -n spinnaker-system --from-file=id_rsa=ssh/id_rsa --from-file=config=ssh/config
-   ```
-
-In this example, you create a secret with the SSH key and a config to ignore `known hosts` file issues. 
-
-### Update the Manifest
-
-Next, update the Kubernetes manifest:  
-
-1. Update the secret and an empty directory volume
-that will contain the copy of the secret with the correct UID and permissions:
-
-   ```yaml
-   # spin-terraformer deployment
-   volumes:
-   - name: spin-terraformer-sshkey
-     secret:
-       defaultMode: 420
-       secretName: spin-terraformer-sshkey
-   - name: ssh-key-tmp
-     emptyDir:
-       sizeLimit: "128k"
-   ```
-
-2. Define an init container that copies the secret contents to the empty directory and sets the permissions and ownership.  The Spinnaker user uses `user id` `1000`:
-
-   ```yaml
-   # spin-terraformer deployment
-   
-   # This correctly sets the permissions and ownership of the ssh key
-   initContainers:
-   - name: set-key-ownership
-     image: alpine:3.6
-     command: ["sh", "-c", "cp /key-secret/* /key-spin/ && chown -R 1000:1000 /key-spin/* && chmod 600 /key-spin/*"]
-     volumeMounts:
-     - mountPath: /key-spin
-       name: ssh-key-tmp
-     - mountPath: /key-secret
-       name: spin-terraformer-sshkey
-   ```
-
-3. Mount the directory into the Terraform Integration container at the `/home/spinnaker/.ssh` location:
-
-   ```yaml
-   # spin-terraformer deployment
-   volumeMounts:
-   - mountPath: /home/spinnaker/.ssh
-     name: ssh-key-tmp
-   ```
-
-The Terraform Integration now has access to clone private remote Git repositories via SSH after you make these changes and the Terraform Integration redeploys.
+The Terraform Integration now has access to clone private remote Git repositories via SSH and create AWS objects after you make these changes and the Terraform Integration redeploys.
 
 ## Submit feedback
 
