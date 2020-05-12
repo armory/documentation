@@ -248,6 +248,7 @@ UI to add block devices.
 1.  [Edit Your Pipelines JSON](https://docs.armory.io/spinnaker-user-guides/pipelines/#pipeline-json)
 2.  Find your deployment dictionary.  You'll need to add the object of pairs for each cluster definition.
 3.  Add your custom block devices for launch under the key `blockDevices`.
+4.  Make sure that `AMI Block Device Mappings` is set to `Defaults for selected instance type `.
 
 ### Block Devices Definition
 
@@ -276,6 +277,8 @@ UI to add block devices.
               "volumeType": "gp2"
             }
           ]
+          "copySourceCustomBlockDeviceMappings": false,
+          "useAmiBlockDeviceMappings": false
         },
         ...
 ]

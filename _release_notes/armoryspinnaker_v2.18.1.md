@@ -15,7 +15,13 @@ hidden: false
 
 
 ## Known Issues
-There are currently no known issues with this release.
+### Halyard version
+
+There is a known issue where Armory Halyard 1.9.0 fails to install Armory Spinnaker 2.18.1. The Pod for Echo enters a crash loop.
+
+**Workaround** 
+
+Use Armory Halyard 1.8.3 if you want to install Armory Spinnaker 2.18.1. 
 
 
 ## Highlighted Updates

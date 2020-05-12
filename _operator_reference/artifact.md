@@ -45,8 +45,8 @@ artifacts:
 ### Account parameters
 
 - `username`: Bitbucket username
-- `password`: Bitbucket password
-- `usernamePasswordFile`: File containing "username:password" to use for Bitbucket authentication
+- `password`: Bitbucket password. Supports encrypted value.
+- `usernamePasswordFile`: File containing "username:password" to use for Bitbucket authentication. File needs to be present on the machine running Spinnaker. Supports encrypted file.
 
 Note: supply `username` and `password` OR `usernamePasswordFile`
 
@@ -65,7 +65,7 @@ gcs:
 
 ### Account parameters
 
- - `json-path`: The path to a JSON service account that Spinnaker will use as credentials. This is only needed if Spinnaker is not deployed on a Google Compute Engine VM, or needs permissions not afforded to the VM it is running on. See [service-accounts](https://cloud.google.com/compute/docs/access/service-accounts) for more information.
+ - `json-path`: The path to a JSON service account that Spinnaker will use as credentials. This is only needed if Spinnaker is not deployed on a Google Compute Engine VM, or needs permissions not afforded to the VM it is running on. See [service-accounts](https://cloud.google.com/compute/docs/access/service-accounts) for more information. File needs to be present on the machine running Spinnaker. Supports encrypted file.
 
 
 ## GitHub
@@ -89,10 +89,10 @@ github:
 ### Account parameters
 
  - `username`: GitHub username
- - `password`: GitHub password
- - `usernamePasswordFile`: File containing "username:password" to use for GitHub authentication
- - `token`: GitHub token
- - `tokenFile`: File containing a GitHub authentication token
+ - `password`: GitHub password. Supports encrypted value.
+ - `usernamePasswordFile`: File containing "username:password" to use for GitHub authentication. File needs to be present on the machine running Spinnaker. Supports encrypted file.
+ - `token`: GitHub token. Supports encrypted value.
+ - `tokenFile`: File containing a GitHub authentication token. File needs to be present on the machine running Spinnaker. Supports encrypted file.
 
 Note: supply `username` and `password` OR `usernamePasswordFile` or `token` or `tokenFile`
 
@@ -113,8 +113,8 @@ gitlab:
 
 ### Account parameters
 
- - `token`: Gitlab token
- - `tokenFile`: File containing a Gitlab authentication token
+ - `token`: Gitlab token. Supports encrypted value.
+ - `tokenFile`: File containing a Gitlab authentication token. File needs to be present on the machine running Spinnaker. Supports encrypted file.
 
 Note: supply `token` or `tokenFile`
 
@@ -143,13 +143,13 @@ gitrepo:
 ### Account parameters
 
 - `username`: Git username
-- `password`: Git password
-- `usernamePasswordFile`: File containing "username:password" to use for Git authentication
-- `token`:  Git token
-- `tokenFile`: File containing a Git authentication token
-- `sshPrivateKeyFilePath`: Path to the ssh private key in PEM format
-- `sshPrivateKeyPassphrase`: Passphrase for encrypted private key
-- `sshKnownHostsFilePath`: File containing the known and trusted SSH hosts.
+- `password`: Git password. Supports encrypted value.
+- `usernamePasswordFile`: File containing "username:password" to use for Git authentication. File needs to be present on the machine running Spinnaker. Supports encrypted file.
+- `token`:  Git token. Supports encrypted value.
+- `tokenFile`: File containing a Git authentication token. File needs to be present on the machine running Spinnaker. Supports encrypted file.
+- `sshPrivateKeyFilePath`: Path to the ssh private key in PEM format. File needs to be present on the machine running Spinnaker. Supports encrypted file.
+- `sshPrivateKeyPassphrase`: Passphrase for encrypted private key. Supports encrypted value.
+- `sshKnownHostsFilePath`: File containing the known and trusted SSH hosts. File needs to be present on the machine running Spinnaker. Supports encrypted file.
 - `sshTrustUnknownHosts`: Setting this to true allows Spinnaker to authenticate with unknown hosts
 
 Note: supply `username` and `password` OR `usernamePasswordFile` or `token` or `tokenFile`
@@ -175,8 +175,8 @@ helm:
 
  - `repository`: Helm chart repository
  - `username`: Helm chart repository basic auth username
- - `password`: Helm chart repository basic auth password
- - `usernamePasswordFile`: File containing "username:password" to use for helm chart repository basic auth
+ - `password`: Helm chart repository basic auth password. Supports encrypted value.
+ - `usernamePasswordFile`: File containing "username:password" to use for helm chart repository basic auth. File needs to be present on the machine running Spinnaker. Supports encrypted file.
 
 Note: supply `username` and `password` OR `usernamePasswordFile`
 
@@ -199,8 +199,8 @@ http:
 ### Account parameters
 
  - `username`: HTTP basic auth username
- - `password`: HTTP basic auth password
- - `usernamePasswordFile`: File containing "username:password" to use for HTTP basic auth
+ - `password`: HTTP basic auth password. Supports encrypted value.
+ - `usernamePasswordFile`: File containing "username:password" to use for HTTP basic auth. File needs to be present on the machine running Spinnaker. Supports encrypted file.
 
 Note: supply `username` and `password` OR `usernamePasswordFile`
 
@@ -246,8 +246,8 @@ oracle:
 - `region`: An Oracle region (e.g., us-phoenix-1)
 - `userId`:  Provide the OCID of the Oracle User you're authenticating as
 - `fingerprint`:  Fingerprint of the public key
-- `sshPrivateKeyFilePath`:  Path to the private key in PEM format
-- `privateKeyPassphrase`:  Passphrase used for the private key, if it is encrypted
+- `sshPrivateKeyFilePath`:  Path to the private key in PEM format. File needs to be present on the machine running Spinnaker. Supports encrypted file.
+- `privateKeyPassphrase`:  Passphrase used for the private key, if it is encrypted. Supports encrypted value.
 - `tenancyId`: Provide the OCID of the Oracle Tenancy to use.
 
 ## S3
@@ -272,7 +272,7 @@ s3:
 - `apiRegion`: S3 api region; only required when using an S3 clone such as Minio
 - `region`: S3 region
 - `awsAccessKeyId`: Your AWS Access Key ID. If not provided, Halyard/Spinnaker will try to find AWS credentials as described at http://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html#credentials-default
-- `awsSecretAccessKey`: Your AWS Secret Key.
+- `awsSecretAccessKey`: Your AWS Secret Key. Supports encrypted value.
 
 ## Templates
 
@@ -282,4 +282,4 @@ templates:
   templatePath:
  ```
 
-`templatePath`: The path to the Jinja template to use for artifact extraction
+`templatePath`: The path to the Jinja template to use for artifact extraction. File needs to be present on the machine running Spinnaker.

@@ -36,7 +36,7 @@ notifications:
 
 - `enabled`: true or false.
 - `botName`: The name of your Slack bot.
-- `token`: Your Slack bot token.
+- `token`: Your Slack bot token. Supports encrypted value.
 - `baseUrl`: Slack endpoint. Optional, only set if using a compatible API.
 - `forceUseIncomingWebhook`: true or false. Force usage of incoming webhooks endpoint for Slack. Optional, only set if using a compatible API.
 
@@ -46,9 +46,9 @@ notifications:
 - `account`: Your Twilio account SID.
 - `baseUrl`: Twilio REST API base url
 - `from`: The phone number from which the SMS will be sent (e.g. +1234-567-8910).
-- `token`: Your Twilio auth token.
+- `token`: Your Twilio auth token. Supports encrypted value.
 
 ## GitHub status parameters
 
 - `enabled`: true or false.
-- `token`: Your GitHub account token.
+- `token`: Your GitHub account token. Supports encrypted value.

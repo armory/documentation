@@ -20,7 +20,7 @@ If we're using a GKE cluster, we must be able to connect to the EKS cluster. Thi
 If we have access to the role that created the EKS cluster, we can update our kubeconfig with access to our Kubernetes cluster with this command:
 
 ```bash
-   gcloud container clusters get-credentials <your-cluster-name>
+gcloud container clusters get-credentials <your-cluster-name>
 ```
 
 From here, we can validate access to the cluster with this command (should receive a number of namespaces)

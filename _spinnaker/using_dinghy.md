@@ -34,7 +34,7 @@ created/updated in that application.
 
 Here is an example Dinghyfile:
 
-```
+```json
 {
   "application": "helloworldapp",
   "pipelines": [
@@ -45,7 +45,7 @@ Here is an example Dinghyfile:
         {
           "name": "one",
           "type": "wait",
-          "waitTIme": 10
+          "waitTime": 10
         }
       ]
     }
@@ -93,50 +93,50 @@ While a JSON array is an ordered list, the order of the stages in your pipeline'
 
 ```json
 
-  "application": "helloworld",
-  "pipelines": [
-    {
-      "application": "helloworld",
-      "name": "my-pipeline-name",
-      "stages": [
-        {
-          "name": "one",
-          "type": "wait",
-          "waitTIme":  10,
-          "refId": "first-stage",
-          "requisiteStageRefIds": []
-        },
-        {
-          "name": "two-a",
-          "type": "wait",
-          "waitTIme":  15,
-          "refId": "my-second-stage",
-          "requisiteStageRefIds": [
-            "first-stage"
-          ]
-        },
-        {
-          "name": "two-b",
-          "type": "wait",
-          "waitTIme":  30,
-          "refId": "my-other-second-stage",
-          "requisiteStageRefIds": [
-            "first-stage"
-          ]
-        },
-        {
-          "name": "last",
-          "type": "wait",
-          "waitTIme":  20,
-          "refId": "my-final-stage",
-          "requisiteStageRefIds": [
-            "my-second-stage",
-            "my-other-second-stage",
-          ]
-        }
-      ]
-    }
-  ]
+"application": "helloworld",
+"pipelines": [
+  {
+    "application": "helloworld",
+    "name": "my-pipeline-name",
+    "stages": [
+      {
+        "name": "one",
+        "type": "wait",
+        "waitTime":  10,
+        "refId": "first-stage",
+        "requisiteStageRefIds": []
+      },
+      {
+        "name": "two-a",
+        "type": "wait",
+        "waitTime":  15,
+        "refId": "my-second-stage",
+        "requisiteStageRefIds": [
+          "first-stage"
+        ]
+      },
+      {
+        "name": "two-b",
+        "type": "wait",
+        "waitTime":  30,
+        "refId": "my-other-second-stage",
+        "requisiteStageRefIds": [
+          "first-stage"
+        ]
+      },
+      {
+        "name": "last",
+        "type": "wait",
+        "waitTime":  20,
+        "refId": "my-final-stage",
+        "requisiteStageRefIds": [
+          "my-second-stage",
+          "my-other-second-stage",
+        ]
+      }
+    ]
+  }
+]
 }
 ```
 
@@ -159,7 +159,7 @@ or updated.
 
 Here's an example Dinghyfile that has no pipelines but creates an application named `mynewapp` along with a few options:
 
-```
+```json
 {
   "application": "mynewapp",
   "pipelines": [],
@@ -182,7 +182,8 @@ Note that only the `application` and `pipelines` keys are required; everything e
 ![](/images/dinghy-template-repo.png)
 
  They are JSON files with replacable values in them. e.g., a module that defines a wait stage in a pipeline might look like:
-```
+
+```json
 {
     "name": "Wait",
     "refId": "1",
@@ -191,12 +192,14 @@ Note that only the `application` and `pipelines` keys are required; everything e
     "waitTime": 42
 }
 ```
+
 - **Pipeline definitions**: These define a pipeline for an application in a file called `dinghyfile`. The `dinghyfile` usually resides at the root level of the application repo. eg:
 
 ![](/images/dinghyfile.png)
 
 You can compose stage/task templates to make a full definition. e.g., a Pipeline definition that has a single wait stage might look like:
-```
+
+```json
 {
   "application": "yourspinnakerapplicationname",
   "pipelines": [
@@ -223,6 +226,7 @@ You can compose stage/task templates to make a full definition. e.g., a Pipeline
 ## Template Variables and Substitution
 
 Pipeline definitions can include Modules defined in another GitHub Repo. e.g.:
+
 ```{% raw %}
 {
   "application": "yourspinnakerapplicationname",
@@ -239,7 +243,17 @@ Pipeline definitions can include Modules defined in another GitHub Repo. e.g.:
     }
   ]
 }
+{% endraw %}
+```
+
+Note that modules can be stored on a subfolder of your repository. To reference these modules, add a snippet like the following:
+
+```{% raw %}
+{{ module "my/path/to/module/wait.stage.module" }}
 {% endraw %}```
+
+> Using the path "/my/path/to/module/wait.stage.module" with a leading slash (`/`)is not supported in Armory 2.19.8 and earlier.
+
 
 The `{% raw %}{{ module "wait.stage.module" }}{% endraw %}` takes the wait.stage.module file inside the dinghy-templates repo, and includes it in the current template. Note that modules are simply text inserted into the JSON they are referenced by; if you wanted to add another stage after the module in the example above, you would need to add the comma after the substitution so the resulting JSON was correct.
 
@@ -261,7 +275,8 @@ We can also pass variables to our modules like so:
     }
   ]
 }
-{% endraw %}```
+{% endraw %}
+```
 
 Any number of variables can be passed to a module by simply specifying them as arguments, e.g.: `{% raw %}{{ module "wait.stage.module" "waitTime" 100 "name" "simpleWait" }}{% endraw %}`.
 
@@ -356,7 +371,8 @@ You would use the following JSON to create such. Note that any of the stages cou
     }
   ]
 }
-{% endraw %}```
+{% endraw %}
+```
 
 The file `deploy.stage.module` would look like this:
 ```{% raw %}
@@ -368,7 +384,8 @@ The file `deploy.stage.module` would look like this:
   "requisiteStageRefIds": {{ var "requisiteStageRefIds" ?: [] }},
   "type": "deploy"
 }
-{% endraw %}```
+{% endraw %}
+```
 
 ## Multiple Level Inheritance
 
@@ -424,7 +441,7 @@ If you want any pipelines in the spinnaker application that are not part of the 
 ```{% raw %}
 {
   "application": "yourspinnakerapplicationname",
-  "deleteStalePipelines": true
+  "deleteStalePipelines": true,
   "pipelines": [
   ]
 }
@@ -436,14 +453,14 @@ The spinnaker `pipeline` stage allows you to trigger other pipelines. However, t
 
 ```{% raw %}
 {
-		"application": "pipelineidexample",
-		"failPipeline": true,
-		"name": "Pipeline",
-		"pipeline": "{{ pipelineID "default-app" "default-pipeline" }}",
-		"refId": "1",
-		"requisiteStageRefIds": [],
-		"type": "pipeline",
-		"waitForCompletion": true
+  "application": "pipelineidexample",
+  "failPipeline": true,
+  "name": "Pipeline",
+  "pipeline": "{{ pipelineID "default-app" "default-pipeline" }}",
+  "refId": "1",
+  "requisiteStageRefIds": [],
+  "type": "pipeline",
+  "waitForCompletion": true
 }
 {% endraw %}```
 
@@ -476,6 +493,8 @@ Notice both `app1` and `app2` are under the same repo, each app has its own `din
 
 ### Template Validation
 If, while rendering a `dinghyfile`, a malformed JSON file is encountered, the logs should indicate the line number and the column number of the error. The `arm cli` can be used to validate `dinghyfile`s and `module`s locally without having to put them in source control.
+
+Armory CLI: <https://github.com/armory-io/arm> 
 
 ### Newlines
 For ease of readablilty, you can split a single call to `module` across multiple lines. For example, the following two `dinghyfile`s are both valid & produce identical pipelines in spinnaker:
@@ -548,7 +567,7 @@ Note that top-level variables are overwritten by variables in the call to module
       "application": "yourspinnakerapplicationname",
       "name": "Made By Armory Pipeline Templates",
       "stages": [
-        {{ module "wait.stage.module" "waitTime": "43" }}
+        {{ module "wait.stage.module" "waitTime" "43" }}
       ]
     }
   ]
@@ -578,81 +597,80 @@ If you have already created a pipeline in the Spinnaker UI, you can create a din
 2. Click on the `Pipeline Actions` dropdown and select 'Edit as JSON'
 3. Copy/paste this data into a new file, you will need to wrap this JSON with the following
 
-    ```
-    {
-      "application": "YourSpinnakerApplicationName",
-      "pipelines": [
-         "name": "the name of your pipeline",
-         "application": "YourSpinnakerApplicationName",
-         The JSON obtained from the UI
-       ]
-    }
-    ```
+   ```json
+   {
+     "application": "YourSpinnakerApplicationName",
+     "pipelines": [
+        "name": "the name of your pipeline",
+        "application": "YourSpinnakerApplicationName",
+        "{ The rest of the JSON obtained from the UI }"
+      ]
+   }
+   ```
+
 4. Add the following parameters to each pipeline in the collection within the root of its JSON:
 
-    ```
-    "application": "YourSpinnakerApplicationName"
-    "name": "<the name of the pipeline you wish to create>"
-    ```
-    Note that the value you set for `"application"` must be the same as the value in step 3.
+   ```json
+   "application": "YourSpinnakerApplicationName"
+   "name": "<the name of the pipeline you wish to create>"
+   ```
 
-    For example, if your pipeline called "Wait Pipeline" has a JSON definition that looks like this:
+   Note that the value you set for `"application"` must be the same as the value in step 3.
+   For example, if your pipeline called "Wait Pipeline" has a JSON definition that looks like this:
+   
+   ```json
+   {
+     "isNew": true,
+     "keepWaitingPipelines": false,
+     "lastModifiedBy": "justin@acompany.com",
+     "limitConcurrent": true,
+     "stages": [
+       {
+         "isNew": true,
+         "name": "Wait",
+         "refId": "1",
+         "requisiteStageRefIds": [],
+         "type": "wait",
+         "waitTime": 30
+       }
+     ],
+     "triggers": [],
+     "updateTs": "1572455128000"
+   }
+   ```
 
-    ```
-      {
-        "isNew": true,
-        "keepWaitingPipelines": false,
-        "lastModifiedBy": "justin@acompany.com",
-        "limitConcurrent": true,
-        "stages": [
-          {
-            "isNew": true,
-            "name": "Wait",
-            "refId": "1",
-            "requisiteStageRefIds": [],
-            "type": "wait",
-            "waitTime": 30
-          }
-        ],
-        "triggers": [],
-        "updateTs": "1572455128000"
-      }
+   Then a Dinghy file managing this pipeline in the "helloworld" application looks like this:
 
-    ```
+   ```json
+   {
+     "application": "helloworld",
+     "pipelines": [
+       {
+         "application": "helloworld",
+         "name": "Wait Pipeline",
+         "isNew": true,
+         "keepWaitingPipelines": false,
+         "lastModifiedBy": "justin@acompany.com",
+         "limitConcurrent": true,
+         "stages": [
+           {
+             "isNew": true,
+             "name": "Wait",
+             "refId": "1",
+             "requisiteStageRefIds": [],
+             "type": "wait",
+             "waitTime": 30
+           }
+         ],
+         "triggers": [],
+         "updateTs": "1572455128000"
+       }
+      ]
+   }
+   ```
 
-    Then a Dinghy file managing this pipeline in the "helloworld" application looks like this:
-
-    ```
-      {
-        "application": "helloworld",
-        "pipelines": [
-          {
-            "application": "helloworld",
-            "name": "Wait Pipeline",
-            "isNew": true,
-            "keepWaitingPipelines": false,
-            "lastModifiedBy": "justin@acompany.com",
-            "limitConcurrent": true,
-            "stages": [
-              {
-                "isNew": true,
-                "name": "Wait",
-                "refId": "1",
-                "requisiteStageRefIds": [],
-                "type": "wait",
-                "waitTime": 30
-              }
-            ],
-            "triggers": [],
-            "updateTs": "1572455128000"
-          }
-         ]
-      }
-    ```
-
-    Save this file as `dinghyfile` in the root of your project and push it to your repository.
-
-    You may want to follow the [deleting stale pipelines](https://docs.armory.io/spinnaker/using_dinghy/#deleting-stale-pipelines).
+   Save this file as `dinghyfile` in the root of your project and push it to your repository.
+   You may want to follow the [deleting stale pipelines](https://docs.armory.io/spinnaker/using_dinghy/#deleting-stale-pipelines).
 
 # Alternate Template Formats
 
@@ -724,6 +742,30 @@ pipelines:
 ## Conditionals
 
 Dinghy supports all of the usual Go template conditionals. In addition to that, Dinghy also provides the git webhoook content in the template, allowing you to use the raw push data in the template itself.
+
+Example:
+```{% raw %}
+{
+  "application": "conditionals",
+  "pipelines": [
+    {
+      "application": "conditionals",
+      "name": "my-pipeline-name",
+      "stages": [
+          {
+            {{ if eq .RawData.pusher.name "Samtribal" }}
+              "name": "this_is_true",
+            {{ else }}
+              "name": "this_is_false",
+            {{ end }}
+            "waitTime":  10,
+            "type": "wait"
+          }
+      ]
+    }
+  ]
+}
+{% endraw %}```
 
 ### Iterating over a map:
 
@@ -837,30 +879,30 @@ If Dinghy crashes on start up and you encounter an error in Dinghy similar to:
 
 You have probably configured global logging levels with `spinnaker-local.yml`. The work around is to override Dinghy's logging levels:
 
-* **Operator**
+**Operator**
 
-    ```yaml
-    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
-    kind: SpinnakerService
-    metadata:
-      name: spinnaker
-    spec:
-      spinnakerConfig:
-        profiles:
-          dinghy: |
-            Logging:
-              Level: INFO
-              ... # Rest of config omitted for brevity
-    ```
+```yaml
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    profiles:
+      dinghy: |
+        Logging:
+          Level: INFO
+          ... # Rest of config omitted for brevity
+```
 
-* **Halyard**
+**Halyard**
 
-    Create `.hal/default/profiles/dinghy-local.yml` and add the following snippet:
+Create `.hal/default/profiles/dinghy-local.yml` and add the following snippet:
 
-    ```
-    Logging:
-      Level: INFO
-    ```
+```
+Logging:
+  Level: INFO
+```
 
 
 # Webhook Secret Validation
@@ -873,41 +915,44 @@ This feature supports **GitHub** webhooks.
 
 When you enable webhook secret validation, **ALL** webhooks for that provider are validated for a secret.
 
-* **Operator**
+**Operator**
 
-    Add the `webhookValidationEnabledProviders` element to the `dinghy` configuration in the `SpinnakerService` manifest. Add the providers as a list. To disable webhooks secrets, delete the `webhookValidationEnabledProviders` element with the list of providers.
+Add the `webhookValidationEnabledProviders` element to the `dinghy` configuration in the `SpinnakerService` manifest. Add the providers as a list. To disable webhooks secrets, delete the `webhookValidationEnabledProviders` element with the list of providers.
 
-    ```yaml
-      apiVersion: spinnaker.armory.io/v1alpha2
-      kind: SpinnakerService
-      metadata:
-        name: spinnaker
-      spec:
-        spinnakerConfig:
-          config:
-            armory:
-              dinghy:
-                webhookValidationEnabledProviders:
-                - github
-                ... # Rest of config omitted for brevity
-    ```
+```yaml
+apiVersion: spinnaker.armory.io/v1alpha2
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    config:
+      armory:
+        dinghy:
+          webhookValidationEnabledProviders:
+          - github
+          ... # Rest of config omitted for brevity
+```
 
-    ```bash
-      kubectl -n spinnaker apply -f spinnakerservice.yml
-    ```
+Then update the SpinnakerService with your updated manifest:
 
-* **Halyard**
-  * **Enable**
+```bash
+kubectl -n spinnaker apply -f spinnakerservice.yml
+```
 
-    ```bash
-	hal armory dinghy webhooksecrets <version control provider> enable
-	```
+**Halyard**
 
-  * **Disable**
+* **Enable**
 
-    ```bash
-	hal armory dinghy webhooksecrets <version control provider> disable
-	```
+  ```bash
+  hal armory dinghy webhooksecrets <version control provider> enable
+  ```
+
+* **Disable**
+
+  ```bash
+  hal armory dinghy webhooksecrets <version control provider> disable
+  ```
 
 
 ## Webhook Validation Fields
@@ -934,58 +979,59 @@ You can specify a default secret to use when your GitHub organization has multip
 
 ## Add or Edit Webhook Validations
 
-* **Operator**
+**Operator**
 
-    Add the `webhookValidations` element to the `dinghy` configuration in the `SpinnakerService` manifest.
+Add the `webhookValidations` element to the `dinghy` configuration in the `SpinnakerService` manifest.
 
-    ```yaml
-      apiVersion: spinnaker.armory.io/v1alpha2
-      kind: SpinnakerService
-      metadata:
-        name: spinnaker
-      spec:
-        spinnakerConfig:
-          config:
-            armory:
-              dinghy:
-              webhookValidations:
-              - enabled: true
-                versionControlProvider: github
-                organization: testorg
-                repo: testrepo
-                secret: testSecret
-              - enabled: true
-                versionControlProvider: github
-                organization: armory
-                repo: test-repo
-                secret: testSecret
-                ... # Rest of config omitted for brevity
-    ```
+```yaml
+apiVersion: spinnaker.armory.io/v1alpha2
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    config:
+      armory:
+        dinghy:
+        webhookValidations:
+        - enabled: true
+          versionControlProvider: github
+          organization: testorg
+          repo: testrepo
+          secret: testSecret
+        - enabled: true
+          versionControlProvider: github
+          organization: armory
+          repo: test-repo
+          secret: testSecret
+          ... # Rest of config omitted for brevity
+```
 
-    ```bash
-      kubectl -n spinnaker apply -f spinnakerservice.yml
-    ```
+```bash
+kubectl -n spinnaker apply -f spinnakerservice.yml
+```
 
-* **Halyard**
+**Halyard**
 
-    ```bash
-	hal armory dinghy webhooksecrets <version control provider> edit \
-	--organization testOrg \
-	--repo repoName \
-	--enabled true \
-	--secret testSecret
-	```
+```bash
+hal armory dinghy webhooksecrets <version control provider> edit \
+  --organization testOrg \
+  --repo repoName \
+  --enabled true \
+  --secret testSecret
+```
 
-* Edit with Halyard
-	To disable a repository, set `enabled` to `false`:
+Edit with Halyard
 
-    ```bash
-	hal armory dinghy webhooksecrets <version control provider> edit \
-	--organization testOrg \
-	--repo repoName \
-	--enabled false \
-	--secret testSuperSecret \
-	```
+To disable a repository, set `enabled` to `false`:
+
+```bash
+hal armory dinghy webhooksecrets <version control provider> edit \
+  --organization testOrg \
+  --repo repoName \
+  --enabled false \
+  --secret testSuperSecret
+```
 
 
 ## List Webhook Validations
@@ -1000,10 +1046,9 @@ You can use parameters to search for specific elements.
 
 ```bash
 hal armory dinghy webhooksecrets <version control provider> list \
---organization armory-io \
---enabled false
+  --organization armory-io \
+  --enabled false
 ```
-
 
 ## Delete Webhook Validations
 
@@ -1017,7 +1062,7 @@ Apply at least one filter to avoid deleting all webhook validations by mistake.
 
 ```bash
 hal armory dinghy webhooksecrets <version control provider> delete \
---repo testRepo
+  --repo testRepo
 ```
 
 Delete all Webhook validations with the `--all` parameter.

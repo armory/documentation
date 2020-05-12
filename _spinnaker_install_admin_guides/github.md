@@ -35,31 +35,31 @@ more detailed help, take a look at the
 If you haven't done this yet (for example, if you've just installed Armory
 Spinnaker fresh), you'll need to enable Github as an artifact source:
 
-* **Operator**
+**Operator**
 
-    Add the following snippet to `SpinnakerService` manifest:
+Add the following snippet to `SpinnakerService` manifest:
 
-    ```yaml
-    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
-    kind: SpinnakerService
-    metadata:
-      name: spinnaker
-    spec:
-      spinnakerConfig:  
-        config:
-          features:
-            artifacts: true
-          artifacts:
-            github:
-              enabled: true
-    ```
+```yaml
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:  
+    config:
+      features:
+        artifacts: true
+      artifacts:
+        github:
+          enabled: true
+```
 
-* **Halyard**
+**Halyard**
 
-    ```bash
-    hal config features edit --artifacts true
-    hal config artifact github enable
-    ```
+```bash
+hal config features edit --artifacts true
+hal config artifact github enable
+```
 
 ### Add a Github Credential
 
@@ -74,52 +74,51 @@ this:
 
 *Replace the account name `github_user` with the string you want to use to identify this Github credential.*
 
-* **Operator**
+**Operator**
 
-    Add the following snippet to `SpinnakerService` manifest:
+Add the following snippet to `SpinnakerService` manifest:
 
-    ```yaml
-    apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
-    kind: SpinnakerService
-    metadata:
-      name: spinnaker
-    spec:
-      spinnakerConfig:  
-        config:
-          features:
-            artifacts: true
-          artifacts:
-            github:
-              enabled: true
-              accounts:
-              - name: github_user
-                token: abc  # Github's personal access token. This fields supports `encrypted` references to secrets.
-                # username: abc # GitHub username
-                # password: abc # GitHub password. This fields supports `encrypted` references to secrets.
-                # usernamePasswordFile: creds.txt # File containing "username:password" to use for GitHub authentication. This fields supports `encryptedFile` references to secrets.
-                # tokenFile: token.txt # File containing a GitHub authentication token. This fields supports `encryptedFile` references to secrets.
-    ```
+```yaml
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:  
+    config:
+      features:
+        artifacts: true
+      artifacts:
+        github:
+          enabled: true
+          accounts:
+          - name: github_user
+            token: abc  # Github's personal access token. This fields supports `encrypted` references to secrets.
+            # username: abc # GitHub username
+            # password: abc # GitHub password. This fields supports `encryptedreferences to secrets.
+            # usernamePasswordFile: creds.txt # File containing "username:passwordto use for GitHub authentication. This fields supports `encryptedFilereferences to secrets.
+            # tokenFile: token.txt # File containing a GitHub authentication tokenThis fields supports `encryptedFile` references to secrets.
+```
 
-    If you have a Github personal access token, you only need that to authenticate against Github, but there are other authentication options like username/password, or specifying credentials in a `file` entry.
+If you have a Github personal access token, you only need that to authenticate against Github, but there are other authentication options like username/password, or specifying credentials in a `file` entry.
 
-    Don't forget to apply your changes:
+Don't forget to apply your changes:
 
-    ```bash
-    kubectl -n >spinnaker namespace> apply -f <SpinnakerService manifest>
-    ```
+```bash
+kubectl -n >spinnaker namespace> apply -f <SpinnakerService manifest>
+```
 
-* **Halyard**
+**Halyard**
 
-    ```bash
-    GITHUB_ACCOUNT_NAME=github_user
-    hal config artifact github account add ${GITHUB_ACCOUNT_NAME} \
-        --token # you'll be prompted for this interactively
-    ```
+```bash
+GITHUB_ACCOUNT_NAME=github_user
+hal config artifact github account add ${GITHUB_ACCOUNT_NAME} \
+    --token # you'll be prompted for this interactively
+```
 
-    Detailed information on all command line options can be found
-    [here](https://www.spinnaker.io/reference/halyard/commands/#hal-config-artifact-github-account-add)
+Detailed information on all command line options can be found [here](https://www.spinnaker.io/reference/halyard/commands/#hal-config-artifact-github-account-add).
 
-    Don't forget to `hal deploy apply` your changes.
+Don't forget to run `hal deploy apply` to apply your changes.
 
 ## Using the Github Credential
 

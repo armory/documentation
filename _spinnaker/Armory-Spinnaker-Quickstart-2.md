@@ -18,9 +18,10 @@ Before you start, ensure that have completed the following requirements:
 
     Running the following command from your local machine should return the namespaces for the EKS cluster you want to deploy to.
 
-    ```bash
-    kubectl get ns
-    ```
+  ```bash
+  kubectl get ns
+  ```
+
 * Have a way to copy files from your local workstation to the Minnaker VM, such as `scp`.
 
 
@@ -36,44 +37,44 @@ The Account name is arbitrary and should be a name that is an identifiable.  The
 
 1. Set environment variables for halyard command:
    
-    ```bash 
-    export AWS_ACCOUNT_NAME=aws-dev-1 \
-    export ACCOUNT_ID=[YOUR_ACCOUNT_ID] \
-    export ROLE_NAME=role/Spinnaker-Managed-Role
-    ```
+   ```bash 
+   export AWS_ACCOUNT_NAME=aws-dev-1 \
+   export ACCOUNT_ID=[YOUR_ACCOUNT_ID] \
+   export ROLE_NAME=role/Spinnaker-Managed-Role
+   ```
 
 2. Add the AWS provider account to Spinnaker:
 
-    ```bash
-    hal config provider aws account add ${AWS_ACCOUNT_NAME} \
-        --account-id ${ACCOUNT_ID} \
-        --assume-role ${ROLE_NAME} \
-        --regions us-east-1,us-west-2
-    ```
+   ```bash
+   hal config provider aws account add ${AWS_ACCOUNT_NAME} \
+     --account-id ${ACCOUNT_ID} \
+     --assume-role ${ROLE_NAME} \
+     --regions us-east-1,us-west-2
+   ```
 
 3. Enable the AWS provider:
    
-    ```bash
-    hal config provider aws enable
-    ```
+   ```bash
+   hal config provider aws enable
+   ```
 
 4. Add an account to the ECS provider:
    
-    ```bash
-    hal config provider ecs account add ecs-account-name --aws-account aws-dev-1
-    ```
+   ```bash
+   hal config provider ecs account add ecs-account-name --aws-account aws-dev-1
+   ```
 
 5. Enable the ECS provider:
    
-    ```bash
-    hal config provider ecs enable
-    ```
+   ```bash
+   hal config provider ecs enable
+   ```
 
 6. Apply the new configurations and redeploy Spinnaker:
    
-    ```bash
-    hal deploy apply
-    ```
+   ```bash
+   hal deploy apply
+   ```
 
 ### Tag AWS Subnets for Spinnaker Auto Discovery
 
@@ -86,14 +87,12 @@ Key                 Value
 immutable_metadata  {"purpose":"example-purpose"}
 ```
 
-* Do not change `purpose`.
 * Replace `example-purpose` with your subnet identifier. The subnet shows up in Deck as a dropdown option.
 
- **Example:** 
+**Example:**
 
-```
- immutable_metadata {"purpose":"**us-west-2-dev-subnet**"}
-```
+* Key: `immutable_metadata`
+* Value: `{"purpose":"us-west-2-dev-subnet"}`
 
 # Second: Connect Spinnaker to an Amazon EKS cluster
 
