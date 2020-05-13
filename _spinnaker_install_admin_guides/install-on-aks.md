@@ -95,6 +95,7 @@ To create an AKS cluster, perform the following steps on the `workstation machin
    mkdir ~/aks-spinnaker
    cd ~/aks-spinnaker
    ```
+   
    For this guide, use the `~/aks-spinnaker` directory, but this can be any persistent directory on any Linux or OSX machine.
 
 2. Run the following commands to set up the `az` CLI:
@@ -126,19 +127,19 @@ To create an AKS cluster, perform the following steps on the `workstation machin
 
 6. Configure the Kubernetes context so that `kubectl` uses your AKS cluster:
     
-    To use the cluster created in the previous step, run the following command:
+   To use the cluster created in the previous step, run the following command:
 
-    ```bash
-    export KUBECONFIG=kubeconfig-aks
-    az aks get-credentials --resource-group ${RESOURCE_GROUP} --name spinnaker-cluster --file ${KUBECONFIG}
-    ```
+   ```bash
+   export KUBECONFIG=kubeconfig-aks
+   az aks get-credentials --resource-group ${RESOURCE_GROUP} --name spinnaker-cluster --file ${KUBECONFIG}
+   ```
 
-    To use an existing AKS cluster, run the following command:
+   To use an existing AKS cluster, run the following command:
 
-    ```bash
-    export KUBECONFIG=kubeconfig-aks
-    az aks get-credentials --resource-group <your-resource-group> --name <your-cluster-name> --file ${KUBECONFIG}
-    ```
+   ```bash
+   export KUBECONFIG=kubeconfig-aks
+   az aks get-credentials --resource-group <your-resource-group> --name <your-cluster-name> --file ${KUBECONFIG}
+   ```
 
 7. Verify that you have access to the cluster:
 
@@ -207,9 +208,9 @@ Spinnaker uses an AZS bucket to store persistent configuration (such as pipeline
    az storage account create --resource-group ${STORAGE_RESOURCE_GROUP} --sku STANDARD_LRS --name ${STORAGE_ACCOUNT_NAME}
    STORAGE_ACCOUNT_KEY=$(az storage account keys list --resource-group ${STORAGE_RESOURCE_GROUP} --account-name ${STORAGE_ACCOUNT_NAME} --query "[0].value" | tr -d '"')
    ```
-    Keep the following Azure requirements in mind when defining `STORAGE_ACCOUNT_NAME`: 
-      * The name must be between 3 and 24 characters
-      * Only numbers and lowercase characters are valid
+   Keep the following Azure requirements in mind when defining `STORAGE_ACCOUNT_NAME`: 
+    * The name must be between 3 and 24 characters
+    * Only numbers and lowercase characters are valid
     
 ## Stage files on the `Halyard machine`
 

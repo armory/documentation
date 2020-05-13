@@ -65,11 +65,34 @@ be the one you referenced in the environment file.
 *Description*:  Free form text to help your coworkers know what this canary
 is doing.
 
-Note: If you see the following error `The was an error saving your config: 400` when you are trying to save your "Canary Config", try adding the following settings in `.hal/default/profiles/gate-local.yml`
-```yaml
+Note: If you see the following error `The was an error saving your config: 400` when you are trying to save your "Canary Config", add the following setting:
+
+**Halyard**
+
+In `.hal/default/profiles/gate-local.yml`, add the following snippet:
+
+```
 services:
   kayenta:
     canaryConfigStore: true
+```
+
+**Operator**
+
+In your `SpinnakerService` manifest, add the following snippet:
+
+```yaml
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+  kind: SpinnakerService
+  metadata:
+    name: spinnaker
+  spec:
+    spinnakerConfig:
+      profiles:
+        gate:
+          services:
+            kayenta:
+              canaryConfigStore: true
 ```
 
 ## Groups

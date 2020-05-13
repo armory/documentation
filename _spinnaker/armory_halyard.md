@@ -103,6 +103,24 @@ hal armory diagnostics edit [parameters]
  * `--no-validate`: (*Default*: `false`) Skip validation.
  * `--uuid`: (*Required*) UUID of the Armory installation
 
+#### Equivalent SpinnakerService.yml config for Spinnaker Operator
+
+```yaml
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    config:
+      armory:
+        diagnostics:
+          enabled: true     # Whether or not diagnostics event reporting is enabled
+          uuid: abc         # UUID of the Armory installation
+          logging:
+            enabled: true   # Whether or not Spinnaker logs are sent to Armory
+            endpoint: https://debug.armory.io/v1/logs  # Destination URL of Spinnaker logs
+```
 
 ---
 ## hal armory diagnostics enable
@@ -180,6 +198,43 @@ hal armory dinghy edit [parameters]
  * `--template-org`: (*Required*) SCM organization or namespace where application and template repositories are located.
  * `--template-repo`: (*Required*) SCM repository where module templates are located.
 
+#### Equivalent SpinnakerService.yml config for Spinnaker Operator
+
+```yaml
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    config:
+      armory:
+        dinghy:
+          enabled: true       # Whether or not dinghy is enabled
+          templateOrg: abc    # SCM organization or namespace where application and template repositories are located
+          templateRepo: abc   # SCM repository where module templates are located
+          githubToken: abc    #  GitHub token.
+          githubEndpoint: https://api.github.com # (Default: https://api.github.com) Github API endpoint. Useful if you’re using Github Enterprise
+          stashUsername: abc  # Stash username
+          stashToken: abc     # Stash token
+          stashEndpoint: abc  # Stash API endpoint
+          gitlabToken: abc    # GitLab token
+          gitlabEndpoint: abc # GitLab endpoint
+          dinghyFilename: dinghyfile #  (Default: dinghyfile) Name of the file in application repositories which contains pipelines
+          autoLockPipelines: true # (Default: true) Lock pipelines in the UI before overwriting on change
+          fiatUser: abc       # Fiat user or service account to use for Dinghy operations
+          notifiers:
+            slack: 
+              enabled: false  # Whether or not Slack notifications are enabled for dinghy events
+              channel: abc    # Slack channel where notifications will be sent to
+          webhookValidationEnabledProviders:  # List of enabled providers for webhook validations
+          webhookValidations: # Webhook validations list
+          - enabled: true     # true/false flag to enable validation for the repository
+            versionControlProvider: abc    # Version Control provider
+            organization: abc # Organization for the repository
+            repo: abc         # Repository name
+            secret: abc       # Secret for the Webhook
+```
 
 ---
 ## hal armory dinghy enable
@@ -241,6 +296,65 @@ hal armory dinghy slack disable [parameters]
 #### Parameters
  * `--deployment`: If supplied, use this Halyard deployment. This will _not_ create a new deployment.
  * `--no-validate`: (*Default*: `false`) Skip validation.
+
+---
+## hal armory dinghy webhooksecrets <provider> [enable | disable]
+
+Enable or disable webhook secrets validation in GitHub. This does not support other providers. If this option is enabled, all GitHub webhooks will be validated.  (Halyard >= 1.8.4)
+
+#### Usage
+```
+hal armory dinghy webhooksecrets <provider> [ enable | disable]
+```
+
+---
+## hal armory dinghy webhooksecrets <provider> edit
+ 
+Add or edit webhook secrets validation in GitHub. This does not support other providers.  (Halyard >= 1.8.4)
+
+#### Usage
+```
+hal armory dinghy webhooksecrets <provider> edit [parameters]
+```
+
+#### Parameters
+ * `--organization`: Organization for the repository.
+ * `--repo`: Repository name.
+ * `--secret`: Secret for the Webhook.
+ * `--enabled`: true or false. If true, then validation will be done. If false, then validation will always pass (bypass validation).
+
+---
+## hal armory dinghy webhooksecrets <provider> list
+
+List webhook secrets validations for GitHub. This does not support other providers. (Halyard >= 1.8.4)
+
+#### Usage
+```
+hal armory dinghy webhooksecrets <provider> list [parameters]
+```
+
+#### Parameters
+ * `--organization`: Organization for the repository.
+ * `--repo`: Repository name.
+ * `--secret`: Secret for the webhook.
+ * `--enabled`: true or false.
+
+---
+## hal armory dinghy webhooksecrets <provider> delete
+
+Delete webhook secrets validations for GitHub. This does not support other providers. Provide at least one parameter for the command to delete the webhook secrets.  (Halyard >= 1.8.4)
+
+#### Usage
+```
+hal armory dinghy webhooksecrets <provider> delete [parameters]
+```
+
+#### Parameters
+ * `--organization`: Organization for the repository.
+ * `--repo`: Repository name.
+ * `--secret`: Secret for the Webhook.
+ * `--enabled`: true/false value.
+ * `--all`: Deletes all Webhook validation records. This param should be used alone.
 
 ---
 ## hal armory init
@@ -328,6 +442,25 @@ hal armory secrets vault edit [parameters]
  * `--role`: (Applies to `KUBERNETES` [authentication method](https://www.vaultproject.io/docs/auth/kubernetes.html)) Name of the role against which the login is being attempted.
  * `--url`: (*Required*) URL of the Vault endpoint from Spinnaker services.
 
+#### Equivalent SpinnakerService.yml config for Spinnaker Operator
+
+```yaml
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    config:
+      armory:
+        secrets:
+          vault:
+            enabled: true     # Whether or not Vault secrets are enabled
+            url: abc          # URL of the Vault endpoint from Spinnaker services
+            path: kubernetes  # (Default: kubernetes) (Applies to KUBERNETES authentication method) Path of the kubernetes authentication backend mount
+            role: spinnaker   # (Applies to KUBERNETES authentication method) Name of the role against which the login is being attempted
+            authMethod: KUBERNETES # Method used to authenticate with the Vault endpoint. Must be either KUBERNETES for Kubernetes service account auth or TOKEN for Vault token auth. The TOKEN method will require a VAULT_TOKEN environment variable set for Operator and the services.
+```
 
 ---
 ## hal armory secrets vault enable

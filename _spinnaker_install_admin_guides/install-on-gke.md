@@ -13,7 +13,7 @@ This guide describes how to install Spinnaker in Google Kubernetes Engine (GKE).
 
 * A GKE (Google Kubernetes Engine) cluster (you can use an existing one if you already have one)
 * A GCS (Google Cloud Storage) bucket (you can use an existing one if you already have one)
-* An NGINX Ingress controller in your GKE cluster. This step is only needed if your cluster doesn't already have an ingress installed. Note that the examples on this page for NGINX only work on Kubernetes version 1.14 or later. 
+* An NGINX Ingress controller in your GKE cluster. This step is only needed if your cluster doesn't already have an ingress installed. Note that the examples on this page for NGINX only work on Kubernetes version 1.14 or later.
 
 This document currently does not fully cover the following (see [Next Steps](#next-steps) for some links to achieve these)
 
@@ -389,11 +389,11 @@ Then, you can access Spinnaker at http://localhost:9000
 
 (If you are doing this on a remote machine, this will not work because your browser attempts to access localhost on your local workstation rather than on the remote machine where the port is forwarded)
 
-__Note:__ Even if the `hal deploy apply` command returns successfully, the 
-installation may not be complete yet. This is especially the case with 
+__Note:__ Even if the `hal deploy apply` command returns successfully, the
+installation may not be complete yet. This is especially the case with
 distributed Kubernetes installs. If you see errors such as `Connection refused`,
-the containers may not be available yet. You can either wait 
-or check the status of all of the containers using the command for your cloud provider 
+the containers may not be available yet. You can either wait
+or check the status of all of the containers using the command for your cloud provider
 (such as `kubectl get pods --namespace spinnaker`).
 
 ## Install the NGINX ingress controller
@@ -509,7 +509,7 @@ Once the ingress is up (this may take some time), you can get the IP address for
 
 ```bash
 $ kubectl describe -n spinnaker-system ingress spin-ingress
-Name:             spinnaker-nginx-ingress
+Name:             spin-ingress
 Namespace:        spinnaker
 Address:          35.233.216.189
 Default backend:  default-http-backend:80 (10.36.2.7:8080)

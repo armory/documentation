@@ -1,23 +1,24 @@
 ---
 layout: post
 title: Configuring Vault for Kubernetes Auth
-order: 153
+order: 155
 ---
 
 {:toc}
 
-To utilize the Kubernetes auth method for managing your Spinnaker secrets you need a properly configured Vault server. This document describes how to configure Vault for this purpose. It concludes by testing that a pod running in your Kubernetes cluster can authenticate with your Vault server using the Kubernetes auth method.
+To utilize the Kubernetes auth method for managing your Spinnaker secrets, you need to configure your Vault server. This document describes how to configure Vault for this purpose. It concludes by testing that a pod running in your Kubernetes cluster can authenticate with your Vault server using the Kubernetes auth method.
 
 ## Overview
 
-Configuration of Vault for the Kubernetes auth method requires configuring both Vault and Kubernetes. We will begin by configuring Kubernetes and wrap things up by then configuring Vault itself. 
+Configuration of Vault for the Kubernetes auth method requires configuring both Vault and Kubernetes. We will begin by configuring Kubernetes and wrap things up by then configuring Vault itself.
 
 ## Kubernetes configuration
 
 **1. Create a Service Account.**
 
 **vault-auth-service-account.yml**
-```
+
+```yaml
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
@@ -54,6 +55,7 @@ $ kubectl -n default apply --filename vault-auth-service-account.yml
 **2. Create a read-only policy `spinnaker-kv-ro` in Vault**
 
 **spinnaker-kv-ro.hcl**
+
 ```
 # For K/V v1 secrets engine
 path "secret/spinnaker/*" {
@@ -64,6 +66,7 @@ path "secret/data/spinnaker/*" {
     capabilities = ["read", "list"]
 }
 ```
+
 ```
 $ vault policy write spinnaker-kv-ro spinnaker-kv-ro.hcl
 ```
@@ -96,7 +99,7 @@ The Kubernetes Vault Auth Secrets Engine does not currently support token renewa
 **Note** by default Vault has a max_ttl parameter set to `768h0m0s` that's 32 days, if you want to set the `TTL` to a higher value, you need to modify this parameter.
 
 
-**Important:** Spinnaker must be redeployed sometime during the defined `TTL` window -- we recommend this be done by updating to a new version of Spinnaker and running `hal deploy apply`.
+**Important:** Spinnaker must be redeployed sometime during the defined `TTL` window -- Armory recommends this be done by updating to a new version of Spinnaker and running `kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest>` if using Operator, or `hal deploy apply` if using Halyard.
 
 ---
 

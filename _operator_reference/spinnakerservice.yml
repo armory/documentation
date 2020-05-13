@@ -1,0 +1,1168 @@
+apiVersion: spinnaker.armory.io/v1alpha2
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    config:
+      version: 2.17.5
+      providers:
+        appengine:
+          enabled: false
+          gcloudPath: /root # The path to the gcloud executable on the machine running clouddriver.
+          accounts:
+          - name: prod-1
+            environment: prod # The environment name for the account. Many accounts can share the same environment (e.g. dev, test, prod)
+            requiredGroupMembership: # A user must be a member of at least one specified group in order to make changes to this account's cloud resources.
+            - readers
+            providerVersion: v1
+            permissions:
+              READ:
+              - read1
+              - read2
+              WRITE:
+              - write1
+              - write2
+              EXECUTE:
+              - exec1
+              - exec2
+              CREATE:
+              - create1
+              - create2
+            project: proj1 # The Google Cloud Platform project this Spinnaker account will manage.
+            jsonPath: sa.json # The path to a JSON service account that Spinnaker will use as credentials. This is only needed if Spinnaker is not deployed on a Google Compute Engine VM, or needs permissions not afforded to the VM it is running on. See https://cloud.google.com/compute/docs/access/service-accounts for more information.
+            localRepositoryDirectory: /root # A local directory to be used to stage source files for App Engine deployments within Spinnaker's Clouddriver microservice.
+            gitHttpsUsername: admin # A username to be used when connecting with a remote git repository server over HTTPS.
+            gitHttpsPassword: admin # A password to be used when connecting with a remote git repository server over HTTPS.
+            githubOAuthAccessToken: ABC # An OAuth token provided by Github for connecting to a git repository over HTTPS. See https://help.github.com/articles/creating-an-access-token-for-command-line-use for more information.
+            sshPrivateKeyFilePath: id.rsa # The path to an SSH private key to be used when connecting with a remote git repository over SSH.
+            sshPrivateKeyPassphrase: xyz # The passphrase to an SSH private key to be used when connecting with a remote git repository over SSH.
+            sshKnownHostsFilePath: knows_hosts # The path to a known_hosts file to be used when connecting with a remote git repository over SSH.
+            sshTrustUnknownHosts: false # Enabling this flag will allow Spinnaker to connect with a remote git repository over SSH without verifying the server's IP address against a known_hosts file.
+            gcloudReleaseTrack: STABLE # The gcloud release track (ALPHA, BETA, or STABLE) that Spinnaker will use when deploying to App Engine.
+            services: # A list of regular expressions. Any service matching one of these regexes will be indexed by Spinnaker.
+            - abc
+            versions: #  A list of regular expressions. Any version matching one of these regexes will be indexed by Spinnaker.
+            - abc
+            omitServices: #  A list of regular expressions. Any service matching one of these regexes will be ignored by Spinnaker.
+            - abc
+            omitVersions: # A list of regular expressions. Any version matching one of these regexes will be ignored by Spinnaker.
+            - abc
+            cachingIntervalSeconds: 30 # The interval in seconds at which Spinnaker will poll for updates in your AppEngine clusters.
+        aws:
+          enabled: false
+          accounts:
+          - name: aws-dev
+            environment: dev
+            requiredGroupMembership: # A user must be a member of at least one specified group in order to make changes to this account's cloud resources.
+            - readers
+            providerVersion: V1
+            permissions:
+              READ:
+              - read1
+              - read2
+              WRITE:
+              - write1
+              - write2
+              EXECUTE:
+              - exec1
+              - exec2
+              CREATE:
+              - create1
+              - create2
+            accountId: '025179128306'
+            regions:
+              - name: us-east-1
+              - name: us-east-2
+              - name: us-west-1
+              - name: us-west-2
+            assumeRole: role/german-test-role
+          primaryAccount: aws-dev
+          bakeryDefaults:
+            templateFile: xyz # This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this list https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer, or supplied as described here: https://spinnaker.io/setup/bakery/
+            awsAccessKey: abc # The default access key used to communicate with AWS.
+            awsSecretKey: abc # The secret key used to communicate with AWS.
+            awsSubnetId: abc #  If using VPC, the default ID of the subnet, such as subnet-12345def, where Packer will launch the EC2 instance. This field is required if you are using a non-default VPC.
+            awsVpcId: abc #  If launching into a VPC subnet, Packer needs the VPC ID in order to create a temporary security group within the VPC. Requires subnet_id to be set. If this default value is left blank, Packer will try to get the VPC ID from the subnet_id.
+            awsAssociatePublicIpAddress: false #  If using a non-default VPC, public IP addresses are not provided by default. If this is enabled, your new instance will get a Public IP.
+            defaultVirtualizationType: pv # The default type of virtualization for the AMI you are building. This option must match the supported virtualization type of source_ami. Can be pv or hvm.
+            baseImages:
+            - baseImage:
+                id: 123
+                shortDescription: abc
+                detailedDescription: abc
+                packageType: abc
+                templateFile: abc
+              virtualizationSettings:
+              - region: us-west-2
+                virtualizationType: pv
+                instanceType: abc
+                sourceAmi: abc
+                sshUserName: abc
+                winRmUserName: abc
+                spotPrice: 123
+                spotPriceAutoProduct: 123
+          defaultKeyPairTemplate: '{{"{{"}}name{{"}}"}}-keypair'
+          defaultRegions:
+            - name: us-east-1
+            - name: us-east-2
+            - name: us-west-1
+            - name: us-west-2
+          defaults:
+            iamRole: BaseIAMRole
+          accessKeyId: xyz # Your AWS Access Key ID. If not provided, Halyard/Spinnaker will try to find AWS credentials as described at http://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html#credentials-default. Note that if you are baking AMI's via Rosco, you may also need to set the access key on the AWS bakery default options.
+          secretAccessKey: xyz # Your AWS Secret Key.. Note that if you are baking AMI's via Rosco, you may also need to set the secret key on the AWS bakery default options.
+          defaultAssumeRole: xyz
+          features:
+            cloudFormation:
+              enabled: true
+        ecs:
+          enabled: false
+          accounts:
+          - name: aws-dev
+            environment: dev # The environment name for the account. Many accounts can share the same environment (e.g. dev, test, prod)
+            awsAccount: aws-dev
+            requiredGroupMembership: # A user must be a member of at least one specified group in order to make changes to this account's cloud resources.
+            - readers
+            permissions:
+              READ:
+              - read1
+              - read2
+              WRITE:
+              - write1
+              - write2
+              EXECUTE:
+              - exec1
+              - exec2
+              CREATE:
+              - create1
+              - create2
+          providerVersion: v1
+          primaryAccount: aws-dev
+        azure:
+          enabled: false
+          accounts:
+          - name: azure-dev
+            environment: dev
+            requiredGroupMembership: # A user must be a member of at least one specified group in order to make changes to this account's cloud resources.
+            - readers
+            providerVersion: V1
+            permissions:
+              READ:
+              - read1
+              - read2
+              WRITE:
+              - write1
+              - write2
+              EXECUTE:
+              - exec1
+              - exec2
+              CREATE:
+              - create1
+              - create2
+            clientId: '025179128306' # The clientId (also called appId) of your service principal.
+            appKey: abc # The appKey (password) of your service principal.
+            tenantId: abc # The tenantId that your service principal is assigned to.
+            subscriptionId: abc # The subscriptionId that your service principal is assigned to.
+            objectId: abc # The objectId of your service principal. This is only required if using Packer to bake Windows images.
+            defaultResourceGroup: abc # The default resource group to contain any non-application specific resources.
+            defaultKeyVault: abc # The name of a KeyVault that contains the user name, password, and ssh public key used to create VMs
+            packerResourceGroup: abc # The resource group to use if baking images with Packer.
+            packerStorageAccount: abc # The storage account to use if baking images with Packer.
+            regions:
+              - name: abc
+            useSshPublicKey: true # Whether to use SSH public key to provision the linux vm. The default value is true which means using the ssh public key. Setting it to false means using the password instead.
+          primaryAccount: azure-dev
+          bakeryDefaults:
+            templateFile: xyz # This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this list https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer, or supplied as described here: https://spinnaker.io/setup/bakery/
+            baseImages:
+            - baseImage:
+                id: 123
+                shortDescription: abc
+                detailedDescription: abc
+                packageType: abc
+                templateFile: abc
+                publisher: abc
+                offer: abc
+                sku: abc
+                version: abc
+              virtualizationSettings: {}
+        dcos:
+          enabled: false
+          accounts:
+          - name: dcos-dev
+            environment: dev
+            requiredGroupMembership: # A user must be a member of at least one specified group in order to make changes to this account's cloud resources.
+            - readers
+            providerVersion: V1
+            permissions:
+              READ:
+              - read1
+              - read2
+              WRITE:
+              - write1
+              - write2
+              EXECUTE:
+              - exec1
+              - exec2
+              CREATE:
+              - create1
+              - create2
+            dockerRegistries: # Provide the list of docker registries to use with this DC/OS account
+            - accountName: abc
+              namespaces:
+              - abc
+              - def
+            clusters:
+            - name: abc
+              uid: abc
+              password: abc
+              serviceKeyFile: dcos-key
+          primaryAccount: dcos-dev
+          clusters:
+          - name: cluster1
+            dcosUrl: abc # URL of the endpoint for the DC/OS cluster's admin router.
+            caCertFile: dcos.ca # Root certificate file to trust for connections to the cluster
+            insecureSkipTlsVerify: false # Set this flag to disable verification of certificates from the cluster (insecure)
+            loadBalancer:
+              image: abc # Marathon-lb image to use when creating a load balancer with Spinnaker
+              serviceAccountSecret: abc # Name of the secret to use for allowing marathon-lb to authenticate with the cluster. Only necessary for clusters with strict or permissive security.
+        dockerRegistry:
+          accounts:
+          - name: dockerhub
+            environment: dev # The environment name for the account. Many accounts can share the same environment (e.g. dev, test, prod)
+            requiredGroupMembership: # A user must be a member of at least one specified group in order to make changes to this account's cloud resources.
+            - readers
+            providerVersion: V1
+            permissions:
+              READ:
+              - read1
+              - read2
+              WRITE:
+              - write1
+              - write2
+              EXECUTE:
+              - exec1
+              - exec2
+              CREATE:
+              - create1
+              - create2
+            address: https://index.docker.io # The registry address you want to pull and deploy images from. For example: index.docker.io - DockerHub quay.io - Quay gcr.io - Google Container Registry (GCR) [us|eu|asia].gcr.io - Regional GCR localhost - Locally deployed registry
+            username: abc # Your docker registry username
+            password: abc # Your docker registry password
+            passwordCommand: abc # Command to retrieve docker token/password, commands must be available in environment
+            email: fake.email@spinnaker.io # Your docker registry email (often this only needs to be well-formed, rather than be a real address)
+            cacheIntervalSeconds: 30 # How many seconds elapse between polling your docker registry. Certain registries are sensitive to over-polling, and larger intervals (e.g. 10 minutes = 600 seconds) are desirable if you're seeing rate limiting.
+            clientTimeoutMillis: 60000 # Timeout time in milliseconds for this repository.
+            cacheThreads: 1 # How many threads to cache all provided repos on. Really only useful if you have a ton of repos.
+            paginateSize: 100 # Paginate size for the docker repository _catalog endpoint.
+            sortTagsByDate: false #  Sort tags by creation date.
+            trackDigests: false # Track digest changes. This is not recommended as it consumes a high QPM, and most registries are flaky.
+            insecureRegistry: false # Treat the docker registry as insecure (don't validate the ssl cert).
+            repositories: # An optional list of repositories to cache images from. If not provided, Spinnaker will attempt to read accessible repositories from the registries _catalog endpoint
+            - library/nginx
+            passwordFile: docker-pass # The path to a file containing your docker password in plaintext (not a docker/config.json file)
+            dockerconfigFile: docker-config
+          enabled: true
+          primaryAccount: dockerhub
+        google:
+          enabled: false
+          accounts:
+          - name: google-dev
+            environment: dev
+            requiredGroupMembership: # A user must be a member of at least one specified group in order to make changes to this account's cloud resources.
+            - readers
+            providerVersion: V1
+            permissions:
+              READ:
+              - read1
+              - read2
+              WRITE:
+              - write1
+              - write2
+              EXECUTE:
+              - exec1
+              - exec2
+              CREATE:
+              - create1
+              - create2
+            project: abc # The Google Cloud Platform project this Spinnaker account will manage.
+            jsonPath: gcp.json # The path to a JSON service account that Spinnaker will use as credentials. This is only needed if Spinnaker is not deployed on a Google Compute Engine VM, or needs permissions not afforded to the VM it is running on. See https://cloud.google.com/compute/docs/access/service-accounts for more information.
+            alphaListed: false # Enable this flag if your project has access to alpha features and you want Spinnaker to take advantage of them.
+            imageProjects: # A list of Google Cloud Platform projects Spinnaker will be able to cache and deploy images from. When this is omitted, it defaults to the current project. Each project must have granted the IAM role compute.imageUser to the service account associated with the json key used by this account, as well as to the 'Google APIs service account' automatically created for the project being managed (should look similar to 12345678912@cloudservices.gserviceaccount.com). See https://cloud.google.com/compute/docs/images/sharing-images-across-projects for more information about sharing images across GCP projects.
+            - abc
+            consul:
+              enabled: false
+              agentEndpoint: localhost
+              agentPort: 8500
+              datacenters:
+              - abc
+            userDataFile: usr.data # The path to user data template file. Spinnaker has the ability to inject userdata into generated instance templates. The mechanism is via a template file that is token replaced to provide some specifics about the deployment. See https://github.com/spinnaker/clouddriver/blob/master/clouddriver-aws/UserData.md for more information.
+            regions: # A list of regions for caching and mutating calls. This overwrites any default-regions set on the provider.
+            - abc
+          primaryAccount: google-dev
+          bakeryDefaults:
+            templateFile: xyz # This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this list https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer, or supplied as described here: https://spinnaker.io/setup/bakery/
+            baseImages:
+            - baseImage:
+                id: 123 #  This is the identifier used by your cloud to find this base image.
+                shortDescription: abc #  A short description to help human operators identify the image.
+                detailedDescription: abc # A long description to help human operators identify the image.
+                packageType: abc # This is used to help Spinnaker's bakery download the build artifacts you supply it with. For example, specifying 'deb' indicates that your artifacts will need to be fetched from a debian repository.
+                templateFile: abc # This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this list https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer, or supplied as described here: https://spinnaker.io/setup/bakery/
+                isImageFamily: false
+              virtualizationSettings:
+                sourceImage: abc # The source image. If both source image and source image family are set, source image will take precedence.
+                sourceImageFamily: abc # The source image family to create the image from. The newest, non-deprecated image is used.
+              zone: abc # Set the default zone your images will be baked in.
+              network: abc # Set the default network your images will be baked in.
+              networkProjectId: abc # Set the default project id for the network and subnet to use for the VM baking your image.
+              useInternalIp: true # Use the internal rather than external IP of the VM baking your image.
+          defaultKeyPairTemplate: '{{"{{"}}name{{"}}"}}-keypair'
+          defaultRegions: # A list of regions for caching and mutating calls, applied to all accounts unless overridden.
+           - name: abc
+        huaweicloud:
+          enabled: false
+          accounts:
+          - name: huawei-dev
+            environment: dev
+            requiredGroupMembership: # A user must be a member of at least one specified group in order to make changes to this account's cloud resources.
+            - readers
+            providerVersion: V1
+            permissions:
+              READ:
+              - read1
+              - read2
+              WRITE:
+              - write1
+              - write2
+              EXECUTE:
+              - exec1
+              - exec2
+              CREATE:
+              - create1
+              - create2
+            accountType: abc # The type of account.
+            authUrl: abc # The auth url of cloud.
+            username: abc # The username used to access cloud.
+            password: abc # The password used to access cloud.
+            projectName: abc # The name of the project within the cloud.
+            domainName: abc # The domain name of the cloud.
+            insecure: false # Disable certificate validation on SSL connections. Needed if certificates are self signed. Default false.
+            regions: # The region(s) of the cloud.
+            - abc
+          primaryAccount: huawei-dev
+          bakeryDefaults:
+            templateFile: xyz # This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this list https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer, or supplied as described here: https://spinnaker.io/setup/bakery/
+            baseImages:
+            - baseImage:
+                id: 123 #  This is the identifier used by your cloud to find this base image.
+                shortDescription: abc #  A short description to help human operators identify the image.
+                detailedDescription: abc # A long description to help human operators identify the image.
+                packageType: abc # This is used to help Spinnaker's bakery download the build artifacts you supply it with. For example, specifying 'deb' indicates that your artifacts will need to be fetched from a debian repository.
+                templateFile: abc # This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this list https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer, or supplied as described here: https://spinnaker.io/setup/bakery/
+              virtualizationSettings:
+              - region: abc # The region for the baking configuration.
+                instanceType: abc # The instance type for the baking configuration.
+                sourceImageId: abc # The source image ID for the baking configuration.
+                sshUserName: abc # The ssh username for the baking configuration.
+                eipType: abc # The eip type for the baking configuration. See the api doc to get its value
+            authUrl: abc # Set the default auth URL your images will be baked in.
+            username: abc # Set the default username your images will be baked with.
+            password: abc # Set the default password your images will be baked with.
+            projectName: abc # Set the default project name your images will be baked in.
+            domainName: abc # Set the default domainName your images will be baked in.
+            insecure: false # The security setting (true/false) for connecting to the HuaweiCloud account.
+            vpcId: abc #  Set the vpc your images will be baked in.
+            subnetId: abc #  Set the subnet your images will be baked in.
+            securityGroup: abc # Set the default security group your images will be baked in.
+            eipBandwidthSize: 123 # Set the bandwidth size of eip your images will be baked in.
+        kubernetes:
+          enabled: true
+          accounts:
+          - name: spinnaker
+            context: abc # The kubernetes context to be managed by Spinnaker. See http://kubernetes.io/docs/user-guide/kubeconfig-file/#context for more information. When no context is configured for an account the 'current-context' in your kubeconfig is assumed.
+            cluster: abc # Used with V1 provider (deprecated)
+            user: abc # Used with V1 provider (deprecated)
+            configureImagePullSecrets: true # Used with V1 provider. When true, Spinnaker will create & manage your image pull secrets for you; when false, you will have to create and attach them to your pod specs by hand.
+            serviceAccount: true # When true, Spinnaker attempt to authenticate against Kubernetes using a Kubernetes service account. This only works when Halyard & Spinnaker are deployed in Kubernetes. Read more about service accounts here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/.
+            cacheThreads: 1 # Number of caching agents for this kubernetes account. Each agent handles a subset of the namespaces available to this account. By default, only 1 agent caches all kinds for all namespaces in the account.
+            namespaces: # A list of namespaces this Spinnaker account can deploy to and will cache. When no namespaces are configured, this defaults to 'all namespaces'.
+            - abc
+            omitNamespaces: # A list of namespaces this Spinnaker account cannot deploy to or cache. This can only be set when --namespaces is empty or not set.
+            - kube-system
+            kinds: # (V2 Only) A list of resource kinds this Spinnaker account can deploy to and will cache. When no kinds are configured, this defaults to 'all kinds described here https://spinnaker.io/reference/providers/kubernetes-v2/'.
+            - abc
+            omitKinds: # (V2 Only) A list of resource kinds this Spinnaker account cannot deploy to or cache. This can only be set when --kinds is empty or not set.
+            - abc
+            customResources: # (V2 Only) List of Kubernetes custom resources to managed by clouddriver and made available for use in patch and delete manifest stages.
+            - kubernetesKind: abc # Fully qualified name of the Kubernetes CRD
+              spinnakerKind: instances # One of instances, configs, serverGroups, loadBalancers, securityGroups, serverGroupManagers, unclassified
+              versioned: false
+            cachingPolicies:
+            - kubernetesKind: abc
+              maxEntriesPerAgent: 100
+            kubeconfigFile: kubecfg # The path to your kubeconfig file. By default, it will be under the Spinnaker user's home directory in the typical .kube/config location.
+            kubeconfigContents: | # Inline kubeconfig file contents
+                abc
+            kubectlPath: /root # Alternate path inside clouddriver pod of the kubectl binary
+            kubectlRequestTimeoutSeconds: 300 # Timeout in seconds of kubectl calls
+            checkPermissionsOnStartup: false # When false, clouddriver will skip the permission checks for all kubernetes kinds at startup. This can save a great deal of time during clouddriver startup when you have many kubernetes accounts configured. This disables the log messages at startup about missing permissions.
+            liveManifestCalls: false # When true, clouddriver will query manifest status during pipeline executions using live data rather than the cache. This eliminates all time spent in the "force cache refresh" task in pipelines, greatly reducing execution time.
+            oAuthServiceAccount: oauth-sa
+            oAuthScopes:
+            - abc
+            namingStrategy: abc
+            skin: abc
+            onlySpinnakerManaged: false # (V2 Only) When true, Spinnaker will only cache/display applications that have been created by Spinnaker; as opposed to attempting to configure applications for resources already present in Kubernetes.
+            debug: false
+            dockerRegistries:
+            - accountName: dockerhub
+              namespaces:
+              - abc
+            providerVersion: V2
+            requiredGroupMembership: # A user must be a member of at least one specified group in order to make changes to this account's cloud resources.
+            - readers
+            permissions:
+              READ:
+              - read1
+              - read2
+              WRITE:
+              - write1
+              - write2
+              EXECUTE:
+              - exec1
+              - exec2
+              CREATE:
+              - create1
+              - create2
+          primaryAccount: spinnaker
+        tencentcloud:
+          enabled: false
+          accounts:
+          - name: tencent-dev
+            environment: dev
+            requiredGroupMembership: # A user must be a member of at least one specified group in order to make changes to this account's cloud resources.
+            - readers
+            providerVersion: V1
+            permissions:
+              READ:
+              - read1
+              - read2
+              WRITE:
+              - write1
+              - write2
+              EXECUTE:
+              - exec1
+              - exec2
+              CREATE:
+              - create1
+              - create2
+            secretId: abc # The secret id used to access Tencent Cloud.
+            secretKey: abc # The secret key used to access Tencent Cloud.
+            regions: #  The Tencent Cloud regions this Spinnaker account will manage.
+            - abc
+          primaryAccount: tencent-dev
+          bakeryDefaults:
+            templateFile: xyz # This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this list https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer, or supplied as described here: https://spinnaker.io/setup/bakery/
+            baseImages:
+            - baseImage:
+                id: 123 #  This is the identifier used by your cloud to find this base image.
+                shortDescription: abc #  A short description to help human operators identify the image.
+                detailedDescription: abc # A long description to help human operators identify the image.
+                packageType: abc # This is used to help Spinnaker's bakery download the build artifacts you supply it with. For example, specifying 'deb' indicates that your artifacts will need to be fetched from a debian repository.
+                templateFile: abc # This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this list https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer, or supplied as described here: https://spinnaker.io/setup/bakery/
+              virtualizationSettings:
+              - region: abc # The region for the baking configuration.
+                zone: abc # The zone for the baking configuration.
+                instanceType: abc # The instance type for the baking configuration.
+                sourceImageId: abc # The source image ID for the baking configuration.
+                sshUserName: abc # The ssh username for the baking configuration.
+            secretId: abc # The default access key used to communicate with AWS.
+            secretKey: abc # The secret key used to communicate with AWS.
+        oracle:
+          enabled: false
+          accounts:
+          - name: oracle-dev
+            environment: dev
+            requiredGroupMembership: # A user must be a member of at least one specified group in order to make changes to this account's cloud resources.
+            - readers
+            providerVersion: V1
+            permissions:
+              READ:
+              - read1
+              - read2
+              WRITE:
+              - write1
+              - write2
+              EXECUTE:
+              - exec1
+              - exec2
+              CREATE:
+              - create1
+              - create2
+            compartmentId: abc # Provide the OCID of the Oracle Compartment to use.
+            userId: abc # Provide the OCID of the Oracle User you're authenticating as
+            fingerprint: abc # Fingerprint of the public key
+            sshPrivateKeyFilePath: oracle.pem # Path to the private key in PEM format
+            privateKeyPassphrase: abc # Passphrase used for the private key, if it is encrypted
+            tenancyId: abc # Provide the OCID of the Oracle Tenancy to use.
+            region: abc # An Oracle region (e.g., us-phoenix-1)
+          primaryAccount: oracle-dev
+          bakeryDefaults:
+            templateFile: xyz # This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this list https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer, or supplied as described here: https://spinnaker.io/setup/bakery/
+            baseImages:
+            - baseImage:
+                id: 123 #  This is the identifier used by your cloud to find this base image.
+                shortDescription: abc #  A short description to help human operators identify the image.
+                detailedDescription: abc # A long description to help human operators identify the image.
+                packageType: abc # This is used to help Spinnaker's bakery download the build artifacts you supply it with. For example, specifying 'deb' indicates that your artifacts will need to be fetched from a debian repository.
+                templateFile: abc # This is the name of the packer template that will be used to bake images from this base image. The template file must be found in this list https://github.com/spinnaker/rosco/tree/master/rosco-web/config/packer, or supplied as described here: https://spinnaker.io/setup/bakery/
+              virtualizationSettings:
+                baseImageId: abc # The OCID of the base image ID for the baking configuration.
+                sshUserName: abc # The ssh username for the baking configuration.
+            availabilityDomain: abc # The name of the Availability Domain within which a new instance is launched and provisioned.
+            subnetId: abc # The name of the subnet within which a new instance is launched and provisioned.
+            instanceShape: abc # The shape for allocated to a newly created instance.
+        cloudfoundry:
+          enabled: false
+          accounts:
+          - name: cf-dev
+            environment: dev
+            requiredGroupMembership: # A user must be a member of at least one specified group in order to make changes to this account's cloud resources.
+            - readers
+            providerVersion: V1
+            permissions:
+              READ:
+              - read1
+              - read2
+              WRITE:
+              - write1
+              - write2
+              EXECUTE:
+              - exec1
+              - exec2
+              CREATE:
+              - create1
+              - create2
+            apiHost: abc # Host of the CloudFoundry Foundation API endpoint ie. api.sys.somesystem.com
+            appsManagerUrl: abc # HTTP(S) URL of the Apps Manager application for the CloudFoundry Foundation ie. [https://apps.sys.somesystem.com](https://apps.sys.somesystem.com)
+            metricsUrl: abc # HTTP(S) URL of the metrics application for the CloudFoundry Foundation ie. [https://metrics.sys.somesystem.com](https://metrics.sys.somesystem.com)
+            password: abc # Password for the account to use on for this CloudFoundry Foundation
+            user: abc # User name for the account to use on for this CloudFoundry Foundation
+            skipSslValidation: false # Skip SSL server certificate validation of the API endpoint
+          primaryAccount: cf-dev
+      deploymentEnvironment:
+        size: SMALL
+        type: Distributed # Distributed: Deploy Spinnaker with one server group per microservice, and a single shared Redis. LocalDebian: Download and run the Spinnaker debians on the machine running the Daemon. LocalGit: Download and run the Spinnaker git repos on the machine running the Daemon.
+        accountName: spinnaker # The Spinnaker account that Spinnaker will be deployed to, assuming you are running a deployment of Spinnaker that requires an active cloud provider.
+        imageVariant: SLIM # The container image variant type to use when deploying a distributed installation of Spinnaker. slim: Based on an Alpine image ubuntu: Based on Canonical's ubuntu:bionic image. java8: A variant of slim that uses the Java 8 runtime ubuntu-java8: A variant of ubuntu that uses the Java 8 runtime Default value: slim
+        bootstrapOnly: false # A bootstrap-only account is the account in which Spinnaker itself is deployed. When true, this account will not be included the accounts managed by Spinnaker.
+        updateVersions: true # When set to "false", any local version of Spinnaker components will be used instead of attempting to update. This does not work for distributed installations of Spinnaker, where no local version exists.
+        consul:
+          enabled: false # Whether or not to use Consul as a service discovery mechanism to deploy Spinnaker.
+          address: abc # The address of a running Consul cluster. See https://www.consul.io/. This is only required when Spinnaker is being deployed in non-Kubernetes clustered configuration.
+        vault:
+          enabled: false # Whether or not to use Vault as a secret storage mechanism to deploy Spinnaker.
+          address: abc  # The address of a running Vault datastore. See https://www.vaultproject.io/. This is only required when Spinnaker is being deployed in non-Kubernetes clustered configuration.
+        location: spinnaker # This is the location spinnaker will be deployed to. When deploying to Kubernetes, use this flag to specify the namespace to deploy to (defaults to 'spinnaker')
+        customSizing: # Configure, validate, and view the component sizings for the Spinnaker services.
+          spin-clouddriver:
+            replicas: 1 # Set the number of replicas (pods) to be created for this service.
+            requests:
+              memory: 8Gi # Sets the memory request for the container running the spinnaker service. Example: 512Mi.
+              cpu: 250m # Sets the cpu request for the container running the spinnaker service. Example: 250m.
+            limits:
+              memory: 8Gi
+              cpu: 250m
+        sidecars:
+          spin-clouddriver:
+          - name: abc
+            dockerImage: abc
+            port: 123
+            env:
+              abc: def
+            args:
+            - abc
+            command:
+            - abc
+            configMapVolumeMounts:
+            - configMapName: abc
+              mountPath: abc
+            secretVolumeMounts:
+            - secretName: abc
+              mountPath: abc
+            mountPath: abc
+            securityContext:
+              privileged: false
+        initContainers: {}
+        hostAliases: {}
+        nodeSelectors:
+          abc: def
+        affinity: {}
+        tolerations:
+          spin-clouddriver:
+          - key: abc
+            operator: Exists # Exists, Equal, DoesNotExist
+            value: abc
+            effect: abc
+        gitConfig:
+          upstreamUser: spinnaker # This is the upstream git user you are configuring to pull changes from & push PRs to.
+          originUser: abc # This is the git user your github fork exists under.
+        livenessProbeConfig:
+          enabled: true # When true, enable Kubernetes liveness probes on Spinnaker services deployed in a Distributed installation. See docs for more information: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+          initialDelaySeconds: 30 # The number of seconds to wait before performing the first liveness probe. Should be set to the longest service startup time. See docs for more information: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+        haServices:
+          clouddriver:
+            enabled: false
+            disableClouddriverRoDeck: false
+            redisMasterEndpoint: abc # Set external Redis endpoint for clouddriver-rw and clouddriver-caching. The Redis URI schema is described here: https://www.iana.org/assignments/uri-schemes/prov/redis. clouddriver-rw and clouddriver-caching are configured to use the shared Redis, by default.
+            redisSlaveEndpoint: abc # Set external Redis endpoint for clouddriver-ro. The Redis URI schema is described here: https://www.iana.org/assignments/uri-schemes/prov/redis. clouddriver-ro is configured to use the shared Redis, by default.
+            redisSlaveDeckEndpoint: abc # Set external Redis endpoint for clouddriver-ro-deck. The Redis URI schema is described here: https://www.iana.org/assignments/uri-schemes/prov/redis. clouddriver-ro-deck is configured to use the shared Redis, by default.
+          echo:
+            enabled: false
+      persistentStorage:
+        persistentStoreType: s3
+        azs:
+          storageAccountName: abc # The name of an Azure Storage Account used for Spinnaker's persistent data.
+          storageAccountKey: abc # The key to access the Azure Storage Account used for Spinnaker's persistent data.
+          storageContainerName: abc # (Default: spinnaker) The container name in the chosen storage account to place all of Spinnaker's persistent data.
+        gcs:
+          jsonPath: sa.json # A path to a JSON service account with permission to read and write to the bucket to be used as a backing store.
+          project: abc # The Google Cloud Platform project you are using to host the GCS bucket as a backing store.
+          bucket: abc #  The name of a storage bucket that your specified account has access to. If not specified, a random name will be chosen. If you specify a globally unique bucket name that doesn't exist yet, Halyard will create that bucket for you.
+          rootFolder: front50 # The root folder in the chosen bucket to place all of Spinnaker's persistent data in.
+          bucketLocation: abc #  This is only required if the bucket you specify doesn't exist yet. In that case, the bucket will be created in that location. See https://cloud.google.com/storage/docs/managing-buckets#manage-class-location.
+        oracle:
+          bucketName: abc # The bucket name to store persistent state object in
+          namespace: abc # The namespace the bucket and objects should be created in
+          compartmentId: abc # Provide the OCID of the Oracle Compartment to use.
+          region: abc # An Oracle region (e.g., us-phoenix-1)
+          userId: abc # Provide the OCID of the Oracle User you're authenticating as
+          fingerprint: abc # Fingerprint of the public key
+          sshPrivateKeyFilePath: key.pem # Path to the private key in PEM format
+          privateKeyPassphrase: abc # Passphrase used for the private key, if it is encrypted
+          tenancyId: abc # Provide the OCID of the Oracle Tenancy to use.
+        s3:
+          bucket: spinnaker # The name of a storage bucket that your specified account has access to. If not specified, a random name will be chosen. If you specify a globally unique bucket name that doesn't exist yet, Halyard will create that bucket for you.
+          rootFolder: front50 # The root folder in the chosen bucket to place all of Spinnaker's persistent data in.
+          region: us-west-2 # This is only required if the bucket you specify doesn't exist yet. In that case, the bucket will be created in that region. See http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region.
+          pathStyleAccess: false # when true, use path-style to access bucket; when false, use virtual hosted-style to access bucket. See
+          endpoint: abc #  An alternate endpoint that your S3-compatible storage can be found at. This is intended for self-hosted storage services with S3-compatible APIs, e.g. Minio. If supplied, this storage type cannot be validated.
+          accessKeyId: abc # Your AWS Access Key ID. If not provided, Halyard/Spinnaker will try to find AWS credentials as described at http://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html#credentials-default
+          serverSideEncryption: AES256 # Use Amazon Server-Side Encryption ('x-amz-server-side-encryption' header). Supports 'AES256' (for Amazon S3-managed encryption keys, equivalent to a header value of 'AES256') and 'AWSKMS' (for AWS KMS-managed encryption keys, equivalent to a header value of 'aws:kms'.
+          secretAccessKey: abc # Your AWS Secret Key.
+      features:
+        artifacts: true # Enable artifact support. Read more at https://spinnaker.io/reference/artifacts/
+        auth: false
+        fiat: false
+        chaos: false # Enable Chaos Monkey support. For this to work, you'll need a running Chaos Monkey deployment. Currently, Halyard doesn't configure Chaos Monkey for you; read more instructions here https://github.com/Netflix/chaosmonkey/wiki.
+        entityTags: false
+        pipelineTemplates: false # Enable pipeline template support. Read more at https://github.com/spinnaker/dcd-spec.
+        artifactsRewrite: false #  Enable new artifact support. Read more at https://www.spinnaker.io/reference/artifacts-with-artifactsrewrite/
+        mineCanary: false # Enable canary support. For this to work, you'll need a canary judge configured. Currently, Halyard does not configure canary judge for you.
+        appengineContainerImageUrlDeployments: false # Enable appengine deployments using a container image URL from gcr.io.
+        infrastructureStages: false # Enable infrastructure stages. Allows for creating Load Balancers as part of pipelines.
+        travis: false # Enable the Travis CI stage.
+        wercker: false # Enable the Wercker CI stage.
+        managedPipelineTemplatesV2UI: false  # Enable managed pipeline templates v2 UI support.
+        gremlin: false # Enable Gremlin fault-injection support.
+      metricStores:
+        enabled: true
+        period: 30 # Set the polling period for the monitoring daemon.
+        prometheus:
+          push_gateway: abc # The endpoint the monitoring Daemon should push metrics to. If you have configured Prometheus to automatically discover all your Spinnaker services and pull metrics from them this is not required.
+          add_source_metalabels: true
+          enabled: true
+        datadog:
+          enabled: false
+          api_key: abc # Your datadog API key.
+          app_key: abc # Your datadog app key. This is only required if you want Spinnaker to push pre-configured Spinnaker dashboards to your Datadog account.
+          tags: #  Your datadog custom tags. Please delimit the KVP with colons i.e. app:test env:dev
+          - tag1
+        stackdriver:
+          enabled: false
+          credentials_path: sa.json # A path to a Google JSON service account that has permission to publish metrics.
+          project: abc # The project Spinnaker's metrics should be published to.
+          zone: abc # The zone Spinnaker's metrics should be associated with.
+          instance_id: abc
+        newrelic:
+          enabled: false
+          insert_key: # Your New Relic Insights insert key
+          host: abc # The URL to post metric data to. In almost all cases, this is set correctly by default and should not be used.
+          tags: # Your custom tags. Please delimit the KVP with colons i.e. app:test env:dev
+          - tag1
+      notifications:
+        slack:
+          enabled: false
+          botName: abc # The name of your slack bot.
+          token: abc # Your slack bot token.
+          baseUrl: abc # Slack endpoint. Optional, only set if using a compatible API.
+          forceUseIncomingWebhook: false # Force usage of incoming webhooks endpoint for slack. Optional, only set if using a compatible API.
+        twilio:
+          enabled: false
+          account: abc  # Your Twilio account SID.
+          baseUrl: abc
+          from: abc # The phone number from which the SMS will be sent (i.e. +1234-567-8910).
+          token: abc # Your Twilio auth token.
+        github-status:
+          enabled: false
+          token: abc  #  Your github account token.
+          enabled: false
+      timezone: America/Los_Angeles # The timezone your Spinnaker instance runs in. This affects what the UI will display as well as how CRON triggers are run.
+      ci:
+        jenkins:
+          enabled: false
+          masters:
+          - name: abc
+            permissions:
+              READ:
+              - read1
+            address: abc # The address your jenkins master is reachable at.
+            username: abc # The username of the jenkins user to authenticate as.
+            password: abc # The password of the jenkins user to authenticate as.
+            csrf: abc # Whether or not to negotiate CSRF tokens when calling Jenkins.
+            trustStore: trustStore
+            trustStoreType: abc
+            trustStorePassword: abc
+        travis:
+          enabled: false
+          masters:
+          - name: abc
+            permissions:
+              READ:
+              - read1
+            address: abc # The address of the travis API (https://api.travis-ci.org).
+            baseUrl: abc # The base URL to the travis UI (https://travis-ci.org).
+            githubToken: abc # The github token to authentiacte against travis with.
+            numberOfRepositories: 1 # How many repositories the travis integration should fetch from the api each time the poller runs. Should be set a bit higher than the expected maximum number of repositories built within the poll interval.
+        wercker:
+          enabled: false
+          masters:
+          - name: abc
+            permissions:
+              READ:
+              - read1
+            address: abc # The address your Wercker master is reachable at.
+            user: abc # The username of the Wercker user to authenticate as.
+            token: abc #  The personal token of the Wercker user to authenticate as.
+        concourse:
+          enabled: false
+          masters:
+          - name: abc
+            permissions:
+              READ:
+              - read1
+            url: abc # The url your concourse search is reachable at.
+            username: abc # The username of the concourse user to authenticate as.
+            password: abc # The password of the concourse user to authenticate as.
+        gcb:
+          enabled: false
+          accounts:
+          - name: abc
+            permissions:
+              READ:
+              - read1
+            project: abc # The name of the GCP project in which to trigger and monitor builds.
+            subscriptionName: abc # The name of the PubSub subscription on which to listen for build changes.
+            jsonKey: sa.json # The path to a JSON service account that Spinnaker will use as credentials.
+        codebuild:
+          enabled: false
+          accounts:
+          - name: abc
+            permissions:
+              READ:
+              - read1
+            accountId: abc # The AWS account ID that will be used to trigger CodeBuild build.
+            assumeRole: abc # If set, Operator will configure a credentials provider that uses AWS Security Token Service to assume the specified role.
+            region: us-west-2 # The AWS region in which your CodeBuild projects live.
+      repository:
+        artifactory:
+          enabled: false
+          searches:
+          - baseUrl: abc # The base url your artifactory search is reachable at.
+            repo: abc # The repo in your artifactory to be searched.
+            groupId: abc # The group id in your artifactory to be searched.
+            repoType: abc # The package type of repo in your artifactory to be searched.
+            username: abc  # The username of the artifactory user to authenticate as.
+            password: abc # The password of the artifactory user to authenticate as.
+      security:
+        apiSecurity:
+          ssl:
+            enabled: false
+            keyAlias: abc # Name of your keystore entry as generated with your keytool.
+            keyStore: key # Path to the keystore holding your security certificates.
+            keyStoreType: abc # The type of your keystore. Examples include JKS, and PKCS12.
+            keyStorePassword: abc # The password to unlock your keystore. Due to a limitation in Tomcat, this must match your key's password in the keystore.
+            trustStore: trust # Path to the truststore holding your trusted certificates.
+            trustStoreType: abc # The type of your truststore. Examples include JKS, and PKCS12.
+            trustStorePassword: abc # The password to unlock your truststore.
+            clientAuth: WANT # Declare 'WANT' when client auth is wanted but not mandatory, or 'NEED', when client auth is mandatory.
+          overrideBaseUrl: https://spinnaker-api.armory.io #  If you are accessing the API server remotely, provide the full base URL of whatever proxy or load balancer is fronting the API requests.
+          corsAccessPattern: ^.*$ # If you have authentication enabled, are accessing Spinnaker remotely, and are logging in from sources other than the UI, provide a regex matching all URLs authentication redirects may come from.
+        uiSecurity:
+          ssl:
+            enabled: false
+            sslCertificateFile: # Path to your .crt file.
+            sslCertificateKeyFile: # Path to your .key file.
+            sslCertificatePassphrase: # The passphrase needed to unlock your SSL certificate. This will be provided to Apache on startup.
+            sslCACertificateFile: # Path to the .crt file for the CA that issued your SSL certificate. This is only needed for localgitdeployments that serve the UI using webpack dev server.
+          overrideBaseUrl: https://spinnaker-api.armory.io #  If you are accessing the UI server remotely, provide the full base URL of whatever proxy or load balancer is fronting the UI requests.
+        authn:
+          oauth2:
+            enabled: true
+            client:
+              clientId: abc # The OAuth client ID you have configured with your OAuth provider.
+              clientSecret: abc # The OAuth client secret you have configured with your OAuth provider.
+              accessTokenUri: https://github.com/login/oauth/access_token # The access token uri for your OAuth provider.
+              userAuthorizationUri: https://github.com/login/oauth/authorize # The user authorization uri for your OAuth provider.
+              clientAuthenticationScheme: abc #  The client authentication scheme for your OAuth provider.
+              scope: user:email # The scope for your OAuth provider.
+              preEstablishedRedirectUri: abc # The externally accessible URL for Gate. For use with load balancers that do any kind of address manipulation for Gate traffic, such as an SSL terminating load balancer.
+              useCurrentUri: false
+            userInfoRequirements: {} # The map of requirements the userInfo request must have. This is used to restrict user login to specific domains or having a specific attribute. Use equal signs between key and value, and additional key/value pairs need to repeat the flag. Example: '--user-info-requirements foo=bar --userInfoRequirements baz=qux'.
+            resource:
+              userInfoUri: https://api.github.com/user # The user info uri for your OAuth provider.
+            userInfoMapping:
+              email: email # The email field returned from your OAuth provider.
+              firstName: '' # The first name field returned from your OAuth provider.
+              lastName: name # The last name field returned from your OAuth provider.
+              username: login # The username field returned from your OAuth provider.
+            provider: GITHUB # One of azure, github, oracle, other, google
+          saml:
+            enabled: false
+            metadataLocal: abc # The address to your identity provider's metadata XML file. This is a local file.
+            metadataRemote: abc # The address to your identity provider's metadata XML file. This is a URL.
+            issuerId: abc # The identity of the Spinnaker application registered with the SAML provider.
+            keyStore: abc # Path to the keystore that contains this server's private key. This key is used to cryptographically sign SAML AuthNRequest objects.
+            keyStorePassword: abc # he password used to access the file specified in --keystore
+            keyStoreAliasName: abc # The name of the alias under which this server's private key is stored in the --keystore file.
+            serviceAddress: abc # The address of the Gate server that will be accesible by the SAML identity provider. This should be the full URL, including port, e.g. https://gate.org.com:8084/. If deployed behind a load balancer, this would be the laod balancer's address.
+            userAttributeMapping:
+              firstName: abc # The first name field returned from your SAML provider.
+              lastName: abc # The last name field returned from your SAML provider.
+              roles: abc # The roles field returned from your SAML provider.
+              lastName: abc # The last name field returned from your SAML provider.
+              username: abc # The username field returned from your SAML provider.
+              email: abc # The email field returned from your SAML provider.
+          ldap:
+            enabled: false
+            url: abc # ldap:// or ldaps:// url of the LDAP server
+            userDnPattern: abc # The pattern for finding a user's DN using simple pattern matching. For example, if your LDAP server has the URL ldap://mysite.com/dc=spinnaker,dc=org, and you have the pattern 'uid={0},ou=members', 'me' will map to a DN uid=me,ou=members,dc=spinnaker,dc=org. If no match is found, will try to find the user using user-search-filter, if set.
+            userSearchBase: abc # The part of the directory tree under which user searches should be performed. If user-search-base isn't supplied, the search will be performed from the root.
+            userSearchFilter: abc # The filter to use when searching for a user's DN. Will search either from user-search-base (if specified) or root for entires matching the filter, then attempt to bind as that user with the login password. For example, the filter 'uid={0}' would apply to any user where uid matched the user's login name. If --user-dn-pattern is also specified, will attempt to find a match using the specified pattern first, before searching with the specified search filter if no match is found from the pattern.
+            managerDn: abc # An LDAP manager user is required for binding to the LDAP server for the user authentication process. This property refers to the DN of that entry. I.e. this is not the user which will be authenticated when logging into DHIS2, rather the user which binds to the LDAP server in order to do the authentication.
+            managerPassword: abc # The password for the LDAP manager user.
+            groupSearchBase: abc # The part of the directory tree under which group searches should be performed.
+          x509:
+            enabled: true
+            roleOid: abc # The OID that encodes roles that the user specified in the x509 certificate belongs to
+            subjectPrincipalRegex: EMAILADDRESS=(.*?)(?:,|$) # The regex used to parse the subject principal name embedded in the x509 certificate if necessary
+          iap:
+            enabled: false
+            jwtHeader: abc # The HTTP request header that contains the JWT token.
+            issuerId: abc # The Issuer from the ID token payload.
+            audience: abc # The Audience from the ID token payload. You can retrieve this field from the IAP console: https://cloud.google.com/iap/docs/signed-headers-howto#verify_the_id_token_header.
+            iapVerifyKeyUrl: abc # The URL containing the Cloud IAP public keys in JWK format.
+          enabled: true
+        authz:
+          groupMembership:
+            service: GITHUB # One of EXTERNAL, FILE, GOOGLE, GITHUB, LDAP
+            google:
+              roleProviderType: GOOGLE
+              credentialPath: sa.json # A path to a valid json service account that can authenticate against the Google role provider.
+              adminUsername: abc # Your role provider's admin username e.g. admin@myorg.net
+              domain: abc # The domain your role provider is configured for e.g. myorg.net.
+            github:
+              roleProviderType: GITHUB
+              baseUrl: https://api.github.com # Used if using GitHub enterprise some other non github.com GitHub installation.
+              accessToken: abc # A personal access token of an account with access to your organization's GitHub Teams structure.
+              organization: abc # The GitHub organization under which to query for GitHub Teams.
+            file:
+              roleProviderType: FILE
+              path: roles.txt # A path to a file describing the roles of each user.
+            ldap:
+              roleProviderType: LDAP
+              url: abc # ldap:// or ldaps:// url of the LDAP server
+              managerDn: abc # The manager user's distinguished name (principal) to use for querying ldap groups.
+              managerPassword: abc # The manager user's password to use for querying ldap groups.
+              userDnPattern: abc # The pattern for finding a user's DN using simple pattern matching. For example, if your LDAP server has the URL ldap://mysite.com/dc=spinnaker,dc=org, and you have the pattern 'uid={0},ou=members', 'me' will map to a DN uid=me,ou=members,dc=spinnaker,dc=org. If no match is found, will try to find the user using --user-search-filter, if set.
+              userSearchBase: abc # The part of the directory tree under which user searches should be performed. If --user-search-base isn't supplied, the search will be performed from the root.
+              groupSearchBase: abc # The part of the directory tree under which group searches should be performed.
+              userSearchFilter: abc # The filter to use when searching for a user's DN. Will search either from --user-search-base (if specified) or root for entires matching the filter.
+              groupSearchFilter: abc # The filter which is used to search for group membership. The default is 'uniqueMember={0}', corresponding to the groupOfUniqueMembers LDAP class. In this case, the substituted parameter is the full distinguished name of the user. The parameter '{1}' can be used if you want to filter on the login name.
+              groupRoleAttributes: abc # The attribute which contains the name of the authority defined by the group entry. Defaults to 'cn'.
+          enabled: true
+      artifacts:
+        bitbucket:
+          enabled: false
+          accounts:
+          - name: abc
+            username: abc # Bitbucket username
+            password: abc # Bitbucket password
+            usernamePasswordFile: creds.txt # File containing "username:password" to use for Bitbucket authentication
+        gcs:
+          enabled: false
+          accounts:
+          - name: abc
+            jsonPath: sa.json # The path to a JSON service account that Spinnaker will use as credentials. This is only needed if Spinnaker is not deployed on a Google Compute Engine VM, or needs permissions not afforded to the VM it is running on. See https://cloud.google.com/compute/docs/access/service-accounts for more information.
+        oracle:
+          enabled: false
+          accounts:
+          - name: abc
+            namespace: abc #  The namespace the bucket and objects should be created in
+            region: abc # An Oracle region (e.g., us-phoenix-1)
+            userId: abc # Provide the OCID of the Oracle User you're authenticating as
+            fingerprint: abc # Fingerprint of the public key
+            sshPrivateKeyFilePath: key.pem # Path to the private key in PEM format
+            privateKeyPassphrase: abc # Passphrase used for the private key, if it is encrypted
+            tenancyId: abc # Provide the OCID of the Oracle Tenancy to use.
+        github:
+          accounts:
+          - name: german-github
+            username: abc # GitHub username
+            password: abc # GitHub password
+            usernamePasswordFile: creds.txt # File containing "username:password" to use for GitHub authentication
+            token: abc # GitHub token
+            tokenFile: token.txt # File containing a GitHub authentication token
+          enabled: true
+        gitlab:
+          enabled: false
+          accounts:
+          - name: abc
+            token: abc # Gitlab token
+            tokenFile: token.txt # File containing a Gitlab authentication token
+        gitrepo:
+          enabled: false
+          accounts:
+          - name: abc
+            username: abc # Git username
+            password: abc # Git password
+            usernamePasswordFile: creds.txt # File containing "username:password" to use for Git authentication
+            token: abc #  Git token
+            tokenFile: token.txt # File containing a Git authentication token
+            sshPrivateKeyFilePath: key.pem # Path to the ssh private key in PEM format
+            sshPrivateKeyPassphrase: abc # Passphrase for encrypted private key
+            sshKnownHostsFilePath: hosts # File containing the known and trusted SSH hosts
+            sshTrustUnknownHosts: false # Setting this to true allows Spinnaker to authenticate with unknown hosts
+        http:
+          enabled: false
+          accounts:
+          - name: abc
+            username: abc # Http username
+            password: abc # Http password
+            usernamePasswordFile: creds # File containing "username:password" to use for Http authentication
+        helm:
+          enabled: false
+          accounts:
+          - name: abc
+            username: abc # Helm chart repository basic auth username
+            password: abc # Helm chart repository basic auth password
+            repository: abc # Helm chart repository
+            usernamePasswordFile: creds # File containing "username:password" to use for helm chart repository basic auth
+        s3:
+          enabled: false
+          accounts:
+          - name: abc
+            apiEndpoint: abc # S3 api endpoint; only required when using an S3 clone such as Minio
+            apiRegion: abc # S3 api region; only required when using an S3 clone such as Minio
+            region: abc # S3 region
+            awsAccessKeyId: abc # Your AWS Access Key ID. If not provided, Halyard/Spinnaker will try to find AWS credentials as described at http://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html#credentials-default
+            awsSecretAccessKey: abc # Your AWS Secret Key.
+        maven:
+          enabled: false
+          accounts:
+          - name: abc
+            repositoryUrl: abc # Full URI for the Maven repository ie. [http://some.host.com/repository/path](http://some.host.com/repository/path)
+        templates:
+        - name: abc
+          templatePath: abc # The path to the Jinja template to use for artifact extraction
+      pubsub:
+        enabled: false
+        google:
+          enabled: false
+          subscriptions:
+          - name: abc
+            project: abc # The name of the GCP project your subscription lives in.
+            subscriptionName: abc # The name of the subscription to listen to. This identifier does not include the name of the project, and must already be configured for Spinnaker to work.
+            jsonPath: sa.json # The path to a JSON service account that Spinnaker will use as credentials. This is only needed if Spinnaker is not deployed on a Google Compute Engine VM, or needs permissions not afforded to the VM it is running on. See https://cloud.google.com/compute/docs/access/service-accounts for more information.
+            templatePath: template.jinja # A path to a jinja template that specifies how artifacts from this pubsub system are interpreted and transformed into Spinnaker artifacts. See spinnaker.io/reference/artifacts for more information.
+            ackDeadlineSeconds: 10 # Time in seconds before an outstanding message is considered unacknowledged and is re-sent. Configurable in your Google Cloud Pubsub subscription. See the docs here: https://cloud.google.com/pubsub/docs/subscriber
+            messageFormat: GCB # # One of 'GCB', 'GCS', 'GCR', or 'CUSTOM'. This can be used to help Spinnaker translate the contents of the Pub/Sub message into Spinnaker artifacts.
+          publishers:
+          - name: abc
+            project: abc
+            topicName: abc
+            jsonPath: sa.json
+            content: ALL # One of ALL, NOTIFICATIONS
+      canary:
+        enabled: true
+        serviceIntegrations:
+          - name: google
+            enabled: true
+            accounts:
+            - name: abc
+              project: abc # The Google Cloud Platform project the canary service will use to consume GCS and Stackdriver.
+              jsonPath: sa.json # The path to a JSON service account that Spinnaker will use as credentials. This is only needed if Spinnaker is not deployed on a Google Compute Engine VM, or needs permissions not afforded to the VM it is running on. See https://cloud.google.com/compute/docs/access/service-accounts for more information.
+              bucket: abc # The name of a storage bucket that your specified account has access to. If you specify a globally unique bucket name that doesn't exist yet, Kayenta will create that bucket for you.
+              bucketLocation: abc # This is only required if the bucket you specify doesn't exist yet. In that case, the bucket will be created in that location. See https://cloud.google.com/storage/docs/managing-buckets#manage-class-location.
+              rootFolder: kayenta-prod # The root folder in the chosen bucket to place all of the canary service's persistent data in (Default: kayenta).
+              supportedTypes: # One of: METRICS_STORE, METRICS_STORE, OBJECT_STORE
+              - METRICS_STORE
+              - CONFIGURATION_STORE
+              - OBJECT_STORE
+            gcsEnabled: true # Whether or not to enable GCS as a persistent store (Default: false).
+            stackdriverEnabled: false # Whether or not to enable Stackdriver as a metrics service (Default: false).
+            metadataCachingIntervalMS: 60000 # Number of milliseconds to wait in between caching the names of available metric types (for use in building canary configs; Default: 60000).
+          - name: prometheus
+            enabled: false
+            accounts:
+            - name: abc
+              endpoint:
+                baseUrl: abc # The base URL to the Prometheus server.
+              username: abc # A basic auth username.
+              password: abc # A basic auth password.
+              usernamePasswordFile: creds # The path to a file containing "username:password".
+              supportedTypes: # One of: METRICS_STORE, METRICS_STORE, OBJECT_STORE
+              - METRICS_STORE
+              - CONFIGURATION_STORE
+              - OBJECT_STORE
+            metadataCachingIntervalMS: 60000 # Number of milliseconds to wait in between caching the names of available metric types (for use in building canary configs; Default: 60000).
+          - name: datadog
+            enabled: true
+            accounts:
+            - name: my-datadog-account
+              endpoint:
+                baseUrl: https://app.datadoghq.com # The base URL to the Datadog server.
+              apiKey: abc # Your org's unique Datadog API key. See https://app.datadoghq.com/account/settings#api.
+              applicationKey: abc # Your Datadog application key. See https://app.datadoghq.com/account/settings#api.
+              supportedTypes: # One of: METRICS_STORE, METRICS_STORE, OBJECT_STORE
+              - METRICS_STORE
+              - CONFIGURATION_STORE
+              - OBJECT_STORE
+          - name: signalfx
+            enabled: true
+            accounts:
+            - name: abc
+              endpoint:
+                baseUrl: https://stream.signalfx.com # The base URL to the SignalFx server. Defaults to https://stream.signalfx.com
+              accessToken: abc # The SignalFx access token.
+              defaultScopeKey: abc # Scope key is used to distinguish between base and canary deployments. If omitted every request must supply the _scope_key param in extended scope params
+              defaultLocationKey: abc # Location key is used to filter by deployment region. If omitted requests must supply the _location_key if it is needed.
+              supportedTypes: # One of: METRICS_STORE, METRICS_STORE, OBJECT_STORE
+              - METRICS_STORE
+              - CONFIGURATION_STORE
+              - OBJECT_STORE
+          - name: aws
+            enabled: false
+            accounts:
+            - name:  abc
+              bucket: abc # The name of a storage bucket that your specified account has access to. If you specify a globally unique bucket name that doesn't exist yet, Kayenta will create that bucket for you.
+              region: abc # The region to use.
+              rootFolder: kayenta # The root folder in the chosen bucket to place all of the canary service's persistent data in (Default: kayenta).
+              profileName: default # The profile name to use when resolving AWS credentials. Typically found in ~/.aws/credentials (Default: default).
+              endpoint: abc # The endpoint used to reach the service implementing the AWS api. Typical use is with Minio.
+              accessKeyId: abc # The default access key used to communicate with AWS.
+              secretAccessKey: abc # The secret key used to communicate with AWS.
+              supportedTypes: # One of: METRICS_STORE, METRICS_STORE, OBJECT_STORE
+              - METRICS_STORE
+              - CONFIGURATION_STORE
+              - OBJECT_STORE
+            s3Enabled: false # Whether or not to enable S3 as a persistent store (Default: false).
+          - name: newrelic
+            enabled: false
+            accounts:
+            - name:  abc
+              endpoint:
+                baseUrl: https://app.datadoghq.com # The base URL to the New Relic Insights server.
+              apiKey: abc # Your account's unique New Relic Insights API key. See https://docs.newrelic.com/docs/insights/insights-api/get-data/query-insights-event-data-api.
+              applicationKey: abc # Your New Relic account id. See https://docs.newrelic.com/docs/accounts/install-new-relic/account-setup/account-id.
+              supportedTypes: # One of: METRICS_STORE, METRICS_STORE, OBJECT_STORE
+              - METRICS_STORE
+              - CONFIGURATION_STORE
+              - OBJECT_STORE
+        reduxLoggerEnabled: true # Whether or not to enable redux logging in the canary module in deck (Default: true).
+        defaultMetricsAccount: abc # Name of metrics account to use by default.
+        defaultStorageAccount: abc # Name of storage account to use by default.
+        defaultJudge: NetflixACAJudge-v1.0 # Name of canary judge to use by default (Default: NetflixACAJudge-v1.0).
+        defaultMetricsStore: abc # Name of metrics store to use by default (e.g. atlas, datadog, prometheus, stackdriver).
+        stagesEnabled: true # Whether or not to enable canary stages in deck (Default: true).
+        atlasWebComponentsUrl: abc # Location of web components to use for Atlas metric configuration.
+        templatesEnabled: true # Whether or not to enable custom filter templates for canary configs in deck (Default: true).
+        showAllConfigsEnabled: true # Whether or not to show all canary configs in deck, or just those scoped to the current application (Default: true).
+      spinnaker:
+        extensibility:
+          plugins:
+            abc:
+              id: abc
+              enabled: false # To enable or disable the plugin.
+              uiResourceLocation: abc # The location of the plugin's ui resource.
+              version: abc # The plugin version to use
+              extensions:
+                abc:
+                  id: abc
+                  enabled: false
+                  config: {}
+          repositories:
+            abc:
+              id: abc
+              url: abc # The location of the plugin repository.
+      webhook:
+        trust:
+          enabled: false
+          trustStore: trustStore # The path to a key store in JKS format containing certification authorities that should be trusted by webhook stages.
+          trustStorePassword: abc # The password for the supplied trustStore.
+      stats:
+        enabled: true
+        endpoint: https://stats.spinnaker.io # Set the endpoint for stats metrics.
+      armory:
+        dinghy:
+          enabled: true
+          templateOrg: abc # SCM organization or namespace where application and template repositories are located.
+          githubToken: abc #  GitHub token.
+          githubEndpoint: https://api.github.com # (Default: https://api.github.com) Github API endpoint. Useful if you’re using Github Enterprise.
+          stashUsername: abc # Stash username.
+          stashToken: abc #  Stash token.
+          stashEndpoint: abc # Stash API endpoint.
+          gitlabToken: abc # GitLab token.
+          gitlabEndpoint: abc # GitLab endpoint.
+          dinghyFilename: dinghyfile #  (Default: dinghyfile) Name of the file in application repositories which contains pipelines
+          autoLockPipelines: false # (Default: true) Lock pipelines in the UI before overwriting on change.
+          fiatUser: abc # Fiat user to use for Dinghy operations.
+          notifiers:
+            slack:
+              enabled: false
+              channel: abc # Sets the channel notifications will be sent to.
+        diagnostics:
+          enabled: true
+          uuid: abc # UUID of the Armory installation
+          logging:
+            enabled: true
+            endpoint: https://debug.armory.io/v1/logs
+        terraform:
+          enabled: true
+          git:
+            enabled: true
+            accessToken: abc
+            username: abc
+        secrets:
+          vault:
+            enabled: true
+            url: abc # URL of the Vault endpoint from Spinnaker services.
+            path: abc # (Default: kubernetes) (Applies to KUBERNETES authentication method) Path of the kubernetes authentication backend mount.
+            role: spinnaker # (Applies to KUBERNETES authentication method) Name of the role against which the login is being attempted.
+            authMethod: KUBERNETES # Method used to authenticate with the Vault endpoint. Must be either KUBERNETES for Kubernetes service account auth or TOKEN for Vault token auth. The TOKEN method will require a VAULT_TOKEN environment variable set for Operator and the services.
+    profiles: {}
+    service-settings: {}
+    files: {}
+  expose:
+    type: service
+    service:
+      type: LoadBalancer
+      publicPort: 80
+      annotations: {}
+      overrides:
+        deck:
+          type: LoadBalancer
+          publicPort: 80
+          annotations: {}

@@ -28,12 +28,33 @@ This is just a quick walkthrough of how to configure your Spinnaker to access a
 Github repo as a source of artifacts.  Many of the commands below have
 additional options that may be useful (or possibly required).  If you need
 more detailed help, take a look at the
-[Halyard command reference](https://www.spinnaker.io/reference/halyard/commands/#hal-config-artifact-github)
+[Halyard command reference](https://www.spinnaker.io/reference/halyard/commands/#hal-config-artifact-github) if you're deploying Spinnaker with Halyard.
 
 ### Enable Github Artifacts
 
 If you haven't done this yet (for example, if you've just installed Armory
 Spinnaker fresh), you'll need to enable Github as an artifact source:
+
+**Operator**
+
+Add the following snippet to `SpinnakerService` manifest:
+
+```yaml
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:  
+    config:
+      features:
+        artifacts: true
+      artifacts:
+        github:
+          enabled: true
+```
+
+**Halyard**
 
 ```bash
 hal config features edit --artifacts true
@@ -53,16 +74,51 @@ this:
 
 *Replace the account name `github_user` with the string you want to use to identify this Github credential.*
 
+**Operator**
+
+Add the following snippet to `SpinnakerService` manifest:
+
+```yaml
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:  
+    config:
+      features:
+        artifacts: true
+      artifacts:
+        github:
+          enabled: true
+          accounts:
+          - name: github_user
+            token: abc  # Github's personal access token. This fields supports `encrypted` references to secrets.
+            # username: abc # GitHub username
+            # password: abc # GitHub password. This fields supports `encryptedreferences to secrets.
+            # usernamePasswordFile: creds.txt # File containing "username:passwordto use for GitHub authentication. This fields supports `encryptedFilereferences to secrets.
+            # tokenFile: token.txt # File containing a GitHub authentication tokenThis fields supports `encryptedFile` references to secrets.
+```
+
+If you have a Github personal access token, you only need that to authenticate against Github, but there are other authentication options like username/password, or specifying credentials in a `file` entry.
+
+Don't forget to apply your changes:
+
+```bash
+kubectl -n >spinnaker namespace> apply -f <SpinnakerService manifest>
+```
+
+**Halyard**
+
 ```bash
 GITHUB_ACCOUNT_NAME=github_user
 hal config artifact github account add ${GITHUB_ACCOUNT_NAME} \
-  --token # you'll be prompted for this interactively
+    --token # you'll be prompted for this interactively
 ```
 
-Detailed information on all command line options can be found
-[here](https://www.spinnaker.io/reference/halyard/commands/#hal-config-artifact-github-account-add)
+Detailed information on all command line options can be found [here](https://www.spinnaker.io/reference/halyard/commands/#hal-config-artifact-github-account-add).
 
-Don't forget to `hal deploy apply` your changes.
+Don't forget to run `hal deploy apply` to apply your changes.
 
 ## Using the Github Credential
 

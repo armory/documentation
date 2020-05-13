@@ -11,7 +11,7 @@ This document describes how to set up Spinnaker secrets in an encrypted GCS buck
 ## Authorization
 Since you're storing sensitive information, make sure to protect the bucket by restricting access and [enabling encryption](https://cloud.google.com/storage/docs/encryption/).
 
-Remember to run Halyard's daemon and Spinnaker services with permissions to read that content.
+Remember to run the Operator deployment (or Halyard's daemon) and Spinnaker services with permissions to read that content.
 
 ## Storing secrets
 Store your GitHub credentials in `mybucket/spinnaker-secrets.yml`:

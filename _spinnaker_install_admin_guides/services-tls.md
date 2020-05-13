@@ -123,7 +123,7 @@ http:
 ### Halyard
 You can change each Java or Golang service endpoints by adding the following in `<hal directory>/<deployment>/service-settings/<service>.yml`:
 ```yaml
-scheme: https
+baseUrl: https://spin-<SERVICE>.<NAMESPACE>:<SERVICE PORT>
 ```
 
 ### Spinnaker Operator
@@ -137,32 +137,32 @@ spec:
   spinnakerConfig:
     service-settings:
       clouddriver:
-        scheme: https
+        baseUrl: https://spin-clouddriver.<NAMESPACE>:7002
       dinghy:
-        scheme: https
+        baseUrl: https://spin-dinghy.<NAMESPACE>:8081
       echo:
-        scheme: https
+        baseUrl: https://spin-echo.<NAMESPACE>:8089
       fiat:
-        scheme: https
+        baseUrl: https://spin-fiat.<NAMESPACE>:7003
       front50:
-        scheme: https
+        baseUrl: https://spin-front50.<NAMESPACE>:8080
       gate:
-        scheme: https
+        baseUrl: https://spin-gate.<NAMESPACE>:8084
       kayenta:
-        scheme: https
+        baseUrl: https://spin-kayenta.<NAMESPACE>:8090
       orca:
-        scheme: https
+        baseUrl: https://spin-orca.<NAMESPACE>:8083
       igor:
-        scheme: https
+        baseUrl: https://spin-igor.<NAMESPACE>:8088
       rosco:
-        scheme: https
+        baseUrl: https://spin-rosco.<NAMESPACE>:8087
       terraformer:
-        scheme: https
+        baseUrl: https://spin-terraformer.<NAMESPACE>:7088
 ```
 
 ## Deployment
 
-After you finish modyfing the service YAML files, run `hal deploy apply` to apply your changes to your Spinnaker deployment.
+After you finish modyfing the service YAML files, run `kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest>` if using Operator, or `hal deploy apply` if using Halyard to apply your changes to your Spinnaker deployment.
 
 Switching from plain HTTP to HTTPS will cause some short disruption to the services as they become healthy at different times.
 
@@ -173,27 +173,35 @@ Switching from plain HTTP to HTTPS will cause some short disruption to the servi
 
 You can store secrets (and non secrets) in [supported secret stores](../secrets) as well as in Kubernetes secrets if using the [Spinnaker Operator](../../spinnaker/operator/). This is the simplest route.
 
-For instance, assuming all the information is stored in a bucket named `mybucket` on s3 that all services have access to, `echo-local.yml` might look like:
+For instance, assuming all the information is stored in a bucket named `mybucket` on s3 that all services have access to, `SpinnakerService` manifest (or the corresponding `echo-local.yml` in Halyard) might look like:
 
 ```yaml
-server:
-  ssl:
-    enabled: true
-    key-store: encryptedFile:s3!b:mybucket!r:us-west-2!f:echo.jks
-    key-store-type: JKS
-    key-alias: echo
-    key-store-password: encrypted:s3!b:mybucket!r:us-west-2!f:passwords.yml!k:echo.keyPassword
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    profiles:
+      echo:
+        server:
+          ssl:
+            enabled: true
+            key-store: encryptedFile:s3!b:mybucket!r:us-west-2!f:echo.jks
+            key-store-type: JKS
+            key-alias: echo
+            key-store-password: encrypted:s3!b:mybucket!r:us-west-2!f:passwords.yml!k:echo.keyPassword
 
-ok-http-client:
-  key-store: encryptedFile:s3!b:mybucket!r:us-west-2!f:truststore.jks
-  key-store-type: JKS
-  key-store-password: encrypted:s3!b:mybucket!r:us-west-2!f:passwords.yml!k:truststorePassword
-  trust-store: encryptedFile:s3!b:mybucket!r:us-west-2!f:truststore.jks
-  trust-store-type: JKS
-  trust-store-password: encrypted:s3!b:mybucket!r:us-west-2!f:passwords.yml!k:truststorePassword
+        ok-http-client:
+          key-store: encryptedFile:s3!b:mybucket!r:us-west-2!f:truststore.jks
+          key-store-type: JKS
+          key-store-password: encrypted:s3!b:mybucket!r:us-west-2!f:passwords.yml!k:truststorePassword
+          trust-store: encryptedFile:s3!b:mybucket!r:us-west-2!f:truststore.jks
+          trust-store-type: JKS
+          trust-store-password: encrypted:s3!b:mybucket!r:us-west-2!f:passwords.yml!k:truststorePassword
 ```
 
-Run `hal deploy apply` after you make your changes.
+Run `kubectl -n <spinnaker namespace> apply -f <SpinnakerService manifest>` if using Operator, or `hal deploy apply` if using Halyard after you make your changes.
 
 ### Manually Providing Information
 

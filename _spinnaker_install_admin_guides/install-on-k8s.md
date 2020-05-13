@@ -265,8 +265,7 @@ The command returns the namespaces in the EKS cluster.
 First, download the CRDs and manifests from the [latest stable release](https://github.com/armory-io/spinnaker-operator/releases).
 
 ```bash
-$ export RELEASE=<x.x.x>
-$ bash -c 'curl -L https://github.com/armory-io/spinnaker-operator/releases/download/${RELEASE}/manifests.tgz | tar -xz'
+$ bash -c 'curl -L https://github.com/armory-io/spinnaker-operator/releases/latest/download/manifests.tgz | tar -xz'
 ```
 
 Install Spinnaker CRDs:
@@ -320,51 +319,6 @@ Note the values that you need to modify:
 - metadata `name`: Change if you're installing Spinnaker to a namespace other than `spinnaker`.
 
 ```yaml
-apiVersion: spinnaker.armory.io/v1alpha2
-kind: SpinnakerService
-metadata:
-  name: spinnaker
-spec:
-  spinnakerConfig:
-    config:
-      version: 2.17.1  # Replace with desired version of Spinnaker to deploy
-      persistentStorage:
-        persistentStoreType: s3
-        s3:
-          bucket: spinnaker-abcxyz # Replace with the name of the S3 bucket created previously
-          region: us-west-2        # Replace with correct bucket's region
-          accessKeyId: XYZ         # (Optional, set only when using an IAM user to authenticate to the bucket instead of an IAM role)
-          secretAccessKey: XYZ     # (Optional, set only when using an IAM user to authenticate to the bucket instead of an IAM role)
-          rootFolder: front50
-      features:
-        artifacts: true
-      providers:
-        kubernetes:
-          accounts:
-          - name: spinnaker
-            cacheThreads: 1
-            cachingPolicies: []
-            configureImagePullSecrets: true
-            customResources: []
-            dockerRegistries: []
-            kinds: []
-            namespaces:
-            - spinnaker  # Name of the namespace where Spinnaker is installed
-            oAuthScopes: []
-            omitKinds: []
-            omitNamespaces: []
-            onlySpinnakerManaged: false
-            permissions: {}
-            providerVersion: V2
-            requiredGroupMembership: []
-            serviceAccount: true
-          enabled: true
-          primaryAccount: spinnaker
-    service-settings:
-      clouddriver:
-        kubernetes:
-          serviceAccountName: spin-sa
----
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -461,6 +415,51 @@ roleRef:
   kind: Role
   name: spin-role
   apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: spinnaker.armory.io/v1alpha2
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    config:
+      version: 2.17.1  # Replace with desired version of Spinnaker to deploy
+      persistentStorage:
+        persistentStoreType: s3
+        s3:
+          bucket: spinnaker-abcxyz # Replace with the name of the S3 bucket created previously
+          region: us-west-2        # Replace with correct bucket's region
+          accessKeyId: XYZ         # (Optional, set only when using an IAM user to authenticate to the bucket instead of an IAM role)
+          secretAccessKey: XYZ     # (Optional, set only when using an IAM user to authenticate to the bucket instead of an IAM role)
+          rootFolder: front50
+      features:
+        artifacts: true
+      providers:
+        kubernetes:
+          accounts:
+          - name: spinnaker
+            cacheThreads: 1
+            cachingPolicies: []
+            configureImagePullSecrets: true
+            customResources: []
+            dockerRegistries: []
+            kinds: []
+            namespaces:
+            - spinnaker  # Name of the namespace where Spinnaker is installed
+            oAuthScopes: []
+            omitKinds: []
+            omitNamespaces: []
+            onlySpinnakerManaged: false
+            permissions: {}
+            providerVersion: V2
+            requiredGroupMembership: []
+            serviceAccount: true
+          enabled: true
+          primaryAccount: spinnaker
+    service-settings:
+      clouddriver:
+        kubernetes:
+          serviceAccountName: spin-sa
 ```
 
 Deploy the manifest with the following command:
@@ -899,46 +898,46 @@ kubectl -n spinnaker apply -f spin-ingress.yml
 
 Spinnaker must be aware of its endpoints to work properly. Configuration updates vary depending upon whether you installed Spinnaker using Operator or Halyard. 
 
-* If you use Operator:
+**Operator**
     
-    Update `spinnakerservice.yml` adding the `security` section:
+Update `spinnakerservice.yml` adding the `security` section:
     
-    ```yaml
-    spec:
-      spinnakerConfig:
-        config:
-          security:
-            apiSecurity:
-              overrideBaseUrl: http://spinnaker.domain.com/api/v1  # Replace this with the IP address or DNS that points to our nginx ingress instance
-            uiSecurity:
-              overrideBaseUrl: http://spinnaker.domain.com         # Replace this with the IP address or DNS that points to our nginx ingress instance
-    ```
+```yaml
+spec:
+  spinnakerConfig:
+    config:
+      security:
+        apiSecurity:
+          overrideBaseUrl: http://spinnaker.domain.com/api/v1  # Replace this with the IP address or DNS that points to our nginx ingress instance
+        uiSecurity:
+          overrideBaseUrl: http://spinnaker.domain.com         # Replace this with the IP address or DNS that points to our nginx ingress instance
+```
   
-    Apply the changes:
+Apply the changes:
     
-    ```bash
-    kubectl -n spinnaker apply -f spinnakerservice.yml 
-    ```
+```bash
+kubectl -n spinnaker apply -f spinnakerservice.yml 
+```
 
-* If you use Halyard:
+**Halyard**
 
-    Run this command to get into the Halyard container:
+Run this command to get into the Halyard container:
 
-    ```
-    kubectl -n spinnaker exec -it halyard-0 bash
-    ```
+```
+kubectl -n spinnaker exec -it halyard-0 bash
+```
 
-    Then, run the following command from inside the container:
+Then, run the following command from inside the container:
 
-    ```bash
-    SPINNAKER_ENDPOINT=http://spinnaker.domain.com
-    # ^ Replace this with the IP address or DNS that points to our nginx ingress instance
+```bash
+SPINNAKER_ENDPOINT=http://spinnaker.domain.com
+# ^ Replace this with the IP address or DNS that points to our nginx ingress instance
 
-    hal config security ui edit --override-base-url ${SPINNAKER_ENDPOINT}
-    hal config security api edit --override-base-url ${SPINNAKER_ENDPOINT}/api/v1
+hal config security ui edit --override-base-url ${SPINNAKER_ENDPOINT}
+hal config security api edit --override-base-url ${SPINNAKER_ENDPOINT}/api/v1
 
-    hal deploy apply
-    ```
+hal deploy apply
+```
 
 ### Configuring TLS certificates
 

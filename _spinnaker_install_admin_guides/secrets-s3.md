@@ -11,7 +11,7 @@ This document describes how to set up Spinnaker secrets in an encrypted S3 bucke
 ## Authorization
 Since you're storing sensitive information, make sure to protect the bucket by restricting access and [enabling encryption](https://docs.aws.amazon.com/AmazonS3/latest/user-guide/default-bucket-encryption.html).
 
-Remember to run Halyard's daemon and Spinnaker services with IAM roles that allow them to read that content.
+Remember to run the Operator (or Halyard's daemon) and Spinnaker services with IAM roles that allow them to read that content.
 
 ## Storing secrets
 ### Storing credentials

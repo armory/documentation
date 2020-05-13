@@ -12,6 +12,8 @@ individual component and a more pluggable architecture for custom components.
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
+![Architecture Diagram](/images/install_admin_guides_SpinnakerArchitecture.png)
+
 ### Orca
 
 Orca is responsible for the orchestration of pipelines, stages and tasks within Spinnaker.  It acts as the "traffic cop" within Spinnaker making sure that sub-services, their executions and states are passed along correctly.
@@ -43,9 +45,19 @@ Igor is a wrapper API which communicates with Jenkins.  It is responsible for ki
 Echo is the service for Spinnaker which manages notifications, alerts and scheduled pipelines (Cron).  It can also propagate these events out to other REST endpoints such as an Elastic Search, Splunk's HTTP Event Collector or a custom event collector/processor.
 
 ### Front50
+
 Front50 is the persistent datastore for Spinnaker. Most notabily pipelines, configurations, and jobs.
+
+### Kayenta
+
+Kayenta is Spinnaker's canary analysis service, integrating with 3rd party monitoring services such as Datadog or Prometheus.
+
+## Armory Specific Micro-Services
 
 ### Dinghy
 Dinghy is the Armory-specific microservice used to manage Pipelines as Code.  It supports two main capabilities:
 * Automatically synchronizing pipeline definitions from an external Github or BitBucket repository to Armory Spinnaker.
 * Creating a library of pipeline modules (components) that can be templatized and used in Dinghy-managed pipeline definitions.
+
+### Terrafomer
+Terraformer is the Armory-specific microservice used to run Terraform scripts within a Spinnaker pipeline.

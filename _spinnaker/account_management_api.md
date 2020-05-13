@@ -2,6 +2,7 @@
 layout: post
 title: Account Management API
 order: 99
+published: false
 ---
 
 {:.no_toc}
@@ -113,7 +114,7 @@ Configuring the Account Management API similar to other Spinnaker services. For 
         password: <password>
         file: clouddriver-remote.yml
 
-When using the GitHub integration, you need to configure Clouddriver to use GitHub as well. Note, the `remote` profile corresponds to the `clouddriver-remote` file that the API manages. To enable remote configuration, add the snippet below to `~/.hal/{DEPLOYMENT_NAME}/profiles/spinnakerconfig.yml`.
+When using the GitHub integration, you need to configure Clouddriver to use GitHub as well. Note, the `remote` profile corresponds to the `clouddriver-remote` file that the API manages. To enable remote configuration, add the snippet below to `~/.hal/{DEPLOYMENT_NAME}/profiles/spinnakerconfig.yml` if you're using Halyard or under `spec.spinnakerConfig.profiles.clouddriver` of the `SpinnakerService` manifest if you're using Operator:
 
     spring:
       profiles:

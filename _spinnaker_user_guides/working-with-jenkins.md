@@ -17,7 +17,7 @@ This guide includes:
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-> Before you start, you'll need to [configure Jenkins](/spinnaker-install-admin-guides/jenkins/) using Halyard.  If
+> Before you start, you'll need to [configure Jenkins](/spinnaker-install-admin-guides/jenkins/).  If
 > you don't see Jenkins as an option, or you're not seeing the correct
 > master/job combination in the UI, you'll need to double-check your Spinnaker
 > is configured to use that resource.
