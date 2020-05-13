@@ -17,9 +17,6 @@ This guide should include:
 ## Overview
 To get an overview of Pipelines as code, check out the [user guide](/spinnaker/using_dinghy).
 
-**Note:** Dinghy uses Redis to store relationships between pipeline templates and pipeline dinghy files. An external Redis instance is highly recommended 
-for production use. If Redis becomes unavailable, dinghy files will need to be updated in order to repopulate Redis with the relationships.
-
 ## Enabling Pipelines as code
 To configure Pipelines as code, start by enabling it:
 
@@ -53,6 +50,48 @@ kubectl -n spinnaker apply -f spinnakerservice.yml
 hal armory dinghy enable
 ```
 Dinghy is the microservice for Pipelines as code.
+
+## Redis
+
+Dinghy uses Redis to store relationships between pipeline templates and pipeline dinghy files. An external Redis instance is highly recommended for production use. If Redis becomes unavailable, dinghy files will need to be updated in order to repopulate Redis with the relationships.
+
+**Note:** Dinghy can only be configured to use a password with the default Redis user.
+
+To set/override the Spinnaker Redis settings do the following:
+
+**Operator**
+
+In `SpinnakerService` manifest:
+
+```yaml
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    profiles:
+      dinghy:
+        redis:
+          baseUrl: "redis://spin-redis:6379"
+          password: "password"
+```
+
+```bash
+kubectl -n spinnaker apply -f spinnakerservice.yml
+```
+
+**Halyard**
+
+Edit the `~/.hal/default/profiles/dinghy-local.yml` file and add the following:
+
+```yaml
+redis:
+  baseUrl: "redis://spin-redis:6379"
+  password: "password"
+```
+
+Then run `hal deploy apply` to deploy the changes.
 
 ## Steps to follow to configure Pipelines as code:
 
