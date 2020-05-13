@@ -4,6 +4,7 @@ title: Enabling the Terraform Integration Stage
 order: 141
 redirect_from:
   - /spinnaker/terraform_integration/
+  - /spinnaker/terraform-configure-integration
 ---
 
 {:.no_toc}
