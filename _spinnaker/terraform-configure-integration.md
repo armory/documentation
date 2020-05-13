@@ -481,17 +481,17 @@ Additionally, you need `kubectl` installed. Perform the following steps:
    hal deploy apply
    ```
 
-9.  Verify the following before you start using the Terraform integration:
+9. Verify the following before you start using the Terraform integration: 
 
-   **Verify that the Terraformer pod is running**
+   **Verify that the Terraformer pod is running**:
 
-   ```
+   ```bash
    kubectl -n <Your Spinnaker namespace> get pods
    ```
 
-   **Verify the credentials are available**
+   **Verify the credentials are available**:
 
-   ```
+   ```bash
    # Enter the Terraformer pod
    kubectl -n <Your Spinnaker namespace> exec -it <Terraformer pod name> bash
    
