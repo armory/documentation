@@ -466,6 +466,11 @@ Configure profiles that users can select when creating a Terraform Integration s
         
      For more information, see the documentation for your secret store.
 3. Save the file. 
+4. Apply your changes:
+   
+   ```
+   hal deploy apply
+   ```
 
 
 ## Submit feedback
