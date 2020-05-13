@@ -28,6 +28,48 @@ When creating a Terraform Integration stage, pipeline creators select a specific
 
 Note that all Terraform stages within a Pipeline that affect state must use the same Terraform version.
 
+## Redis
+
+Terraformer uses Redis to store Terraform logs and plans. An external Redis instance is highly recommended for production use.
+
+**Note:** Terraformer can only be configured to use a password with the default Redis user.
+
+To set/override the Spinnaker Redis settings do the following:
+
+**Operator**
+
+In `SpinnakerService` manifest:
+
+```yaml
+apiVersion: spinnaker.armory.io/{{ site.data.versions.operator-extended-crd-version }}
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    profiles:
+      terraformer:
+        redis:
+          baseUrl: "redis://spin-redis:6379"
+          password: "password"
+```
+
+```bash
+kubectl -n spinnaker apply -f spinnakerservice.yml
+```
+
+**Halyard**
+
+Edit the `~/.hal/default/profiles/terraformer-local.yml` file and add the following:
+
+```yaml
+redis:
+  baseUrl: "redis://spin-redis:6379"
+  password: "password"
+```
+
+Then run `hal deploy apply` to deploy the changes.
+
 ## Requirements
 
 * Credentials (in the form of basic auth) for your Terraform Git repository. The Terraform Integration needs access to credentials to download directories that house your Terraform templates. The credentials can take one of two forms:
