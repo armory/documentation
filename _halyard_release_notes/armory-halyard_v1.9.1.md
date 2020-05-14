@@ -1,78 +1,57 @@
 ---
 layout: post
-title: v1.9.0 Armory Halyard (OSS 1.34.0)
+title: v1.9.1 Armory Halyard (OSS 1.35.3)
 order: -202001061114156
 ---
 
-# 04/23/2020 Release Notes
+# 05/14/2020 Release Notes
 {:.no_toc}
 
-This version is required to deploy Armory Spinnaker 2.19+. 
-
-
 ## Known Issue
-
-### Halyard version
-
-There is a known issue where Armory Halyard 1.9.0 fails to install Armory Spinnaker 2.18.1. The Pod for Echo enters a crash loop.
-
-**Workaround** 
-
-Use Armory Halyard 1.8.3 if you want to install Armory Spinnaker 2.18.1. 
+No known issues
 
 ## Highlights
 
-Armory Halyard 1.9.0 resolves an issue where secrets are stored decrypted at rest in the Pods of the Spinnaker services.
+Armory Halyard 1.9.1 resolves an issue where echo pod in Armory Spinnaker 2.18 remained in a crash loop state.
 
 
 ## Halyard Armory Enterprise Spinnaker
-- fix(secrets): have services decrypt their own secrets
-- chore(build): bump OSS Halyard to 1.34.0
-- Changes to add enabled/disabled to webhooks validation
-- feat(dinghy): Support for webhook secrets in dinghy
-- feat(stats): Rename telemetry to stats props due to change in halyard
-- chore(vulnerabilities): resolve CVEs and other security issues
-- feat(telemetry): add ability to report deploy method to "echo" via telemetry
-
+- fix(plugins): Use Armory Spinnaker version to detect if plugins are supported
+- chore(cve): CVE fixes
 
 
 ## Halyard Community Contributions 
-You can see the full changelog here: [version-1.32.0...version-1.34.0](https://github.com/spinnaker/halyard/compare/version-1.32.0...version-1.34.0)
+You can see the full changelog here: [version-1.34.0...version-1.35.3](https://github.com/spinnaker/halyard/compare/version-1.34.0...version-1.35.3)
 
-- chore(java11): Compile with Java 11 (but targeting Java 8) (#1608)
-- chore(containers): Make Dockerfiles work with buildtool's containers.yml (#1607)
-- chore(mergify): autobump reviews should go to oss-approvers (#1606)
-- chore(dependencies): Autobump spinnakerGradleVersion (#1605)
-- chore(deps): bump internal spinnaker dependencies (#1604)
-- chore(mergify): if an autobump fails, request a review (#1603)
-- chore(build): enable the spinnaker project plugin (#1602)
-- chore(build): upgrade spinnaker gradle plugin (#1601)
-- fix(daemon): Don't try to kill daemon created by another user (#1600)
-- chore(dependencies): Autobump korkVersion (#1599)
-- fix(container): restore openssl to alpine image (#1596)
-- feat(plugins): add plugins to all services (#1594)
-- chore(dependencies): Autobump korkVersion (#1595)
-- chore(dependencies): Autobump korkVersion (#1593)
-- chore(dependencies): Autobump korkVersion (#1592)
-- chore(dependencies): Autobump korkVersion (#1591)
-- fix(plugins): Revert add plugins to all services (#1559) (#1590)
-- chore(gha): don't run the GHA build when pushing to a fork (#1589)
-- chore(dependencies): Autobump korkVersion (#1588)
-- chore(dependencies): Autobump korkVersion (#1587)
-- feat(plugins): add plugins to all services (#1559)
-- fix(plugins): fix plugins-manifest.json  (#1564)
-- chore(dependencies): Autobump korkVersion (#1586)
-- (tag: version-1.33.0, upstream/release-1.33.x) chore(dependencies): Autobump korkVersion (#1585)
-- chore(mergify): release-* branches require release manager approval (#1584)
-- fix(config): Ignore any existing `plugins` stanzas. (#1583)
-- Revert "chore(build): Remove init-publish script (#1579)" (#1580)
-- chore(build): Remove init-publish script (#1579)
-- feat(build): Remove TravisCI and replace with GitHub Actions (#1578)
-- chore(dependencies): Autobump korkVersion (#1577)
-- chore(dependencies): Autobump korkVersion (#1576)
-- chore(dependencies): Autobump korkVersion (#1575)
-- chore(dependencies): Autobump korkVersion (#1574)
-- chore(dependencies): Autobump korkVersion (#1573)
-- feat(k8s/deploy): Add custom health check to service-settings (#1572)
-- chore(dependencies): Autobump korkVersion (#1571)
-- chore(dependencies): Autobump korkVersion (#1570)
+- chore(dependencies): Autobump korkVersion (#1609) …
+- chore(dependencies): Autobump korkVersion (#1610) …
+- chore(dependencies): Autobump korkVersion (#1611) …
+- chore(dependencies): Autobump korkVersion (#1612) …
+- chore(dependencies): Autobump spinnakerGradleVersion (#1613) …
+- fix(publishing): No longer need to change ACL on halyard artifact sin… …
+- feat(cli): remove unused appengine feature flag (#1615) …
+- chore(dependencies): Autobump spinnakerGradleVersion (#1616) …
+- chore(dependencies): Autobump korkVersion (#1617) …
+- chore(dependencies): Autobump spinnakerGradleVersion (#1621) …
+- chore(dependencies): Autobump korkVersion (#1622) …
+- feat(artifacts): remove artifacts and artifactsRewrite feature flags (#… …
+- chore(dependencies): Autobump fiatVersion (#1624) …
+- chore(dependencies): Autobump korkVersion (#1625) …
+- chore(dependencies): Autobump korkVersion (#1627) …
+- chore(build): update to newer spinnaker project plugin (#1626) …
+- chore(dependencies): Autobump spinnakerGradleVersion (#1628) …
+- feat(cli): remove Travis, Wercker, Gremlin, and InfrastructureStages … …
+- chore(dependencies): Autobump spinnakerGradleVersion (#1629) …
+- chore(dependencies): Autobump spinnakerGradleVersion (#1632) …
+- fix(containers): Add retry to Docker containers downloading kubectl (#… …
+- fix(build): use bom for kubernetes-client version …
+- chore(build): gradle build cleanup …
+- chore(dependencies): Autobump spinnakerGradleVersion (#1635) …
+- chore(dependencies): Autobump clouddriverVersion (#1637) …
+- feat(docs): document poor performance of sortTagsByDate flag (#1639)
+- chore(dependencies): Autobump spinnakerGradleVersion (#1641) …
+- chore(dependencies): Autobump clouddriverVersion (#1642) …
+- fix(google): Update constructors to account for retry changes (#1640) …
+- fix(cli): replace artifacts commands (#1645) (#1646) …
+- fix(daemon): Fix startup failure by reverting incorrect ps usage (#1653… …
+- fix(cli): replace gremlin commands for 1.18 and 1.19 compatibility (#… …
