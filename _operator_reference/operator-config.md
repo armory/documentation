@@ -334,10 +334,9 @@ kustomize:
 
 #### Strategic Merge Patch Example
 
-When a merge patch will just replace an array, a strategic merge patch will
-consider the structure being modified. The same as above could be done with a
+When a merge patch replaces an array, a strategic merge patch considers the structure being modified. The same as above could be done with a
 strategic merge patch. A more interesting example would be to change the image
-name of Gate. In that example, we could have one or more containers. We'll just
+name of Gate. In that example, you could have one or more containers. Just
 change the one called `gate`:
 
 ```yaml

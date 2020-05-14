@@ -8,7 +8,7 @@ order: 2
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
->Configure this section only if you are deploying Armory Spinnaker
+>Configure this section only if you are deploying Armory Spinnaker.
 
 # Parameters
 

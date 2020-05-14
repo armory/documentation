@@ -12,7 +12,10 @@ Note that Spinnaker Operator is currently in [Beta](https://kb.armory.io/release
 
 # Overview
 
-Spinnaker Operator is a Kubernetes operator for Spinnaker that makes it easier to install, deploy, and upgrade any version of Spinnaker through a workflow that you are already familiar with.  The open source [Spinnaker Operator](https://github.com/armory/spinnaker-operator) installs open source Spinnaker, whereas the proprietary Spinnaker Operator installs Armory Spinnaker.
+Spinnaker Operator is a Kubernetes operator for Spinnaker that makes it easier to install, deploy, and upgrade any version of Spinnaker through a workflow that you are already familiar with.  There are two flavors of the Spinnaker Operator:
+
+* The open source [Spinnaker Operator](https://github.com/armory/spinnaker-operator) that installs open source Spinnaker.
+* The proprietary Armory Spinnaker Operator that installs Armory Spinnaker. This version comes with additional enterprise features.
 
 After you install Spinnaker Operator, you can use `kubectl` to manage the lifecycle of your deployment.
 
@@ -48,7 +51,7 @@ The rest of this page describes how to modify some of the default configurations
 # Benefits of Operator
 
 - Stop using Halyard commands: just `kubectl apply` your Spinnaker configuration. This includes support for local files.
-- Expose Spinnaker to the outside world (via `LoadBalancer`). You can still disable that behavior if you prefer to manage ingresses and load balancers yourself.
+- Expose Spinnaker to the outside world (with `LoadBalancer`). You can still disable that behavior if you prefer to manage ingresses and load balancers yourself.
 - Deploy any version of Spinnaker. Operator is not tied to a particular version of Spinnaker.
 - Keep secrets separate from your config. Store your config in `git` and have an easy Gitops workflow.
 - Validate your configuration before applying it (with webhook validation).
@@ -264,8 +267,8 @@ kubectl -n <namespace> delete spinnakerservice spinnaker
 
 # Migrating from Halyard to Operator
 
-If you have a current Spinnaker instance installed via Halyard, use this guide to migrate existing
-configuration to Operator.
+If you have a current Spinnaker instance installed with Halyard, use this guide
+to migrate existing configuration to Operator.
 
 The migration process from Halyard to Operator can be completed in 7 steps:
 
@@ -459,7 +462,7 @@ The migration process from Halyard to Operator can be completed in 7 steps:
 
    The validation service throws an error when something is wrong with your manifest.
 
-7. Apply your SpinnakerService
+7. Apply your SpinnakerService:
 
    ```bash
    kubectl -n <namespace> apply -f <spinnaker service>
