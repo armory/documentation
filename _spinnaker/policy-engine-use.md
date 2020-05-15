@@ -20,25 +20,15 @@ For example, Runtime validation with the Policy Engine can prevent Kubernetes Lo
 {:toc}
 
 ## Before You Start
-Using the Policy Engine requires an understanding of OPA's [rego syntax](https://www.openpolicyagent.org/docs/latest/policy-language/) and how to [deploy an OPA server](https://www.openpolicyagent.org/docs/latest/#running-opa).
 
-## How Policy Engine works
+Familiarize yourself with OPA's [rego syntax](https://www.openpolicyagent.org/docs/latest/policy-language/) and how to [deploy an OPA server](https://www.openpolicyagent.org/docs/latest/#running-opa).
 
-The Policy Engine uses [OPA's Data API](https://www.openpolicyagent.org/docs/latest/rest-api/#data-api) to check pipeline configurations against OPA policies that you set. 
+Additionally, make sure that the [Policy Engine is enabled](/spinnaker/policy-engine-enable) and determine whether it is configured.
 
-In general, the only requirement for the Policy Engine in `rego` syntax is the following:
-
-```
-package opa.pipelines
-
-deny["some text"] {
-  condition
-}
-```
-
-Blocks of rules must be in a `deny` statement and must have a valid package, such as `opa.pipelines`.
+## Using the Policy Engine
 
 At a high level, adding policies for the Policy Engine to use is a two-step process:
+
 1. Create the policies and save them to a `.rego` file as described in [Writing OPA policies for the Policy Engine](#writing-opa-policies-for-the-policy-engine).
 2. Add the policies to the OPA server with a ConfigMap or API request as described in [Adding policies to the Policy Engine](#adding-policies-to-the-policy-engine).
 
@@ -66,12 +56,13 @@ deny[msg] {
 
 `deny[msg] {`
 - Required. Policy Engine works by evaluating pipelines against conditions you set. If the conditions evaluate to true, the pipelines are failed.
-- The message that gets displayed to a user when a policy is triggered
+- The message that gets displayed to a user when a policy is triggered. You can set this explicitly in the brackets and enclosed by quotes, such as `["This is your message"]` or in the body of the policy. Armory recommends setting it in the body of the policy. 
 
 `msg :=<Message to display to user>`
 - Recommended. The message that gets shown to users when a policy fails a pipeline.
 
-`condition_1`
+`condition_1`<br>
+`condition_n`
 
 - Required. This is the main body of the policy. The conditions that you configure here are what a pipeline gets evaluated against.
 
@@ -128,7 +119,7 @@ deny[msg] {
     manifest.kind == "Service"
     manifest.spec.type == "LoadBalancer"
 
-    # Check all of the ports to ensure that port `22` isn't open. If the Policy Engine finds port `22`, the `deny` rule evaluates to true. This results in the deployment failing and the `msg` is shown to the user.
+    # Check all of the ports to ensure that port `22` is not open. If the Policy Engine finds port `22`, the `deny` rule evaluates to true. This results in the deployment failing and the `msg` is shown to the user.
     port := manifest.spec.ports[_]
     port.port == 22
 }
@@ -221,7 +212,10 @@ From this information, you can extract the exact JSON being enforced. You can us
 
 Note: The following ConfigMap is missing some annotations that Spinnaker adds later.
 
-```
+<details>
+  <summary>Show me the ConfigMap</summary>
+<pre>
+<codeblock>
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -306,4 +300,7 @@ status:
   readyReplicas: 1
   replicas: 1
   updatedReplicas: 1
-  ```
+  
+<code>
+</pre>
+</details>

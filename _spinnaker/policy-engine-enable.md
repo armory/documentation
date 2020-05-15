@@ -13,6 +13,8 @@ The Armory Policy Engine is designed to allow enterprises more complete control 
 * **Save time validation** - Validate pipelines as they're created/modified. This validation operates on all pipelines using a fail closed model. This means that if you have the Policy Engine enabled but no policies configured, the Policy Engine prevents you from creating or updating any pipeline.
 * **Runtime validation** - Validate deployments as a pipeline is executing. This validation only operates on tasks that you have explicitly created policies for. Tasks with no policies are not validated.
 
+For information about how to use the Policy Engine, see [Using the Policy Engine](/spinnaker/policy-engine-use/)
+
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
@@ -29,7 +31,7 @@ Make sure you can meet the following version requirements for the Policy Engine:
 
 The Policy Engine supports the following OPA server deployments: 
 
-* An OPA server deployed in the same Kubernetes cluster as an Armory Spinnaker deployment. The [Using ConfigMaps for OPA policies](#using-configmaps-for-opa-policies) section contains a manifest you can use.
+* An OPA server deployed in the same Kubernetes cluster as an Armory Spinnaker deployment. The [Example OPA server](#example-opa-server) section contains a manifest you can use.
 * An OPA cluster that is **not** in the same Kubernetes cluster as an Armory Spinnaker deployment . See the [OPA documentation](https://www.openpolicyagent.org/docs/latest/) for more information about installing an OPA cluster. 
 
 ### Example OPA server
@@ -38,7 +40,7 @@ This section contains a sample manifest that deploys an OPA server that is confi
 
 When using the below example, keep the following guidelines in mind:
 * The manifest does not configure any authorization requirements for the OPA server it deploys. This means that anyone can add a policy.
-* Make sure you replace `<namespace>` with the appropriate namespace.
+* The example uses a namespace called `opa`. Make sure you replace it with your namespace if you want.
 
 ```yaml
 ---
@@ -252,32 +254,5 @@ hal deploy apply
 ```
 
 Once Spinnaker finishes redeploying, Policy Engine can evaluate pipelines based on your policies.
-
-
-
-### Writing a policy
-
-Deployment validation works by mapping an OPA policy package to a Spinnaker deployment task. For example, deploying a Kubernetes Service is done using the Deploy (Manifest) stage, so we'll write a policy that applies to that task. 
-
-```
-# Notice the package. The package maps to the task you want to create a policy for.
-package spinnaker.deployment.tasks.deployManifest
-
-deny[msg] {
-    msg := "LoadBalancer Services must not have port 22 open."
-    manifests := input.deploy.manifests
-    manifest := manifests[_]
-
-    manifest.kind == "Service"
-    manifest.spec.type == "LoadBalancer"
-
-    port := manifest.spec.ports[_]
-    port.port == 22
-}
-```
-
-
-
-
 
 
