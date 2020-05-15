@@ -5,25 +5,6 @@ rm -dfr _site
 
 docker run -v "$(pwd):/src" --workdir /src golang:1.12.0 go run -mod=vendor bin/download_images.go -d /src -i /src/images/ --check
 
-
-SEMVER_REGEX='^[0-9]+\.[0-9]+\.[0-9]+$'
-
-echo "Getting Base Halyard Armory version"
-VERSIONS=$(curl -sf http://build-orchestrator.armory.io/projects/halyard-armory/versions | jq -r '.[]')
-halyard_armory_version=
-set +e
-for V in $VERSIONS; do
-    curl --silent -f -lSL https://hub.docker.com/v2/repositories/armory/halyard-armory/tags/$V > /dev/null
-    if [[ $? -eq 0 ]]; then
-        halyard_armory_version=$V
-        break
-    fi
-done
-set -e
-
-sed "s|halyard-armory-version:.*|halyard-armory-version: $halyard_armory_version|" _data/versions.yml > _data/versions.yml.new
-mv _data/versions.yml.new _data/versions.yml
-
 docker build -t armory/documentation .
 
 docker run --rm --user="root" -v "$(pwd):/srv/jekyll" armory/documentation bash -c "jekyll build"
