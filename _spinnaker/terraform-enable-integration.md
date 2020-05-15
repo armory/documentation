@@ -505,7 +505,7 @@ Additionally, you need `kubectl` installed. Perform the following steps:
      spin-terraformer:
      - name: init-terraformer
        image: busybox:latest
-       command: ["sh", "-c", "cp /secrets/* /ssh-spin && chow -R 1000:1000 /ssh-spin/* && chmod 600 /ssh-spin/* && mv /ssh-spin/credentials /aws-spin"]
+       command: ["sh", "-c", "cp /secrets/* /ssh-spin && chown -R 1000:1000 /ssh-spin/* && chmod 600 /ssh-spin/* && mv /ssh-spin/credentials /aws-spin"]
        volumeMounts: 
        - mountPath: /ssh-spin
          name: ssh-key-temp
