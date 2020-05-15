@@ -59,5 +59,5 @@ Dinghy is the Armory-specific microservice used to manage Pipelines as Code.  It
 * Automatically synchronizing pipeline definitions from an external Github or BitBucket repository to Armory Spinnaker.
 * Creating a library of pipeline modules (components) that can be templatized and used in Dinghy-managed pipeline definitions.
 
-### Terrafomer
+### Terraformer
 Terraformer is the Armory-specific microservice used to run Terraform scripts within a Spinnaker pipeline.
