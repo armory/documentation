@@ -94,6 +94,7 @@ Permissions
 ### Artifact 
 (__Appears on:__
 <a href="#bakemanifest">BakeManifest</a>, 
+<a href="#deploymanifest">DeployManifest</a>, 
 <a href="#webhook">Webhook</a>)
 <p>Artifact is an object that references an external resource. It could be a
 Docker container, file in source control, AMI, or binary blob in S3, etc.</p>
@@ -192,6 +193,8 @@ for more information.</p>
 </tbody>
 </table>
 ### ArtifactReference 
+(__Appears on:__
+<a href="#bakemanifest">BakeManifest</a>)
 <table>
 <thead>
 <tr>
@@ -214,6 +217,17 @@ string
 <tr>
 <td>
 <code>displayName</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+</td>
+</tr>
+<tr>
+<td>
+<code>account</code><br />
 <em>
 string
 </em>
@@ -329,6 +343,20 @@ bool
 </tr>
 <tr>
 <td>
+<code>inputArtifact</code><br />
+<em>
+<a href="#artifactreference">
+ArtifactReference
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>InputArtifact is used by the Kustomize variant of BakeManifest to pull in a single artifact.</p>
+</td>
+</tr>
+<tr>
+<td>
 <code>outputName</code><br />
 <em>
 string
@@ -368,6 +396,18 @@ string
 </em>
 </td>
 <td>
+</td>
+</tr>
+<tr>
+<td>
+<code>kustomizeFilePath</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>KustomizeFilePath is the relative path to the kustomize.yaml file in the given artifact.</p>
 </td>
 </tr>
 </tbody>
@@ -718,8 +758,7 @@ TargetCriteria
 ### DeployManifest 
 (__Appears on:__
 <a href="#stageunion">StageUnion</a>)
-<p>DeployManifest deploys a Kubernetes manifest to a target Kubernetes cluster. Spinnaker will periodically check the status of the manifest to make sure the manifest converges on the target cluster until it reaches a timeout
-FIXME: trafficManagement, relationships</p>
+<p>DeployManifest deploys a Kubernetes manifest to a target Kubernetes cluster. Spinnaker will periodically check the status of the manifest to make sure the manifest converges on the target cluster until it reaches a timeout</p>
 <table>
 <thead>
 <tr>
@@ -748,36 +787,6 @@ string
 </td>
 <td>
 <p>CloudProvider is the type of cloud provider used by the selected account.</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>completeOtherBranchesThenFail</code><br />
-<em>
-bool
-</em>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<code>continuePipeline</code><br />
-<em>
-bool
-</em>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<code>failPipeline</code><br />
-<em>
-bool
-</em>
-</td>
-<td>
 </td>
 </tr>
 <tr>
@@ -844,6 +853,79 @@ bool
 <a href="#source">
 Source
 </a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+</td>
+</tr>
+<tr>
+<td>
+<code>manifestArtifact</code><br />
+<em>
+<a href="#matchartifact">
+MatchArtifact
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+</td>
+</tr>
+<tr>
+<td>
+<code>namespaceOverride</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+</td>
+</tr>
+<tr>
+<td>
+<code>requiredArtifacts</code><br />
+<em>
+<a href="#artifact">
+[]Artifact
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+</td>
+</tr>
+<tr>
+<td>
+<code>requiredArtifactIds</code><br />
+<em>
+[]string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+</td>
+</tr>
+<tr>
+<td>
+<code>trafficManagement</code><br />
+<em>
+<a href="#trafficmanagement">
+TrafficManagement
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Spinnaker manages traffic based on your selected strategy</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>stageTimeoutMs</code><br />
+<em>
+int
 </em>
 </td>
 <td>
@@ -1376,7 +1458,8 @@ JudgmentMessage
 </table>
 ### MatchArtifact 
 (__Appears on:__
-<a href="#artifact">Artifact</a>)
+<a href="#artifact">Artifact</a>, 
+<a href="#deploymanifest">DeployManifest</a>)
 <table>
 <thead>
 <tr>
@@ -2261,6 +2344,108 @@ UndoRolloutManifest
 (__Appears on:__
 <a href="#deletemanifest">DeleteManifest</a>)
 <p>These values can be found in: /clouddriver/clouddriver-kubernetes-v2/src/main/java/com/netflix/spinnaker/clouddriver/kubernetes/v2/controllers/ManifestController.java</p>
+### TrafficManagement 
+(__Appears on:__
+<a href="#deploymanifest">DeployManifest</a>)
+<p>Spinnaker manages traffic based on your selected strategy</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>enabled</code><br />
+<em>
+bool
+</em>
+</td>
+<td>
+<p>Allow Spinnaker to associate each ReplicaSet deployed in this stage with one or more Services
+and manage traffic based on your selected rollout strategy options.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>options</code><br />
+<em>
+<a href="#trafficmanagementoptions">
+TrafficManagementOptions
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+</td>
+</tr>
+</tbody>
+</table>
+### TrafficManagementOptions 
+(__Appears on:__
+<a href="#trafficmanagement">TrafficManagement</a>)
+<p>TrafficManagementOptions</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>enableTraffic</code><br />
+<em>
+bool
+</em>
+</td>
+<td>
+<p>Send client requests to new pods</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>namespace</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>services</code><br />
+<em>
+[]string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>strategy</code><br />
+<em>
+<a href="#trafficmanagementstrategy">
+TrafficManagementStrategy
+</a>
+</em>
+</td>
+<td>
+</td>
+</tr>
+</tbody>
+</table>
+### TrafficManagementStrategy (<code>string</code> alias)
+(__Appears on:__
+<a href="#trafficmanagementoptions">TrafficManagementOptions</a>)
+<p>Tells Spinnaker what to do with the previous version(s) of the ReplicaSet in the cluster.
+Redblack: Disables all previous ReplicaSet as soon as the new ReplicaSet is ready.
+Highlander: Destroys all previous ReplicaSet as soon as the new ReplicaSet is ready.</p>
 ### UndoRolloutManifest 
 (__Appears on:__
 <a href="#stageunion">StageUnion</a>)
@@ -2705,5 +2890,5 @@ int
 <hr/>
 <p><em>
 Generated with <code>gen-crd-api-reference-docs</code>
-on git commit <code>5c79111</code>.
+on git commit <code>f2c85f9</code>.
 </em></p>
