@@ -297,7 +297,7 @@ The migration process from Halyard to Operator can be completed in 7 steps:
 
    Note: `config` is under `~/.hal`
 
-   More details on [SpinnakerService Options](../operator-config/#specspinnakerconfig) on `.spec.spinnakerConfig.config` section
+   More details on [SpinnakerService Options](/operator_reference/operator-config/#specspinnakerconfig) on `.spec.spinnakerConfig.config` section.
 
 3. Export Spinnaker profiles.
 
@@ -324,7 +324,7 @@ The migration process from Halyard to Operator can be completed in 7 steps:
            <CONTENT>
    ```
 
-   More details on [SpinnakerService Options](../operator-config/#specspinnakerconfigprofiles) on `.spec.spinnakerConfig.profiles` section
+   More details on [SpinnakerService Options](/operator_reference/operator-config/#specspinnakerconfigprofiles) on `.spec.spinnakerConfig.profiles` section
 
 4. Export Spinnaker settings.
 
@@ -350,7 +350,7 @@ The migration process from Halyard to Operator can be completed in 7 steps:
          echo:
            <CONTENT>
    ```
-   More details on [SpinnakerService Options](../operator-config/#specspinnakerconfigservice-settings) on `.spec.spinnakerConfig.service-settings` section
+   More details on [SpinnakerService Options](/operator_reference/operator-config/#specspinnakerconfigservice-settings) on `.spec.spinnakerConfig.service-settings` section
 
 5. Export local file references.
 
@@ -418,7 +418,7 @@ The migration process from Halyard to Operator can be completed in 7 steps:
      primaryAccount: prod
    ```
 
-   More details on [SpinnakerService Options](../operator-config/#specspinnakerconfigfiles) on `.spec.spinnakerConfig.files` section
+   More details on [SpinnakerService Options](/operator_reference/operator-config/#specspinnakerconfigfiles) on `.spec.spinnakerConfig.files` section
 
 6. Export Packer template files (if used).
 
@@ -452,7 +452,7 @@ The migration process from Halyard to Operator can be completed in 7 steps:
            <CONTENT>
    ```
 
-   More details on [SpinnakerService Options](../operator-config/#specspinnakerconfigfiles) on `.spec.spinnakerConfig.files` section
+   More details on [SpinnakerService Options](/operator_reference/operator-config/#specspinnakerconfigfiles) on `.spec.spinnakerConfig.files` section
 
 6. Validate your Spinnaker configuration if you plan to run the Operator in cluster mode.
 
