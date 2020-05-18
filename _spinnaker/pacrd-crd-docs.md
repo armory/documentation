@@ -94,6 +94,7 @@ Permissions
 ### Artifact 
 (__Appears on:__
 <a href="#bakemanifest">BakeManifest</a>, 
+<a href="#deploymanifest">DeployManifest</a>, 
 <a href="#webhook">Webhook</a>)
 <p>Artifact is an object that references an external resource. It could be a
 Docker container, file in source control, AMI, or binary blob in S3, etc.</p>
@@ -194,7 +195,6 @@ for more information.</p>
 ### ArtifactReference 
 (__Appears on:__
 <a href="#bakemanifest">BakeManifest</a>)
-<p>ArtifactReference TODO doesn&rsquo;t seem to be working&hellip;?</p>
 <table>
 <thead>
 <tr>
@@ -205,22 +205,35 @@ for more information.</p>
 <tbody>
 <tr>
 <td>
-<code>account</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
 <code>id</code><br />
 <em>
 string
 </em>
 </td>
 <td>
+<em>(Optional)</em>
+</td>
+</tr>
+<tr>
+<td>
+<code>displayName</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+</td>
+</tr>
+<tr>
+<td>
+<code>account</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
 </td>
 </tr>
 </tbody>
@@ -320,12 +333,26 @@ bool
 <td>
 <code>inputArtifacts</code><br />
 <em>
-<a href="#artifactreference">
-[]ArtifactReference
+<a href="#*github.com/armory-io/pacrd/api/v1alpha1.artifactreference">
+[]*github.com/armory-io/pacrd/api/v1alpha1.ArtifactReference
 </a>
 </em>
 </td>
 <td>
+</td>
+</tr>
+<tr>
+<td>
+<code>inputArtifact</code><br />
+<em>
+<a href="#artifactreference">
+ArtifactReference
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>InputArtifact is used by the Kustomize variant of BakeManifest to pull in a single artifact.</p>
 </td>
 </tr>
 <tr>
@@ -369,6 +396,18 @@ string
 </em>
 </td>
 <td>
+</td>
+</tr>
+<tr>
+<td>
+<code>kustomizeFilePath</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>KustomizeFilePath is the relative path to the kustomize.yaml file in the given artifact.</p>
 </td>
 </tr>
 </tbody>
@@ -429,6 +468,87 @@ string
 </td>
 <td>
 <em>(Optional)</em>
+</td>
+</tr>
+</tbody>
+</table>
+### CustomArtifact 
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>type</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>name</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>id</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>location</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>reference</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>version</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>artifactAccount</code><br />
+<em>
+string
+</em>
+</td>
+<td>
 </td>
 </tr>
 </tbody>
@@ -638,8 +758,7 @@ TargetCriteria
 ### DeployManifest 
 (__Appears on:__
 <a href="#stageunion">StageUnion</a>)
-<p>DeployManifest deploys a Kubernetes manifest to a target Kubernetes cluster. Spinnaker will periodically check the status of the manifest to make sure the manifest converges on the target cluster until it reaches a timeout
-FIXME: trafficManagement, relationships</p>
+<p>DeployManifest deploys a Kubernetes manifest to a target Kubernetes cluster. Spinnaker will periodically check the status of the manifest to make sure the manifest converges on the target cluster until it reaches a timeout</p>
 <table>
 <thead>
 <tr>
@@ -668,36 +787,6 @@ string
 </td>
 <td>
 <p>CloudProvider is the type of cloud provider used by the selected account.</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>completeOtherBranchesThenFail</code><br />
-<em>
-bool
-</em>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<code>continuePipeline</code><br />
-<em>
-bool
-</em>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<code>failPipeline</code><br />
-<em>
-bool
-</em>
-</td>
-<td>
 </td>
 </tr>
 <tr>
@@ -768,6 +857,197 @@ Source
 </td>
 <td>
 <em>(Optional)</em>
+</td>
+</tr>
+<tr>
+<td>
+<code>manifestArtifact</code><br />
+<em>
+<a href="#matchartifact">
+MatchArtifact
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+</td>
+</tr>
+<tr>
+<td>
+<code>namespaceOverride</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+</td>
+</tr>
+<tr>
+<td>
+<code>requiredArtifacts</code><br />
+<em>
+<a href="#artifact">
+[]Artifact
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+</td>
+</tr>
+<tr>
+<td>
+<code>requiredArtifactIds</code><br />
+<em>
+[]string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+</td>
+</tr>
+<tr>
+<td>
+<code>trafficManagement</code><br />
+<em>
+<a href="#trafficmanagement">
+TrafficManagement
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Spinnaker manages traffic based on your selected strategy</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>stageTimeoutMs</code><br />
+<em>
+int
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+</td>
+</tr>
+</tbody>
+</table>
+### DockerArtifact 
+<p>DockerArtifact represents a container in the target Docker registry.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>artifactAccount</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+<p>ArtifactAccount represents the desired container registry to pull images from.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>name</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+<p>Name is the fully qualified Docker image name in the configured registry.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>id</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+<p>ID represents a pipeline-wide unique identifier.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>type</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+</tbody>
+</table>
+### EmbeddedArtifact 
+<p>EmbeddedArtifact represents a base64 encoded artifact.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>type</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>name</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>id</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+</tbody>
+</table>
+### ErrNameUndefined 
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>ArtifactName</code><br />
+<em>
+string
+</em>
+</td>
+<td>
 </td>
 </tr>
 </tbody>
@@ -1178,8 +1458,8 @@ JudgmentMessage
 </table>
 ### MatchArtifact 
 (__Appears on:__
-<a href="#artifact">Artifact</a>)
-<p>MatchArtifact TODO</p>
+<a href="#artifact">Artifact</a>, 
+<a href="#deploymanifest">DeployManifest</a>)
 <table>
 <thead>
 <tr>
@@ -1190,64 +1470,21 @@ JudgmentMessage
 <tbody>
 <tr>
 <td>
-<code>id</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-</td>
-</tr>
-<tr>
-<td>
-<code>artifactAccount</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-</td>
-</tr>
-<tr>
-<td>
-<code>string</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-</td>
-</tr>
-<tr>
-<td>
-<code>name</code><br />
-<em>
-string
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-</td>
-</tr>
-<tr>
-<td>
 <code>type</code><br />
 <em>
 string
 </em>
 </td>
 <td>
-<em>(Optional)</em>
 </td>
 </tr>
 <tr>
 <td>
-<code>version</code><br />
+<code>properties</code><br />
 <em>
-string
+<a href="https://godoc.org/k8s.io/apimachinery/pkg/runtime#RawExtension">
+k8s.io/apimachinery/pkg/runtime.RawExtension
+</a>
 </em>
 </td>
 <td>
@@ -1824,6 +2061,8 @@ SelectorsKind
 (__Appears on:__
 <a href="#deploymanifest">DeployManifest</a>)
 <p>Source represents the kind of DeployManifest stage is defined.</p>
+### SpinnakerMatchArtifact 
+<p>SpinnakerMatchArtifact represents TODO</p>
 ### StageEnabled 
 (__Appears on:__
 <a href="#stageunion">StageUnion</a>, 
@@ -1860,7 +2099,7 @@ string
 </tbody>
 </table>
 ### StageUnion 
-<p>StageUnion is a union type that encompasses strongly typed stage defnitions.</p>
+<p>Stage is a union type that encompasses strongly typed stage defnitions.</p>
 <table>
 <thead>
 <tr>
@@ -2105,6 +2344,108 @@ UndoRolloutManifest
 (__Appears on:__
 <a href="#deletemanifest">DeleteManifest</a>)
 <p>These values can be found in: /clouddriver/clouddriver-kubernetes-v2/src/main/java/com/netflix/spinnaker/clouddriver/kubernetes/v2/controllers/ManifestController.java</p>
+### TrafficManagement 
+(__Appears on:__
+<a href="#deploymanifest">DeployManifest</a>)
+<p>Spinnaker manages traffic based on your selected strategy</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>enabled</code><br />
+<em>
+bool
+</em>
+</td>
+<td>
+<p>Allow Spinnaker to associate each ReplicaSet deployed in this stage with one or more Services
+and manage traffic based on your selected rollout strategy options.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>options</code><br />
+<em>
+<a href="#trafficmanagementoptions">
+TrafficManagementOptions
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+</td>
+</tr>
+</tbody>
+</table>
+### TrafficManagementOptions 
+(__Appears on:__
+<a href="#trafficmanagement">TrafficManagement</a>)
+<p>TrafficManagementOptions</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>enableTraffic</code><br />
+<em>
+bool
+</em>
+</td>
+<td>
+<p>Send client requests to new pods</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>namespace</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>services</code><br />
+<em>
+[]string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>strategy</code><br />
+<em>
+<a href="#trafficmanagementstrategy">
+TrafficManagementStrategy
+</a>
+</em>
+</td>
+<td>
+</td>
+</tr>
+</tbody>
+</table>
+### TrafficManagementStrategy (<code>string</code> alias)
+(__Appears on:__
+<a href="#trafficmanagementoptions">TrafficManagementOptions</a>)
+<p>Tells Spinnaker what to do with the previous version(s) of the ReplicaSet in the cluster.
+Redblack: Disables all previous ReplicaSet as soon as the new ReplicaSet is ready.
+Highlander: Destroys all previous ReplicaSet as soon as the new ReplicaSet is ready.</p>
 ### UndoRolloutManifest 
 (__Appears on:__
 <a href="#stageunion">StageUnion</a>)
@@ -2200,6 +2541,37 @@ KubernetesKind
 (__Appears on:__
 <a href="#undorolloutmanifest">UndoRolloutManifest</a>)
 <p>UndoRolloutManifestMode is the means for undoing a manifest rollout.</p>
+### UnknownArtifact 
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>type</code><br />
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>properties</code><br />
+<em>
+map[string]interface{}
+</em>
+</td>
+<td>
+</td>
+</tr>
+</tbody>
+</table>
 ### Webhook 
 (__Appears on:__
 <a href="#stageunion">StageUnion</a>)
@@ -2518,5 +2890,5 @@ int
 <hr/>
 <p><em>
 Generated with <code>gen-crd-api-reference-docs</code>
-on git commit <code>1c406ef</code>.
+on git commit <code>f2c85f9</code>.
 </em></p>

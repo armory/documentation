@@ -7,12 +7,14 @@ order: -202001061114156
 # 04/02/2020 Release Notes
 {:.no_toc}
 
-This version is required to deploy Armory Spinnaker 2.19+. 
+Armory Halyard 1.8.3 is the minimum version required to deploy Armory Spinnaker 2.19+. 
 
 ## Full Version
 1.8.3-rc569 (OSS 1.32.0-214e5ba-stable548 build 569)
 
 ## Known Issues
+
+### Plugins 
 
 When you try to deploy Spinnaker using Halyard 1.8.3, you encounter the following error:
 
@@ -25,6 +27,14 @@ Validation in Global:
 **Workaround** 
 
 Remove the top level key for Plugins in your Halconfig. 
+
+### Secrets
+
+Secrets are stored decrypted at rest in the Pods of the Spinnaker services.
+
+**Workaround**
+Upgrade to Armory Halyard 1.9.0 or later.
+
 
 ## Halyard Armory Enterprise Spinnaker
  No Changes

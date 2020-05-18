@@ -45,7 +45,7 @@ Here is an example Dinghyfile:
         {
           "name": "one",
           "type": "wait",
-          "waitTIme": 10
+          "waitTime": 10
         }
       ]
     }
@@ -102,14 +102,14 @@ While a JSON array is an ordered list, the order of the stages in your pipeline'
       {
         "name": "one",
         "type": "wait",
-        "waitTIme":  10,
+        "waitTime":  10,
         "refId": "first-stage",
         "requisiteStageRefIds": []
       },
       {
         "name": "two-a",
         "type": "wait",
-        "waitTIme":  15,
+        "waitTime":  15,
         "refId": "my-second-stage",
         "requisiteStageRefIds": [
           "first-stage"
@@ -118,7 +118,7 @@ While a JSON array is an ordered list, the order of the stages in your pipeline'
       {
         "name": "two-b",
         "type": "wait",
-        "waitTIme":  30,
+        "waitTime":  30,
         "refId": "my-other-second-stage",
         "requisiteStageRefIds": [
           "first-stage"
@@ -127,7 +127,7 @@ While a JSON array is an ordered list, the order of the stages in your pipeline'
       {
         "name": "last",
         "type": "wait",
-        "waitTIme":  20,
+        "waitTime":  20,
         "refId": "my-final-stage",
         "requisiteStageRefIds": [
           "my-second-stage",
@@ -243,7 +243,17 @@ Pipeline definitions can include Modules defined in another GitHub Repo. e.g.:
     }
   ]
 }
+{% endraw %}
+```
+
+Note that modules can be stored on a subfolder of your repository. To reference these modules, add a snippet like the following:
+
+```{% raw %}
+{{ module "my/path/to/module/wait.stage.module" }}
 {% endraw %}```
+
+> Using the path "/my/path/to/module/wait.stage.module" with a leading slash (`/`)is not supported in Armory 2.19.8 and earlier.
+
 
 The `{% raw %}{{ module "wait.stage.module" }}{% endraw %}` takes the wait.stage.module file inside the dinghy-templates repo, and includes it in the current template. Note that modules are simply text inserted into the JSON they are referenced by; if you wanted to add another stage after the module in the example above, you would need to add the comma after the substitution so the resulting JSON was correct.
 
@@ -265,7 +275,8 @@ We can also pass variables to our modules like so:
     }
   ]
 }
-{% endraw %}```
+{% endraw %}
+```
 
 Any number of variables can be passed to a module by simply specifying them as arguments, e.g.: `{% raw %}{{ module "wait.stage.module" "waitTime" 100 "name" "simpleWait" }}{% endraw %}`.
 
@@ -279,7 +290,8 @@ Inside wait.stage.module, we can then include these variables inline:
   "type": "wait",
   "waitTime": {{ var "waitTime" ?: 10 }}
 }
-{% endraw %}```
+{% endraw %}
+```
 
 The `{% raw %}{{ var }}{% endraw %}` function is used to access variables passed to the `{% raw %}{{ module }}{% endraw %}` call.
 The first parameter is the variable name: `{% raw %}{{ var "waitName" }}{% endraw %}`
@@ -359,7 +371,8 @@ You would use the following JSON to create such. Note that any of the stages cou
     }
   ]
 }
-{% endraw %}```
+{% endraw %}
+```
 
 The file `deploy.stage.module` would look like this:
 ```{% raw %}
@@ -371,7 +384,8 @@ The file `deploy.stage.module` would look like this:
   "requisiteStageRefIds": {{ var "requisiteStageRefIds" ?: [] }},
   "type": "deploy"
 }
-{% endraw %}```
+{% endraw %}
+```
 
 ## Multiple Level Inheritance
 
@@ -427,7 +441,7 @@ If you want any pipelines in the spinnaker application that are not part of the 
 ```{% raw %}
 {
   "application": "yourspinnakerapplicationname",
-  "deleteStalePipelines": true
+  "deleteStalePipelines": true,
   "pipelines": [
   ]
 }
@@ -479,6 +493,8 @@ Notice both `app1` and `app2` are under the same repo, each app has its own `din
 
 ### Template Validation
 If, while rendering a `dinghyfile`, a malformed JSON file is encountered, the logs should indicate the line number and the column number of the error. The `arm cli` can be used to validate `dinghyfile`s and `module`s locally without having to put them in source control.
+
+Armory CLI: <https://github.com/armory-io/arm> 
 
 ### Newlines
 For ease of readablilty, you can split a single call to `module` across multiple lines. For example, the following two `dinghyfile`s are both valid & produce identical pipelines in spinnaker:
@@ -551,7 +567,7 @@ Note that top-level variables are overwritten by variables in the call to module
       "application": "yourspinnakerapplicationname",
       "name": "Made By Armory Pipeline Templates",
       "stages": [
-        {{ module "wait.stage.module" "waitTime": "43" }}
+        {{ module "wait.stage.module" "waitTime" "43" }}
       ]
     }
   ]
@@ -726,6 +742,30 @@ pipelines:
 ## Conditionals
 
 Dinghy supports all of the usual Go template conditionals. In addition to that, Dinghy also provides the git webhoook content in the template, allowing you to use the raw push data in the template itself.
+
+Example:
+```{% raw %}
+{
+  "application": "conditionals",
+  "pipelines": [
+    {
+      "application": "conditionals",
+      "name": "my-pipeline-name",
+      "stages": [
+          {
+            {{ if eq .RawData.pusher.name "Samtribal" }}
+              "name": "this_is_true",
+            {{ else }}
+              "name": "this_is_false",
+            {{ end }}
+            "waitTime":  10,
+            "type": "wait"
+          }
+      ]
+    }
+  ]
+}
+{% endraw %}```
 
 ### Iterating over a map:
 

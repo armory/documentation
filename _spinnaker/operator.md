@@ -12,7 +12,12 @@ Note that Spinnaker Operator is currently in [Beta](https://kb.armory.io/release
 
 # Overview
 
-Spinnaker Operator is a Kubernetes operator for Spinnaker that makes it easier to install, deploy, and upgrade any version of Spinnaker through a workflow that you are already familiar with.  After you install Spinnaker Operator, you can use `kubectl` to manage the lifecycle of your deployment.
+Spinnaker Operator is a Kubernetes operator for Spinnaker that makes it easier to install, deploy, and upgrade any version of Spinnaker through a workflow that you are already familiar with.  There are two flavors of the Spinnaker Operator:
+
+* The open source [Spinnaker Operator](https://github.com/armory/spinnaker-operator) that installs open source Spinnaker.
+* The proprietary Armory Spinnaker Operator that installs Armory Spinnaker. This version comes with additional enterprise features.
+
+After you install Spinnaker Operator, you can use `kubectl` to manage the lifecycle of your deployment.
 
 Operator has two distinct modes you can install and use:
 
@@ -22,7 +27,7 @@ Operator has two distinct modes you can install and use:
 If you want to get started quickly, install Operator and Spinnaker by running the following commands:
 
 ```
-# Pick a release from https://github.com/armory-io/spinnaker-operator/releases 
+# Pick a release from https://github.com/armory-io/spinnaker-operator/releases
 mkdir -p spinnaker-operator && cd spinnaker-operator
 bash -c 'curl -L https://github.com/armory-io/spinnaker-operator/releases/latest/download/manifests.tgz | tar -xz'
 
@@ -46,7 +51,7 @@ The rest of this page describes how to modify some of the default configurations
 # Benefits of Operator
 
 - Stop using Halyard commands: just `kubectl apply` your Spinnaker configuration. This includes support for local files.
-- Expose Spinnaker to the outside world (via `LoadBalancer`). You can still disable that behavior if you prefer to manage ingresses and load balancers yourself.
+- Expose Spinnaker to the outside world (with `LoadBalancer`). You can still disable that behavior if you prefer to manage ingresses and load balancers yourself.
 - Deploy any version of Spinnaker. Operator is not tied to a particular version of Spinnaker.
 - Keep secrets separate from your config. Store your config in `git` and have an easy Gitops workflow.
 - Validate your configuration before applying it (with webhook validation).
@@ -202,11 +207,11 @@ To upgrade an existing Spinnaker deployment using the Operator, perform the foll
    ```bash
    kubectl -n <spinnaker-namespace> apply -f deploy/spinnaker/basic/SpinnakerService.yml
    ```
-   
+
    Replace `<spinnaker-namespace>` with the namespace for the existing Spinnaker deployment.
 
    You can view the upgraded services starting up with the following command:
-   
+
    ```bash
    kubectl -n <spinnaker-namespace> describe spinsvc spinnaker
    ```
@@ -259,102 +264,102 @@ kubectl -n <namespace> describe spinnakerservice spinnaker
 ```bash
 kubectl -n <namespace> delete spinnakerservice spinnaker
 ```
- 
+
 # Migrating from Halyard to Operator
 
-If you have a current Spinnaker instance installed via Halyard, use this guide to migrate existing 
-configuration to Operator.
+If you have a current Spinnaker instance installed with Halyard, use this guide
+to migrate existing configuration to Operator.
 
 The migration process from Halyard to Operator can be completed in 7 steps:
 
-1. To get started, install Spinnaker Operator. 
+1. To get started, install Spinnaker Operator.
 2. Export Spinnaker configuration.
 
-    Copy the desired profile's content from the `config` file 
-    
+    Copy the desired profile's content from the `config` file
+
    For example, if you want to migrate the `default` hal profile, use the following `SpinnakerService` manifest structure:
-   
+
    ```yaml
    currentDeployment: default
    deploymentConfigurations:
    - name: default
-     <CONTENT> 
+     <CONTENT>
    ```
-    
+
    Add `<CONTENT>` in the `spec.spinnakerConfig.config` section in the `SpinnakerService` manifest as follows:
-   
+
    ```yaml
    spec:
      spinnakerConfig:
        config:
-         <<CONTENT>> 
+         <<CONTENT>>
    ```
-    
+
    Note: `config` is under `~/.hal`
-    
-   More details on [SpinnakerService Options](../operator-config/#specspinnakerconfig) on `.spec.spinnakerConfig.config` section
+
+   More details on [SpinnakerService Options](/operator_reference/operator-config/#specspinnakerconfig) on `.spec.spinnakerConfig.config` section.
 
 3. Export Spinnaker profiles.
 
    If you have configured Spinnaker profiles, you will need to migrate these profiles to the `SpinnakerService` manifest.
-    
+
    First, identify the current profiles under  `~/.hal/default/profiles`
-    
+
    For each file, create an entry under `spec.spinnakerConfig.profiles`
-    
-   For example, you have the following profile: 
-    
+
+   For example, you have the following profile:
+
    ```bash
    $ ls -a ~/.hal/default/profiles | sort
    echo-local.yml
    ```
-    
+
    Create a new entry with the name of the file without `-local.yaml` as follows:
-    
+
    ```yaml
    spec:
      spinnakerConfig:
        profiles:
-         echo: 
+         echo:
            <CONTENT>
    ```
-    
-   More details on [SpinnakerService Options](../operator-config/#specspinnakerconfigprofiles) on `.spec.spinnakerConfig.profiles` section
+
+   More details on [SpinnakerService Options](/operator_reference/operator-config/#specspinnakerconfigprofiles) on `.spec.spinnakerConfig.profiles` section
 
 4. Export Spinnaker settings.
 
    If you configured Spinnaker settings, you need to migrate these settings to the `SpinnakerService` manifest also.
-    
+
    First, identify the current settings under  `~/.hal/default/service-settings`
-    
+
    For each file, create an entry under `spec.spinnakerConfig.service-settings`
-    
-   For example, you have the following settings: 
-    
+
+   For example, you have the following settings:
+
    ```bash
    $ ls -a ~/.hal/default/service-settings | sort
    echo.yml
    ```
-    
+
    Create a new entry with the name of the file without `.yaml` as follows:
-    
+
    ```yaml
    spec:
      spinnakerConfig:
-       service-settings: 
+       service-settings:
          echo:
            <CONTENT>
    ```
-   More details on [SpinnakerService Options](../operator-config/#specspinnakerconfigservice-settings) on `.spec.spinnakerConfig.service-settings` section
+   More details on [SpinnakerService Options](/operator_reference/operator-config/#specspinnakerconfigservice-settings) on `.spec.spinnakerConfig.service-settings` section
 
 5. Export local file references.
 
    If you have references to local files in any part of the config, like `kubeconfigFile`, service account json files or others, you need to migrate these files to the `SpinnakerService` manifest.
-    
+
    For each file, create an entry under `spec.spinnakerConfig.files`
-    
+
    For example, you have a Kubernetes account configured like this:
-    
+
    ```yaml
    kubernetes:
      enabled: true
@@ -377,19 +382,19 @@ The migration process from Halyard to Operator can be completed in 7 steps:
        kubeconfigFile: /home/spinnaker/.hal/secrets/kubeconfig-prod
      primaryAccount: prod
    ```
-    
+
    The `kubeconfigFile` field is a reference to a physical file on the machine running Halyard. You need to create a new entry in `files` section like this:
-     
+
    ```yaml
    spec:
      spinnakerConfig:
-       files: 
+       files:
          kubeconfig-prod: |
            <CONTENT>
    ```
-    
+
    Then replace the file path in the config to match the key in the `files` section:
-    
+
    ```yaml
    kubernetes:
      enabled: true
@@ -412,52 +417,52 @@ The migration process from Halyard to Operator can be completed in 7 steps:
        kubeconfigFile: kubeconfig-prod  # File name must match "files" key
      primaryAccount: prod
    ```
-    
-   More details on [SpinnakerService Options](../operator-config/#specspinnakerconfigfiles) on `.spec.spinnakerConfig.files` section
-    
-6. Export Packer template files (if used). 
+
+   More details on [SpinnakerService Options](/operator_reference/operator-config/#specspinnakerconfigfiles) on `.spec.spinnakerConfig.files` section
+
+6. Export Packer template files (if used).
 
    If you are using custom Packer templates for baking images, you need to migrate these files to the `SpinnakerService` manifest.
-    
+
    First, identify the current templates under  `~/.hal/default/profiles/rosco/packer`
-    
+
    For each file, reate an entry under `spec.spinnakerConfig.files`
-    
+
    For example, you have the following `example-packer-config` file:
-    
+
    ```bash
    $ tree -v ~/.hal/default/profiles
    ├── echo-local.yml
    └── rosco
        └── packer
            └── example-packer-config.json
-    
+
    2 directories, 2 files
    ```
-    
+
    You need to create a new entry with the name of the file following these instructions:
-    
+
    - For each file, list the folder name starting with `profiles`, followed by double underscores (`__`) and at the very end the name of the file.
-   
+
    ```yaml
    spec:
      spinnakerConfig:
-       files: 
+       files:
          profiles__rosco__packer__example-packer-config.json: |
            <CONTENT>
    ```
 
-   More details on [SpinnakerService Options](../operator-config/#specspinnakerconfigfiles) on `.spec.spinnakerConfig.files` section
+   More details on [SpinnakerService Options](/operator_reference/operator-config/#specspinnakerconfigfiles) on `.spec.spinnakerConfig.files` section
 
 6. Validate your Spinnaker configuration if you plan to run the Operator in cluster mode.
 
    ```bash
    kubectl -n <namespace> apply -f <spinnaker service manifest> --server-dry-run
    ```
-   
+
    The validation service throws an error when something is wrong with your manifest.
 
-7. Apply your SpinnakerService 
+7. Apply your SpinnakerService:
 
    ```bash
    kubectl -n <namespace> apply -f <spinnaker service>
