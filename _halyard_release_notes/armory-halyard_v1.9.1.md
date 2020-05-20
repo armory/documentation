@@ -7,8 +7,9 @@ order: -202001061114156
 # 05/14/2020 Release Notes
 {:.no_toc}
 
-## Known Issue
-No known issues
+## Known Issues
+
+AWS cli is missing a dependency, which causes that Spinnaker cannot be deployed if it has Kubernetes accounts using AWS cli for getting authentication tokens.
 
 ## Highlights
 
