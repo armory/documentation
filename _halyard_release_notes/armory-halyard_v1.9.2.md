@@ -12,8 +12,7 @@ No known issues
 
 ## Highlights
 
-Armory Halyard 1.9.2 resolves an issue where AWS cli was missing a dependency, preventing to deploy Spinnaker if it had Kubernetes accounts using AWS cli for getting authentication tokens.
-
+Resolves an issue in Armory Halyard 1.9.1 where Spinnaker cannot be deployed if it has Kubernetes accounts that use the AWS cli to get authentication tokens. The AWS cli was missing a dependency.
 
 ## Halyard Armory Enterprise Spinnaker
 - fix(cve): update google-cloud-sdk install params
@@ -23,4 +22,4 @@ Armory Halyard 1.9.2 resolves an issue where AWS cli was missing a dependency, p
 
 ## Halyard Community Contributions 
 
-No new changes since last Armory Halyard release.
+No new changes since the last Armory Halyard release.
