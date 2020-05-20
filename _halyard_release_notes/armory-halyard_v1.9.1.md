@@ -9,7 +9,7 @@ order: -202001061114156
 
 ## Known Issues
 
-AWS cli is missing a dependency, which causes that Spinnaker cannot be deployed if it has Kubernetes accounts using AWS cli for getting authentication tokens.
+Spinnaker cannot be deployed if it has Kubernetes accounts that use the AWS cli to get authentication tokens. The AWS cli is missing a dependency in this version of Halyard.
 
 ## Highlights
 
