@@ -6155,7 +6155,7 @@
               target: "_blank",
               href: "https://www.youtube.com/channel/UC9ESNuSCMXLsdRdBDhjSzcA/featured",
               rel: "noopener noreferrer"
-            }, "YouTube"))))))), a.a.createElement(W, null, a.a.createElement(R, {className: "text-center"}, a.a.createElement(Se, null, "\xa9", (new Date).getFullYear(), " Armory Inc. All Rights Reserved.", a.a.createElement("span", null, "\xa0\xa0\u2022\xa0\xa0"), a.a.createElement("a", {href: "https://www.armory.io/privacy/"}, "Privacy Policy"), a.a.createElement("span", null, "\xa0\xa0\u2022\xa0\xa0"), a.a.createElement("a", {href: "https://www.armory.io/terms"}, "Terms & Conditions"))))))
+            }, "YouTube"))))))), a.a.createElement(W, null, a.a.createElement(R, {className: "text-center"}, a.a.createElement(Se, null, "\xa9", (new Date).getFullYear(), " Armory Inc. All Rights Reserved.", a.a.createElement("span", null, "\xa0\xa0\u2022\xa0\xa0"), a.a.createElement("a", {href: "https://www.armory.io/privacy/"}, "Privacy Policy"), a.a.createElement("span", null, "\xa0\xa0\u2022\xa0\xa0"), a.a.createElement("a", {href: "https://www.armory.io/terms-of-service/"}, "EULA"),  a.a.createElement("span", null, "\xa0\xa0\u2022\xa0\xa0"), a.a.createElement("a", {href: "https://www.armory.io/terms-and-conditions/"}, "Terms & Conditions"))))))
           }
         }
       ]), t
