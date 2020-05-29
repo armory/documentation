@@ -92,7 +92,7 @@ Additional stage fields can be identified by configuring the stage through the U
 While a JSON array is an ordered list, the order of the stages in your pipeline's `stages` array isn't used for stage order.  Instead, Spinnaker stages each have a `refId`, a unique string within the pipeline that identifies the stage and an array of stages that the stage depends on. Note that `refId` is often a numerical value but does not need to be one. For example, this is a four-stage pipeline:
 
 ```json
-
+{
 "application": "helloworld",
 "pipelines": [
   {
