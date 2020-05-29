@@ -7,8 +7,11 @@ order: -202001061114156
 # 05/14/2020 Release Notes
 {:.no_toc}
 
-## Known Issue
-No known issues
+## Known Issues
+
+Spinnaker cannot be deployed if it has Kubernetes accounts that use the AWS cli to get authentication tokens. The AWS cli is missing a dependency in this version of Halyard.
+
+This issue is fixed in Armory Halyard 1.9.2.
 
 ## Highlights
 
