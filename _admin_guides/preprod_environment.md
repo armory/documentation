@@ -68,9 +68,9 @@ SPRING_PROFILES_ACTIVE=armory,local,preprod
 ### Create a new Deploy Stage
 Add a new deploy stage to your "Spinnaker Deploy Spinnaker" pipeline. When adding the stage and server group you can use production as the server template. You'll want to add a `manual judgement` or `integration test` stage following the deploy stage so you can confirm that your preprod environment is working as expected. Make sure to change the stack to the name chosen for your environment file, in this example: `preprod`.
 
-![deploy configuration](/images/Image 2017-10-20 at 1.06.30 PM.png)
+![deploy configuration](/images/Image-2017-10-20-at-1.06.30-PM.png)
 
 <br/>
 Your finished pipeline should resemble the following:
 <br/><br/>
-![preprod environment](/images/Image 2017-10-20 at 1.06.00 PM.png)
+![preprod environment](/images/Image-2017-10-20-at-1.06.00-PM.png)

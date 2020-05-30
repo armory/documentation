@@ -94,4 +94,4 @@ kubectl -n <namespace> create configmap token-refresh-config --from-file <config
 
 Success! Now you will be able to use ECR as a docker registry in the configuration stage.
 
-![](/images/Image 2018-12-18 at 2.02.02 PM.png)
+![](/images/Image-2018-12-18-at-2.02.02-PM.png)

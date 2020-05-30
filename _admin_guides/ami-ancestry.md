@@ -13,7 +13,7 @@ order: 90
 
 To find the ancestry tool, navigate your browser to: `http://${SPINNAKER_URL}/armory/audit/`.  You should find the audit dashboard:
 
-![ancestry](/images/Image 2017-05-16 at 10.03.15 AM.png)
+![ancestry](/images/Image-2017-05-16-at-10.03.15-AM.png)
 
 Entering in an AMI ID will return the parents and descendents of the AMI that was entered.
 

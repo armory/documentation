@@ -132,7 +132,7 @@ Optionally, you can include a default parameter: `{% raw %}{{ var "waitName" ?: 
 
 Let us create a more realistic pipeline using templates. One that would look like this:
 
-![](/images/Screen Shot 2018-03-12 at 11.18.38 AM.png)
+![](/images/Screen-Shot-2018-03-12-at-11.18.38-AM.png)
 
 You would use the following JSON to create such. Note that any of the stages could have come from an imported module, but we show the full JSON here for readability:
 

@@ -21,10 +21,10 @@ Subnets determine where and how you can deploy AWS resources such as EC2 machine
 
 Spinnaker groups subnets into a single subnet name across multiple availability zones.  This makes it simpler for end-users of Spinnaker to choose a group of subnets within a VPC that have a given purpose such as `ec2-subnets`, `elb-subnets` or `public-subnets`.  This allows Spinnaker to place the machines within that group and ensure equal redundancy across zones. Below is a logical representation of how Spinnaker groups multiple subnets together.  If you want to **make a subnet accessible to Spinnaker** you'll have to add a tag and value to the subnet with the following: `immutable_metadata={"purpose":"example-purpose"}`
 
-![subnet tags in AWS console](/images/Image 2017-10-05 at 3.53.35 PM.png)
+![subnet tags in AWS console](/images/Image-2017-10-05-at-3.53.35-PM.png)
 
 Conceptually, this is how Spinnaker groups subnets logically.
-![subnets groups](/images/Image 2017-04-18 at 4.07.10 PM.png)
+![subnets groups](/images/Image-2017-04-18-at-4.07.10-PM.png)
 
 ## Verifying Subnet Configuration
 

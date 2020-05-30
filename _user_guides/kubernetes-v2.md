@@ -115,7 +115,7 @@ volumes:
       name: k8-v2-config-map-v000
 ```
 
-![deployment](/images/Image 2018-01-26 at 5.36.53 PM.png)
+![deployment](/images/Image-2018-01-26-at-5.36.53-PM.png)
 
 ### Executing The Pipeline
 

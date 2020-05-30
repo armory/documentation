@@ -75,13 +75,13 @@ target stage for this to work.  You can find the numeric IDs for your
 stages by Exporting your Jira Workflow to XML:
 tags:
 
-![Jira Workflow Export](/images/[d93b1dfc73914409c00446b1df79e6b0]_Image 2018-06-12 at 9.43.07 AM.png)
+![Jira Workflow Export](/images/[d93b1dfc73914409c00446b1df79e6b0]_Image-2018-06-12-at-9.43.07-AM.png)
 
 The workflow stage IDs are found in the `<global-actions>` section, in the
 `<step>` tags.  In this example, you can see that setting the stage ID to
 6 will transition the ticket to the "In Progress" workflow stage:
 
-![Issue ID Example](/images/[eda500982c996a99a735551b5a4e52a4]_Image 2018-06-12 at 9.50.32 AM.png)
+![Issue ID Example](/images/[eda500982c996a99a735551b5a4e52a4]_Image-2018-06-12-at-9.50.32-AM.png)
 
 These IDs will be different for every workflow.  Note that if the workflow
 disallows the transition from the current stage to the stage given, this

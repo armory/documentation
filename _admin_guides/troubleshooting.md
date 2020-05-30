@@ -14,7 +14,7 @@ If you deploy a configuration or a change that takes down Spinnaker it'll be imp
 
 1.  Look for an existing deployment with the `armoryspinnaker` prefix.  
 
-1.  Find the ASGs of Armory Spinnaker that were deployed.  Typically it should be `armoryspinnaker-ha-polling-v${VER}` where `${VER}` is something like `023`.  You should see 2 ASGS, one that is active instead and the older version should be disabled. ![armory spinnaker ASGs](/images/Image 2017-02-02 at 11.57.41 AM.png)
+1.  Find the ASGs of Armory Spinnaker that were deployed.  Typically it should be `armoryspinnaker-ha-polling-v${VER}` where `${VER}` is something like `023`.  You should see 2 ASGS, one that is active instead and the older version should be disabled. ![armory spinnaker ASGs](/images/Image-2017-02-02-at-11.57.41-AM.png)
 
 1. Edit the older ASG and remove any suspended processes that are listed
  ![remove suspended process](/images/admin-user-guide-1.png)
@@ -31,7 +31,7 @@ If you deploy a configuration or a change that takes down Spinnaker it'll be imp
 #### How can I debug Armory Spinnaker?
 
 You'll need to SSH into a box running Armory Spinnaker.  You can find an active node by going to clusters view and selecting a node.
-![selecting a node](/images/Screen Recording 2017-09-14 at 04.18 PM.gif)
+![selecting a node](/images/Screen-Recording-2017-09-14-at-04.18-PM.gif)
 
 Once you have SSH'ed into a box you'll need to find which sub-service is unhealthy:
 ```sh

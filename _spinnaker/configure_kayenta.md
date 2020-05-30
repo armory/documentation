@@ -117,7 +117,7 @@ spec:
 Before you can use Canary stages in your application's pipelines, you'll need
 to enable the Canary feature in the application's config:
 
-![image](/images/Image 2018-10-23 at 3.25.33 PM.png)
+![image](/images/Image-2018-10-23-at-3.25.33-PM.png)
 
 Make sure you remember to save the change.  We recommend you refresh the page
 in your browser after enabling the feature before continuing.
@@ -136,7 +136,7 @@ with `--show-all-configs-enabled false` when configuring with halyard, or settin
 
 Click `Add configuration` and you should see a mostly-blank form:
 
-![Canary Config Form](/images/Image 2018-04-18 at 12.56.54 PM.png)
+![Canary Config Form](/images/Image-2018-04-18-at-12.56.54-PM.png)
 
 *Configuration Name*:  Spaces are not allowed, only alphanumerics, hyphens and
 underscores.  This name will be displayed as an option in the Canary stage
@@ -174,7 +174,7 @@ Metric Store you selected earlier.  The DataDog dialog looks like:
 
 The Stackdriver dialog looks like:
 
-![Stackdriver Metric Dialog](/images/Image 2018-04-18 at 1.12.46 PM.png)
+![Stackdriver Metric Dialog](/images/Image-2018-04-18-at-1.12.46-PM.png)
 
 In all cases, the Name is free-form and used to label the results and graphs.
 
@@ -242,7 +242,7 @@ of whether or not the pipeline should continue.
 If everything is configured properly, you should be able to create a stage
 of Type `Canary Analysis`.  The stage form should look like this:
 
-![Blank Canary Config](/images/Image 2018-04-18 at 1.48.11 PM.png)
+![Blank Canary Config](/images/Image-2018-04-18-at-1.48.11-PM.png)
 
 *Analysis Type*:  "Real Time" (default) or "Retrospective".  If you select
 Retrospective, you'll see two additional fields appear, where you will set
@@ -331,7 +331,7 @@ Stackdriver metrics.
 Here's a simple example of using Kayenta to automate canary analysis before
 promoting a build to full production status.
 
-![Pipeline Overview](/images/Image 2018-09-24 at 8.51.45 AM.png)
+![Pipeline Overview](/images/Image-2018-09-24-at-8.51.45-AM.png)
 
 ### Find the Baseline Version
 
@@ -341,7 +341,7 @@ pick up.  Our first real stage is to figure out what's currently running
 in our production Deployment (`Get Baseline`).  For this, we use a
 `Find Artifacts From Resource (Manifest)` stage:
 
-![Get Baseline](/images/Image 2018-09-24 at 8.58.19 AM.png)
+![Get Baseline](/images/Image-2018-09-24-at-8.58.19-AM.png)
 
 ### Deploy Baseline Manifest
 
@@ -427,14 +427,14 @@ the Location fields aren't used, so we've left them blank.
 We select our metrics account (Datadog) and our Storage account, and set the
 Scope Name to `default`.
 
-![Canary Analysis](/images/Image 2018-09-24 at 9.08.25 AM.png)
+![Canary Analysis](/images/Image-2018-09-24-at-9.08.25-AM.png)
 
 One more important thing to set on this stage is the `Execution Option`;
 we don't want to stop the pipeline if the canary fails, or we won't have a
 chance to clean up the baseline and canary deployments.  So we choose to
 `ignore the failure`:
 
-![ignore the failure](/images/Image 2018-09-24 at 9.14.09 AM.png)
+![ignore the failure](/images/Image-2018-09-24-at-9.14.09-AM.png)
 
 When the analysis stage ends, we want to do few things, all at the same time.
 We want to clean up the baseline and canary stages, regardless of the outcome,
@@ -449,7 +449,7 @@ just identify the deployment name we used earlier.  We run one stage for
 Baseline and one for Canary, in parallel (just showing the stage for the
 baseline -- for the canary, we just change the name):
 
-![Delete Deployments](/images/Image 2018-09-24 at 9.20.55 AM.png)
+![Delete Deployments](/images/Image-2018-09-24-at-9.20.55-AM.png)
 
 ### Deploy to Production
 
@@ -485,7 +485,7 @@ to expectations, so we only do this stage conditionally.  Under `Execution
 Options` we want to make this `Conditional on Expression` and then we check
 the status of our Canary Analysis stage:
 
-![Conditional on Expression](/images/Image 2018-09-24 at 9.26.17 AM.png)
+![Conditional on Expression](/images/Image-2018-09-24-at-9.26.17-AM.png)
 
 ### Final Grade
 
@@ -495,7 +495,7 @@ Preconditions` to also look back and check to see if the canary was successful
 or not.  We add a precondition and select `Expression` and enter in the same
 condition as for our production deploy stage:
 
-![Add Precondition](/images/Image 2018-09-24 at 9.28.02 AM.png)
+![Add Precondition](/images/Image-2018-09-24-at-9.28.02-AM.png)
 
 This stage will fail if the condition isn't satisfied, and pass if it has.
 

@@ -28,7 +28,7 @@ You can set a logging profile by changing the variable per environment.  You can
 
 You can use any of the available logging drivers for Docker.  At the time of this writing below are the supported drivers from Docker:
 
-![supported docker drivers](/images/Image 2017-04-13 at 11.22.03 AM.png)
+![supported docker drivers](/images/Image-2017-04-13-at-11.22.03-AM.png)
 
 
 ## Example: Logging to Splunk

@@ -80,4 +80,4 @@ hal deploy apply --service-names clouddriver
 
 Now you can add ECR as a docker registry in the configuration stage
 
-![](/images/Image 2018-12-18 at 2.02.02 PM.png)
+![](/images/Image-2018-12-18-at-2.02.02-PM.png)

@@ -45,7 +45,7 @@ a new pipeline`.
 We want this initial pipeline to be responsible for our artifact's deployment
 to *staging*. With this in mind, we have named it `Deploy to Staging`
 
-![Deploy to Staging](/images/Image 2018-10-23 at 2.03.33 PM.png)
+![Deploy to Staging](/images/Image-2018-10-23-at-2.03.33-PM.png)
 
 You should now configure the expected artifacts for your pipeline and specify
 how your pipeline should be triggered. In our example we have specified a
@@ -82,7 +82,7 @@ Now click, `Add stage` and select `Manual Judgement` as the *Stage Type*. In
 Additionally, you can provide additional instructions in the *Instructions*
 text-area. 
 
-![Manual Judgement](/images/Image 2018-10-23 at 1.47.21 PM.png)
+![Manual Judgement](/images/Image-2018-10-23-at-1.47.21-PM.png)
 
 Save your changes.
 
@@ -95,14 +95,14 @@ Click `Pipelines` and then click `+ Create` to create a new pipeline. We have
 named this one `Deploy to Production` and have made use of the `Copy From` 
 dropdown in order to copy our `Deploy to Staging` pipeline.
 
-![Copy Staging Pipeline](/images/Image 2018-10-23 at 1.48.19 PM.png)
+![Copy Staging Pipeline](/images/Image-2018-10-23-at-1.48.19-PM.png)
 
 You will want to delete the *Automated Trigger* copied from our `Deploy to 
 Staging` pipeline. In its place, create a new one of *Type* `Pipeline`. In 
 the *Pipeline* dropdown select `Staging Judgement`. Lastly, select
 `successful` for *Pipeline Status* and select `Trigger Enabled`
 
-![Automated Trigger](/images/Image 2018-10-23 at 1.50.56 PM.png)
+![Automated Trigger](/images/Image-2018-10-23-at-1.50.56-PM.png)
 
 Finally, add a new stage of type `Deploy (Manifest)`. The configuration for this 
 stage should mirror the configuration of the `Deploy (Manifest)` stage of

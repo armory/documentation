@@ -17,7 +17,7 @@ Pipelines are a combination of stages that enable some very sophisticated coordi
 
 Take this screenshot for example:
 
-![](/images/Image 2017-04-03 at 4.35.40 PM.png)
+![](/images/Image-2017-04-03-at-4.35.40-PM.png)
 
 There is a pipeline called 'Deploy' with two executions, both labeled 'Manual Start'. The top execution is marked as 'Succeeded' while the bottom is marked as 'Cancelled'. 
 
@@ -28,11 +28,11 @@ For more information on creating bake and deploy pipelines, checkout the [baking
 
 You can re-run an execution by pressing the 'Start Manual Execution'. 
 
-![](/images/Image 2017-04-03 at 4.51.41 PM.png)
+![](/images/Image-2017-04-03-at-4.51.41-PM.png)
 
 If your pipeline has a Jenkins' trigger, you can select which Jenkins' build number to use for running the pipeline. 
 
-![](/images/Image 2017-04-03 at 4.53.50 PM.png)
+![](/images/Image-2017-04-03-at-4.53.50-PM.png)
 
 The artifacts produced by the build you select will be used in the pipeline. If your pipeline bakes an image, a cached image will be used if available. To force a rebuild, make sure you specify such before pressing the 'Run' button.
 
@@ -43,7 +43,7 @@ Spinnaker supports several methods of notification. Notifications can be made wh
 
 To enable it, navigate to the configuration screen for your pipeline. Make sure you have the 'Configuration' stage selected. Scroll down to the 'Notifications' section.
 
-![](/images/Image 2017-04-03 at 4.31.37 PM.png)
+![](/images/Image-2017-04-03-at-4.31.37-PM.png)
 
  Press 'Add Notifications Preference'. For example's sake, I have selected to receive a notification via Slack in the `#engineering` channel whenever my pipeline fails.
 
@@ -56,23 +56,23 @@ Pipelines are represented as JSON behind the scenes. The JSON is interpreted and
 
 1. Click 'Configure' on your pipeline:
 
-![](/images/Image 2017-05-04 at 4.23.33 PM.png)
+![](/images/Image-2017-05-04-at-4.23.33-PM.png)
 
 2. Press the 'Pipeline Actions' button in the upper right to display a dropdown menu.
 
-![](/images/Image 2017-05-04 at 4.30.11 PM.png)
+![](/images/Image-2017-05-04-at-4.30.11-PM.png)
 
 There are two JSON related options on this dropdown menu:
 
 a. If you select 'Edit as JSON' then you should see something like:
 
-![](/images/Image 2017-05-04 at 4.32.03 PM.png)
+![](/images/Image-2017-05-04-at-4.32.03-PM.png)
 
 From this screen you can edit the JSON directly. **Remember to always save your changes**, so they will be used in the next execution of your pipeline.
 
 b. If you select 'Show Revision History' then you should see something like:
 
-![](/images/Image 2017-05-04 at 4.35.39 PM.png)
+![](/images/Image-2017-05-04-at-4.35.39-PM.png)
 
 You can select different revisions using the dropdown menu labeled 'Revision' in the top left. You can compare it to different versions using the 'compare to' dropdown menu in the upper right. 
 

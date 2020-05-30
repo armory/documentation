@@ -14,23 +14,23 @@ order: 15
 For certain components you’ll only want a single instance running on an ASG on “polling” mode. Namely Igor and Echo which need to run on a single instance so that multiple trigger events are not sent to Spinnaker and issuing multiple events for the same build.
 
 To set this up, edit your Armory Spinnaker deploy pipeline so it looks like this.
-![](/images/Image 2018-05-16 at 14.39.40.png)
+![](/images/Image-2018-05-16-at-14.39.40.png)
 
 > Note, the cloud_details set to `nonpolling` is required. On boot, Armory Spinnaker will use [/etc/default/server-env](https://kb.armory.io/aws/18-what-is-server-env/) to determine which group this instance belongs to.
 
 #### "Disable Poller" stage
 Armory includes a service (Lighthouse) that will wait for existing jobs to complete before shutting itself down.
 If Fiat is enabled, make sure that you have [configured a service account](https://docs.armory.io/install-guide/authz/#configure-a-service-account).
-![](/images/Image 2018-05-16 at 14.35.42.png)
+![](/images/Image-2018-05-16-at-14.35.42.png)
 
 #### "Deploy to Prod nonpolling"
 Setup your deploy stage to deploy a nonpolling cluster. You can scale this cluster up to as needed.
-![](/images/Image 2018-05-16 at 14.31.14.png)
+![](/images/Image-2018-05-16-at-14.31.14.png)
 
 
 #### "Deploy to Prod Polling"
 Deploy only **1 instance**.
-![](/images/Image 2018-05-16 at 14.37.01.png)
+![](/images/Image-2018-05-16-at-14.37.01.png)
 
 
 
