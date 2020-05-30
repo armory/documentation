@@ -6,13 +6,14 @@ import (
   "io/ioutil"
   "os"
   "path/filepath"
+  "regexp"
   "strings"
 )
 
 type Opts struct {
-  Directory string `short:"d" long:"directory" description:"The absolute path of the dir to scan, try '-d $PWD'" required:"true"`
-  ImageDir  string `short:"i" long:"image-dir" description:"The absolute path of where to put images, try '-i $PWD/images/'" required:"true"`
-  CheckOnly bool   `long:"check" description:"Exits non zero on images not hosted by Armory or stored in the repo" required:"false"`
+  Directory string   `short:"d" long:"directory" description:"The absolute path of the dir to scan, try '-d $PWD'" required:"true"`
+  ImageDir  string   `short:"i" long:"image-dir" description:"The absolute path of where to put images, try '-i $PWD/images/'" required:"true"`
+  Excludes  []string `short:"e" long:"exclude" description:"folder or regex to exclude when walking the 'directory'" required:"false"`
 }
 
 func main() {
@@ -37,7 +38,31 @@ func main() {
 }
 
 func replaceContents(err error, opts Opts, renamed []imageRename) error {
+  var excludedRegexes []*regexp.Regexp
+  for _, e := range opts.Excludes {
+    r, err := regexp.Compile(e)
+    if err != nil {
+      return err
+    }
+
+    excludedRegexes = append(excludedRegexes, r)
+  }
+
   err = filepath.Walk(opts.Directory, func(path string, info os.FileInfo, err error) error {
+    if info.IsDir() {
+      return nil
+    }
+
+    if filepath.Ext(path) != ".md" {
+      return nil
+    }
+
+    for _, e := range excludedRegexes {
+      if e.Match([]byte(path)) {
+        return nil
+      }
+    }
+
     fileContents, _ := ioutil.ReadFile(path)
     permissions, err := os.Stat(path)
     if err != nil {
@@ -49,6 +74,12 @@ func replaceContents(err error, opts Opts, renamed []imageRename) error {
       c = strings.ReplaceAll(c, r.OldFileName, r.NewFileName)
     }
 
+    if string(fileContents) == c {
+      log.Infof("skipping: %s", path)
+      return nil
+    }
+
+    log.Infof("rewriting: %s", path)
     err = ioutil.WriteFile(path, []byte(c), permissions.Mode())
     if err != nil {
       log.Error("cannot rename file")
@@ -94,12 +125,11 @@ func getImagePaths(err error, opts Opts) []string {
 func getNewImageNames(imgPaths []string) []imageRename {
   var renamed []imageRename
   for _, path := range imgPaths {
-    img := imageRename{}
-
-    parts := strings.Split(path, string(os.PathSeparator))
-    img.OldFileName = parts[len(parts)-1]
-    img.NewFileName = strings.ReplaceAll(img.OldFileName, " ", "-")
-    img.Folder = strings.ReplaceAll(path, string(os.PathSeparator)+img.OldFileName, "") // please don't do /path/path/name.png/name.png -_-
+    img := imageRename{
+      OldFileName: filepath.Base(path),
+      NewFileName: strings.ReplaceAll(filepath.Base(path), " ", "-"),
+      Folder:      filepath.Dir(path),
+    }
 
     renamed = append(renamed, img)
   }
