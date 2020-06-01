@@ -32,8 +32,8 @@ Breaking change: Kubernetes accounts with an unspecified providerVersion will no
 ## Known Issues
 There are currently no known issues with this release.
 
-
-
+### Upgrading from 2.18.x with MySQL used for Front50 will Rename Table plugin_artifacts
+As a part of upgrading from 2.18.x to 2.19.x the table **plugin_artifacts** is renamed to **plugin_info**.  Please be advised that attempting to downgrade from 2.19.x to 2.18.x will not revert naming of the table, and it will continue to be named as **plugin_info**, preventing access to the table.  
 
 ## Highlighted Updates
 ### Armory
