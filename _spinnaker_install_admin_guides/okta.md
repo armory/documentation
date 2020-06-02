@@ -104,8 +104,8 @@ keytool -genkey -v -keystore $KEYSTORE_PATH -alias saml -keyalg RSA -keysize 204
                 enabled: true
                 keyStore: encryptedFile:k8s!spin-secrets!k:saml.jks
                 keyStoreAliasName: saml
-                keyStorePassword: encrypted:k8s!spin-secrets!k:keystorePassword
-                metadataLocal: encryptedFile:k8s!spin-secrets!k:metadata.xml
+                keyStorePassword: encrypted:k8s!n:spin-secrets!k:keystorePassword
+                metadataLocal: encryptedFile:k8s!n:spin-secrets!k:metadata.xml
                 issuerId: io.armory.spinnaker.oktatest # The identity of the Spinnaker application registered with the SAML provider.
                 serviceAddress: https://<gate-URL>     # The address of the Gate server that will be accesible by the SAML identity provider. This should be the full URL, including port, e.g. https://gate.org.com:8084/. If deployed behind a load balancer, this would be the laod balancer's address.
     ```
