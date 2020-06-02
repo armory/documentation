@@ -27,14 +27,15 @@ The Kubernetes V1 provider will be removed in Spinnaker 1.21. Please see the [RF
 
 Breaking change: Kubernetes accounts with an unspecified providerVersion will now default to V2. Update your Halconfig to specify `providerVersion: v1` for any Kubernetes accounts you are currently using with the V1 provider.
 
-### Upgrading from 2.18.x with MySQL used for Front50 will Rename Table plugin_artifacts
-As a part of upgrading from 2.18.x to 2.19.x the table **plugin_artifacts** is renamed to **plugin_info**.  Please be advised that attempting to downgrade from 2.19.x to 2.18.x will not revert naming of the table, and it will continue to be named as **plugin_info**, preventing access to the table.  
-
 ## Known Issues
 
 ### Plugins
 
 There is a known issue with the Plugins framework in Armory Spinnaker 2.17.7. If you want to build or use plugins, do not use this version. Use Armory Spinnaker 2.17.8 or later.
+
+### Upgrading from 2.18.x with MySQL used for Front50 renames the plugin_artifacts table
+As a part of the upgrade from 2.18.x to 2.19.x, the table **plugin_artifacts** gets renamed to `plugin_info`. Downgrades from 2.19.x to 2.18.x do not revert the table name. The table remains named `plugin_info`, preventing access to the table.  
+
 
 ## Highlighted Updates
 
@@ -188,5 +189,3 @@ See the Open Source Spinnaker Release Notes for the versions included in this re
 * [Spinnaker's v1.19.5](https://www.spinnaker.io/community/releases/versions/1-19-5-changelog#individual-service-changes) 
 
 Armory Spinnaker 2.19.7 cherry-picks [spinnaker/fiat/pull/656](https://github.com/spinnaker/fiat/pull/656), which resolves an issue with Fiat and service accounts.
-
-

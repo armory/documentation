@@ -24,10 +24,10 @@ Armory Spinnaker 2.19.x requires Armory Halyard 1.8.3 or later.
 ### HTTP sessions for Gate
 This version includes an upgrade to the Spring Boot dependency. This requires you to flush all the Gate sessions for your Spinnaker deployment. For more information, see [Flushing Gate Sessions](https://kb.armory.io/admin/flush-gate-sessions/).
 
-### Upgrading from 2.18.x with MySQL used for Front50 will Rename Table plugin_artifacts
-As a part of upgrading from 2.18.x to 2.19.x the table **plugin_artifacts** is renamed to **plugin_info**.  Please be advised that attempting to downgrade from 2.19.x to 2.18.x will not revert naming of the table, and it will continue to be named as **plugin_info**, preventing access to the table.  
-
 ## Known Issues
+
+### Upgrading from 2.18.x with MySQL used for Front50 renames the plugin_artifacts table
+As a part of the upgrade from 2.18.x to 2.19.x, the table **plugin_artifacts** gets renamed to `plugin_info`. Downgrades from 2.19.x to 2.18.x do not revert the table name. The table remains named `plugin_info`, preventing access to the table.  
 
 ### Service Accounts using Fiat
 
