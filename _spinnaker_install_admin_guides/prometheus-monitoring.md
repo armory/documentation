@@ -3,27 +3,31 @@ layout: post
 title: Monitoring Spinnaker with Prometheus
 order: 920
 ---
-This article describes how to monitor Spinnaker using Prometheus.
+
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-Using a monitoring solution to confirm the health of Spinnaker is a best practice that Armory recommends for every production instance. This document describes how to setup a basic Prometheus and Grafana stack along with enabling monitoring sidecars for the Spinnaker microservices. These sidecar pods provide a metrics endpoint that can be read by
-Prometheus and graphed using Grafana. 
+## Overview
 
-This document assumes that you have Spinnaker deployed in the spinnaker-system namespace, and that Prometheus and Grafana are deployed in the monitoring namespace. It also 
-assumes that you have some familiarity with both Prometheus and Grafana. This document is a starting point for enabling metric collection. Additional Prometheus and Grafana
-configuration will be necessary to make them production-grade, and this configuration is not a part of this document. 
+Armory recommends using a monitoring solution to confirm the health of Spinnaker for every production instance. This document describes how to set up a basic [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/) stack along with enabling monitoring sidecars for the Spinnaker microservices. These sidecar pods provide a metrics endpoint that Prometheus reads and Grafana graphs. Additional Prometheus and Grafana configuration is necessary to make them production-grade, and this configuration is not a part of this document.
 
-## Use kube-prometheus to Create a Monitoring Stack
+## Prerequisites
 
-If you already have a monitoring stack, you can skip this section.
+* You are familiar with Prometheus and Grafana
+* Spinnaker is deployed in the spinnaker-system namespace
+* Prometheus and Grafana are deployed in the monitoring namespace
 
-A quick and easy way to standup a cluster monitoring solution is to use kube-prometheus. This project creates a monitoring stack that includes cluster monitoring with Prometheus and dashboards with Grafana. 
 
-To create the stack, follow the quick start instructions beginning with the Compatibility Matrix from the [kube-prometheus](https://github.com/coreos/kube-prometheus#kubernetes-compatibility-matrix) project. 
+## Use `kube-prometheus` to create a monitoring stack
 
-When you have completed the instructions, you will have pods running in the `monitoring` namespace.
+You can skip this section if you already have a monitoring stack.
+
+A quick and easy way to configure a cluster monitoring solution is to use `kube-prometheus`. This project creates a monitoring stack that includes cluster monitoring with Prometheus and dashboards with Grafana.
+
+To create the stack, follow the [kube-prometheus quick start](https://github.com/coreos/kube-prometheus#kubernetes-compatibility-matrix) instructions beginning with the _Compatibility Matrix_ section.
+
+After you complete the instructions, you have pods running in the `monitoring` namespace.
 
 ```bash
 % kubectl get pods --namespace monitoring
@@ -42,17 +46,17 @@ prometheus-operator-6685db5c6-qfpbj   1/1     Running   0          106s
 
 ```
 
-Access the Prometheus web interface by using a `kubectl port-forward`. NOTE: Eventually you will want to create an ingress service if you want to expose this interface for others to use. Before doing so, enable security controls following Prometheus best practices.
+Access the Prometheus web interface by using the `kubectl port-forward` command. NOTE: if you want to expose this interface for others to use, create an ingress service. Before doing that, enable security controls following Prometheus best practices.
 
 ```bash
 % kubectl --namespace monitoring port-forward svc/prometheus-k8s 9090 &
 ```
 
-Then navigate to: http://localhost:9090/targets
+Navigate to `http://localhost:9090/targets`.
 
-## Configure Monitoring in Spinnaker
+## Configure monitoring in Spinnaker
 
-To enable monitoring of Spinnaker by Prometheus, enable the following configuration.
+To enable monitoring of Spinnaker by Prometheus, enable the `metric-stores` configuration.
 
 * **Halyard**
 
@@ -85,15 +89,17 @@ To enable monitoring of Spinnaker by Prometheus, enable the following configurat
               add_source_metalabels: true          
   ```
 
-Wait for all of the Spinnaker pods to be ready before proceeding to the next step. You can check the status by running a `kubectl get pods` command.  Because you are adding a sidecar to each pod, you may need to ensure you have enough capacity in your kubernetes cluster to be able to support the additional resource requirements. 
+Wait for all of the Spinnaker pods to be ready before proceeding to the next step. You can check the status by running the `kubectl get pods` command.  Because you are adding a sidecar to each pod, you may need to ensure you have enough capacity in your Kubernetes cluster to be able to support the additional resource requirements.
 
-##  Configure Prometheus to Monitor Spinnaker
+##  Configure Prometheus to monitor Spinnaker
 
-There are two steps to configure Prometheus to monitor Spinnaker.
+There are two steps to configure Prometheus to monitor Spinnaker:
+
 - Add permissions for Prometheus to talk to the Spinnaker namespace
 - Configure Prometheus to find the Spinnaker endpoints
 
 Add permissions for Prometheus by applying the following configuration to your cluster:
+
 ```bash
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -153,35 +159,34 @@ spec:
     path: "/prometheus_metrics"
 ```
 
-## Check for Spinnaker Targets in Prometheus
+## Check for Spinnaker targets in Prometheus
 
-After applying these changes, you should be able to see spinnaker targets in Prometheus. It may take 3 to 5 minutes for this to show up depending on where Prometheus is in its config polling interval.
+After applying these changes, you should be able to see  Spinnaker targets in Prometheus. It may take 3 to 5 minutes for this to show up depending on where Prometheus is in its config polling interval.
 
 ![Prometheus Targets](/images/prometheus.png)
 
 ## Access Grafana
 
-Similar to what we did for Prometheus, port forward into Grafana and access the web interface.
+Configure port forwarding for Grafana:
 
 ```bash
 $ kubectl --namespace monitoring port-forward svc/grafana 3000
 ```
 
-Access the web interface via http://localhost:3000 and use the default grafana user:password of `admin:admin`.
+Access the Grafana web interface via http://localhost:3000 and use the default grafana user:password of `admin:admin`.
 
-## Add Armory Dashboards to Grafana
+## Add Armory dashboards to Grafana
 
-As a starting point for metrics to graph for monitoring, Armory provides a monitoring json file you can load into Grafana. If you are a Grafana expert, you can skip this step.
+Armory provides a JSON file that you can import into Grafana as a starting point for metrics to graph for monitoring. You can skip this step if you are a Grafana expert.
 
 - Git clone this repo to your local workstation: https://github.com/armory-io/spin-monitoring-dashboards.git
 - Access the Grafana web interface (as shown above)
 - Navigate to Dashboards then Manage
-- Click on the import button
-- Upload the spin-monitoring-dashboards/grafana/spinnaker-main.json file from the directory you cloned above
+- Click on the _Import_ button
+- Upload the `spin-monitoring-dashboards/grafana/spinnaker-main.json` file from the directory you cloned above
 
-After uploading the dashboards, you can view them by clicking on Dashboards, Manage, and then Spinnaker-main to explore graphs for each service.
+After importing the dashboards, you explore graphs for each service by clicking on _Dashboards_, _Manage_, and then _Spinnaker-main_.
 
 ![Grafana Dashboard](/images/grafana.png)
 
-Additional example dashboards can be found at this location: https://github.com/spinnaker/spinnaker-monitoring
-
+Additional example dashboards are in the [spinnaker-monitoring](https://github.com/spinnaker/spinnaker-monitoring) repo.
