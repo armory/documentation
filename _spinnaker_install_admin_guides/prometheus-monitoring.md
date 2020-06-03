@@ -12,11 +12,11 @@ order: 920
 
 Armory recommends using a monitoring solution to confirm the health of Spinnaker for every production instance. This document describes how to set up a basic [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/) stack along with enabling monitoring sidecars for the Spinnaker microservices. These sidecar pods provide a metrics endpoint that Prometheus reads and Grafana graphs. Additional Prometheus and Grafana configuration is necessary to make them production-grade, and this configuration is not a part of this document.
 
-## Prerequisites
+## Assumptions
 
 * You are familiar with Prometheus and Grafana
 * Spinnaker is deployed in the spinnaker-system namespace
-* Prometheus and Grafana are deployed in the monitoring namespace
+* Prometheus and Grafana are (or will be) deployed in the monitoring namespace
 
 
 ## Use `kube-prometheus` to create a monitoring stack
