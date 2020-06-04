@@ -143,6 +143,8 @@ keytool -genkey -v -keystore $KEYSTORE_PATH -alias saml -keyalg RSA -keysize 204
         --service-address-url $SERVICE_ADDR_URL
 
     hal config security authn saml enable
+
+    hal deploy apply
     ```
 
 
