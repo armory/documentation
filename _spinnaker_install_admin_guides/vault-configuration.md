@@ -127,11 +127,11 @@ $ vault write auth/kubernetes/role/spinnaker \
 
 It is time verify that the Kubernetes auth method has been properly configured.
 
-**5. Deploy Armory's [debug container](https://github.com/armory/docker-debugging-tools/blob/master/Dockerfile) into your cluster -- this container has the Vault cli pre-installed.**
+**5. Deploy Armory's [debug container](https://github.com/armory/troubleshooting-toolbox/blob/master/docker-debugging-tools/Dockerfile) into your cluster -- this container has the Vault cli pre-installed.**
 
 **Note: This should be deployed into the same namespace as your Spinnaker install**
 
-```$ kubectl apply -f  https://raw.githubusercontent.com/armory/docker-debugging-tools/master/deployment.yml```
+```$ kubectl apply -f https://raw.githubusercontent.com/armory/troubleshooting-toolbox/master/docker-debugging-tools/deployment.yml```
 
 **6. `exec` into the pod**
 
