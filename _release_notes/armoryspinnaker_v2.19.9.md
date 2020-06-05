@@ -43,7 +43,7 @@ This release includes several fixes to CVEs.
 
 ###  Spinnaker Community Contributions
 
-There have also been numerous enhancements, fixes and features across all of Spinnaker's other services. See highlights and detailed changes here:  
+There have also been numerous enhancements, fixes and features across all of Spinnaker's other services from the open source community. See highlights and detailed changes here:  
 
 * [Spinnaker's v1.19.11](https://www.spinnaker.io/community/releases/versions/1-19-11-changelog)  
 
