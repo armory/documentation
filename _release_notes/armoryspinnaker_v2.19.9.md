@@ -42,11 +42,32 @@ This release includes several fixes to CVEs in addition to bug fixes and general
 
 Armory has also made enhancements to the following feature:
 
-**Pipelines as code**
+### Pipelines as code
 
 - Messages surfaced by Pipelines as code (through the Dinghy service) to GitHub now provide more information about warnings or failures in pipeline rendering.
 - Pipelines as code now supports validating stage references in a pipeline. If you attempt to save a pipeline that references a stage that does not exist, you get a warning.
 
+### Security update
+
+This releases focuses on making Spinnaker more secure. Although several CVEs are resolved, the following still exist:
+
+#### Clouddriver
+
+The following three CVEs still exist in Clouddriver:
+
+- CVE-2020-1747
+- CVE-2017-18342
+- CVE-2016-10745
+
+All three are embedded dependencies in the Google Cloud SDK. A version of the Google Cloud SDK addressing these CVEs has not been released. The risk to Clouddriver users is low: all three CVEs deal with untrusted input, which Clouddriver does not provide to the Google Cloud SDK. Additionally, users deploying to other cloud providers are not at risk for this vulernability.
+
+#### Igor
+
+The following CVE still exists in Igor:
+
+- CVE-2017-1000190
+
+Igor depends on SimpleXML as a transitive dependency. The Travis and Jenkins modules use for annotations in their models. Because Igor uses the Jackson library to parse XML directly, the service is not at risk for this vulnerability.
 
 ###  Spinnaker Community Contributions
 
@@ -54,7 +75,6 @@ There have also been numerous enhancements, fixes and features across all of Spi
 
 * [Spinnaker's v1.19.11](https://www.spinnaker.io/community/releases/versions/1-19-11-changelog)  
 
-<br><br><br>
 ## Detailed Updates
 
 ### Bill of Materials
