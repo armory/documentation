@@ -43,9 +43,9 @@ This release includes several fixes to CVEs.
 
 ###  Spinnaker Community Contributions
 
-There have also been numerous enhancements, fixes and features across all of Spinnaker's other services. See their changes here:  
+There have also been numerous enhancements, fixes and features across all of Spinnaker's other services. See highlights and detailed changes here:  
 
-* [Spinnaker's v1.19.11](https://www.spinnaker.io/community/releases/versions/1-19-11-changelog#spinnaker-release-1-19-11)  
+* [Spinnaker's v1.19.11](https://www.spinnaker.io/community/releases/versions/1-19-11-changelog)  
 
 <br><br><br>
 ## Detailed Updates
@@ -212,44 +212,3 @@ artifactSources:
  - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#53) (#54)
  - chore(cve): fix CVE-2019-17495 CVE (#49)
  - chore(build): update to aquasec scan (#50) (#51)
-
-
-
-###  Spinnaker Community Contributions
-<!-- UNCOMMENT ME:
-See Spinnaker's release notes that are included in this release:  
-[Spinnaker's v1.8.0](https://www.spinnaker.io/community/releases/versions/1-8-0-changelog#individual-service-changes)  
-[Spinnaker's v1.8.1](https://www.spinnaker.io/community/releases/versions/1-8-1-changelog#individual-service-changes)  
-
-<!-- UNCOMMENT ME: Changes listed below is are extra changes that have not yet made it to another Spinnaer release version: -->
-<!-- You may need to pick out some extra contributions from OSS -->
-
-#### Clouddriver  - 2.19.20
-No Changes
-
-#### Deck  - 2.19.12
-No Changes
-
-#### Echo  - 2.19.14
-No Changes
-
-#### Fiat  - 2.19.13
-No Changes
-
-#### Front50  - 2.19.12
-No Changes
-
-#### Gate  - 2.19.11
-No Changes
-
-#### Igor  - 2.19.12
-No Changes
-
-#### Kayenta  - 2.19.13
-No Changes
-
-#### Orca  - 2.19.14
-No Changes
-
-#### Rosco  - 2.19.13
-No Changes
