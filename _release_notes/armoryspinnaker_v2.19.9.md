@@ -5,7 +5,7 @@ order: -21920200605174937
 hidden: false
 ---
 
-# 06/05/20 Release Notes
+## 06/05/20 Release Notes
 {:.no_toc}
 
 > Note: If you're experiencing production issues after upgrading Spinnaker, rollback to a [previous working version](http://docs.armory.io/admin-guides/troubleshooting/#i-upgraded-spinnaker-and-it-is-no-longer-responding-how-do-i-rollback) and please report issues to [http://go.armory.io/support](http://go.armory.io/support).
@@ -13,48 +13,39 @@ hidden: false
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
+## Breaking Changes
+
+### Required Halyard version
+
+Armory Spinnaker 2.19.x requires Armory Halyard 1.8.3 or later.
+
+### HTTP sessions for Gate
+Armory Spinnaker 2.19.x includes an upgrade to the Spring Boot dependency. This requires you to flush all the Gate sessions for your Spinnaker deployment. For more information, see [Flushing Gate Sessions](https://kb.armory.io/admin/flush-gate-sessions/).
+
+### Scheduled Removal of Kubernetes V1 Provider
+The Kubernetes V1 provider will be removed in Spinnaker 1.21. Please see the [RFC](https://github.com/spinnaker/governance/blob/master/rfc/eol_kubernetes_v1.md) for more details.
+
+Breaking change: Kubernetes accounts with an unspecified providerVersion will now default to V2. Update your Halconfig to specify `providerVersion: v1` for any Kubernetes accounts you are currently using with the V1 provider.
 
 ## Known Issues
-There are currently no known issues with this release.
 
-<!--- Example of a problem
-Igor added ..... which does.....
+### Upgrading from 2.18.x with MySQL used for Front50 renames the plugin_artifacts table
+As a part of the upgrade from 2.18.x to 2.19.x, the table **plugin_artifacts** gets renamed to `plugin_info`. Downgrades from 2.19.x to 2.18.x do not revert the table name. The table remains named `plugin_info`, preventing access to the table.  
 
-**Symptoms:**
-**Fix:**
--->
-
-
+This issue only occurs if you upgrade to 2.19.x and then downgrade.
 
 ## Highlighted Updates
-### Armory
-<!--- A quick summary of what's changed with Armory -->
 
+### Armory
+
+This release includes several fixes to CVEs.
 
 
 ###  Spinnaker Community Contributions
-REMOVE ME: link to the spninaker release: https://www.spinnaker.io/community/releases/versions
-REMOVE ME: maybe copy their notable changes here
 
-<!--- Example message
 There have also been numerous enhancements, fixes and features across all of Spinnaker's other services. See their changes here:  
-[Spinnaker's v1.7.0](https://www.spinnaker.io/community/releases/versions/1-7-0-changelog)  
-[Spinnaker's v1.7.1](https://www.spinnaker.io/community/releases/versions/1-7-1-changelog)  
--->
 
-
-#### Igor
-REMOVE ME: FOR EACH OF SPINNAKER'S SERVICES, PICK OUT SOME NOTIBLE CHANGES
-
-<!--- An example of a problem
-Igor added ..... which does.....
-
-**Symptoms:**
-**Fix:**
--->
-
-
-
+* [Spinnaker's v1.19.11](https://www.spinnaker.io/community/releases/versions/1-19-11-changelog#spinnaker-release-1-19-11)  
 
 <br><br><br>
 ## Detailed Updates
