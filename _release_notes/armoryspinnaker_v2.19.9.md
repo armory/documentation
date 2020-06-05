@@ -121,9 +121,9 @@ services:
     commit: 19860f83
     version: 2.19.13
   monitoring-daemon:
-    version: 0.16.1-7d506f0-rc1
+    version: 2.19.0
   monitoring-third-party:
-    version: 0.16.1-7d506f0-rc1
+    version: 2.19.0
 dependencies:
   redis:
     version: 2:2.8.4-2
