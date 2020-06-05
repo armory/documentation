@@ -140,7 +140,6 @@ artifactSources:
  - Added git commit status and bug fix for app creation (#223) (#224)
  - Added support for local_module, validation for requisitestageref and fixed a bug regarding app creation throwing an error message (#221) (#222)
  - feat(validation): refIds and stagerefIds fields for stages are validated (#218) (#219)
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#214)
  - fix(security): Fix for CVE-2019-18276 (#211)
  - chore(build): update build w/ aquasec scan (#212)
  - fix(dinghy) fix conditionals and rawdata (#210)
@@ -150,19 +149,15 @@ artifactSources:
  - chore(actions): update github workflow (#167) (#168)
  - fix(docker): remove pip3 from image for cve (#163) (#164)
  - build(security): apk del gnupg after installing tf versions; fixes cv… (#161) (#162)
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (bp #156) (#157)
  - chore(build): update to use aquasec scan (#154) (#155)
 
 #### Armory Clouddriver  - 2.19.8...2.19.20
  - chore(vulnerabilities): resolve CVEs and other security issues (#129) (#138)
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#136) (#137)
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#130) (#135)
  - feat(container): add docker hub publish on successful scan (#132) (#133)
  - fix(opa): fix NPE when no upstream validator found (#127) (#128)
  - fix(opa): fix opa bean conflict (#125) (#126)
  - chore(build): add missing task dockerPush (#118) (#119)
  - chore(build): update build add aquasec scan (#116) (#117)
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#111) (#115)
  - chore(cve): workaround for CVE-2019-17495 (#109) (#110)
  - chore(cve): Fully remove anthoscli, CVE-2019-18658 (#107) (#108)
  - chore(cve): Upgrade to AWS 1.18.13 - resolves CVE-2020-1747 (bp #105) (#106)
@@ -172,19 +167,13 @@ artifactSources:
  - chore(build): remove Xray scan (#601) (#602)
  - fix(terraform): fix stage version selector (bp #599) (#600)
  - chore(build): update build add aquasec scan (#595) (#598)
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#597)
 
 #### Armory Echo  - 2.19.8...2.19.14
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#162) (#163)
  - chore(actions): update github workflow (#160) (#161)
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#157) (#159)
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#155) (#156)
  - feat(aquasec): Trying aquasec scanner (#153) (#154)
  - fix(plugins): add plugins dir (bp #151) (#152)
 
 #### Armory Fiat  - 2.19.6...2.19.13
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#61) (#63)
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#56) (#60)
  - chore(actions): update github workflow (#58) (#59)
  - chore(build): add missing task dockerPush (#54) (#55)
  - chore(build): update build add aquasec scan (#50) (#53)
@@ -192,50 +181,32 @@ artifactSources:
  - chore(cve): fix CVE-2019-17495 CVE (#48) (#51)
 
 #### Armory Front50  - 2.19.6...2.19.12
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (bp #97) (#98)
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#94) (#95)
  - fix(opa): fix conflicting beans (#90) (#91)
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#87) (#88)
  - chore(cve): fix CVE-2019-17495 CVE (bp #83) (#84)
  - chore(build): update build w/ aquasec scan (#85) (#86)
 
 #### Armory Gate  - 2.19.5...2.19.11
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#119) (#120)
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#116) (#118)
  - fix(cve): exclude converter-simplexml lib due to CVE-2017-1000190. (#114) (#115)
  - chore(build): update build add aquasec scan (#110) (#113)
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#111) (#112)
  - chore(cve): CVE fixes (#108) (#109)
 
 #### Armory Igor  - 2.19.6...2.19.12
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#69) (#70)
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#64) (#66)
  - chore(build): update github workflow (#67) (#68)
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#62) (#63)
  - chore(build): update to use aquasec scan (#60) (#61)
 
 #### Armory Kayenta  - 2.19.5...2.19.13
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#81) (#82)
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#76) (#80)
  - chore(build): update github workflow (#78) (#79)
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#74) (#75)
  - chore(build): update to use aquasec scan (#72) (#73)
  - fix(dependencies): tweak deps so that the right orca and kork are used and port oss integration tests so that dep issues pop up in CI (#70) (#71)
  - fix(dependencies): Exclude the dependencies that I manaully determined that Kayenta defines itself from the armory-commons bom platform so that Kayenta has the version or orca and kork that it expects (#66) (#69)
  - chore(cve): fix CVE-2019-17495 CVE (#67) (#68)
 
 #### Armory Orca  - 2.19.9...2.19.14
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#106) (#107)
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#103) (#105)
  - chore(aquasec): update build to scan using aquasec (#100) (#101)
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#97) (#98)
  - feat(terraformer): pass selected profile to backend (#93) (#96)
 
 #### Armory Rosco  - 2.19.6...2.19.13
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (bp #62) (#63)
  - chore(build): update github workflow (#60) (#61)
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#57) (#59)
  - chore(cve): fix for CVE-2017-18640 (#55) (#56)
- - fix(spinnakerBump): AutoBump Spinnaker Versions/ArmoryCommons Versions (#53) (#54)
  - chore(cve): fix CVE-2019-17495 CVE (#49)
  - chore(build): update to aquasec scan (#50) (#51)
