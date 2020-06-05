@@ -38,7 +38,14 @@ This issue only occurs if you upgrade to 2.19.x and then downgrade.
 
 ### Armory
 
-This release includes several fixes to CVEs.
+This release includes several fixes to CVEs in addition to bug fixes and general improvements. 
+
+Armory has also made enhancements to the following feature:
+
+**Pipelines as code**
+
+- Messages surfaced by Pipelines as code (through the Dinghy service) to GitHub now provide more information about warnings or failures in pipeline rendering.
+- Pipelines as code now supports validating stage references in a pipeline. If you attempt to save a pipeline that references a stage that does not exist, you get a warning.
 
 
 ###  Spinnaker Community Contributions
