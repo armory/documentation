@@ -7,19 +7,19 @@ redirect_from:
 published: true
 ---
 
+**_This document is intended for users who have purchased the Armory AWS Container Marketplace offering._**
+
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-# Overview
+## Overview
 
-**_This is a placeholder document, and will be updated once the Armory Spinnaker AWS Container Marketplace offering has been published._**
+**_This is a placeholder document and will be updated once the Armory Spinnaker AWS Container Marketplace offering has been published._**
 
 Spinnaker Operator is a Kubernetes Operator that makes it easier to install, deploy, and upgrade Armory Spinnaker.
 
 The AWS Container Marketplace offering for Spinnaker Operator will install the Armory Spinnaker Operator in an EKS cluster.
-
-**_This document is intended only for users of the Armory AWS Container Marketplace offering that have purchased the offering._**
 
 ## Prerequisites
 
@@ -45,4 +45,3 @@ In addition, Spinnaker will need the following permissions, configured via IAM r
 1. Install the Armory Spinnaker Operator
 1. Create a SpinnakerService Custom Resource
 1. Expose your Spinnaker instance
-

@@ -6,7 +6,7 @@ order: 2
 
 The AWS QuickStart walks you through configuring your Spinnaker instance hosted on AWS to deploy to AWS.
 
-**This guide assumes that Spinnaker was installed with Halyard, not Operator**
+**This guide assumes that Spinnaker is installed with Halyard, not Operator.**
 
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
