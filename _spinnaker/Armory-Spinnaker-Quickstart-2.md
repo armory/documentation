@@ -10,6 +10,8 @@ order: 3
 
 Need help setting this up? - For a guided tutorial, see the **Video Walkthrough** at the bottom of this page.
 
+**This guide assumes that Spinnaker is installed with Halyard, not Operator.**
+
 ## Prerequisites
 Before you start, ensure that have completed the following requirements:
 * Finish [AWS QuickStart Step 1](/spinnaker/Armory-Spinnaker-Quickstart-1).
