@@ -1,6 +1,6 @@
 ---
 layout: post
-# title: Installation from AWS Container Marketplace
+title: Installing from the AWS Container Marketplace
 order: 99
 redirect_from:
   - /spinnaker/aws_container_marketplace/
