@@ -19,6 +19,8 @@ Spinnaker Operator is a Kubernetes Operator that makes it easier to install, dep
 
 The AWS Container Marketplace offering for Spinnaker Operator will install the Armory Spinnaker Operator in an EKS cluster.
 
+Spinnaker can be installed in any namespace in your EKS cluster; this document assumes that Spinnaker will be installed in the `spinnaker` namespace.
+
 **_This document is intended only for users of the Armory AWS Container Marketplace offering that have purchased the offering._**
 
 ## Prerequisites
