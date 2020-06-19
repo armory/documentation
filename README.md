@@ -1,5 +1,7 @@
 # documentation
 
+This repo is archived. Use https://github.com/armory/docs/.
+
 Technical documentation for Armory Spinnaker.
 
 ## Development
@@ -69,4 +71,3 @@ Spinnaker" to the section title of your choice, and `site.spinnaker` to
           </ul>
         </li>
 ```
-
