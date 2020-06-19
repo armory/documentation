@@ -459,5 +459,5 @@ Now that Spinnaker is running, here are potential next steps:
 
 * Configuring certificates to secure our cluster (see [this section](#configuring-tls-certificates) for notes on this)
 * Configuring authentication/authorization (see the [Open Source Spinnaker documentation](https://www.spinnaker.io/setup/security/))
-* Adding external Kubernetes accounts to deploy applications to (see [this KB article](https://kb.armory.io/installation/spinnaker-add-kubernetes/))
+* Adding external Kubernetes accounts to deploy applications to (see [Creating and Adding a Kubernetes Account to Spinnaker (Deployment Target)](/spinnaker-install-admin-guides/add-kubernetes-account/))
 * Adding AWS accounts to deploy applications to (see the [Open Source Spinnaker documentation](https://www.spinnaker.io/setup/install/providers/aws/))
