@@ -13,7 +13,7 @@ redirect_from:
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
 
-> You can also find [Armory's releases notes here.](https://docs.armory.io/release-notes/).
+> You can also find [Armory's releases notes here](https://docs.armory.io/release-notes/).
 
 ## Armory Halyard
 Armory Halyard is an extended version of Halyard that deploys Armory features. You can find the base OSS version:

@@ -42,18 +42,18 @@ spec:
             enabled: true
             authMethod: KUBERNETES                      # Method used to authenticate with the Vault endpoint. Must be either KUBERNETES for Kubernetes service account auth or TOKEN for Vault token auth. The TOKEN method will require a VAULT_TOKEN environment variable set for Operator and the services.  
             url: <Vault server URL>:<port, if required> # URL of the Vault endpoint from Spinnaker services.
-            role: <k8s role with access to Vault>       # (Applies to KUBERNETES authentication method) Name of the role against which the login is being attempted.
+            role: <Vault role>       # (Applies to KUBERNETES authentication method) Name of the role against which the login is being attempted.
               # path: <k8s cluster path>                  # (Optional; default: kubernetes) Applies to KUBERNETES authentication method) Path of the kubernetes authentication backend mount. Default is "kubernetes"
 ```
 
 **Halyard**
 
-```
+```bash
 hal armory secrets vault enable
 hal armory secrets vault edit \
     --auth-method KUBERNETES \
     --url <Vault server URL>:<port, if required> \
-    --role <k8s role with access to Vault> \
+    --role <Role in Vault> \
     --path <k8s cluster path> (*optional*, default is 'kubernetes')
 ```
 
@@ -102,7 +102,7 @@ secrets:
     enabled: true
     url: <Vault server URL>
     authMethod: KUBERNETES
-    role: <k8s role>
+    role: <Vault role>
     path: <k8s cluster path>
 ```
 
@@ -152,7 +152,7 @@ secrets:
     enabled: true
     url: <Vault server URL>
     authMethod: KUBERNETES
-    role: <k8s role>
+    role: <Vault role>
     path: <k8s cluster path>
 ```
 Restart the pod so that Halyard restarts with your new config.

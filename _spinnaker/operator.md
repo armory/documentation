@@ -4,8 +4,6 @@ title: Spinnaker Operator
 order: 11
 ---
 
-Note that Spinnaker Operator is currently in [Beta](https://kb.armory.io/releases/early-release-beta-GA/). The feature is working and installable but is not meant for production use.
-
 {:.no_toc}
 * This is a placeholder for an unordered list that will be replaced with ToC. To exclude a header, add {:.no_toc} after it.
 {:toc}
