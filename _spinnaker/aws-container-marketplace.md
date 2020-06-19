@@ -42,7 +42,7 @@ This document covers the following high-level steps:
 
 ### Creating and configuring the necessary AWS IAM roles for your Kubernetes cluster
 
-AWS IAM permissions will be granted to Spinnaker via the use of AWS's IAM roles for Kubernetes Service Accounts (this feature must be enabled at a cluster level).  You will create three IAM roles:
+AWS IAM permissions are granted to Spinnaker via the use of AWS's IAM roles for Kubernetes Service Accounts. This feature must be enabled at a cluster level.  You need to create three IAM roles:
 * An IAM role to be used by Operator (`spinnaker-operator` ServiceAccount in `spinnaker-operator` Namespace) that will have these permissions:
     * `aws-marketplace:RegisterUsage`
     * `s3:*` on your AWS Bucket
@@ -445,18 +445,17 @@ kubectl apply -f manifests/spinnaker/SpinnakerService.yaml
 
 ### Configuring TLS certificates
 
-Configuring TLS certificates for ingresses is often very environment-specific. In general, you want to do the following:
+Configuring TLS certificates for ingresses is environment-specific. In general, you want to do the following:
 
 * Add certificate(s) so that our ingress controller can use them
 * Configure the ingress(es) so that NGINX (or the load balancer in front of NGINX, or your alternative ingress controller) terminates TLS using the certificate(s)
 * Update Spinnaker to be aware of the new TLS endpoints, by replacing `http` by `https` to override the base URLs in the previous section.
 
-## Next Steps
+## Next steps
 
 Now that Spinnaker is running, here are potential next steps:
 
-* Configuration of certificates to secure our cluster (see [this section](#configuring-tls-certificates) for notes on this)
-* Configuration of Authentication/Authorization (see the [Open Source Spinnaker documentation](https://www.spinnaker.io/setup/security/))
-* Add external Kubernetes accounts to deploy applications to (see [this KB article](https://kb.armory.io/installation/spinnaker-add-kubernetes/))
-* Add AWS accounts to deploy applications to (see the [Open Source Spinnaker documentation](https://www.spinnaker.io/setup/install/providers/aws/))
-
+* Configuring certificates to secure our cluster (see [this section](#configuring-tls-certificates) for notes on this)
+* Configuring authentication/authorization (see the [Open Source Spinnaker documentation](https://www.spinnaker.io/setup/security/))
+* Adding external Kubernetes accounts to deploy applications to (see [this KB article](https://kb.armory.io/installation/spinnaker-add-kubernetes/))
+* Adding AWS accounts to deploy applications to (see the [Open Source Spinnaker documentation](https://www.spinnaker.io/setup/install/providers/aws/))
