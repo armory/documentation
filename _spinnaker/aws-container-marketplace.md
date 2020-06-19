@@ -17,7 +17,9 @@ The AWS Container Marketplace offering for Spinnaker Operator will install the A
 
 Spinnaker can be installed in any namespace in your EKS cluster; this document assumes that Spinnaker will be installed in the `spinnaker` namespace.
 
-**_This document is intended only for users of the Armory AWS Container Marketplace offering that have purchased the offering; it will not work if you have not subscribed to the Armory Container Marketplace offering!_**
+**_This document is intended only for users of the Armory AWS Container Marketplace offering that have purchased the offering; it will not work if you have not subscribed to the Armory Container Marketplace offering._**
+
+Please contact Armory (hello@armory.io) if you're interested in an AWS Marketplace Private Offer.
 
 ## Prerequisites
 
@@ -65,7 +67,7 @@ You will end up with these three IAM roles:
 
 #### IAM Role for Operator Pod
 
-Create an IAM role to be used by the Operator pod (call it `eks-spinnaker-operator`)
+Create an IAM role to be used by the Operator pod (call it `eks-spinnaker-operator`, and configure it for use by EC2; the trust relationships will be replaced later)
 
 Grant it the AWS managed policy `AWSMarketplaceMeteringRegisterUsage`
 
@@ -153,7 +155,7 @@ For example:
 
 #### IAM Role for Front50 Pod
 
-Create an IAM role to be used by the Operator pod (call it `eks-spinnaker-front50`)
+Create an IAM role to be used by the Operator pod (call it `eks-spinnaker-front50`, and configure it for use by EC2; the trust relationships will be replaced later)
 
 Grant it an inline policy granting permissions on your S3 bucket (replace `BUCKET_NAME` with the name of your bucket):
 
@@ -237,11 +239,9 @@ For example:
 }
 ```
 
-
-
 #### IAM Role for Clouddriver Pod
 
-Create an IAM role to be used by the Operator pod (call it `eks-spinnaker-clouddriver`)
+Create an IAM role to be used by the Operator pod (call it `eks-spinnaker-clouddriver`, and configure it for use by EC2; the trust relationships will be replaced later)
 
 It will not need explicit AWS permissions (for now).
 
@@ -384,7 +384,7 @@ Then, create a Kubernetes Ingress to expose `spin-deck` and `spin-gate`.  Create
 
 ```bash
 ---
-apiVersion: networking.k8s.io/v1
+apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: spin-ingress
@@ -410,7 +410,7 @@ spec:
         path: /api/v1
 ```
 
-_**Make sure the host field is updated with the correct DNS record!**_
+_**Make sure the host field is updated with the correct DNS record**_
 
 Apply the ingress file you just created:
 
@@ -420,7 +420,7 @@ kubectl -n spinnaker apply -f spin-ingress.yml
 
 ### Configure Spinnaker to be aware of its endpoints
 
-Uncomment and update the spec.spinnakerConfig.config.security section of `manifests/spinnaker/SpinnakerService.yaml`:
+Update the spec.spinnakerConfig.config.security section of `manifests/spinnaker/SpinnakerService.yaml`:
     
 ```yaml
 spec:
@@ -435,13 +435,15 @@ spec:
       # ... more configuration
 ```
 
-_**Make sure to specify http or https according to your environment!**_
+_**Make sure to specify http or https according to your environment**_
 
 Apply the changes:
     
 ```bash
 kubectl apply -f manifests/spinnaker/SpinnakerService.yaml
 ```
+
+_**If you receive an error here, delete and recreate the SpinnakserService**_
 
 ### Configuring TLS certificates
 
@@ -457,5 +459,5 @@ Now that Spinnaker is running, here are potential next steps:
 
 * Configuring certificates to secure our cluster (see [this section](#configuring-tls-certificates) for notes on this)
 * Configuring authentication/authorization (see the [Open Source Spinnaker documentation](https://www.spinnaker.io/setup/security/))
-* Adding external Kubernetes accounts to deploy applications to (see [this KB article](https://kb.armory.io/installation/spinnaker-add-kubernetes/))
+* Adding external Kubernetes accounts to deploy applications to (see [Creating and Adding a Kubernetes Account to Spinnaker (Deployment Target)](/spinnaker-install-admin-guides/add-kubernetes-account/))
 * Adding AWS accounts to deploy applications to (see the [Open Source Spinnaker documentation](https://www.spinnaker.io/setup/install/providers/aws/))
