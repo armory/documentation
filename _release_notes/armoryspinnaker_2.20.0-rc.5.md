@@ -1,11 +1,11 @@
 ---
 layout: post
-title: v2.20.0-rc.5 Armory Release (OSS Spinnaker v1.20.5)
+title: v2.20.0 Armory Release (OSS Spinnaker v1.20.5)
 order: -2201592574068
 hidden: false
 ---
 
-# 2020/06/60 Release Notes
+# 2020/06/19 Release Notes
 {:.no_toc}
 
 > Note: If you're experiencing production issues after upgrading Spinnaker, rollback to a [previous working version](http://docs.armory.io/admin-guides/troubleshooting/#i-upgraded-spinnaker-and-it-is-no-longer-responding-how-do-i-rollback) and please report issues to [http://go.armory.io/support](http://go.armory.io/support).
@@ -92,7 +92,6 @@ artifactSources:
 #### Armory Front50 - 2.19.12...2.20.2
 
   - armory commons updates (#38)
-  - fix early merge miss
   - fix(mergify): fix rules (#49)
   - fix(plugins): add plugins dir (#52)
   - chore(cve): fix CVE-2019-17495 CVE (#83)
@@ -106,7 +105,6 @@ artifactSources:
 
   - chore(commons): Armory commons bump (#92)
   - Java 11 and gradle plugin update (#91)
-  - merge fix
   - fix(mergify): fix rules (#103)
   - fix(plugins): add plugins dir (#106)
   - chore(cve): CVE fixes (#108)
@@ -233,7 +231,6 @@ artifactSources:
 #### Armory Fiat - 2.19.13...2.20.2
 
   - chore(commons): Armory commons bump (#36)
-  - fix merge issues
   - fix(mergify): fix rules (#42)
   - fix(plugins): add plugins dir (#46)
   - chore(cve): fix CVE-2019-17495 CVE (#48)
@@ -247,7 +244,6 @@ artifactSources:
   - Java 11 and gradle plugin update (#74)
   - fix(jvm): Switched to java 11 (#77)
   - fix(bumps): Spinnaker bump version (#88)
-  - fix merge from master
   - fix(clouddriver.yaml): copied from 1.19.x (#94)
   - fix(mergify): fix rules (#98)
   - fix(plugins): add plugins dir (#103)
