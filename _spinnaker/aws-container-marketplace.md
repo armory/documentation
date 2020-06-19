@@ -24,7 +24,7 @@ Spinnaker can be installed in any namespace in your EKS cluster; this document a
 This document requires the following:
 
 * An EKS cluster (Kubernetes 1.16 or above) configured with [IAM roles for service accounts](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html)
-* An ingress controller for your EKS cluster (documentation for using either the NGINX Ingress Controller or ALB Ingress Controller are included)
+* An ingress controller for your EKS cluster (this document assumes the EKS cluster is using the NGINX Ingress Controller)
 * `cluster-admin` access on the EKS cluster
 * An AWS S3 bucket to store Spinnaker application and pipeline configuration
 
@@ -360,4 +360,104 @@ Once your Spinnaker instance is up and running, you need to configure it so that
 
 1. Expose the `spin-deck` and `spin-gate` services so that they can be reached by your end users (and client services)
 1. Configure Spinnaker so that it knows about the endpoints it is exposed on
+
+Given a domain name (or IP address) (such as spinnaker.domain.com or 55.55.55.55), you should be able to:
+
+* Reach the `spin-deck` service at the root of the domain (`http://spinnaker.domain.com` or `http://55.55.55.55`)
+* Reach the `spin-gate` service at the root of the domain (`http://spinnaker.domain.com/api/v1` or `http://55.55.55.55/api/v1`)
+  
+You can use either http or https, as long as you use the same for both. Additionally, you have to configure Spinnaker to be aware of its endpoints.  
+
+This section assumes the following:
+* The [NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/#aws) has been installed in the EKS cluster
+* You can set up a DNS CNAME Record pointing at the AWS Load Balancer in front of your NGINX Ingress Controller
+
+### Set up an Ingress for `spin-deck` and `spin-gate`
+
+First, determine a DNS name that you can use for Spinnaker, and set up a CNAME pointing that DNS name at your AWS Load Balancer.  For example:
+
+* NGINX Ingress Controller has created an NLB at `abcd1234abcd1234abcd1234abcd1234-1234567812345678.elb.us-east-1.amazonaws.com`
+* Desired domain name for Spinnaker is `spinnaker.domain.com`
+* Create a CNAME DNS Record pointing `spinnaker.domain.com` at `abcd1234abcd1234abcd1234abcd1234-1234567812345678.elb.us-east-1.amazonaws.com` (you may also use an ALIAS Record in Route 53)
+
+Then, create a Kubernetes Ingress to expose `spin-deck` and `spin-gate`.  Create a file called `spin-ingress.yml` with the following content:
+
+```bash
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: spin-ingress
+  namespace: spinnaker
+  labels:
+    app: spin
+    cluster: spin-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+  - 
+    host: spinnaker.domain.com # Make sure to update this field
+    http:
+      paths:
+      - backend:
+          serviceName: spin-deck
+          servicePort: 9000
+        path: /
+      - backend:
+          serviceName: spin-gate
+          servicePort: 8084
+        path: /api/v1
+```
+
+_**Make sure the host field is updated with the correct DNS record!**_
+
+Apply the ingress file you just created:
+
+```bash
+kubectl -n spinnaker apply -f spin-ingress.yml
+```
+
+### Configure Spinnaker to be aware of its endpoints
+
+Uncomment and update the spec.spinnakerConfig.config.security section of `manifests/spinnaker/SpinnakerService.yaml`:
+    
+```yaml
+spec:
+  spinnakerConfig:
+    config:
+      # ... more configuration
+      security:
+        uiSecurity:
+          overrideBaseUrl: http://spinnaker.domain.com         # Replace this with the IP address or DNS that points to our nginx ingress instance
+        apiSecurity:
+          overrideBaseUrl: http://spinnaker.domain.com/api/v1  # Replace this with the IP address or DNS that points to our nginx ingress instance
+      # ... more configuration
+```
+
+_**Make sure to specify http or https according to your environment!**_
+
+Apply the changes:
+    
+```bash
+kubectl apply -f manifests/spinnaker/SpinnakerService.yaml
+```
+
+### Configuring TLS certificates
+
+Configuring TLS certificates for ingresses is often very environment-specific. In general, you want to do the following:
+
+* Add certificate(s) so that our ingress controller can use them
+* Configure the ingress(es) so that NGINX (or the load balancer in front of NGINX, or your alternative ingress controller) terminates TLS using the certificate(s)
+* Update Spinnaker to be aware of the new TLS endpoints, by replacing `http` by `https` to override the base URLs in the previous section.
+
+## Next Steps
+
+Now that Spinnaker is running, here are potential next steps:
+
+* Configuration of certificates to secure our cluster (see [this section](#configuring-tls-certificates) for notes on this)
+* Configuration of Authentication/Authorization (see the [Open Source Spinnaker documentation](https://www.spinnaker.io/setup/security/))
+* Add Kubernetes accounts to deploy applications to (see [this KB article](https://kb.armory.io/installation/spinnaker-add-kubernetes/))
+* Add GCP accounts to deploy applications to (see the [Open Source Spinnaker documentation](https://www.spinnaker.io/setup/install/providers/gce/))
+* Add AWS accounts to deploy applications to (see the [Open Source Spinnaker documentation](https://www.spinnaker.io/setup/install/providers/aws/))
 
