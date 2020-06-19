@@ -11,9 +11,6 @@ order: -202001061114156
 No known issues
 
 ## Halyard Armory Enterprise Spinnaker
+
 - fix(cve): Security fix for CVE-2020-1945
-
-
-## Halyard Community Contributions 
-
-No new changes since the last Armory Halyard release.
+- Upgrade OSS Halyard to 1.36.0
