@@ -17,7 +17,7 @@ The AWS Container Marketplace offering for Spinnaker Operator will install the A
 
 Spinnaker can be installed in any namespace in your EKS cluster; this document assumes that Spinnaker will be installed in the `spinnaker` namespace.
 
-**_This document is intended only for users of the Armory AWS Container Marketplace offering that have purchased the offering._**
+**_This document is intended only for users of the Armory AWS Container Marketplace offering that have purchased the offering; it will not work if you have not subscribed to the Armory Container Marketplace offering!_**
 
 ## Prerequisites
 
